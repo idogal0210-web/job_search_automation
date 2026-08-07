@@ -39,6 +39,7 @@ HIGH PRIORITY TARGET COMPANIES & SECTORS:
 - EPC Contractors: אלקטרה, אפקון, אלקו, מנרב.
 
 EXCLUDED / REJECTED COMPANIES & SHIFTS:
+❌ Energean (אנרג'יאן) - EXCLUDE per candidate request (current employer).
 ❌ נתג"ז (INGL) - EXCLUDE per candidate request.
 ❌ Chevron Israel (שברון) - EXCLUDE per candidate request (2-week shift model).
 ❌ Raycatch - EXCLUDE.
@@ -55,7 +56,7 @@ Target Roles:
 STRICT FILTERING RULES:
 - Boost match score (+10%) for target companies (Enlight, Doral, SolarEdge, Nofar, Energix, OPC, etc.).
 - Reject B.Sc. Engineer ONLY jobs.
-- Reject INGL, Chevron Israel, and FIFO shifts without relocation.
+- Reject Energean, INGL, Chevron Israel, Raycatch, and FIFO shifts without relocation.
 - Minimum Match Score threshold: 65%.
 """
 
@@ -89,8 +90,8 @@ def fetch_jobs_google_search():
                         link = link_elem.get("href", "").split("?")[0]
                         loc = loc_elem.text.strip() if loc_elem else "ישראל"
                         
-                        # Exclude INGL, Chevron, Raycatch
-                        if any(ex in company.lower() or ex in title.lower() for ex in ["ingl", "נתג", "chevron", "שברון", "raycatch"]):
+                        # Exclude Energean, INGL, Chevron, Raycatch
+                        if any(ex in company.lower() or ex in title.lower() for ex in ["energean", "אנרג'יאן", "ingl", "נתג", "chevron", "שברון", "raycatch"]):
                             continue
                             
                         jobs.append({
@@ -144,7 +145,7 @@ Return a JSON array of objects with the following schema for jobs matching score
 CRITICAL RULES:
 - ONLY include jobs with match_score >= 65.
 - Reject B.Sc. Engineer ONLY jobs where Practical Engineer (הנדסאי) is strictly rejected.
-- Reject INGL, Chevron Israel, and FIFO shifts without relocation.
+- Reject Energean, INGL, Chevron Israel, Raycatch, and FIFO shifts without relocation.
 - Maximum 5 best jobs returned.
 - Return ONLY valid raw JSON array inside backticks.
 """
