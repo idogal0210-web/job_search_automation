@@ -3,6 +3,7 @@ import sys
 import json
 import smtplib
 import requests
+from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from bs4 import BeautifulSoup
@@ -13,6 +14,44 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env if present
 load_dotenv()
+
+HISTORY_FILE = os.path.join(os.path.dirname(__file__), "seen_jobs.json")
+RETENTION_DAYS = 14
+
+def load_seen_jobs():
+    """Load previously sent jobs and prune any older than 14 days."""
+    if not os.path.exists(HISTORY_FILE):
+        return {}
+    try:
+        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        cutoff = datetime.now() - timedelta(days=RETENTION_DAYS)
+        fresh_data = {}
+        for link, ts_str in data.items():
+            try:
+                ts = datetime.fromisoformat(ts_str)
+                if ts > cutoff:
+                    fresh_data[link] = ts_str
+            except Exception:
+                pass
+        return fresh_data
+    except Exception as e:
+        print(f"[-] Error reading seen_jobs.json: {e}")
+        return {}
+
+def save_seen_jobs(seen_dict, newly_sent_jobs):
+    """Save newly sent jobs into seen_jobs.json with timestamp."""
+    now_iso = datetime.now().isoformat()
+    for job in newly_sent_jobs:
+        link = job.get("link", "").strip()
+        if link:
+            seen_dict[link] = now_iso
+    try:
+        with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+            json.dump(seen_dict, f, ensure_ascii=False, indent=2)
+        print(f"[+] Updated {HISTORY_FILE} with {len(newly_sent_jobs)} newly sent jobs.")
+    except Exception as e:
+        print(f"[-] Error writing seen_jobs.json: {e}")
 
 # Candidate Profile Context for AI Evaluation
 IDO_CV_SUMMARY = """
@@ -36,7 +75,7 @@ HIGH PRIORITY TARGET COMPANIES & SECTORS:
 - Natural Gas & Power: NewMed Energy, OPC Energy, Dorad Energy, Edeltech.
 - Energy Storage (BESS) & Tech: Nostromo, Brenmiller, StoreDot, Electreon, H2Pro, GenCell.
 - Heavy Industry & Water: ICL (כיל), חברת החשמל, מקורות, IDE Technologies, בז"ן.
-- EPC Contractors: אלקטרה, אפקון, אלקו, מנרב.
+- EPC Contractors: אלקטרה, אפקון, אלקו, מנרב, שפיר הנדסה.
 
 EXCLUDED / REJECTED COMPANIES & SHIFTS:
 ❌ Energean (אנרג'יאן) - EXCLUDE per candidate request (current employer).
@@ -50,8 +89,9 @@ Target Roles:
 1. Gas Controller / Plant Operator / תפעול ובקרה בתשתיות אנרגיה, גז טבעי ותחנות כוח.
 2. Practical Mechanical Engineer / הנדסאי מכונות, תחזוקה, הנדסאי תהליך במפעלים ותעשייה.
 3. Solar PV / Renewable Energy Projects / אנרגיה ירוקה וסולארית (High Priority).
-4. Operations Team Leader / Field Manager / ניהול צוותי שטח ותפעול טכני.
-5. Tech Operations / Technical Support בחברות הייטק וסטארטאפים.
+4. Operations Team Leader / Field Manager / Field Service Engineer / ניהול צוותי שטח ותפעול טכני.
+5. Tech Operations / Technical Support בחברות הייטק וסטארטאפים בתחומי קליימטק ואנרגיה.
+6. Battery Storage (BESS) / Commissioning Engineer / מהנדס/הנדסאי הקמות והפעלה.
 
 STRICT FILTERING RULES:
 - Boost match score (+10%) for target companies (Enlight, Doral, SolarEdge, Nofar, Energix, OPC, etc.).
@@ -60,21 +100,75 @@ STRICT FILTERING RULES:
 - Minimum Match Score threshold: 65%.
 """
 
-def fetch_jobs_google_search():
-    """Fetch potential job leads targeting Israel engineering & energy roles directly from live feeds."""
+def fetch_jobs_google_search(seen_jobs_dict):
+    """Fetch potential job leads across a broad spectrum of keywords, target companies, and pagination."""
     jobs = []
-    print("[+] Fetching live job listings directly from LinkedIn Israel & Israeli Job Boards...")
+    print("[+] Fetching live job listings from LinkedIn Israel & Israeli Job Feeds...")
     
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
     }
 
-    # 1. Search LinkedIn Israel via direct public search API/Endpoint
-    keywords = ["הנדסאי מכונות", "בקר גז", "תפעול אנרגיה", "אנרגיה סולארית", "Gas Controller", "Operations Manager"]
-    for kw in keywords:
+    # 1. Broad role & skill keywords
+    role_keywords = [
+        "הנדסאי מכונות",
+        "בקר גז",
+        "תפעול אנרגיה",
+        "אנרגיה סולארית",
+        "הנדסאי אחזקה",
+        "טכנאי שטח",
+        "Field Service Engineer",
+        "Plant Operator Israel",
+        "Gas Controller",
+        "הנדסאי תהליך",
+        "Process Technician",
+        "BESS Israel",
+        "אגירת אנרגיה",
+        "Solar Project Engineer",
+        "Commissioning Engineer",
+        "Site Manager Energy",
+        "SCADA Operator Israel",
+        "מנהל עבודה סולארי",
+        "מנהל פרויקטים תשתיות",
+        "תפעול חדר בקרה"
+    ]
+
+    # 2. Specific Target Companies Searches
+    company_keywords = [
+        "Enlight Renewable Energy",
+        "Doral Energy",
+        "SolarEdge Israel",
+        "Nofar Energy",
+        "Energix Renewable Energies",
+        "EDF Renewables Israel",
+        "Siemens Energy Israel",
+        "OPC Energy",
+        "Dorad Energy",
+        "ICL Group Israel",
+        "Afcon Holdings",
+        "Electra Energy",
+        "Augury Israel",
+        "StoreDot Israel",
+        "IDE Technologies",
+        "Shikun & Binui Energy"
+    ]
+
+    all_queries = []
+    # Primary role queries with pagination (start=0 and start=25)
+    for kw in role_keywords:
+        all_queries.append((kw, 0))
+        all_queries.append((kw, 25))
+
+    # Company queries (start=0)
+    for comp in company_keywords:
+        all_queries.append((comp, 0))
+
+    seen_links_current_run = set()
+
+    for kw, start_idx in all_queries:
         try:
-            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={requests.utils.quote(kw)}&location=Israel&start=0"
+            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={requests.utils.quote(kw)}&location=Israel&start={start_idx}"
             res = requests.get(url, headers=headers, timeout=8)
             if res.status_code == 200:
                 soup = BeautifulSoup(res.text, "html.parser")
@@ -87,25 +181,29 @@ def fetch_jobs_google_search():
                     if title_elem and link_elem:
                         title = title_elem.text.strip()
                         company = comp_elem.text.strip() if comp_elem else ""
-                        link = link_elem.get("href", "").split("?")[0]
+                        link = link_elem.get("href", "").split("?")[0].strip()
                         loc = loc_elem.text.strip() if loc_elem else "ישראל"
                         
-                        # Exclude Energean, INGL, Chevron, Raycatch
+                        # 1. Skip already seen jobs in the last 14 days
+                        if link in seen_jobs_dict or link in seen_links_current_run:
+                            continue
+
+                        # 2. Exclude Energean, INGL, Chevron, Raycatch
                         if any(ex in company.lower() or ex in title.lower() for ex in ["energean", "אנרג'יאן", "ingl", "נתג", "chevron", "שברון", "raycatch"]):
                             continue
                             
+                        seen_links_current_run.add(link)
                         jobs.append({
                             "title": f"{company} - {title}",
                             "snippet": f"משרה בחברת {company} במיקום {loc}. דרישות תפקיד: {title}",
                             "link": link
                         })
         except Exception as e:
-            print(f"[-] LinkedIn fetch error for '{kw}': {e}")
+            # Continue on error
+            pass
 
-    print(f"[+] Successfully fetched {len(jobs)} live jobs from LinkedIn Israel and Israeli feeds.")
+    print(f"[+] Successfully fetched {len(jobs)} FRESH candidate jobs (after 14-day history filtering & deduplication).")
     return jobs
-
-
 
 
 def evaluate_jobs_with_gemini(job_list):
@@ -118,6 +216,9 @@ def evaluate_jobs_with_gemini(job_list):
     client = genai.Client(api_key=gemini_key)
     evaluated_jobs = []
 
+    # Send up to 80 candidate jobs to Gemini in one prompt for efficiency
+    candidate_batch = job_list[:80]
+
     prompt = f"""
 You are an expert AI Career Advisor evaluating jobs for Ido Gal.
 
@@ -125,7 +226,7 @@ CANDIDATE CV PROFILE & RULES:
 {IDO_CV_SUMMARY}
 
 JOB POSTINGS TO EVALUATE:
-{json.dumps(job_list, ensure_ascii=False, indent=2)}
+{json.dumps(candidate_batch, ensure_ascii=False, indent=2)}
 
 Filter and evaluate the jobs strictly according to the candidate profile and rules.
 Return a JSON array of objects with the following schema for jobs matching score >= 65%:
@@ -203,7 +304,7 @@ def build_html_email(evaluated_jobs):
         <div class="container" dir="rtl" style="direction: rtl; text-align: right;">
             <div class="header" dir="rtl">
                 <h1>🎯 משרות מותאמות אישית (תאימות 65%+) | עידו גל</h1>
-                <p>סיכום אוטומטי יומי מבוסס AI - {len(evaluated_jobs)} משרות נבחרות</p>
+                <p>סיכום אוטומטי יומי מבוסס AI - {len(evaluated_jobs)} משרות נבחרות חדשות</p>
             </div>
             <div class="content" dir="rtl" style="direction: rtl; text-align: right;">
     """
@@ -287,21 +388,29 @@ def send_email(subject, html_content, recipient_email):
         return False
 
 def main():
-    print("[+] Starting Job Search Automation for Ido Gal...")
+    print("[+] Starting Job Search Automation for Ido Gal (with 14-Day History Deduplication)...")
     
-    # 1. Fetch Job Leads
-    raw_jobs = fetch_jobs_google_search()
-    print(f"[+] Retrieved {len(raw_jobs)} job postings for analysis.")
+    # 1. Load seen jobs history (14 days window)
+    seen_jobs_dict = load_seen_jobs()
+    print(f"[+] Loaded {len(seen_jobs_dict)} active jobs in 14-day history.")
+
+    # 2. Fetch Fresh Job Leads
+    raw_jobs = fetch_jobs_google_search(seen_jobs_dict)
+    print(f"[+] Retrieved {len(raw_jobs)} unique fresh job postings for analysis.")
 
     if not raw_jobs:
-        print("[!] No job leads found today.")
+        print("[!] No new jobs found today.")
         return
 
-    # 2. Evaluate with Gemini AI
+    # 3. Evaluate with Gemini AI
     evaluated_jobs = evaluate_jobs_with_gemini(raw_jobs)
-    print(f"[+] Evaluated {len(evaluated_jobs)} jobs with Gemini AI.")
+    print(f"[+] Evaluated {len(evaluated_jobs)} matching jobs with Gemini AI.")
 
-    # 3. Build & Dispatch HTML Email Report
+    # 4. Save newly sent jobs to history
+    if evaluated_jobs:
+        save_seen_jobs(seen_jobs_dict, evaluated_jobs)
+
+    # 5. Build & Dispatch HTML Email Report
     html_content = build_html_email(evaluated_jobs)
     send_email("🎯 משרות מותאמות אישית עבור עידו גל - סיכום יומי", html_content, "idogal0210@gmail.com")
 
