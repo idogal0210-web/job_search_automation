@@ -91,13 +91,15 @@ def save_seen_drones(seen_dict, newly_sent_jobs):
             "match_score": job.get("match_score", 0),
             "sector": "רחפנים, כטב\"ם ורובוטיקה",
             "summary": job.get("summary_hebrew", ""),
-            "link": job.get("link", "")
+            "link": job.get("link", ""),
+            "license_status": job.get("license_status", "none"),
+            "license_note": job.get("license_note_hebrew", "")
         })
 
     try:
         with open(ARCHIVE_FILE, "w", encoding="utf-8") as f:
             json.dump(archive_list, f, ensure_ascii=False, indent=2)
-        print(f"[+] Updated {ARCHIVE_FILE} with drone jobs for weekly digest.")
+        print(f"[+] Updated {ARCHIVE_FILE} with categorized drone jobs for weekly digest.")
     except Exception as e:
         print(f"[-] Error writing weekly_archive.json: {e}")
 
@@ -109,6 +111,7 @@ Email: idogal0210@gmail.com | Phone: 052-632-8886 | Location: Tel Aviv - Or Aqiv
 Degree / Qualifications:
 - Practical Mechanical Engineer (הנדסאי מכונות), Ruppin Academic Center (2024). NOT a B.Sc. Engineer!
 - Certified Electrician (חשמלאי מוסמך), Ruppin Academic Center (Expected 2026).
+- Drone Pilot License Status: Currently does NOT hold a commercial CAAI (רת"א) drone pilot license.
 
 Military & Combat Leadership:
 - Combat Commander & Demolitions in Nahal Reconnaissance Unit (סיירת נח"ל - חבלה ופיקוד 07/08): High technical discipline, field leadership under pressure, hands-on mechanical & tactical operational skills.
@@ -124,12 +127,11 @@ TARGET DRONE & AEROSPACE COMPANIES (BOOST +10%):
 ⭐ Defense & Aerospace Giants: Elbit Systems (אלביט מערכות), IAI (התעשייה האווירית), Rafael (רפאל), BlueBird Aero Systems.
 ⭐ Drone Tech, Payloads & Avionics: NextVision (נקסט ויז'ן), ParaZero, D-Fend Solutions, Skylock, Axon Vision, Sentrycs.
 
-TARGET DRONE ROLES:
-1. Mechanical & Integration Practical Engineer / הנדסאי מכונות ואינטגרציה ברחפנים: הרכבות מכניות, שילוב מטע"דים, בדיקות גופים, עבודה עם חומרים מרוכבים.
-2. Flight Test & Field Operator / טכנאי ניסויי טיסה ומטיס שטח: ניסויי טיסה, הטסת רחפנים טקטיים, כיול מערכות אוטונומיות בשטח.
-3. Drone Operations & Fleet Controller / בקרת מבצעים ושליטה בצי רחפנים אוטונומיים (תפור לניסיון מחדר הבקרה ב-Energean).
-4. Avionics & Electrical Technician / טכנאי חשמל ואוויוניקה: חיווט, מנועים, בקרי מהירות (ESC), סוללות וטעינה מהירה.
-5. Field Service Engineer / Customer Support / שירות שטח ותמיכה טכנית לרחפנים ומערכות ביטחוניות.
+CATEGORIZATION OF DRONE JOBS BY LICENSE REQUIREMENT:
+1. None (ללא צורך ברישיון מטיס): Mechanical Assembly, Integration, Control Room / Remote Operations, Electrical & Avionics Wiring, Demolitions/Testing.
+2. Training Provided (החברה מספקת הכשרה והסמכה): Companies that train candidates to become certified drone pilots/operators on the job.
+3. Advantage (רישיון מטיס כיתרון): Field testing or customer support where a pilot license is a plus but not strictly mandatory.
+4. Mandatory (רישיון מטיס כדרישת סף): Roles strictly requiring an active commercial CAAI (רת"א) pilot license.
 
 EXCLUDED / REJECTED:
 ❌ Energean, INGL, Chevron Israel, Raycatch.
@@ -163,7 +165,8 @@ def fetch_drone_jobs(seen_drones_dict):
         "Drone Operator Israel",
         "Autonomous Systems Technician Israel",
         "Field Operator Drones",
-        "UAV Integration"
+        "UAV Integration",
+        "מפעיל כטבמ"
     ]
 
     # 2. Drone specific companies queries
@@ -181,7 +184,8 @@ def fetch_drone_jobs(seen_drones_dict):
         "ParaZero",
         "D-Fend Solutions",
         "Elbit Systems UAV",
-        "IAI Drones"
+        "IAI Drones",
+        "Rafael Defense Drones"
     ]
 
     all_queries = []
@@ -230,7 +234,7 @@ def fetch_drone_jobs(seen_drones_dict):
     return jobs
 
 def evaluate_drone_jobs_with_gemini(job_list):
-    """Use Gemini AI to analyze fit for Drone & UAV roles against Ido Gal's profile."""
+    """Use Gemini AI to analyze fit and classify licensing requirements for Drone/UAV roles."""
     gemini_key = os.environ.get("GEMINI_API_KEY")
     if not gemini_key:
         print("[-] GEMINI_API_KEY missing.")
@@ -250,7 +254,7 @@ CANDIDATE CV PROFILE & RULES:
 JOB POSTINGS TO EVALUATE:
 {json.dumps(candidate_batch, ensure_ascii=False, indent=2)}
 
-Filter and evaluate the jobs strictly according to the candidate profile and drone roles.
+Filter and evaluate the jobs strictly according to the candidate profile and categorize by drone licensing status.
 Return a JSON array of objects with the following schema for jobs matching score >= 65%:
 [
   {{
@@ -260,16 +264,23 @@ Return a JSON array of objects with the following schema for jobs matching score
     "company": "שם החברה",
     "location": "מיקום (מרכז / שרון / צפון / Remote)",
     "summary_hebrew": "תקציר ממוקד בעברית של 2 שורות בלבד על התפקיד, הרחפנים/מערכות והאחריות",
-    "pros_hebrew": "2-3 נקודות חוזק בולטות להתאמה מהניסיון של עידו (הנדסאי מכונות, ניטור ובקרה, רקע פיקודי קרבי, חשמל)",
-    "gaps_hebrew": "דרישות חובה או פערים לתשומת לב (אם קיימים)"
+    "pros_hebrew": "2-3 נקודות חוזק בולטות להתאמה מהניסיון של עידו",
+    "gaps_hebrew": "דרישות חובה או פערים לתשומת לב",
+    "license_status": "none" | "training_provided" | "advantage" | "mandatory",
+    "license_note_hebrew": "הסבר קצר על סטטוס הרישיון (למשל: 'אין צורך ברישיון מטיס', 'החברה מכשירה ומסמיכה מטיסים', 'רישיון מטיס כיתרון בלבד', 'רישיון מטיס רת\"א כדרישת סף')"
   }}
 ]
 
 CRITICAL RULES:
 - ONLY include jobs relevant to Drones, UAV, Autonomous Robotics, Flight Testing, Integration, Mechanical, or Defense Systems.
 - ONLY include jobs with match_score >= 65.
+- Categorize 'license_status' accurately:
+  * 'none': For Mechanical Engineering, Integration, Control Room, Electrical/Avionics wiring, Demolitions/Explosives testing.
+  * 'training_provided': For companies offering in-house flight training & operator certification.
+  * 'advantage': When flight license is listed as a plus/advantage only.
+  * 'mandatory': When an active commercial drone pilot license is strictly required.
 - Reject B.Sc. Engineer ONLY jobs where Practical Engineer (הנדסאי) is strictly rejected.
-- Maximum 5 best jobs returned.
+- Maximum 6 best jobs returned.
 - Return ONLY valid raw JSON array inside backticks.
 """
 
@@ -306,42 +317,107 @@ CRITICAL RULES:
             break
 
     evaluated_jobs.sort(key=lambda x: x.get("match_score", 0), reverse=True)
-    return evaluated_jobs[:5]
+    return evaluated_jobs[:6]
 
 def build_drone_html_email(evaluated_jobs):
-    """Build a specialized Aero-Tech styled RTL HTML email for Drone & UAV jobs."""
+    """Build a specialized Aero-Tech styled RTL HTML email with explicit licensing badges and categories."""
+    
+    # Categorize jobs for structured display
+    cat_none = [j for j in evaluated_jobs if j.get("license_status") == "none"]
+    cat_training = [j for j in evaluated_jobs if j.get("license_status") == "training_provided"]
+    cat_adv = [j for j in evaluated_jobs if j.get("license_status") == "advantage"]
+    cat_mand = [j for j in evaluated_jobs if j.get("license_status") == "mandatory"]
+
     html = f"""
     <!DOCTYPE html>
     <html dir="rtl" lang="he">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-            body {{ font-family: 'Segoe UI', Arial, sans-serif; background-color: #0f172a; margin: 0; padding: 20px; color: #f8fafc; direction: rtl; text-align: right; }}
-            .container {{ max-width: 650px; margin: 0 auto; background: #1e293b; border-radius: 14px; overflow: hidden; box-shadow: 0 6px 30px rgba(0,0,0,0.35); border: 1px solid #334155; direction: rtl; text-align: right; }}
-            .header {{ background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0c4a6e 100%); color: #ffffff; padding: 26px; text-align: center; direction: rtl; }}
+            body {{ font-family: 'Segoe UI', Arial, sans-serif; background-color: #0b1329; margin: 0; padding: 18px; color: #f8fafc; direction: rtl; text-align: right; }}
+            .container {{ max-width: 660px; margin: 0 auto; background: #131f37; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.45); border: 1px solid #233554; direction: rtl; text-align: right; }}
+            .header {{ background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #075985 100%); color: #ffffff; padding: 26px 20px; text-align: center; direction: rtl; }}
             .header h1 {{ margin: 0; font-size: 23px; font-weight: 800; color: #ffffff; }}
             .header p {{ margin: 6px 0 0 0; opacity: 0.95; font-size: 14px; color: #e0f2fe; }}
             .content {{ padding: 22px; direction: rtl; text-align: right; }}
-            .job-card {{ background: #0f172a; border: 1px solid #334155; border-right: 5px solid #38bdf8; border-radius: 10px; padding: 18px; margin-bottom: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); direction: rtl; text-align: right; }}
-            .job-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #334155; padding-bottom: 8px; direction: rtl; }}
-            .job-title {{ font-size: 17px; font-weight: bold; color: #38bdf8; text-decoration: none; text-align: right; }}
-            .score-badge {{ background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 4px 12px; border-radius: 16px; font-weight: bold; font-size: 13px; display: inline-block; margin-left: 10px; border: 1px solid #38bdf8; }}
-            .details {{ font-size: 14px; line-height: 1.6; color: #cbd5e1; direction: rtl; text-align: right; }}
-            .summary-box {{ background: #1e293b; padding: 10px 12px; border-radius: 6px; margin: 10px 0; border-right: 3px solid #38bdf8; font-size: 13.5px; color: #e2e8f0; direction: rtl; text-align: right; }}
-            .pro-list {{ color: #4ade80; margin: 4px 0; padding-right: 15px; font-size: 13.5px; direction: rtl; text-align: right; }}
-            .gap-list {{ color: #fbbf24; margin: 4px 0; padding-right: 15px; font-size: 13.5px; direction: rtl; text-align: right; }}
-            .btn {{ display: inline-block; background: linear-gradient(135deg, #0284c7, #0284c7); color: #ffffff !important; padding: 10px 18px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13.5px; margin-top: 12px; text-align: center; border: 1px solid #38bdf8; }}
-            .footer {{ background: #0f172a; text-align: center; padding: 14px; font-size: 12px; color: #94a3b8; border-top: 1px solid #334155; direction: rtl; }}
+            
+            /* Section Titles */
+            .section-title {{ font-size: 15px; font-weight: bold; padding: 8px 12px; border-radius: 6px; margin: 20px 0 12px 0; display: flex; align-items: center; justify-content: space-between; direction: rtl; }}
+            .title-none {{ background: rgba(16, 185, 129, 0.15); color: #34d399; border-right: 4px solid #10b981; }}
+            .title-training {{ background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-right: 4px solid #f59e0b; }}
+            .title-adv {{ background: rgba(59, 130, 246, 0.15); color: #60a5fa; border-right: 4px solid #3b82f6; }}
+            .title-mand {{ background: rgba(239, 68, 68, 0.15); color: #f87171; border-right: 4px solid #ef4444; }}
+
+            /* Job Card */
+            .job-card {{ background: #0b1329; border: 1px solid #1e2d4a; border-radius: 10px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); direction: rtl; text-align: right; }}
+            .job-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #1e2d4a; padding-bottom: 8px; direction: rtl; }}
+            .job-title {{ font-size: 16.5px; font-weight: bold; color: #38bdf8; text-decoration: none; text-align: right; }}
+            
+            /* Badges */
+            .score-badge {{ background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 4px 10px; border-radius: 14px; font-weight: bold; font-size: 12.5px; display: inline-block; }}
+            .license-badge-none {{ background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 6px; }}
+            .license-badge-training {{ background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 6px; }}
+            .license-badge-adv {{ background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 6px; }}
+            .license-badge-mand {{ background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 6px; }}
+            
+            .details {{ font-size: 13.5px; line-height: 1.6; color: #cbd5e1; direction: rtl; text-align: right; }}
+            .summary-box {{ background: #131f37; padding: 10px 12px; border-radius: 6px; margin: 8px 0; border-right: 3px solid #38bdf8; font-size: 13px; color: #e2e8f0; direction: rtl; text-align: right; }}
+            .pro-list {{ color: #4ade80; margin: 4px 0; padding-right: 15px; font-size: 13px; direction: rtl; text-align: right; }}
+            .gap-list {{ color: #fbbf24; margin: 4px 0; padding-right: 15px; font-size: 13px; direction: rtl; text-align: right; }}
+            .btn {{ display: inline-block; background: #0284c7; color: #ffffff !important; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 10px; text-align: center; border: 1px solid #38bdf8; }}
+            .footer {{ background: #0b1329; text-align: center; padding: 14px; font-size: 12px; color: #64748b; border-top: 1px solid #1e2d4a; direction: rtl; }}
         </style>
     </head>
     <body dir="rtl" style="direction: rtl; text-align: right;">
         <div class="container" dir="rtl" style="direction: rtl; text-align: right;">
             <div class="header" dir="rtl">
                 <h1>🚁 משרות מובילות בעולם הרחפנים והכטב"ם | עידו גל</h1>
-                <p>סיכום יומי אוטונומי מבוסס AI - {len(evaluated_jobs)} משרות נבחרות</p>
+                <p>סיכום יומי מבוסס AI - מחולק לפי דרישות רישיון והכשרת מטיסים</p>
             </div>
             <div class="content" dir="rtl" style="direction: rtl; text-align: right;">
     """
+
+    def render_job_card(job):
+        score = job.get("match_score", 65)
+        lic_stat = job.get("license_status", "none")
+        lic_note = job.get("license_note_hebrew", "")
+        
+        if lic_stat == "none":
+            badge_html = f'<span class="license-badge-none">🟢 ללא צורך ברישיון מטיס: {lic_note}</span>'
+            card_border = "border-right: 5px solid #10b981;"
+        elif lic_stat == "training_provided":
+            badge_html = f'<span class="license-badge-training">🎓 הכשרה והסמכה ע"ח החברה: {lic_note}</span>'
+            card_border = "border-right: 5px solid #f59e0b;"
+        elif lic_stat == "advantage":
+            badge_html = f'<span class="license-badge-adv">🟡 רישיון כיתרון (לא חובה): {lic_note}</span>'
+            card_border = "border-right: 5px solid #3b82f6;"
+        else:
+            badge_html = f'<span class="license-badge-mand">🔴 רישיון מטיס כדרישת סף: {lic_note}</span>'
+            card_border = "border-right: 5px solid #ef4444;"
+
+        return f"""
+            <div class="job-card" dir="rtl" style="{card_border} direction: rtl; text-align: right;">
+                <div class="job-header" dir="rtl">
+                    <span class="score-badge">התאמה: {score}%</span>
+                    <a href="{job.get('link', '#')}" class="job-title" target="_blank" dir="rtl">{job.get('title', 'משרה')}</a>
+                </div>
+                <div class="details" dir="rtl">
+                    <div>{badge_html}</div>
+                    <p style="margin:4px 0;"><strong>חברה ומיקום:</strong> {job.get('company', '')} | {job.get('location', '')}</p>
+                    <div class="summary-box">
+                        <strong>תקציר המשרה:</strong> {job.get('summary_hebrew', '')}
+                    </div>
+                    <p style="margin-bottom:2px; margin-top:8px;"><strong>נקודות חוזק מהניסיון שלך:</strong></p>
+                    <div class="pro-list">• {job.get('pros_hebrew', '')}</div>
+                    
+                    <p style="margin-bottom:2px; margin-top:8px;"><strong>דגשים / דרישות נוספות:</strong></p>
+                    <div class="gap-list">• {job.get('gaps_hebrew', '')}</div>
+                    
+                    <a href="{job.get('link', '#')}" class="btn" target="_blank">צפה במשרה והגש מועמדות &larr;</a>
+                </div>
+            </div>
+        """
 
     if not evaluated_jobs:
         html += """
@@ -351,34 +427,33 @@ def build_drone_html_email(evaluated_jobs):
         </div>
         """
     else:
-        for job in evaluated_jobs:
-            score = job.get("match_score", 65)
+        # Group 1: None
+        if cat_none:
+            html += '<div class="section-title title-none">🟢 משרות ללא צורך ברישיון מטיס (מכניקה, אינטגרציה, בקרה, חשמל)</div>'
+            for j in cat_none:
+                html += render_job_card(j)
 
-            html += f"""
-                <div class="job-card" dir="rtl" style="direction: rtl; text-align: right;">
-                    <div class="job-header" dir="rtl" style="direction: rtl; text-align: right;">
-                        <span class="score-badge">התאמה: {score}%</span>
-                        <a href="{job.get('link', '#')}" class="job-title" target="_blank" dir="rtl" style="direction: rtl; text-align: right;">{job.get('title', 'משרה')}</a>
-                    </div>
-                    <div class="details" dir="rtl" style="direction: rtl; text-align: right;">
-                        <p style="margin:4px 0; direction: rtl; text-align: right;"><strong>חברה ומיקום:</strong> {job.get('company', '')} | {job.get('location', '')}</p>
-                        <div class="summary-box" dir="rtl" style="direction: rtl; text-align: right;">
-                            <strong>תקציר המשרה:</strong> {job.get('summary_hebrew', '')}
-                        </div>
-                        <p style="margin-bottom:2px; margin-top:8px; direction: rtl; text-align: right;"><strong>נקודות חוזק מהניסיון שלך:</strong></p>
-                        <div class="pro-list" dir="rtl" style="direction: rtl; text-align: right;">• {job.get('pros_hebrew', '')}</div>
-                        
-                        <p style="margin-bottom:2px; margin-top:8px; direction: rtl; text-align: right;"><strong>דגשים / דרישות נוספות:</strong></p>
-                        <div class="gap-list" dir="rtl" style="direction: rtl; text-align: right;">• {job.get('gaps_hebrew', '')}</div>
-                        
-                        <a href="{job.get('link', '#')}" class="btn" target="_blank" dir="rtl" style="direction: rtl;">צפה במשרה והגש מועמדות &larr;</a>
-                    </div>
-                </div>
-            """
+        # Group 2: Training Provided
+        if cat_training:
+            html += '<div class="section-title title-training">🎓 משרות עם הכשרה והסמכה לרישיון מטיס ע"ח החברה</div>'
+            for j in cat_training:
+                html += render_job_card(j)
+
+        # Group 3: Advantage
+        if cat_adv:
+            html += '<div class="section-title title-adv">🟡 משרות שבהן רישיון מטיס הוא יתרון בלבד (לא חובה)</div>'
+            for j in cat_adv:
+                html += render_job_card(j)
+
+        # Group 4: Mandatory
+        if cat_mand:
+            html += '<div class="section-title title-mand">🔴 משרות הדורשות רישיון מטיס מסחרי קיים כדרישת סף</div>'
+            for j in cat_mand:
+                html += render_job_card(j)
 
     html += """
             </div>
-            <div class="footer" dir="rtl" style="direction: rtl; text-align: center;">
+            <div class="footer" dir="rtl">
                 <p>הודעה זו נשלחה באופן אוטומטי ע"י מערכת Job Search Automation עבור עידו גל</p>
             </div>
         </div>
@@ -420,7 +495,7 @@ def send_drone_email(subject, html_content, recipient_email):
         return False
 
 def main():
-    print("[+] Starting Drone & UAV Job Search Automation for Ido Gal...")
+    print("[+] Starting Drone & UAV Job Search Automation for Ido Gal (Categorized by License Requirements)...")
 
     # 1. Load seen drone jobs history
     seen_drones = load_seen_drones()
@@ -434,7 +509,7 @@ def main():
         print("[!] No new drone jobs found today.")
         return
 
-    # 3. Evaluate with Gemini AI
+    # 3. Evaluate with Gemini AI & classify licensing
     evaluated_jobs = evaluate_drone_jobs_with_gemini(raw_jobs)
     print(f"[+] Evaluated {len(evaluated_jobs)} matching drone jobs with Gemini AI.")
 
@@ -444,7 +519,7 @@ def main():
 
     # 5. Build & Dispatch HTML Email
     html_content = build_drone_html_email(evaluated_jobs)
-    send_drone_email("🚁 משרות מובילות בעולם הרחפנים והכטב\"ם (תאימות 65%+) | עידו גל", html_content, "idogal0210@gmail.com")
+    send_drone_email("🚁 משרות מובילות בעולם הרחפנים והכטב\"ם (מחולק לפי דרישות רישיון) | עידו גל", html_content, "idogal0210@gmail.com")
 
 if __name__ == "__main__":
     main()

@@ -198,5 +198,77 @@
     "sector": "רחפנים, כטב\"ם ורובוטיקה",
     "summary": "תפעול, הטסה ובדיקת מערכות הרחפן האוטונומי של החברה בשטח ובחדרי בקרה, תוך ניטור טלמטריה ומערכות קצה.",
     "link": "https://il.linkedin.com/jobs/view/drone-pilot-at-percepto-4445911955"
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Airobotics - Operations Team Member",
+    "company": "Airobotics",
+    "match_score": 90,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "מפעיל/ת חדר בקרה וצוות תפעול למערכות הרחפנים האוטונומיות של החברה. התפקיד כולל ניטור טלמטריה בזמן אמת, עבודה מול מערכות SCADA וקבלת החלטות בחירום.",
+    "link": "https://il.linkedin.com/jobs/view/operations-team-member-at-airobotics-4330535984",
+    "license_status": "training_provided",
+    "license_note": "החברה מספקת הכשרה והסמכה מלאה על מערכות הרחפנים האוטונומיות שלה במסגרת התפקיד."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Regulus - Field Testing Engineer",
+    "company": "Regulus",
+    "match_score": 88,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "הובלה וביצוע של ניסויי שדה מורכבים למערכות הגנה ולוחמה אלקטרונית נגד רחפנים (RF). עבודה טכנית עם מערכות קצה ואנליזה של תוצאות בשטח.",
+    "link": "https://il.linkedin.com/jobs/view/field-testing-engineer-at-regulus-4321408416",
+    "license_status": "advantage",
+    "license_note": "רישיון מטיס רחפנים מהווה יתרון לצורך הטסת רחפני מטרה במהלך ניסויי השדה, אך אינו דרישת סף."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "BIRD Aerosystems - Electrical Practical Engineer",
+    "company": "BIRD Aerosystems",
+    "match_score": 87,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "תפקיד הנדסאי/ת אינטגרציה וחיווט למערכות הגנה אוויריות מתקדמות המותקנות על גבי כלי טיס. עבודה על פרויקטים רב-תחומיים המשלבים חשמל, אלקטרוניקה ומכניקה.",
+    "link": "https://il.linkedin.com/jobs/view/electrical-practical-engineer-at-bird-aerosystems-4442521609",
+    "license_status": "none",
+    "license_note": "תפקיד הנדסי וטכנולוגי במעבדה ובייצור - אין שום צורך ברישיון מטיס."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Airobotics - Flight Test Engineer",
+    "company": "Airobotics",
+    "match_score": 85,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "הכנה, הובלה והוצאה לפועל של ניסויי טיסה מורכבים למערכות רחפנים ומטע\"דים. עבודה מול צוותי פיתוח תוכנה, חומרה ומכניקה.",
+    "link": "https://il.linkedin.com/jobs/view/flight-test-engineer-at-airobotics-4449105617",
+    "license_status": "advantage",
+    "license_note": "רישיון מטיס רחפנים מסחרי (רת\"א) מהווה יתרון משמעותי אך אינו תנאי סף חובה לקבלה."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "BlueBird Aero Systems Ltd. - New Product Introduction Engineer",
+    "company": "BlueBird Aero Systems",
+    "match_score": 83,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "תפקיד NPI להעברת פרויקטי כטב\"ם ורחפנים מפיתוח לייצור המוני. כתיבת הוראות הרכבה, תכנון ג'יגים ומתקני ייצור ופתרון בעיות מכאניות ברצפת הייצור.",
+    "link": "https://il.linkedin.com/jobs/view/new-product-introduction-engineer-at-bluebird-aero-systems-ltd-4446639280",
+    "license_status": "none",
+    "license_note": "עבודה הנדסית-תעשייתית במפעל הייצור של החברה - אין צורך ברישיון מטיס."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Shifters - Robotics Assembly & Integration Technician",
+    "company": "Shifters (עבור חברת רחפנים/רובוטיקה)",
+    "match_score": 80,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "הרכבה מכאנית עדינה, חיווט ואינטגרציה של מערכות רובוטיקה ורחפנים מתקדמים. ביצוע בדיקות קבלה (ATP) ותמיכה בצוות הפיתוח.",
+    "link": "https://il.linkedin.com/jobs/view/robotics-assembly-integration-technician-at-shifters-4441607017",
+    "license_status": "none",
+    "license_note": "עבודה מעבדתית ורצפת ייצור - ללא צורך ברישיון מטיס."
   }
 ]
