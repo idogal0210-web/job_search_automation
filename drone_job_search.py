@@ -93,13 +93,14 @@ def save_seen_drones(seen_dict, newly_sent_jobs):
             "summary": job.get("summary_hebrew", ""),
             "link": job.get("link", ""),
             "license_status": job.get("license_status", "none"),
-            "license_note": job.get("license_note_hebrew", "")
+            "license_note": job.get("license_note_hebrew", ""),
+            "tier_priority": job.get("tier_priority", 2)
         })
 
     try:
         with open(ARCHIVE_FILE, "w", encoding="utf-8") as f:
             json.dump(archive_list, f, ensure_ascii=False, indent=2)
-        print(f"[+] Updated {ARCHIVE_FILE} with categorized drone jobs for weekly digest.")
+        print(f"[+] Updated {ARCHIVE_FILE} with prioritized drone jobs for weekly digest.")
     except Exception as e:
         print(f"[-] Error writing weekly_archive.json: {e}")
 
@@ -130,7 +131,7 @@ Core Skills:
 
 Languages:
 - Hebrew: Native language.
-- English: Full professional proficiency.
+- English: Full professional proficiency (5 years international team training in US & Germany).
 
 Professional Experience:
 1. Energean Israel Ltd. | Gas Controller | 2022–Present:
@@ -151,10 +152,21 @@ Military Service:
   - Combat soldier and commander in demolitions and combat engineering. Led the unit's demolitions field as a career service member (קבע).
   - Certifications: Rifleman 08 (רובאי 08) and Demolitions & Combat Engineering 07 (הסמכת חבלה והנדסה קרבית 07).
 
-TARGET DRONE & AEROSPACE COMPANIES (BOOST +10%):
-⭐ Drone Pioneers: Percepto, XTEND, HevenDrones, Airobotics, SpearUAV, Steadicopter, Flytrex, Robotican, Copterpix, High Lander, Sightec.
-⭐ Defense & Aerospace Giants: Elbit Systems (אלביט מערכות), IAI (התעשייה האווירית), Rafael (רפאל), BlueBird Aero Systems, BIRD Aerosystems.
-⭐ Drone Tech, Payloads & Avionics: NextVision (נקסט ויז'ן), ParaZero, D-Fend Solutions, Skylock, Axon Vision, Sentrycs, Regulus Cyber.
+====================================================================
+PRIORITIZATION TIERS FOR TARGET DRONE COMPANIES (APPLY SCORE BOOST):
+====================================================================
+⭐ TIER 1 (MAXIMUM BOOST +15% - Perfect Fit for Combat/Demolitions + Mech/Elec + International Training):
+1. XTEND (אקסטנד): Tactical VR Drones, Human-Guided, US/DoD training & ops, flight operations, mechanical/avionics integration.
+2. SpearUAV (ספיר): Encapsulated tactical drones Ninox, mechanical launch tubes, demolitions & payload integration.
+3. רפאל (Rafael): Defense test arenas, demolitions, tactical drones, laser C-UAS, explosive testing (חבלה 07/08).
+
+🚀 TIER 2 (STRONG BOOST +10% - Energy Facilities, Autonomous Ops & Precision Electro-Mechanics):
+4. Percepto (פרספטו): Autonomous Drone-in-a-Box for Energy & Critical Infrastructure (Direct fit to Energean / SCADA / Solar).
+5. NextVision (נקסט ויז'ן): Stabilized micro-gimbals, cameras, precision electro-mechanics & NPI.
+6. BlueBird Aero Systems / Airobotics / HevenDrones / Steadicopter / Robotican / Flytrex.
+
+🛡️ TIER 3 (MODERATE BOOST +5% - Defense Giants & Avionics/Cyber):
+7. Elbit Systems (אלביט מערכות), IAI (התעשייה האווירית), BIRD Aerosystems, Regulus Cyber, ParaZero, D-Fend Solutions, Skylock.
 
 CATEGORIZATION OF DRONE JOBS BY LICENSE REQUIREMENT:
 1. None ('none'): Mechanical Assembly, Integration, Control Room / Remote Operations, Electrical & Avionics Wiring, Demolitions/Testing.
@@ -169,16 +181,30 @@ EXCLUDED / REJECTED:
 """
 
 def fetch_drone_jobs(seen_drones_dict):
-    """Fetch potential drone, UAV, and autonomous robotics jobs from LinkedIn Israel."""
+    """Fetch potential drone, UAV, and autonomous robotics jobs from LinkedIn Israel prioritized by Tiers."""
     jobs = []
-    print("[+] Fetching live Drone & UAV job listings from LinkedIn Israel...")
+    print("[+] Fetching live Drone & UAV job listings from LinkedIn Israel prioritized by Tier 1 & 2 companies...")
 
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
     }
 
-    drone_queries = [
+    # Priority queries focusing on Tier 1 & 2 first
+    tier_1_2_company_queries = [
+        "XTEND Reality",
+        "Spear UAV",
+        "Rafael Defense Drones",
+        "Percepto Drones",
+        "NextVision",
+        "BlueBird Aero Systems",
+        "Airobotics",
+        "Heven Drones",
+        "Steadicopter",
+        "Robotican"
+    ]
+
+    drone_role_queries = [
         "רחפנים",
         "כטבמ",
         "כטב\"ם",
@@ -194,34 +220,18 @@ def fetch_drone_jobs(seen_drones_dict):
         "Autonomous Systems Technician Israel",
         "Field Operator Drones",
         "UAV Integration",
-        "מפעיל כטבמ"
-    ]
-
-    drone_companies = [
-        "Percepto Drones",
-        "XTEND Reality",
-        "Heven Drones",
-        "Airobotics",
-        "Spear UAV",
-        "Steadicopter",
-        "Flytrex",
-        "BlueBird Aero Systems",
-        "Robotican",
-        "NextVision",
-        "ParaZero",
-        "D-Fend Solutions",
+        "מפעיל כטבמ",
         "Elbit Systems UAV",
         "IAI Drones",
-        "Rafael Defense Drones",
         "BIRD Aerosystems"
     ]
 
     all_queries = []
-    for q in drone_queries:
+    for c in tier_1_2_company_queries:
+        all_queries.append((c, 0))
+    for q in drone_role_queries:
         all_queries.append((q, 0))
         all_queries.append((q, 25))
-    for c in drone_companies:
-        all_queries.append((c, 0))
 
     seen_links_current_run = set()
 
@@ -262,7 +272,7 @@ def fetch_drone_jobs(seen_drones_dict):
     return jobs
 
 def evaluate_drone_jobs_with_gemini(job_list):
-    """Use Gemini AI to analyze fit and classify licensing requirements for Drone/UAV roles."""
+    """Use Gemini AI to analyze fit, prioritize Tiers, and classify licensing for Drone/UAV roles."""
     gemini_key = os.environ.get("GEMINI_API_KEY")
     if not gemini_key:
         print("[-] GEMINI_API_KEY missing.")
@@ -271,10 +281,10 @@ def evaluate_drone_jobs_with_gemini(job_list):
     client = genai.Client(api_key=gemini_key)
     evaluated_jobs = []
 
-    candidate_batch = job_list[:80]
+    candidate_batch = job_list[:90]
 
     prompt = f"""
-You are an expert AI Aerospace & Drone Career Advisor evaluating Drone/UAV/Robotics jobs for Ido Gal based on his updated CV.
+You are an expert AI Aerospace & Drone Career Advisor evaluating Drone/UAV/Robotics jobs for Ido Gal based on his updated CV and STRICT 3-TIER COMPANY PRIORITIZATION.
 
 CANDIDATE CV PROFILE & RULES:
 {IDO_DRONE_CV_SUMMARY}
@@ -282,33 +292,29 @@ CANDIDATE CV PROFILE & RULES:
 JOB POSTINGS TO EVALUATE:
 {json.dumps(candidate_batch, ensure_ascii=False, indent=2)}
 
-Filter and evaluate the jobs strictly according to the candidate profile and categorize by drone licensing status.
+Filter and evaluate the jobs strictly according to the candidate profile, prioritizing Tier 1 (XTEND, SpearUAV, Rafael) and Tier 2 (Percepto, NextVision, BlueBird, Airobotics, HevenDrones).
 Return a JSON array of objects with the following schema for jobs matching score >= 65%:
 [
   {{
     "title": "שם התפקיד והחברה",
     "link": "URL link",
-    "match_score": 85, (integer 65-100),
+    "match_score": 85, (integer 65-100, incorporating Tier boosts),
     "company": "שם החברה",
     "location": "מיקום (מרכז / שרון / צפון / Remote)",
     "summary_hebrew": "תקציר ממוקד בעברית של 2 שורות בלבד על התפקיד, הרחפנים/מערכות והאחריות",
     "pros_hebrew": "2-3 נקודות חוזק בולטות להתאמה מהניסיון של עידו",
     "gaps_hebrew": "דרישות חובה או פערים לתשומת לב",
     "license_status": "none" | "training_provided" | "advantage" | "mandatory",
-    "license_note_hebrew": "הסבר קצר על סטטוס הרישיון (למשל: 'אין צורך ברישיון מטיס', 'החברה מכשירה ומסמיכה מטיסים', 'רישיון מטיס כיתרון בלבד', 'רישיון מטיס רת\"א כדרישת סף')"
+    "license_note_hebrew": "הסבר קצר על סטטוס הרישיון",
+    "tier_priority": 1 | 2 | 3 (1 for XTEND/Spear/Rafael, 2 for Percepto/NextVision/BlueBird/Airobotics/Heven, 3 for others)
   }}
 ]
 
 CRITICAL RULES:
-- ONLY include jobs relevant to Drones, UAV, Autonomous Robotics, Flight Testing, Integration, Mechanical, or Defense Systems.
-- ONLY include jobs with match_score >= 65.
-- Categorize 'license_status' accurately:
-  * 'none': For Mechanical Engineering, Integration, Control Room, Electrical/Avionics wiring, Demolitions/Explosives testing.
-  * 'training_provided': For companies offering in-house flight training & operator certification.
-  * 'advantage': When flight license is listed as a plus/advantage only.
-  * 'mandatory': When an active commercial drone pilot license is strictly required.
+- PRIORITIZE Tier 1 & Tier 2 companies at the very top of the list!
+- Categorize 'license_status' accurately ('none', 'training_provided', 'advantage', 'mandatory').
 - Reject B.Sc. Engineer ONLY jobs where Practical Engineer (הנדסאי) is strictly rejected.
-- Maximum 6 best jobs returned.
+- Return top 6-8 best matching jobs.
 - Return ONLY valid raw JSON array inside backticks.
 """
 
@@ -344,11 +350,12 @@ CRITICAL RULES:
         if evaluated_jobs:
             break
 
-    evaluated_jobs.sort(key=lambda x: x.get("match_score", 0), reverse=True)
+    # Sort first by tier priority (Tier 1 first), then by match_score
+    evaluated_jobs.sort(key=lambda x: (x.get("tier_priority", 3), -x.get("match_score", 0)))
     return evaluated_jobs[:6]
 
 def build_drone_html_email(evaluated_jobs):
-    """Build a specialized Aero-Tech styled RTL HTML email with high-contrast distinct colored categories."""
+    """Build a specialized Aero-Tech styled RTL HTML email with Tier prioritization badges and distinct colored categories."""
     
     cat_none = [j for j in evaluated_jobs if j.get("license_status") == "none"]
     cat_training = [j for j in evaluated_jobs if j.get("license_status") == "training_provided"]
@@ -372,37 +379,43 @@ def build_drone_html_email(evaluated_jobs):
             
             .content {{ padding: 24px 20px; direction: rtl; text-align: right; }}
             
+            /* Tier 1 Spotlight Banner */
+            .tier-banner {{ background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border: 1px solid #6366f1; border-radius: 10px; padding: 12px 16px; margin-bottom: 22px; font-size: 13px; color: #e0e7ff; direction: rtl; }}
+            
             /* Category Containers */
-            .category-box {{ margin-bottom: 28px; border-radius: 12px; padding: 16px; direction: rtl; text-align: right; }}
+            .category-box {{ margin-bottom: 26px; border-radius: 12px; padding: 16px; direction: rtl; text-align: right; }}
             
             /* Color Schemes per Category */
             /* 1. None - Emerald Green */
             .cat-box-none {{ background: rgba(6, 78, 59, 0.25); border: 1.5px solid #10b981; }}
-            .cat-header-none {{ color: #34d399; font-size: 16px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(16, 185, 129, 0.4); padding-bottom: 8px; }}
+            .cat-header-none {{ color: #34d399; font-size: 15.5px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(16, 185, 129, 0.4); padding-bottom: 8px; }}
             .card-none {{ background: #0b1528; border: 1px solid #10b981; border-right: 5px solid #10b981; border-radius: 10px; padding: 16px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1); }}
             .badge-none {{ background: #10b981; color: #ffffff; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; display: inline-block; }}
             .btn-none {{ display: inline-block; background: #059669; color: #ffffff !important; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; text-align: center; border: 1px solid #34d399; }}
             
             /* 2. Training Provided - Amber / Gold */
             .cat-box-training {{ background: rgba(120, 53, 15, 0.25); border: 1.5px solid #f59e0b; }}
-            .cat-header-training {{ color: #fbbf24; font-size: 16px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(245, 158, 11, 0.4); padding-bottom: 8px; }}
+            .cat-header-training {{ color: #fbbf24; font-size: 15.5px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(245, 158, 11, 0.4); padding-bottom: 8px; }}
             .card-training {{ background: #0b1528; border: 1px solid #f59e0b; border-right: 5px solid #f59e0b; border-radius: 10px; padding: 16px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1); }}
             .badge-training {{ background: #f59e0b; color: #000000; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; display: inline-block; }}
             .btn-training {{ display: inline-block; background: #d97706; color: #ffffff !important; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; text-align: center; border: 1px solid #fbbf24; }}
 
             /* 3. Advantage - Sky Blue */
             .cat-box-adv {{ background: rgba(12, 74, 110, 0.25); border: 1.5px solid #0284c7; }}
-            .cat-header-adv {{ color: #38bdf8; font-size: 16px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(2, 132, 199, 0.4); padding-bottom: 8px; }}
+            .cat-header-adv {{ color: #38bdf8; font-size: 15.5px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(2, 132, 199, 0.4); padding-bottom: 8px; }}
             .card-adv {{ background: #0b1528; border: 1px solid #0284c7; border-right: 5px solid #0284c7; border-radius: 10px; padding: 16px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1); }}
             .badge-adv {{ background: #0284c7; color: #ffffff; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; display: inline-block; }}
             .btn-adv {{ display: inline-block; background: #0284c7; color: #ffffff !important; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; text-align: center; border: 1px solid #38bdf8; }}
 
             /* 4. Mandatory - Coral Red */
             .cat-box-mand {{ background: rgba(127, 29, 29, 0.25); border: 1.5px solid #ef4444; }}
-            .cat-header-mand {{ color: #f87171; font-size: 16px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(239, 68, 68, 0.4); padding-bottom: 8px; }}
+            .cat-header-mand {{ color: #f87171; font-size: 15.5px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(239, 68, 68, 0.4); padding-bottom: 8px; }}
             .card-mand {{ background: #0b1528; border: 1px solid #ef4444; border-right: 5px solid #ef4444; border-radius: 10px; padding: 16px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1); }}
             .badge-mand {{ background: #ef4444; color: #ffffff; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; display: inline-block; }}
             .btn-mand {{ display: inline-block; background: #dc2626; color: #ffffff !important; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; text-align: center; border: 1px solid #f87171; }}
+
+            /* Tier 1 Special Badge */
+            .tier1-tag {{ background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #ffffff; font-size: 11px; font-weight: bold; padding: 2px 8px; border-radius: 10px; margin-right: 6px; display: inline-block; }}
 
             .details {{ font-size: 13.5px; line-height: 1.6; color: #cbd5e1; direction: rtl; text-align: right; }}
             .summary-box {{ background: #131f37; padding: 10px 12px; border-radius: 6px; margin: 8px 0; border-right: 3px solid #38bdf8; font-size: 13px; color: #e2e8f0; direction: rtl; text-align: right; }}
@@ -416,22 +429,32 @@ def build_drone_html_email(evaluated_jobs):
         <div class="container" dir="rtl" style="direction: rtl; text-align: right;">
             <div class="header" dir="rtl">
                 <h1>🚁 משרות מובילות בעולם הרחפנים והכטב"ם | עידו גל</h1>
-                <p>סיכום יומי חכם מבוסס AI - מחולק לקטגוריות צבעוניות לפי דרישות רישיון</p>
+                <p>סיכום יומי חכם מבוסס AI - מתועדף לפי חברות היעד המובילות (XTEND, Spear, רפאל, פרספטו)</p>
             </div>
             <div class="content" dir="rtl" style="direction: rtl; text-align: right;">
+                
+                <div class="tier-banner" dir="rtl">
+                    🎯 <strong>תעדוף חברות פעיל:</strong> עדיפות עליונה ניתנת לחברות <strong>Tier 1 (XTEND, SpearUAV, רפאל)</strong> ו-<strong>Tier 2 (Percepto, NextVision, BlueBird, Airobotics)</strong> המתאימות במדויק לשילוב של הנדסאי מכונות, חבלה ופיקוד, ובקרה.
+                </div>
     """
 
     def render_card(job, theme):
         score = job.get("match_score", 65)
         lic_note = job.get("license_note_hebrew", "")
+        tier = job.get("tier_priority", 2)
         card_class = f"card-{theme}"
         badge_class = f"badge-{theme}"
         btn_class = f"btn-{theme}"
 
+        tier_badge = '<span class="tier1-tag">⭐ חברת עדיפות Tier 1</span>' if tier == 1 else ""
+
         return f"""
             <div class="{card_class}" dir="rtl" style="direction: rtl; text-align: right;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #1e293b; padding-bottom: 6px; direction: rtl;">
-                    <span class="{badge_class}">{score}% התאמה</span>
+                    <div>
+                        <span class="{badge_class}">{score}% התאמה</span>
+                        {tier_badge}
+                    </div>
                     <a href="{job.get('link', '#')}" target="_blank" style="font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none;">{job.get('title', 'משרה')}</a>
                 </div>
                 <div class="details" dir="rtl">
@@ -559,13 +582,13 @@ def send_drone_email(subject, html_content, recipient_email):
         return False
 
 def main():
-    print("[+] Starting Drone & UAV Job Search Automation for Ido Gal (Categorized by License Requirements)...")
+    print("[+] Starting Drone & UAV Job Search Automation for Ido Gal (Prioritized Tiers + Licensing Categories)...")
 
     # 1. Load seen drone jobs history
     seen_drones = load_seen_drones()
     print(f"[+] Loaded {len(seen_drones)} active drone jobs in 14-day history.")
 
-    # 2. Fetch fresh drone jobs
+    # 2. Fetch fresh drone jobs prioritized by Tier 1 & 2
     raw_jobs = fetch_drone_jobs(seen_drones)
     print(f"[+] Retrieved {len(raw_jobs)} unique fresh drone job postings for analysis.")
 
@@ -573,7 +596,7 @@ def main():
         print("[!] No new drone jobs found today.")
         return
 
-    # 3. Evaluate with Gemini AI & classify licensing
+    # 3. Evaluate with Gemini AI & classify licensing + tiers
     evaluated_jobs = evaluate_drone_jobs_with_gemini(raw_jobs)
     print(f"[+] Evaluated {len(evaluated_jobs)} matching drone jobs with Gemini AI.")
 
@@ -583,7 +606,7 @@ def main():
 
     # 5. Build & Dispatch HTML Email
     html_content = build_drone_html_email(evaluated_jobs)
-    send_drone_email("🚁 משרות מובילות בעולם הרחפנים והכטב\"ם (צבעים מובחנים לפי סטטוס רישיון) | עידו גל", html_content, "idogal0210@gmail.com")
+    send_drone_email("🚁 משרות מובילות בעולם הרחפנים והכטב\"ם (מתועדף לפי חברות יעד) | עידו גל", html_content, "idogal0210@gmail.com")
 
 if __name__ == "__main__":
     main()

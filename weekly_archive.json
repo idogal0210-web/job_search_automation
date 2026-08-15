@@ -342,5 +342,83 @@
     "link": "https://il.linkedin.com/jobs/view/23002-integrator-at-qualitest-4446917765",
     "license_status": "none",
     "license_note": "אין צורך ברישיון מטיס רחפנים."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Airobotics - Tier 3 Integration & Support",
+    "company": "Airobotics",
+    "match_score": 85,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "תמיכה טכנית דרג ג' ואינטגרציה של מערכות הרחפנים האוטונומיות של החברה. התפקיד כולל פתרון תקלות חומרה ומכניקה מורכבות במעבדה ובשטח.",
+    "link": "https://il.linkedin.com/jobs/view/tier-3-integration-support-at-airobotics-4442984971",
+    "license_status": "none",
+    "license_note": "התפקיד ממוקד באינטגרציה, מעבדה ותמיכה טכנית מורכבת, ואינו דורש רישיון מטיס.",
+    "tier_priority": 2
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Exodigo - Field Operations Employee",
+    "company": "Exodigo",
+    "match_score": 85,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "הפעלה ואופרציה של מערכות סריקה רובוטיות וטכנולוגיות שטח מתקדמות למיפוי תת-קרקעי, כולל כיול חומרה ופתרון בעיות בזמן אמת.",
+    "link": "https://il.linkedin.com/jobs/view/field-operations-employee-at-exodigo-4402948683",
+    "license_status": "none",
+    "license_note": "הפעלה פיזית וטכנולוגית של מערכות רובוטיות קרקעיות, ללא דרישה לרישיון רחפן.",
+    "tier_priority": 3
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Wiliot - Field Technician",
+    "company": "Wiliot",
+    "match_score": 84,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "התקנה, אינטגרציה ותמיכה טכנית בשטח של פלטפורמת חיישני IoT חכמים ומערכות מחשוב קצה באתרי לקוחות.",
+    "link": "https://il.linkedin.com/jobs/view/field-technician-at-wiliot-4443370019",
+    "license_status": "none",
+    "license_note": "עבודה טכנית וחיווט חשמלי/אלקטרוני שאינם מצריכים רישיון מטיס כלל.",
+    "tier_priority": 3
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Elbit Systems Israel - Mechanical Assembly Production Engineer",
+    "company": "Elbit Systems",
+    "match_score": 80,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "תמיכה הנדסית בקווי ייצור והרכבות מכניות מורכבות של מערכות צבאיות ותעופתיות, פתרון בעיות הנדסיות ושיפור תהליכי הרכבה.",
+    "link": "https://il.linkedin.com/jobs/view/mechanical-assembly-production-engineer-at-elbit-systems-israel-4440444398",
+    "license_status": "none",
+    "license_note": "הנדסת ייצור והרכבה במפעל, ללא צורך ברישיון טיסה.",
+    "tier_priority": 3
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Rail Vision Ltd - Field engineer",
+    "company": "Rail Vision Ltd",
+    "match_score": 78,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "התקנה, בדיקות ואינטגרציה של מערכות אלקטרו-אופטיות ומערכות ראייה ממוחשבת מורכבות על גבי רכבות בארץ ובחו\"ל.",
+    "link": "https://il.linkedin.com/jobs/view/field-engineer-at-rail-vision-ltd-4445717502",
+    "license_status": "none",
+    "license_note": "אינטגרציה פיזית של מערכות אלקטרו-אופטיות קרקעיות, ללא צורך ברישיון טיסה.",
+    "tier_priority": 3
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Funpressor - Mechanical Design Engineer",
+    "company": "Funpressor",
+    "match_score": 75,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "תכנון מכני של מערכות לחץ, פנאומטיקה ומכניקה מתקדמת. התפקיד כולל עבודה עם תוכנות תיב\"ם והובלת פרויקטים משלב הרעיון לייצור.",
+    "link": "https://il.linkedin.com/jobs/view/mechanical-design-engineer-at-funpressor-4450805816",
+    "license_status": "none",
+    "license_note": "תפקיד פיתוח ותכנון מכני משרדי/מעבדתי, ללא דרישת רישיון.",
+    "tier_priority": 3
   }
 ]
