@@ -104,25 +104,35 @@ def save_seen_jobs(seen_dict, newly_sent_jobs):
     except Exception as e:
         print(f"[-] Error writing weekly_archive.json: {e}")
 
-# Candidate Profile Context for AI Evaluation
+# Candidate Profile Context for AI Evaluation - Extracted Directly from Updated CV
 IDO_CV_SUMMARY = """
 Name: Ido Gal (עידו גל)
-Email: idogal0210@gmail.com | Phone: 052-632-8886 | Location: Tel Aviv - Or Aqiva (Center, Sharon, North, nearby South, or Relocation overseas).
+Email: idogal0210@gmail.com | Phone: 052-632-8886 | Location: Tel Aviv - Or Aqiva (Center, Sharon, North, or Relocation).
+LinkedIn: linkedin.com/in/idogal0210
 
-Degree / Qualifications:
-- Practical Mechanical Engineer (הנדסאי מכונות - התמחות באנרגיה ירוקה וגז טבעי), Ruppin Academic Center (2024). NOT a B.Sc. Engineer!
-- Certified Electrician (חשמלאי מוסמך), Ruppin Academic Center (Expected 2026).
+Education & Certifications:
+- Practical Mechanical Engineer (הנדסאי מכונות), Specializing in Green Energy and Natural Gas (התמחות באנרגיה ירוקה ובגז טבעי), Ruppin Academic Center (2024). NOT a B.Sc. Engineer!
+- Certified Electrician (חשמלאי מוסמך), Ruppin Academic Center (Expected completion 2026).
+
+Technical Tools & Capabilities:
+- Advanced Excel: Reports, data analysis, automation.
+- SAP.
+- AI Tools: Copilot 365, Gemini — practical application in professional work environments to improve efficiency and workflows.
+- Data analysis and operational reporting.
+
+Core Skills:
+- Monitoring & coordination of natural gas supply 24/7.
+- Working with complex energy systems & infrastructure.
+- Handling abnormal situations & emergency response in real-time under pressure.
+- Autonomous decision-making in safety-critical environments.
+- Cross-departmental collaboration (commercial, operational, INGL, offshore platform).
+- Work process improvement, task prioritization, and employee training/mentoring.
+
+Languages:
+- Hebrew: Native.
+- English: Full professional proficiency.
 
 Professional Experience:
-- Gas Controller at Energean Israel Ltd. (2022–Present): 24/7 operational control of natural gas supply to strategic industrial plants and power stations in Israel. Sole operational representative on night shifts. Real-time pressure monitoring, gas nominations, safety-critical decision making under pressure, AI tool implementation.
-- Security Officer at Energean/Vulcan (2020–2022): Protected sensitive natural gas infrastructure.
-- Sales Team Leader & Trainer in International Direct Sales (2015–2020): US & Germany, team management & cross-cultural communication.
-- Solar Systems Installer at MER Group (2010–2012): Hands-on installation and commissioning of PV solar systems.
-- Combat Commander in Nahal Reconnaissance Unit (Demolitions & Combat Engineering 07/08).
-
-HIGH PRIORITY TARGET COMPANIES & SECTORS:
-⭐ Solar & Green Energy: Enlight, Doral, Nofar, Energix, EDF Renewables Israel, Shikun & Binui Energy, Afcon, Enerpoint.
-⭐ Energy Tech / AI: SolarEdge, Augury, BrightSource, Driivz, REplace, Siemens Energy Israel, Honeywell Israel, ABB Israel, Brightmerge.
 - Natural Gas & Power: NewMed Energy, OPC Energy, Dorad Energy, Edeltech.
 - Energy Storage (BESS) & Tech: Nostromo, Brenmiller, StoreDot, Electreon, H2Pro, GenCell.
 - Heavy Industry & Water: ICL (כיל), חברת החשמל, מקורות, IDE Technologies, בז"ן.

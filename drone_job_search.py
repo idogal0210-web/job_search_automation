@@ -103,35 +103,64 @@ def save_seen_drones(seen_dict, newly_sent_jobs):
     except Exception as e:
         print(f"[-] Error writing weekly_archive.json: {e}")
 
-# Candidate Profile Context for Drone Jobs Evaluation
+# Complete and Updated Candidate Profile Context for Drone Jobs Evaluation
 IDO_DRONE_CV_SUMMARY = """
 Name: Ido Gal (עידו גל)
 Email: idogal0210@gmail.com | Phone: 052-632-8886 | Location: Tel Aviv - Or Aqiva (Center, Sharon, North, or Relocation).
+LinkedIn: linkedin.com/in/idogal0210
 
-Degree / Qualifications:
-- Practical Mechanical Engineer (הנדסאי מכונות), Ruppin Academic Center (2024). NOT a B.Sc. Engineer!
-- Certified Electrician (חשמלאי מוסמך), Ruppin Academic Center (Expected 2026).
+Education & Certifications:
+- Practical Mechanical Engineer (הנדסאי מכונות), Specializing in Green Energy and Natural Gas (התמחות באנרגיה ירוקה ובגז טבעי), Ruppin Academic Center (2024). NOT a B.Sc. Engineer!
+- Certified Electrician (חשמלאי מוסמך), Ruppin Academic Center (Expected completion 2026).
 - Drone Pilot License Status: Currently does NOT hold a commercial CAAI (רת"א) drone pilot license.
 
-Military & Combat Leadership:
-- Combat Commander & Demolitions in Nahal Reconnaissance Unit (סיירת נח"ל - חבלה ופיקוד 07/08): High technical discipline, field leadership under pressure, hands-on mechanical & tactical operational skills.
+Technical Tools & Capabilities:
+- Advanced Excel: Reports, complex data analysis, automation.
+- SAP.
+- AI Tools: Copilot 365, Gemini — practical application in professional work environments to improve reporting and workflows.
+- Data analysis and operational reporting.
+
+Core Skills:
+- Monitoring & coordination of natural gas supply 24/7.
+- Working with complex energy systems & high-tech infrastructure.
+- Handling abnormal situations & emergency response in real-time under pressure.
+- Autonomous decision-making in safety-critical environments.
+- Cross-departmental collaboration (commercial, operational, INGL, offshore platform).
+- Work process improvement, task prioritization, and employee training/mentoring.
+
+Languages:
+- Hebrew: Native language.
+- English: Full professional proficiency.
 
 Professional Experience:
-- Gas Controller at Energean Israel Ltd. (2022–Present): 24/7 real-time operations, telemetry monitoring, SCADA, critical emergency decision making under stress.
-- Security Officer at Energean/Vulcan (2020–2022): Tactical security & infrastructure protection.
-- International Sales Team Leader & Trainer (2015–2020): US & Germany, team leadership, cross-cultural training.
-- Solar PV Systems Installer at MER Group (2010–2012): Electrical wiring, hands-on installation & commissioning.
+1. Energean Israel Ltd. | Gas Controller | 2022–Present:
+   - 24/7 operational oversight of natural gas supply to strategic customers (power stations, large industrial plants).
+   - Sole operational representative on night shifts, independently coordinating with offshore platform and INGL (נתג"ז).
+   - Real-time pressure monitoring, flow rates, nomination approvals, reporting deviations.
+   - Close coordination with commercial team to align operational execution with commercial commitments.
+   - Implementation of AI tools (Copilot 365, Gemini) for reporting efficiency.
+2. Vulcan / Energean Israel Ltd. | Security Officer, Strategic Energy Facility | 2020–2022:
+   - Protection of critical natural gas infrastructure in sensitive, strictly regulated environments.
+3. Sales Team Leader & Sales Trainer | International Markets (US & Germany) | 2015–2020:
+   - Recruited, trained, and mentored sales reps in US & Germany. Leadership, cross-cultural training, and workflow implementation.
+4. MER Group | Solar PV Systems Installer | 2010–2012:
+   - Hands-on field work, end-to-end installation and initial commissioning of PV systems, wiring and electrical connections.
+
+Military Service:
+- Nahal Reconnaissance Unit (סיירת נח"ל) | Demolitions and Combat Engineering (חבלה והנדסה קרבית) | 2012–2015:
+  - Combat soldier and commander in demolitions and combat engineering. Led the unit's demolitions field as a career service member (קבע).
+  - Certifications: Rifleman 08 (רובאי 08) and Demolitions & Combat Engineering 07 (הסמכת חבלה והנדסה קרבית 07).
 
 TARGET DRONE & AEROSPACE COMPANIES (BOOST +10%):
 ⭐ Drone Pioneers: Percepto, XTEND, HevenDrones, Airobotics, SpearUAV, Steadicopter, Flytrex, Robotican, Copterpix, High Lander, Sightec.
-⭐ Defense & Aerospace Giants: Elbit Systems (אלביט מערכות), IAI (התעשייה האווירית), Rafael (רפאל), BlueBird Aero Systems.
-⭐ Drone Tech, Payloads & Avionics: NextVision (נקסט ויז'ן), ParaZero, D-Fend Solutions, Skylock, Axon Vision, Sentrycs.
+⭐ Defense & Aerospace Giants: Elbit Systems (אלביט מערכות), IAI (התעשייה האווירית), Rafael (רפאל), BlueBird Aero Systems, BIRD Aerosystems.
+⭐ Drone Tech, Payloads & Avionics: NextVision (נקסט ויז'ן), ParaZero, D-Fend Solutions, Skylock, Axon Vision, Sentrycs, Regulus Cyber.
 
 CATEGORIZATION OF DRONE JOBS BY LICENSE REQUIREMENT:
-1. None (ללא צורך ברישיון מטיס): Mechanical Assembly, Integration, Control Room / Remote Operations, Electrical & Avionics Wiring, Demolitions/Testing.
-2. Training Provided (החברה מספקת הכשרה והסמכה): Companies that train candidates to become certified drone pilots/operators on the job.
-3. Advantage (רישיון מטיס כיתרון): Field testing or customer support where a pilot license is a plus but not strictly mandatory.
-4. Mandatory (רישיון מטיס כדרישת סף): Roles strictly requiring an active commercial CAAI (רת"א) pilot license.
+1. None ('none'): Mechanical Assembly, Integration, Control Room / Remote Operations, Electrical & Avionics Wiring, Demolitions/Testing.
+2. Training Provided ('training_provided'): Companies offering in-house flight training & operator certification on the job.
+3. Advantage ('advantage'): Field testing, flight testing, or customer support where a pilot license is a plus but not strictly mandatory.
+4. Mandatory ('mandatory'): Roles strictly requiring an active commercial CAAI (רת"א) pilot license.
 
 EXCLUDED / REJECTED:
 ❌ Energean, INGL, Chevron Israel, Raycatch.
@@ -149,7 +178,6 @@ def fetch_drone_jobs(seen_drones_dict):
         "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
     }
 
-    # 1. Drone specific role queries
     drone_queries = [
         "רחפנים",
         "כטבמ",
@@ -169,7 +197,6 @@ def fetch_drone_jobs(seen_drones_dict):
         "מפעיל כטבמ"
     ]
 
-    # 2. Drone specific companies queries
     drone_companies = [
         "Percepto Drones",
         "XTEND Reality",
@@ -185,7 +212,8 @@ def fetch_drone_jobs(seen_drones_dict):
         "D-Fend Solutions",
         "Elbit Systems UAV",
         "IAI Drones",
-        "Rafael Defense Drones"
+        "Rafael Defense Drones",
+        "BIRD Aerosystems"
     ]
 
     all_queries = []
@@ -246,7 +274,7 @@ def evaluate_drone_jobs_with_gemini(job_list):
     candidate_batch = job_list[:80]
 
     prompt = f"""
-You are an expert AI Aerospace & Drone Career Advisor evaluating Drone/UAV/Robotics jobs for Ido Gal.
+You are an expert AI Aerospace & Drone Career Advisor evaluating Drone/UAV/Robotics jobs for Ido Gal based on his updated CV.
 
 CANDIDATE CV PROFILE & RULES:
 {IDO_DRONE_CV_SUMMARY}
@@ -320,9 +348,8 @@ CRITICAL RULES:
     return evaluated_jobs[:6]
 
 def build_drone_html_email(evaluated_jobs):
-    """Build a specialized Aero-Tech styled RTL HTML email with explicit licensing badges and categories."""
+    """Build a specialized Aero-Tech styled RTL HTML email with high-contrast distinct colored categories."""
     
-    # Categorize jobs for structured display
     cat_none = [j for j in evaluated_jobs if j.get("license_status") == "none"]
     cat_training = [j for j in evaluated_jobs if j.get("license_status") == "training_provided"]
     cat_adv = [j for j in evaluated_jobs if j.get("license_status") == "advantage"]
@@ -335,86 +362,95 @@ def build_drone_html_email(evaluated_jobs):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-            body {{ font-family: 'Segoe UI', Arial, sans-serif; background-color: #0b1329; margin: 0; padding: 18px; color: #f8fafc; direction: rtl; text-align: right; }}
-            .container {{ max-width: 660px; margin: 0 auto; background: #131f37; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.45); border: 1px solid #233554; direction: rtl; text-align: right; }}
-            .header {{ background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #075985 100%); color: #ffffff; padding: 26px 20px; text-align: center; direction: rtl; }}
-            .header h1 {{ margin: 0; font-size: 23px; font-weight: 800; color: #ffffff; }}
-            .header p {{ margin: 6px 0 0 0; opacity: 0.95; font-size: 14px; color: #e0f2fe; }}
-            .content {{ padding: 22px; direction: rtl; text-align: right; }}
+            body {{ font-family: 'Segoe UI', Arial, sans-serif; background-color: #080e1e; margin: 0; padding: 18px; color: #f8fafc; direction: rtl; text-align: right; }}
+            .container {{ max-width: 680px; margin: 0 auto; background: #0f172a; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.6); border: 1px solid #1e293b; direction: rtl; text-align: right; }}
             
-            /* Section Titles */
-            .section-title {{ font-size: 15px; font-weight: bold; padding: 8px 12px; border-radius: 6px; margin: 20px 0 12px 0; display: flex; align-items: center; justify-content: space-between; direction: rtl; }}
-            .title-none {{ background: rgba(16, 185, 129, 0.15); color: #34d399; border-right: 4px solid #10b981; }}
-            .title-training {{ background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-right: 4px solid #f59e0b; }}
-            .title-adv {{ background: rgba(59, 130, 246, 0.15); color: #60a5fa; border-right: 4px solid #3b82f6; }}
-            .title-mand {{ background: rgba(239, 68, 68, 0.15); color: #f87171; border-right: 4px solid #ef4444; }}
+            /* Header */
+            .header {{ background: linear-gradient(135deg, #0369a1 0%, #0f172a 100%); color: #ffffff; padding: 28px 20px; text-align: center; direction: rtl; border-bottom: 2px solid #0284c7; }}
+            .header h1 {{ margin: 0; font-size: 24px; font-weight: 800; color: #ffffff; }}
+            .header p {{ margin: 6px 0 0 0; opacity: 0.95; font-size: 14px; color: #bae6fd; }}
+            
+            .content {{ padding: 24px 20px; direction: rtl; text-align: right; }}
+            
+            /* Category Containers */
+            .category-box {{ margin-bottom: 28px; border-radius: 12px; padding: 16px; direction: rtl; text-align: right; }}
+            
+            /* Color Schemes per Category */
+            /* 1. None - Emerald Green */
+            .cat-box-none {{ background: rgba(6, 78, 59, 0.25); border: 1.5px solid #10b981; }}
+            .cat-header-none {{ color: #34d399; font-size: 16px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(16, 185, 129, 0.4); padding-bottom: 8px; }}
+            .card-none {{ background: #0b1528; border: 1px solid #10b981; border-right: 5px solid #10b981; border-radius: 10px; padding: 16px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1); }}
+            .badge-none {{ background: #10b981; color: #ffffff; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; display: inline-block; }}
+            .btn-none {{ display: inline-block; background: #059669; color: #ffffff !important; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; text-align: center; border: 1px solid #34d399; }}
+            
+            /* 2. Training Provided - Amber / Gold */
+            .cat-box-training {{ background: rgba(120, 53, 15, 0.25); border: 1.5px solid #f59e0b; }}
+            .cat-header-training {{ color: #fbbf24; font-size: 16px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(245, 158, 11, 0.4); padding-bottom: 8px; }}
+            .card-training {{ background: #0b1528; border: 1px solid #f59e0b; border-right: 5px solid #f59e0b; border-radius: 10px; padding: 16px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.1); }}
+            .badge-training {{ background: #f59e0b; color: #000000; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; display: inline-block; }}
+            .btn-training {{ display: inline-block; background: #d97706; color: #ffffff !important; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; text-align: center; border: 1px solid #fbbf24; }}
 
-            /* Job Card */
-            .job-card {{ background: #0b1329; border: 1px solid #1e2d4a; border-radius: 10px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); direction: rtl; text-align: right; }}
-            .job-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #1e2d4a; padding-bottom: 8px; direction: rtl; }}
-            .job-title {{ font-size: 16.5px; font-weight: bold; color: #38bdf8; text-decoration: none; text-align: right; }}
-            
-            /* Badges */
-            .score-badge {{ background: linear-gradient(135deg, #0284c7, #0369a1); color: white; padding: 4px 10px; border-radius: 14px; font-weight: bold; font-size: 12.5px; display: inline-block; }}
-            .license-badge-none {{ background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 6px; }}
-            .license-badge-training {{ background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 6px; }}
-            .license-badge-adv {{ background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 6px; }}
-            .license-badge-mand {{ background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-block; margin-bottom: 6px; }}
-            
+            /* 3. Advantage - Sky Blue */
+            .cat-box-adv {{ background: rgba(12, 74, 110, 0.25); border: 1.5px solid #0284c7; }}
+            .cat-header-adv {{ color: #38bdf8; font-size: 16px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(2, 132, 199, 0.4); padding-bottom: 8px; }}
+            .card-adv {{ background: #0b1528; border: 1px solid #0284c7; border-right: 5px solid #0284c7; border-radius: 10px; padding: 16px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1); }}
+            .badge-adv {{ background: #0284c7; color: #ffffff; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; display: inline-block; }}
+            .btn-adv {{ display: inline-block; background: #0284c7; color: #ffffff !important; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; text-align: center; border: 1px solid #38bdf8; }}
+
+            /* 4. Mandatory - Coral Red */
+            .cat-box-mand {{ background: rgba(127, 29, 29, 0.25); border: 1.5px solid #ef4444; }}
+            .cat-header-mand {{ color: #f87171; font-size: 16px; font-weight: bold; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(239, 68, 68, 0.4); padding-bottom: 8px; }}
+            .card-mand {{ background: #0b1528; border: 1px solid #ef4444; border-right: 5px solid #ef4444; border-radius: 10px; padding: 16px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1); }}
+            .badge-mand {{ background: #ef4444; color: #ffffff; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; display: inline-block; }}
+            .btn-mand {{ display: inline-block; background: #dc2626; color: #ffffff !important; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; text-align: center; border: 1px solid #f87171; }}
+
             .details {{ font-size: 13.5px; line-height: 1.6; color: #cbd5e1; direction: rtl; text-align: right; }}
             .summary-box {{ background: #131f37; padding: 10px 12px; border-radius: 6px; margin: 8px 0; border-right: 3px solid #38bdf8; font-size: 13px; color: #e2e8f0; direction: rtl; text-align: right; }}
             .pro-list {{ color: #4ade80; margin: 4px 0; padding-right: 15px; font-size: 13px; direction: rtl; text-align: right; }}
             .gap-list {{ color: #fbbf24; margin: 4px 0; padding-right: 15px; font-size: 13px; direction: rtl; text-align: right; }}
-            .btn {{ display: inline-block; background: #0284c7; color: #ffffff !important; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 10px; text-align: center; border: 1px solid #38bdf8; }}
-            .footer {{ background: #0b1329; text-align: center; padding: 14px; font-size: 12px; color: #64748b; border-top: 1px solid #1e2d4a; direction: rtl; }}
+            
+            .footer {{ background: #080e1e; text-align: center; padding: 16px; font-size: 12px; color: #64748b; border-top: 1px solid #1e293b; direction: rtl; }}
         </style>
     </head>
     <body dir="rtl" style="direction: rtl; text-align: right;">
         <div class="container" dir="rtl" style="direction: rtl; text-align: right;">
             <div class="header" dir="rtl">
                 <h1>🚁 משרות מובילות בעולם הרחפנים והכטב"ם | עידו גל</h1>
-                <p>סיכום יומי מבוסס AI - מחולק לפי דרישות רישיון והכשרת מטיסים</p>
+                <p>סיכום יומי חכם מבוסס AI - מחולק לקטגוריות צבעוניות לפי דרישות רישיון</p>
             </div>
             <div class="content" dir="rtl" style="direction: rtl; text-align: right;">
     """
 
-    def render_job_card(job):
+    def render_card(job, theme):
         score = job.get("match_score", 65)
-        lic_stat = job.get("license_status", "none")
         lic_note = job.get("license_note_hebrew", "")
-        
-        if lic_stat == "none":
-            badge_html = f'<span class="license-badge-none">🟢 ללא צורך ברישיון מטיס: {lic_note}</span>'
-            card_border = "border-right: 5px solid #10b981;"
-        elif lic_stat == "training_provided":
-            badge_html = f'<span class="license-badge-training">🎓 הכשרה והסמכה ע"ח החברה: {lic_note}</span>'
-            card_border = "border-right: 5px solid #f59e0b;"
-        elif lic_stat == "advantage":
-            badge_html = f'<span class="license-badge-adv">🟡 רישיון כיתרון (לא חובה): {lic_note}</span>'
-            card_border = "border-right: 5px solid #3b82f6;"
-        else:
-            badge_html = f'<span class="license-badge-mand">🔴 רישיון מטיס כדרישת סף: {lic_note}</span>'
-            card_border = "border-right: 5px solid #ef4444;"
+        card_class = f"card-{theme}"
+        badge_class = f"badge-{theme}"
+        btn_class = f"btn-{theme}"
 
         return f"""
-            <div class="job-card" dir="rtl" style="{card_border} direction: rtl; text-align: right;">
-                <div class="job-header" dir="rtl">
-                    <span class="score-badge">התאמה: {score}%</span>
-                    <a href="{job.get('link', '#')}" class="job-title" target="_blank" dir="rtl">{job.get('title', 'משרה')}</a>
+            <div class="{card_class}" dir="rtl" style="direction: rtl; text-align: right;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #1e293b; padding-bottom: 6px; direction: rtl;">
+                    <span class="{badge_class}">{score}% התאמה</span>
+                    <a href="{job.get('link', '#')}" target="_blank" style="font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none;">{job.get('title', 'משרה')}</a>
                 </div>
                 <div class="details" dir="rtl">
-                    <div>{badge_html}</div>
-                    <p style="margin:4px 0;"><strong>חברה ומיקום:</strong> {job.get('company', '')} | {job.get('location', '')}</p>
+                    <div style="margin-bottom: 6px;">
+                        <span style="font-size: 12.5px; font-weight: 600; opacity: 0.9;">📌 סטטוס רישיון: {lic_note}</span>
+                    </div>
+                    <p style="margin: 4px 0;"><strong>חברה ומיקום:</strong> {job.get('company', '')} | {job.get('location', '')}</p>
                     <div class="summary-box">
                         <strong>תקציר המשרה:</strong> {job.get('summary_hebrew', '')}
                     </div>
-                    <p style="margin-bottom:2px; margin-top:8px;"><strong>נקודות חוזק מהניסיון שלך:</strong></p>
+                    <p style="margin-bottom: 2px; margin-top: 8px;"><strong>נקודות חוזק מהניסיון שלך:</strong></p>
                     <div class="pro-list">• {job.get('pros_hebrew', '')}</div>
                     
-                    <p style="margin-bottom:2px; margin-top:8px;"><strong>דגשים / דרישות נוספות:</strong></p>
+                    <p style="margin-bottom: 2px; margin-top: 8px;"><strong>דגשים / דרישות נוספות:</strong></p>
                     <div class="gap-list">• {job.get('gaps_hebrew', '')}</div>
                     
-                    <a href="{job.get('link', '#')}" class="btn" target="_blank">צפה במשרה והגש מועמדות &larr;</a>
+                    <div style="margin-top: 12px;">
+                        <a href="{job.get('link', '#')}" target="_blank" class="{btn_class}">הגש מועמדות למשרה &larr;</a>
+                    </div>
                 </div>
             </div>
         """
@@ -427,29 +463,57 @@ def build_drone_html_email(evaluated_jobs):
         </div>
         """
     else:
-        # Group 1: None
+        # Group 1: None (Emerald)
         if cat_none:
-            html += '<div class="section-title title-none">🟢 משרות ללא צורך ברישיון מטיס (מכניקה, אינטגרציה, בקרה, חשמל)</div>'
+            html += """
+            <div class="category-box cat-box-none" dir="rtl">
+                <div class="cat-header-none" dir="rtl">
+                    <span>🟢 קטגוריה 1: ללא צורך ברישיון מטיס (אינטגרציה, מכניקה, בקרה וחשמל)</span>
+                    <span style="font-size: 13px; font-weight: normal; opacity: 0.9;">""" + str(len(cat_none)) + """ משרות</span>
+                </div>
+            """
             for j in cat_none:
-                html += render_job_card(j)
+                html += render_card(j, "none")
+            html += "</div>"
 
-        # Group 2: Training Provided
+        # Group 2: Training Provided (Amber/Gold)
         if cat_training:
-            html += '<div class="section-title title-training">🎓 משרות עם הכשרה והסמכה לרישיון מטיס ע"ח החברה</div>'
+            html += """
+            <div class="category-box cat-box-training" dir="rtl">
+                <div class="cat-header-training" dir="rtl">
+                    <span>🎓 קטגוריה 2: הכשרה והסמכה לרישיון מטיס ע"ח החברה</span>
+                    <span style="font-size: 13px; font-weight: normal; opacity: 0.9;">""" + str(len(cat_training)) + """ משרות</span>
+                </div>
+            """
             for j in cat_training:
-                html += render_job_card(j)
+                html += render_card(j, "training_provided")
+            html += "</div>"
 
-        # Group 3: Advantage
+        # Group 3: Advantage (Sky Blue)
         if cat_adv:
-            html += '<div class="section-title title-adv">🟡 משרות שבהן רישיון מטיס הוא יתרון בלבד (לא חובה)</div>'
+            html += """
+            <div class="category-box cat-box-adv" dir="rtl">
+                <div class="cat-header-adv" dir="rtl">
+                    <span>🟡 קטגוריה 3: רישיון מטיס כיתרון בלבד (אינו דרישת סף)</span>
+                    <span style="font-size: 13px; font-weight: normal; opacity: 0.9;">""" + str(len(cat_adv)) + """ משרות</span>
+                </div>
+            """
             for j in cat_adv:
-                html += render_job_card(j)
+                html += render_card(j, "adv")
+            html += "</div>"
 
-        # Group 4: Mandatory
+        # Group 4: Mandatory (Coral Red)
         if cat_mand:
-            html += '<div class="section-title title-mand">🔴 משרות הדורשות רישיון מטיס מסחרי קיים כדרישת סף</div>'
+            html += """
+            <div class="category-box cat-box-mand" dir="rtl">
+                <div class="cat-header-mand" dir="rtl">
+                    <span>🔴 קטגוריה 4: רישיון מטיס מסחרי כדרישת סף</span>
+                    <span style="font-size: 13px; font-weight: normal; opacity: 0.9;">""" + str(len(cat_mand)) + """ משרות</span>
+                </div>
+            """
             for j in cat_mand:
-                html += render_job_card(j)
+                html += render_card(j, "mand")
+            html += "</div>"
 
     html += """
             </div>
@@ -519,7 +583,7 @@ def main():
 
     # 5. Build & Dispatch HTML Email
     html_content = build_drone_html_email(evaluated_jobs)
-    send_drone_email("🚁 משרות מובילות בעולם הרחפנים והכטב\"ם (מחולק לפי דרישות רישיון) | עידו גל", html_content, "idogal0210@gmail.com")
+    send_drone_email("🚁 משרות מובילות בעולם הרחפנים והכטב\"ם (צבעים מובחנים לפי סטטוס רישיון) | עידו גל", html_content, "idogal0210@gmail.com")
 
 if __name__ == "__main__":
     main()

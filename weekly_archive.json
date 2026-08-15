@@ -270,5 +270,77 @@
     "link": "https://il.linkedin.com/jobs/view/robotics-assembly-integration-technician-at-shifters-4441607017",
     "license_status": "none",
     "license_note": "עבודה מעבדתית ורצפת ייצור - ללא צורך ברישיון מטיס."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Field System QA - D-Fend Solutions",
+    "company": "D-Fend Solutions",
+    "match_score": 92,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "בדיקות איכות ותפקוד בשטח של מערכות מתקדמות לנטרול רחפנים (C-UAS). התפקיד כולל פריסה מבצעית, הדמיית תרחישי איום ואנליזה של ביצועי המערכת בזמן אמת.",
+    "link": "https://il.linkedin.com/jobs/view/field-system-qa-at-d-fend-solutions-4429978968",
+    "license_status": "none",
+    "license_note": "אין צורך ברישיון מטיס; הבדיקות מתמקדות במערכות הגילוי והחסימה הקרקעיות."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "טכנאי/ת מעבדה - SMARTSHOOTER",
+    "company": "SMARTSHOOTER",
+    "match_score": 88,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "בדיקות מעבדה, הרכבה וכיול של מערכות בקרת אש חכמות ליירוט רחפנים ומטרות בתנועה. עבודה עם מכלולים מכאניים, אלקטרוניים ואופטיים.",
+    "link": "https://il.linkedin.com/jobs/view/%D7%9B%D7%A8%D7%A1%D7%9D-%D7%97%D7%A8%D7%98-at-pepsico-4344425620",
+    "license_status": "none",
+    "license_note": "אין צורך ברישיון מטיס רחפנים."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Field Operations - Global Team - Exodigo",
+    "company": "Exodigo",
+    "match_score": 87,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "תפעול מערכות סריקה ומיפוי תת-קרקעי מתקדמות המבוססות על חיישנים מרובים ורובוטיקה. ניהול משימות שטח בארץ ובחו\"ל, איסוף נתונים ופתרון תקלות.",
+    "link": "https://il.linkedin.com/jobs/view/field-operations-global-team-at-exodigo-4445692118",
+    "license_status": "training_provided",
+    "license_note": "החברה מכשירה ומסמיכה באופן פנימי על הציוד והרובוטיקה הייחודיים שלה."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "טכנאי/ת אוויוניקה מטוסים - IAI",
+    "company": "IAI - Israel Aerospace Industries",
+    "match_score": 85,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "אחזקה, אינטגרציה וחיווט של מערכות אלקטרוניות, ניווט ותקשורת במטוסים וכלי טיס בלתי מאוישים במתקני התעשייה האווירית בלוד.",
+    "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%90%D7%95%D7%95%D7%99%D7%95%D7%A0%D7%99%D7%A7%D7%94-%D7%9E%D7%98%D7%95%D7%A1%D7%99%D7%9D-at-iai-israel-aerospace-industries-4435551339",
+    "license_status": "none",
+    "license_note": "אין צורך ברישיון מטיס רחפנים."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "System Qualification Technician - Innoviz Technologies",
+    "company": "Innoviz Technologies",
+    "match_score": 82,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "בדיקות אינטגרציה, כיול והסמכה של מערכות ה-LiDAR לרכבים אוטונומיים ורובוטיקה. ניתוח תוצאות בדיקה ודיווח על חריגות תוכנה וחומרה.",
+    "link": "https://il.linkedin.com/jobs/view/system-qualification-technician-at-innoviz-technologies-4413479135",
+    "license_status": "none",
+    "license_note": "אין צורך ברישיון מטיס רחפנים."
+  },
+  {
+    "date": "2026-08-15",
+    "day_name": "יום שבת",
+    "title": "Integrator - Qualitest",
+    "company": "Qualitest",
+    "match_score": 80,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "אינטגרציה ובדיקות מערכת עבור פרויקטים ביטחוניים מובילים באזור הצפון. עבודה בסביבה מולטי-דיסציפלינרית המשלבת תוכנה, חומרה ומכניקה.",
+    "link": "https://il.linkedin.com/jobs/view/23002-integrator-at-qualitest-4446917765",
+    "license_status": "none",
+    "license_note": "אין צורך ברישיון מטיס רחפנים."
   }
 ]
