@@ -31,7 +31,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Daily Job Search
+      - name: Run Daily Energy & Drone Job Searches
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
@@ -40,13 +40,14 @@ jobs:
           GOOGLE_SEARCH_CX: ${{ secrets.GOOGLE_SEARCH_CX }}
         run: |
           python job_search.py
+          python drone_job_search.py
 
       - name: Commit and push updated history & weekly archive
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add seen_jobs.json weekly_archive.json || true
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update seen_jobs and weekly_archive [skip ci]" && git push)
+          git add seen_jobs.json seen_drones.json weekly_archive.json || true
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update seen_jobs, seen_drones and weekly_archive [skip ci]" && git push)
 
   weekly-summary-saturday:
     runs-on: ubuntu-latest

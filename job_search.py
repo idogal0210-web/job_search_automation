@@ -302,25 +302,37 @@ CRITICAL RULES:
 - Return ONLY valid raw JSON array inside backticks.
 """
 
-    for model_name in ['gemini-flash-latest', 'gemini-2.0-flash', 'gemini-1.5-flash']:
-        try:
-            print(f"[+] Evaluating with model: {model_name}...")
-            response = client.models.generate_content(
-                model=model_name,
-                contents=prompt
-            )
-            text = response.text.strip()
-            if text.startswith("```json"):
-                text = text[7:]
-            if text.endswith("```"):
-                text = text[:-3]
-            
-            evaluated_jobs = json.loads(text.strip())
-            if evaluated_jobs:
-                print(f"[+] Successfully evaluated {len(evaluated_jobs)} matching jobs.")
-                break
-        except Exception as e:
-            print(f"[-] Model {model_name} error: {e}")
+    models_to_try = [
+        'gemini-3.5-flash',
+        'gemini-3.6-flash',
+        'gemini-flash-latest',
+        'gemini-2.5-flash-lite'
+    ]
+
+    import time
+    for model_name in models_to_try:
+        for attempt in range(2):
+            try:
+                print(f"[+] Evaluating with model: {model_name} (attempt {attempt+1})...")
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt
+                )
+                text = response.text.strip()
+                if text.startswith("```json"):
+                    text = text[7:]
+                if text.endswith("```"):
+                    text = text[:-3]
+                
+                evaluated_jobs = json.loads(text.strip())
+                if evaluated_jobs:
+                    print(f"[+] Successfully evaluated {len(evaluated_jobs)} matching jobs.")
+                    break
+            except Exception as e:
+                print(f"[-] Model {model_name} error: {e}")
+                time.sleep(2)
+        if evaluated_jobs:
+            break
 
     evaluated_jobs.sort(key=lambda x: x.get("match_score", 0), reverse=True)
     return evaluated_jobs[:5]
