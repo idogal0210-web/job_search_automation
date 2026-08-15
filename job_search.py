@@ -39,19 +39,70 @@ def load_seen_jobs():
         print(f"[-] Error reading seen_jobs.json: {e}")
         return {}
 
+ARCHIVE_FILE = os.path.join(os.path.dirname(__file__), "weekly_archive.json")
+
+DAY_NAMES = {
+    0: "יום ב'",
+    1: "יום ג'",
+    2: "יום ד'",
+    3: "יום ה'",
+    4: "יום ו'",
+    5: "יום שבת",
+    6: "יום א'"
+}
+
 def save_seen_jobs(seen_dict, newly_sent_jobs):
-    """Save newly sent jobs into seen_jobs.json with timestamp."""
-    now_iso = datetime.now().isoformat()
+    """Save newly sent jobs into seen_jobs.json and weekly_archive.json."""
+    now = datetime.now()
+    now_iso = now.isoformat()
+    today_str = now.strftime("%Y-%m-%d")
+    day_name = DAY_NAMES.get(now.weekday(), "")
+
     for job in newly_sent_jobs:
         link = job.get("link", "").strip()
         if link:
             seen_dict[link] = now_iso
+
+    # 1. Save seen_jobs.json
     try:
         with open(HISTORY_FILE, "w", encoding="utf-8") as f:
             json.dump(seen_dict, f, ensure_ascii=False, indent=2)
         print(f"[+] Updated {HISTORY_FILE} with {len(newly_sent_jobs)} newly sent jobs.")
     except Exception as e:
         print(f"[-] Error writing seen_jobs.json: {e}")
+
+    # 2. Append to weekly_archive.json
+    archive_list = []
+    if os.path.exists(ARCHIVE_FILE):
+        try:
+            with open(ARCHIVE_FILE, "r", encoding="utf-8") as f:
+                archive_list = json.load(f)
+        except Exception:
+            archive_list = []
+
+    # Filter out archive entries older than 14 days
+    cutoff_date = (now - timedelta(days=14)).strftime("%Y-%m-%d")
+    archive_list = [j for j in archive_list if j.get("date", "") >= cutoff_date]
+
+    # Add new jobs
+    for job in newly_sent_jobs:
+        archive_list.append({
+            "date": today_str,
+            "day_name": day_name,
+            "title": job.get("title", ""),
+            "company": job.get("company", ""),
+            "match_score": job.get("match_score", 0),
+            "sector": job.get("location", "ישראל"),
+            "summary": job.get("summary_hebrew", ""),
+            "link": job.get("link", "")
+        })
+
+    try:
+        with open(ARCHIVE_FILE, "w", encoding="utf-8") as f:
+            json.dump(archive_list, f, ensure_ascii=False, indent=2)
+        print(f"[+] Updated {ARCHIVE_FILE} with rich metadata for weekly digest.")
+    except Exception as e:
+        print(f"[-] Error writing weekly_archive.json: {e}")
 
 # Candidate Profile Context for AI Evaluation
 IDO_CV_SUMMARY = """
