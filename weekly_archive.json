@@ -420,5 +420,133 @@
     "license_status": "none",
     "license_note": "תפקיד פיתוח ותכנון מכני משרדי/מעבדתי, ללא דרישת רישיון.",
     "tier_priority": 3
+  },
+  {
+    "date": "2026-08-16",
+    "day_name": "יום א'",
+    "title": "SolarEdge Technologies - Field Service Electrician",
+    "company": "SolarEdge Technologies",
+    "match_score": 95,
+    "sector": "הרצליה (מרכז / שרון)",
+    "summary": "מתן שירות טכני, איתור ופתרון תקלות בשטח למערכות סולאריות ואנרגיה ירוקה של מובילת השוק העולמית.",
+    "link": "https://il.linkedin.com/jobs/view/field-service-electrician-at-solaredge-technologies-4438105569"
+  },
+  {
+    "date": "2026-08-16",
+    "day_name": "יום א'",
+    "title": "Elmor Renewable Energy - מנהל/ת פרויקטים – אזור צפון",
+    "company": "Elmor Renewable Energy",
+    "match_score": 90,
+    "sector": "כוכב יאיר / צפון",
+    "summary": "ניהול ותיאום פרויקטי הקמה ותשתית בתחום האנרגיה הירוקה והסולארית, פיקוח על קבלנים ועמידה בלוחות זמנים.",
+    "link": "https://il.linkedin.com/jobs/view/%D%A5%D%A0%D%94%D%9C-%D%AA-%D%A4%D%A8%D%95%D%99%D%A7%D%AA%D%99%D%9D-%E2%80%93-%D%90%D%96%D%95%D%A8-%D%A6%D%A4%D%95%D%A5-at-elmor-renewable-energy-4405637931"
+  },
+  {
+    "date": "2026-08-16",
+    "day_name": "יום א'",
+    "title": "Galooli - Customer Technical Support Specialist",
+    "company": "Galooli",
+    "match_score": 88,
+    "sector": "תל אביב - יפו",
+    "summary": "תמיכה טכנית ואנליטית בלקוחות החברה סביב מערכות תוכנה וחומרה לניהול, ניטור ואופטימיזציה של נכסי אנרגיה וסוללות (BESS).",
+    "link": "https://il.linkedin.com/jobs/view/customer-technical-support-specialist-at-galooli-4432181954"
+  },
+  {
+    "date": "2026-08-16",
+    "day_name": "יום א'",
+    "title": "Alstom - Product Introduction Trouble Shooter Technician",
+    "company": "Alstom",
+    "match_score": 85,
+    "sector": "תל אביב - יפו",
+    "summary": "אבחון ופתרון תקלות מורכבות (מכאניות וחשמליות) במערכות קרונות ותשתית רכבת קלה בשלבי ההקמה וההפעלה הראשוניים.",
+    "link": "https://il.linkedin.com/jobs/view/product-introduction-trouble-shooter-technician-at-alstom-4430282048"
+  },
+  {
+    "date": "2026-08-16",
+    "day_name": "יום א'",
+    "title": "Enlight Renewable Energy Ltd (ENLT) - Assets Manager",
+    "company": "Enlight Renewable Energy Ltd",
+    "match_score": 80,
+    "sector": "ראש העין",
+    "summary": "ניהול תפעולי ומסחרי של נכסי אנרגיה מתחדשת פעילים, מעקב אחר ביצועי הפקה, תיאום תחזוקה וקשר מול גורמים שונים.",
+    "link": "https://il.linkedin.com/jobs/view/assets-manager-at-enlight-renewable-energy-ltd-enlt-4442595916"
+  },
+  {
+    "date": "2026-08-16",
+    "day_name": "יום א'",
+    "title": "NextVision Stabilized Systems Ltd. - Technical Support Engineer (Pre and Post Sales)",
+    "company": "NextVision",
+    "match_score": 95,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "תמיכה טכנית (לפני ואחרי מכירה) במצלמות וגימבלים מיוצבים לרחפנים ומזל\"טים, כולל עבודה מול לקוחות בינלאומיים.",
+    "link": "https://il.linkedin.com/jobs/view/technical-support-engineer-pre-and-post-sales-at-nextvision-stabilized-systems-ltd-4420714907",
+    "license_status": "none",
+    "license_note": "אין דרישה לרישיון מטיס; התפקיד מתמקד בתמיכה טכנית ומכאנית במערכות.",
+    "tier_priority": 2
+  },
+  {
+    "date": "2026-08-16",
+    "day_name": "יום א'",
+    "title": "Airobotics - Flight Test Pilot",
+    "company": "Airobotics (איירובוטיקס)",
+    "match_score": 75,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "הטסה, ניסויי טיסה ובקרת משימה של רחפנים אוטונומיים תעשייתיים כחלק מצוות הפיתוח והניסויים.",
+    "link": "https://il.linkedin.com/jobs/view/flight-test-pilot-at-airobotics-4447696940",
+    "license_status": "training_provided",
+    "license_note": "החברה עשויה לספק הכשרה פנימית למועמדים בעלי משמעת מבצעית ורקע תפעולי יוצא דופן.",
+    "tier_priority": 2
+  },
+  {
+    "date": "2026-08-16",
+    "day_name": "יום א'",
+    "title": "Bagira - מדריך/ת חי\"ר נייד/ת",
+    "company": "Bagira",
+    "match_score": 88,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "הדרכת לוחמים ומפקדים על סימולטורים ומערכות אימון טקטיות מתקדמות בשטח ובמתקני החברה.",
+    "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%93%D7%A8%D7%99%D7%9A-%D7%AA-%D7%97%D7%99-%D7%A8-%D7%A0%D7%99%D7%99%D7%93-%D7%AA-at-bagira-4410488296",
+    "license_status": "none",
+    "license_note": "אין דרישה לרישיון מטיס רחפן.",
+    "tier_priority": 3
+  },
+  {
+    "date": "2026-08-16",
+    "day_name": "יום א'",
+    "title": "Buildots - Field Capture Technician",
+    "company": "Buildots",
+    "match_score": 80,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "איסוף נתונים ויזואליים באתרי בנייה באמצעות מצלמות קסדה וטכנולוגיות מעקב מתקדמות, וניתוחם במשרד.",
+    "link": "https://il.linkedin.com/jobs/view/field-capture-technician-at-buildots-4443118561",
+    "license_status": "none",
+    "license_note": "לא נדרש רישיון מטיס רחפן (האיסוף מתבצע רגלית באמצעות מצלמות 360).",
+    "tier_priority": 3
+  },
+  {
+    "date": "2026-08-16",
+    "day_name": "יום א'",
+    "title": "BIRD Aerosystems - Production Engineer",
+    "company": "BIRD Aerosystems",
+    "match_score": 78,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "הובלת תהליכי ייצור, הרכבה ואינטגרציה של מערכות הגנה מוטסות, תמיכה ברצפת הייצור ומעבר מפיתוח לייצור (NPI).",
+    "link": "https://il.linkedin.com/jobs/view/production-engineer-at-bird-aerosystems-4442531161",
+    "license_status": "none",
+    "license_note": "תפקיד פנים-מפעלי ברצפת הייצור, אין דרישה לרישיון טיסה.",
+    "tier_priority": 3
+  },
+  {
+    "date": "2026-08-16",
+    "day_name": "יום א'",
+    "title": "Elbit Systems Israel - Composites Manufacturing Engineer",
+    "company": "Elbit Systems (אלביט)",
+    "match_score": 77,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "ליווי תהליכי ייצור של חומרים מרוכבים לתעשיית התעופה והכטב\"ם, פתרון בעיות הנדסיות ברצפת הייצור.",
+    "link": "https://il.linkedin.com/jobs/view/composites-manufacturing-engineer-at-elbit-systems-israel-4378155782",
+    "license_status": "none",
+    "license_note": "תפקיד הנדסי תעשייתי, ללא היבטי הטסה.",
+    "tier_priority": 3
   }
 ]
