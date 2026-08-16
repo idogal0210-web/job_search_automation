@@ -102,55 +102,64 @@ def save_seen_drones(seen_dict, newly_sent_jobs):
             json.dump(archive_list, f, ensure_ascii=False, indent=2)
         print(f"[+] Updated {ARCHIVE_FILE} with prioritized drone jobs for weekly digest.")
     except Exception as e:
-        print(f"[-] Error writing weekly_archive.json: {e}")
-
-# Complete and Updated Candidate Profile Context for Drone Jobs Evaluation
+        print# Complete and Updated Candidate Profile Context for Drone Jobs Evaluation (Aug 2026)
 IDO_DRONE_CV_SUMMARY = """
 Name: Ido Gal (עידו גל)
-Email: idogal0210@gmail.com | Phone: 052-632-8886 | Location: Tel Aviv - Or Aqiva (Center, Sharon, North, or Relocation).
-LinkedIn: linkedin.com/in/idogal0210
+Title: Gas Controller & Energy Systems Operations | Practical Mechanical Engineer | Real-Time Control & Supply Continuity
+Location: Tel Aviv | Phone: 052-632-8886 | Email: idogal0210@gmail.com | LinkedIn: www.linkedin.com/in/ido-g
 
 Education & Certifications:
-- Practical Mechanical Engineer (הנדסאי מכונות), Specializing in Green Energy and Natural Gas (התמחות באנרגיה ירוקה ובגז טבעי), Ruppin Academic Center (2024). NOT a B.Sc. Engineer!
-- Certified Electrician (חשמלאי מוסמך), Ruppin Academic Center (Expected completion 2026).
+- Practical Mechanical Engineer, Natural Gas & Green Energy (הנדסאי מכונות, התמחות בגז טבעי ובאנרגיה ירוקה), Ruppin Academic Center (2024). NOT a B.Sc. Engineer!
+- Certified Electrician Studies (לימודי חשמלאי מוסמך), Ruppin Academic Center (Expected completion 2026).
 - Drone Pilot License Status: Currently does NOT hold a commercial CAAI (רת"א) drone pilot license.
 
-Technical Tools & Capabilities:
-- Advanced Excel: Reports, complex data analysis, automation.
-- SAP.
-- AI Tools: Copilot 365, Gemini — practical application in professional work environments to improve reporting and workflows.
-- Data analysis and operational reporting.
+Technical Tools & Systems:
+- Advanced Excel: Analysis, formulas, operational reports, automation.
+- SAP in organizational environments.
+- Microsoft 365 Copilot, Gemini: Practical application and workflow automation.
+- Operational data analysis and reporting, supply quantity tracking and control.
+- Shift reports and handover documentation.
+- AI and automation implementation in workflows.
 
 Core Skills:
-- Monitoring & coordination of natural gas supply 24/7.
-- Working with complex energy systems & high-tech infrastructure.
-- Handling abnormal situations & emergency response in real-time under pressure.
-- Autonomous decision-making in safety-critical environments.
-- Cross-departmental collaboration (commercial, operational, INGL, offshore platform).
-- Work process improvement, task prioritization, and employee training/mentoring.
+- Real-time gas and energy operations control 24/7.
+- Pressure, flow-rate and quantity monitoring.
+- Nomination / Re-nomination handling and supply allocations.
+- Operational event and deviation response in safety-critical environments.
+- Independent decision-making under pressure (sole focal point on night shifts).
+- Cross-functional and external coordination (offshore platform, INGL/נתג"ז, commercial teams, strategic customers).
+- Operational continuity and prioritization.
+- Data analysis, reporting, process improvement, automation.
+- Employee training, mentoring, and leadership.
 
 Languages:
-- Hebrew: Native language.
-- English: Full professional proficiency (5 years international team training in US & Germany).
+- Hebrew: Native.
+- English: Full professional proficiency (5 years international sales leadership and team training in US & Germany).
 
 Professional Experience:
-1. Energean Israel Ltd. | Gas Controller | 2022–Present:
-   - 24/7 operational oversight of natural gas supply to strategic customers (power stations, large industrial plants).
-   - Sole operational representative on night shifts, independently coordinating with offshore platform and INGL (נתג"ז).
-   - Real-time pressure monitoring, flow rates, nomination approvals, reporting deviations.
-   - Close coordination with commercial team to align operational execution with commercial commitments.
-   - Implementation of AI tools (Copilot 365, Gemini) for reporting efficiency.
-2. Vulcan / Energean Israel Ltd. | Security Officer, Strategic Energy Facility | 2020–2022:
-   - Protection of critical natural gas infrastructure in sensitive, strictly regulated environments.
-3. Sales Team Leader & Sales Trainer | International Markets (US & Germany) | 2015–2020:
-   - Recruited, trained, and mentored sales reps in US & Germany. Leadership, cross-cultural training, and workflow implementation.
-4. MER Group | Solar PV Systems Installer | 2010–2012:
-   - Hands-on field work, end-to-end installation and initial commissioning of PV systems, wiring and electrical connections.
+1. Energean Israel Ltd | Gas Controller | 2022–Present:
+   - Continuous operational control of natural gas supply to strategic customers (power stations, major industrial plants) 24/7.
+   - Real-time monitoring of pressures, flow rates, supply quantities, and operational data; rapid deviation identification.
+   - Nomination and Re-nomination handling, reviewing quantity changes and updating gas allocations.
+   - Independent coordination between offshore platform, INGL, commercial department, and customers.
+   - Translating commercial requirements into operational execution as the independent focal point on night shifts.
+   - Making real-time decisions under pressure in response to demand changes and unplanned events.
+   - Producing reports, supply data, and operational documentation for control, analysis, reporting, and shift handover.
+   - Implementing Excel, Microsoft 365 Copilot, and Gemini solutions to reduce manual work and shorten execution times.
+2. Vulcan / Energean Israel Ltd | Security Officer, Strategic Energy Facility | 2020–2022:
+   - Secured sensitive natural gas infrastructure under strict safety, security, and access-control procedures.
+   - Coordinated with operational stakeholders while supporting site continuity, alertness, and rapid event response.
+3. Sales Team Leader & Sales Trainer | International Activity | 2015–2020:
+   - Recruited, trained, and supported sales reps in international markets, mainly the U.S. and Israel–Germany activity.
+   - Led learning, adaptation, and performance-improvement processes in dynamic multicultural environments.
+4. MER Group | PV Solar Systems Installer | 2010–2012:
+   - Installed, wired, and assisted with initial commissioning of photovoltaic systems; hands-on renewable energy construction.
 
 Military Service:
-- Nahal Reconnaissance Unit (סיירת נח"ל) | Demolitions and Combat Engineering (חבלה והנדסה קרבית) | 2012–2015:
-  - Combat soldier and commander in demolitions and combat engineering. Led the unit's demolitions field as a career service member (קבע).
-  - Certifications: Rifleman 08 (רובאי 08) and Demolitions & Combat Engineering 07 (הסמכת חבלה והנדסה קרבית 07).
+- Nahal Reconnaissance Unit (סיירת נח"ל) | Demolitions & Combat Engineering (חבלה והנדסה קרבית) | 2012–2015:
+  - Combat soldier, commander, and career service member leading the unit's demolitions field.
+  - Certifications: Rifleman 08 (רובאי 08) and Demolitions & Combat Engineering 07 (הסמכת פלס/חבלה 07).
+"""
 
 ====================================================================
 PRIORITIZATION TIERS FOR TARGET DRONE COMPANIES (APPLY SCORE BOOST):
