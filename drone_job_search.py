@@ -159,7 +159,6 @@ Military Service:
 - Nahal Reconnaissance Unit (סיירת נח"ל) | Demolitions & Combat Engineering (חבלה והנדסה קרבית) | 2012–2015:
   - Combat soldier, commander, and career service member leading the unit's demolitions field.
   - Certifications: Rifleman 08 (רובאי 08) and Demolitions & Combat Engineering 07 (הסמכת פלס/חבלה 07).
-"""
 
 ====================================================================
 PRIORITIZATION TIERS FOR TARGET DRONE COMPANIES (APPLY SCORE BOOST):
@@ -567,9 +566,10 @@ def send_drone_email(subject, html_content, recipient_email):
 
     if not sender_email or not sender_password:
         print("[-] SENDER_EMAIL or SENDER_APP_PASSWORD missing. Writing preview to sample_drone_report.html...")
-        with open("sample_drone_report.html", "w", encoding="utf-8") as f:
+        report_path = os.path.join(os.path.dirname(__file__), "sample_drone_report.html")
+        with open(report_path, "w", encoding="utf-8") as f:
             f.write(html_content)
-        print("[+] Preview saved to sample_drone_report.html")
+        print(f"[+] Preview saved to {report_path}")
         return False
 
     try:

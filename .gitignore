@@ -6,3 +6,4 @@ __pycache__/
 sample_report.html
 sample_report_ilan.html
 .DS_Store
+.agents/

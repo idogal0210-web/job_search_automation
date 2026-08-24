@@ -212,9 +212,10 @@ def send_weekly_email():
 
     if not sender_email or not sender_password:
         print("[-] SENDER_EMAIL or SENDER_APP_PASSWORD missing. Writing preview to sample_weekly_report.html...")
-        with open("sample_weekly_report.html", "w", encoding="utf-8") as f:
+        report_path = os.path.join(os.path.dirname(__file__), "sample_weekly_report.html")
+        with open(report_path, "w", encoding="utf-8") as f:
             f.write(html_content)
-        print("[+] Preview written to sample_weekly_report.html")
+        print(f"[+] Preview written to {report_path}")
         return False
 
     try:

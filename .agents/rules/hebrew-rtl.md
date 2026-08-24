@@ -19,3 +19,4 @@ This rule enforces strict Right-to-Left (RTL) formatting and writing for all Heb
 
 ### 3. Artifacts and Generated Documents
 - Any generated Markdown, HTML, PDF, or text artifacts containing Hebrew must prioritize RTL alignment and readability.
+

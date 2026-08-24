@@ -456,9 +456,10 @@ def send_email(subject, html_content, recipient_email):
 
     if not sender_email or not sender_password:
         print("[-] SENDER_EMAIL or SENDER_APP_PASSWORD missing. Printing HTML output to file for preview...")
-        with open("/Users/ido/.gemini/antigravity/scratch/job_search_automation/sample_report.html", "w", encoding="utf-8") as f:
+        report_path = os.path.join(os.path.dirname(__file__), "sample_report.html")
+        with open(report_path, "w", encoding="utf-8") as f:
             f.write(html_content)
-        print("[+] Preview saved to sample_report.html")
+        print(f"[+] Preview saved to {report_path}")
         return False
 
     try:
