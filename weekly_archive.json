@@ -676,5 +676,133 @@
     "license_status": "advantage",
     "license_note": "רישיון מטיס מהווה יתרון משמעותי, אך הרקע הפיקודי והטכני של עידו בשטח יכול להוות בסיס חזק להכשרה פנימית.",
     "tier_priority": 2
+  },
+  {
+    "date": "2026-08-26",
+    "day_name": "יום ד'",
+    "title": "Team 3 Group - מפעילי/ות חדר בקרה (תשתיות אנרגיה וגז)",
+    "company": "Team 3 Group",
+    "match_score": 98,
+    "sector": "תל אביב",
+    "summary": "הפעלת חדר בקרה 24/7 עבור חברה מובילה בתחום תשתיות הגז והאנרגיה, כולל ניטור מדדים, לחצים וזרימות בזמן אמת.",
+    "link": "https://il.linkedin.com/jobs/view/64-%D7%9C%D7%A9%D7%A2%D7%94%21-%D7%9C%D7%97%D7%91%D7%A8%D7%94-%D7%9E%D7%95%D7%91%D7%99%D7%9C%D7%94-%D7%91%D7%AA%D7%97%D7%95%D7%9D-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%9ה%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-%D7%95%D7%94%D7%92%D7%96-%D7%93%D7%A8%D7%95%D7%A9%D7%99%D7%9D-%D7%95%D7%AA-%D7%9E%D7%A4%D7%A2%D7%99%D7%9C%D7%99-%D7%95%D7%AA-%D7%9H%D7%93%D7%A8-%D7%91%D7%A7%D7%A8%D7%94-%D7%91%D7%A8%D7%9E%D7%AA-%D7%94%D7%97%D7%99%D7%99%D7%9C-%D7%AA-%D7%90-at-team-3-group-4456494573"
+  },
+  {
+    "date": "2026-08-26",
+    "day_name": "יום ד'",
+    "title": "AMAREL LTD - Junior Solar Account Coordinator",
+    "company": "AMAREL LTD",
+    "match_score": 88,
+    "sector": "מחוז מרכז",
+    "summary": "תיאום טכני ומסחרי של פרויקטים ולקוחות בתחום האנרגיה הסולארית, עבודה מול ממשקים מרובים ומעקב אחר ביצוע.",
+    "link": "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4447699352"
+  },
+  {
+    "date": "2026-08-26",
+    "day_name": "יום ד'",
+    "title": "SolarEdge Technologies - Customer Experience & Operation Team Leader",
+    "company": "SolarEdge Technologies",
+    "match_score": 82,
+    "sector": "הרצליה",
+    "summary": "ניהול צוות תפעול וחווית לקוח בחברה גלובלית מובילה לטכנולוגיות אנרגיה ירוקה, תוך שיפור תהליכים ומענה ללקוחות אסטרטגיים.",
+    "link": "https://il.linkedin.com/jobs/view/customer-experience-operation-team-leader-at-solaredge-technologies-4458194577"
+  },
+  {
+    "date": "2026-08-26",
+    "day_name": "יום ד'",
+    "title": "IEC - חברת החשמל לישראל - electrical engineering",
+    "company": "חברת החשמל לישראל בע\"מ",
+    "match_score": 78,
+    "sector": "אשקלון",
+    "summary": "תפקיד הנדסי ותפעולי במערך החשמל והאנרגיה של האתר, כולל עבודה עם מערכות כוח וממשקים טכנולוגיים מורכבים.",
+    "link": "https://il.linkedin.com/jobs/view/electrical-engineering-at-iec-israel-electric-corporation-%D7%97%D7%91%D7%A8%D7%AA-%D7%94%D7%97%D7%A9%D7%9E%D7%9C-%D7%9C%D7%99%D7%A9%D7%A8%D7%90%D7%9C-%D7%91%D7%A2-%D7%9E-4423341828"
+  },
+  {
+    "date": "2026-08-26",
+    "day_name": "יום ד'",
+    "title": "Central Bottling Company Israel - מנהל/ת תחום תשתיות אנרגיה (17810)",
+    "company": "Central Bottling Company (קוקה קולה)",
+    "match_score": 72,
+    "sector": "אשקלון",
+    "summary": "ניהול, תפעול ואחזקה של תשתיות האנרגיה במפעל, כולל מערכות קיטור, גז טבעי, מים ומערכות מורכבות אחרות.",
+    "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%AA%D7%97%D7%95%D7%9D-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-17810-at-central-bottling-company-israel-ltd-4449499398"
+  },
+  {
+    "date": "2026-08-26",
+    "day_name": "יום ד'",
+    "title": "SMARTSHOOTER - טכנאי/ת מעבדה",
+    "company": "SMARTSHOOTER",
+    "match_score": 88,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "עבודת מעבדה הכוללת אינטגרציה, כיול, בדיקות חומרה ותוכנה של מערכות בקרת אש חכמות ליירוט רחפנים (C-UAS).",
+    "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%9E%D7%A2%D7%91%D7%93%D7%94-at-smartshooter-4425809150",
+    "license_status": "none",
+    "license_note": "תפקיד מעבדה ופיתוח חומרה, אינו דורש רישיון מטיס.",
+    "tier_priority": 2
+  },
+  {
+    "date": "2026-08-26",
+    "day_name": "יום ד'",
+    "title": "Heven AeroTech - Drone Pilot",
+    "company": "Heven AeroTech",
+    "match_score": 75,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "הטסה, ניסויי שטח, הגדרת מערכות רחפנים כבדים (מבוססי מימן) וליווי תהליכי אינטגרציה של פלטפורמות UAV.",
+    "link": "https://il.linkedin.com/jobs/view/drone-pilot-at-heven-aerotech-4452575210",
+    "license_status": "training_provided",
+    "license_note": "משרה המשלבת הטסה. החברה עשויה להכשיר מועמד בעל נתונים אישיים ורקע טכני/צבאי חזק כשל עידו.",
+    "tier_priority": 2
+  },
+  {
+    "date": "2026-08-26",
+    "day_name": "יום ד'",
+    "title": "BIRD Aerosystems - דרוש/ה מרכיב/ה אלקטרו-אופטי/ת",
+    "company": "BIRD Aerosystems",
+    "match_score": 81,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "הרכבה, חיווט ואינטגרציה של מכלולים אלקטרו-אופטיים עדינים ומערכות הגנה אוויריות המותקנות על מסוקים ורחפנים.",
+    "link": "https://il.linkedin.com/jobs/view/%D7%93%D7%A8%D7%95%D7%A9-%D7%94-%D7%9E%D7%A8%D7%9B%D7%99%D7%91-%D7%94-%D7%90%D7%9C%D7%A7%D7%98%D7%A8%D7%95-%D7%90%D7%95%D7%A4%D7%98%D7%99-%D7%AA-at-bird-aerosystems-4456353696",
+    "license_status": "none",
+    "license_note": "משרת ייצור ואינטגרציה פנימית, אין דרישה לרישיון הטסה.",
+    "tier_priority": 3
+  },
+  {
+    "date": "2026-08-26",
+    "day_name": "יום ד'",
+    "title": "Elbit Systems Israel - מבקר.ת בדיקות אל הרס / N.D.T",
+    "company": "Elbit Systems",
+    "match_score": 78,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "ביצוע בדיקות איכות קריטיות (NDT) למבנים תעופתיים וחלקי כטב\"ם מחומרים מרוכבים בהתאם לתקנים מחמירים.",
+    "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%AA-%D7%91%D7%93%D7%99%D7%A7%D7%95%D7%AA-%D7%90%D7%9C-%D7%94%D7%A8%D7%A1-n-d-t-at-elbit-systems-israel-4399777310",
+    "license_status": "none",
+    "license_note": "תפקיד בקרת איכות מכנית, ללא דרישת הטסה.",
+    "tier_priority": 3
+  },
+  {
+    "date": "2026-08-26",
+    "day_name": "יום ד'",
+    "title": "ForSight Robotics - Technical Support Specialist",
+    "company": "ForSight Robotics",
+    "match_score": 76,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "תמיכה טכנית, פתרון תקלות חומרה/תוכנה מורכבות במערכות רובוטיות והדרכת לקוחות וצוותים בינלאומיים בארץ ובחו\"ל.",
+    "link": "https://il.linkedin.com/jobs/view/technical-support-specialist-at-forsight-robotics-4452599570",
+    "license_status": "none",
+    "license_note": "תפקיד תמיכה טכנית והדרכה גלובלית, אינו דורש רישיון מטיס.",
+    "tier_priority": 3
+  },
+  {
+    "date": "2026-08-26",
+    "day_name": "יום ד'",
+    "title": "IAI - מהנדס/ת מכונות לרובוטיקה ואוטומציה לקווי ייצור",
+    "company": "IAI - התעשייה האווירית",
+    "match_score": 71,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "תכנון, אינטגרציה ותחזוקת מערכות מכניות ואוטומציה מתקדמות בקווי הייצור של חטיבת תעופה וחלל.",
+    "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%94%D7%A0%D7%93%D7%A1-%D7%AA-%D7%9E%D7%9B%D7%95%D7%A0%D7%95%D7%AA-%D7%9C%D7%A8%D7%95%D7%91%D7%95%D7%98%D7%99%D7%A7%D7%94-%D7%95%D7%90%D7%95%D7%98%D7%95%D7%9E%D7%A6%D7%99%D7%94-%D7%9C%D7%A7%D7%95%D7%95%D7%99-%D7%99%D7%99%D7%A6%D7%95%D7%A8-at-iai-israel-aerospace-industries-4400721561",
+    "license_status": "none",
+    "license_note": "תפקיד פיתוח ואינטגרציה של קווי ייצור רובוטיים, ללא דרישת הטסה.",
+    "tier_priority": 3
   }
 ]
