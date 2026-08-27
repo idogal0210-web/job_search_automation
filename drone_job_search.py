@@ -488,9 +488,15 @@ def build_drone_html_email(evaluated_jobs):
 
     if not evaluated_jobs:
         html += """
-        <div dir="rtl" style="text-align:center; padding: 35px; direction: rtl;">
-            <p style="font-size:16px; color:#94a3b8;">לא נמצאו משרות רחפנים חדשות שעברו את סף ההתאמה (65%+) היום.</p>
-            <p style="font-size:13px; color:#64748b;">הסריקה האוטומטית תמשיך לרוץ בענן מחר ב-07:00 בבוקר!</p>
+        <div class="job-card" dir="rtl" style="direction: rtl; text-align: center; padding: 25px; background: #1e293b; border: 1px solid #334155; border-radius: 10px;">
+            <h3 style="color: #38bdf8; margin-top: 0;">✅ סריקת משרות רחפנים וכטב"ם הושלמה בהצלחה</h3>
+            <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6; margin: 10px 0;">
+                כלל חברות היעד וקטגוריות הרחפנים והביטחון נסרקו הבוקר.<br>
+                לא אותרו משרות חדשות שטרם נשלחו ב-14 הימים האחרונים שעברו את סף ההתאמה (65%+).
+            </p>
+            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 0;">
+                הסריקה האוטומטית הבאה תתבצע מחר ב-06:35 בבוקר בענן.
+            </p>
         </div>
         """
     else:
@@ -601,19 +607,19 @@ def main():
     raw_jobs = fetch_drone_jobs(seen_drones)
     print(f"[+] Retrieved {len(raw_jobs)} unique fresh drone job postings for analysis.")
 
-    if not raw_jobs:
-        print("[!] No new drone jobs found today.")
-        return
+    evaluated_jobs = []
+    if raw_jobs:
+        # 3. Evaluate with Gemini AI & classify licensing + tiers
+        evaluated_jobs = evaluate_drone_jobs_with_gemini(raw_jobs)
+        print(f"[+] Evaluated {len(evaluated_jobs)} matching drone jobs with Gemini AI.")
 
-    # 3. Evaluate with Gemini AI & classify licensing + tiers
-    evaluated_jobs = evaluate_drone_jobs_with_gemini(raw_jobs)
-    print(f"[+] Evaluated {len(evaluated_jobs)} matching drone jobs with Gemini AI.")
+        # 4. Save newly sent jobs to history & weekly archive
+        if evaluated_jobs:
+            save_seen_drones(seen_drones, evaluated_jobs)
+    else:
+        print("[!] No fresh drone jobs found today. Sending daily status confirmation email.")
 
-    # 4. Save newly sent jobs to history & weekly archive
-    if evaluated_jobs:
-        save_seen_drones(seen_drones, evaluated_jobs)
-
-    # 5. Build & Dispatch HTML Email
+    # 5. Build & Dispatch HTML Email (always dispatched so user gets daily report)
     html_content = build_drone_html_email(evaluated_jobs)
     send_drone_email("🚁 משרות מובילות בעולם הרחפנים והכטב\"ם (מתועדף לפי חברות יעד) | עידו גל", html_content, "idogal0210@gmail.com")
 

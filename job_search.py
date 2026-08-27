@@ -403,9 +403,15 @@ def build_html_email(evaluated_jobs):
     
     if not evaluated_jobs:
         html += """
-        <div dir="rtl" style="text-align:center; padding: 30px; direction: rtl;">
-            <p style="font-size:16px; color:#64748b;">לא נמצאו משרות חדשות שעברו את סף ההתאמה (65%+) היום.</p>
-            <p style="font-size:13px; color:#94a3b8;">הסריקה תמשיך לרוץ אוטומטית בענן מחר ב-07:00 בבוקר!</p>
+        <div class="job-card" dir="rtl" style="direction: rtl; text-align: center; padding: 25px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;">
+            <h3 style="color: #1e3c72; margin-top: 0;">✅ הסריקה היומית הושלמה בהצלחה</h3>
+            <p style="font-size: 15px; color: #475569; line-height: 1.6; margin: 10px 0;">
+                כלל מילות המפתח וחברות היעד בתחומי האנרגיה, הגז הטבעי, BESS והבקרה נסרקו הבוקר.<br>
+                לא אותרו משרות חדשות שטרם נשלחו ב-14 הימים האחרונים שעברו את סף ההתאמה (65%+).
+            </p>
+            <p style="font-size: 13px; color: #64748b; margin-bottom: 0;">
+                הסריקה האוטומטית הבאה תתבצע מחר ב-06:35 בבוקר בענן.
+            </p>
         </div>
         """
     else:
@@ -491,19 +497,19 @@ def main():
     raw_jobs = fetch_jobs_google_search(seen_jobs_dict)
     print(f"[+] Retrieved {len(raw_jobs)} unique fresh job postings for analysis.")
 
-    if not raw_jobs:
-        print("[!] No new jobs found today.")
-        return
+    evaluated_jobs = []
+    if raw_jobs:
+        # 3. Evaluate with Gemini AI
+        evaluated_jobs = evaluate_jobs_with_gemini(raw_jobs)
+        print(f"[+] Evaluated {len(evaluated_jobs)} matching jobs with Gemini AI.")
 
-    # 3. Evaluate with Gemini AI
-    evaluated_jobs = evaluate_jobs_with_gemini(raw_jobs)
-    print(f"[+] Evaluated {len(evaluated_jobs)} matching jobs with Gemini AI.")
+        # 4. Save newly sent jobs to history
+        if evaluated_jobs:
+            save_seen_jobs(seen_jobs_dict, evaluated_jobs)
+    else:
+        print("[!] No fresh jobs found today. Sending daily status confirmation email.")
 
-    # 4. Save newly sent jobs to history
-    if evaluated_jobs:
-        save_seen_jobs(seen_jobs_dict, evaluated_jobs)
-
-    # 5. Build & Dispatch HTML Email Report
+    # 5. Build & Dispatch HTML Email Report (always dispatched so user gets daily report)
     html_content = build_html_email(evaluated_jobs)
     send_email("🎯 משרות מותאמות אישית עבור עידו גל - סיכום יומי", html_content, "idogal0210@gmail.com")
 
