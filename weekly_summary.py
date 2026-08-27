@@ -32,39 +32,34 @@ def load_weekly_jobs():
         return []
 
 def build_weekly_email_html(jobs):
-    """Build a rich, RTL-formatted weekly summary HTML email structured as a comprehensive numbered table."""
+    """Build a rich, RTL-formatted weekly summary HTML email."""
     # 1. Deduplicate by link for the weekly digest
     seen_links = set()
     unique_jobs = []
     for j in jobs:
-        link = j.get("link", "").strip()
-        if link and link not in seen_links:
+        link = j.get("link", "")
+        if link not in seen_links:
             seen_links.add(link)
             unique_jobs.append(j)
-        elif not link:
-            unique_jobs.append(j)
 
-    # 2. Sort jobs by Company (sorted by highest match score per company) and match score descending
-    companies = {}
+    # 2. Sort by match score to pick Top 3 Weekly Picks
+    sorted_by_score = sorted(unique_jobs, key=lambda x: x.get("match_score", 0), reverse=True)
+    top_3_picks = sorted_by_score[:3]
+
+    # 3. Group jobs by Date
+    jobs_by_date = {}
     for j in unique_jobs:
-        comp = j.get("company", "").strip() or "חברות שונות"
-        comp_clean = comp.replace(" (איירובוטיקס)", "").replace(" (אלביט)", "").replace(" Ltd", "").replace(" Technologies", "").replace(" (ENLT)", "").replace(" Israel", "").replace(" Stabilized Systems", "").strip()
-        if comp_clean not in companies:
-            companies[comp_clean] = []
-        companies[comp_clean].append(j)
+        d = j.get("date", "")
+        if d not in jobs_by_date:
+            jobs_by_date[d] = {
+                "day_name": j.get("day_name", ""),
+                "date": d,
+                "jobs": []
+            }
+        jobs_by_date[d]["jobs"].append(j)
 
-    # Sort companies by max score
-    sorted_companies = sorted(companies.items(), key=lambda item: max([x.get("match_score", 0) for x in item[1]]), reverse=True)
-    
-    # Flatten sorted jobs into a single list with sequential numbering
-    sorted_unique_jobs = []
-    for comp_name, comp_jobs in sorted_companies:
-        c_sorted = sorted(comp_jobs, key=lambda x: x.get("match_score", 0), reverse=True)
-        sorted_unique_jobs.extend(c_sorted)
-
-    # Top 3 Weekly Picks
-    sorted_by_pure_score = sorted(unique_jobs, key=lambda x: x.get("match_score", 0), reverse=True)
-    top_3_picks = sorted_by_pure_score[:3]
+    # Sort dates chronologically
+    sorted_dates = sorted(jobs_by_date.keys())
 
     # Build HTML
     html = f"""
@@ -75,8 +70,8 @@ def build_weekly_email_html(jobs):
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             body {{ font-family: 'Segoe UI', Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 15px; color: #1e293b; direction: rtl; text-align: right; }}
-            .container {{ max-width: 920px; margin: 0 auto; background: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 6px 25px rgba(0,0,0,0.08); direction: rtl; text-align: right; }}
-            .header {{ background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); color: #ffffff; padding: 26px 20px; text-align: center; direction: rtl; }}
+            .container {{ max-width: 700px; margin: 0 auto; background: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 6px 25px rgba(0,0,0,0.08); direction: rtl; text-align: right; }}
+            .header {{ background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); color: #ffffff; padding: 28px 20px; text-align: center; direction: rtl; }}
             .header h1 {{ margin: 0; font-size: 24px; font-weight: 800; color: #ffffff; }}
             .header p {{ margin: 8px 0 0 0; opacity: 0.9; font-size: 14px; color: #cbd5e1; }}
             .content {{ padding: 22px; direction: rtl; text-align: right; }}
@@ -86,22 +81,22 @@ def build_weekly_email_html(jobs):
             .gold-title {{ font-size: 17px; font-weight: bold; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; direction: rtl; }}
             .gold-card {{ background: #ffffff; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; border-right: 4px solid #f59e0b; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }}
             
+            /* Day Section */
+            .day-section {{ margin-bottom: 25px; }}
+            .day-header {{ font-size: 16px; font-weight: bold; color: #1e3a8a; background: #eff6ff; padding: 10px 14px; border-radius: 8px; border-right: 4px solid #2563eb; margin-bottom: 12px; direction: rtl; text-align: right; }}
+            
             /* Job Table */
-            table {{ width: 100%; border-collapse: collapse; margin-bottom: 15px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; font-size: 13px; }}
-            th {{ background-color: #f8fafc; color: #334155; padding: 12px 8px; font-weight: 700; border-bottom: 2px solid #cbd5e1; text-align: right; }}
-            td {{ padding: 12px 8px; border-bottom: 1px solid #f1f5f9; color: #334155; vertical-align: top; text-align: right; }}
+            table {{ width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 10px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; font-size: 13.5px; }}
+            th {{ background-color: #f8fafc; color: #475569; padding: 10px 8px; font-weight: 700; border-bottom: 1px solid #e2e8f0; text-align: right; }}
+            td {{ padding: 12px 8px; border-bottom: 1px solid #f1f5f9; color: #334155; vertical-align: middle; text-align: right; }}
+            tr:last-child td {{ border-bottom: none; }}
             tr:nth-child(even) {{ background-color: #fafbfc; }}
-            tr:hover {{ background-color: #f1f5f9; }}
             
             /* Badges & Buttons */
-            .score-badge-high {{ background-color: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-weight: bold; font-size: 12px; display: inline-block; white-space: nowrap; }}
-            .score-badge-mid {{ background-color: #2563eb; color: white; padding: 4px 8px; border-radius: 12px; font-weight: bold; font-size: 12px; display: inline-block; white-space: nowrap; }}
-            .score-badge-normal {{ background-color: #f59e0b; color: white; padding: 4px 8px; border-radius: 12px; font-weight: bold; font-size: 12px; display: inline-block; white-space: nowrap; }}
+            .score-badge-high {{ background-color: #10b981; color: white; padding: 3px 8px; border-radius: 12px; font-weight: bold; font-size: 12px; display: inline-block; }}
+            .score-badge-mid {{ background-color: #2563eb; color: white; padding: 3px 8px; border-radius: 12px; font-weight: bold; font-size: 12px; display: inline-block; }}
             .btn-apply {{ display: inline-block; background-color: #2563eb; color: #ffffff !important; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 12px; white-space: nowrap; text-align: center; }}
             .btn-apply:hover {{ background-color: #1d4ed8; }}
-            
-            .pro-text {{ color: #059669; font-weight: 500; }}
-            .gap-text {{ color: #d97706; font-size: 12px; }}
             
             .footer {{ background: #f8fafc; text-align: center; padding: 16px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; direction: rtl; }}
         </style>
@@ -109,100 +104,82 @@ def build_weekly_email_html(jobs):
     <body dir="rtl" style="direction: rtl; text-align: right;">
         <div class="container" dir="rtl" style="direction: rtl; text-align: right;">
             <div class="header" dir="rtl">
-                <h1>📊 דוח סיכום שבועי מובנה | עידו גל</h1>
-                <p>ריכוז כלל המשרות שנאספו השבוע ({len(unique_jobs)} משרות נבחרות מסודרות בטבלה)</p>
+                <h1>📊 דוח סיכום שבועי | עידו גל</h1>
+                <p>כל המשרות המותאמות שנאספו השבוע ({len(unique_jobs)} משרות נבחרות)</p>
             </div>
             
             <div class="content" dir="rtl" style="direction: rtl; text-align: right;">
     """
 
-    # Top 3 Gold Picks Box
+    # Top 3 Box
     if top_3_picks:
         html += """
                 <div class="gold-box" dir="rtl" style="direction: rtl; text-align: right;">
                     <div class="gold-title" dir="rtl">
-                        <span>⭐ משרות הזהב של השבוע (Top 3 Weekly Picks)</span>
+                        <span>⭐ משרות הזהב של השבוע (Top 3 Picks)</span>
                     </div>
         """
         for rank, job in enumerate(top_3_picks, 1):
             score = job.get("match_score", 90)
-            summary_txt = job.get("pros") or job.get("summary") or ""
             html += f"""
                     <div class="gold-card" dir="rtl">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
                             <span style="font-weight: bold; font-size: 14.5px; color: #1e293b;">#{rank} {job.get('company')} - {job.get('title')}</span>
                             <span class="score-badge-high">{score}% התאמה</span>
                         </div>
-                        <p style="margin: 3px 0 8px 0; font-size: 13px; color: #475569;">{summary_txt}</p>
+                        <p style="margin: 3px 0 8px 0; font-size: 13px; color: #475569;">{job.get('summary', '')}</p>
                         <a href="{job.get('link')}" target="_blank" class="btn-apply" style="background-color: #d97706;">הגש מועמדות עכשיו &larr;</a>
                     </div>
             """
         html += "</div>"
 
-    # Master Table
-    if not sorted_unique_jobs:
+    # Day by Day Tables
+    if not sorted_dates:
         html += """
         <div style="text-align: center; padding: 40px; color: #64748b;">
-            <p style="font-size: 16px;">לא נצברו משרות השבוע בארכיון.</p>
+            <p style="font-size: 16px;">לא נצברו משרות השבוע.</p>
         </div>
         """
     else:
-        html += f"""
-                <h3 style="color: #1e3a8a; border-right: 4px solid #2563eb; padding-right: 8px; margin: 20px 0 12px 0;">
-                    📋 טבלת ריכוז משרות מלאה ({len(sorted_unique_jobs)} משרות)
-                </h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 5%; text-align: center;">מס'</th>
-                            <th style="width: 15%;">חברה</th>
-                            <th style="width: 22%;">תפקיד</th>
-                            <th style="width: 9%; text-align: center;">התאמה</th>
-                            <th style="width: 24%;">סיבת ההתאמה (רקע וחוזקות)</th>
-                            <th style="width: 17%;">דרישות מחייבות / דגשים</th>
-                            <th style="width: 8%; text-align: center;">קישור</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        """
-        row_counter = 1
-        for comp_name, comp_jobs in sorted_companies:
-            c_sorted = sorted(comp_jobs, key=lambda x: x.get("match_score", 0), reverse=True)
-            rowspan_count = len(c_sorted)
-            for idx_in_comp, j in enumerate(c_sorted):
+        for date_key in sorted_dates:
+            day_data = jobs_by_date[date_key]
+            d_formatted = datetime.strptime(date_key, "%Y-%m-%d").strftime("%d.%m.%Y")
+            day_name = day_data.get("day_name", "")
+            
+            html += f"""
+                <div class="day-section" dir="rtl">
+                    <div class="day-header" dir="rtl">
+                        📅 {day_name} | {d_formatted} ({len(day_data['jobs'])} משרות)
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">חברה</th>
+                                <th style="width: 35%;">שם המשרה</th>
+                                <th style="width: 20%;">סקטור / תחום</th>
+                                <th style="width: 10%; text-align: center;">התאמה</th>
+                                <th style="width: 10%; text-align: center;">פעולה</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            """
+            for j in day_data["jobs"]:
                 score = j.get("match_score", 85)
-                if score >= 90:
-                    badge_class = "score-badge-high"
-                elif score >= 80:
-                    badge_class = "score-badge-mid"
-                else:
-                    badge_class = "score-badge-normal"
-                    
-                pros_txt = j.get("pros") or j.get("summary") or "התאמה גבוהה לרקע בהנדסאות מכונות, חשמל ותפעול"
-                gaps_txt = j.get("gaps") or j.get("license_note") or j.get("sector") or "משרה פעילה"
-                link_url = j.get("link", "#")
-
-                html += "<tr>"
-                html += f'<td style="text-align: center; font-weight: bold; color: #64748b;">{row_counter}</td>'
-                
-                # Merge company cell with rowspan if it is the first row for this company
-                if idx_in_comp == 0:
-                    border_style = "border-left: 1px solid #e2e8f0; " if rowspan_count > 1 else ""
-                    html += f'<td rowspan="{rowspan_count}" style="vertical-align: middle; background: #ffffff; font-weight: bold; {border_style}font-size: 13.5px; color: #1e293b;">{comp_name}</td>'
-                
+                badge_class = "score-badge-high" if score >= 90 else "score-badge-mid"
                 html += f"""
-                            <td>{j.get('title')}</td>
-                            <td style="text-align: center;"><span class="{badge_class}">{score}%</span></td>
-                            <td class="pro-text">{pros_txt}</td>
-                            <td class="gap-text">{gaps_txt}</td>
-                            <td style="text-align: center;"><a href="{link_url}" target="_blank" class="btn-apply">הגש &larr;</a></td>
-                        </tr>
+                            <tr>
+                                <td><strong>{j.get('company')}</strong></td>
+                                <td>{j.get('title')}</td>
+                                <td style="font-size: 12.5px; color: #64748b;">{j.get('sector', '')}</td>
+                                <td style="text-align: center;"><span class="{badge_class}">{score}%</span></td>
+                                <td style="text-align: center;"><a href="{j.get('link')}" target="_blank" class="btn-apply">הגש &larr;</a></td>
+                            </tr>
                 """
-                row_counter += 1
-        html += """
-                    </tbody>
-                </table>
-        """
+            html += """
+                        </tbody>
+                    </table>
+                </div>
+            """
 
     html += """
             </div>
