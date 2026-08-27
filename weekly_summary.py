@@ -166,34 +166,18 @@ def build_weekly_email_html(jobs):
             # Sort this day's jobs strictly by match score descending
             day_jobs_sorted = sorted(day_data["jobs"], key=lambda x: x.get("match_score", 0), reverse=True)
             
-            i = 0
-            while i < len(day_jobs_sorted):
-                curr_comp = day_jobs_sorted[i].get("company", "").strip()
-                
-                # Count consecutive jobs from the exact same company in this score-sorted order
-                run_length = 1
-                while (i + run_length < len(day_jobs_sorted)) and (day_jobs_sorted[i + run_length].get("company", "").strip() == curr_comp):
-                    run_length += 1
-                
-                # Render the consecutive rows for this company
-                for idx_in_run in range(run_length):
-                    j = day_jobs_sorted[i + idx_in_run]
-                    score = j.get("match_score", 85)
-                    badge_class = "score-badge-high" if score >= 90 else "score-badge-mid"
-                    
-                    html += "<tr>"
-                    if idx_in_run == 0:
-                        border_style = "border-left: 1px solid #e2e8f0; " if run_length > 1 else ""
-                        html += f'<td rowspan="{run_length}" style="vertical-align: middle; background: #ffffff; font-weight: bold; {border_style}color: #1e293b;">{curr_comp}</td>'
-                    
-                    html += f"""
+            for j in day_jobs_sorted:
+                score = j.get("match_score", 85)
+                badge_class = "score-badge-high" if score >= 90 else "score-badge-mid"
+                html += f"""
+                            <tr>
+                                <td><strong>{j.get('company')}</strong></td>
                                 <td>{j.get('title')}</td>
                                 <td style="font-size: 12.5px; color: #64748b;">{j.get('sector', '')}</td>
                                 <td style="text-align: center;"><span class="{badge_class}">{score}%</span></td>
                                 <td style="text-align: center;"><a href="{j.get('link')}" target="_blank" class="btn-apply">הגש &larr;</a></td>
                             </tr>
-                    """
-                i += run_length
+                """
 
             html += """
                         </tbody>
