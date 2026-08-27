@@ -91,6 +91,8 @@ def save_seen_drones(seen_dict, newly_sent_jobs):
             "match_score": job.get("match_score", 0),
             "sector": "רחפנים, כטב\"ם ורובוטיקה",
             "summary": job.get("summary_hebrew", ""),
+            "pros": job.get("pros_hebrew", ""),
+            "gaps": job.get("gaps_hebrew", ""),
             "link": job.get("link", ""),
             "license_status": job.get("license_status", "none"),
             "license_note": job.get("license_note_hebrew", ""),

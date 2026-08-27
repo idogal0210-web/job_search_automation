@@ -94,6 +94,8 @@ def save_seen_jobs(seen_dict, newly_sent_jobs):
             "match_score": job.get("match_score", 0),
             "sector": job.get("location", "ישראל"),
             "summary": job.get("summary_hebrew", ""),
+            "pros": job.get("pros_hebrew", ""),
+            "gaps": job.get("gaps_hebrew", ""),
             "link": job.get("link", "")
         })
 
