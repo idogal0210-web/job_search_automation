@@ -165,30 +165,40 @@ def build_weekly_email_html(jobs):
                     </thead>
                     <tbody>
         """
-        for idx, j in enumerate(sorted_unique_jobs, 1):
-            score = j.get("match_score", 85)
-            if score >= 90:
-                badge_class = "score-badge-high"
-            elif score >= 80:
-                badge_class = "score-badge-mid"
-            else:
-                badge_class = "score-badge-normal"
-                
-            pros_txt = j.get("pros") or j.get("summary") or "התאמה גבוהה לרקע בהנדסאות מכונות, חשמל ותפעול"
-            gaps_txt = j.get("gaps") or j.get("license_note") or j.get("sector") or "משרה פעילה"
-            link_url = j.get("link", "#")
+        row_counter = 1
+        for comp_name, comp_jobs in sorted_companies:
+            c_sorted = sorted(comp_jobs, key=lambda x: x.get("match_score", 0), reverse=True)
+            rowspan_count = len(c_sorted)
+            for idx_in_comp, j in enumerate(c_sorted):
+                score = j.get("match_score", 85)
+                if score >= 90:
+                    badge_class = "score-badge-high"
+                elif score >= 80:
+                    badge_class = "score-badge-mid"
+                else:
+                    badge_class = "score-badge-normal"
+                    
+                pros_txt = j.get("pros") or j.get("summary") or "התאמה גבוהה לרקע בהנדסאות מכונות, חשמל ותפעול"
+                gaps_txt = j.get("gaps") or j.get("license_note") or j.get("sector") or "משרה פעילה"
+                link_url = j.get("link", "#")
 
-            html += f"""
-                        <tr>
-                            <td style="text-align: center; font-weight: bold; color: #64748b;">{idx}</td>
-                            <td><strong>{j.get('company')}</strong></td>
+                html += "<tr>"
+                html += f'<td style="text-align: center; font-weight: bold; color: #64748b;">{row_counter}</td>'
+                
+                # Merge company cell with rowspan if it is the first row for this company
+                if idx_in_comp == 0:
+                    border_style = "border-left: 1px solid #e2e8f0; " if rowspan_count > 1 else ""
+                    html += f'<td rowspan="{rowspan_count}" style="vertical-align: middle; background: #ffffff; font-weight: bold; {border_style}font-size: 13.5px; color: #1e293b;">{comp_name}</td>'
+                
+                html += f"""
                             <td>{j.get('title')}</td>
                             <td style="text-align: center;"><span class="{badge_class}">{score}%</span></td>
                             <td class="pro-text">{pros_txt}</td>
                             <td class="gap-text">{gaps_txt}</td>
                             <td style="text-align: center;"><a href="{link_url}" target="_blank" class="btn-apply">הגש &larr;</a></td>
                         </tr>
-            """
+                """
+                row_counter += 1
         html += """
                     </tbody>
                 </table>
