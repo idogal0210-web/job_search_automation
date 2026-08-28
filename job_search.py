@@ -488,6 +488,55 @@ def send_email(subject, html_content, recipient_email):
         print(f"[-] Failed to send email: {e}")
         return False
 
+def expand_energy_queries_with_ai(client, seen_jobs_dict):
+    """Muscle 3: Dynamically generate and execute expanded queries if daily results are low."""
+    print("[+] Muscle 3 Activated: Generating dynamic energy queries via Gemini AI...")
+    prompt = f"""
+Given the candidate profile for Ido Gal (Practical Mechanical Engineer, Natural Gas & Solar Energy, Control Room Operator, Electrician student, ex-combat demolitions commander):
+Generate 4 novel, specific search keywords in Hebrew or English to discover hidden energy, infrastructure, commissioning, or control room jobs in Israel (e.g. niche EPC contractors, commissioning tech, biogas, microgrids, industrial telemetry).
+Return ONLY a raw JSON array of 4 strings, e.g. ["query 1", "query 2", "query 3", "query 4"].
+"""
+    expanded_jobs = []
+    try:
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt
+        )
+        text = response.text.strip()
+        if text.startswith("```json"):
+            text = text[7:]
+        if text.endswith("```"):
+            text = text[:-3]
+        queries = json.loads(text.strip())
+        print(f"[+] AI Generated Dynamic Queries: {queries}")
+        
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+            "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8"
+        }
+        for kw in queries:
+            url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={requests.utils.quote(kw)}&location=Israel&start=0"
+            res = requests.get(url, headers=headers, timeout=8)
+            if res.status_code == 200:
+                soup = BeautifulSoup(res.text, "html.parser")
+                for card in soup.find_all("li"):
+                    title_elem = card.find("h3", class_="base-search-card__title")
+                    comp_elem = card.find("h4", class_="base-search-card__subtitle")
+                    link_elem = card.find("a", class_="base-card__full-link")
+                    if title_elem and link_elem:
+                        link = link_elem.get("href", "").split("?")[0].strip()
+                        comp = comp_elem.text.strip() if comp_elem else ""
+                        title = title_elem.text.strip()
+                        if link and link not in seen_jobs_dict:
+                            expanded_jobs.append({
+                                "title": f"{comp} - {title}",
+                                "snippet": f"{comp} - {title}",
+                                "link": link
+                            })
+    except Exception as e:
+        print(f"[-] Query expansion fallback: {e}")
+    return expanded_jobs
+
 def main():
     print("[+] Starting Job Search Automation for Ido Gal (with 14-Day History Deduplication)...")
     
@@ -495,23 +544,54 @@ def main():
     seen_jobs_dict = load_seen_jobs()
     print(f"[+] Loaded {len(seen_jobs_dict)} active jobs in 14-day history.")
 
-    # 2. Fetch Fresh Job Leads
+    # 2. Fetch Fresh Job Leads (Standard Google/LinkedIn Feeds)
     raw_jobs = fetch_jobs_google_search(seen_jobs_dict)
     print(f"[+] Retrieved {len(raw_jobs)} unique fresh job postings for analysis.")
 
+    # 3. Muscle 2: Fetch Direct ATS Jobs (Comeet / Career Portals)
+    try:
+        from ats_scraper import get_energy_ats_jobs
+        ats_jobs = get_energy_ats_jobs()
+        added_ats = 0
+        for aj in ats_jobs:
+            link = aj.get("link", "").strip()
+            if link and link not in seen_jobs_dict:
+                raw_jobs.append(aj)
+                added_ats += 1
+        print(f"[+] Muscle 2: Added {added_ats} direct ATS jobs from company portals.")
+    except Exception as e:
+        print(f"[-] ATS scraper note: {e}")
+
+    # 4. Evaluate with Gemini AI
     evaluated_jobs = []
     if raw_jobs:
-        # 3. Evaluate with Gemini AI
         evaluated_jobs = evaluate_jobs_with_gemini(raw_jobs)
         print(f"[+] Evaluated {len(evaluated_jobs)} matching jobs with Gemini AI.")
 
-        # 4. Save newly sent jobs to history
-        if evaluated_jobs:
-            save_seen_jobs(seen_jobs_dict, evaluated_jobs)
+    # 5. Muscle 3: Autonomous Query Expansion if few results found
+    if len(evaluated_jobs) < 2:
+        print("[!] Low yield detected. Activating Muscle 3 (Autonomous Query Expansion)...")
+        gemini_key = os.environ.get("GEMINI_API_KEY")
+        if gemini_key:
+            try:
+                client = genai.Client(api_key=gemini_key)
+                expanded_raw = expand_energy_queries_with_ai(client, seen_jobs_dict)
+                if expanded_raw:
+                    extra_eval = evaluate_jobs_with_gemini(expanded_raw)
+                    for ej in extra_eval:
+                        if ej.get("link") not in [x.get("link") for x in evaluated_jobs]:
+                            evaluated_jobs.append(ej)
+                    print(f"[+] Muscle 3 added {len(extra_eval)} new matching jobs.")
+            except Exception as e:
+                print(f"[-] Query expansion error: {e}")
+
+    # 6. Save newly sent jobs to history & weekly archive
+    if evaluated_jobs:
+        save_seen_jobs(seen_jobs_dict, evaluated_jobs)
     else:
         print("[!] No fresh jobs found today. Sending daily status confirmation email.")
 
-    # 5. Build & Dispatch HTML Email Report (always dispatched so user gets daily report)
+    # 7. Build & Dispatch HTML Email Report (always dispatched so user gets daily report)
     html_content = build_html_email(evaluated_jobs)
     send_email("🎯 משרות מותאמות אישית עבור עידו גל - סיכום יומי", html_content, "idogal0210@gmail.com")
 
