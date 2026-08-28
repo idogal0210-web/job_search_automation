@@ -2,11 +2,21 @@ name: Daily & Weekly Job Search Automation
 
 on:
   schedule:
-    # Daily job search at 06:35 AM Israel Time (03:35 AM UTC)
-    - cron: '35 3 * * *'
+    # Daily job search at 07:30 AM Israel Time (04:30 AM UTC)
+    - cron: '30 4 * * *'
     # Saturday weekly summary at 11:55 AM Israel Time (08:55 AM UTC)
     - cron: '55 8 * * 6'
-  workflow_dispatch: # Allows manual trigger from GitHub UI
+  workflow_dispatch:
+    inputs:
+      job_type:
+        description: 'Automation job to run'
+        required: true
+        default: 'daily'
+        type: choice
+        options:
+          - daily
+          - weekly
+          - both
 
 permissions:
   contents: write
@@ -15,7 +25,9 @@ jobs:
   job-search-daily:
     runs-on: ubuntu-latest
     name: "Daily Job Search - Ido Gal"
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '35 3 * * *'
+    if: |
+      (github.event_name == 'schedule' && github.event.schedule == '30 4 * * *') ||
+      (github.event_name == 'workflow_dispatch' && (inputs.job_type == 'daily' || inputs.job_type == 'both' || inputs.job_type == ''))
 
     steps:
       - name: Checkout repository
@@ -46,13 +58,16 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main || true
           git add seen_jobs.json seen_drones.json weekly_archive.json || true
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update seen_jobs, seen_drones and weekly_archive [skip ci]" && git push)
 
   weekly-summary-saturday:
     runs-on: ubuntu-latest
     name: "Saturday Weekly Digest - Ido Gal"
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '55 8 * * 6'
+    if: |
+      (github.event_name == 'schedule' && github.event.schedule == '55 8 * * 6') ||
+      (github.event_name == 'workflow_dispatch' && (inputs.job_type == 'weekly' || inputs.job_type == 'both'))
 
     steps:
       - name: Checkout repository
