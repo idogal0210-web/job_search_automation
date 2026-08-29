@@ -104,7 +104,7 @@ def build_weekly_email_html(jobs):
     <body dir="rtl" style="direction: rtl; text-align: right;">
         <div class="container" dir="rtl" style="direction: rtl; text-align: right;">
             <div class="header" dir="rtl">
-                <h1>📊 דוח סיכום שבועי | עידו גל</h1>
+                <h1>🔗 דוח סיכום שבועי | עידו גל</h1>
                 <p>כל המשרות המותאמות שנאספו השבוע ({len(unique_jobs)} משרות נבחרות)</p>
             </div>
             
@@ -222,7 +222,7 @@ def send_weekly_email():
     import time
 
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = Header("📊 סיכום שבועי: כל המשרות המובילות של השבוע | עידו גל", "utf-8")
+    msg["Subject"] = Header("🔗 סיכום שבועי: כל המשרות המובילות של השבוע | עידו גל", "utf-8")
     msg["From"] = Header(f"Job Search Automation <{sender_email}>", "utf-8")
     msg["To"] = Header(recipient_email, "utf-8")
 
