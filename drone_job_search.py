@@ -200,40 +200,48 @@ def fetch_drone_jobs(seen_drones_dict):
         "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
     }
 
-    # Priority queries focusing on Tier 1 & 2 first
+    # Priority queries focusing on Pure Drone & UAV companies
     tier_1_2_company_queries = [
-        "XTEND Reality",
+        "XTEND Drones",
         "Spear UAV",
-        "Rafael Defense Drones",
-        "Percepto Drones",
-        "NextVision",
+        "Rafael Drone",
         "BlueBird Aero Systems",
         "Airobotics",
         "Heven Drones",
         "Steadicopter",
-        "Robotican"
+        "Robotican",
+        "NextVision Drones",
+        "D-Fend Solutions",
+        "CopterPIX",
+        "Elbit UAV Systems",
+        "IAI Heron UAV"
     ]
 
     drone_role_queries = [
         "רחפנים",
         "כטבמ",
         "כטב\"ם",
-        "Drone Engineer",
-        "UAV Technician",
-        "Flight Test Technician Israel",
         "מטיס רחפנים",
-        "הנדסאי מכונות רחפנים",
-        "אינטגרטור כטב\"ם",
+        "מפעיל רחפנים",
         "טכנאי רחפנים",
-        "Avionics Technician Israel",
+        "אינטגרטור כטב\"ם",
+        "הנדסאי מכונות רחפנים",
+        "ניסויי טיסה כטב\"ם",
+        "Drone Assembly Technician",
+        "UAV Technician Israel",
+        "Flight Test UAV Israel",
+        "UAV Integration Israel",
         "Drone Operator Israel",
-        "Autonomous Systems Technician Israel",
-        "Field Operator Drones",
-        "UAV Integration",
-        "מפעיל כטבמ",
-        "Elbit Systems UAV",
-        "IAI Drones",
-        "BIRD Aerosystems"
+        "GCS Operator UAV",
+        "Counter-UAS Technician",
+        "Loitering Munitions Israel"
+    ]
+
+    NON_DRONE_NEGATIVE_KEYWORDS = [
+        "energean", "אנרג'יאן", "ingl", "נתג", "chevron", "שברון", "raycatch",
+        "submarine", "צוללת", "naval", "ימי", "חיל הים", "טנק", "tank", "נגמ\"ש",
+        "artillery", "תותח", "בואינג", "boeing", "airbus", "רואה חשבון",
+        "מנהל חשבונות", "hr manager", "legal counsel"
     ]
 
     all_queries = []
@@ -266,7 +274,8 @@ def fetch_drone_jobs(seen_drones_dict):
                         if link in seen_drones_dict or link in seen_links_current_run:
                             continue
 
-                        if any(ex in company.lower() or ex in title.lower() for ex in ["energean", "אנרג'יאן", "ingl", "נתג", "chevron", "שברון", "raycatch"]):
+                        title_comp_lower = f"{company} {title}".lower()
+                        if any(neg in title_comp_lower for neg in NON_DRONE_NEGATIVE_KEYWORDS):
                             continue
 
                         seen_links_current_run.add(link)
@@ -294,7 +303,7 @@ def evaluate_drone_jobs_with_gemini(job_list):
     candidate_batch = job_list[:90]
 
     prompt = f"""
-You are an expert AI Aerospace & Drone Career Advisor evaluating Drone/UAV/Robotics jobs for Ido Gal based on his updated CV and STRICT 3-TIER COMPANY PRIORITIZATION.
+You are an expert AI Aerospace & Tactical Drone Career Advisor evaluating Drone/UAV/Autonomous Robotics jobs for Ido Gal based on his updated CV and STRICT 3-TIER COMPANY PRIORITIZATION.
 
 CANDIDATE CV PROFILE & RULES:
 {IDO_DRONE_CV_SUMMARY}
@@ -302,29 +311,35 @@ CANDIDATE CV PROFILE & RULES:
 JOB POSTINGS TO EVALUATE:
 {json.dumps(candidate_batch, ensure_ascii=False, indent=2)}
 
-Filter and evaluate the jobs strictly according to the candidate profile, prioritizing Tier 1 (XTEND, SpearUAV, Rafael) and Tier 2 (Percepto, NextVision, BlueBird, Airobotics, HevenDrones).
-Return a JSON array of objects with the following schema for jobs matching score >= 65%:
+Filter and evaluate the jobs strictly according to the candidate profile.
+
+STRICT DRONE & UAV MANDATORY CRITERIA:
+1. MANDATORY: The job MUST be directly related to Drones, UAVs, UAS, eVTOL, Loitering Munitions, Counter-UAS (C-UAS), Tactical Robotics, or Drone Payloads/Avionics.
+2. STRICT REJECTION: Reject any job that is general defense (tanks, naval, land radar, weapon sights), commercial airline jets, or generic software/IT without hardware/UAV integration.
+3. MINIMUM SCORE: Only include jobs with Match Score >= 75%.
+4. PRIORITIZATION: Prioritize Tier 1 (XTEND, SpearUAV, Rafael Drones) and Tier 2 (BlueBird, NextVision, Airobotics, HevenDrones, Steadicopter, Robotican, D-Fend, CopterPIX).
+
+Return a JSON array of objects with the following schema:
 [
   {{
     "title": "שם התפקיד והחברה",
     "link": "URL link",
-    "match_score": 85, (integer 65-100, incorporating Tier boosts),
+    "match_score": 85, (integer 75-100, incorporating Tier boosts),
     "company": "שם החברה",
     "location": "מיקום (מרכז / שרון / צפון / Remote)",
+    "drone_domain": "הרכבה ואינטגרציה של רחפנים וכטב\"ם" | "הטסה, ניסויי שטח והפעלת משימות" | "עמדות שליטה ובקרה (GCS) וחמ\"ל רחפנים" | "מערכות C-UAS והגנה מפני רחפנים" | "מטע\"דים, אלקטרו-אופטיקה ואוויוניקה",
     "summary_hebrew": "תקציר ממוקד בעברית של 2 שורות בלבד על התפקיד, הרחפנים/מערכות והאחריות",
     "pros_hebrew": "2-3 נקודות חוזק בולטות להתאמה מהניסיון של עידו",
     "gaps_hebrew": "דרישות חובה או פערים לתשומת לב",
     "license_status": "none" | "training_provided" | "advantage" | "mandatory",
     "license_note_hebrew": "הסבר קצר על סטטוס הרישיון",
-    "tier_priority": 1 | 2 | 3 (1 for XTEND/Spear/Rafael, 2 for Percepto/NextVision/BlueBird/Airobotics/Heven, 3 for others)
+    "tier_priority": 1 | 2 | 3 (1 for XTEND/Spear/Rafael, 2 for BlueBird/NextVision/Airobotics/Heven/Steadicopter/Robotican/D-Fend, 3 for others)
   }}
 ]
 
 CRITICAL RULES:
-- PRIORITIZE Tier 1 & Tier 2 companies at the very top of the list!
-- Categorize 'license_status' accurately ('none', 'training_provided', 'advantage', 'mandatory').
 - Reject B.Sc. Engineer ONLY jobs where Practical Engineer (הנדסאי) is strictly rejected.
-- Return top 6-8 best matching jobs.
+- Return top 5-7 best matching jobs with score >= 75%.
 - Return ONLY valid raw JSON array inside backticks.
 """
 
@@ -457,6 +472,7 @@ def build_drone_html_email(evaluated_jobs):
         btn_class = f"btn-{theme}"
 
         tier_badge = '<span class="tier1-tag">⭐ חברת עדיפות Tier 1</span>' if tier == 1 else ""
+        domain_tag = f'<span style="background: rgba(56, 189, 248, 0.18); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); font-size: 11.5px; padding: 2px 8px; border-radius: 6px; margin-left: 6px; display: inline-block;">🏷️ {job.get("drone_domain")}</span>' if job.get("drone_domain") else ""
 
         return f"""
             <div class="{card_class}" dir="rtl" style="direction: rtl; text-align: right;">
@@ -464,6 +480,7 @@ def build_drone_html_email(evaluated_jobs):
                     <div>
                         <span class="{badge_class}">{score}% התאמה</span>
                         {tier_badge}
+                        {domain_tag}
                     </div>
                     <a href="{job.get('link', '#')}" target="_blank" style="font-size: 16px; font-weight: bold; color: #ffffff; text-decoration: none;">{job.get('title', 'משרה')}</a>
                 </div>

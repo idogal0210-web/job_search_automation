@@ -2,18 +2,21 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
-# Known Israeli defense, UAV, robotics, energy, and green tech companies with Comeet / Greenhouse career feeds
-COMEET_COMPANIES = [
-    {"company": "Airobotics", "uid": "airobotics", "sector": "רחפנים, כטב\"ם ורובוטיקה"},
-    {"company": "SpearUAV", "uid": "spearuav", "sector": "רחפנים, כטב\"ם ורובוטיקה"},
-    {"company": "SMARTSHOOTER", "uid": "smartshooter", "sector": "מערכות ביטחוניות ואלקטרו-אופטיקה"},
-    {"company": "XTEND", "uid": "xtend", "sector": "רחפנים וביטחון"},
-    {"company": "HighLander", "uid": "highlander", "sector": "ניהול תנועת רחפנים ורובוטיקה"},
-    {"company": "D-Fend Solutions", "uid": "d-fend", "sector": "הגנת C-UAS וסייבר"},
-    {"company": "NextVision", "uid": "nextvision", "sector": "אלקטרו-אופטיקה לרחפנים"},
+# Energy & Infrastructure ATS Companies
+ENERGY_COMEET_COMPANIES = [
     {"company": "SolarEdge", "uid": "solaredge", "sector": "אנרגיה סולארית וחשמל"},
     {"company": "Enlight Energy", "uid": "enlight", "sector": "אנרגיה מתחדשת"},
     {"company": "Augury", "uid": "augury", "sector": "ניטור מכונות ו-IIoT"},
+]
+
+# Dedicated Pure Drone, UAV, Robotics & Counter-UAS Companies
+DRONE_COMEET_COMPANIES = [
+    {"company": "XTEND", "uid": "xtend", "sector": "רחפנים אוטונומיים וביטחון"},
+    {"company": "SpearUAV", "uid": "spearuav", "sector": "רחפנים משוטטים ורובוטיקה"},
+    {"company": "Airobotics", "uid": "airobotics", "sector": "רחפנים אוטונומיים"},
+    {"company": "HighLander", "uid": "highlander", "sector": "ניהול תנועת רחפנים ו-UAS"},
+    {"company": "D-Fend Solutions", "uid": "d-fend", "sector": "הגנת C-UAS מפני רחפנים"},
+    {"company": "NextVision", "uid": "nextvision", "sector": "אלקטרו-אופטיקה ומטע\"דים לרחפנים"},
 ]
 
 ENERGY_KEYWORDS = [
@@ -21,9 +24,16 @@ ENERGY_KEYWORDS = [
     "technician", "מכונות", "הנדסאי", "גז", "אנרגיה", "חשמל", "בקרה", "מפעיל", "טכנאי", "שירות שטח", "field", "operation"
 ]
 
-DRONE_KEYWORDS = [
-    "drone", "uav", "uas", "robotics", "flight", "test", "operator", "technician", 
-    "integration", "mechanical", "electrical", "רחפן", "כטבמ", "כטב\"ם", "ניסויים", "חבלה", "מטיס", "מרכיב", "אינטגרציה"
+# Strict Drone / UAV Anchor Keywords
+DRONE_ANCHOR_KEYWORDS = [
+    "drone", "uav", "uas", "flight", "pilot", "operator", "avionics", "fpv", "evtol", 
+    "multirotor", "payload", "gcs", "integration", "field test", "technician", "assembly",
+    "רחפן", "רחפנים", "כטבמ", "כטב\"ם", "מטיס", "מפעיל", "אינטגרציה", "הרכבה", "ניסויי טיסה", "מטע\"ד", "חיווט"
+]
+
+# Negative Keywords to reject non-drone/unrelated jobs
+DRONE_NEGATIVE_KEYWORDS = [
+    "naval", "submarine", "tank", "artillery", "weapon sight", "accounting", "hr manager", "legal"
 ]
 
 def fetch_comeet_positions(company_uid, company_name, default_sector):
@@ -59,7 +69,7 @@ def fetch_comeet_positions(company_uid, company_name, default_sector):
 def get_energy_ats_jobs():
     """Extract and filter energy/infrastructure/mechanical ATS jobs."""
     all_jobs = []
-    for comp in COMEET_COMPANIES:
+    for comp in ENERGY_COMEET_COMPANIES:
         pos_list = fetch_comeet_positions(comp["uid"], comp["company"], comp["sector"])
         for p in pos_list:
             text = f"{p['title']} {p['snippet']}".lower()
@@ -68,18 +78,20 @@ def get_energy_ats_jobs():
     return all_jobs
 
 def get_drone_ats_jobs():
-    """Extract and filter drone/defense/UAV ATS jobs."""
+    """Extract and filter dedicated drone/UAV/C-UAS ATS jobs."""
     all_jobs = []
-    for comp in COMEET_COMPANIES:
+    for comp in DRONE_COMEET_COMPANIES:
         pos_list = fetch_comeet_positions(comp["uid"], comp["company"], comp["sector"])
         for p in pos_list:
             text = f"{p['title']} {p['snippet']}".lower()
-            if any(kw in text for kw in DRONE_KEYWORDS):
-                all_jobs.append(p)
+            # Must match at least one drone keyword and no negative keywords
+            if any(kw in text for kw in DRONE_ANCHOR_KEYWORDS):
+                if not any(neg in text for neg in DRONE_NEGATIVE_KEYWORDS):
+                    all_jobs.append(p)
     return all_jobs
 
 if __name__ == "__main__":
     print("[+] Testing ATS Scraper...")
     energy_jobs = get_energy_ats_jobs()
     drone_jobs = get_drone_ats_jobs()
-    print(f"[+] Found {len(energy_jobs)} Energy ATS jobs and {len(drone_jobs)} Drone ATS jobs.")
+    print(f"[+] Found {len(energy_jobs)} Energy ATS jobs and {len(drone_jobs)} Pure Drone ATS jobs.")
