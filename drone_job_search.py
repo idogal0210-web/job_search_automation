@@ -663,7 +663,48 @@ Return ONLY a raw JSON array of 4 strings, e.g. ["query 1", "query 2", "query 3"
         print(f"[-] Drone query expansion fallback: {e}")
     return expanded_jobs
 
+def check_already_ran_today():
+    """
+    Idempotency Lock:
+    If this is a scheduled cron run (GITHUB_EVENT_NAME == 'schedule'),
+    checks if a scheduled run for today has already completed successfully via GitHub Actions API.
+    If so, exits cleanly within 2 seconds to prevent duplicate runs/emails across backup cron slots.
+    Manual runs (workflow_dispatch) always bypass this lock.
+    """
+    event_name = os.environ.get("GITHUB_EVENT_NAME", "")
+    if event_name != "schedule":
+        # Manual run or local execution -> Always proceed
+        return False
+
+    token = os.environ.get("GITHUB_TOKEN")
+    repo = os.environ.get("GITHUB_REPOSITORY")
+    today_utc = datetime.utcnow().strftime("%Y-%m-%d")
+
+    if token and repo:
+        try:
+            url = f"https://api.github.com/repos/{repo}/actions/runs?event=schedule&status=completed&conclusion=success&per_page=10"
+            res = requests.get(url, headers={
+                "Authorization": f"Bearer {token}",
+                "Accept": "application/vnd.github+json",
+                "User-Agent": "JobSearchIdempotency"
+            }, timeout=4)
+            if res.status_code == 200:
+                runs = res.json().get("workflow_runs", [])
+                for r in runs:
+                    created_at = r.get("created_at", "")[:10]
+                    if created_at == today_utc:
+                        print(f"[+] Idempotency Lock: Scheduled daily search already succeeded today ({today_utc}) (Run ID: {r.get('id')}).")
+                        print("[+] Exiting cleanly to prevent duplicate runs/emails.")
+                        sys.exit(0)
+        except Exception as e:
+            print(f"[-] Idempotency check exception (proceeding with run): {e}")
+
+    return False
+
 def main():
+    # 0. Check Idempotency Lock for Scheduled Runs
+    check_already_ran_today()
+
     print("[+] Starting Drone & UAV Job Search Automation for Ido Gal (Prioritized Tiers + Licensing Categories)...")
 
     # 1. Load seen drone jobs history

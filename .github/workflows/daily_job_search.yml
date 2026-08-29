@@ -4,7 +4,9 @@ on:
   schedule:
     # Primary daily job search at 07:30 AM Israel Time (04:30 AM UTC)
     - cron: '30 4 * * *'
-    # Backup daily job search at 08:00 AM Israel Time (05:00 AM UTC)
+    # Backup slot 1 at 07:45 AM Israel Time (04:45 AM UTC)
+    - cron: '45 4 * * *'
+    # Backup slot 2 at 08:00 AM Israel Time (05:00 AM UTC)
     - cron: '0 5 * * *'
     # Saturday weekly summary at 11:55 AM Israel Time (08:55 AM UTC)
     - cron: '55 8 * * 6'
@@ -28,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Daily Job Search - Ido Gal"
     if: |
-      (github.event_name == 'schedule' && (github.event.schedule == '30 4 * * *' || github.event.schedule == '0 5 * * *')) ||
+      (github.event_name == 'schedule' && (github.event.schedule == '30 4 * * *' || github.event.schedule == '45 4 * * *' || github.event.schedule == '0 5 * * *')) ||
       (github.event_name == 'workflow_dispatch' && (inputs.job_type == 'daily' || inputs.job_type == 'both'))
 
     steps:
@@ -47,6 +49,7 @@ jobs:
 
       - name: Run Daily Energy & Drone Job Searches
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
