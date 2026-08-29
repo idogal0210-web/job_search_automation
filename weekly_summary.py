@@ -218,23 +218,39 @@ def send_weekly_email():
         print(f"[+] Preview written to {report_path}")
         return False
 
-    try:
-        msg = MIMEMultipart("alternative")
-        msg["Subject"] = "📊 סיכום שבועי: כל המשרות המובילות של השבוע | עידו גל"
-        msg["From"] = f"Job Search Automation <{sender_email}>"
-        msg["To"] = recipient_email
-        msg.attach(MIMEText(html_content, "html", "utf-8"))
+    from email.header import Header
+    import time
 
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.sendmail(sender_email, recipient_email, msg.as_string())
-        server.quit()
-        print(f"[+] Weekly Summary successfully sent to {recipient_email}!")
-        return True
-    except Exception as e:
-        print(f"[-] Failed to send weekly email: {e}")
-        return False
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = Header("📊 סיכום שבועי: כל המשרות המובילות של השבוע | עידו גל", "utf-8")
+    msg["From"] = Header(f"Job Search Automation <{sender_email}>", "utf-8")
+    msg["To"] = Header(recipient_email, "utf-8")
+
+    html_part = MIMEText(html_content, "html", "utf-8")
+    html_part.add_header("Content-Disposition", "inline")
+    msg.attach(html_part)
+
+    max_retries = 3
+    delays = [5, 10, 15]
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"[+] Attempting Weekly Summary SMTP dispatch ({attempt}/{max_retries}) to {recipient_email}...")
+            server = smtplib.SMTP(smtp_server, smtp_port, timeout=25)
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, recipient_email, msg.as_string())
+            server.quit()
+            print(f"[+] Weekly Summary successfully sent to {recipient_email} on attempt {attempt}!")
+            return True
+        except Exception as e:
+            print(f"[-] Weekly SMTP attempt {attempt} failed: {e}")
+            if attempt < max_retries:
+                sleep_time = delays[attempt - 1]
+                print(f"[!] Retrying in {sleep_time} seconds (Exponential Backoff)...")
+                time.sleep(sleep_time)
+            else:
+                print(f"[-] All {max_retries} Weekly SMTP dispatch attempts failed.")
+                return False
 
 if __name__ == "__main__":
     send_weekly_email()

@@ -565,8 +565,11 @@ def build_drone_html_email(evaluated_jobs):
     """
     return html
 
+from email.header import Header
+import time
+
 def send_drone_email(subject, html_content, recipient_email):
-    """Send email via SMTP."""
+    """Send email via SMTP with up to 3 retries and exponential backoff."""
     sender_email = os.environ.get("SENDER_EMAIL")
     sender_password = os.environ.get("SENDER_APP_PASSWORD")
     smtp_server = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
@@ -580,23 +583,36 @@ def send_drone_email(subject, html_content, recipient_email):
         print(f"[+] Preview saved to {report_path}")
         return False
 
-    try:
-        msg = MIMEMultipart("alternative")
-        msg["Subject"] = subject
-        msg["From"] = f"Drone Job Search Automation <{sender_email}>"
-        msg["To"] = recipient_email
-        msg.attach(MIMEText(html_content, "html", "utf-8"))
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = Header(subject, "utf-8")
+    msg["From"] = Header(f"Drone Job Search Automation <{sender_email}>", "utf-8")
+    msg["To"] = Header(recipient_email, "utf-8")
 
-        server = smtplib.SMTP(smtp_server, smtp_port)
-        server.starttls()
-        server.login(sender_email, sender_password)
-        server.sendmail(sender_email, recipient_email, msg.as_string())
-        server.quit()
-        print(f"[+] Drone Jobs Email successfully sent to {recipient_email}!")
-        return True
-    except Exception as e:
-        print(f"[-] Failed to send email: {e}")
-        return False
+    html_part = MIMEText(html_content, "html", "utf-8")
+    html_part.add_header("Content-Disposition", "inline")
+    msg.attach(html_part)
+
+    max_retries = 3
+    delays = [5, 10, 15]
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"[+] Attempting SMTP dispatch ({attempt}/{max_retries}) to {recipient_email}...")
+            server = smtplib.SMTP(smtp_server, smtp_port, timeout=25)
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, recipient_email, msg.as_string())
+            server.quit()
+            print(f"[+] Drone Jobs Email successfully sent to {recipient_email} on attempt {attempt}!")
+            return True
+        except Exception as e:
+            print(f"[-] SMTP attempt {attempt} failed: {e}")
+            if attempt < max_retries:
+                sleep_time = delays[attempt - 1]
+                print(f"[!] Retrying in {sleep_time} seconds (Exponential Backoff)...")
+                time.sleep(sleep_time)
+            else:
+                print(f"[-] All {max_retries} SMTP dispatch attempts failed.")
+                return False
 
 def expand_drone_queries_with_ai(client, seen_drones_dict):
     """Muscle 3: Dynamically generate and execute expanded drone/defense queries if daily results are low."""
