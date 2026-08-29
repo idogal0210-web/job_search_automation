@@ -202,10 +202,6 @@ def send_weekly_email():
     jobs = load_weekly_jobs()
     print(f"[+] Loaded {len(jobs)} jobs for this week.")
 
-    if not jobs:
-        print("[!] No jobs found in archive for this week.")
-        return False
-
     html_content = build_weekly_email_html(jobs)
 
     sender_email = os.environ.get("SENDER_EMAIL")
