@@ -67,6 +67,39 @@ jobs:
           git add seen_jobs.json seen_drones.json weekly_archive.json || true
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update seen_jobs, seen_drones and weekly_archive [skip ci]" && git push)
 
+      - name: Send Urgent Failure Alert Email (Exceptions Only)
+        if: failure()
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 -c "
+          import os, smtplib
+          from email.mime.text import MIMEText
+          from email.mime.multipart import MIMEMultipart
+          from email.header import Header
+
+          sender = os.environ.get('SENDER_EMAIL')
+          pwd = os.environ.get('SENDER_APP_PASSWORD')
+          run_url = os.environ.get('RUN_URL')
+          recipient = 'idogal0210@gmail.com'
+
+          if sender and pwd:
+              msg = MIMEMultipart()
+              msg['Subject'] = Header('⚠️ התראת תקלה: ריצת חיפוש המשרות נכשלה | עידו גל', 'utf-8')
+              msg['From'] = Header(f'Job Search Alert <{sender}>', 'utf-8')
+              msg['To'] = Header(recipient, 'utf-8')
+              body = f'<div dir=\"rtl\" style=\"font-family: Arial; padding: 20px;\"><h2 style=\"color: #dc2626;\">⚠️ התרחשה שגיאה בריצת חיפוש המשרות</h2><p>ריצת האוטומציה נתקלה בשגיאה באחד השלבים.</p><p><a href=\"{run_url}\" style=\"background: #dc2626; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block;\">צפה ביומן הריצה ב-GitHub Actions ↗</a></p></div>'
+              msg.attach(MIMEText(body, 'html', 'utf-8'))
+              server = smtplib.SMTP('smtp.gmail.com', 587, timeout=20)
+              server.starttls()
+              server.login(sender, pwd)
+              server.sendmail(sender, recipient, msg.as_string())
+              server.quit()
+              print('[+] Failure alert email dispatched.')
+          "
+
   weekly-summary-saturday:
     runs-on: ubuntu-latest
     name: "Saturday Weekly Digest - Ido Gal"
@@ -97,3 +130,36 @@ jobs:
           SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
         run: |
           python weekly_summary.py
+
+      - name: Send Urgent Failure Alert Email (Exceptions Only)
+        if: failure()
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 -c "
+          import os, smtplib
+          from email.mime.text import MIMEText
+          from email.mime.multipart import MIMEMultipart
+          from email.header import Header
+
+          sender = os.environ.get('SENDER_EMAIL')
+          pwd = os.environ.get('SENDER_APP_PASSWORD')
+          run_url = os.environ.get('RUN_URL')
+          recipient = 'idogal0210@gmail.com'
+
+          if sender and pwd:
+              msg = MIMEMultipart()
+              msg['Subject'] = Header('⚠️ התראת תקלה: דוח הסיכום השבועי נכשל | עידו גל', 'utf-8')
+              msg['From'] = Header(f'Job Search Alert <{sender}>', 'utf-8')
+              msg['To'] = Header(recipient, 'utf-8')
+              body = f'<div dir=\"rtl\" style=\"font-family: Arial; padding: 20px;\"><h2 style=\"color: #dc2626;\">⚠️ התרחשה שגיאה בהפקת הדוח השבועי</h2><p>ריצת הדוח השבועי נתקלה בשגיאה באחד השלבים.</p><p><a href=\"{run_url}\" style=\"background: #dc2626; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block;\">צפה ביומן הריצה ב-GitHub Actions ↗</a></p></div>'
+              msg.attach(MIMEText(body, 'html', 'utf-8'))
+              server = smtplib.SMTP('smtp.gmail.com', 587, timeout=20)
+              server.starttls()
+              server.login(sender, pwd)
+              server.sendmail(sender, recipient, msg.as_string())
+              server.quit()
+              print('[+] Failure alert email dispatched.')
+          "
