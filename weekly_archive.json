@@ -1750,5 +1750,50 @@
     "license_status": "none",
     "license_note": "עבודה הנדסית קלאסית ברצפת ייצור, ללא דרישת הטסה.",
     "tier_priority": 3
+  },
+  {
+    "date": "2026-08-30",
+    "day_name": "יום א'",
+    "title": "Airobotics - Flight Test Pilot",
+    "company": "Airobotics",
+    "match_score": 82,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "הובלת ניסויי טיסה והפעלה מבצעית של מערכות רחפנים אוטונומיים (Drone-in-a-Box), כולל תחזוקת שטח ותחקור ביצועים.",
+    "pros": "רקע טכני כהנדסאי מכונות בשילוב משמעת מבצעית וניסיון עשיר בניהול מערכות בזמן אמת מסיירת נח\"ל ומבקרת אנרגיה.",
+    "gaps": "היעדר רישיון מטיס מסחרי רת\"א בתוקף – מותנה בהסמכה והכשרה פנימית על ידי החברה.",
+    "link": "https://il.linkedin.com/jobs/view/flight-test-pilot-at-airobotics-4447696940",
+    "license_status": "training_provided",
+    "license_note": "ניסיון בהטסה מהווה יתרון; החברה מספקת הכשרה והסמכה פנימית למפעילי המערכות האוטונומיות שלה.",
+    "tier_priority": 2
+  },
+  {
+    "date": "2026-08-30",
+    "day_name": "יום א'",
+    "title": "D-Fend Solutions - Field System QA",
+    "company": "D-Fend Solutions",
+    "match_score": 86,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "ביצוע בדיקות איכות ובדיקות שטח מבצעיות למערכות הגנה נגד רחפנים (C-UAS). התפקיד כולל תפעול מערכות בשטח, ניתוח תקלות ותקשורת רדיו בזמן אמת.",
+    "pros": "התאמה מצוינת בין ניסיון מבצעי/חבלני מסיירת נח\"ל לבין תפעול מערכות טכנולוגיות בשטח, בצד קור רוח וניהול חריגות בזמן אמת.",
+    "gaps": "נדרשת למידה מהירה של פרוטוקולי תקשורת רדיו (RF) ושיטות בדיקה מובנות של חומרה ותוכנה.",
+    "link": "https://il.linkedin.com/jobs/view/field-system-qa-at-d-fend-solutions-4429978968",
+    "license_status": "none",
+    "license_note": "אין דרישה לרישיון מטיס רת\"א; התפקיד מתמקד בבדיקות שטח של מערכות גילוי ושיבוש C-UAS.",
+    "tier_priority": 3
+  },
+  {
+    "date": "2026-08-30",
+    "day_name": "יום א'",
+    "title": "D-Fend Solutions - Quality Engineer (Hardware & Manufacturing)",
+    "company": "D-Fend Solutions",
+    "match_score": 77,
+    "sector": "רחפנים, כטב\"ם ורובוטיקה",
+    "summary": "אחריות על איכות ייצור ומכלולי חומרה במערכות C-UAS מתקדמות, כולל בדיקות קבלה, ליווי קווי הרכבה ותחקור כשלים טכניים.",
+    "pros": "השכלה כהנדסאי מכונות ולימודי חשמלאי מוסמך המתאימים לבקרת איכות של מכלולים אלקטרו-מכאניים.",
+    "gaps": "נדרשת הבנה מעמיקה בתקני איכות יצור (ISO/AS9100) ומתודולוגיות QA חומרה/הרכבה.",
+    "link": "https://il.linkedin.com/jobs/view/quality-engineer-hardware-manufacturing-at-d-fend-solutions-4446167312",
+    "license_status": "none",
+    "license_note": "תפקיד מעבדתי/מפעלי – ללא צורך ברישיון מטיס.",
+    "tier_priority": 3
   }
 ]
