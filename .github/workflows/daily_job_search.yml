@@ -50,16 +50,15 @@ jobs:
           GOOGLE_SEARCH_API_KEY: ${{ secrets.GOOGLE_SEARCH_API_KEY }}
           GOOGLE_SEARCH_CX: ${{ secrets.GOOGLE_SEARCH_CX }}
         run: |
-          python job_search.py
-          python drone_job_search.py
+          python daily_job_search_unified.py
 
-      - name: Commit and push updated history & weekly archive
+      - name: Commit and push updated history, weekly archive, and interactive docs
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git pull --rebase origin main || true
-          git add seen_jobs.json seen_drones.json weekly_archive.json || true
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update seen_jobs, seen_drones and weekly_archive [skip ci]" && git push)
+          git add seen_jobs.json seen_drones.json weekly_archive.json docs/ || true
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update history, archive and interactive docs [skip ci]" && git push)
 
       - name: Send Urgent Failure Alert Email (Exceptions Only)
         if: failure()

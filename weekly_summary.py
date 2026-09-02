@@ -2,38 +2,40 @@ import os
 import sys
 import json
 import smtplib
+import time
 from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
+from email.header import Header
 from dotenv import load_dotenv
 
-# Load environment variables
+from interactive_app_builder import build_and_save_docs_app
+
 load_dotenv()
 
 ARCHIVE_FILE = os.path.join(os.path.dirname(__file__), "weekly_archive.json")
 
 def load_weekly_jobs():
-    """Load jobs from the past 7 days from weekly_archive.json."""
+    """Load jobs from past 7 days from weekly_archive.json."""
     if not os.path.exists(ARCHIVE_FILE):
-        print("[-] weekly_archive.json not found.")
         return []
     try:
         with open(ARCHIVE_FILE, "r", encoding="utf-8") as f:
             jobs = json.load(f)
-        
-        now = datetime.now()
-        # 7-day window
-        cutoff_date = (now - timedelta(days=7)).strftime("%Y-%m-%d")
+        cutoff_date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
         weekly_jobs = [j for j in jobs if j.get("date", "") >= cutoff_date]
         return weekly_jobs
     except Exception as e:
         print(f"[-] Error loading weekly jobs: {e}")
         return []
 
-def build_weekly_email_html(jobs):
-    """Build a rich, RTL-formatted weekly summary HTML email."""
-    # 1. Deduplicate by link for the weekly digest
+def build_weekly_email_html(jobs, dashboard_url):
+    """
+    Build clean 3-4 color palette Saturday Weekly Summary HTML.
+    Palette: Navy #0f172a, Muted Slate #475569, Accent Blue #0284c7, Success Green #16a34a.
+    """
+    now_str = datetime.now().strftime("%d.%m.%Y")
+    
     seen_links = set()
     unique_jobs = []
     for j in jobs:
@@ -42,215 +44,156 @@ def build_weekly_email_html(jobs):
             seen_links.add(link)
             unique_jobs.append(j)
 
-    # 2. Sort by match score to pick Top 3 Weekly Picks
     sorted_by_score = sorted(unique_jobs, key=lambda x: x.get("match_score", 0), reverse=True)
     top_3_picks = sorted_by_score[:3]
 
-    # 3. Group jobs by Date
-    jobs_by_date = {}
+    # Sector grouping
+    sectors = {
+        "energy": {"title": "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA", "jobs": []},
+        "drones": {"title": "🚁 רחפנים, כטב\"ם אוטונומי ורובוטיקה", "jobs": []},
+        "cuas": {"title": "🛡️ מערכות הגנת C-UAS וביטחון", "jobs": []},
+        "avionics": {"title": "📡 מטע\"דים, אלקטרו-אופטיקה ואוויוניקה", "jobs": []}
+    }
+
     for j in unique_jobs:
-        d = j.get("date", "")
-        if d not in jobs_by_date:
-            jobs_by_date[d] = {
-                "day_name": j.get("day_name", ""),
-                "date": d,
-                "jobs": []
-            }
-        jobs_by_date[d]["jobs"].append(j)
-
-    # Sort dates chronologically
-    sorted_dates = sorted(jobs_by_date.keys())
-
-    # Build HTML
-    html = f"""
-    <!DOCTYPE html>
-    <html dir="rtl" lang="he">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            body {{ font-family: 'Segoe UI', Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 15px; color: #1e293b; direction: rtl; text-align: right; }}
-            .container {{ max-width: 700px; margin: 0 auto; background: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 6px 25px rgba(0,0,0,0.08); direction: rtl; text-align: right; }}
-            .header {{ background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); color: #ffffff; padding: 28px 20px; text-align: center; direction: rtl; }}
-            .header h1 {{ margin: 0; font-size: 24px; font-weight: 800; color: #ffffff; }}
-            .header p {{ margin: 8px 0 0 0; opacity: 0.9; font-size: 14px; color: #cbd5e1; }}
-            .content {{ padding: 22px; direction: rtl; text-align: right; }}
-            
-            /* Top 3 Box */
-            .gold-box {{ background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 2px solid #f59e0b; border-radius: 12px; padding: 18px; margin-bottom: 25px; box-shadow: 0 3px 10px rgba(245, 158, 11, 0.15); direction: rtl; text-align: right; }}
-            .gold-title {{ font-size: 17px; font-weight: bold; color: #92400e; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; direction: rtl; }}
-            .gold-card {{ background: #ffffff; border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; border-right: 4px solid #f59e0b; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }}
-            
-            /* Day Section */
-            .day-section {{ margin-bottom: 25px; }}
-            .day-header {{ font-size: 16px; font-weight: bold; color: #1e3a8a; background: #eff6ff; padding: 10px 14px; border-radius: 8px; border-right: 4px solid #2563eb; margin-bottom: 12px; direction: rtl; text-align: right; }}
-            
-            /* Job Table */
-            table {{ width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 10px; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0; font-size: 13.5px; }}
-            th {{ background-color: #f8fafc; color: #475569; padding: 10px 8px; font-weight: 700; border-bottom: 1px solid #e2e8f0; text-align: right; }}
-            td {{ padding: 12px 8px; border-bottom: 1px solid #f1f5f9; color: #334155; vertical-align: middle; text-align: right; }}
-            tr:last-child td {{ border-bottom: none; }}
-            tr:nth-child(even) {{ background-color: #fafbfc; }}
-            
-            /* Badges & Buttons */
-            .score-badge-high {{ background-color: #10b981; color: white; padding: 3px 8px; border-radius: 12px; font-weight: bold; font-size: 12px; display: inline-block; }}
-            .score-badge-mid {{ background-color: #2563eb; color: white; padding: 3px 8px; border-radius: 12px; font-weight: bold; font-size: 12px; display: inline-block; }}
-            .btn-apply {{ display: inline-block; background-color: #2563eb; color: #ffffff !important; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 12px; white-space: nowrap; text-align: center; }}
-            .btn-apply:hover {{ background-color: #1d4ed8; }}
-            
-            .footer {{ background: #f8fafc; text-align: center; padding: 16px; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; direction: rtl; }}
-        </style>
-    </head>
-    <body dir="rtl" style="direction: rtl; text-align: right;">
-        <div class="container" dir="rtl" style="direction: rtl; text-align: right;">
-            <div class="header" dir="rtl">
-                <h1>🔗 דוח סיכום שבועי | עידו גל</h1>
-                <p>כל המשרות המותאמות שנאספו השבוע ({len(unique_jobs)} משרות נבחרות)</p>
-            </div>
-            
-            <div class="content" dir="rtl" style="direction: rtl; text-align: right;">
-    """
+        sec_key = j.get("sector_key", "energy")
+        if sec_key not in sectors:
+            sec_key = "energy"
+        sectors[sec_key]["jobs"].append(j)
 
     # Top 3 Box
+    top_3_html = ""
     if top_3_picks:
-        html += """
-                <div class="gold-box" dir="rtl" style="direction: rtl; text-align: right;">
-                    <div class="gold-title" dir="rtl">
-                        <span>⭐ משרות הזהב של השבוע (Top 3 Picks)</span>
-                    </div>
-        """
-        for rank, job in enumerate(top_3_picks, 1):
-            score = job.get("match_score", 90)
-            html += f"""
-                    <div class="gold-card" dir="rtl">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                            <span style="font-weight: bold; font-size: 14.5px; color: #1e293b;">#{rank} {job.get('company')} - {job.get('title')}</span>
-                            <span class="score-badge-high">{score}% התאמה</span>
-                        </div>
-                        <p style="margin: 3px 0 8px 0; font-size: 13px; color: #475569;">{job.get('summary', '')}</p>
-                        <a href="{job.get('link')}" target="_blank" class="btn-apply" style="background-color: #d97706;">הגש מועמדות עכשיו &larr;</a>
-                    </div>
-            """
-        html += "</div>"
-
-    # Day by Day Tables
-    if not sorted_dates:
-        html += """
-        <div style="text-align: center; padding: 40px; color: #64748b;">
-            <p style="font-size: 16px;">לא נצברו משרות השבוע.</p>
-        </div>
-        """
-    else:
-        for date_key in sorted_dates:
-            day_data = jobs_by_date[date_key]
-            d_formatted = datetime.strptime(date_key, "%Y-%m-%d").strftime("%d.%m.%Y")
-            day_name = day_data.get("day_name", "")
-            
-            html += f"""
-                <div class="day-section" dir="rtl">
-                    <div class="day-header" dir="rtl">
-                        📅 {day_name} | {d_formatted} ({len(day_data['jobs'])} משרות)
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="width: 25%;">חברה</th>
-                                <th style="width: 35%;">שם המשרה</th>
-                                <th style="width: 20%;">סקטור / תחום</th>
-                                <th style="width: 10%; text-align: center;">התאמה</th>
-                                <th style="width: 10%; text-align: center;">פעולה</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            """
-            # Sort this day's jobs strictly by match score descending
-            day_jobs_sorted = sorted(day_data["jobs"], key=lambda x: x.get("match_score", 0), reverse=True)
-            
-            for j in day_jobs_sorted:
-                score = j.get("match_score", 85)
-                badge_class = "score-badge-high" if score >= 90 else "score-badge-mid"
-                html += f"""
-                            <tr>
-                                <td><strong>{j.get('company')}</strong></td>
-                                <td>{j.get('title')}</td>
-                                <td style="font-size: 12.5px; color: #64748b;">{j.get('sector', '')}</td>
-                                <td style="text-align: center;"><span class="{badge_class}">{score}%</span></td>
-                                <td style="text-align: center;"><a href="{j.get('link')}" target="_blank" class="btn-apply">הגש &larr;</a></td>
-                            </tr>
-                """
-
-            html += """
-                        </tbody>
-                    </table>
+        top_items = ""
+        for idx, pick in enumerate(top_3_picks, 1):
+            top_items += f"""
+            <div style="padding: 10px; margin-bottom: 8px; background-color: #ffffff; border-radius: 8px; border-right: 4px solid #16a34a;">
+                <div style="font-weight: bold; color: #0f172a; font-size: 15px;">{idx}. {pick.get('company')} – {pick.get('title')}</div>
+                <div style="font-size: 13px; color: #475569; margin-top: 4px;">
+                    <span style="color: #16a34a; font-weight: bold;">{pick.get('match_score')}% התאמה</span> | {pick.get('sector')} &nbsp;&nbsp;
+                    <a href="{pick.get('link')}" style="color: #0284c7; text-decoration: underline; font-weight: bold;">הגש מועמדות למשרה ↗</a>
                 </div>
+            </div>
             """
-
-    html += """
-            </div>
-            <div class="footer" dir="rtl">
-                <p>דוח זה הופק באופן אוטומטי ע"י מערכת Job Search Automation עבור עידו גל</p>
-            </div>
+        top_3_html = f"""
+        <div style="background-color: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+            <div style="font-size: 16px; font-weight: bold; color: #92400e; margin-bottom: 12px;">⭐ משרות הזהב של השבוע (Top 3 Picks):</div>
+            {top_items}
         </div>
-    </body>
-    </html>
-    """
+        """
+
+    # Sector tables
+    sector_tables_html = ""
+    for sec_key, sec_data in sectors.items():
+        sec_jobs = sec_data["jobs"]
+        if not sec_jobs:
+            continue
+        
+        rows_html = ""
+        for j in sec_jobs:
+            rows_html += f"""
+            <tr style="border-bottom: 1px solid #e2e8f0;">
+                <td style="padding: 10px; text-align: center;">
+                    <a href="{j.get('link')}" style="background-color: #0284c7; color: #ffffff; padding: 6px 12px; text-decoration: none; border-radius: 6px; font-size: 12px; font-weight: bold; display: inline-block;">הגש מועמדות ↗</a>
+                </td>
+                <td style="padding: 10px; text-align: center; font-weight: bold; color: #16a34a; font-size: 13px;">{j.get('match_score')}%</td>
+                <td style="padding: 10px; text-align: right; color: #0f172a; font-size: 13px;"><b>{j.get('title')}</b></td>
+                <td style="padding: 10px; text-align: right; color: #0f172a; font-size: 13px; font-weight: bold;">{j.get('company')}</td>
+            </tr>
+            """
+            
+        sector_tables_html += f"""
+        <div style="margin-bottom: 24px;">
+            <div style="font-size: 16px; font-weight: bold; color: #0f172a; margin-bottom: 8px; border-bottom: 2px solid #0284c7; padding-bottom: 4px;">{sec_data['title']} ({len(sec_jobs)} משרות)</div>
+            <table style="width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
+                <thead>
+                    <tr style="background-color: #0f172a; color: #ffffff; font-size: 12px;">
+                        <th style="padding: 8px; text-align: center; width: 110px;">פעולה</th>
+                        <th style="padding: 8px; text-align: center; width: 70px;">התאמה</th>
+                        <th style="padding: 8px; text-align: right;">שם המשרה</th>
+                        <th style="padding: 8px; text-align: right; width: 140px;">חברה</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows_html}
+                </tbody>
+            </table>
+        </div>
+        """
+
+    html = f"""<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 20px; direction: rtl;">
+    <div style="max-width: 680px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; padding: 24px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+        
+        <!-- Header -->
+        <div style="background-color: #0f172a; color: #ffffff; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 24px;">
+            <h1 style="margin: 0 0 6px 0; font-size: 22px;">🔗 דוח סיכום שבועי: כל המשרות המובילות | עידו גל</h1>
+            <div style="font-size: 13px; color: #94a3b8;">תאריך הפקה: {now_str} | סה"כ משרות נבחרות השבוע: {len(unique_jobs)}</div>
+        </div>
+
+        <!-- Interactive Web App CTA Button -->
+        <div style="text-align: center; margin-bottom: 24px;">
+            <a href="{dashboard_url}" style="background-color: #0284c7; color: #ffffff; font-size: 15px; font-weight: bold; text-decoration: none; padding: 14px 28px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);">
+                🚀 פתח דוח שבועי אינטראקטיבי וסינון משרות (V / X) ↗
+            </a>
+            <div style="font-size: 12px; color: #64748b; margin-top: 6px;">כולל תובנות AI על החברה, כמות עובדים, מדד פתיחות וסרגל התקדמות</div>
+        </div>
+
+        {top_3_html}
+
+        {sector_tables_html}
+
+        <!-- Footer -->
+        <div style="border-top: 1px solid #e2e8f0; padding-top: 14px; text-align: center; font-size: 12px; color: #94a3b8;">
+            דוח זה הופק באופן אוטומטי ע"י מערכת Job Search Automation עבור עידו גל.
+        </div>
+
+    </div>
+</body>
+</html>
+"""
     return html
 
-def send_weekly_email():
-    """Build and dispatch the weekly digest email."""
-    print("[+] Building Weekly Summary Report for Ido Gal...")
+def run_weekly_summary():
+    print("[+] Starting Saturday Weekly Summary Dispatch...")
     jobs = load_weekly_jobs()
-    print(f"[+] Loaded {len(jobs)} jobs for this week.")
+    
+    if not jobs:
+        print("[!] No jobs found in archive for weekly digest. Sending empty alert.")
+        
+    # Build GitHub Pages interactive app for Saturday digest
+    build_and_save_docs_app(jobs, is_weekly=True)
+    dashboard_url = "https://idogal0210-web.github.io/job_search_automation/"
 
-    html_content = build_weekly_email_html(jobs)
+    email_html = build_weekly_email_html(jobs, dashboard_url)
 
     sender_email = os.environ.get("SENDER_EMAIL")
-    sender_password = os.environ.get("SENDER_APP_PASSWORD")
-    smtp_server = os.environ.get("SMTP_SERVER", "smtp.gmail.com")
-    smtp_port = int(os.environ.get("SMTP_PORT", 587))
-    recipient_email = "idogal0210@gmail.com"
+    sender_pwd = os.environ.get("SENDER_APP_PASSWORD")
+    recipient = "idogal0210@gmail.com"
 
-    if not sender_email or not sender_password:
-        print("[-] SENDER_EMAIL or SENDER_APP_PASSWORD missing. Writing preview to sample_weekly_report.html...")
-        report_path = os.path.join(os.path.dirname(__file__), "sample_weekly_report.html")
-        with open(report_path, "w", encoding="utf-8") as f:
-            f.write(html_content)
-        print(f"[+] Preview written to {report_path}")
-        return False
+    if sender_email and sender_pwd:
+        msg = MIMEMultipart()
+        msg['Subject'] = Header(f"🔗 דוח סיכום שבועי: כל המשרות המובילות ({len(jobs)} משרות) | עידו גל", 'utf-8')
+        msg['From'] = Header(f"Job Search Automation <{sender_email}>", 'utf-8')
+        msg['To'] = Header(recipient, 'utf-8')
+        msg.attach(MIMEText(email_html, 'html', 'utf-8'))
 
-    from email.header import Header
-    import time
-
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = Header("🔗 סיכום שבועי: כל המשרות המובילות של השבוע | עידו גל", "utf-8")
-    msg["From"] = Header(f"Job Search Automation <{sender_email}>", "utf-8")
-    msg["To"] = Header(recipient_email, "utf-8")
-
-    html_part = MIMEText(html_content, "html", "utf-8")
-    html_part.add_header("Content-Disposition", "inline")
-    msg.attach(html_part)
-
-    max_retries = 3
-    delays = [5, 10, 15]
-    for attempt in range(1, max_retries + 1):
-        try:
-            print(f"[+] Attempting Weekly Summary SMTP dispatch ({attempt}/{max_retries}) to {recipient_email}...")
-            server = smtplib.SMTP(smtp_server, smtp_port, timeout=25)
-            server.starttls()
-            server.login(sender_email, sender_password)
-            server.sendmail(sender_email, recipient_email, msg.as_string())
-            server.quit()
-            print(f"[+] Weekly Summary successfully sent to {recipient_email} on attempt {attempt}!")
-            return True
-        except Exception as e:
-            print(f"[-] Weekly SMTP attempt {attempt} failed: {e}")
-            if attempt < max_retries:
-                sleep_time = delays[attempt - 1]
-                print(f"[!] Retrying in {sleep_time} seconds (Exponential Backoff)...")
-                time.sleep(sleep_time)
-            else:
-                print(f"[-] All {max_retries} Weekly SMTP dispatch attempts failed.")
-                return False
+        for attempt in range(1, 4):
+            try:
+                server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
+                server.starttls()
+                server.login(sender_email, sender_pwd)
+                server.sendmail(sender_email, recipient, msg.as_string())
+                server.quit()
+                print(f"[+] Saturday weekly email successfully dispatched to {recipient} (Attempt {attempt}).")
+                break
+            except Exception as e:
+                print(f"[!] Saturday email dispatch attempt {attempt} failed: {e}")
+                time.sleep(attempt * 5)
 
 if __name__ == "__main__":
-    send_weekly_email()
+    run_weekly_summary()
