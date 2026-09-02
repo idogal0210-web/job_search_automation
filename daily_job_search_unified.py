@@ -456,12 +456,15 @@ def run_unified_daily_search():
     # GitHub Pages Live URL
     dashboard_url = "https://idogal0210-web.github.io/job_search_automation/"
 
-    # Sort & Top 3
+    # Sort by match score
     processed_jobs.sort(key=lambda x: x.get("match_score", 0), reverse=True)
     top_3 = processed_jobs[:3]
 
+    # Cap daily email payload to top 25 curated jobs (keeps email clean, crisp, and manageable)
+    curated_email_jobs = processed_jobs[:25]
+
     # Build HTML email
-    email_html = build_unified_html_email(processed_jobs, top_3, dashboard_url)
+    email_html = build_unified_html_email(curated_email_jobs, top_3, dashboard_url)
 
     # Dispatch Single Unified Email
     sender_email = os.environ.get("SENDER_EMAIL")
@@ -471,7 +474,7 @@ def run_unified_daily_search():
     if sender_email and sender_pwd:
         import time
         msg = MIMEMultipart()
-        msg['Subject'] = Header(f"🎯 דוח משרות יומי מאוחד ({len(processed_jobs)} משרות נבחרות) | עידו גל", 'utf-8')
+        msg['Subject'] = Header(f"🎯 דוח משרות יומי מאוחד ({len(curated_email_jobs)} משרות נבחרות) | עידו גל", 'utf-8')
         msg['From'] = Header(f"Job Search Automation <{sender_email}>", 'utf-8')
         msg['To'] = Header(recipient, 'utf-8')
         msg.attach(MIMEText(email_html, 'html', 'utf-8'))
