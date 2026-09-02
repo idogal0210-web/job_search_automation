@@ -276,6 +276,11 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
         
         rows_html = ""
         for j in sec_jobs:
+            comp_name = j.get('company', '')
+            comp_desc = j.get('company_summary', j.get('sector', ''))
+            # Format: שם החברה - מאיזה תחום החברה ומה המוצר שלה
+            comp_display = f"<b>{comp_name}</b> – <span style='font-size: 12px; color: #475569;'>{comp_desc}</span>"
+            
             rows_html += f"""
             <tr style="border-bottom: 1px solid #e2e8f0;">
                 <td style="padding: 10px; text-align: center;">
@@ -283,7 +288,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
                 </td>
                 <td style="padding: 10px; text-align: center; font-weight: bold; color: #16a34a; font-size: 13px;">{j.get('match_score')}%</td>
                 <td style="padding: 10px; text-align: right; color: #0f172a; font-size: 13px;"><b>{j.get('title')}</b></td>
-                <td style="padding: 10px; text-align: right; color: #0f172a; font-size: 13px; font-weight: bold;">{j.get('company')}</td>
+                <td style="padding: 10px; text-align: right; color: #0f172a; font-size: 13px;">{comp_display}</td>
             </tr>
             """
             
@@ -460,8 +465,21 @@ def run_unified_daily_search():
     processed_jobs.sort(key=lambda x: x.get("match_score", 0), reverse=True)
     top_3 = processed_jobs[:3]
 
-    # Cap daily email payload to top 25 curated jobs (keeps email clean, crisp, and manageable)
-    curated_email_jobs = processed_jobs[:25]
+    # Select exactly 5 Energy/Gas jobs + 5 Drone/UAV/C-UAS jobs = Total 10 jobs for daily email
+    energy_jobs_top5 = [j for j in processed_jobs if j.get("sector_key") == "energy"][:5]
+    drone_jobs_top5 = [j for j in processed_jobs if j.get("sector_key") in ["drones", "cuas", "avionics"]][:5]
+
+    # Fallbacks if one sector has fewer than 5
+    curated_set = set(j.get("link") for j in energy_jobs_top5 + drone_jobs_top5)
+    remaining_jobs = [j for j in processed_jobs if j.get("link") not in curated_set]
+
+    while len(energy_jobs_top5) < 5 and remaining_jobs:
+        energy_jobs_top5.append(remaining_jobs.pop(0))
+
+    while len(drone_jobs_top5) < 5 and remaining_jobs:
+        drone_jobs_top5.append(remaining_jobs.pop(0))
+
+    curated_email_jobs = energy_jobs_top5 + drone_jobs_top5
 
     # Build HTML email
     email_html = build_unified_html_email(curated_email_jobs, top_3, dashboard_url)
@@ -474,7 +492,7 @@ def run_unified_daily_search():
     if sender_email and sender_pwd:
         import time
         msg = MIMEMultipart()
-        msg['Subject'] = Header(f"🎯 דוח משרות יומי מאוחד ({len(curated_email_jobs)} משרות נבחרות) | עידו גל", 'utf-8')
+        msg['Subject'] = Header(f"🎯 דוח משרות יומי מאוחד (10 משרות נבחרות: 5 אנרגיה + 5 רחפנים) | עידו גל", 'utf-8')
         msg['From'] = Header(f"Job Search Automation <{sender_email}>", 'utf-8')
         msg['To'] = Header(recipient, 'utf-8')
         msg.attach(MIMEText(email_html, 'html', 'utf-8'))
