@@ -84,14 +84,16 @@ def get_drone_ats_jobs():
         pos_list = fetch_comeet_positions(comp["uid"], comp["company"], comp["sector"])
         for p in pos_list:
             text = f"{p['title']} {p['snippet']}".lower()
-            # Must match at least one drone keyword and no negative keywords
             if any(kw in text for kw in DRONE_ANCHOR_KEYWORDS):
                 if not any(neg in text for neg in DRONE_NEGATIVE_KEYWORDS):
                     all_jobs.append(p)
     return all_jobs
 
+def scrape_all_comeet_jobs():
+    """Combined helper for all ATS Comeet jobs."""
+    return get_energy_ats_jobs() + get_drone_ats_jobs()
+
 if __name__ == "__main__":
     print("[+] Testing ATS Scraper...")
-    energy_jobs = get_energy_ats_jobs()
-    drone_jobs = get_drone_ats_jobs()
-    print(f"[+] Found {len(energy_jobs)} Energy ATS jobs and {len(drone_jobs)} Pure Drone ATS jobs.")
+    all_comeet = scrape_all_comeet_jobs()
+    print(f"[+] Found {len(all_comeet)} total Comeet ATS jobs.")
