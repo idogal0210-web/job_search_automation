@@ -8,6 +8,7 @@ sample_report_ilan.html
 sample_drone_report.html
 sample_weekly_report.html
 sample_interactive_preview.html
+sample_daily_report_preview.html
 *.pdf
 .DS_Store
 .agents/
