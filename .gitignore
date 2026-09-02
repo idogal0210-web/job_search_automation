@@ -9,6 +9,7 @@ sample_drone_report.html
 sample_weekly_report.html
 sample_interactive_preview.html
 sample_daily_report_preview.html
+sample_daily_report_dark_list_preview.html
 *.pdf
 .DS_Store
 .agents/
