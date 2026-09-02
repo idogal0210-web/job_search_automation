@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(__file__)
 SEEN_JOBS_FILE = os.path.join(BASE_DIR, "seen_jobs.json")
 SEEN_DRONES_FILE = os.path.join(BASE_DIR, "seen_drones.json")
 WEEKLY_ARCHIVE_FILE = os.path.join(BASE_DIR, "weekly_archive.json")
-SAVED_TRIAGE_FILE = os.path.join(BASE_DIR, "saved_jobs.json")
+REJECTED_JOBS_FILE = os.path.join(BASE_DIR, "rejected_jobs.json")
 RETENTION_DAYS = 14
 
 def check_already_ran_today():
@@ -77,6 +77,17 @@ def load_seen_dict(file_path):
     except Exception:
         return {}
 
+def load_rejected_job_links():
+    """Load persistent list of rejected job URLs to ensure they never reappear."""
+    if not os.path.exists(REJECTED_JOBS_FILE):
+        return set()
+    try:
+        with open(REJECTED_JOBS_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return set(data if isinstance(data, list) else data.keys())
+    except Exception:
+        return set()
+
 def save_seen_dict(file_path, seen_dict, new_links):
     now_iso = datetime.now().isoformat()
     for link in new_links:
@@ -98,12 +109,15 @@ def update_weekly_archive(new_jobs):
     cutoff_date = (datetime.now() - timedelta(days=8)).strftime("%Y-%m-%d")
     archive = [j for j in archive if j.get("date", "") >= cutoff_date]
     
+    rejected_set = load_rejected_job_links()
+    archive = [j for j in archive if j.get("link") not in rejected_set]
+
     seen_links = {j.get("link") for j in archive}
     today_str = datetime.now().strftime("%Y-%m-%d")
     
     for job in new_jobs:
         link = job.get("link")
-        if link and link not in seen_links:
+        if link and link not in seen_links and link not in rejected_set:
             seen_links.add(link)
             job_copy = dict(job)
             job_copy["date"] = today_str
@@ -112,7 +126,6 @@ def update_weekly_archive(new_jobs):
     with open(WEEKLY_ARCHIVE_FILE, "w", encoding="utf-8") as f:
         json.dump(archive, f, ensure_ascii=False, indent=2)
 
-# Candidate CV summary for Gemini evaluation
 CV_CONTEXT = """
 Name: Ido Gal (עידו גל)
 Title: Gas Controller & Energy Systems Operations | Practical Mechanical Engineer | Real-Time Control & Supply Continuity
@@ -122,7 +135,7 @@ Skills: Real-time 24/7 SCADA & gas control, pressure/flow monitoring, nomination
 
 def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_drone=False):
     """
-    Evaluates job relevance AND extracts rich structured company intelligence using Gemini.
+    Evaluates job relevance AND extracts rich, detailed company intelligence using Gemini.
     """
     prompt = f"""
     You are an expert AI Career Coach evaluating a job for candidate Ido Gal:
@@ -139,7 +152,9 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     2. "reasoning": 1-2 sentence Hebrew justification.
     3. "sector_key": one of ["energy", "drones", "cuas", "avionics"].
     4. "sector": Hebrew sector name e.g. "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA" or "🚁 רחפנים, כטב"ם אוטונומי ורובוטיקה".
-    5. "company_summary": 1-2 sentence Hebrew summary of company core product, tech, and market standing.
+    5. "company_summary": Rich 2-3 sentence Hebrew detailed overview explaining:
+       - What the company specializes in, its core product/technology, and market standing.
+       - Why it is relevant for a Mechanical Practical Engineer / Gas Controller / Field Integrator.
     6. "company_size": Hebrew company size estimate e.g. "80-120 עובדים (סטארטאפ בצמיחה)" or "200+ עובדים".
     7. "junior_openness": Hebrew openness indicator e.g. "🟢 גבוהה – פתוחים להנדסאים בעלי זיקה טכנית ללא ניסיון קודם ברחפנים."
     8. "work_model": Hebrew work model e.g. "היברידי", "משמרות 24/7", or "שטח ומעבדה".
@@ -163,7 +178,7 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
             "reasoning": "משרה מותאמת לרקע הטכני בתשתיות/רחפנים.",
             "sector_key": "drones" if is_drone else "energy",
             "sector": "🚁 רחפנים, כטב\"ם אוטונומי ורובוטיקה" if is_drone else "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA",
-            "company_summary": f"חברה מובילה בתחום {company}.",
+            "company_summary": f"חברה מובילה בתחום {company}, מפתחת טכנולוגיות מתקדמות ומערכות תשתיות/תעופה. החברה מציעה הזדמנויות פיתוח מקצועיות להנדסאים וטכנאי שטח.",
             "company_size": "עובדים בתעשייה",
             "junior_openness": "🟢 גבוהה – פתוחים להנדסאים/מהנדסים בעלי זיקה טכנית ותשוקה ללמידה.",
             "work_model": "היברידי / שטח"
@@ -217,7 +232,6 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
     """
     now_str = datetime.now().strftime("%d.%m.%Y")
 
-    # Group jobs by sector
     sectors = {
         "energy": {"title": "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA", "jobs": []},
         "drones": {"title": "🚁 רחפנים, כטב\"ם אוטונומי ורובוטיקה", "jobs": []},
@@ -231,7 +245,6 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
             sec_key = "energy"
         sectors[sec_key]["jobs"].append(j)
 
-    # Build Top 3 Gold Section
     top_3_html = ""
     if top_3:
         top_items = ""
@@ -252,7 +265,6 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
         </div>
         """
 
-    # Build Sector Grouped Tables
     sector_tables_html = ""
     for sec_key, sec_data in sectors.items():
         sec_jobs = sec_data["jobs"]
@@ -310,7 +322,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
             <a href="{dashboard_url}" style="background-color: #0284c7; color: #ffffff; font-size: 15px; font-weight: bold; text-decoration: none; padding: 14px 28px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);">
                 🚀 פתח דוח אינטראקטיבי וסינון משרות (V / X) ↗
             </a>
-            <div style="font-size: 12px; color: #64748b; margin-top: 6px;">כולל תובנות AI על החברה, כמות עובדים, מדד פתיחות וסרגל התקדמות</div>
+            <div style="font-size: 12px; color: #64748b; margin-top: 6px;">כולל תובנות AI מורחבות על החברה, כמות עובדים, מדד פתיחות וסרגל התקדמות</div>
         </div>
 
         {top_3_html}
@@ -344,6 +356,7 @@ def run_unified_daily_search():
 
     seen_jobs = load_seen_dict(SEEN_JOBS_FILE)
     seen_drones = load_seen_dict(SEEN_DRONES_FILE)
+    rejected_links = load_rejected_job_links()
 
     all_raw_jobs = []
 
@@ -376,13 +389,13 @@ def run_unified_daily_search():
         j["snippet"] = j.get("title", "")
     all_raw_jobs.extend(comeet_jobs)
 
-    # Deduplicate & filter against history
+    # Deduplicate & filter against history AND persistent rejection set
     unique_candidates = []
     seen_current = set()
 
     for job in all_raw_jobs:
         link = job.get("link", "")
-        if not link or link in seen_current or link in seen_jobs or link in seen_drones:
+        if not link or link in seen_current or link in seen_jobs or link in seen_drones or link in rejected_links:
             continue
         seen_current.add(link)
         unique_candidates.append(job)

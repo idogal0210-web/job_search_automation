@@ -13,17 +13,34 @@ from interactive_app_builder import build_and_save_docs_app
 
 load_dotenv()
 
-ARCHIVE_FILE = os.path.join(os.path.dirname(__file__), "weekly_archive.json")
+BASE_DIR = os.path.dirname(__file__)
+ARCHIVE_FILE = os.path.join(BASE_DIR, "weekly_archive.json")
+REJECTED_JOBS_FILE = os.path.join(BASE_DIR, "rejected_jobs.json")
+
+def load_rejected_job_links():
+    if not os.path.exists(REJECTED_JOBS_FILE):
+        return set()
+    try:
+        with open(REJECTED_JOBS_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            return set(data if isinstance(data, list) else data.keys())
+    except Exception:
+        return set()
 
 def load_weekly_jobs():
-    """Load jobs from past 7 days from weekly_archive.json."""
+    """Load jobs from past 7 days from weekly_archive.json, excluding any rejected jobs."""
     if not os.path.exists(ARCHIVE_FILE):
         return []
     try:
         with open(ARCHIVE_FILE, "r", encoding="utf-8") as f:
             jobs = json.load(f)
         cutoff_date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
-        weekly_jobs = [j for j in jobs if j.get("date", "") >= cutoff_date]
+        rejected_set = load_rejected_job_links()
+        
+        weekly_jobs = [
+            j for j in jobs
+            if j.get("date", "") >= cutoff_date and j.get("link") not in rejected_set
+        ]
         return weekly_jobs
     except Exception as e:
         print(f"[-] Error loading weekly jobs: {e}")
@@ -47,7 +64,6 @@ def build_weekly_email_html(jobs, dashboard_url):
     sorted_by_score = sorted(unique_jobs, key=lambda x: x.get("match_score", 0), reverse=True)
     top_3_picks = sorted_by_score[:3]
 
-    # Sector grouping
     sectors = {
         "energy": {"title": "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA", "jobs": []},
         "drones": {"title": "🚁 רחפנים, כטב\"ם אוטונומי ורובוטיקה", "jobs": []},
@@ -61,7 +77,6 @@ def build_weekly_email_html(jobs, dashboard_url):
             sec_key = "energy"
         sectors[sec_key]["jobs"].append(j)
 
-    # Top 3 Box
     top_3_html = ""
     if top_3_picks:
         top_items = ""
@@ -82,7 +97,6 @@ def build_weekly_email_html(jobs, dashboard_url):
         </div>
         """
 
-    # Sector tables
     sector_tables_html = ""
     for sec_key, sec_data in sectors.items():
         sec_jobs = sec_data["jobs"]
@@ -140,7 +154,7 @@ def build_weekly_email_html(jobs, dashboard_url):
             <a href="{dashboard_url}" style="background-color: #0284c7; color: #ffffff; font-size: 15px; font-weight: bold; text-decoration: none; padding: 14px 28px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);">
                 🚀 פתח דוח שבועי אינטראקטיבי וסינון משרות (V / X) ↗
             </a>
-            <div style="font-size: 12px; color: #64748b; margin-top: 6px;">כולל תובנות AI על החברה, כמות עובדים, מדד פתיחות וסרגל התקדמות</div>
+            <div style="font-size: 12px; color: #64748b; margin-top: 6px;">כולל תובנות AI מורחבות על החברה, כמות עובדים, מדד פתיחות וסרגל התקדמות</div>
         </div>
 
         {top_3_html}
@@ -165,7 +179,6 @@ def run_weekly_summary():
     if not jobs:
         print("[!] No jobs found in archive for weekly digest. Sending empty alert.")
         
-    # Build GitHub Pages interactive app for Saturday digest
     build_and_save_docs_app(jobs, is_weekly=True)
     dashboard_url = "https://idogal0210-web.github.io/job_search_automation/"
 
