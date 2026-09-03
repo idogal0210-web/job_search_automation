@@ -2,7 +2,7 @@ name: Daily & Weekly Job Search Automation
 
 on:
   schedule:
-    - cron: '23 9 * * *'    # 12:23 שעון ישראל (09:23 UTC) — חיפוש יומי
+    - cron: '28 7 * * *'    # 10:28 שעון ישראל (07:28 UTC) — חיפוש יומי
     - cron: '13 7 * * 6'    # 10:13 שעון ישראל (07:13 UTC) — סיכום שבועי (שבת)
   workflow_dispatch:
     inputs:
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     name: "Daily Job Search - Ido Gal"
     if: |
-      (github.event_name == 'schedule' && github.event.schedule == '23 9 * * *') ||
+      (github.event_name == 'schedule' && github.event.schedule == '28 7 * * *') ||
       (github.event_name == 'workflow_dispatch' && (inputs.job_type == 'daily' || inputs.job_type == 'both'))
 
     steps:
