@@ -82,56 +82,80 @@ def build_weekly_email_html(jobs, dashboard_url):
         top_items = ""
         for idx, pick in enumerate(top_3_picks, 1):
             top_items += f"""
-            <div style="padding: 10px; margin-bottom: 8px; background-color: #ffffff; border-radius: 8px; border-right: 4px solid #16a34a;">
-                <div style="font-weight: bold; color: #0f172a; font-size: 15px;">{idx}. {pick.get('company')} – {pick.get('title')}</div>
-                <div style="font-size: 13px; color: #475569; margin-top: 4px;">
-                    <span style="color: #16a34a; font-weight: bold;">{pick.get('match_score')}% התאמה</span> | {pick.get('sector')} &nbsp;&nbsp;
-                    <a href="{pick.get('link')}" style="color: #0284c7; text-decoration: underline; font-weight: bold;">הגש מועמדות למשרה ↗</a>
+            <div style="padding: 12px; margin-bottom: 8px; background-color: #1e293b; border-radius: 8px; border-right: 4px solid #10b981; border: 1px solid #334155;">
+                <div style="font-weight: bold; color: #f8fafc; font-size: 15px;">{idx}. {pick.get('company')} – {pick.get('title')}</div>
+                <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">
+                    <span style="color: #34d399; font-weight: bold;">{pick.get('match_score')}% התאמה</span> | {pick.get('sector')} &nbsp;&nbsp;
+                    <a href="{pick.get('link')}" style="color: #38bdf8; text-decoration: underline; font-weight: bold;">הגש מועמדות למשרה ↗</a>
                 </div>
             </div>
             """
         top_3_html = f"""
-        <div style="background-color: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
-            <div style="font-size: 16px; font-weight: bold; color: #92400e; margin-bottom: 12px;">⭐ משרות הזהב של השבוע (Top 3 Picks):</div>
+        <div style="background-color: #1e293b; border: 1.5px solid #f59e0b; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+            <div style="font-size: 16px; font-weight: bold; color: #fbbf24; margin-bottom: 12px;">⭐ משרות הזהב של השבוע (Top 3 Picks):</div>
             {top_items}
         </div>
         """
 
-    sector_tables_html = ""
+    sector_blocks_html = ""
     for sec_key, sec_data in sectors.items():
         sec_jobs = sec_data["jobs"]
         if not sec_jobs:
             continue
         
-        rows_html = ""
-        for j in sec_jobs:
-            rows_html += f"""
-            <tr style="border-bottom: 1px solid #e2e8f0;">
-                <td style="padding: 10px; text-align: center;">
-                    <a href="{j.get('link')}" style="background-color: #0284c7; color: #ffffff; padding: 6px 12px; text-decoration: none; border-radius: 6px; font-size: 12px; font-weight: bold; display: inline-block;">הגש מועמדות ↗</a>
-                </td>
-                <td style="padding: 10px; text-align: center; font-weight: bold; color: #16a34a; font-size: 13px;">{j.get('match_score')}%</td>
-                <td style="padding: 10px; text-align: right; color: #0f172a; font-size: 13px;"><b>{j.get('title')}</b></td>
-                <td style="padding: 10px; text-align: right; color: #0f172a; font-size: 13px; font-weight: bold;">{j.get('company')}</td>
-            </tr>
+        cards_html = ""
+        for idx, j in enumerate(sec_jobs, 1):
+            comp_name = j.get('company', 'חברה')
+            comp_domain = j.get('company_domain_product', j.get('company_summary', j.get('sector', '')))
+            loc = j.get('location', 'ישראל')
+            card_title = f"{comp_name} - {j.get('title', '')}"
+            job_sum = j.get('job_summary', j.get('company_summary', ''))
+            strengths = j.get('experience_strengths', j.get('reasoning', ''))
+            highlights = j.get('key_highlights', '')
+            
+            cards_html += f"""
+            <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);">
+                <!-- Header -->
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 12px;">
+                    <div style="font-size: 16.5px; font-weight: bold; color: #38bdf8;">
+                        {idx}. {card_title} <span style="font-size: 12.5px; font-weight: normal; color: #94a3b8;">• {loc}</span>
+                    </div>
+                    <div style="background-color: #064e3b; color: #34d399; font-size: 13px; font-weight: bold; padding: 4px 10px; border-radius: 20px; border: 1px solid #059669;">
+                        {j.get('match_score')}% התאמה
+                    </div>
+                </div>
+
+                <!-- Structured Fields -->
+                <div style="font-size: 13.5px; line-height: 1.6; color: #cbd5e1;">
+                    <div style="margin-bottom: 8px;">
+                        <span style="color: #60a5fa; font-weight: bold;">🏢 תחום ומוצר החברה:</span> {comp_domain}
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <span style="color: #60a5fa; font-weight: bold;">📋 תקציר המשרה:</span> {job_sum}
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <span style="color: #4ade80; font-weight: bold;">💪 נקודות חוזק מהניסיון שלך:</span> {strengths}
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <span style="color: #fbbf24; font-weight: bold;">🔍 דגשים / דרישות נוספות:</span> {highlights}
+                    </div>
+                </div>
+
+                <!-- Action CTA Button -->
+                <div style="text-align: left; margin-top: 14px; border-top: 1px dashed #334155; padding-top: 10px;">
+                    <a href="{j.get('link')}" style="background-color: #0284c7; color: #ffffff; padding: 8px 18px; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold; display: inline-block;">
+                        הגש מועמדות למשרה ↗
+                    </a>
+                </div>
+            </div>
             """
             
-        sector_tables_html += f"""
-        <div style="margin-bottom: 24px;">
-            <div style="font-size: 16px; font-weight: bold; color: #0f172a; margin-bottom: 8px; border-bottom: 2px solid #0284c7; padding-bottom: 4px;">{sec_data['title']} ({len(sec_jobs)} משרות)</div>
-            <table style="width: 100%; border-collapse: collapse; background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid #e2e8f0;">
-                <thead>
-                    <tr style="background-color: #0f172a; color: #ffffff; font-size: 12px;">
-                        <th style="padding: 8px; text-align: center; width: 110px;">פעולה</th>
-                        <th style="padding: 8px; text-align: center; width: 70px;">התאמה</th>
-                        <th style="padding: 8px; text-align: right;">שם המשרה</th>
-                        <th style="padding: 8px; text-align: right; width: 140px;">חברה</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {rows_html}
-                </tbody>
-            </table>
+        sector_blocks_html += f"""
+        <div style="margin-bottom: 28px;">
+            <div style="font-size: 18px; font-weight: bold; color: #f8fafc; margin-bottom: 14px; border-bottom: 2px solid #0284c7; padding-bottom: 6px;">
+                {sec_data['title']} ({len(sec_jobs)} משרות)
+            </div>
+            {cards_html}
         </div>
         """
 
@@ -140,29 +164,29 @@ def build_weekly_email_html(jobs, dashboard_url):
 <head>
     <meta charset="UTF-8">
 </head>
-<body style="font-family: Arial, sans-serif; background-color: #f8fafc; color: #0f172a; margin: 0; padding: 20px; direction: rtl;">
-    <div style="max-width: 680px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; padding: 24px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #0f172a; color: #f8fafc; margin: 0; padding: 20px; direction: rtl;">
+    <div style="max-width: 680px; margin: 0 auto; background-color: #0f172a; padding: 10px;">
         
         <!-- Header -->
-        <div style="background-color: #0f172a; color: #ffffff; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 24px;">
-            <h1 style="margin: 0 0 6px 0; font-size: 22px;">🔗 דוח סיכום שבועי: כל המשרות המובילות | עידו גל</h1>
-            <div style="font-size: 13px; color: #94a3b8;">תאריך הפקה: {now_str} | סה"כ משרות נבחרות השבוע: {len(unique_jobs)}</div>
+        <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid #334155; border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.4);">
+            <h1 style="margin: 0 0 8px 0; font-size: 22px; color: #ffffff; font-weight: 800;">🔗 דוח סיכום שבועי: כל המשרות המובילות | עידו גל</h1>
+            <div style="font-size: 13.5px; color: #94a3b8;">תאריך הפקה: {now_str} | סה"כ משרות נבחרות השבוע: {len(unique_jobs)}</div>
         </div>
 
         <!-- Interactive Web App CTA Button -->
-        <div style="text-align: center; margin-bottom: 24px;">
-            <a href="{dashboard_url}" style="background-color: #0284c7; color: #ffffff; font-size: 15px; font-weight: bold; text-decoration: none; padding: 14px 28px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);">
-                🚀 פתח דוח שבועי אינטראקטיבי וסינון משרות (V / X) ↗
+        <div style="text-align: center; margin-bottom: 28px;">
+            <a href="{dashboard_url}" style="background-color: #0284c7; color: #ffffff; font-size: 15px; font-weight: bold; text-decoration: none; padding: 14px 28px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);">
+                🚀 פתח דוח אינטראקטיבי וניהול משרות (✔️ / ✖️) ↗
             </a>
-            <div style="font-size: 12px; color: #64748b; margin-top: 6px;">כולל תובנות AI מורחבות על החברה, כמות עובדים, מדד פתיחות וסרגל התקדמות</div>
+            <div style="font-size: 12px; color: #94a3b8; margin-top: 8px;">כולל סינון מתקדם לפי תחומים, שמירת משרות והסרת משרות לא רלוונטיות</div>
         </div>
 
         {top_3_html}
 
-        {sector_tables_html}
+        {sector_blocks_html}
 
         <!-- Footer -->
-        <div style="border-top: 1px solid #e2e8f0; padding-top: 14px; text-align: center; font-size: 12px; color: #94a3b8;">
+        <div style="border-top: 1px solid #334155; padding-top: 16px; text-align: center; font-size: 12px; color: #64748b; margin-top: 30px;">
             דוח זה הופק באופן אוטומטי ע"י מערכת Job Search Automation עבור עידו גל.
         </div>
 

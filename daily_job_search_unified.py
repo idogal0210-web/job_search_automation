@@ -47,7 +47,7 @@ def check_already_ran_today():
                 if run.get("event") == "schedule":
                     run_time_str = run.get("created_at")
                     if run_time_str:
-                        run_date = datetime.strptime(run_time_str, "%Y-%m-%d%H:%M:%SZ").date()
+                        run_date = datetime.strptime(run_time_str, "%Y-%m-%dT%H:%M:%SZ").date()
                         if run_date == today_utc:
                             print(f"[!] Workflow already succeeded today on schedule ({run_date}). Skipping duplicate email dispatch.")
                             return True
