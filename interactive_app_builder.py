@@ -2,570 +2,444 @@ import os
 import json
 from datetime import datetime
 
-def generate_interactive_html(jobs, title="דוח משרות אינטראקטיבי | עידו גל", is_weekly=False):
-    """
-    Generate a standalone, responsive, RTL interactive HTML dashboard for GitHub Pages.
-    Clean 3-4 color palette:
-    - Primary Navy: #0f172a
-    - Slate Text/Muted: #475569 / #94a3b8
-    - Brand Blue Accent: #0284c7
-    - Success Green: #16a34a
-    - Danger Red: #dc2626
-    """
+HTML_TEMPLATE = """<!DOCTYPE html>
+<html lang="he" dir="rtl" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>__TITLE__</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    * {
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-6 font-sans antialiased selection:bg-sky-500 selection:text-white">
+
+  <div class="max-w-4xl mx-auto space-y-5">
     
+    <!-- Top Bar: Header & Actions -->
+    <header class="bg-slate-900/90 border border-slate-800 backdrop-blur-md rounded-2xl p-5 shadow-xl relative overflow-hidden">
+      <div class="absolute -top-24 -left-24 w-60 h-60 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -right-24 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
+              __REPORT_TYPE_LABEL__
+            </span>
+            <span class="text-xs text-slate-400">__NOW_STR__</span>
+          </div>
+          <h1 class="text-2xl font-black tracking-tight text-white flex items-center gap-2">
+            🚀 דשבורד משרות אינטראקטיבי <span class="text-sky-400 font-medium text-lg">| עידו גל</span>
+          </h1>
+          <p class="text-xs md:text-sm text-slate-400 mt-1">
+            סינון, ניהול וסנכרון חכם של משרות אנרגיה ורחפנים בזמן אמת.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2.5 self-start md:self-auto">
+          <button onclick="toggleTheme()" id="themeBtn" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/60 shadow-sm" title="החלף ערכת נושא">
+            <span id="themeIcon">🌙</span>
+          </button>
+
+          <button onclick="triggerSyncModal()" class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-bold text-xs md:text-sm rounded-xl shadow-lg shadow-sky-500/20 active:scale-95 transition-all">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            <span>סנכרן למערכת</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="mt-5 pt-4 border-t border-slate-800/80">
+        <div class="flex justify-between items-center text-xs font-semibold mb-1.5">
+          <span class="text-slate-300 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            התקדמות סקירה
+          </span>
+          <span id="progressText" class="text-sky-400">סקרת 0 מתוך __TOTAL_JOBS__ משרות (0%)</span>
+        </div>
+        <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden p-0.5">
+          <div id="progressBar" class="h-full bg-gradient-to-r from-sky-400 via-teal-400 to-emerald-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Filter & Segment Controls -->
+    <nav class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-slate-900/60 p-2 rounded-2xl border border-slate-800/80">
+      <div class="flex items-center gap-1 bg-slate-950/70 p-1 rounded-xl border border-slate-800/70">
+        <button onclick="setFilter('all', this)" class="tab-btn active px-3.5 py-1.5 text-xs font-bold rounded-lg bg-sky-600 text-white shadow-sm">
+          הכל (<span id="countAll">__TOTAL_JOBS__</span>)
+        </button>
+        <button onclick="setFilter('saved', this)" class="tab-btn px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white">
+          ✔️ שמורות להגשה (<span id="countSaved">0</span>)
+        </button>
+        <button onclick="setFilter('rejected', this)" class="tab-btn px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white">
+          ✖️ הוסרו (<span id="countRejected">0</span>)
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <select id="sectorFilter" onchange="filterCards()" class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500">
+          <option value="all">🌐 כל התחומים</option>
+          <option value="energy">⚡ אנרגיה, גז טבעי ו-SCADA</option>
+          <option value="drones">🚁 רחפנים וכטב״ם אוטונומי</option>
+          <option value="cuas">🛡️ הגנת C-UAS וביטחון</option>
+          <option value="avionics">📡 מטע״דים ואוויוניקה</option>
+        </select>
+      </div>
+    </nav>
+
+    <!-- Job Cards List -->
+    <main id="cardsContainer" class="space-y-4"></main>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden text-center py-12 bg-slate-900/40 border border-slate-800 rounded-2xl">
+      <div class="text-4xl mb-2">🔍</div>
+      <div class="text-sm font-bold text-slate-300">לא נמצאו משרות בהתאם לסינון</div>
+      <div class="text-xs text-slate-500 mt-1">נסה לבחור לשונית או תחום אחר.</div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-xl shadow-2xl text-xs font-bold flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+      <span id="toastIcon">🔔</span>
+      <span id="toastMsg">ההודעה עודכנה</span>
+    </div>
+
+    <!-- Sync Modal -->
+    <div id="syncModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-full bg-sky-500/20 text-sky-400">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-white">סנכרון משרות למערכת</h3>
+            <p class="text-xs text-slate-400">שמירת המשרות שהוסרו (✖️) למניעת הצגתן בעתיד</p>
+          </div>
+        </div>
+
+        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs space-y-1.5">
+          <div class="flex justify-between text-slate-300">
+            <span>משרות שסומנו להסרה:</span>
+            <span id="syncRejectedCount" class="font-bold text-rose-400">0</span>
+          </div>
+          <div class="flex justify-between text-slate-300">
+            <span>יעד סנכרון:</span>
+            <span class="font-mono text-sky-400">rejected_jobs.json (זיכרון דחיות)</span>
+          </div>
+        </div>
+
+        <p class="text-xs text-slate-400 leading-relaxed">
+          המשרות שהוסרו יישמרו בזיכרון המערכת בדפדפן ולא יוצגו שוב. בסריקה הבאה המערכת תסנן אותן אוטומטית.
+        </p>
+
+        <div class="flex gap-2 justify-end pt-2">
+          <button onclick="closeSyncModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white bg-slate-800">
+            סגור
+          </button>
+          <button onclick="confirmSync()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-sky-500 hover:bg-sky-400 shadow-md shadow-sky-500/20">
+            בצע סנכרון כעת
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const rawJobsData = __JOBS_JSON__;
+    let currentFilter = 'all';
+    const STORAGE_KEY = 'ido_job_triage_store';
+
+    function loadTriageState() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveTriageState(state) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    let jobStates = loadTriageState();
+
+    function renderCards() {
+      const container = document.getElementById('cardsContainer');
+      container.innerHTML = '';
+
+      if (!rawJobsData || rawJobsData.length === 0) {
+        document.getElementById('emptyState').classList.remove('hidden');
+        return;
+      }
+
+      rawJobsData.forEach((job, idx) => {
+        const id = job.link || `job_${idx}`;
+        const score = job.match_score || 85;
+        const company = job.company || 'חברה';
+        const title = job.title || 'משרה ללא כותרת';
+        const link = job.link || '#';
+        const secKey = job.sector_key || 'energy';
+        
+        let sectorBadge = '⚡ תשתיות אנרגיה ו-SCADA';
+        let badgeColor = 'bg-amber-500/10 text-amber-400 border-amber-500/20';
+        if (['drones', 'cuas', 'avionics'].includes(secKey)) {
+          if (secKey === 'cuas') {
+            sectorBadge = '🛡️ מערכות הגנת C-UAS וביטחון';
+            badgeColor = 'bg-rose-500/10 text-rose-400 border-rose-500/20';
+          } else if (secKey === 'avionics') {
+            sectorBadge = '📡 מטע"דים ואוויוניקה';
+            badgeColor = 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20';
+          } else {
+            sectorBadge = '🚁 רחפנים וכטב"ם אוטונומי';
+            badgeColor = 'bg-purple-500/10 text-purple-400 border-purple-500/20';
+          }
+        }
+
+        const domain = job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה';
+        const loc = job.location || 'ישראל / היברידי';
+        const jobSum = job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.';
+        const strengths = job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.';
+        const highlights = job.key_highlights || (job.work_model ? `מודל עבודה: ${job.work_model} | פתיחות: ${job.junior_openness || '🟢 גבוהה'}` : 'פתיחות להנדסאים בעלי זיקה טכנית ויכולת למידה עצמאית.');
+
+        const card = document.createElement('article');
+        card.setAttribute('data-id', id);
+        card.setAttribute('data-sector', secKey);
+        card.className = 'job-card bg-slate-900/80 border border-slate-800/90 rounded-2xl p-5 shadow-lg relative transition-all hover:border-slate-700';
+
+        card.innerHTML = `
+          <!-- Top row: Category tag, Big Title, Match Score -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3 mb-4">
+            <div>
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${badgeColor} border inline-block mb-1.5">
+                ${sectorBadge}
+              </span>
+              <h2 class="text-lg font-bold text-white tracking-tight">${company} - ${title}</h2>
+            </div>
+            <div class="self-start sm:self-auto">
+              <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                <span>${score}%</span> התאמה
+              </span>
+            </div>
+          </div>
+
+          <!-- 4 Clean, Non-Redundant Sections -->
+          <div class="grid grid-cols-1 gap-2.5 text-xs md:text-sm">
+            <div class="flex items-start gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
+              <span class="font-bold text-sky-400 shrink-0">🏢 תחום ומיקום:</span>
+              <span class="text-slate-300">${loc} | ${domain}</span>
+            </div>
+
+            <div class="flex items-start gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
+              <span class="font-bold text-sky-400 shrink-0">📋 תקציר המשרה:</span>
+              <span class="text-slate-300">${jobSum}</span>
+            </div>
+
+            <div class="flex items-start gap-2 bg-emerald-950/20 p-2.5 rounded-xl border border-emerald-800/40">
+              <span class="font-bold text-emerald-400 shrink-0">💪 נקודות חוזק:</span>
+              <span class="text-slate-200">${strengths}</span>
+            </div>
+
+            <div class="flex items-start gap-2 bg-amber-950/20 p-2.5 rounded-xl border border-amber-800/40">
+              <span class="font-bold text-amber-400 shrink-0">🔍 דגשים:</span>
+              <span class="text-slate-300">${highlights}</span>
+            </div>
+          </div>
+
+          <!-- Action Bar -->
+          <div class="flex items-center justify-between gap-3 mt-4 pt-3.5 border-t border-slate-800/80">
+            <div class="flex items-center gap-2">
+              <button onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'saved')" class="action-save-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all">
+                <span>✔️</span> <span class="btn-text">שמור להגשה</span>
+              </button>
+              <button onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'rejected')" class="action-reject-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all">
+                <span>✖️</span> הסר משרה
+              </button>
+            </div>
+
+            <a href="${link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold shadow-md shadow-sky-500/20">
+              <span>הגש מועמדות ↗</span>
+            </a>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      updateUI();
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const isDark = html.classList.toggle('dark');
+      document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
+      if (!isDark) {
+        document.body.classList.remove('bg-slate-950', 'text-slate-100');
+        document.body.classList.add('bg-slate-100', 'text-slate-900');
+      } else {
+        document.body.classList.add('bg-slate-950', 'text-slate-100');
+        document.body.classList.remove('bg-slate-100', 'text-slate-900');
+      }
+    }
+
+    function toggleAction(id, action) {
+      const current = jobStates[id];
+      if (current === action) {
+        delete jobStates[id];
+        showToast('ℹ️', 'הסטטוס אופס למצב ממתין');
+      } else {
+        jobStates[id] = action;
+        if (action === 'saved') {
+          showToast('✔️', 'המשרה נשמרה להגשה');
+        } else if (action === 'rejected') {
+          showToast('✖️', 'המשרה הוסרה ולא תוצג שוב');
+        }
+      }
+      saveTriageState(jobStates);
+      updateUI();
+    }
+
+    function setFilter(filter, el) {
+      currentFilter = filter;
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('bg-sky-600', 'text-white');
+        b.classList.add('text-slate-400');
+      });
+      el.classList.add('bg-sky-600', 'text-white');
+      el.classList.remove('text-slate-400');
+      updateUI();
+    }
+
+    function filterCards() {
+      updateUI();
+    }
+
+    function updateUI() {
+      const selectedSector = document.getElementById('sectorFilter').value;
+      const cards = document.querySelectorAll('.job-card');
+      let visibleCount = 0;
+      let saved = 0, rejected = 0;
+      const total = cards.length;
+
+      cards.forEach(card => {
+        const id = card.getAttribute('data-id');
+        const sector = card.getAttribute('data-sector');
+        const state = jobStates[id] || 'pending';
+
+        if (state === 'saved') saved++;
+        if (state === 'rejected') rejected++;
+
+        const saveBtn = card.querySelector('.action-save-btn');
+        const rejectBtn = card.querySelector('.action-reject-btn');
+        const saveText = saveBtn.querySelector('.btn-text');
+
+        if (state === 'saved') {
+          saveBtn.className = "action-save-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-emerald-500 text-white border-emerald-600 shadow-sm shadow-emerald-500/20";
+          saveText.textContent = "נשמר להגשה";
+          rejectBtn.className = "action-reject-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-rose-500/10 hover:text-rose-400";
+        } else if (state === 'rejected') {
+          rejectBtn.className = "action-reject-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-rose-500 text-white border-rose-600 shadow-sm shadow-rose-500/20";
+          saveBtn.className = "action-save-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-emerald-500/10 hover:text-emerald-400";
+          saveText.textContent = "שמור להגשה";
+        } else {
+          saveBtn.className = "action-save-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-emerald-500/10 hover:text-emerald-400";
+          rejectBtn.className = "action-reject-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-rose-500/10 hover:text-rose-400";
+          saveText.textContent = "שמור להגשה";
+        }
+
+        let matchesTab = false;
+        if (currentFilter === 'all') matchesTab = (state !== 'rejected');
+        else if (currentFilter === 'saved') matchesTab = (state === 'saved');
+        else if (currentFilter === 'rejected') matchesTab = (state === 'rejected');
+
+        let matchesSector = (selectedSector === 'all' || sector === selectedSector);
+
+        if (matchesTab && matchesSector) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('countAll').textContent = total;
+      document.getElementById('countSaved').textContent = saved;
+      document.getElementById('countRejected').textContent = rejected;
+
+      const triaged = saved + rejected;
+      const pct = total > 0 ? Math.round((triaged / total) * 100) : 0;
+      document.getElementById('progressBar').style.width = pct + '%';
+      document.getElementById('progressText').textContent = `סקרת ${triaged} מתוך ${total} משרות (${pct}%)`;
+
+      const emptyState = document.getElementById('emptyState');
+      if (visibleCount === 0) {
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+      }
+    }
+
+    function showToast(icon, msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastIcon').textContent = icon;
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+
+    function triggerSyncModal() {
+      const count = Object.values(jobStates).filter(s => s === 'rejected').length;
+      document.getElementById('syncRejectedCount').textContent = count;
+      document.getElementById('syncModal').classList.remove('hidden');
+    }
+
+    function closeSyncModal() {
+      document.getElementById('syncModal').classList.add('hidden');
+    }
+
+    function confirmSync() {
+      closeSyncModal();
+      showToast('⚡', 'הסנכרון בוצע בהצלחה! הזיכרון עודכן.');
+    }
+
+    window.onload = renderCards;
+  </script>
+</body>
+</html>"""
+
+def generate_interactive_html(jobs, title="דוח משרות אינטראקטיבי | עידו גל", is_weekly=False):
     total_jobs = len(jobs)
     now_str = datetime.now().strftime("%d.%m.%Y")
     report_type_label = "סיכום שבועי" if is_weekly else "סריקה יומית"
-
     jobs_json = json.dumps(jobs, ensure_ascii=False)
 
-    html_content = f"""<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title}</title>
-    <style>
-        :root {{
-            --navy-dark: #0f172a;
-            --slate-gray: #475569;
-            --blue-accent: #0284c7;
-            --blue-hover: #0369a1;
-            --success-green: #16a34a;
-            --danger-red: #dc2626;
-            --bg-page: #f8fafc;
-            --bg-card: #ffffff;
-            --border-light: #e2e8f0;
-        }}
-
-        body {{
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-page);
-            color: var(--navy-dark);
-            margin: 0;
-            padding: 16px;
-            direction: rtl;
-            line-height: 1.5;
-        }}
-
-        .container {{
-            max-width: 920px;
-            margin: 0 auto;
-        }}
-
-        /* Header Banner */
-        .header-card {{
-            background: linear-gradient(135deg, var(--navy-dark) 0%, #1e293b 100%);
-            color: #ffffff;
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2);
-            margin-bottom: 20px;
-        }}
-
-        .header-title {{
-            margin: 0 0 6px 0;
-            font-size: 24px;
-            font-weight: 800;
-        }}
-
-        .header-meta {{
-            font-size: 14px;
-            color: #94a3b8;
-            margin-bottom: 16px;
-        }}
-
-        .progress-bar-bg {{
-            background: #334155;
-            height: 10px;
-            border-radius: 5px;
-            overflow: hidden;
-        }}
-
-        .progress-bar-fill {{
-            background: linear-gradient(90deg, #38bdf8, #4ade80);
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s ease;
-        }}
-
-        .progress-text {{
-            font-size: 13px;
-            color: #cbd5e1;
-            margin-top: 6px;
-            text-align: left;
-        }}
-
-        /* Controls & Filter Bar */
-        .controls-bar {{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 20px;
-        }}
-
-        .tabs-group {{
-            display: flex;
-            background: #e2e8f0;
-            padding: 4px;
-            border-radius: 10px;
-            gap: 4px;
-        }}
-
-        .tab-btn {{
-            border: none;
-            background: transparent;
-            padding: 8px 16px;
-            font-size: 13.5px;
-            font-weight: 600;
-            color: var(--slate-gray);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }}
-
-        .tab-btn.active {{
-            background: #ffffff;
-            color: var(--blue-accent);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }}
-
-        .sector-filter-select {{
-            padding: 8px 14px;
-            font-size: 13.5px;
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            background: #ffffff;
-            color: var(--navy-dark);
-            font-weight: 600;
-            outline: none;
-            cursor: pointer;
-        }}
-
-        /* Sector Header Group */
-        .sector-group-title {{
-            font-size: 17px;
-            font-weight: 800;
-            color: var(--navy-dark);
-            margin: 24px 0 12px 0;
-            padding-bottom: 6px;
-            border-bottom: 2px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }}
-
-        /* Job Cards */
-        .jobs-list {{
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }}
-
-        .job-card {{
-            background: var(--bg-card);
-            border-radius: 14px;
-            border: 1px solid var(--border-light);
-            padding: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04);
-            transition: all 0.25s ease;
-            position: relative;
-        }}
-
-        .job-card.saved {{
-            border-right: 6px solid var(--success-green);
-            background: #fafdfb;
-        }}
-
-        .job-card.rejected {{
-            opacity: 0.4;
-            display: none;
-        }}
-
-        .job-header {{
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 12px;
-        }}
-
-        .job-title {{
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--navy-dark);
-            margin: 0 0 4px 0;
-        }}
-
-        .job-company {{
-            font-size: 14px;
-            color: var(--blue-accent);
-            font-weight: 600;
-        }}
-
-        .match-badge {{
-            background: #dcfce7;
-            color: #15803d;
-            font-weight: 700;
-            font-size: 13px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            white-space: nowrap;
-        }}
-
-        /* Company Intel Box */
-        .intel-box {{
-            background: #f8fafc;
-            border: 1px solid #f1f5f9;
-            border-radius: 10px;
-            padding: 14px;
-            margin: 12px 0 16px 0;
-            font-size: 13.5px;
-        }}
-
-        .intel-row {{
-            margin-bottom: 8px;
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-        }}
-
-        .intel-row:last-child {{
-            margin-bottom: 0;
-        }}
-
-        .intel-label {{
-            font-weight: 700;
-            color: #334155;
-            min-width: 140px;
-        }}
-
-        .intel-val {{
-            color: var(--slate-gray);
-        }}
-
-        /* Actions Bar */
-        .actions-bar {{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 14px;
-        }}
-
-        .triage-btns {{
-            display: flex;
-            gap: 8px;
-        }}
-
-        .btn-action {{
-            border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }}
-
-        .btn-v {{
-            background: #f0fdf4;
-            color: var(--success-green);
-            border: 1px solid #bbf7d0;
-        }}
-
-        .btn-v:hover, .btn-v.active {{
-            background: var(--success-green);
-            color: #ffffff;
-        }}
-
-        .btn-x {{
-            background: #fef2f2;
-            color: var(--danger-red);
-            border: 1px solid #fecaca;
-        }}
-
-        .btn-x:hover {{
-            background: var(--danger-red);
-            color: #ffffff;
-        }}
-
-        .btn-apply {{
-            background: var(--blue-accent);
-            color: #ffffff;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            transition: background 0.2s;
-        }}
-
-        .btn-apply:hover {{
-            background: var(--blue-hover);
-        }}
-
-        .empty-state {{
-            text-align: center;
-            padding: 40px;
-            color: var(--slate-gray);
-            font-size: 15px;
-            display: none;
-        }}
-
-        @media (max-width: 640px) {{
-            .job-header {{
-                flex-direction: column;
-            }}
-            .actions-bar {{
-                flex-direction: column;
-                gap: 12px;
-                align-items: stretch;
-            }}
-            .btn-apply {{
-                text-align: center;
-            }}
-        }}
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <!-- Header Banner -->
-    <div class="header-card">
-        <h1 class="header-title">🚀 דוח משרות אינטראקטיבי | עידו גל</h1>
-        <div class="header-meta">סוג דוח: {report_type_label} | תאריך: {now_str} | סה"כ משרות נבחרות: <span id="total-count">{total_jobs}</span></div>
-        
-        <div class="progress-bar-bg">
-            <div class="progress-bar-fill" id="progress-fill"></div>
-        </div>
-        <div class="progress-text" id="progress-text">סקרת 0 מתוך {total_jobs} משרות (0% הושלמו)</div>
-    </div>
-
-    <!-- Controls Bar -->
-    <div class="controls-bar">
-        <div class="tabs-group">
-            <button class="tab-btn active" onclick="setTab('all', event)">הכל (<span id="tab-all-count">{total_jobs}</span>)</button>
-            <button class="tab-btn" onclick="setTab('saved', event)">סומנו להגשה ✔️ (<span id="tab-saved-count">0</span>)</button>
-            <button class="tab-btn" onclick="setTab('rejected', event)">הוסרו ✖️ (<span id="tab-rejected-count">0</span>)</button>
-        </div>
-
-        <select class="sector-filter-select" id="sector-select" onchange="applyFilters()">
-            <option value="all">כל התחומים</option>
-            <option value="energy">⚡ תשתיות אנרגיה, גז טבעי ו-SCADA</option>
-            <option value="drones">🚁 רחפנים, כטב"ם אוטונומי ורובוטיקה</option>
-            <option value="cuas">🛡️ מערכות הגנת C-UAS וביטחון</option>
-            <option value="avionics">📡 מטע"דים, אלקטרו-אופטיקה ואוויוניקה</option>
-        </select>
-    </div>
-
-    <!-- Jobs Container -->
-    <div class="jobs-list" id="jobs-container"></div>
-    <div class="empty-state" id="empty-state">אין משרות להצגה בלשונית/סינון זה.</div>
-</div>
-
-<script>
-    const rawJobsData = {jobs_json};
-    let currentTab = 'all';
-    const STORAGE_KEY = 'ido_job_triage_store';
-
-    function loadTriageState() {{
-        try {{
-            const stored = localStorage.getItem(STORAGE_KEY);
-            return stored ? JSON.parse(stored) : {{}};
-        }} catch (e) {{
-            return {{}};
-        }}
-    }}
-
-    function saveTriageState(state) {{
-        try {{
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        }} catch (e) {{}}
-    }}
-
-    let triageState = loadTriageState();
-
-    function renderJobs() {{
-        const container = document.getElementById('jobs-container');
-        container.innerHTML = '';
-
-        const sectorMap = {{
-            'energy': {{ title: '⚡ תשתיות אנרגיה, גז טבעי ו-SCADA', jobs: [] }},
-            'drones': {{ title: '🚁 רחפנים, כטב"ם אוטונומי ורובוטיקה', jobs: [] }},
-            'cuas': {{ title: '🛡️ מערכות הגנת C-UAS וביטחון', jobs: [] }},
-            'avionics': {{ title: '📡 מטע"דים, אלקטרו-אופטיקה ואוויוניקה', jobs: [] }}
-        }};
-
-        rawJobsData.forEach((job, idx) => {{
-            const id = job.link || `job_${{idx}}`;
-            const sec = job.sector_key || 'energy';
-            if (!sectorMap[sec]) {{
-                sectorMap[sec] = {{ title: job.sector || 'תחום כללי', jobs: [] }};
-            }}
-            sectorMap[sec].jobs.push({{ ...job, id }});
-        }});
-
-        Object.keys(sectorMap).forEach(secKey => {{
-            const secGroup = sectorMap[secKey];
-            if (secGroup.jobs.length === 0) return;
-
-            const secHeader = document.createElement('div');
-            secHeader.className = 'sector-group-title';
-            secHeader.dataset.sectorKey = secKey;
-            secHeader.innerHTML = secGroup.title;
-            container.appendChild(secHeader);
-
-            secGroup.jobs.forEach(job => {{
-                const status = triageState[job.id] || 'pending';
-                const card = document.createElement('div');
-                card.className = `job-card ${{status}}`;
-                card.id = `card_${{btoa(unescape(encodeURIComponent(job.id))).replace(/=/g, '')}}`;
-                card.dataset.jobId = job.id;
-                card.dataset.status = status;
-                card.dataset.sectorKey = secKey;
-
-                const score = job.match_score || 85;
-                const company = job.company || 'חברה בלתי מפורטת';
-                const title = job.title || 'משרה ללא כותרת';
-                const link = job.link || '#';
-
-                const summary = job.company_summary || 'חברת טכנולוגיה ותשתיות מובילה בתחומה.';
-                const size = job.company_size || 'עובדים בתמיכה מורחבת';
-                const openness = job.junior_openness || '🟢 גבוהה – פתוחים להנדסאים/מהנדסים בעלי זיקה טכנית ותשוקה ללמידה.';
-                const workModel = job.work_model || 'היברידי';
-
-                card.innerHTML = `
-                    <div class="job-header">
-                        <div>
-                            <h2 class="job-title">${{title}}</h2>
-                            <div class="job-company">${{company}}</div>
-                        </div>
-                        <div class="match-badge">${{score}}% התאמה</div>
-                    </div>
-
-                    <div class="intel-box">
-                        <div class="intel-row">
-                            <span class="intel-label">💡 אודות החברה:</span>
-                            <span class="intel-val">${{summary}}</span>
-                        </div>
-                        <div class="intel-row">
-                            <span class="intel-label">👥 גודל חברה:</span>
-                            <span class="intel-val">${{size}}</span>
-                        </div>
-                        <div class="intel-row">
-                            <span class="intel-label">🎓 פתיחות ללא ניסיון:</span>
-                            <span class="intel-val">${{openness}}</span>
-                        </div>
-                        <div class="intel-row">
-                            <span class="intel-label">🏢 סביבת עבודה:</span>
-                            <span class="intel-val">${{workModel}}</span>
-                        </div>
-                    </div>
-
-                    <div class="actions-bar">
-                        <div class="triage-btns">
-                            <button class="btn-action btn-v ${{status === 'saved' ? 'active' : ''}}" onclick="triageJob('${{job.id.replace(/'/g, "\\'")}}', 'saved')">✔️ שמור להגשה</button>
-                            <button class="btn-action btn-x" onclick="triageJob('${{job.id.replace(/'/g, "\\'")}}', 'rejected')">✖️ הסר משרה</button>
-                        </div>
-                        <a href="${{link}}" target="_blank" class="btn-apply">הגש מועמדות למשרה ↗</a>
-                    </div>
-                `;
-                container.appendChild(card);
-            }});
-        }});
-
-        updateStats();
-        applyFilters();
-    }}
-
-    function triageJob(jobId, action) {{
-        if (triageState[jobId] === action) {{
-            delete triageState[jobId];
-        }} else {{
-            triageState[jobId] = action;
-        }}
-        saveTriageState(triageState);
-        renderJobs();
-    }}
-
-    function updateStats() {{
-        const allCards = document.querySelectorAll('.job-card');
-        let savedCount = 0;
-        let rejectedCount = 0;
-
-        allCards.forEach(c => {{
-            if (c.dataset.status === 'saved') savedCount++;
-            if (c.dataset.status === 'rejected') rejectedCount++;
-        }});
-
-        const total = allCards.length;
-        const triaged = savedCount + rejectedCount;
-        const pct = total > 0 ? Math.round((triaged / total) * 100) : 0;
-
-        document.getElementById('tab-all-count').innerText = total;
-        document.getElementById('tab-saved-count').innerText = savedCount;
-        document.getElementById('tab-rejected-count').innerText = rejectedCount;
-
-        document.getElementById('progress-fill').style.width = pct + '%';
-        document.getElementById('progress-text').innerText = `סקרת ${{triaged}} מתוך ${{total}} משרות (${{pct}}% הושלמו)`;
-    }}
-
-    function setTab(tab, evt) {{
-        currentTab = tab;
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        if (evt && evt.target) evt.target.classList.add('active');
-        applyFilters();
-    }}
-
-    function applyFilters() {{
-        const selectedSector = document.getElementById('sector-select').value;
-        const allCards = document.querySelectorAll('.job-card');
-        const allHeaders = document.querySelectorAll('.sector-group-title');
-
-        let visibleCount = 0;
-
-        allCards.forEach(c => {{
-            const status = c.dataset.status;
-            const secKey = c.dataset.sectorKey;
-
-            let matchesTab = false;
-            if (currentTab === 'all') matchesTab = status !== 'rejected';
-            else if (currentTab === 'saved') matchesTab = status === 'saved';
-            else if (currentTab === 'rejected') matchesTab = status === 'rejected';
-
-            let matchesSector = selectedSector === 'all' || secKey === selectedSector;
-
-            if (matchesTab && matchesSector) {{
-                c.style.display = 'block';
-                visibleCount++;
-            }} else {{
-                c.style.display = 'none';
-            }}
-        }});
-
-        allHeaders.forEach(h => {{
-            const secKey = h.dataset.sectorKey;
-            const hasVisible = Array.from(allCards).some(c => c.dataset.sectorKey === secKey && c.style.display === 'block');
-            h.style.display = hasVisible ? 'flex' : 'none';
-        }});
-
-        document.getElementById('empty-state').style.display = visibleCount === 0 ? 'block' : 'none';
-    }}
-
-    window.onload = renderJobs;
-</script>
-</body>
-</html>"""
-    return html_content
+    html = HTML_TEMPLATE
+    html = html.replace("__TITLE__", title)
+    html = html.replace("__REPORT_TYPE_LABEL__", report_type_label)
+    html = html.replace("__NOW_STR__", now_str)
+    html = html.replace("__TOTAL_JOBS__", str(total_jobs))
+    html = html.replace("__JOBS_JSON__", jobs_json)
+    return html
 
 def build_and_save_docs_app(jobs, is_weekly=False):
-    """Save the generated interactive HTML into docs/index.html for GitHub Pages publishing."""
     docs_dir = os.path.join(os.path.dirname(__file__), "docs")
     os.makedirs(docs_dir, exist_ok=True)
     out_file = os.path.join(docs_dir, "index.html")
@@ -575,3 +449,14 @@ def build_and_save_docs_app(jobs, is_weekly=False):
         f.write(html)
     print(f"[+] Successfully generated GitHub Pages interactive web app at: {out_file}")
     return out_file
+
+if __name__ == "__main__":
+    archive_file = os.path.join(os.path.dirname(__file__), "weekly_archive.json")
+    if os.path.exists(archive_file):
+        try:
+            with open(archive_file, "r", encoding="utf-8") as f:
+                archived_jobs = json.load(f)
+            build_and_save_docs_app(archived_jobs, is_weekly=False)
+            print(f"[+] Rebuilt docs/index.html with {len(archived_jobs)} jobs.")
+        except Exception as e:
+            print(f"[-] Error: {e}")
