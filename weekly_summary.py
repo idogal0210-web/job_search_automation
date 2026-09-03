@@ -27,8 +27,18 @@ def load_rejected_job_links():
     except Exception:
         return set()
 
+EXCLUDED_COMPANIES = [
+    "energean", "אנרג'יאן", "נתג\"ז", "נתגז", "ingl", "chevron", "שברון", "raycatch", "רייקאץ'"
+]
+
 def load_weekly_jobs():
-    """Load jobs from past 7 days from weekly_archive.json, excluding any rejected jobs."""
+    """
+    Load all valid jobs from past 7 days from weekly_archive.json:
+    - Includes ALL jobs that were not removed/rejected (rejected_jobs.json, is_removed, status=='rejected')
+    - Excludes strictly forbidden companies (Energean, INGL, Chevron, Raycatch)
+    - Enforces passing score threshold (60+ energy, 70+ drones/defense)
+    - Deduplicates by job link so each position appears once
+    """
     if not os.path.exists(ARCHIVE_FILE):
         return []
     try:
@@ -37,10 +47,36 @@ def load_weekly_jobs():
         cutoff_date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
         rejected_set = load_rejected_job_links()
         
-        weekly_jobs = [
-            j for j in jobs
-            if j.get("date", "") >= cutoff_date and j.get("link") not in rejected_set
-        ]
+        seen_links = set()
+        weekly_jobs = []
+        for j in jobs:
+            link = j.get("link", "")
+            if not link or link in seen_links:
+                continue
+
+            # Check date (past 7 days)
+            if j.get("date", "") < cutoff_date:
+                continue
+
+            # Check user rejection
+            if link in rejected_set or j.get("is_removed") or j.get("status") == "rejected":
+                continue
+
+            # Check strictly excluded companies
+            comp = j.get("company", "").lower()
+            title = j.get("title", "").lower()
+            if any(ex in comp or ex in title for ex in EXCLUDED_COMPANIES):
+                continue
+
+            # Check threshold
+            is_drone = j.get("sector_key") in ["drones", "cuas", "avionics"]
+            threshold = 70 if is_drone else 60
+            if j.get("match_score", 0) < threshold:
+                continue
+
+            seen_links.add(link)
+            weekly_jobs.append(j)
+
         return weekly_jobs
     except Exception as e:
         print(f"[-] Error loading weekly jobs: {e}")
