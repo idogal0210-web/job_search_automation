@@ -123,8 +123,8 @@ def update_weekly_archive(new_jobs):
 
 CV_CONTEXT = """
 Name: Ido Gal (עידו גל)
-Title: Gas Controller & Energy Systems Operations | Practical Mechanical Engineer | Real-Time Control & Supply Continuity
-Education: Practical Mechanical Engineer, Natural Gas & Green Energy (הנדסאי מכונות, התמחות בגז טבעי ובאנרגיה ירוקה), Ruppin Academic Center (2024). Certified Electrician Studies (2026). NOT a B.Sc. Engineer!
+Title: Gas Controller - Operations & Product (בקר גז - תפעול ומוצר) & Energy Systems | Practical Mechanical Engineer | Real-Time Control & Supply Continuity
+Education: Practical Mechanical Engineer, Natural Gas & Green Energy (הנדסאי מכונות, התמחות בגז טבעי ובאנרגיה ירוקה), Ruppin Academic Center (2024). Certified Electrician Studies (2026 - לקראת סיום הלימודים, חודשיים). NOT a B.Sc. Engineer!
 Skills: Real-time 24/7 SCADA & gas control, pressure/flow monitoring, nomination allocations, Excel, SAP, Python, Gemini/Copilot AI automation, Nahal Reconnaissance demolitions/combat engineering (סיירת נח"ל).
 """
 
