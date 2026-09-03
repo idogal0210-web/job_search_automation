@@ -25,6 +25,12 @@ REJECTED_JOBS_FILE = os.path.join(BASE_DIR, "rejected_jobs.json")
 RETENTION_DAYS = 14
 
 def check_already_ran_today():
+    # Never block manual local runs, explicit --force, or manual workflow_dispatch triggers
+    if "--force" in sys.argv or not os.environ.get("GITHUB_ACTIONS"):
+        return False
+    if os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch":
+        return False
+
     token = os.environ.get("GITHUB_TOKEN")
     repo = "idogal0210-web/job_search_automation"
     workflow_id = "daily_job_search.yml"
@@ -307,6 +313,9 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
             loc = j.get('location', 'ישראל')
             
             card_title = f"{comp_name} - {j.get('title', '')}"
+            job_sum = j.get('job_summary', j.get('company_summary', ''))
+            strengths = j.get('experience_strengths', j.get('reasoning', ''))
+            highlights = j.get('key_highlights', '')
             
             cards_html += f"""
             <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);">
