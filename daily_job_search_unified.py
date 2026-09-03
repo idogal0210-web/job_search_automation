@@ -133,25 +133,46 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     Evaluates job relevance AND extracts detailed structured section data using Gemini.
     """
     prompt = f"""
-    You are an expert AI Career Coach evaluating a job for candidate Ido Gal:
-    Candidate Profile: {CV_CONTEXT}
-    
-    Job Details:
+    You are an expert AI Technical Career Coach evaluating a job opportunity for Ido Gal.
+
+    Candidate Profile (Source of Truth):
+    {CV_CONTEXT}
+
+    Target Job Details:
     - Title: {title}
     - Company: {company}
     - Snippet/Description: {snippet}
-    - Is Drone/UAV focus: {is_drone}
-    
+    - Is Drone/Defense domain: {is_drone}
+
+    Evaluation & Screening Rules:
+    1. STRICT EXCLUSIONS: If the company is "Energean", "INGL" (נתג"ז), "Chevron", or "Raycatch", give match_score: 0 and disqualify immediately.
+    2. B.Sc. REQUIREMENT & FLEXIBILITY:
+       - Ido is a certified Practical Mechanical Engineer (הנדסאי מכונות), NOT a B.Sc. engineer.
+       - If the job strictly and inflexibly requires a B.Sc. in engineering with zero leeway, disqualify it (match_score < 55).
+       - ONLY allow B.Sc.-titled jobs if you identify genuine flexibility, practical openness, or if the company is known to accept experienced practical engineers (הנדסאים).
+    3. DOMAIN PREFERENCES & TARGET COMPANIES:
+       - Energy: Give a slight preference / bonus to Solar PV and Natural Gas opportunities (Ido's primary thesis & operational domains), while maintaining full openness and positive evaluation for all other energy fields (grid storage, power stations, thermal systems, wind, industrial infrastructure).
+       - Target Company Bonus: Give a scoring bonus to companies in rapid growth (funded scale-ups like XTEND, Percepto, Spear UAV, Doral, Enlight, Nofar) or financially robust market leaders known for strong pay & benefits (Elbit, IAI, Rafael, OPC Energy, Ormat, Dalia Energy).
+    4. MATCH SCORING (0-100):
+       - Energy passing threshold: 60+. Drone/Defense passing threshold: 70+.
+       - Score objectively based on Ido's genuine background: 24/7 gas/SCADA control, practical mechanical engineering, upcoming certified electrician (2 months), and Nahal Reconnaissance operational drone/combat engineering experience.
+
     Return STRICT JSON with keys:
-    1. "match_score": integer (0 to 100). Minimum threshold is 65 for energy, 75 for drones.
+    1. "match_score": integer (0 to 100).
     2. "reasoning": 1-2 sentence Hebrew justification.
     3. "sector_key": one of ["energy", "drones", "cuas", "avionics"].
-    4. "sector": Hebrew sector name e.g. "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA" or "🚁 רחפנים, כטב"ם אוטונומי ורובוטיקה".
-    5. "company_domain_product": Hebrew short summary of company domain & core product (e.g. "חברת תשתיות אנרגיה וטורבינות סולאריות").
-    6. "location": Hebrew location (e.g. "מרכז / שטח" or "תל אביב").
-    7. "job_summary": 2-3 sentence Hebrew detailed summary of the job role and company context.
-    8. "experience_strengths": 1-2 sentence Hebrew summary of strengths matching Ido's CV (SCADA control, Mechanical Practical Engineer, Nahal Reconnaissance technical background).
-    9. "key_highlights": 1-2 sentence Hebrew additional requirements, shift model, and junior openness.
+    4. "sector": Hebrew sector title e.g. "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA" or "🚁 רחפנים וכטב״ם אוטונומי".
+    5. "location": Hebrew location in 2-4 words (e.g. "תל אביב (היברידי)", "מתקן שטח / מרכז").
+    6. "company_domain_product": 10-15 words Hebrew concise summary strictly describing the company's core domain and product (DO NOT repeat the company name or location here).
+    7. "job_summary": 2-3 sentence Hebrew concise summary of core job duties and responsibilities.
+    8. "experience_strengths": 1-2 sentence Hebrew tailored strengths mapping:
+       - For Energy: Highlight 24/7 control room, gas pressures/flows, SCADA, INGL/platform interfaces, and Ruppin Natural Gas diploma.
+       - For Drones/Defense: Highlight Nahal Reconnaissance field & operational drone piloting, demolitions, and precise mechanical assemblies.
+       - For Industry/Operations: Highlight Practical Mechanical Engineer, pressure systems, and near-completion Certified Electrician (2 months).
+    9. "key_highlights": 1-2 sentence Hebrew highlights covering:
+       - Flexibility on B.Sc. / Practical Engineer openness.
+       - Realistic salary range estimate for the Israeli market ONLY if known or strongly grounded (e.g. "הערכת שכר: 17,000-22,000 ₪"). If speculative, omit.
+       - Shifts (24/7) or field/company car requirements if mentioned.
     10. "company_size": Hebrew company size estimate.
     11. "junior_openness": Hebrew openness indicator.
     12. "work_model": Hebrew work model.
@@ -178,12 +199,12 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
         "match_score": 85,
         "reasoning": "משרה מותאמת לרקע הטכני בתשתיות/רחפנים.",
         "sector_key": "drones" if is_drone else "energy",
-        "sector": "🚁 רחפנים, כטב\"ם אוטונומי ורובוטיקה" if is_drone else "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA",
+        "sector": "🚁 רחפנים וכטב\"ם אוטונומי" if is_drone else "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA",
         "company_domain_product": f"חברה מובילה בתחום {domain_str}",
         "location": "ישראל / היברידי",
-        "job_summary": f"תפקיד מפתח בחברת {company} הכולל אחריות על ניטור, אינטגרציה ותפעול מערכות מתקדמות בסביבה דינמית.",
+        "job_summary": f"תפקיד מפתח בחברה הכולל אחריות על ניטור, אינטגרציה ותפעול מערכות מתקדמות בסביבה דינמית.",
         "experience_strengths": "התאמה גבוהה לניסיון בבקרת תפעול 24/7, תואר הנדסאי מכונות מרופין ורקע טכני-מבצעי מסיירת נח\"ל.",
-        "key_highlights": "נדרשת זיקה טכנית ויכולת עבודה עצמאית. פתוחים להנדסאים/מהנדסים בעלי תשוקה ללמידה.",
+        "key_highlights": "פתיחות להנדסאים בעלי זיקה טכנית. הערכת שכר: בהתאם לניסיון.",
         "company_size": "80-150 עובדים",
         "junior_openness": "🟢 גבוהה",
         "work_model": "היברידי / שטח"
@@ -285,17 +306,15 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
             comp_domain = j.get('company_domain_product', j.get('company_summary', j.get('sector', '')))
             loc = j.get('location', 'ישראל')
             
-            comp_full_header = f"{comp_name} – {comp_domain} | {loc}"
-            
-            job_sum = j.get('job_summary', j.get('company_summary', ''))
-            strengths = j.get('experience_strengths', j.get('reasoning', ''))
-            highlights = j.get('key_highlights', f"מודל עבודה: {j.get('work_model', 'היברידי')} | פתיחות: {j.get('junior_openness', '🟢 גבוהה')}")
+            card_title = f"{comp_name} - {j.get('title', '')}"
             
             cards_html += f"""
             <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);">
                 <!-- Header -->
                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 12px;">
-                    <div style="font-size: 17px; font-weight: bold; color: #38bdf8;">{idx}. {j.get('title')}</div>
+                    <div style="font-size: 16.5px; font-weight: bold; color: #38bdf8;">
+                        {idx}. {card_title} <span style="font-size: 12.5px; font-weight: normal; color: #94a3b8;">• {loc}</span>
+                    </div>
                     <div style="background-color: #064e3b; color: #34d399; font-size: 13px; font-weight: bold; padding: 4px 10px; border-radius: 20px; border: 1px solid #059669;">
                         {j.get('match_score')}% התאמה
                     </div>
@@ -304,7 +323,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
                 <!-- Structured Fields -->
                 <div style="font-size: 13.5px; line-height: 1.6; color: #cbd5e1;">
                     <div style="margin-bottom: 8px;">
-                        <span style="color: #60a5fa; font-weight: bold;">🏢 חברה ומיקום:</span> {comp_full_header}
+                        <span style="color: #60a5fa; font-weight: bold;">🏢 תחום ומוצר החברה:</span> {comp_domain}
                     </div>
                     <div style="margin-bottom: 8px;">
                         <span style="color: #60a5fa; font-weight: bold;">📋 תקציר המשרה:</span> {job_sum}
@@ -392,22 +411,28 @@ def run_unified_daily_search():
 
     all_raw_jobs = []
 
-    # 1. Energy Queries
+    # 1. Energy Queries (Solar & Natural Gas focus + Grid & Power Plants)
     energy_keywords = [
         "הנדסאי מכונות", "בקר גז", "תפעול אנרגיה", "אנרגיה סולארית",
         "Field Service Engineer Israel", "Gas Controller Israel", "SCADA Operator Israel",
-        "SolarEdge Israel", "Enlight Energy", "Doral Energy"
+        "SolarEdge Israel", "Enlight Energy", "Doral Energy", "Nofar Energy",
+        "Ormat Technologies", "OPC Energy", "Dalia Energy", "Edeltech",
+        "Shikun & Binui Energy", "Control Room Operator Israel", "טכנאי חדר בקרה",
+        "מפעיל תחנת כוח", "אגירת אנרגיה", "מערכות סולאריות"
     ]
     energy_jobs = fetch_linkedin_jobs(energy_keywords)
     for j in energy_jobs:
         j["is_drone"] = False
     all_raw_jobs.extend(energy_jobs)
 
-    # 2. Drone Queries
+    # 2. Drone & Defense Queries (Leading defense & scale-ups)
     drone_keywords = [
         "XTEND Drones", "Spear UAV", "Rafael Drone", "Airobotics",
-        "רחפנים", "כטב\"ם", "אינטגרטור כטב\"ם", "ניסויי טיסה כטב\"ם",
-        "Drone Assembly Technician", "Counter-UAS Israel"
+        "Percepto Drones", "Robotican", "Steadicopter", "Third Eye Systems",
+        "Elbit Systems Drones", "IAI Drones", "High Lander Drones",
+        "Smart Shooter", "HevenDrones", "רחפנים", "כטב\"ם", "אינטגרטור כטב\"ם",
+        "ניסויי טיסה כטב\"ם", "Drone Assembly Technician", "Counter-UAS Israel",
+        "אינטגרטור מערכות", "Integration Technician Israel"
     ]
     drone_jobs = fetch_linkedin_jobs(drone_keywords)
     for j in drone_jobs:
@@ -448,7 +473,7 @@ def run_unified_daily_search():
         )
         
         score = eval_res.get("match_score", 0)
-        threshold = 75 if job.get("is_drone") else 65
+        threshold = 70 if job.get("is_drone") else 60
         
         if score >= threshold:
             enriched_job = {
