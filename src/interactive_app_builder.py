@@ -81,7 +81,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <nav class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-slate-900/60 p-2 rounded-2xl border border-slate-800/80">
       <div class="flex items-center gap-1 bg-slate-950/70 p-1 rounded-xl border border-slate-800/70">
         <button onclick="setFilter('all', this)" class="tab-btn active px-3.5 py-1.5 text-xs font-bold rounded-lg bg-sky-600 text-white shadow-sm">
-          הכל (<span id="countAll">__TOTAL_JOBS__</span>)
+          משרות חדשות (<span id="countAll">__TOTAL_JOBS__</span>)
         </button>
         <button onclick="setFilter('saved', this)" class="tab-btn px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white">
           ✔️ שמורות להגשה (<span id="countSaved">0</span>)
