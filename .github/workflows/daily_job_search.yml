@@ -57,7 +57,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git pull --rebase origin main || true
-          git add seen_jobs.json seen_drones.json weekly_archive.json rejected_jobs.json docs/ || true
+          git add data/ seen_jobs.json seen_drones.json weekly_archive.json rejected_jobs.json docs/ || true
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update history, archive and interactive docs [skip ci]" && git push)
 
       - name: Send Urgent Failure Alert Email (Exceptions Only)
@@ -129,7 +129,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git pull --rebase origin main || true
-          git add weekly_archive.json rejected_jobs.json docs/ || true
+          git add data/ weekly_archive.json rejected_jobs.json docs/ || true
           git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update weekly interactive docs [skip ci]" && git push)
 
       - name: Send Urgent Failure Alert Email (Exceptions Only)

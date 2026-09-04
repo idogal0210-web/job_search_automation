@@ -9,13 +9,18 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header
 from dotenv import load_dotenv
 
-from interactive_app_builder import build_and_save_docs_app
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(BASE_DIR, "src"))
 
-load_dotenv()
+try:
+    from src.interactive_app_builder import build_and_save_docs_app
+except ImportError:
+    from interactive_app_builder import build_and_save_docs_app
 
-BASE_DIR = os.path.dirname(__file__)
-ARCHIVE_FILE = os.path.join(BASE_DIR, "weekly_archive.json")
-REJECTED_JOBS_FILE = os.path.join(BASE_DIR, "rejected_jobs.json")
+DATA_DIR = os.path.join(BASE_DIR, "data")
+ARCHIVE_FILE = os.path.join(DATA_DIR, "weekly_archive.json") if os.path.exists(DATA_DIR) else os.path.join(BASE_DIR, "weekly_archive.json")
+REJECTED_JOBS_FILE = os.path.join(DATA_DIR, "rejected_jobs.json") if os.path.exists(DATA_DIR) else os.path.join(BASE_DIR, "rejected_jobs.json")
+SAVED_JOBS_FILE = os.path.join(DATA_DIR, "saved_jobs.json") if os.path.exists(DATA_DIR) else os.path.join(BASE_DIR, "saved_jobs.json")
 
 def load_rejected_job_links():
     if not os.path.exists(REJECTED_JOBS_FILE):

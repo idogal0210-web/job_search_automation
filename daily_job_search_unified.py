@@ -13,16 +13,22 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 
-from ats_scraper import scrape_all_comeet_jobs
-from interactive_app_builder import build_and_save_docs_app
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(BASE_DIR, "src"))
 
-load_dotenv()
+try:
+    from src.ats_scraper import scrape_all_comeet_jobs
+    from src.interactive_app_builder import build_and_save_docs_app
+except ImportError:
+    from ats_scraper import scrape_all_comeet_jobs
+    from interactive_app_builder import build_and_save_docs_app
 
-BASE_DIR = os.path.dirname(__file__)
-SEEN_JOBS_FILE = os.path.join(BASE_DIR, "seen_jobs.json")
-SEEN_DRONES_FILE = os.path.join(BASE_DIR, "seen_drones.json")
-WEEKLY_ARCHIVE_FILE = os.path.join(BASE_DIR, "weekly_archive.json")
-REJECTED_JOBS_FILE = os.path.join(BASE_DIR, "rejected_jobs.json")
+DATA_DIR = os.path.join(BASE_DIR, "data")
+SEEN_JOBS_FILE = os.path.join(DATA_DIR, "seen_jobs.json") if os.path.exists(DATA_DIR) else os.path.join(BASE_DIR, "seen_jobs.json")
+SEEN_DRONES_FILE = os.path.join(DATA_DIR, "seen_drones.json") if os.path.exists(DATA_DIR) else os.path.join(BASE_DIR, "seen_drones.json")
+WEEKLY_ARCHIVE_FILE = os.path.join(DATA_DIR, "weekly_archive.json") if os.path.exists(DATA_DIR) else os.path.join(BASE_DIR, "weekly_archive.json")
+REJECTED_JOBS_FILE = os.path.join(DATA_DIR, "rejected_jobs.json") if os.path.exists(DATA_DIR) else os.path.join(BASE_DIR, "rejected_jobs.json")
+SAVED_JOBS_FILE = os.path.join(DATA_DIR, "saved_jobs.json") if os.path.exists(DATA_DIR) else os.path.join(BASE_DIR, "saved_jobs.json")
 RETENTION_DAYS = 14
 
 def check_already_ran_today():
