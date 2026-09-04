@@ -16,12 +16,8 @@ from dotenv import load_dotenv
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(BASE_DIR, "src"))
 
-try:
-    from src.ats_scraper import scrape_all_comeet_jobs
-    from src.interactive_app_builder import build_and_save_docs_app
-except ImportError:
-    from ats_scraper import scrape_all_comeet_jobs
-    from interactive_app_builder import build_and_save_docs_app
+from src.ats_scraper import scrape_all_comeet_jobs
+from src.interactive_app_builder import build_and_save_docs_app
 
 DATA_DIR = os.path.join(BASE_DIR, "data")
 SEEN_JOBS_FILE = os.path.join(DATA_DIR, "seen_jobs.json") if os.path.exists(DATA_DIR) else os.path.join(BASE_DIR, "seen_jobs.json")
