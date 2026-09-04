@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import smtplib
+import time
 import requests
 from datetime import datetime, timedelta
 from email.mime.text import MIMEText
@@ -134,10 +135,71 @@ Education: Practical Mechanical Engineer, Natural Gas & Green Energy (הנדסא
 Skills: Real-time 24/7 SCADA & gas control, pressure/flow monitoring, nomination allocations, Excel, SAP, Python, Gemini/Copilot AI automation, Nahal Reconnaissance demolitions/combat engineering (סיירת נח"ל).
 """
 
+NON_TECHNICAL_TITLES = [
+    # Hebrew
+    "שיווק", "מנהל מותג", "מנהלת מותג", "משאבי אנוש", "רכזת גיוס", "רכז גיוס", "גיוס עובדים",
+    "הנהלת חשבונות", "מנהל חשבונות", "מנהלת חשבונות", "רואה חשבון", "רואת חשבון", "חשב שכר", "חשבת שכר",
+    "יועץ משפטי", "יועצת משפטית", "עורך דין", "עורכת דין", "משפטי", "סיעוד", "אח מוסמך", "אחות מוסמכת",
+    "רופא", "רופאה", "רוקח", "רוקחת", "מכירות טלפוניות", "טלמרקטינג", "נציג שירות", "נציגת שירות",
+    "נציג מכירות", "נציגת מכירות", "מוקד", "קופאי", "קופאית", "מלצר", "מלצרית", "מזכיר", "מזכירה",
+    "מנהל משרד", "מנהלת משרד", "קוסמטיקה", "טיפוח", "ביוטי", "רכש", "קניין", "קניינית",
+    "ניקיון", "עובד ניקיון", "עובדת ניקיון", "בוחן חיובים", "בוחנת חיובים", "מנתח מערכות data",
+    # English
+    "brand manager", "marketing", "digital marketing", "social media", "seo", "human resources",
+    "talent acquisition", "recruiter", "sourcer", "accountant", "bookkeeper", "payroll",
+    "finance manager", "cfo", "legal counsel", "attorney", "lawyer", "compliance officer",
+    "nurse", "nursing", "physician", "pharmacist", "sales representative", "telemarketing",
+    "customer service", "customer support", "cashier", "receptionist", "office manager", "cosmetics", "beauty",
+    "user acquisition", "procurement", "buyer", "cleaner", "tax preparer", "service desk",
+    "bi analyst", "data analyst", "full stack", "web developer", "frontend", "backend", "software developer",
+    "copywriter", "content writer", "salesperson", "sales manager", "product designer", "country club", "crm dynamics"
+]
+
 def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_drone=False):
     """
     Evaluates job relevance AND extracts detailed structured section data using Gemini.
+    Enforces candidate rules, strict exclusions, B.Sc. flexibility, and fail-closed integrity.
     """
+    # 1. Deterministic Non-Technical & Blacklist Pre-Filters
+    title_lower = title.lower()
+    company_lower = company.lower()
+    
+    for bl in ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון", "raycatch", "רייקאץ"]:
+        if bl in company_lower:
+            print(f"[BLACKLIST] Disqualifying {company} - {title} (Match score: 0)")
+            return {
+                "match_score": 0,
+                "reasoning": f"חברה ברשימת החרגה קשיחה ({company}) - נפסל מיידית.",
+                "sector_key": "other",
+                "sector": "לא רלוונטי",
+                "company_domain_product": "",
+                "location": "ישראל",
+                "job_summary": "",
+                "experience_strengths": "",
+                "key_highlights": "",
+                "company_size": "",
+                "junior_openness": "",
+                "work_model": ""
+            }
+
+    for non_tech in NON_TECHNICAL_TITLES:
+        if non_tech in title_lower:
+            print(f"[PRE-FILTER] Disqualifying non-technical role: {company} - {title} (matched '{non_tech}')")
+            return {
+                "match_score": 0,
+                "reasoning": f"תפקיד שאינו טכני/הנדסי ('{non_tech}') - נפסל אוטומטית במערכת.",
+                "sector_key": "other",
+                "sector": "לא רלוונטי",
+                "company_domain_product": "",
+                "location": "ישראל",
+                "job_summary": "",
+                "experience_strengths": "",
+                "key_highlights": "",
+                "company_size": "",
+                "junior_openness": "",
+                "work_model": ""
+            }
+
     prompt = f"""
     You are an expert AI Technical Career Coach evaluating a job opportunity for Ido Gal.
 
@@ -152,14 +214,17 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
 
     Evaluation & Screening Rules:
     1. STRICT EXCLUSIONS: If the company is "Energean", "INGL" (נתג"ז), "Chevron", or "Raycatch", give match_score: 0 and disqualify immediately.
-    2. B.Sc. REQUIREMENT & FLEXIBILITY:
+    2. RELEVANCE & NON-TECHNICAL REJECTION:
+       - Ido is a Practical Mechanical Engineer in natural gas, SCADA control, technical energy systems, and combat engineering/drones.
+       - Any job completely outside engineering, technical operations, energy, mechanics, electricity, or drones/defense (e.g. Brand Manager, Marketing, Cosmetics, Sales, HR, Legal, Finance, Healthcare) MUST receive match_score: 0 and be disqualified immediately!
+    3. B.Sc. REQUIREMENT & FLEXIBILITY:
        - Ido is a certified Practical Mechanical Engineer (הנדסאי מכונות), NOT a B.Sc. engineer.
        - If the job strictly and inflexibly requires a B.Sc. in engineering with zero leeway, disqualify it (match_score < 55).
        - ONLY allow B.Sc.-titled jobs if you identify genuine flexibility, practical openness, or if the company is known to accept experienced practical engineers (הנדסאים).
-    3. DOMAIN PREFERENCES & TARGET COMPANIES:
+    4. DOMAIN PREFERENCES & TARGET COMPANIES:
        - Energy: Give a slight preference / bonus to Solar PV and Natural Gas opportunities (Ido's primary thesis & operational domains), while maintaining full openness and positive evaluation for all other energy fields (grid storage, power stations, thermal systems, wind, industrial infrastructure).
        - Target Company Bonus: Give a scoring bonus to companies in rapid growth (funded scale-ups like XTEND, Percepto, Spear UAV, Doral, Enlight, Nofar) or financially robust market leaders known for strong pay & benefits (Elbit, IAI, Rafael, OPC Energy, Ormat, Dalia Energy).
-    4. MATCH SCORING (0-100):
+    5. MATCH SCORING (0-100):
        - Energy passing threshold: 60+. Drone/Defense passing threshold: 70+.
        - Score objectively based on Ido's genuine background: 24/7 gas/SCADA control, practical mechanical engineering, upcoming certified electrician (2 months), and Nahal Reconnaissance operational drone/combat engineering experience.
 
@@ -184,14 +249,22 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     12. "work_model": Hebrew work model.
     """
     
-    for model_name in ["gemini-2.5-flash", "gemini-1.5-flash", "gemini-2.0-flash", "gemini-2.5-flash"]:
+    # Cascade: Primary gemini-3.8-flash -> Fallbacks gemini-3.7-flash, gemini-3.5-flash, gemini-3.6-flash, gemini-flash-latest
+    models_to_try = [
+        "gemini-3.8-flash",
+        "gemini-3.7-flash",
+        "gemini-3.5-flash",
+        "gemini-3.6-flash",
+        "gemini-flash-latest"
+    ]
+    for model_name in models_to_try:
         try:
             response = client.models.generate_content(
                 model=model_name,
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
-                    temperature=0.2
+                    temperature=0.15
                 )
             )
             data = json.loads(response.text)
@@ -199,21 +272,21 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
         except Exception:
             continue
 
-    # Fallback structure
-    domain_str = "רחפנים אוטונומיים וביטחון" if is_drone else "תשתיות אנרגיה, גז וחשמל"
+    # Fail CLOSED: Never return dummy positive scores or fabricated text on error
+    print(f"[-] Gemini evaluation failed for {company} - {title}. Disqualifying by default (score 0).")
     return {
-        "match_score": 85,
-        "reasoning": "משרה מותאמת לרקע הטכני בתשתיות/רחפנים.",
-        "sector_key": "drones" if is_drone else "energy",
-        "sector": "🚁 רחפנים וכטב\"ם אוטונומי" if is_drone else "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA",
-        "company_domain_product": f"חברה מובילה בתחום {domain_str}",
-        "location": "ישראל / היברידי",
-        "job_summary": f"תפקיד מפתח בחברה הכולל אחריות על ניטור, אינטגרציה ותפעול מערכות מתקדמות בסביבה דינמית.",
-        "experience_strengths": "התאמה גבוהה לניסיון בבקרת תפעול 24/7, תואר הנדסאי מכונות מרופין ורקע טכני-מבצעי מסיירת נח\"ל.",
-        "key_highlights": "פתיחות להנדסאים בעלי זיקה טכנית. הערכת שכר: בהתאם לניסיון.",
-        "company_size": "80-150 עובדים",
-        "junior_openness": "🟢 גבוהה",
-        "work_model": "היברידי / שטח"
+        "match_score": 0,
+        "reasoning": "שגיאת ניתוח או חוסר נתונים - נפסל אוטומטית למניעת שגיאות.",
+        "sector_key": "other",
+        "sector": "לא רלוונטי",
+        "company_domain_product": "",
+        "location": "ישראל",
+        "job_summary": "",
+        "experience_strengths": "",
+        "key_highlights": "",
+        "company_size": "",
+        "junior_openness": "",
+        "work_model": ""
     }
 
 def fetch_linkedin_jobs(keywords, location="Israel", max_pages=2):
@@ -256,11 +329,15 @@ def fetch_linkedin_jobs(keywords, location="Israel", max_pages=2):
 
 def build_unified_html_email(jobs, top_3, dashboard_url):
     """
-    Builds a Dark Mode List Layout email (no tables) with structured sections:
-    - חברה ומיקום
-    - תקציר המשרה
-    - נקודות חוזק מהניסיון שלך
-    - דגשים / דרישות נוספות
+    Builds a Dark Mode List Layout email (matching dashboard_preview.html) with:
+    - Category Pill Badge (Drones vs Energy)
+    - Card Title with location next to it: [Company] - [Title] • [Location]
+    - 4 distinct styled boxes with tinted backgrounds & borders:
+      1. 🏢 תחום ומוצר החברה (Dark Slate Box)
+      2. 📋 תקציר המשרה (Dark Slate Box)
+      3. 💪 נקודות חוזק מהניסיון שלך (Emerald Tinted Box)
+      4. 🔍 דגשים / דרישות נוספות (Amber Tinted Box)
+    - Action CTA button with sky/blue gradient
     """
     now_str = datetime.now().strftime("%d.%m.%Y")
 
@@ -284,22 +361,26 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
         for idx, pick in enumerate(top_3, 1):
             comp_domain = pick.get('company_domain_product', pick.get('sector', ''))
             top_items += f"""
-            <div style="background-color: #1e293b; padding: 12px 16px; margin-bottom: 10px; border-radius: 8px; border-right: 4px solid #4ade80;">
-                <div style="font-weight: bold; color: #f8fafc; font-size: 15px;">{idx}. {pick.get('company')} – {pick.get('title')}</div>
-                <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">
-                    <span style="color: #4ade80; font-weight: bold;">{pick.get('match_score')}% התאמה</span> | {comp_domain} &nbsp;&nbsp;
-                    <a href="{pick.get('link')}" style="color: #38bdf8; text-decoration: underline; font-weight: bold;">הגש מועמדות ↗</a>
+            <div style="background-color: #1e293b; padding: 14px 18px; margin-bottom: 10px; border-radius: 10px; border-right: 4px solid #f59e0b; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div style="font-weight: 800; color: #f8fafc; font-size: 15.5px;">{idx}. {pick.get('company')} – {pick.get('title')}</div>
+                    <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">
+                        <span style="color: #34d399; font-weight: bold;">{pick.get('match_score')}% התאמה</span> • {comp_domain}
+                    </div>
+                </div>
+                <div>
+                    <a href="{pick.get('link')}" target="_blank" style="background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color: #ffffff; padding: 6px 14px; text-decoration: none; border-radius: 6px; font-size: 12px; font-weight: bold; display: inline-block;">הגש מועמדות ↗</a>
                 </div>
             </div>
             """
         top_3_html = f"""
-        <div style="background-color: #0f172a; border: 1px solid #3b82f6; border-radius: 12px; padding: 18px; margin-bottom: 28px;">
-            <div style="font-size: 16px; font-weight: bold; color: #60a5fa; margin-bottom: 14px;">⭐ משרות הזהב של היום (Top 3 Picks):</div>
+        <div style="background-color: #0f172a; border: 1px solid #f59e0b; border-radius: 14px; padding: 18px; margin-bottom: 26px; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.15);">
+            <div style="font-size: 16px; font-weight: 800; color: #fbbf24; margin-bottom: 14px;">⭐ משרות הזהב המובילות (Top 3 Picks):</div>
             {top_items}
         </div>
         """
 
-    # Sector Cards List (Dark Theme List)
+    # Sector Cards List (Dark Theme List matching dashboard_preview.html)
     sector_blocks_html = ""
     for sec_key, sec_data in sectors.items():
         sec_jobs = sec_data["jobs"]
@@ -311,43 +392,60 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
             comp_name = j.get('company', 'חברה')
             comp_domain = j.get('company_domain_product', j.get('company_summary', j.get('sector', '')))
             loc = j.get('location', 'ישראל')
+            score = j.get('match_score', 0)
             
             card_title = f"{comp_name} - {j.get('title', '')}"
             job_sum = j.get('job_summary', j.get('company_summary', ''))
             strengths = j.get('experience_strengths', j.get('reasoning', ''))
             highlights = j.get('key_highlights', '')
             
+            # Category Badge
+            if sec_key in ['drones', 'cuas', 'avionics']:
+                badge_html = '<span style="background-color: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 6px;">🚁 רחפנים וכטב״ם אוטונומי</span>'
+            else:
+                badge_html = '<span style="background-color: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 6px;">⚡ תשתיות אנרגיה וגז טבעי</span>'
+
             cards_html += f"""
-            <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);">
+            <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 20px; margin-bottom: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.35);">
                 <!-- Header -->
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 12px;">
-                    <div style="font-size: 16.5px; font-weight: bold; color: #38bdf8;">
-                        {idx}. {card_title} <span style="font-size: 12.5px; font-weight: normal; color: #94a3b8;">• {loc}</span>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #334155; padding-bottom: 12px; margin-bottom: 14px;">
+                    <div>
+                        {badge_html}
+                        <h2 style="font-size: 17px; font-weight: bold; color: #ffffff; margin: 0; line-height: 1.4;">
+                            {idx}. {card_title} <span style="font-size: 12.5px; font-weight: normal; color: #94a3b8; margin-right: 6px;">• {loc}</span>
+                        </h2>
                     </div>
-                    <div style="background-color: #064e3b; color: #34d399; font-size: 13px; font-weight: bold; padding: 4px 10px; border-radius: 20px; border: 1px solid #059669;">
-                        {j.get('match_score')}% התאמה
+                    <div style="background-color: rgba(16, 185, 129, 0.15); color: #34d399; font-size: 12.5px; font-weight: 800; padding: 4px 12px; border-radius: 9999px; border: 1px solid rgba(16, 185, 129, 0.35); white-space: nowrap; margin-right: 12px;">
+                        {score}% התאמה
                     </div>
                 </div>
 
-                <!-- Structured Fields -->
-                <div style="font-size: 13.5px; line-height: 1.6; color: #cbd5e1;">
-                    <div style="margin-bottom: 8px;">
-                        <span style="color: #60a5fa; font-weight: bold;">🏢 תחום ומוצר החברה:</span> {comp_domain}
+                <!-- Structured 4 Distinct Styled Boxes -->
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <!-- Box 1: Company Domain & Product -->
+                    <div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
+                        <span style="color: #38bdf8; font-weight: bold;">🏢 תחום ומוצר החברה:</span> {comp_domain}
                     </div>
-                    <div style="margin-bottom: 8px;">
-                        <span style="color: #60a5fa; font-weight: bold;">📋 תקציר המשרה:</span> {job_sum}
+
+                    <!-- Box 2: Job Summary -->
+                    <div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
+                        <span style="color: #38bdf8; font-weight: bold;">📋 תקציר המשרה:</span> {job_sum}
                     </div>
-                    <div style="margin-bottom: 8px;">
+
+                    <!-- Box 3: Experience Strengths -->
+                    <div style="background-color: rgba(6, 78, 59, 0.2); border: 1px solid rgba(5, 150, 105, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;">
                         <span style="color: #4ade80; font-weight: bold;">💪 נקודות חוזק מהניסיון שלך:</span> {strengths}
                     </div>
-                    <div style="margin-bottom: 12px;">
+
+                    <!-- Box 4: Highlights / Requirements -->
+                    <div style="background-color: rgba(120, 53, 15, 0.2); border: 1px solid rgba(217, 119, 6, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
                         <span style="color: #fbbf24; font-weight: bold;">🔍 דגשים / דרישות נוספות:</span> {highlights}
                     </div>
                 </div>
 
                 <!-- Action CTA Button -->
-                <div style="text-align: left; margin-top: 14px; border-top: 1px dashed #334155; padding-top: 10px;">
-                    <a href="{j.get('link')}" style="background-color: #0284c7; color: #ffffff; padding: 8px 18px; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold; display: inline-block;">
+                <div style="border-top: 1px solid rgba(51, 65, 85, 0.6); padding-top: 14px; margin-top: 14px; text-align: left;">
+                    <a href="{j.get('link')}" target="_blank" style="background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color: #ffffff; padding: 9px 22px; text-decoration: none; border-radius: 8px; font-size: 12.5px; font-weight: bold; display: inline-block; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);">
                         הגש מועמדות למשרה ↗
                     </a>
                 </div>
@@ -356,7 +454,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
             
         sector_blocks_html += f"""
         <div style="margin-bottom: 28px;">
-            <div style="font-size: 17px; font-weight: bold; color: #f8fafc; margin-bottom: 12px; border-bottom: 2px solid #38bdf8; padding-bottom: 6px;">
+            <div style="font-size: 17.5px; font-weight: 800; color: #f8fafc; margin-bottom: 14px; border-bottom: 2px solid #0284c7; padding-bottom: 6px;">
                 {sec_data['title']} ({len(sec_jobs)} משרות)
             </div>
             {cards_html}
@@ -368,19 +466,19 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
 <head>
     <meta charset="UTF-8">
 </head>
-<body style="font-family: Arial, sans-serif; background-color: #0f172a; color: #f8fafc; margin: 0; padding: 20px; direction: rtl;">
+<body style="font-family: Arial, sans-serif; background-color: #020617; color: #f8fafc; margin: 0; padding: 20px; direction: rtl;">
     <div style="max-width: 680px; margin: 0 auto; background-color: #0b1329; border-radius: 16px; padding: 24px; border: 1px solid #1e293b; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
         
         <!-- Header -->
-        <div style="background-color: #1e293b; color: #ffffff; border-radius: 12px; padding: 22px; text-align: center; margin-bottom: 24px; border: 1px solid #334155;">
-            <h1 style="margin: 0 0 6px 0; font-size: 22px; color: #38bdf8;">🎯 דוח משרות יומי מאוחד | עידו גל</h1>
+        <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; border-radius: 14px; padding: 24px; text-align: center; margin-bottom: 24px; border: 1px solid #334155; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+            <h1 style="margin: 0 0 6px 0; font-size: 22px; color: #38bdf8; font-weight: 800;">🎯 דוח משרות יומי מאוחד | עידו גל</h1>
             <div style="font-size: 13px; color: #94a3b8;">תאריך סריקה: {now_str} | סה"כ משרות נבחרות: {len(jobs)} (5 אנרגיה + 5 רחפנים)</div>
         </div>
 
         <!-- Interactive Web App CTA Button -->
         <div style="text-align: center; margin-bottom: 26px;">
-            <a href="{dashboard_url}" style="background-color: #0284c7; color: #ffffff; font-size: 15px; font-weight: bold; text-decoration: none; padding: 14px 28px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);">
-                🚀 פתח דוח אינטראקטיבי וסינון משרות (V / X) ↗
+            <a href="{dashboard_url}" target="_blank" style="background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color: #ffffff; font-size: 14.5px; font-weight: bold; text-decoration: none; padding: 13px 28px; border-radius: 12px; display: inline-block; box-shadow: 0 6px 18px rgba(2, 132, 199, 0.4);">
+                🚀 פתח דוח אינטראקטיבי וניהול משרות (✔️ / ✖️) ↗
             </a>
             <div style="font-size: 12px; color: #94a3b8; margin-top: 8px;">כולל תובנות AI מורחבות על החברה, כמות עובדים, מדד פתיחות וסרגל התקדמות</div>
         </div>
@@ -412,7 +510,7 @@ def run_unified_daily_search():
         print("[-] GEMINI_API_KEY missing. Exiting.")
         return
 
-    genai_client = genai.Client(api_key=api_key)
+    genai_client = genai.Client(api_key=api_key, http_options={'timeout': 15000})
 
     seen_jobs = load_seen_dict(SEEN_JOBS_FILE)
     seen_drones = load_seen_dict(SEEN_DRONES_FILE)

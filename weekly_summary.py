@@ -149,37 +149,53 @@ def build_weekly_email_html(jobs, dashboard_url):
             strengths = j.get('experience_strengths', j.get('reasoning', ''))
             highlights = j.get('key_highlights', '')
             
+            # Category Badge
+            if sec_key in ['drones', 'cuas', 'avionics']:
+                badge_html = '<span style="background-color: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 6px;">🚁 רחפנים וכטב״ם אוטונומי</span>'
+            else:
+                badge_html = '<span style="background-color: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 6px;">⚡ תשתיות אנרגיה וגז טבעי</span>'
+
             cards_html += f"""
-            <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 18px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);">
+            <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 20px; margin-bottom: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.35);">
                 <!-- Header -->
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 12px;">
-                    <div style="font-size: 16.5px; font-weight: bold; color: #38bdf8;">
-                        {idx}. {card_title} <span style="font-size: 12.5px; font-weight: normal; color: #94a3b8;">• {loc}</span>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #334155; padding-bottom: 12px; margin-bottom: 14px;">
+                    <div>
+                        {badge_html}
+                        <h2 style="font-size: 17px; font-weight: bold; color: #ffffff; margin: 0; line-height: 1.4;">
+                            {idx}. {card_title} <span style="font-size: 12.5px; font-weight: normal; color: #94a3b8; margin-right: 6px;">• {loc}</span>
+                        </h2>
                     </div>
-                    <div style="background-color: #064e3b; color: #34d399; font-size: 13px; font-weight: bold; padding: 4px 10px; border-radius: 20px; border: 1px solid #059669;">
+                    <div style="background-color: rgba(16, 185, 129, 0.15); color: #34d399; font-size: 12.5px; font-weight: 800; padding: 4px 12px; border-radius: 9999px; border: 1px solid rgba(16, 185, 129, 0.35); white-space: nowrap; margin-right: 12px;">
                         {j.get('match_score')}% התאמה
                     </div>
                 </div>
 
-                <!-- Structured Fields -->
-                <div style="font-size: 13.5px; line-height: 1.6; color: #cbd5e1;">
-                    <div style="margin-bottom: 8px;">
-                        <span style="color: #60a5fa; font-weight: bold;">🏢 תחום ומוצר החברה:</span> {comp_domain}
+                <!-- Structured 4 Distinct Styled Boxes -->
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <!-- Box 1: Company Domain & Product -->
+                    <div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
+                        <span style="color: #38bdf8; font-weight: bold;">🏢 תחום ומוצר החברה:</span> {comp_domain}
                     </div>
-                    <div style="margin-bottom: 8px;">
-                        <span style="color: #60a5fa; font-weight: bold;">📋 תקציר המשרה:</span> {job_sum}
+
+                    <!-- Box 2: Job Summary -->
+                    <div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
+                        <span style="color: #38bdf8; font-weight: bold;">📋 תקציר המשרה:</span> {job_sum}
                     </div>
-                    <div style="margin-bottom: 8px;">
+
+                    <!-- Box 3: Experience Strengths -->
+                    <div style="background-color: rgba(6, 78, 59, 0.2); border: 1px solid rgba(5, 150, 105, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;">
                         <span style="color: #4ade80; font-weight: bold;">💪 נקודות חוזק מהניסיון שלך:</span> {strengths}
                     </div>
-                    <div style="margin-bottom: 12px;">
+
+                    <!-- Box 4: Highlights / Requirements -->
+                    <div style="background-color: rgba(120, 53, 15, 0.2); border: 1px solid rgba(217, 119, 6, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
                         <span style="color: #fbbf24; font-weight: bold;">🔍 דגשים / דרישות נוספות:</span> {highlights}
                     </div>
                 </div>
 
                 <!-- Action CTA Button -->
-                <div style="text-align: left; margin-top: 14px; border-top: 1px dashed #334155; padding-top: 10px;">
-                    <a href="{j.get('link')}" style="background-color: #0284c7; color: #ffffff; padding: 8px 18px; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold; display: inline-block;">
+                <div style="border-top: 1px solid rgba(51, 65, 85, 0.6); padding-top: 14px; margin-top: 14px; text-align: left;">
+                    <a href="{j.get('link')}" target="_blank" style="background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color: #ffffff; padding: 9px 22px; text-decoration: none; border-radius: 8px; font-size: 12.5px; font-weight: bold; display: inline-block; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);">
                         הגש מועמדות למשרה ↗
                     </a>
                 </div>
