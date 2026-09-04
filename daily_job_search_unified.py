@@ -104,8 +104,6 @@ def save_seen_dict(file_path, seen_dict, new_links):
         json.dump(seen_dict, f, ensure_ascii=False, indent=2)
 
 def update_weekly_archive(new_jobs):
-    if not new_jobs:
-        return
     archive = []
     if os.path.exists(WEEKLY_ARCHIVE_FILE):
         try:
@@ -123,16 +121,19 @@ def update_weekly_archive(new_jobs):
     seen_links = {j.get("link") for j in archive}
     today_str = datetime.now().strftime("%Y-%m-%d")
     
-    for job in new_jobs:
-        link = job.get("link")
-        if link and link not in seen_links and link not in rejected_set:
-            seen_links.add(link)
-            job_copy = dict(job)
-            job_copy["date"] = today_str
-            archive.append(job_copy)
+    if new_jobs:
+        for job in new_jobs:
+            link = job.get("link")
+            if link and link not in seen_links and link not in rejected_set:
+                seen_links.add(link)
+                job_copy = dict(job)
+                job_copy["date"] = today_str
+                archive.append(job_copy)
             
     with open(WEEKLY_ARCHIVE_FILE, "w", encoding="utf-8") as f:
         json.dump(archive, f, ensure_ascii=False, indent=2)
+
+    return archive
 
 CV_CONTEXT = """
 Name: Ido Gal (עידו גל)
@@ -624,10 +625,11 @@ def run_unified_daily_search():
     # Save to history & archive
     save_seen_dict(SEEN_JOBS_FILE, seen_jobs, new_links_energy)
     save_seen_dict(SEEN_DRONES_FILE, seen_drones, new_links_drones)
-    update_weekly_archive(processed_jobs)
+    updated_archive = update_weekly_archive(processed_jobs)
 
-    # Build GitHub Pages interactive app
-    build_and_save_docs_app(processed_jobs, is_weekly=False)
+    # Build GitHub Pages interactive app with cumulative weekly archive
+    active_dashboard_jobs = updated_archive if updated_archive else processed_jobs
+    build_and_save_docs_app(active_dashboard_jobs, is_weekly=False)
 
     # GitHub Pages Live URL
     dashboard_url = "https://idogal0210-web.github.io/job_search_automation/"
