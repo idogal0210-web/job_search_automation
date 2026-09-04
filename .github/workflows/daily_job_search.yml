@@ -1,20 +1,9 @@
-name: Daily & Weekly Job Search Automation
+name: Daily Job Search Automation
 
 on:
   schedule:
     - cron: '28 7 * * *'    # 10:28 שעון ישראל (07:28 UTC) — חיפוש יומי
-    - cron: '13 7 * * 6'    # 10:13 שעון ישראל (07:13 UTC) — סיכום שבועי (שבת)
   workflow_dispatch:
-    inputs:
-      job_type:
-        description: 'Automation job to run'
-        required: true
-        default: 'both'
-        type: choice
-        options:
-          - daily
-          - weekly
-          - both
 
 permissions:
   contents: write
@@ -23,9 +12,6 @@ jobs:
   job-search-daily:
     runs-on: ubuntu-latest
     name: "Daily Job Search - Ido Gal"
-    if: |
-      (github.event_name == 'schedule' && github.event.schedule == '28 7 * * *') ||
-      (github.event_name == 'workflow_dispatch' && (inputs.job_type == 'daily' || inputs.job_type == 'both'))
 
     steps:
       - name: Checkout repository
@@ -84,78 +70,6 @@ jobs:
               msg['From'] = Header(f'Job Search Alert <{sender}>', 'utf-8')
               msg['To'] = Header(recipient, 'utf-8')
               body = f'<div dir=\"rtl\" style=\"font-family: Arial; padding: 20px;\"><h2 style=\"color: #dc2626;\">⚠️ התרחשה שגיאה בריצת חיפוש המשרות</h2><p>ריצת האוטומציה נתקלה בשגיאה באחד השלבים.</p><p><a href=\"{run_url}\" style=\"background: #dc2626; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block;\">צפה ביומן הריצה ב-GitHub Actions ↗</a></p></div>'
-              msg.attach(MIMEText(body, 'html', 'utf-8'))
-              server = smtplib.SMTP('smtp.gmail.com', 587, timeout=20)
-              server.starttls()
-              server.login(sender, pwd)
-              server.sendmail(sender, recipient, msg.as_string())
-              server.quit()
-              print('[+] Failure alert email dispatched.')
-          "
-
-  weekly-summary-saturday:
-    runs-on: ubuntu-latest
-    name: "Saturday Weekly Digest - Ido Gal"
-    needs: [job-search-daily]
-    if: |
-      always() && (
-        (github.event_name == 'schedule' && github.event.schedule == '13 7 * * 6') ||
-        (github.event_name == 'workflow_dispatch' && (inputs.job_type == 'weekly' || inputs.job_type == 'both'))
-      )
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: Dispatch Saturday Weekly Summary Email
-        env:
-          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-          SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
-        run: |
-          python weekly_summary.py
-
-      - name: Commit and push updated weekly interactive docs
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main || true
-          git add data/ weekly_archive.json rejected_jobs.json docs/ || true
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update weekly interactive docs [skip ci]" && git push)
-
-      - name: Send Urgent Failure Alert Email (Exceptions Only)
-        if: failure()
-        env:
-          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-          SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          python3 -c "
-          import os, smtplib
-          from email.mime.text import MIMEText
-          from email.mime.multipart import MIMEMultipart
-          from email.header import Header
-
-          sender = os.environ.get('SENDER_EMAIL')
-          pwd = os.environ.get('SENDER_APP_PASSWORD')
-          run_url = os.environ.get('RUN_URL')
-          recipient = 'idogal0210@gmail.com'
-
-          if sender and pwd:
-              msg = MIMEMultipart()
-              msg['Subject'] = Header('⚠️ התראת תקלה: דוח הסיכום השבועי נכשל | עידו גל', 'utf-8')
-              msg['From'] = Header(f'Job Search Alert <{sender}>', 'utf-8')
-              msg['To'] = Header(recipient, 'utf-8')
-              body = f'<div dir=\"rtl\" style=\"font-family: Arial; padding: 20px;\"><h2 style=\"color: #dc2626;\">⚠️ התרחשה שגיאה בהפקת הדוח השבועי</h2><p>ריצת הדוח השבועי נתקלה בשגיאה באחד השלבים.</p><p><a href=\"{run_url}\" style=\"background: #dc2626; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block;\">צפה ביומן הריצה ב-GitHub Actions ↗</a></p></div>'
               msg.attach(MIMEText(body, 'html', 'utf-8'))
               server = smtplib.SMTP('smtp.gmail.com', 587, timeout=20)
               server.starttls()
