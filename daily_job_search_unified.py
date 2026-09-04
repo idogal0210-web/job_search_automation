@@ -168,7 +168,7 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     title_lower = title.lower()
     company_lower = company.lower()
     
-    for bl in ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון", "raycatch", "רייקאץ"]:
+    for bl in ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון"]:
         if bl in company_lower:
             print(f"[BLACKLIST] Disqualifying {company} - {title} (Match score: 0)")
             return {
@@ -217,7 +217,7 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     - Is Drone/Defense domain: {is_drone}
 
     Evaluation & Screening Rules:
-    1. STRICT EXCLUSIONS: If the company is "Energean", "INGL" (נתג"ז), "Chevron", or "Raycatch", give match_score: 0 and disqualify immediately.
+    1. STRICT EXCLUSIONS: If the company is "Energean", "INGL" (נתג"ז), or "Chevron", give match_score: 0 and disqualify immediately.
     2. RELEVANCE & NON-TECHNICAL REJECTION:
        - Ido is a Practical Mechanical Engineer in natural gas, SCADA control, technical energy systems, and combat engineering/drones.
        - Any job completely outside engineering, technical operations, energy, mechanics, electricity, or drones/defense (e.g. Brand Manager, Marketing, Cosmetics, Sales, HR, Legal, Finance, Healthcare) MUST receive match_score: 0 and be disqualified immediately!
@@ -226,10 +226,11 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
        - If the job strictly and inflexibly requires a B.Sc. in engineering with zero leeway, disqualify it (match_score < 55).
        - ONLY allow B.Sc.-titled jobs if you identify genuine flexibility, practical openness, or if the company is known to accept experienced practical engineers (הנדסאים).
     4. DOMAIN PREFERENCES & TARGET COMPANIES:
-       - Energy: Give a strong preference / bonus to Solar PV, Energy Storage (BESS) and Natural Gas opportunities (Ido's primary thesis & operational domains), while maintaining positive evaluation for all other energy/infrastructure fields (grid storage, power stations, thermal systems, industrial piping).
+       - Energy: Give a strong preference / bonus to Solar PV, Energy Storage (BESS), Energy Tech and Natural Gas opportunities (Ido's primary thesis & operational domains), while maintaining positive evaluation for all other energy/infrastructure fields (grid storage, power stations, thermal systems, industrial piping).
        - Target Company Bonus: Give a scoring bonus (+5 to +10%) to verified target companies:
          * Renewables & Storage (BESS): Enlight, Energix, SolarEdge, Doral Energy, Nofar Energy, Shikun & Binui Energy, EDF Renewables, Prime Energy, Brenmiller Energy, Augwind.
          * Gas, Power Plants & SCADA: OPC Energy, Dalia Energy, Dorad Energy, Edeltech, Supergas Energy, Ormat Technologies, Paz Ashdod Refinery, Bazan Group, Afcon Control, Electra Power / Infrastructure.
+         * Energy Tech & Smart Infrastructure: H2Pro, Prisma Photonics, Brenmiller Energy, Doral Group / Doral Energy-Tech Ventures, GenCell Energy, ZOOZ Power (Chakratec), Augwind, Raycatch, Phinergy, mPrest.
          * Drones, Robotics & C-UAS: XTEND, Spear UAV, Percepto, Airobotics, HighLander, Steadicopter, Robotican, Third Eye Systems, Smart Shooter, HevenDrones, D-Fend Solutions, NextVision, Rafael, Elbit Systems, IAI.
     5. 3-REQUIREMENTS MINIMUM MATCH IRON RULE:
        - The job MUST possess AT LEAST 3 CONCRETE, DEMONSTRABLE MATCHES between the stated job requirements/responsibilities and Ido's proven profile (Practical Mechanical Engineer, 24/7 SCADA & gas control room, natural gas & PRMS infrastructure, solar PV & BESS systems, upcoming Certified Electrician, or Nahal Reconnaissance operational drones/demolitions).
@@ -542,7 +543,11 @@ def run_unified_daily_search():
 
         # 10 Natural Gas, Power Plants & SCADA Companies
         "OPC Energy", "Dalia Energy", "Dorad Energy", "Edeltech", "Supergas Energy",
-        "Ormat Technologies", "Paz Ashdod Refinery", "Bazan Energy", "Afcon Control", "Electra Power"
+        "Ormat Technologies", "Paz Ashdod Refinery", "Bazan Energy", "Afcon Control", "Electra Power",
+
+        # 10 Energy Tech & Advanced Infrastructure Companies
+        "H2Pro", "Prisma Photonics", "Doral Energy-Tech Ventures", "GenCell Energy",
+        "ZOOZ Power", "Chakratec", "Raycatch", "Phinergy", "mPrest"
     ]
     energy_jobs = fetch_linkedin_jobs(energy_keywords)
     for j in energy_jobs:
