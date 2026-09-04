@@ -91,7 +91,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </button>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
         <select id="sectorFilter" onchange="filterCards()" class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500">
           <option value="all">🌐 כל התחומים</option>
           <option value="energy">⚡ אנרגיה, גז טבעי ו-SCADA</option>
@@ -99,6 +99,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <option value="cuas">🛡️ הגנת C-UAS וביטחון</option>
           <option value="avionics">📡 מטע״דים ואוויוניקה</option>
         </select>
+
+        <button id="sortBtn" onclick="toggleSort()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-slate-800 text-slate-200 text-xs font-bold rounded-xl border border-slate-800 transition-all shadow-sm" title="לחץ לשינוי סדר המיון">
+          <span id="sortIcon">🔽</span>
+          <span id="sortLabel">התאמה: מגבוה לנמוך</span>
+        </button>
       </div>
     </nav>
 
@@ -165,6 +170,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   <script>
     const rawJobsData = __JOBS_JSON__;
     let currentFilter = 'all';
+    let currentSort = 'desc';
     const STORAGE_KEY = 'ido_job_triage_store';
 
     function loadTriageState() {
@@ -193,7 +199,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         return;
       }
 
-      rawJobsData.forEach((job, idx) => {
+      let sortedJobs = [...rawJobsData];
+      sortedJobs.sort((a, b) => {
+        const scoreA = Number(a.match_score) || 0;
+        const scoreB = Number(b.match_score) || 0;
+        return currentSort === 'desc' ? scoreB - scoreA : scoreA - scoreB;
+      });
+
+      sortedJobs.forEach((job, idx) => {
         const id = job.link || `job_${idx}`;
         const score = job.match_score || 85;
         const company = job.company || 'חברה';
@@ -299,6 +312,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         document.body.classList.add('bg-slate-950', 'text-slate-100');
         document.body.classList.remove('bg-slate-100', 'text-slate-900');
       }
+    }
+
+    function toggleSort() {
+      currentSort = currentSort === 'desc' ? 'asc' : 'desc';
+      const icon = document.getElementById('sortIcon');
+      const label = document.getElementById('sortLabel');
+      if (currentSort === 'desc') {
+        if (icon) icon.textContent = '🔽';
+        if (label) label.textContent = 'התאמה: מגבוה לנמוך';
+        showToast('🔽', 'מיון: ציון התאמה מגבוה לנמוך');
+      } else {
+        if (icon) icon.textContent = '🔼';
+        if (label) label.textContent = 'התאמה: מנמוך לגבוה';
+        showToast('🔼', 'מיון: ציון התאמה מנמוך לגבוה');
+      }
+      renderCards();
     }
 
     function toggleAction(id, action) {
