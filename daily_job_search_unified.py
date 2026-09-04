@@ -226,8 +226,11 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
        - If the job strictly and inflexibly requires a B.Sc. in engineering with zero leeway, disqualify it (match_score < 55).
        - ONLY allow B.Sc.-titled jobs if you identify genuine flexibility, practical openness, or if the company is known to accept experienced practical engineers (הנדסאים).
     4. DOMAIN PREFERENCES & TARGET COMPANIES:
-       - Energy: Give a slight preference / bonus to Solar PV and Natural Gas opportunities (Ido's primary thesis & operational domains), while maintaining full openness and positive evaluation for all other energy fields (grid storage, power stations, thermal systems, wind, industrial infrastructure).
-       - Target Company Bonus: Give a scoring bonus to companies in rapid growth (funded scale-ups like XTEND, Percepto, Spear UAV, Doral, Enlight, Nofar) or financially robust market leaders known for strong pay & benefits (Elbit, IAI, Rafael, OPC Energy, Ormat, Dalia Energy).
+       - Energy: Give a strong preference / bonus to Solar PV, Energy Storage (BESS) and Natural Gas opportunities (Ido's primary thesis & operational domains), while maintaining positive evaluation for all other energy/infrastructure fields (grid storage, power stations, thermal systems, industrial piping).
+       - Target Company Bonus: Give a scoring bonus (+5 to +10%) to verified target companies:
+         * Renewables & Storage (BESS): Enlight, Energix, SolarEdge, Doral Energy, Nofar Energy, Shikun & Binui Energy, EDF Renewables, Prime Energy, Brenmiller Energy, Augwind.
+         * Gas, Power Plants & SCADA: OPC Energy, Dalia Energy, Dorad Energy, Edeltech, Supergas Energy, Ormat Technologies, Paz Ashdod Refinery, Bazan Group, Afcon Control, Electra Power / Infrastructure.
+         * Drones, Robotics & C-UAS: XTEND, Spear UAV, Percepto, Airobotics, HighLander, Steadicopter, Robotican, Third Eye Systems, Smart Shooter, HevenDrones, D-Fend Solutions, NextVision, Rafael, Elbit Systems, IAI.
     5. 3-REQUIREMENTS MINIMUM MATCH IRON RULE:
        - The job MUST possess AT LEAST 3 CONCRETE, DEMONSTRABLE MATCHES between the stated job requirements/responsibilities and Ido's proven profile (Practical Mechanical Engineer, 24/7 SCADA & gas control room, natural gas & PRMS infrastructure, solar PV & BESS systems, upcoming Certified Electrician, or Nahal Reconnaissance operational drones/demolitions).
        - If a job has fewer than 3 concrete requirement matches (e.g. only generic soft skills or only 1-2 tenuous overlaps), you MUST give match_score < 50 and disqualify it immediately!
@@ -525,14 +528,21 @@ def run_unified_daily_search():
 
     all_raw_jobs = []
 
-    # 1. Energy Queries (Solar & Natural Gas focus + Grid & Power Plants)
+    # 1. Energy Queries (10 Renewables/Storage + 10 Gas/Power/SCADA + Core Domain Roles)
     energy_keywords = [
+        # Core Roles & Expertise
         "הנדסאי מכונות", "בקר גז", "תפעול אנרגיה", "אנרגיה סולארית",
         "Field Service Engineer Israel", "Gas Controller Israel", "SCADA Operator Israel",
-        "SolarEdge Israel", "Enlight Energy", "Doral Energy", "Nofar Energy",
-        "Ormat Technologies", "OPC Energy", "Dalia Energy", "Edeltech",
-        "Shikun & Binui Energy", "Control Room Operator Israel", "טכנאי חדר בקרה",
-        "מפעיל תחנת כוח", "אגירת אנרגיה", "מערכות סולאריות"
+        "Control Room Operator Israel", "טכנאי חדר בקרה", "מפעיל תחנת כוח", "אגירת אנרגיה BESS",
+        
+        # 10 Renewables, Solar & Storage (BESS) Companies
+        "Enlight Renewable Energy", "Energix Renewable Energies", "SolarEdge Israel",
+        "Doral Energy", "Nofar Energy", "Shikun & Binui Energy", "EDF Renewables Israel",
+        "Prime Energy Israel", "Brenmiller Energy", "Augwind Energy",
+
+        # 10 Natural Gas, Power Plants & SCADA Companies
+        "OPC Energy", "Dalia Energy", "Dorad Energy", "Edeltech", "Supergas Energy",
+        "Ormat Technologies", "Paz Ashdod Refinery", "Bazan Energy", "Afcon Control", "Electra Power"
     ]
     energy_jobs = fetch_linkedin_jobs(energy_keywords)
     for j in energy_jobs:
