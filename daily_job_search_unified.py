@@ -230,7 +230,10 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     4. DOMAIN PREFERENCES & TARGET COMPANIES:
        - Energy: Give a slight preference / bonus to Solar PV and Natural Gas opportunities (Ido's primary thesis & operational domains), while maintaining full openness and positive evaluation for all other energy fields (grid storage, power stations, thermal systems, wind, industrial infrastructure).
        - Target Company Bonus: Give a scoring bonus to companies in rapid growth (funded scale-ups like XTEND, Percepto, Spear UAV, Doral, Enlight, Nofar) or financially robust market leaders known for strong pay & benefits (Elbit, IAI, Rafael, OPC Energy, Ormat, Dalia Energy).
-    5. MATCH SCORING (0-100):
+    5. 3-REQUIREMENTS MINIMUM MATCH IRON RULE:
+       - The job MUST possess AT LEAST 3 CONCRETE, DEMONSTRABLE MATCHES between the stated job requirements/responsibilities and Ido's proven profile (Practical Mechanical Engineer, 24/7 SCADA & gas control room, natural gas & PRMS infrastructure, solar PV & BESS systems, upcoming Certified Electrician, or Nahal Reconnaissance operational drones/demolitions).
+       - If a job has fewer than 3 concrete requirement matches (e.g. only generic soft skills or only 1-2 tenuous overlaps), you MUST give match_score < 50 and disqualify it immediately!
+    6. MATCH SCORING (0-100):
        - Energy passing threshold: 60+. Drone/Defense passing threshold: 70+.
        - Score objectively based on Ido's genuine background: 24/7 gas/SCADA control, practical mechanical engineering, upcoming certified electrician (2 months), and Nahal Reconnaissance operational drone/combat engineering experience.
 
