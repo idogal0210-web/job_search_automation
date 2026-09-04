@@ -158,7 +158,8 @@ NON_TECHNICAL_TITLES = [
     "customer service", "customer support", "cashier", "receptionist", "office manager", "cosmetics", "beauty",
     "user acquisition", "procurement", "buyer", "cleaner", "tax preparer", "service desk",
     "bi analyst", "data analyst", "full stack", "web developer", "frontend", "backend", "software developer",
-    "copywriter", "content writer", "salesperson", "sales manager", "product designer", "country club", "crm dynamics"
+    "copywriter", "content writer", "salesperson", "sales manager", "product designer", "country club", "crm dynamics",
+    "collections", "salesforce", "account manager", "brand marketing", "vp of sales", "sales"
 ]
 
 def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_drone=False):
