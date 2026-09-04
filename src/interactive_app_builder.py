@@ -131,26 +131,29 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           </div>
         </div>
 
-        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs space-y-1.5">
-          <div class="flex justify-between text-slate-300">
-            <span>משרות שסומנו להסרה:</span>
-            <span id="syncRejectedCount" class="font-bold text-rose-400">0</span>
+        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-xs space-y-2">
+          <div class="flex justify-between items-center text-slate-300">
+            <span class="flex items-center gap-1.5"><span class="text-emerald-400">✔️</span> משרות שמורות להגשה:</span>
+            <span id="syncSavedCount" class="font-bold text-emerald-400 text-sm">0</span>
           </div>
-          <div class="flex justify-between text-slate-300">
-            <span>יעד סנכרון:</span>
-            <span class="font-mono text-sky-400">rejected_jobs.json (זיכרון דחיות)</span>
+          <div class="text-[11px] text-slate-400 mr-5">יעד: <span class="font-mono text-emerald-400">data/saved_jobs.json</span></div>
+
+          <div class="flex justify-between items-center text-slate-300 pt-1 border-t border-slate-800/80">
+            <span class="flex items-center gap-1.5"><span class="text-rose-400">✖️</span> משרות שסומנו להסרה:</span>
+            <span id="syncRejectedCount" class="font-bold text-rose-400 text-sm">0</span>
           </div>
+          <div class="text-[11px] text-slate-400 mr-5">יעד: <span class="font-mono text-rose-400">data/rejected_jobs.json</span></div>
         </div>
 
         <p class="text-xs text-slate-400 leading-relaxed">
-          המשרות שהוסרו יישמרו בזיכרון המערכת בדפדפן ולא יוצגו שוב. בסריקה הבאה המערכת תסנן אותן אוטומטית.
+          לחיצה על סנכרון תשמור ישירות את המשרות לקובצי הפרויקט במחשב שלך ותעדכן את מסדי הנתונים והדשבורד בזמן אמת.
         </p>
 
         <div class="flex gap-2 justify-end pt-2">
           <button onclick="closeSyncModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white bg-slate-800">
             סגור
           </button>
-          <button onclick="confirmSync()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-sky-500 hover:bg-sky-400 shadow-md shadow-sky-500/20">
+          <button id="syncConfirmBtn" onclick="confirmSync()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-sky-500 hover:bg-sky-400 shadow-md shadow-sky-500/20 transition-all">
             בצע סנכרון כעת
           </button>
         </div>
@@ -406,8 +409,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     function triggerSyncModal() {
-      const count = Object.values(jobStates).filter(s => s === 'rejected').length;
-      document.getElementById('syncRejectedCount').textContent = count;
+      const savedCount = Object.values(jobStates).filter(s => s === 'saved').length;
+      const rejectedCount = Object.values(jobStates).filter(s => s === 'rejected').length;
+      document.getElementById('syncSavedCount').textContent = savedCount;
+      document.getElementById('syncRejectedCount').textContent = rejectedCount;
       document.getElementById('syncModal').classList.remove('hidden');
     }
 
@@ -415,9 +420,39 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       document.getElementById('syncModal').classList.add('hidden');
     }
 
-    function confirmSync() {
-      closeSyncModal();
-      showToast('⚡', 'הסנכרון בוצע בהצלחה! הזיכרון עודכן.');
+    async function confirmSync() {
+      const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
+      const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
+      
+      const syncBtn = document.getElementById('syncConfirmBtn');
+      if (syncBtn) {
+        syncBtn.disabled = true;
+        syncBtn.textContent = "מסנכרן למחשב...";
+      }
+
+      try {
+        const response = await fetch('http://127.0.0.1:8765/api/sync', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ saved: savedList, rejected: rejectedList })
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          closeSyncModal();
+          showToast('✅', `סונכרן למחשב בהצלחה! (${data.saved_count} שמורות, ${data.rejected_count} הוסרו)`);
+        } else {
+          throw new Error('Sync server returned error');
+        }
+      } catch (err) {
+        closeSyncModal();
+        showToast('⚠️', 'נשמר בדפדפן. לסנכרון לקובצי המחשב, הפעל: python sync_server.py');
+      } finally {
+        if (syncBtn) {
+          syncBtn.disabled = false;
+          syncBtn.textContent = "בצע סנכרון כעת";
+        }
+      }
     }
 
     window.onload = renderCards;
