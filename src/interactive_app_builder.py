@@ -396,7 +396,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
 
         let matchesTab = false;
-        if (currentFilter === 'all') matchesTab = (state !== 'rejected');
+        if (currentFilter === 'all') matchesTab = (state !== 'saved' && state !== 'rejected');
         else if (currentFilter === 'saved') matchesTab = (state === 'saved');
         else if (currentFilter === 'rejected') matchesTab = (state === 'rejected');
 
@@ -410,7 +410,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
       });
 
-      document.getElementById('countAll').textContent = total;
+      const pending = total - (saved + rejected);
+      document.getElementById('countAll').textContent = pending;
       document.getElementById('countSaved').textContent = saved;
       document.getElementById('countRejected').textContent = rejected;
 
