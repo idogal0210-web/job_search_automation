@@ -150,15 +150,10 @@
         </p>
 
         <div class="pt-2.5 border-t border-slate-800/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 text-xs">
-          <span class="text-slate-400">גיבוי סימונים מהיר:</span>
-          <div class="flex gap-1.5">
-            <button onclick="exportState()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-[11px]" title="העתק סימונים לגיבוי">
-              📋 העתק ללוח
-            </button>
-            <button onclick="importState()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-400 font-medium text-[11px]" title="הדבק סימונים מגיבוי">
-              📥 שחזר מגיבוי
-            </button>
-          </div>
+          <span class="text-slate-400">סנכרון מיידי בין מכשירים:</span>
+          <button onclick="shareSyncLink()" class="px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all" title="פתח את כל המשרות המסומנות במכשיר אחר בלחיצה אחת ללא קודים">
+            <span>📲</span> סנכרן למכשיר אחר (בלי קודים)
+          </button>
         </div>
 
         <div class="flex gap-2 justify-end pt-2">
@@ -200,33 +195,71 @@
       return state;
     }
 
-    function exportState() {
-      const state = loadTriageState();
-      const jsonStr = JSON.stringify(state);
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(jsonStr).then(() => {
-          showToast('📋', 'הסימונים הועתקו ללוח! הדבק אותם באתר השני');
-        }).catch(() => {
-          prompt('העתק את קוד הסימונים:', jsonStr);
-        });
-      } else {
-        prompt('העתק את קוד הסימונים:', jsonStr);
+    function encodeStateForUrl(obj) {
+      try {
+        const json = JSON.stringify(obj);
+        return encodeURIComponent(btoa(unescape(encodeURIComponent(json))));
+      } catch (e) {
+        return encodeURIComponent(JSON.stringify(obj));
       }
     }
 
-    function importState() {
-      const input = prompt('הדבק כאן את קוד הסימונים שהעתקת מהאתר השני:');
-      if (!input) return;
+    function decodeStateFromUrl(str) {
       try {
-        const parsed = JSON.parse(input);
-        if (typeof parsed === 'object' && parsed !== null) {
-          saveTriageState(parsed);
-          jobStates = parsed;
-          updateUI();
-          showToast('✅', 'הסימונים יובאו ועודכנו בהצלחה!');
-        }
+        const decoded = decodeURIComponent(escape(atob(decodeURIComponent(str))));
+        return JSON.parse(decoded);
       } catch (e) {
-        showToast('❌', 'קוד סימונים לא תקין');
+        try {
+          return JSON.parse(decodeURIComponent(str));
+        } catch (e2) {
+          return null;
+        }
+      }
+    }
+
+    function checkUrlSync() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const syncData = urlParams.get('sync');
+        if (syncData) {
+          const incomingState = decodeStateFromUrl(syncData);
+          if (incomingState && typeof incomingState === 'object') {
+            Object.assign(jobStates, incomingState);
+            saveTriageState(jobStates);
+            window.history.replaceState({}, document.title, window.location.pathname);
+            setTimeout(() => {
+              showToast('🎉', 'כל הסימונים סונכרנו בהצלחה למכשיר זה!');
+              updateUI();
+            }, 300);
+          }
+        }
+      } catch (e) {}
+    }
+
+    async function shareSyncLink() {
+      const payload = encodeStateForUrl(jobStates);
+      const shareUrl = window.location.origin + window.location.pathname + '?sync=' + payload;
+      
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'דשבורד משרות - עידו גל',
+            text: 'קישור מעודכן עם כל המשרות שסימנתי',
+            url: shareUrl
+          });
+          showToast('📲', 'הקישור שותף בהצלחה!');
+          return;
+        } catch (err) {}
+      }
+      
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          showToast('🔗', 'קישור סנכרון הועתק! פתח אותו במכשיר השני לסנכרון מיידי');
+        }).catch(() => {
+          prompt('פתח קישור זה במכשיר השני לסנכרון מיידי:', shareUrl);
+        });
+      } else {
+        prompt('פתח קישור זה במכשיר השני לסנכרון מיידי:', shareUrl);
       }
     }
 
@@ -535,7 +568,10 @@
       }
     }
 
-    window.onload = renderCards;
+    window.onload = () => {
+      checkUrlSync();
+      renderCards();
+    };
   </script>
 </body>
 </html>
