@@ -677,23 +677,6 @@
       saveTriageState(jobStates);
       await pushCloudSync();
 
-      const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      if (isLocalHost) {
-        try {
-          const response = await fetch('/api/sync', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ saved: savedList, rejected: rejectedList })
-          });
-          if (response.ok) {
-            const data = await response.json();
-            closeSyncModal();
-            showToast('☁️', `סונכרן לענן ולמחשב בהצלחה! (${data.saved_count} שמורות, ${data.rejected_count} הוסרו)`);
-            return;
-          }
-        } catch (err) {}
-      }
-
       closeSyncModal();
       showToast('☁️', `כל הסימונים סונכרנו לענן בהצלחה! (${savedList.length} שמורות, ${rejectedList.length} הוסרו)`);
       if (syncBtn) {
