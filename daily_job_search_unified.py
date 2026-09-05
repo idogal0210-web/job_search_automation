@@ -83,14 +83,32 @@ def load_seen_dict(file_path):
         return {}
 
 def load_rejected_job_links():
-    if not os.path.exists(REJECTED_JOBS_FILE):
-        return set()
+    rejected_set = set()
+    if os.path.exists(REJECTED_JOBS_FILE):
+        try:
+            with open(REJECTED_JOBS_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                rejected_set = set(data if isinstance(data, list) else data.keys())
+        except Exception:
+            rejected_set = set()
+
     try:
-        with open(REJECTED_JOBS_FILE, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            return set(data if isinstance(data, list) else data.keys())
-    except Exception:
-        return set()
+        fb_url = "https://job-finder-auto-default-rtdb.firebaseio.com/triage.json"
+        res = requests.get(fb_url, timeout=5)
+        if res.status_code == 200:
+            cloud_data = res.json()
+            if cloud_data and isinstance(cloud_data, dict):
+                cloud_rejected = cloud_data.get("rejected", [])
+                if isinstance(cloud_rejected, list):
+                    for l in cloud_rejected:
+                        if l:
+                            rejected_set.add(l)
+                    with open(REJECTED_JOBS_FILE, "w", encoding="utf-8") as f:
+                        json.dump(sorted(list(rejected_set)), f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"[!] Cloud sync warning (load_rejected_job_links): {e}")
+
+    return rejected_set
 
 def save_seen_dict(file_path, seen_dict, new_links):
     now_iso = datetime.now().isoformat()
