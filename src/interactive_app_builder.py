@@ -199,26 +199,27 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       return state;
     }
 
-    function encodeStateForUrl(obj) {
-      try {
-        const json = JSON.stringify(obj);
-        return encodeURIComponent(btoa(unescape(encodeURIComponent(json))));
-      } catch (e) {
-        return encodeURIComponent(JSON.stringify(obj));
-      }
+    function extractJobId(link) {
+      if (!link) return '';
+      const match = link.match(/(\\d{7,12})/);
+      return match ? match[1] : link;
     }
 
-    function decodeStateFromUrl(str) {
-      try {
-        const decoded = decodeURIComponent(escape(atob(decodeURIComponent(str))));
-        return JSON.parse(decoded);
-      } catch (e) {
-        try {
-          return JSON.parse(decodeURIComponent(str));
-        } catch (e2) {
-          return null;
+    function getSyncDelta() {
+      const delta = {};
+      const baseSaved = new Set(typeof initialSavedLinks !== 'undefined' && Array.isArray(initialSavedLinks) ? initialSavedLinks : []);
+      const baseRejected = new Set(typeof initialRejectedLinks !== 'undefined' && Array.isArray(initialRejectedLinks) ? initialRejectedLinks : []);
+
+      for (const [link, state] of Object.entries(jobStates)) {
+        const wasSaved = baseSaved.has(link);
+        const wasRejected = baseRejected.has(link);
+        if (state === 'saved' && !wasSaved) {
+          delta[extractJobId(link)] = 's';
+        } else if (state === 'rejected' && !wasRejected) {
+          delta[extractJobId(link)] = 'r';
         }
       }
+      return delta;
     }
 
     function checkUrlSync() {
@@ -226,13 +227,34 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const urlParams = new URLSearchParams(window.location.search);
         const syncData = urlParams.get('sync');
         if (syncData) {
-          const incomingState = decodeStateFromUrl(syncData);
-          if (incomingState && typeof incomingState === 'object') {
-            Object.assign(jobStates, incomingState);
+          let incomingDelta = null;
+          try {
+            incomingDelta = JSON.parse(atob(decodeURIComponent(syncData)));
+          } catch(e) {
+            try {
+              incomingDelta = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(syncData)))));
+            } catch(e2) {
+              incomingDelta = JSON.parse(decodeURIComponent(syncData));
+            }
+          }
+
+          if (incomingDelta && typeof incomingDelta === 'object') {
+            let count = 0;
+            for (const [idOrLink, val] of Object.entries(incomingDelta)) {
+              const fullState = (val === 's' || val === 'saved') ? 'saved' : 'rejected';
+              const match = rawJobsData.find(j => j.link && (j.link === idOrLink || j.link.includes(idOrLink)));
+              if (match) {
+                jobStates[match.link] = fullState;
+                count++;
+              } else {
+                jobStates[idOrLink] = fullState;
+                count++;
+              }
+            }
             saveTriageState(jobStates);
             window.history.replaceState({}, document.title, window.location.pathname);
             setTimeout(() => {
-              showToast('🎉', 'כל הסימונים סונכרנו בהצלחה למכשיר זה!');
+              showToast('🎉', count > 0 ? `סונכרנו בהצלחה ${count} משרות חדשות!` : 'הדשבורד מסונכרן ומעודכן!');
               updateUI();
             }, 300);
           }
@@ -241,14 +263,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     async function shareSyncLink() {
-      const payload = encodeStateForUrl(jobStates);
-      const shareUrl = window.location.origin + window.location.pathname + '?sync=' + payload;
+      const delta = getSyncDelta();
+      const deltaKeys = Object.keys(delta);
+      let shareUrl = window.location.origin + window.location.pathname;
+      if (deltaKeys.length > 0) {
+        const payload = encodeURIComponent(btoa(JSON.stringify(delta)));
+        shareUrl += '?sync=' + payload;
+      }
       
       if (navigator.share) {
         try {
           await navigator.share({
             title: 'דשבורד משרות - עידו גל',
-            text: 'קישור מעודכן עם כל המשרות שסימנתי',
+            text: deltaKeys.length > 0 ? `סנכרון ${deltaKeys.length} משרות חדשות שסימנתי` : 'דשבורד משרות מעודכן',
             url: shareUrl
           });
           showToast('📲', 'הקישור שותף בהצלחה!');
@@ -258,7 +285,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(shareUrl).then(() => {
-          showToast('🔗', 'קישור סנכרון הועתק! פתח אותו במכשיר השני לסנכרון מיידי');
+          showToast('🔗', 'קישור סנכרון הועתק! פתח אותו במכשיר השני');
         }).catch(() => {
           prompt('פתח קישור זה במכשיר השני לסנכרון מיידי:', shareUrl);
         });
@@ -495,18 +522,40 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
       });
 
-      const pending = total - (saved + rejected);
-      document.getElementById('countAll').textContent = pending;
-      document.getElementById('countSaved').textContent = saved;
-      document.getElementById('countRejected').textContent = rejected;
+      const totalSavedInStore = Object.values(jobStates).filter(s => s === 'saved').length;
+      const totalRejectedInStore = Object.values(jobStates).filter(s => s === 'rejected').length;
+      const pendingInBatch = total - (saved + rejected);
+
+      document.getElementById('countAll').textContent = Math.max(0, pendingInBatch);
+      document.getElementById('countSaved').textContent = totalSavedInStore;
+      document.getElementById('countRejected').textContent = totalRejectedInStore;
 
       const triaged = saved + rejected;
       const pct = total > 0 ? Math.round((triaged / total) * 100) : 0;
       document.getElementById('progressBar').style.width = pct + '%';
-      document.getElementById('progressText').textContent = `סקרת ${triaged} מתוך ${total} משרות (${pct}%)`;
+      document.getElementById('progressText').textContent = `סקרת ${triaged} מתוך ${total} משרות השבוע (${pct}%) • סה"כ שמורות: ${totalSavedInStore} | סה"כ הוסרו: ${totalRejectedInStore}`;
 
       const emptyState = document.getElementById('emptyState');
       if (visibleCount === 0) {
+        if (currentFilter === 'rejected') {
+          emptyState.innerHTML = `
+            <div class="text-4xl mb-2">🗑️</div>
+            <div class="text-sm font-bold text-slate-300">כל ${totalRejectedInStore} המשרות שהוסרו מנוטרלות לצמיתות</div>
+            <div class="text-xs text-slate-500 mt-1">משרות אלו סוננו מחלון ההזדמנויות השבועי ולא ישובו להופיע בדוחות הבאים.</div>
+          `;
+        } else if (currentFilter === 'saved') {
+          emptyState.innerHTML = `
+            <div class="text-4xl mb-2">⭐</div>
+            <div class="text-sm font-bold text-slate-300">עדיין לא סימנת משרות שמורות מתוך מקבץ זה</div>
+            <div class="text-xs text-slate-500 mt-1">לחץ על 'שמור להגשה' בכל כרטיס משרה שמעניינת אותך.</div>
+          `;
+        } else {
+          emptyState.innerHTML = `
+            <div class="text-4xl mb-2">🎉</div>
+            <div class="text-sm font-bold text-slate-300">סיימת לסקור את כל המשרות החדשות!</div>
+            <div class="text-xs text-slate-500 mt-1">כל המשרות במקבץ זה כבר מוינו (נשמרו או הוסרו).</div>
+          `;
+        }
         emptyState.classList.remove('hidden');
       } else {
         emptyState.classList.add('hidden');
