@@ -147,19 +147,30 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <span class="flex items-center gap-1.5"><span class="text-rose-400">✖️</span> משרות שסומנו להסרה:</span>
             <span id="syncRejectedCount" class="font-bold text-rose-400 text-sm">0</span>
           </div>
-          <div class="text-[11px] text-slate-400 mr-5">יעד: <span class="font-mono text-rose-400">data/rejected_jobs.json</span></div>
         </div>
 
         <p class="text-xs text-slate-400 leading-relaxed">
-          לחיצה על סנכרון תשמור ישירות את המשרות לקובצי הפרויקט במחשב שלך ותעדכן את מסדי הנתונים והדשבורד בזמן אמת.
+          הדשבורד שומר ומעדכן את כל המשרות שסימנת באופן רציף. כל המשרות השמורות והמוסרות נשמרות בהתאמה אישית עבורך.
         </p>
+
+        <div class="pt-2.5 border-t border-slate-800/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 text-xs">
+          <span class="text-slate-400">גיבוי סימונים מהיר:</span>
+          <div class="flex gap-1.5">
+            <button onclick="exportState()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-[11px]" title="העתק סימונים לגיבוי">
+              📋 העתק ללוח
+            </button>
+            <button onclick="importState()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-400 font-medium text-[11px]" title="הדבק סימונים מגיבוי">
+              📥 שחזר מגיבוי
+            </button>
+          </div>
+        </div>
 
         <div class="flex gap-2 justify-end pt-2">
           <button onclick="closeSyncModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white bg-slate-800">
             סגור
           </button>
           <button id="syncConfirmBtn" onclick="confirmSync()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-sky-500 hover:bg-sky-400 shadow-md shadow-sky-500/20 transition-all">
-            בצע סנכרון כעת
+            אשר ושמור
           </button>
         </div>
       </div>
@@ -169,16 +180,57 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
   <script>
     const rawJobsData = __JOBS_JSON__;
+    const initialSavedLinks = __INITIAL_SAVED_JSON__;
+    const initialRejectedLinks = __INITIAL_REJECTED_JSON__;
     let currentFilter = 'all';
     let currentSort = 'desc';
     const STORAGE_KEY = 'ido_job_triage_store';
 
     function loadTriageState() {
+      let state = {};
+      if (typeof initialSavedLinks !== 'undefined' && Array.isArray(initialSavedLinks)) {
+        initialSavedLinks.forEach(link => { state[link] = 'saved'; });
+      }
+      if (typeof initialRejectedLinks !== 'undefined' && Array.isArray(initialRejectedLinks)) {
+        initialRejectedLinks.forEach(link => { state[link] = 'rejected'; });
+      }
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
-        return stored ? JSON.parse(stored) : {};
+        if (stored) {
+          const userState = JSON.parse(stored);
+          Object.assign(state, userState);
+        }
+      } catch (e) {}
+      return state;
+    }
+
+    function exportState() {
+      const state = loadTriageState();
+      const jsonStr = JSON.stringify(state);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(jsonStr).then(() => {
+          showToast('📋', 'הסימונים הועתקו ללוח! הדבק אותם באתר השני');
+        }).catch(() => {
+          prompt('העתק את קוד הסימונים:', jsonStr);
+        });
+      } else {
+        prompt('העתק את קוד הסימונים:', jsonStr);
+      }
+    }
+
+    function importState() {
+      const input = prompt('הדבק כאן את קוד הסימונים שהעתקת מהאתר השני:');
+      if (!input) return;
+      try {
+        const parsed = JSON.parse(input);
+        if (typeof parsed === 'object' && parsed !== null) {
+          saveTriageState(parsed);
+          jobStates = parsed;
+          updateUI();
+          showToast('✅', 'הסימונים יובאו ועודכנו בהצלחה!');
+        }
       } catch (e) {
-        return {};
+        showToast('❌', 'קוד סימונים לא תקין');
       }
     }
 
@@ -457,31 +509,33 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       const syncBtn = document.getElementById('syncConfirmBtn');
       if (syncBtn) {
         syncBtn.disabled = true;
-        syncBtn.textContent = "מסנכרן למחשב...";
+        syncBtn.textContent = "שומר סימונים...";
       }
 
-      try {
-        const response = await fetch('http://127.0.0.1:8765/api/sync', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ saved: savedList, rejected: rejectedList })
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          closeSyncModal();
-          showToast('✅', `סונכרן למחשב בהצלחה! (${data.saved_count} שמורות, ${data.rejected_count} הוסרו)`);
-        } else {
-          throw new Error('Sync server returned error');
-        }
-      } catch (err) {
-        closeSyncModal();
-        showToast('⚠️', 'נשמר בדפדפן. לסנכרון לקובצי המחשב, הפעל: python sync_server.py');
-      } finally {
-        if (syncBtn) {
-          syncBtn.disabled = false;
-          syncBtn.textContent = "בצע סנכרון כעת";
-        }
+      saveTriageState(jobStates);
+
+      const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      if (isLocalHost) {
+        try {
+          const response = await fetch('/api/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ saved: savedList, rejected: rejectedList })
+          });
+          if (response.ok) {
+            const data = await response.json();
+            closeSyncModal();
+            showToast('✅', `סונכרן למחשב בהצלחה! (${data.saved_count} שמורות, ${data.rejected_count} הוסרו)`);
+            return;
+          }
+        } catch (err) {}
+      }
+
+      closeSyncModal();
+      showToast('✅', `כל הסימונים שמורים ומעודכנים! (${savedList.length} שמורות, ${rejectedList.length} הוסרו)`);
+      if (syncBtn) {
+        syncBtn.disabled = false;
+        syncBtn.textContent = "אשר ושמור";
       }
     }
 
@@ -491,10 +545,34 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 </html>"""
 
 def generate_interactive_html(jobs, title="דוח משרות אינטראקטיבי | עידו גל", is_weekly=False):
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    saved_file = os.path.join(project_root, "data", "saved_jobs.json")
+    rejected_file = os.path.join(project_root, "data", "rejected_jobs.json")
+
+    saved_links = []
+    if os.path.exists(saved_file):
+        try:
+            with open(saved_file, "r", encoding="utf-8") as f:
+                saved_data = json.load(f)
+                saved_links = [j.get("link") for j in saved_data if j.get("link")]
+        except Exception:
+            pass
+
+    rejected_links = []
+    if os.path.exists(rejected_file):
+        try:
+            with open(rejected_file, "r", encoding="utf-8") as f:
+                rejected_data = json.load(f)
+                rejected_links = rejected_data if isinstance(rejected_data, list) else list(rejected_data.keys())
+        except Exception:
+            pass
+
     total_jobs = len(jobs)
     now_str = datetime.now().strftime("%d.%m.%Y")
     report_type_label = "סיכום שבועי" if is_weekly else "סריקה יומית"
     jobs_json = json.dumps(jobs, ensure_ascii=False)
+    saved_json = json.dumps(saved_links, ensure_ascii=False)
+    rejected_json = json.dumps(rejected_links, ensure_ascii=False)
 
     html = HTML_TEMPLATE
     html = html.replace("__TITLE__", title)
@@ -502,6 +580,8 @@ def generate_interactive_html(jobs, title="דוח משרות אינטראקטי�
     html = html.replace("__NOW_STR__", now_str)
     html = html.replace("__TOTAL_JOBS__", str(total_jobs))
     html = html.replace("__JOBS_JSON__", jobs_json)
+    html = html.replace("__INITIAL_SAVED_JSON__", saved_json)
+    html = html.replace("__INITIAL_REJECTED_JSON__", rejected_json)
     return html
 
 def build_and_save_docs_app(jobs, is_weekly=False):

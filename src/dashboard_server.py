@@ -18,7 +18,8 @@ class SyncHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Request-Private-Network')
+        self.send_header('Access-Control-Allow-Private-Network', 'true')
 
     def do_OPTIONS(self):
         self.send_response(200)
@@ -26,7 +27,21 @@ class SyncHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        if self.path == '/api/status':
+        if self.path in ['/', '/index.html']:
+            index_path = os.path.join(PROJECT_ROOT, 'docs', 'index.html')
+            if os.path.exists(index_path):
+                self.send_response(200)
+                self._send_cors_headers()
+                self.send_header('Content-Type', 'text/html; charset=utf-8')
+                self.end_headers()
+                with open(index_path, 'rb') as f:
+                    self.wfile.write(f.read())
+                return
+            else:
+                self.send_response(404)
+                self.end_headers()
+                return
+        elif self.path == '/api/status':
             self.send_response(200)
             self._send_cors_headers()
             self.send_header('Content-Type', 'application/json; charset=utf-8')
