@@ -47,13 +47,18 @@
         </div>
 
         <div class="flex items-center gap-2.5 self-start md:self-auto">
+          <div id="cloudSyncStatus" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-xs font-bold text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>ענן מסונכרן בלייב</span>
+          </div>
+
           <button onclick="toggleTheme()" id="themeBtn" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/60 shadow-sm" title="החלף ערכת נושא">
             <span id="themeIcon">🌙</span>
           </button>
 
           <button onclick="triggerSyncModal()" class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-bold text-xs md:text-sm rounded-xl shadow-lg shadow-sky-500/20 active:scale-95 transition-all">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-            <span>סנכרן למערכת</span>
+            <span>סנכרון ענן</span>
           </button>
         </div>
       </div>
@@ -193,6 +198,84 @@
         }
       } catch (e) {}
       return state;
+    }
+
+    const CLOUD_SYNC_URL = 'https://job-finder-auto-default-rtdb.firebaseio.com/triage.json';
+    let cloudSyncTimeout = null;
+
+    async function fetchCloudSync() {
+      const cloudBadge = document.getElementById('cloudSyncStatus');
+      try {
+        const resp = await fetch(CLOUD_SYNC_URL, { cache: 'no-cache' });
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && (Array.isArray(data.saved) || Array.isArray(data.rejected))) {
+            let changed = false;
+            if (Array.isArray(data.saved)) {
+              data.saved.forEach(link => {
+                if (jobStates[link] !== 'saved') {
+                  jobStates[link] = 'saved';
+                  changed = true;
+                }
+              });
+            }
+            if (Array.isArray(data.rejected)) {
+              data.rejected.forEach(link => {
+                if (jobStates[link] !== 'rejected') {
+                  jobStates[link] = 'rejected';
+                  changed = true;
+                }
+              });
+            }
+            if (changed) {
+              saveTriageState(jobStates);
+              updateUI();
+            }
+            if (cloudBadge) {
+              cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> <span>ענן מסונכרן</span>';
+            }
+          }
+        }
+      } catch (e) {
+        if (cloudBadge) {
+          cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-500"></span> <span>מקומי</span>';
+        }
+      }
+    }
+
+    function scheduleCloudPush() {
+      if (cloudSyncTimeout) clearTimeout(cloudSyncTimeout);
+      cloudSyncTimeout = setTimeout(pushCloudSync, 400);
+    }
+
+    async function pushCloudSync() {
+      const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
+      const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
+      const payload = {
+        saved: savedList,
+        rejected: rejectedList,
+        updated_at: new Date().toISOString()
+      };
+
+      const cloudBadge = document.getElementById('cloudSyncStatus');
+      if (cloudBadge) {
+        cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> <span>מעדכן ענן...</span>';
+      }
+
+      try {
+        const resp = await fetch(CLOUD_SYNC_URL, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (resp.ok && cloudBadge) {
+          cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> <span>ענן מסונכרן</span>';
+        }
+      } catch (e) {
+        if (cloudBadge) {
+          cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-500"></span> <span>מקומי</span>';
+        }
+      }
     }
 
     function extractJobId(link) {
@@ -453,6 +536,7 @@
       }
       saveTriageState(jobStates);
       updateUI();
+      scheduleCloudPush();
     }
 
     function setFilter(filter, el) {
@@ -591,6 +675,7 @@
       }
 
       saveTriageState(jobStates);
+      await pushCloudSync();
 
       const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       if (isLocalHost) {
@@ -603,24 +688,35 @@
           if (response.ok) {
             const data = await response.json();
             closeSyncModal();
-            showToast('✅', `סונכרן למחשב בהצלחה! (${data.saved_count} שמורות, ${data.rejected_count} הוסרו)`);
+            showToast('☁️', `סונכרן לענן ולמחשב בהצלחה! (${data.saved_count} שמורות, ${data.rejected_count} הוסרו)`);
             return;
           }
         } catch (err) {}
       }
 
       closeSyncModal();
-      showToast('✅', `כל הסימונים שמורים ומעודכנים! (${savedList.length} שמורות, ${rejectedList.length} הוסרו)`);
+      showToast('☁️', `כל הסימונים סונכרנו לענן בהצלחה! (${savedList.length} שמורות, ${rejectedList.length} הוסרו)`);
       if (syncBtn) {
         syncBtn.disabled = false;
-        syncBtn.textContent = "אשר ושמור";
+        syncBtn.textContent = "סנכרן עכשיו לענן";
       }
     }
 
     window.onload = () => {
       checkUrlSync();
       renderCards();
+      fetchCloudSync();
     };
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        fetchCloudSync();
+      }
+    });
+
+    window.addEventListener('focus', () => {
+      fetchCloudSync();
+    });
   </script>
 </body>
 </html>
