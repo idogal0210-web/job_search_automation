@@ -305,9 +305,9 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
             continue
 
     # Fail CLOSED: Never return dummy positive scores or fabricated text on error
-    print(f"[-] Gemini evaluation failed for {company} - {title}. Disqualifying by default (score 0).")
+    print(f"[-] Gemini evaluation failed for {company} - {title}. Disqualifying by default (score -1).")
     return {
-        "match_score": 0,
+        "match_score": -1,
         "reasoning": "שגיאת ניתוח או חוסר נתונים - נפסל אוטומטית למניעת שגיאות.",
         "sector_key": "other",
         "sector": "לא רלוונטי",
@@ -647,6 +647,7 @@ def run_unified_daily_search():
             }
             processed_jobs.append(enriched_job)
             
+        if score != -1:
             if job.get("is_drone"):
                 new_links_drones.append(job["link"])
             else:
