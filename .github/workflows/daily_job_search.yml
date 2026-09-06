@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Daily Energy & Drone Job Searches
+      - name: Run Daily Energy & Drone Job Searches (with AI Auto-Healer)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -36,14 +36,14 @@ jobs:
           GOOGLE_SEARCH_API_KEY: ${{ secrets.GOOGLE_SEARCH_API_KEY }}
           GOOGLE_SEARCH_CX: ${{ secrets.GOOGLE_SEARCH_CX }}
         run: |
-          python daily_job_search_unified.py
+          python ai_healer.py daily_job_search_unified.py
 
       - name: Commit and push updated history, weekly archive, and interactive docs
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          git add data/ docs/
+          git add data/ docs/ src/ daily_job_search_unified.py ai_healer.py
           
           if ! git diff --staged --quiet; then
             git commit -m "chore: update history, archive and interactive docs [skip ci]"
