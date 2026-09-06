@@ -457,6 +457,28 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
             else:
                 badge_html = '<span style="background-color: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 6px;">⚡ תשתיות אנרגיה וגז טבעי</span>'
 
+            boxes_html = ""
+            if comp_domain and comp_domain.strip():
+                boxes_html += f"""
+                    <div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
+                        <span style="color: #38bdf8; font-weight: bold;">🏢 תחום ומוצר החברה:</span> {comp_domain}
+                    </div>"""
+            if job_sum and job_sum.strip():
+                boxes_html += f"""
+                    <div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
+                        <span style="color: #38bdf8; font-weight: bold;">📋 תקציר המשרה:</span> {job_sum}
+                    </div>"""
+            if strengths and strengths.strip():
+                boxes_html += f"""
+                    <div style="background-color: rgba(6, 78, 59, 0.2); border: 1px solid rgba(5, 150, 105, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;">
+                        <span style="color: #4ade80; font-weight: bold;">💪 נקודות חוזק מהניסיון שלך:</span> {strengths}
+                    </div>"""
+            if highlights and highlights.strip():
+                boxes_html += f"""
+                    <div style="background-color: rgba(120, 53, 15, 0.2); border: 1px solid rgba(217, 119, 6, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
+                        <span style="color: #fbbf24; font-weight: bold;">🔍 דגשים / דרישות נוספות:</span> {highlights}
+                    </div>"""
+
             cards_html += f"""
             <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 20px; margin-bottom: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.35);">
                 <!-- Header -->
@@ -472,27 +494,9 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
                     </div>
                 </div>
 
-                <!-- Structured 4 Distinct Styled Boxes -->
+                <!-- Structured Boxes -->
                 <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <!-- Box 1: Company Domain & Product -->
-                    <div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
-                        <span style="color: #38bdf8; font-weight: bold;">🏢 תחום ומוצר החברה:</span> {comp_domain}
-                    </div>
-
-                    <!-- Box 2: Job Summary -->
-                    <div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
-                        <span style="color: #38bdf8; font-weight: bold;">📋 תקציר המשרה:</span> {job_sum}
-                    </div>
-
-                    <!-- Box 3: Experience Strengths -->
-                    <div style="background-color: rgba(6, 78, 59, 0.2); border: 1px solid rgba(5, 150, 105, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;">
-                        <span style="color: #4ade80; font-weight: bold;">💪 נקודות חוזק מהניסיון שלך:</span> {strengths}
-                    </div>
-
-                    <!-- Box 4: Highlights / Requirements -->
-                    <div style="background-color: rgba(120, 53, 15, 0.2); border: 1px solid rgba(217, 119, 6, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;">
-                        <span style="color: #fbbf24; font-weight: bold;">🔍 דגשים / דרישות נוספות:</span> {highlights}
-                    </div>
+                    {boxes_html}
                 </div>
 
                 <!-- Action CTA Button -->
@@ -618,13 +622,29 @@ def run_unified_daily_search():
 
     # Deduplicate & filter against history AND persistent rejection set
     unique_candidates = []
-    seen_current = set()
+    seen_links_current = set()
+    seen_titles = set()
 
     for job in all_raw_jobs:
         link = job.get("link", "")
-        if not link or link in seen_current or link in seen_jobs or link in seen_drones or link in rejected_links:
+        base_link = link.split('?')[0] if link else ""
+        title_company = f"{job.get('title', '')}|{job.get('company', '')}".lower()
+
+        if not base_link:
             continue
-        seen_current.add(link)
+            
+        # Skip if seen in THIS run
+        if base_link in seen_links_current or title_company in seen_titles:
+            continue
+            
+        # Skip if seen in HISTORY (check both base and full link)
+        if base_link in seen_jobs or base_link in seen_drones or base_link in rejected_links:
+            continue
+        if link in seen_jobs or link in seen_drones or link in rejected_links:
+            continue
+            
+        seen_links_current.add(base_link)
+        seen_titles.add(title_company)
         unique_candidates.append(job)
 
     print(f"[+] Found {len(unique_candidates)} new candidate job listings to evaluate.")
