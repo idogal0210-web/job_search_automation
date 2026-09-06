@@ -186,7 +186,7 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     title_lower = title.lower()
     company_lower = company.lower()
     
-    for bl in ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון"]:
+    for bl in ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון", "raycatch", "רייקאץ'"]:
         if bl in company_lower:
             print(f"[BLACKLIST] Disqualifying {company} - {title} (Match score: 0)")
             return {
@@ -279,6 +279,9 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     """
     
     # Cascade: Primary gemini-3.8-flash -> Fallbacks gemini-3.7-flash, gemini-3.5-flash, gemini-3.6-flash, gemini-flash-latest
+    import time
+    time.sleep(4)  # Prevent Gemini Free Tier Rate Limits (429 RESOURCE_EXHAUSTED)
+    
     models_to_try = [
         "gemini-3.8-flash",
         "gemini-3.7-flash",
@@ -565,7 +568,7 @@ def run_unified_daily_search():
 
         # 10 Energy Tech & Advanced Infrastructure Companies
         "H2Pro", "Prisma Photonics", "Doral Energy-Tech Ventures", "GenCell Energy",
-        "ZOOZ Power", "Chakratec", "Raycatch", "Phinergy", "mPrest"
+        "ZOOZ Power", "Chakratec", "Phinergy", "mPrest"
     ]
     energy_jobs = fetch_linkedin_jobs(energy_keywords)
     for j in energy_jobs:
