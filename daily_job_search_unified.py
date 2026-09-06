@@ -186,7 +186,7 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     title_lower = title.lower()
     company_lower = company.lower()
     
-    for bl in ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון", "raycatch", "רייקאץ'"]:
+    for bl in ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון"]:
         if bl in company_lower:
             print(f"[BLACKLIST] Disqualifying {company} - {title} (Match score: 0)")
             return {
@@ -568,7 +568,7 @@ def run_unified_daily_search():
 
         # 10 Energy Tech & Advanced Infrastructure Companies
         "H2Pro", "Prisma Photonics", "Doral Energy-Tech Ventures", "GenCell Energy",
-        "ZOOZ Power", "Chakratec", "Phinergy", "mPrest"
+        "ZOOZ Power", "Chakratec", "Raycatch", "Phinergy", "mPrest"
     ]
     energy_jobs = fetch_linkedin_jobs(energy_keywords)
     for j in energy_jobs:
