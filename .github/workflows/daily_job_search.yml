@@ -2,7 +2,7 @@ name: Daily Job Search Automation
 
 on:
   schedule:
-    - cron: '23 5 * * 0-5'    # 08:23 שעון ישראל (05:23 UTC) — ימים ראשון עד שישי (ללא שבת)
+    - cron: '17 4 * * 0-5'    # 07:17 שעון ישראל (04:17 UTC) — ימים ראשון עד שישי (ללא שבת)
   workflow_dispatch:
 
 permissions:
