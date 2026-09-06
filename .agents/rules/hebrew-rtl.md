@@ -1,22 +1,19 @@
-# Hebrew RTL (Right-to-Left) Formatting Rule
+---
+description: Always enforce Right-to-Left (RTL) formatting and HTML wrapper for all Hebrew text, responses, code blocks, lists, and tables across all conversations and projects.
+globs: "*"
+---
 
-## Overview
-This rule enforces strict Right-to-Left (RTL) formatting and writing for all Hebrew outputs, chat communications, email templates, and web interfaces across Antigravity.
+# Hebrew RTL Mandatory Wrapper Rule
 
-## Core Directives
+## Primary Mandate
+Every single response containing Hebrew text MUST be completely wrapped in a Right-to-Left HTML block:
 
-### 1. Chat & Conversational Hebrew
-- All Hebrew text generated in chat responses must follow proper Right-to-Left (RTL) logical structure.
-- Align bullet lists, headers, and numbered lists to flow naturally from right to left.
-- When mixing Hebrew with English technical terms (e.g. "Gemini API", "GitHub Actions", "Python"), format the surrounding punctuation and sentence layout so the Hebrew text reads right-to-left without layout distortion.
+<div dir="rtl" style="text-align: right;">
+(Content goes here)
+</div>
 
-### 2. HTML Templates, Web Apps, and Email Reports
-- Every generated HTML template, web app, or email summary MUST include:
-  - `<html dir="rtl" lang="he">`
-  - `<body dir="rtl">`
-- Apply explicit CSS rules: `direction: rtl; text-align: right;` to all container elements, cards, tables, headers, and text blocks.
-- Ensure badges, buttons, and call-to-action links align properly to the right margin.
-
-### 3. Artifacts and Generated Documents
-- Any generated Markdown, HTML, PDF, or text artifacts containing Hebrew must prioritize RTL alignment and readability.
-
+## Execution Directives
+1. ALWAYS start Hebrew responses with `<div dir="rtl" style="text-align: right;">`.
+2. ALWAYS end Hebrew responses with `</div>`.
+3. Ensure all bullet lists, numbered lists, markdown tables, and headers flow naturally from right to left inside the wrapper.
+4. When mixing Hebrew with technical English terms (e.g. Python, GitHub, API, MCP), keep the layout strictly RTL without LTR text distortion.
