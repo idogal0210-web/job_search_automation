@@ -42,9 +42,16 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main || true
-          git add data/ seen_jobs.json seen_drones.json weekly_archive.json rejected_jobs.json docs/ || true
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update history, archive and interactive docs [skip ci]" && git push)
+          
+          git add data/ docs/
+          
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: update history, archive and interactive docs [skip ci]"
+            git pull --rebase origin main
+            git push origin main
+          else
+            echo "No changes to commit or push."
+          fi
 
       - name: Send Urgent Failure Alert Email (Exceptions Only)
         if: failure()
