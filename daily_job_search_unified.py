@@ -13,6 +13,8 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 
+load_dotenv()
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(BASE_DIR, "src"))
 
@@ -304,7 +306,25 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
         except Exception:
             continue
 
-    # Fail CLOSED: Never return dummy positive scores or fabricated text on error
+    # Fallback Keyword Scorer if Gemini API is exhausted
+    fallback_keywords = ["scada", "בקר", "solar", "drone", "כטב\"ם", "רחפן", "pv", "bess", "תפעול"]
+    if any(kw in title_lower or kw in company_lower for kw in fallback_keywords):
+        print(f"[!] Gemini exhausted. Fallback accepted: {company} - {title}")
+        return {
+            "match_score": 65,
+            "reasoning": "דורג על ידי מנגנון גיבוי חירום מבוסס מילות מפתח (עקב סיום מכסת Gemini API).",
+            "sector_key": "energy" if not is_drone else "drones",
+            "sector": "אנרגיה (גיבוי)" if not is_drone else "רחפנים (גיבוי)",
+            "company_domain_product": "",
+            "location": "ישראל",
+            "job_summary": snippet[:200],
+            "experience_strengths": "התאמה גולמית למילות מפתח בסורק הגיבוי.",
+            "key_highlights": "",
+            "company_size": "",
+            "junior_openness": "",
+            "work_model": ""
+        }
+        
     print(f"[-] Gemini evaluation failed for {company} - {title}. Disqualifying by default (score -1).")
     return {
         "match_score": -1,
