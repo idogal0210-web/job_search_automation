@@ -146,7 +146,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <span class="flex items-center gap-1.5"><span class="text-emerald-400">✔️</span> משרות שמורות להגשה:</span>
             <span id="syncSavedCount" class="font-bold text-emerald-400 text-sm">0</span>
           </div>
-          <div class="text-[11px] text-slate-400 mr-5">יעד: <span class="font-mono text-emerald-400">data/saved_jobs.json</span></div>
+          <div class="text-[11px] text-slate-400 mr-5">יעד: <span class="font-mono text-emerald-400">Firebase (Cloud Sync)</span></div>
 
           <div class="flex justify-between items-center text-slate-300 pt-1 border-t border-slate-800/80">
             <span class="flex items-center gap-1.5"><span class="text-rose-400">✖️</span> משרות שסומנו להסרה:</span>
@@ -204,8 +204,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       return state;
     }
 
+    
     const CLOUD_SYNC_URL = 'https://job-finder-auto-default-rtdb.firebaseio.com/triage.json';
     let cloudSyncTimeout = null;
+    let cloudLastUpdated = 0;
 
     async function fetchCloudSync() {
       const cloudBadge = document.getElementById('cloudSyncStatus');
@@ -213,7 +215,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const resp = await fetch(CLOUD_SYNC_URL, { cache: 'no-cache' });
         if (resp.ok) {
           const data = await resp.json();
-          if (data && (Array.isArray(data.saved) || Array.isArray(data.rejected))) {
+          if (data) {
+            if (data.updated_at) {
+              cloudLastUpdated = new Date(data.updated_at).getTime();
+            }
             let changed = false;
             if (Array.isArray(data.saved)) {
               data.saved.forEach(link => {
@@ -246,6 +251,67 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
       }
     }
+
+    function scheduleCloudPush() {
+      if (cloudSyncTimeout) clearTimeout(cloudSyncTimeout);
+      cloudSyncTimeout = setTimeout(pushCloudSync, 800);
+    }
+
+    async function pushCloudSync() {
+      const cloudBadge = document.getElementById('cloudSyncStatus');
+      if (cloudBadge) {
+        cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> <span>מעדכן ענן...</span>';
+      }
+
+      try {
+        // Pre-flight check to prevent silent overwrite of newer cloud state
+        const checkResp = await fetch(CLOUD_SYNC_URL, { cache: 'no-cache' });
+        if (checkResp.ok) {
+           const currentData = await checkResp.json();
+           if (currentData && currentData.updated_at) {
+               const remoteTime = new Date(currentData.updated_at).getTime();
+               if (remoteTime > cloudLastUpdated) {
+                   console.warn("Cloud has newer state. Merging before pushing to prevent overwrite.");
+                   if (Array.isArray(currentData.saved)) {
+                       currentData.saved.forEach(link => { if (!jobStates[link]) jobStates[link] = 'saved'; });
+                   }
+                   if (Array.isArray(currentData.rejected)) {
+                       currentData.rejected.forEach(link => { if (!jobStates[link]) jobStates[link] = 'rejected'; });
+                   }
+                   saveTriageState(jobStates);
+                   updateUI();
+               }
+           }
+        }
+      
+        const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
+        const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
+        
+        const timestamp = new Date().toISOString();
+        const payload = {
+          saved: savedList,
+          rejected: rejectedList,
+          updated_at: timestamp
+        };
+
+        const resp = await fetch(CLOUD_SYNC_URL, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (resp.ok) {
+          cloudLastUpdated = new Date(timestamp).getTime();
+          if (cloudBadge) {
+            cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> <span>ענן מסונכרן</span>';
+          }
+        }
+      } catch (e) {
+        if (cloudBadge) {
+          cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-500"></span> <span>מקומי</span>';
+        }
+      }
+    }
+
 
     function scheduleCloudPush() {
       if (cloudSyncTimeout) clearTimeout(cloudSyncTimeout);
@@ -710,17 +776,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
 def generate_interactive_html(jobs, title="דוח משרות אינטראקטיבי | עידו גל", is_weekly=False):
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    saved_file = os.path.join(project_root, "data", "saved_jobs.json")
     rejected_file = os.path.join(project_root, "data", "rejected_jobs.json")
 
     saved_links = []
-    if os.path.exists(saved_file):
-        try:
-            with open(saved_file, "r", encoding="utf-8") as f:
-                saved_data = json.load(f)
-                saved_links = [j.get("link") for j in saved_data if j.get("link")]
-        except Exception:
-            pass
 
     rejected_links = []
     if os.path.exists(rejected_file):

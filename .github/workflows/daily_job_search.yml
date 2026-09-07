@@ -8,10 +8,15 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: "daily-job-search"
+  cancel-in-progress: false
+
 jobs:
   job-search-daily:
     runs-on: ubuntu-latest
     name: "Daily Job Search - Ido Gal"
+    timeout-minutes: 25
 
     steps:
       - name: Checkout repository
@@ -21,6 +26,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
@@ -33,8 +39,6 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
-          GOOGLE_SEARCH_API_KEY: ${{ secrets.GOOGLE_SEARCH_API_KEY }}
-          GOOGLE_SEARCH_CX: ${{ secrets.GOOGLE_SEARCH_CX }}
         run: |
           python ai_healer.py daily_job_search_unified.py
 
@@ -43,7 +47,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          git add -A
+          # Only add specific directories to avoid committing AI healer patched python scripts
+          git add data/ docs/
           
           if ! git diff --staged --quiet; then
             git commit -m "chore: update history, archive and interactive docs [skip ci]"

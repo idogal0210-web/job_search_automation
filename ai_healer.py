@@ -1,8 +1,17 @@
 import os
 import sys
 import subprocess
+import ast
+import shutil
 from google import genai
 from google.genai import types
+
+def is_valid_python(code_str):
+    try:
+        ast.parse(code_str)
+        return True
+    except SyntaxError:
+        return False
 
 def run_script(script_name):
     print(f"[Healer] Running {script_name}...")
@@ -56,11 +65,26 @@ CRITICAL: Return ONLY the raw Python code. Do not include markdown formatting li
         fixed_code = fixed_code.strip()
         
         if not fixed_code or len(fixed_code) < 50:
-            print("[Healer] AI returned invalid code.")
+            print("[Healer] AI returned code that is too short.")
             return False
             
+        if not is_valid_python(fixed_code):
+            print("[Healer] AI returned invalid Python syntax.")
+            return False
+            
+        # Create backup
+        backup_name = f"{script_name}.backup"
+        shutil.copy2(script_name, backup_name)
+        
         with open(script_name, 'w', encoding='utf-8') as f:
             f.write(fixed_code)
+            
+        # Compile check
+        compile_result = subprocess.run([sys.executable, "-m", "py_compile", script_name], capture_output=True)
+        if compile_result.returncode != 0:
+            print("[Healer] AI returned code that fails py_compile. Restoring backup.")
+            shutil.copy2(backup_name, script_name)
+            return False
             
         print(f"[Healer] Successfully patched {script_name}. Retrying execution...")
         return True
@@ -103,7 +127,10 @@ def main():
             sys.exit(0)
         else:
             print(retry_result.stdout)
-            print("[Healer] Script failed again after healing.")
+            print("[Healer] Script failed again after healing. Restoring backup if exists.")
+            backup_name = f"{target_script}.backup"
+            if os.path.exists(backup_name):
+                shutil.copy2(backup_name, target_script)
             print(retry_result.stderr)
             sys.exit(retry_result.returncode)
     else:

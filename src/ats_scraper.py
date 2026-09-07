@@ -41,59 +41,78 @@ def fetch_comeet_positions(company_uid, company_name, default_sector):
     url = f"https://www.comeet.com/jobs-api/v1/companies/{company_uid}/positions?token=undefined"
     jobs = []
     try:
-        res = requests.get(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"}, timeout=6)
-        if res.status_code == 200:
-            data = res.json()
-            if isinstance(data, list):
-                for pos in data:
-                    title = pos.get("name", "")
-                    location_obj = pos.get("location", {})
-                    city = location_obj.get("city", "ישראל") if isinstance(location_obj, dict) else "ישראל"
-                    link = pos.get("url_active_page", "") or pos.get("url_comeet_hosted_page", "")
-                    details = pos.get("details", "") or pos.get("experience_level", "") or ""
-                    
-                    if link and title:
-                        jobs.append({
-                            "title": title,
-                            "company": company_name,
-                            "location": city,
-                            "link": link,
-                            "snippet": f"{company_name} - {title}. {details}"[:400],
-                            "sector": default_sector
-                        })
-    except Exception:
-        # Graceful fallback - never crash
-        pass
-    return jobs
+        res = requests.get(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"}, timeout=10)
+        res.raise_for_status()
+        data = res.json()
+        if isinstance(data, list):
+            for pos in data:
+                title = pos.get("name", "")
+                location_obj = pos.get("location", {})
+                city = location_obj.get("city", "ישראל") if isinstance(location_obj, dict) else "ישראל"
+                link = pos.get("url_active_page", "") or pos.get("url_comeet_hosted_page", "")
+                details = pos.get("details", "") or pos.get("experience_level", "") or ""
+                
+                if link and title:
+                    jobs.append({
+                        "title": title,
+                        "company": company_name,
+                        "location": city,
+                        "link": link,
+                        "snippet": f"{company_name} - {title}. {details}"[:400],
+                        "sector": default_sector
+                    })
+        return {"status": "success", "jobs": jobs}
+    except Exception as e:
+        print(f"[ERROR] Comeet scraper failed for {company_name}: {e}")
+        return {"status": "failed", "jobs": [], "error": str(e)}
 
 def get_energy_ats_jobs():
     """Extract and filter energy/infrastructure/mechanical ATS jobs."""
     all_jobs = []
+    failures = 0
+    successes = 0
     for comp in ENERGY_COMEET_COMPANIES:
-        pos_list = fetch_comeet_positions(comp["uid"], comp["company"], comp["sector"])
-        for p in pos_list:
-            text = f"{p['title']} {p['snippet']}".lower()
-            if any(kw in text for kw in ENERGY_KEYWORDS):
-                all_jobs.append(p)
-    return all_jobs
+        res = fetch_comeet_positions(comp["uid"], comp["company"], comp["sector"])
+        if res["status"] == "success":
+            successes += 1
+            for p in res["jobs"]:
+                text = f"{p['title']} {p['snippet']}".lower()
+                if any(kw in text for kw in ENERGY_KEYWORDS):
+                    all_jobs.append(p)
+        else:
+            failures += 1
+    return {"jobs": all_jobs, "successes": successes, "failures": failures, "attempted": len(ENERGY_COMEET_COMPANIES)}
 
 def get_drone_ats_jobs():
     """Extract and filter dedicated drone/UAV/C-UAS ATS jobs."""
     all_jobs = []
+    failures = 0
+    successes = 0
     for comp in DRONE_COMEET_COMPANIES:
-        pos_list = fetch_comeet_positions(comp["uid"], comp["company"], comp["sector"])
-        for p in pos_list:
-            text = f"{p['title']} {p['snippet']}".lower()
-            if any(kw in text for kw in DRONE_ANCHOR_KEYWORDS):
-                if not any(neg in text for neg in DRONE_NEGATIVE_KEYWORDS):
-                    all_jobs.append(p)
-    return all_jobs
+        res = fetch_comeet_positions(comp["uid"], comp["company"], comp["sector"])
+        if res["status"] == "success":
+            successes += 1
+            for p in res["jobs"]:
+                text = f"{p['title']} {p['snippet']}".lower()
+                if any(kw in text for kw in DRONE_ANCHOR_KEYWORDS):
+                    if not any(neg in text for neg in DRONE_NEGATIVE_KEYWORDS):
+                        all_jobs.append(p)
+        else:
+            failures += 1
+    return {"jobs": all_jobs, "successes": successes, "failures": failures, "attempted": len(DRONE_COMEET_COMPANIES)}
 
 def scrape_all_comeet_jobs():
     """Combined helper for all ATS Comeet jobs."""
-    return get_energy_ats_jobs() + get_drone_ats_jobs()
+    e_res = get_energy_ats_jobs()
+    d_res = get_drone_ats_jobs()
+    return {
+        "jobs": e_res["jobs"] + d_res["jobs"],
+        "successes": e_res["successes"] + d_res["successes"],
+        "failures": e_res["failures"] + d_res["failures"],
+        "attempted": e_res["attempted"] + d_res["attempted"]
+    }
 
 if __name__ == "__main__":
     print("[+] Testing ATS Scraper...")
-    all_comeet = scrape_all_comeet_jobs()
-    print(f"[+] Found {len(all_comeet)} total Comeet ATS jobs.")
+    res = scrape_all_comeet_jobs()
+    print(f"[+] Found {len(res['jobs'])} total Comeet ATS jobs. Successes: {res['successes']}, Failures: {res['failures']}")
