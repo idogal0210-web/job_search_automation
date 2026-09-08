@@ -40,7 +40,7 @@ jobs:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
         run: |
-          python ai_healer.py daily_job_search_unified.py
+          python main.py
 
       - name: Commit and push updated history, weekly archive, and interactive docs
         run: |

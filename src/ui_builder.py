@@ -1,6 +1,6 @@
 import os
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="he" dir="rtl" class="dark">
@@ -774,21 +774,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 </body>
 </html>"""
 
-def generate_interactive_html(jobs, title="דוח משרות אינטראקטיבי | עידו גל", is_weekly=False):
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    rejected_file = os.path.join(project_root, "data", "rejected_jobs.json")
-
+def generate_interactive_html(jobs, rejected_links, title="דוח משרות אינטראקטיבי | עידו גל", is_weekly=False):
     saved_links = []
-
-    rejected_links = []
-    if os.path.exists(rejected_file):
-        try:
-            with open(rejected_file, "r", encoding="utf-8") as f:
-                rejected_data = json.load(f)
-                rejected_links = rejected_data if isinstance(rejected_data, list) else list(rejected_data.keys())
-        except Exception:
-            pass
-
+    
     total_jobs = len(jobs)
     now_str = datetime.now().strftime("%d.%m.%Y")
     report_type_label = "סיכום שבועי" if is_weekly else "סריקה יומית"
@@ -806,29 +794,44 @@ def generate_interactive_html(jobs, title="דוח משרות אינטראקטי�
     html = html.replace("__INITIAL_REJECTED_JSON__", rejected_json)
     return html
 
-def build_and_save_docs_app(jobs, is_weekly=False):
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False):
     docs_dir = os.path.join(project_root, "docs")
     os.makedirs(docs_dir, exist_ok=True)
     out_file = os.path.join(docs_dir, "index.html")
     
-    html = generate_interactive_html(jobs, is_weekly=is_weekly)
+    html = generate_interactive_html(jobs, rejected_links, is_weekly=is_weekly)
     with open(out_file, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"[+] Successfully generated GitHub Pages interactive web app at: {out_file}")
     return out_file
 
-if __name__ == "__main__":
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    archive_file = os.path.join(project_root, "data", "weekly_archive.json")
-    if not os.path.exists(archive_file):
-        archive_file = os.path.join(project_root, "weekly_archive.json")
-        
-    if os.path.exists(archive_file):
+def update_weekly_archive(new_jobs, archive_file_path, rejected_set):
+    archive = []
+    if os.path.exists(archive_file_path):
         try:
-            with open(archive_file, "r", encoding="utf-8") as f:
-                archived_jobs = json.load(f)
-            build_and_save_docs_app(archived_jobs, is_weekly=False)
-            print(f"[+] Rebuilt docs/index.html with {len(archived_jobs)} jobs.")
-        except Exception as e:
-            print(f"[-] Error: {e}")
+            with open(archive_file_path, "r", encoding="utf-8") as f:
+                archive = json.load(f)
+        except Exception:
+            archive = []
+            
+    cutoff_date = (datetime.now() - timedelta(days=8)).strftime("%Y-%m-%d")
+    archive = [j for j in archive if j.get("date", "") >= cutoff_date]
+    
+    archive = [j for j in archive if j.get("link") not in rejected_set]
+
+    seen_links = {j.get("link") for j in archive}
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    
+    if new_jobs:
+        for job in new_jobs:
+            link = job.get("link")
+            if link and link not in seen_links and link not in rejected_set:
+                seen_links.add(link)
+                job_copy = dict(job)
+                job_copy["date"] = today_str
+                archive.append(job_copy)
+            
+    with open(archive_file_path, "w", encoding="utf-8") as f:
+        json.dump(archive, f, ensure_ascii=False, indent=2)
+
+    return archive
