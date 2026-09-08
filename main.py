@@ -150,7 +150,7 @@ def main():
     email_html = build_unified_html_email(top_5_jobs, top_3, dashboard_url)
     
     sender_email = os.getenv("SENDER_EMAIL")
-    sender_pwd = os.getenv("SENDER_PASSWORD")
+    sender_pwd = os.getenv("SENDER_APP_PASSWORD") or os.getenv("SENDER_PASSWORD")
     
     if sender_email and sender_pwd:
         send_email_report(sender_email, sender_pwd, top_5_jobs, email_html, health)
