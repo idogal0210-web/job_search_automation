@@ -16,6 +16,19 @@ class RunHealth:
     comeet_companies_failed: int = 0
     comeet_jobs_found: int = 0
 
+    gemini_attempts: int = 0
+    gemini_successes: int = 0
+    gemini_failures: int = 0
+    
+    candidates_found: int = 0
+    jobs_evaluated: int = 0
+    jobs_passed: int = 0
+    
+    email_attempts: int = 0
+    email_success: bool = False
+    
+    final_status: str = "UNKNOWN"
+
 def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=1):
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
