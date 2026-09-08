@@ -6,7 +6,7 @@ from google import genai
 
 load_dotenv()
 
-from src.fetchers import RunHealth, fetch_linkedin_jobs, scrape_comeet_companies
+from src.fetchers import RunHealth, fetch_linkedin_jobs
 from src.evaluators import evaluate_and_enrich_job_with_gemini
 from src.publishers import build_unified_html_email, send_email_report
 from src.ui_builder import build_and_save_docs_app, update_weekly_archive
@@ -32,14 +32,7 @@ def main():
     print("[FETCH] Scraping LinkedIn (Drones)...")
     linkedin_drones = fetch_linkedin_jobs(drone_keywords, health, max_pages=1)
     
-    print("[FETCH] Scraping Comeet (ATS)...")
-    comeet_res = scrape_comeet_companies()
-    health.comeet_companies_attempted = comeet_res.get("attempted", 0)
-    health.comeet_companies_successful = comeet_res.get("successes", 0)
-    health.comeet_companies_failed = comeet_res.get("failures", 0)
-    health.comeet_jobs_found = len(comeet_res.get("jobs", []))
-
-    all_raw_jobs = linkedin_energy + linkedin_drones + comeet_res.get("jobs", [])
+    all_raw_jobs = linkedin_energy + linkedin_drones
     
     # 3. Filter New Jobs
     new_jobs = []
@@ -112,7 +105,7 @@ def main():
         health.final_status = "FAILED_AI"
         sys.exit(1)
         
-    if health.linkedin_failures > 0 or health.comeet_companies_failed > 0:
+    if health.linkedin_failures > 0:
         health.final_status = "DEGRADED"
     else:
         health.final_status = "SUCCESS"
