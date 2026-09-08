@@ -55,14 +55,71 @@ def main():
     if client:
         for job in new_jobs:
             is_drone = "drone" in job.get("query", "").lower() or job.get("sector") in ["רחפנים אוטונומיים וביטחון", "רחפנים אוטונומיים"]
-            result = evaluate_and_enrich_job_with_gemini(
-                client, 
-                job["title"], 
-                job["company"], 
-                job["snippet"], 
-                is_drone, 
-                health
-            )
+            try:
+                result = evaluate_and_enrich_job_with_gemini(
+                    client, 
+                    job["title"], 
+                    job["company"], 
+                    job["snippet"], 
+                    is_drone, 
+                    health
+                )
+                time.sleep(4)
+            except Exception as e:
+                # Catch 429 specifically from google.genai or trigger fallback
+                if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+                    print(f"[API ERROR] Rate limit reached. Using keyword fallback for: {job.get('title')}")
+                else:
+                    print(f"[API ERROR] Failure, using keyword fallback for: {job.get('title')}. Error: {e}")
+                
+                # Fallback logic
+                keywords = ["gas", "energy", "mechanical", "control", "infrastructure", "cleantech", "drone", "uav", "scada"]
+                text = f"{job.get('title', '')} {job.get('snippet', '')}".lower()
+                match_count = sum(1 for word in keywords if word in text)
+                score = match_count * 15
+                
+                result = {
+                    "match_score": score,
+                    "concrete_matches_count": match_count,
+                    "reasoning": "הערכה באמצעות מילות מפתח עקב חסימת Rate Limit מה-API של גוגל.",
+                    "sector_key": "other",
+                    "sector": "כללי - Fallback",
+                    "location": "לא צוין",
+                    "company_domain_product": "מבוסס מילות מפתח (ללא AI)",
+                    "job_summary": "משרה מבוססת גיבוי עקב חסימה זמנית ב-API.",
+                    "experience_strengths": "נמצאו התאמות מילות מפתח.",
+                    "key_highlights": "הערכה חלופית אוטומטית.",
+                    "company_size": "N/A",
+                    "junior_openness": "N/A",
+                    "work_model": "N/A"
+                }
+                time.sleep(4)
+                
+            # Actually, evaluate_and_enrich_job_with_gemini catches exceptions internally and returns None!
+            # So if it returned None because all models failed with 429, we should apply fallback:
+            if result is None:
+                print(f"[API ERROR] Rate limit or failure for {job.get('title')}. Applying keyword fallback.")
+                keywords = ["gas", "energy", "mechanical", "control", "infrastructure", "cleantech", "drone", "uav", "scada"]
+                text = f"{job.get('title', '')} {job.get('snippet', '')}".lower()
+                match_count = sum(1 for word in keywords if word in text)
+                score = match_count * 15
+                
+                result = {
+                    "match_score": score,
+                    "concrete_matches_count": match_count,
+                    "reasoning": "הערכה באמצעות מילות מפתח עקב חסימת תור מה-API של גוגל.",
+                    "sector_key": "other",
+                    "sector": "כללי - Fallback",
+                    "location": "לא צוין",
+                    "company_domain_product": "מבוסס מילות מפתח (ללא AI)",
+                    "job_summary": "משרה מבוססת גיבוי עקב חסימה זמנית ב-API.",
+                    "experience_strengths": "נמצאו התאמות מילות מפתח.",
+                    "key_highlights": "הערכה חלופית אוטומטית.",
+                    "company_size": "N/A",
+                    "junior_openness": "N/A",
+                    "work_model": "N/A"
+                }
+                
             if result:
                 job.update(result)
                 if (is_drone and job["match_score"] >= 70) or (not is_drone and job["match_score"] >= 60):
@@ -78,9 +135,13 @@ def main():
 
     # 6. Update Dashboard
     print("[UI] Updating Weekly Archive and Dashboard...")
-    temp_archive = update_weekly_archive(top_5_jobs)
+    archive_file_path = os.path.join(os.path.dirname(__file__), "data", "weekly_archive.json")
+    rejected_set = set()
+    temp_archive = update_weekly_archive(top_5_jobs, archive_file_path, rejected_set)
     active_dashboard_jobs = temp_archive if temp_archive else top_5_jobs
-    build_and_save_docs_app(active_dashboard_jobs, is_weekly=False)
+    
+    project_root = os.path.dirname(__file__)
+    build_and_save_docs_app(active_dashboard_jobs, list(rejected_set), project_root, is_weekly=False)
     
     dashboard_url = "https://idogal0210-web.github.io/job_search_automation/"
 
