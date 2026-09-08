@@ -314,7 +314,7 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     health_metrics.gemini_failures += 1
     return None
 
-def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=2):
+def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=1):
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
         "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
@@ -666,29 +666,21 @@ def run_unified_daily_search():
     health.jobs_passed = len(processed_jobs)
     print(f"[INIT] {len(processed_jobs)} jobs passed the score threshold.")
 
-    # Build Dashboard HTML before updating archive, or use temp archive
-    temp_archive = update_weekly_archive(processed_jobs)
-    active_dashboard_jobs = temp_archive if temp_archive else processed_jobs
+    # ---------------------------------------------------------
+    # NEW CURATION: KEEP ONLY THE ABSOLUTE TOP 5 QUALITY JOBS
+    # ---------------------------------------------------------
+    processed_jobs.sort(key=lambda x: x.get("match_score", 0), reverse=True)
+    top_5_jobs = processed_jobs[:5]
+    top_3 = top_5_jobs[:3]
+
+    # Build Dashboard HTML using ONLY the top 5 jobs
+    temp_archive = update_weekly_archive(top_5_jobs)
+    active_dashboard_jobs = temp_archive if temp_archive else top_5_jobs
     build_and_save_docs_app(active_dashboard_jobs, is_weekly=False)
     
     dashboard_url = "https://idogal0210-web.github.io/job_search_automation/"
 
-    # Prepare Email
-    processed_jobs.sort(key=lambda x: x.get("match_score", 0), reverse=True)
-    top_3 = processed_jobs[:3]
-
-    energy_jobs_top5 = [j for j in processed_jobs if j.get("sector_key") == "energy"][:5]
-    drone_jobs_top5 = [j for j in processed_jobs if j.get("sector_key") in ["drones", "cuas", "avionics"]][:5]
-    curated_set = set(j.get("link") for j in energy_jobs_top5 + drone_jobs_top5)
-    remaining_jobs = [j for j in processed_jobs if j.get("link") not in curated_set]
-
-    while len(energy_jobs_top5) < 5 and remaining_jobs:
-        energy_jobs_top5.append(remaining_jobs.pop(0))
-    while len(drone_jobs_top5) < 5 and remaining_jobs:
-        drone_jobs_top5.append(remaining_jobs.pop(0))
-
-    curated_email_jobs = energy_jobs_top5 + drone_jobs_top5
-
+    curated_email_jobs = top_5_jobs
     email_html = build_unified_html_email(curated_email_jobs, top_3, dashboard_url)
 
     # Dispatch Single Unified Email
