@@ -14,6 +14,38 @@ from src.state_manager import load_state, save_state_atomic
 
 STATE_FILE = os.path.join(os.path.dirname(__file__), "data", "jobs_state.json")
 
+# FIX #5 (DRY): Single authoritative keyword-fallback function.
+# Previously this block was copy-pasted twice inside the evaluation loop
+# (once in the `except` branch, once in the `if result is None` branch),
+# creating a risk of the two copies diverging silently.
+FALLBACK_KEYWORDS = [
+    "gas", "energy", "mechanical", "control",
+    "infrastructure", "cleantech", "drone", "uav", "scada"
+]
+
+def apply_keyword_fallback(job: dict) -> dict:
+    """Score a job deterministically using keyword matching when Gemini is unavailable."""
+    text = f"{job.get('title', '')} {job.get('snippet', '')}".lower()
+    match_count = sum(1 for word in FALLBACK_KEYWORDS if word in text)
+    # FIX #6: Cap score at 100 to stay within the documented 0-100 range.
+    score = min(100, match_count * 15)
+    return {
+        "match_score": score,
+        "concrete_matches_count": match_count,
+        "reasoning": "הערכה באמצעות מילות מפתח עקב חסימת Rate Limit מה-API של גוגל.",
+        "sector_key": "other",
+        "sector": "כללי - Fallback",
+        "location": "לא צוין",
+        "company_domain_product": "מבוסס מילות מפתח (ללא AI)",
+        "job_summary": "משרה מבוססת גיבוי עקב חסימה זמנית ב-API.",
+        "experience_strengths": "נמצאו התאמות מילות מפתח.",
+        "key_highlights": "הערכה חלופית אוטומטית.",
+        "company_size": "N/A",
+        "junior_openness": "N/A",
+        "work_model": "N/A"
+    }
+
+
 def main():
     health = RunHealth()
     print("[INIT] Starting Morning Job Search Automation (Modular Architecture)")
@@ -24,25 +56,44 @@ def main():
     handled_links = set(state)
 
     # 2. Fetch Jobs
-    energy_keywords = ["SCADA operator", "Power plant technician", "Natural gas operator", "Mechanical technician energy", "מפעיל חדר בקרה"]
-    drone_keywords = ["Drone operator", "UAV technician", "System integration drone", "מטיס פנים", "כטב\"ם אינטגרציה"]
+    energy_keywords = [
+        "SCADA operator", "Power plant technician", "Natural gas operator",
+        "Mechanical technician energy", "מפעיל חדר בקרה"
+    ]
+    drone_keywords = [
+        "Drone operator", "UAV technician", "System integration drone",
+        "מטיס פנים", "כטב\"ם אינטגרציה"
+    ]
 
     print("[FETCH] Scraping LinkedIn (Energy)...")
     linkedin_energy = fetch_linkedin_jobs(energy_keywords, health, max_pages=1)
     print("[FETCH] Scraping LinkedIn (Drones)...")
     linkedin_drones = fetch_linkedin_jobs(drone_keywords, health, max_pages=1)
-    
+
     all_raw_jobs = linkedin_energy + linkedin_drones
-    
+
     # 3. Filter New Jobs
+    # FIX #2: Use j.get("link") to avoid a hard crash (KeyError) if a scraped
+    #         record is missing the "link" field. Skip only that bad record.
+    # FIX #3: Do NOT merge into handled_links here. Track new links in a
+    #         separate `seen_this_run` set and only persist them after the full
+    #         pipeline (evaluation → dashboard → email) completes successfully.
     new_jobs = []
+    seen_this_run = set()
+    skipped_malformed = 0
     for j in all_raw_jobs:
-        if j["link"] not in handled_links:
+        link = j.get("link")
+        if not link:
+            skipped_malformed += 1
+            print(f"[WARNING] Skipping malformed job with no 'link': {j.get('title', 'Unknown')}")
+            continue
+        if link not in handled_links and link not in seen_this_run:
             new_jobs.append(j)
-            handled_links.add(j["link"]) # mark as seen to avoid duplicates in the same run
-            
+            seen_this_run.add(link)
+
     health.candidates_found = len(new_jobs)
-    print(f"[FILTER] Found {len(new_jobs)} new jobs out of {len(all_raw_jobs)} total fetched.")
+    malformed_note = f" ({skipped_malformed} skipped, missing link)" if skipped_malformed else ""
+    print(f"[FILTER] Found {len(new_jobs)} new jobs out of {len(all_raw_jobs)} total.{malformed_note}")
 
     # 4. Evaluate with AI
     client = None
@@ -54,75 +105,41 @@ def main():
     processed_jobs = []
     if client:
         for job in new_jobs:
-            is_drone = "drone" in job.get("query", "").lower() or job.get("sector") in ["רחפנים אוטונומיים וביטחון", "רחפנים אוטונומיים"]
+            is_drone = (
+                "drone" in job.get("query", "").lower()
+                or job.get("sector") in ["רחפנים אוטונומיים וביטחון", "רחפנים אוטונומיים"]
+            )
+            result = None
             try:
                 result = evaluate_and_enrich_job_with_gemini(
-                    client, 
-                    job["title"], 
-                    job["company"], 
-                    job["snippet"], 
-                    is_drone, 
+                    client,
+                    job["title"],
+                    job["company"],
+                    job["snippet"],
+                    is_drone,
                     health
                 )
-                time.sleep(4)
             except Exception as e:
-                # Catch 429 specifically from google.genai or trigger fallback
                 if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
                     print(f"[API ERROR] Rate limit reached. Using keyword fallback for: {job.get('title')}")
                 else:
-                    print(f"[API ERROR] Failure, using keyword fallback for: {job.get('title')}. Error: {e}")
-                
-                # Fallback logic
-                keywords = ["gas", "energy", "mechanical", "control", "infrastructure", "cleantech", "drone", "uav", "scada"]
-                text = f"{job.get('title', '')} {job.get('snippet', '')}".lower()
-                match_count = sum(1 for word in keywords if word in text)
-                score = match_count * 15
-                
-                result = {
-                    "match_score": score,
-                    "concrete_matches_count": match_count,
-                    "reasoning": "הערכה באמצעות מילות מפתח עקב חסימת Rate Limit מה-API של גוגל.",
-                    "sector_key": "other",
-                    "sector": "כללי - Fallback",
-                    "location": "לא צוין",
-                    "company_domain_product": "מבוסס מילות מפתח (ללא AI)",
-                    "job_summary": "משרה מבוססת גיבוי עקב חסימה זמנית ב-API.",
-                    "experience_strengths": "נמצאו התאמות מילות מפתח.",
-                    "key_highlights": "הערכה חלופית אוטומטית.",
-                    "company_size": "N/A",
-                    "junior_openness": "N/A",
-                    "work_model": "N/A"
-                }
+                    print(f"[API ERROR] Failure for: {job.get('title')}. Error: {e}. Using keyword fallback.")
+            finally:
+                # Always sleep after an API attempt (success or failure) to
+                # maintain a steady 4-second gap between Gemini calls.
                 time.sleep(4)
-                
-            # Actually, evaluate_and_enrich_job_with_gemini catches exceptions internally and returns None!
-            # So if it returned None because all models failed with 429, we should apply fallback:
+
+            # FIX #5 (DRY): A single call to apply_keyword_fallback() handles
+            # both paths: explicit exception (result still None) and internal
+            # model-chain failure (evaluate_... returned None).
             if result is None:
-                print(f"[API ERROR] Rate limit or failure for {job.get('title')}. Applying keyword fallback.")
-                keywords = ["gas", "energy", "mechanical", "control", "infrastructure", "cleantech", "drone", "uav", "scada"]
-                text = f"{job.get('title', '')} {job.get('snippet', '')}".lower()
-                match_count = sum(1 for word in keywords if word in text)
-                score = match_count * 15
-                
-                result = {
-                    "match_score": score,
-                    "concrete_matches_count": match_count,
-                    "reasoning": "הערכה באמצעות מילות מפתח עקב חסימת תור מה-API של גוגל.",
-                    "sector_key": "other",
-                    "sector": "כללי - Fallback",
-                    "location": "לא צוין",
-                    "company_domain_product": "מבוסס מילות מפתח (ללא AI)",
-                    "job_summary": "משרה מבוססת גיבוי עקב חסימה זמנית ב-API.",
-                    "experience_strengths": "נמצאו התאמות מילות מפתח.",
-                    "key_highlights": "הערכה חלופית אוטומטית.",
-                    "company_size": "N/A",
-                    "junior_openness": "N/A",
-                    "work_model": "N/A"
-                }
-                
+                print(f"[FALLBACK] Applying keyword fallback for: {job.get('title')}")
+                result = apply_keyword_fallback(job)
+
             if result:
                 job.update(result)
-                if (is_drone and job["match_score"] >= 70) or (not is_drone and job["match_score"] >= 60):
+                threshold = 70 if is_drone else 60
+                if job["match_score"] >= threshold:
                     processed_jobs.append(job)
 
     health.jobs_passed = len(processed_jobs)
@@ -134,44 +151,77 @@ def main():
     top_3 = top_5_jobs[:3]
 
     # 6. Update Dashboard
+    # FIX #7: Wrap dashboard steps in try/except so a rendering failure does
+    #         not abort the entire pipeline (email and state save can still run).
     print("[UI] Updating Weekly Archive and Dashboard...")
     archive_file_path = os.path.join(os.path.dirname(__file__), "data", "weekly_archive.json")
     rejected_set = set()
-    temp_archive = update_weekly_archive(top_5_jobs, archive_file_path, rejected_set)
-    active_dashboard_jobs = temp_archive if temp_archive else top_5_jobs
-    
-    project_root = os.path.dirname(__file__)
-    build_and_save_docs_app(active_dashboard_jobs, list(rejected_set), project_root, is_weekly=False)
-    
+    active_dashboard_jobs = top_5_jobs
+    try:
+        temp_archive = update_weekly_archive(top_5_jobs, archive_file_path, rejected_set)
+        active_dashboard_jobs = temp_archive if temp_archive else top_5_jobs
+        project_root = os.path.dirname(__file__)
+        build_and_save_docs_app(active_dashboard_jobs, list(rejected_set), project_root, is_weekly=False)
+        print("[UI] Dashboard updated successfully.")
+    except Exception as e:
+        print(f"[UI ERROR] Dashboard/archive update failed: {e}. Continuing to email step.")
+
     dashboard_url = "https://idogal0210-web.github.io/job_search_automation/"
 
     # 7. Dispatch Email
     print("[EMAIL] Building and dispatching email...")
     email_html = build_unified_html_email(top_5_jobs, top_3, dashboard_url)
-    
+
     sender_email = os.getenv("SENDER_EMAIL")
     sender_pwd = os.getenv("SENDER_APP_PASSWORD") or os.getenv("SENDER_PASSWORD")
-    
-    if sender_email and sender_pwd:
+
+    # FIX #4: Named boolean — correctly handles the case where SENDER_EMAIL
+    # is set but the password is missing (previously: state silently never saved).
+    email_configured = bool(sender_email and sender_pwd)
+
+    if email_configured:
         send_email_report(sender_email, sender_pwd, top_5_jobs, email_html, health)
     else:
-        print("[WARNING] Missing email credentials.")
-        
-    # 8. Save State Atomically
-    if health.email_success or not sender_email:
-        save_state_atomic(STATE_FILE, list(handled_links))
-        print("[STATE] State saved securely.")
+        print("[WARNING] Missing email credentials (SENDER_EMAIL and/or SENDER_APP_PASSWORD).")
 
-    if health.gemini_failures > 0 and health.gemini_successes == 0 and health.jobs_evaluated > 0:
-        health.final_status = "FAILED_AI"
-        sys.exit(1)
-        
-    if health.linkedin_failures > 0:
+    # 8. Save State Atomically
+    # FIX #3 (continued): Only merge seen_this_run into handled_links now,
+    # after all pipeline steps completed. Wrapped in try/except so a
+    # state-save failure is logged but does not crash the process.
+    try:
+        if health.email_success or not email_configured:
+            handled_links.update(seen_this_run)
+            save_state_atomic(STATE_FILE, list(handled_links))
+            print("[STATE] State saved securely.")
+        else:
+            print("[STATE] Email failed to send; NOT saving state so these jobs are retried next run.")
+    except Exception as e:
+        print(f"[STATE ERROR] Failed to save state: {e}. Jobs may be re-evaluated next run.")
+
+    # 9. Determine Final Status
+    # FIX #1: If ALL Gemini calls failed but keyword fallback still produced
+    # passing jobs → DEGRADED_FALLBACK (not FAILED_AI + exit(1)).
+    # Only exit(1) when zero jobs passed AND evaluations ran (genuine failure).
+    if (
+        health.gemini_failures > 0
+        and health.gemini_successes == 0
+        and health.jobs_evaluated > 0
+    ):
+        if health.jobs_passed == 0:
+            health.final_status = "FAILED_AI"
+            print(f"[DONE] Final Status: {health.final_status}")
+            sys.exit(1)
+        else:
+            health.final_status = "DEGRADED_FALLBACK"
+    elif health.linkedin_failures > 0:
         health.final_status = "DEGRADED"
+    elif email_configured and not health.email_success:
+        health.final_status = "FAILED_EMAIL"
     else:
         health.final_status = "SUCCESS"
 
     print(f"[DONE] Final Status: {health.final_status}")
+
 
 if __name__ == "__main__":
     main()
