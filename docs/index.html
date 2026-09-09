@@ -105,6 +105,11 @@
           <span id="sortIcon">🔽</span>
           <span id="sortLabel">התאמה: מגבוה לנמוך</span>
         </button>
+
+        <button onclick="openDuplicatesModal()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-amber-500/10 text-amber-400 text-xs font-bold rounded-xl border border-slate-800 hover:border-amber-500/40 transition-all shadow-sm" title="סרוק כפילויות משרות">
+          <span>🔍</span>
+          <span>בדיקת כפילות משרות</span>
+        </button>
       </div>
     </nav>
 
@@ -168,6 +173,32 @@
           <button id="syncConfirmBtn" onclick="confirmSync()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-sky-500 hover:bg-sky-400 shadow-md shadow-sky-500/20 transition-all">
             אשר ושמור
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Duplicates Modal -->
+    <div id="duplicatesModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-lg w-full shadow-2xl space-y-4 max-h-[80vh] flex flex-col">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-full bg-amber-500/20 text-amber-400">
+              <span class="text-xl">🔍</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-base text-white">בדיקת כפילות משרות</h3>
+              <p class="text-xs text-slate-400">זיהוי משרות זהות או דומות לפי כותרת וחברה</p>
+            </div>
+          </div>
+          <button onclick="closeDuplicatesModal()" class="text-slate-500 hover:text-white text-xl font-bold leading-none">✕</button>
+        </div>
+
+        <div id="duplicatesContent" class="overflow-y-auto custom-scrollbar flex-1 space-y-3 text-xs">
+          <!-- filled by JS -->
+        </div>
+
+        <div class="pt-3 border-t border-slate-800/80 flex justify-end">
+          <button onclick="closeDuplicatesModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white bg-slate-800">סגור</button>
         </div>
       </div>
     </div>
@@ -749,6 +780,81 @@
         syncBtn.disabled = false;
         syncBtn.textContent = "סנכרן עכשיו לענן";
       }
+    }
+
+    function openDuplicatesModal() {
+      const content = document.getElementById('duplicatesContent');
+
+      // Normalize: lowercase, strip punctuation, collapse spaces
+      function normalize(str) {
+        if (!str) return '';
+        return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
+      }
+
+      // Group jobs by key = normalize(company) + '|' + normalize(title)
+      const groups = {};
+      rawJobsData.forEach((job, idx) => {
+        const key = normalize(job.company) + '|' + normalize(job.title);
+        if (!groups[key]) groups[key] = [];
+        groups[key].push({ ...job, _idx: idx });
+      });
+
+      const dupGroups = Object.values(groups).filter(g => g.length > 1);
+
+      if (dupGroups.length === 0) {
+        content.innerHTML = `
+          <div class="text-center py-8">
+            <div class="text-4xl mb-3">✅</div>
+            <div class="font-bold text-emerald-400 text-sm">לא נמצאו כפילויות!</div>
+            <div class="text-slate-500 mt-1">כל ${rawJobsData.length} המשרות בדשבורד ייחודיות.</div>
+          </div>`;
+      } else {
+        const totalDups = dupGroups.reduce((sum, g) => sum + g.length - 1, 0);
+        let html = `
+          <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 mb-2 flex items-center gap-2">
+            <span class="text-amber-400 font-bold text-sm">⚠️</span>
+            <span class="text-amber-300 font-semibold">נמצאו <span class="text-white">${dupGroups.length}</span> קבוצות עם <span class="text-white">${totalDups}</span> כפילויות בסך הכל</span>
+          </div>`;
+
+        dupGroups.forEach((group, gi) => {
+          const rep = group[0];
+          html += `
+            <div class="bg-slate-800/60 border border-amber-500/20 rounded-xl p-3 space-y-2">
+              <div class="flex items-center gap-2 font-bold text-amber-300">
+                <span class="bg-amber-500/20 text-amber-400 rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-extrabold shrink-0">${gi + 1}</span>
+                <span>${rep.company || '—'} — ${rep.title || '—'}</span>
+                <span class="mr-auto bg-amber-500/20 text-amber-400 text-[10px] px-2 py-0.5 rounded-full">${group.length} הופעות</span>
+              </div>
+              <div class="space-y-1.5 pr-7">`;
+          group.forEach((job, ji) => {
+            const score = job.match_score || '—';
+            const date = job.date || '—';
+            const link = job.link || '#';
+            html += `
+                <div class="flex items-center justify-between bg-slate-900/70 rounded-lg px-2.5 py-1.5 border border-slate-700/50">
+                  <div class="flex items-center gap-2 text-slate-300">
+                    <span class="text-[10px] text-slate-500">#${ji + 1}</span>
+                    <span class="font-semibold text-emerald-400">${score}%</span>
+                    <span class="text-slate-500">${date}</span>
+                  </div>
+                  <a href="${link}" target="_blank" rel="noopener noreferrer"
+                     class="text-sky-400 hover:text-sky-300 font-bold underline underline-offset-2 text-[10px]">
+                    פתח ↗
+                  </a>
+                </div>`;
+          });
+          html += `</div></div>`;
+        });
+
+        content.innerHTML = html;
+      }
+
+      document.getElementById('duplicatesModal').classList.remove('hidden');
+      showToast('🔍', dupGroups.length > 0 ? `נמצאו ${dupGroups.length} קבוצות כפולות` : 'לא נמצאו כפילויות!');
+    }
+
+    function closeDuplicatesModal() {
+      document.getElementById('duplicatesModal').classList.add('hidden');
     }
 
     window.onload = () => {
