@@ -7,8 +7,8 @@ from google import genai
 load_dotenv()
 
 from src.fetchers import RunHealth, fetch_linkedin_jobs
-from src.evaluators import evaluate_and_enrich_job_with_gemini
-from src.publishers import build_unified_html_email, send_email_report
+from src.evaluators import evaluate_and_enrich_job_with_gemini, QuotaExhaustedError
+from src.publishers import send_email_report
 from src.ui_builder import build_and_save_docs_app, update_weekly_archive
 from src.state_manager import load_state, save_state_atomic
 
@@ -103,6 +103,7 @@ def main():
         print("[WARNING] GEMINI_API_KEY missing. Cannot evaluate jobs.")
 
     processed_jobs = []
+    gemini_quota_exhausted = False  # Circuit Breaker flag
     if client:
         for job in new_jobs:
             is_drone = (
@@ -110,28 +111,35 @@ def main():
                 or job.get("sector") in ["רחפנים אוטונומיים וביטחון", "רחפנים אוטונומיים"]
             )
             result = None
-            try:
-                result = evaluate_and_enrich_job_with_gemini(
-                    client,
-                    job["title"],
-                    job["company"],
-                    job["snippet"],
-                    is_drone,
-                    health
-                )
-            except Exception as e:
-                if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
-                    print(f"[API ERROR] Rate limit reached. Using keyword fallback for: {job.get('title')}")
-                else:
-                    print(f"[API ERROR] Failure for: {job.get('title')}. Error: {e}. Using keyword fallback.")
-            finally:
-                # Always sleep after an API attempt (success or failure) to
-                # maintain a steady 4-second gap between Gemini calls.
-                time.sleep(4)
 
-            # FIX #5 (DRY): A single call to apply_keyword_fallback() handles
-            # both paths: explicit exception (result still None) and internal
-            # model-chain failure (evaluate_... returned None).
+            if gemini_quota_exhausted:
+                # Quota already confirmed exhausted — skip Gemini entirely, no sleep needed.
+                print(f"[CIRCUIT BREAKER] Skipping Gemini for: {job.get('title')}")
+            else:
+                try:
+                    result = evaluate_and_enrich_job_with_gemini(
+                        client,
+                        job["title"],
+                        job["company"],
+                        job["snippet"],
+                        is_drone,
+                        health
+                    )
+                except QuotaExhaustedError:
+                    # Hard daily quota hit — activate circuit breaker for this run.
+                    gemini_quota_exhausted = True
+                    result = None
+                except Exception as e:
+                    if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
+                        print(f"[API ERROR] Rate limit reached. Using keyword fallback for: {job.get('title')}")
+                    else:
+                        print(f"[API ERROR] Failure for: {job.get('title')}. Error: {e}. Using keyword fallback.")
+                    result = None
+                finally:
+                    # Always sleep after a Gemini attempt to maintain a steady gap.
+                    time.sleep(4)
+
+            # Single DRY fallback call handles all failure paths.
             if result is None:
                 print(f"[FALLBACK] Applying keyword fallback for: {job.get('title')}")
                 result = apply_keyword_fallback(job)
@@ -170,7 +178,6 @@ def main():
 
     # 7. Dispatch Email
     print("[EMAIL] Building and dispatching email...")
-    email_html = build_unified_html_email(top_5_jobs, top_3, dashboard_url)
 
     sender_email = os.getenv("SENDER_EMAIL")
     sender_pwd = os.getenv("SENDER_APP_PASSWORD") or os.getenv("SENDER_PASSWORD")
@@ -180,7 +187,17 @@ def main():
     email_configured = bool(sender_email and sender_pwd)
 
     if email_configured:
-        send_email_report(sender_email, sender_pwd, top_5_jobs, email_html, health)
+        # Pass all 7 required arguments using named kwargs to prevent future
+        # mis-ordering if the signature ever changes.
+        send_email_report(
+            sender_email=sender_email,
+            sender_pwd=sender_pwd,
+            processed_jobs=processed_jobs,
+            curated_email_jobs=top_5_jobs,
+            top_3=top_3,
+            dashboard_url=dashboard_url,
+            health=health,
+        )
     else:
         print("[WARNING] Missing email credentials (SENDER_EMAIL and/or SENDER_APP_PASSWORD).")
 

@@ -28,10 +28,19 @@ NON_TECHNICAL_TITLES = [
     "collections", "salesforce", "account manager", "brand marketing", "vp of sales", "sales"
 ]
 
+
+class QuotaExhaustedError(Exception):
+    """Raised when the Gemini API daily quota is confirmed exhausted.
+    Signals the caller to activate the circuit breaker and skip Gemini
+    for ALL remaining jobs in this run, going straight to keyword fallback.
+    """
+    pass
+
+
 def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_drone, health_metrics):
     title_lower = title.lower()
     company_lower = company.lower()
-    
+
     # Deterministic Pre-Filters
     for bl in ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון"]:
         if bl in company_lower:
@@ -79,18 +88,17 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     12. "junior_openness": string.
     13. "work_model": string.
     """
-    
+
     time.sleep(1.5)
-    
+
     health_metrics.gemini_attempts += 1
-    
+
     models_to_try = [
-        "gemini-3.8-flash",
-        "gemini-3.7-flash",
-        "gemini-3.6-flash",
-        "gemini-3.5-flash"
+        "gemini-2.5-flash",
+        "gemini-2.0-flash",
+        "gemini-1.5-flash",
     ]
-    
+
     for model_name in models_to_try:
         try:
             response = client.models.generate_content(
@@ -101,28 +109,37 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
                 )
             )
             data = json.loads(response.text)
-            
+
             # Validation
             req_keys = ["match_score", "concrete_matches_count", "reasoning", "sector_key"]
             if not all(k in data for k in req_keys):
                 print(f"[VALIDATION] Missing keys in Gemini response from {model_name}")
                 continue
-                
+
             if not isinstance(data.get("match_score"), int) or not isinstance(data.get("concrete_matches_count"), int):
                 print(f"[VALIDATION] Type error in Gemini response from {model_name}")
                 continue
-                
+
             health_metrics.gemini_successes += 1
-            
+
             # Post-Gemini Python Deterministic Enforcement
             if data["concrete_matches_count"] < 3:
                 print(f"[VALIDATION] Job disqualified (concrete matches < 3): {company} - {title}")
                 return None
-                
+
             return data
-            
+
         except Exception as e:
-            print(f"[GEMINI] Failure with {model_name}: {e}")
+            err_str = str(e)
+            # Circuit Breaker: Hard daily quota exhaustion (429 + "quota" keyword).
+            # Retrying other models wastes the remaining quota — raise immediately
+            # so the caller can skip Gemini for all remaining jobs in this run.
+            if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str) and "quota" in err_str.lower():
+                print(f"[CIRCUIT BREAKER] Daily quota exhausted on {model_name}. Skipping all remaining Gemini calls.")
+                health_metrics.gemini_failures += 1
+                raise QuotaExhaustedError(f"Daily quota exhausted: {err_str}") from e
+            # Transient errors (503 overload, network blip) → try next model.
+            print(f"[GEMINI] Transient failure with {model_name}: {e}. Trying next model.")
             continue
 
     print(f"[ERROR] All Gemini models failed for {company} - {title}.")
