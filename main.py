@@ -42,7 +42,8 @@ def apply_keyword_fallback(job: dict) -> dict:
         "key_highlights": "הערכה חלופית אוטומטית.",
         "company_size": "N/A",
         "junior_openness": "N/A",
-        "work_model": "N/A"
+        "work_model": "N/A",
+        "company_requirements": "דרישות טכניות והתאמה לתחום על בסיס מילות מפתח (דרישות מפורטות בקישור המשרה)."
     }
 
 

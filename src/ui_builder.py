@@ -117,6 +117,36 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       </div>
     </nav>
 
+    <!-- Contextual Action Bar for Saved Jobs (Export to Excel) -->
+    <div id="savedActionBar" class="hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-emerald-950/40 border border-emerald-500/30 p-3.5 rounded-2xl">
+      <div class="flex items-center gap-2.5">
+        <span class="text-xl">⭐</span>
+        <div>
+          <div class="text-xs font-bold text-emerald-300">משרות ששמרת להגשה</div>
+          <div class="text-[11px] text-slate-400">ייצוא מהיר של כל המשרות השמורות לקובץ Excel מסודר עם קישורים ישירים.</div>
+        </div>
+      </div>
+      <button onclick="exportSavedToExcel()" class="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md shadow-emerald-500/20 active:scale-95 transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        <span>ייצוא לאקסל (Excel)</span>
+      </button>
+    </div>
+
+    <!-- Contextual Action Bar for Rejected Jobs (Permanent Delete & Reset) -->
+    <div id="rejectedActionBar" class="hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-rose-950/40 border border-rose-500/30 p-3.5 rounded-2xl">
+      <div class="flex items-center gap-2.5">
+        <span class="text-xl">🗑️</span>
+        <div>
+          <div class="text-xs font-bold text-rose-300">משרות שסומנו להסרה (✖️)</div>
+          <div class="text-[11px] text-slate-400">לחיצה על מחיקה תנקה את כל הרשימה לצמיתות מכל המכשירים ותאפס את המספר ל-0.</div>
+        </div>
+      </div>
+      <button onclick="clearAllRejected()" class="flex items-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow-md shadow-rose-500/20 active:scale-95 transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+        <span>מחיקה לצמיתות ואיפוס</span>
+      </button>
+    </div>
+
     <!-- Job Cards List -->
     <main id="cardsContainer" class="space-y-4"></main>
 
@@ -526,6 +556,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const jobSum = job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.';
         const strengths = job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.';
         const highlights = job.key_highlights || (job.work_model ? `מודל עבודה: ${job.work_model} | פתיחות: ${job.junior_openness || '🟢 גבוהה'}` : 'פתיחות להנדסאים בעלי זיקה טכנית ויכולת למידה עצמאית.');
+        const companyReqs = job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).';
 
         const card = document.createElement('article');
         card.setAttribute('data-id', id);
@@ -534,14 +565,21 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         card.innerHTML = `
           <!-- Top row: Category tag, Big Title, Match Score -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3 mb-4">
-            <div>
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-slate-800/80 pb-3 mb-4">
+            <div class="flex-1">
               <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${badgeColor} border inline-block mb-1.5">
                 ${sectorBadge}
               </span>
               <h2 class="text-lg font-bold text-white tracking-tight">${company} - ${title} <span class="text-xs font-normal text-slate-400 mr-2">• ${loc}</span></h2>
+              <!-- Sub-header: דרישות החברה עבור המשרה -->
+              <div class="mt-2 text-xs bg-slate-950/80 border border-sky-500/25 rounded-xl px-3 py-2 text-slate-300 flex items-start gap-2 shadow-inner">
+                <span class="font-bold text-sky-400 shrink-0 flex items-center gap-1">
+                  <span>📌</span> דרישות החברה עבור המשרה:
+                </span>
+                <span class="leading-relaxed text-slate-200">${companyReqs}</span>
+              </div>
             </div>
-            <div class="self-start sm:self-auto">
+            <div class="self-start sm:self-auto shrink-0">
               <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
                 <span>${score}%</span> התאמה
               </span>
@@ -716,6 +754,23 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       document.getElementById('progressBar').style.width = pct + '%';
       document.getElementById('progressText').textContent = `סקרת ${triaged} מתוך ${total} משרות השבוע (${pct}%) • סה"כ שמורות: ${totalSavedInStore} | סה"כ הוסרו: ${totalRejectedInStore}`;
 
+      const savedBar = document.getElementById('savedActionBar');
+      const rejectedBar = document.getElementById('rejectedActionBar');
+      if (savedBar) {
+        if (currentFilter === 'saved') {
+          savedBar.classList.remove('hidden');
+        } else {
+          savedBar.classList.add('hidden');
+        }
+      }
+      if (rejectedBar) {
+        if (currentFilter === 'rejected') {
+          rejectedBar.classList.remove('hidden');
+        } else {
+          rejectedBar.classList.add('hidden');
+        }
+      }
+
       const emptyState = document.getElementById('emptyState');
       if (visibleCount === 0) {
         if (currentFilter === 'rejected') {
@@ -859,6 +914,97 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     function closeDuplicatesModal() {
       document.getElementById('duplicatesModal').classList.add('hidden');
+    }
+
+    function clearAllRejected() {
+      const rejectedKeys = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
+      if (rejectedKeys.length === 0) {
+        showToast('ℹ️', 'אין משרות מוסרות למחיקה');
+        return;
+      }
+
+      if (!confirm(`האם אתה בטוח שברצונך למחוק לצמיתות ${rejectedKeys.length} משרות שהוסרו ולאפס את המונה?`)) {
+        return;
+      }
+
+      rejectedKeys.forEach(id => {
+        delete jobStates[id];
+      });
+
+      saveTriageState(jobStates);
+      updateUI();
+      scheduleCloudPush();
+      showToast('🗑️', 'כל המשרות שהוסרו נמחקו לצמיתות והמונה אופס');
+    }
+
+    function exportSavedToExcel() {
+      const savedJobs = (rawJobsData || []).filter(job => jobStates[job.link] === 'saved');
+      if (savedJobs.length === 0) {
+        showToast('⚠️', 'לא נמצאו משרות שמורות לייצוא');
+        return;
+      }
+
+      // UTF-8 BOM for seamless Hebrew display in Microsoft Excel
+      const BOM = '\uFEFF';
+      const headers = [
+        'חברה',
+        'כותרת משרה',
+        'ציון התאמה',
+        'תחום',
+        'מיקום',
+        'דרישות החברה עבור המשרה',
+        'תחום ומוצר החברה',
+        'תקציר המשרה',
+        'נקודות חוזק מהניסיון',
+        'דגשים ומודל עבודה',
+        'קישור ישיר להגשה',
+        'תאריך'
+      ];
+
+      const escapeCSV = (val) => {
+        if (val === null || val === undefined) return '""';
+        const str = String(val).replace(/"/g, '""');
+        return `"${str}"`;
+      };
+
+      const rows = savedJobs.map(job => {
+        const score = job.match_score ? `${job.match_score}%` : '';
+        const reqs = job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) : '') || '';
+        const domain = job.company_domain_product || job.company_summary || '';
+        const summary = job.job_summary || job.company_summary || '';
+        const strengths = job.experience_strengths || job.reasoning || '';
+        const highlights = job.key_highlights || (job.work_model ? `מודל: ${job.work_model}` : '');
+        const date = job.date || '';
+
+        return [
+          escapeCSV(job.company || ''),
+          escapeCSV(job.title || ''),
+          escapeCSV(score),
+          escapeCSV(job.sector || job.sector_key || ''),
+          escapeCSV(job.location || 'ישראל'),
+          escapeCSV(reqs),
+          escapeCSV(domain),
+          escapeCSV(summary),
+          escapeCSV(strengths),
+          escapeCSV(highlights),
+          escapeCSV(job.link || ''),
+          escapeCSV(date)
+        ].join(',');
+      });
+
+      const csvContent = BOM + [headers.map(escapeCSV).join(','), ...rows].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const dateStr = new Date().toISOString().slice(0, 10);
+      a.href = url;
+      a.download = `משרות_שמורות_עידו_גל_${dateStr}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showToast('📊', `יוצאו ${savedJobs.length} משרות שמורות לאקסל בהצלחה!`);
     }
 
     window.onload = () => {

@@ -87,6 +87,7 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     11. "company_size": string.
     12. "junior_openness": string.
     13. "work_model": string.
+    14. "company_requirements": 1-2 sentence Hebrew summary of company requirements (degree/practical engineer, required experience, certifications, and technical tools).
     """
 
     time.sleep(1.5)
