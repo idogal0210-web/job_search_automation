@@ -992,7 +992,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         ].join(',');
       });
 
-      const csvContent = BOM + [headers.map(escapeCSV).join(','), ...rows].join('\r\n');
+      const csvContent = BOM + [headers.map(escapeCSV).join(','), ...rows].join(String.fromCharCode(13, 10));
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
