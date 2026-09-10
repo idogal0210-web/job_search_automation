@@ -281,6 +281,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               cloudLastUpdated = new Date(data.updated_at).getTime();
             }
             let changed = false;
+            if (Array.isArray(data.purged)) {
+              data.purged.forEach(link => {
+                if (jobStates[link] !== 'purged') {
+                  jobStates[link] = 'purged';
+                  changed = true;
+                }
+              });
+            }
             if (Array.isArray(data.saved)) {
               data.saved.forEach(link => {
                 if (jobStates[link] !== 'saved') {
@@ -291,9 +299,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             }
             if (Array.isArray(data.rejected)) {
               data.rejected.forEach(link => {
-                if (jobStates[link] !== 'rejected') {
-                  jobStates[link] = 'rejected';
-                  changed = true;
+                // If the job was purged locally, NEVER resurrect it to rejected
+                if (jobStates[link] !== 'purged' && jobStates[link] !== 'saved') {
+                  if (jobStates[link] !== 'rejected') {
+                    jobStates[link] = 'rejected';
+                    changed = true;
+                  }
                 }
               });
             }
@@ -315,7 +326,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     function scheduleCloudPush() {
       if (cloudSyncTimeout) clearTimeout(cloudSyncTimeout);
-      cloudSyncTimeout = setTimeout(pushCloudSync, 800);
+      cloudSyncTimeout = setTimeout(pushCloudSync, 400);
     }
 
     async function pushCloudSync() {
@@ -325,75 +336,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       }
 
       try {
-        // Pre-flight check to prevent silent overwrite of newer cloud state
-        const checkResp = await fetch(CLOUD_SYNC_URL, { cache: 'no-cache' });
-        if (checkResp.ok) {
-           const currentData = await checkResp.json();
-           if (currentData && currentData.updated_at) {
-               const remoteTime = new Date(currentData.updated_at).getTime();
-               if (remoteTime > cloudLastUpdated) {
-                   console.warn("Cloud has newer state. Merging before pushing to prevent overwrite.");
-                   if (Array.isArray(currentData.saved)) {
-                       currentData.saved.forEach(link => { if (!jobStates[link]) jobStates[link] = 'saved'; });
-                   }
-                   if (Array.isArray(currentData.rejected)) {
-                       currentData.rejected.forEach(link => { if (!jobStates[link]) jobStates[link] = 'rejected'; });
-                   }
-                   saveTriageState(jobStates);
-                   updateUI();
-               }
-           }
-        }
-      
         const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
         const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
+        const purgedList = Object.keys(jobStates).filter(id => jobStates[id] === 'purged');
         
         const timestamp = new Date().toISOString();
         const payload = {
           saved: savedList,
           rejected: rejectedList,
+          purged: purgedList,
           updated_at: timestamp
         };
 
-        const resp = await fetch(CLOUD_SYNC_URL, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        if (resp.ok) {
-          cloudLastUpdated = new Date(timestamp).getTime();
-          if (cloudBadge) {
-            cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> <span>ענן מסונכרן</span>';
-          }
-        }
-      } catch (e) {
-        if (cloudBadge) {
-          cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-500"></span> <span>מקומי</span>';
-        }
-      }
-    }
-
-
-    function scheduleCloudPush() {
-      if (cloudSyncTimeout) clearTimeout(cloudSyncTimeout);
-      cloudSyncTimeout = setTimeout(pushCloudSync, 400);
-    }
-
-    async function pushCloudSync() {
-      const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
-      const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
-      const payload = {
-        saved: savedList,
-        rejected: rejectedList,
-        updated_at: new Date().toISOString()
-      };
-
-      const cloudBadge = document.getElementById('cloudSyncStatus');
-      if (cloudBadge) {
-        cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> <span>מעדכן ענן...</span>';
-      }
-
-      try {
         const resp = await fetch(CLOUD_SYNC_URL, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -697,7 +651,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       const selectedSector = document.getElementById('sectorFilter').value;
       const cards = document.querySelectorAll('.job-card');
       let visibleCount = 0;
-      let saved = 0, rejected = 0;
+      let saved = 0, rejected = 0, purged = 0;
       const total = cards.length;
 
       cards.forEach(card => {
@@ -707,6 +661,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         if (state === 'saved') saved++;
         if (state === 'rejected') rejected++;
+        if (state === 'purged') purged++;
 
         const saveBtn = card.querySelector('.action-save-btn');
         const rejectBtn = card.querySelector('.action-reject-btn');
@@ -727,13 +682,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
 
         let matchesTab = false;
-        if (currentFilter === 'all') matchesTab = (state !== 'saved' && state !== 'rejected');
+        if (currentFilter === 'all') matchesTab = (state !== 'saved' && state !== 'rejected' && state !== 'purged');
         else if (currentFilter === 'saved') matchesTab = (state === 'saved');
         else if (currentFilter === 'rejected') matchesTab = (state === 'rejected');
 
         let matchesSector = (selectedSector === 'all' || sector === selectedSector);
 
-        if (matchesTab && matchesSector) {
+        if (matchesTab && matchesSector && state !== 'purged') {
           card.classList.remove('hidden');
           visibleCount++;
         } else {
@@ -743,13 +698,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
       const totalSavedInStore = Object.values(jobStates).filter(s => s === 'saved').length;
       const totalRejectedInStore = Object.values(jobStates).filter(s => s === 'rejected').length;
-      const pendingInBatch = total - (saved + rejected);
+      const pendingInBatch = total - (saved + rejected + purged);
 
       document.getElementById('countAll').textContent = Math.max(0, pendingInBatch);
       document.getElementById('countSaved').textContent = totalSavedInStore;
       document.getElementById('countRejected').textContent = totalRejectedInStore;
 
-      const triaged = saved + rejected;
+      const triaged = saved + rejected + purged;
       const pct = total > 0 ? Math.round((triaged / total) * 100) : 0;
       document.getElementById('progressBar').style.width = pct + '%';
       document.getElementById('progressText').textContent = `סקרת ${triaged} מתוך ${total} משרות השבוע (${pct}%) • סה"כ שמורות: ${totalSavedInStore} | סה"כ הוסרו: ${totalRejectedInStore}`;
@@ -927,14 +882,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         return;
       }
 
+      // Mark as purged: NEVER show in new jobs, and NEVER show in rejected
       rejectedKeys.forEach(id => {
-        delete jobStates[id];
+        jobStates[id] = 'purged';
       });
 
       saveTriageState(jobStates);
       updateUI();
-      scheduleCloudPush();
-      showToast('🗑️', 'כל המשרות שהוסרו נמחקו לצמיתות והמונה אופס');
+      pushCloudSync();
+      showToast('🗑️', `כל ${rejectedKeys.length} המשרות שהוסרו נמחקו לצמיתות והמונה אופס ל-0`);
     }
 
     function exportSavedToExcel() {
