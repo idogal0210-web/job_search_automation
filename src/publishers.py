@@ -91,8 +91,6 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
             comp_reqs = j.get('company_requirements', j.get('key_highlights', ''))
             if comp_reqs and comp_reqs.strip():
                 boxes_html += f'<div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(14, 165, 233, 0.4); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #38bdf8; font-weight: bold;">🎯 דרישות החברה עבור המשרה:</span> {comp_reqs}</div>'
-            if highlights and highlights.strip():
-                boxes_html += f'<div style="background-color: rgba(120, 53, 15, 0.2); border: 1px solid rgba(217, 119, 6, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #fbbf24; font-weight: bold;">🔍 דגשים / דרישות נוספות:</span> {highlights}</div>'
 
             cards_html += f"""
             <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 20px; margin-bottom: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.35);">
