@@ -465,6 +465,163 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       } catch (e) {}
     }
 
+    const KNOWN_COMPANY_DOMAINS = [
+      [['elbit', 'אלביט'], 'elbitsystems.com'],
+      [['rafael', 'רפאל'], 'rafael.co.il'],
+      [['solaredge'], 'solaredge.com'],
+      [['applied materials'], 'appliedmaterials.com'],
+      [['nova'], 'novami.com'],
+      [['ormat'], 'ormat.com'],
+      [['iai', 'התעשייה האווירית', 'israel aerospace'], 'iai.co.il'],
+      [['tower'], 'towersemi.com'],
+      [['intel', 'realsense'], 'intel.com'],
+      [['apple'], 'apple.com'],
+      [['amazon', 'aws'], 'amazon.com'],
+      [['nvidia'], 'nvidia.com'],
+      [['cato networks'], 'catonetworks.com'],
+      [['check point', 'checkpoint'], 'checkpoint.com'],
+      [['palo alto'], 'paloaltonetworks.com'],
+      [['cyberark'], 'cyberark.com'],
+      [['siemens'], 'siemens.com'],
+      [['hitachi'], 'hitachienergy.com'],
+      [['schneider'], 'se.com'],
+      [['ge vernova', 'ge '], 'gevernova.com'],
+      [['icl group'], 'icl-group.com'],
+      [['enlight'], 'enlightenergy.co.il'],
+      [['energix'], 'energix-group.com'],
+      [['doral'], 'doral-energy.com'],
+      [['netafim'], 'netafim.com'],
+      [['iscar'], 'iscar.com'],
+      [['kla'], 'kla.com'],
+      [['tesla'], 'tesla.com'],
+      [['xtend'], 'xtend.me'],
+      [['nextvision'], 'nextvision-sys.com'],
+      [['d-fend'], 'd-fendsolutions.com'],
+      [['smartshooter', 'smart shooter'], 'smart-shooter.com'],
+      [['spearuav'], 'spearuav.com'],
+      [['controp'], 'controp.com'],
+      [['bird aero'], 'birdaero.com'],
+      [['bluebird'], 'bluebird-uav.com'],
+      [['airobotics', 'איירובוטיקס'], 'airoboticsdrones.com'],
+      [['aerotor'], 'aerotor.com'],
+      [['heven'], 'hevenaerotech.com'],
+      [['sentrycs'], 'sentrycs.com'],
+      [['roboteam'], 'robo-team.com'],
+      [['opc energy'], 'opc-energy.com'],
+      [['חברת החשמל', 'iec '], 'iec.co.il'],
+      [['ashtrom'], 'ashtrom.co.il'],
+      [['alstom'], 'alstom.com'],
+      [['biocatch'], 'biocatch.com'],
+      [['claroty'], 'claroty.com'],
+      [['cheq'], 'cheq.ai'],
+      [['stratasys'], 'stratasys.com'],
+      [['philips'], 'philips.com'],
+      [['adama'], 'adama.com'],
+      [['airwayz'], 'airwayz.co'],
+      [['alumeshet'], 'alumeshet.co.il'],
+      [['bet shemesh', 'מנועי בית שמש'], 'bseltd.com'],
+      [['bruker'], 'bruker.com'],
+      [['fiverr'], 'fiverr.com'],
+      [['gett'], 'gett.com'],
+      [['lemonade'], 'lemonade.com'],
+      [['nestle', 'nestlé'], 'nestle.com'],
+      [['pepsico', 'קוקה קולה', 'central bottling'], 'pepsico.com'],
+      [["l'oréal", 'loreal'], 'loreal.com'],
+      [['manpower'], 'manpower.co.il'],
+      [['sqlink'], 'sqlink.com'],
+      [['flytrex'], 'flytrex.com'],
+      [['percepto'], 'percepto.com'],
+      [['parazero'], 'parazero.com'],
+      [['sightec'], 'sightec.com'],
+      [['regulus'], 'regulus.com'],
+      [['rada'], 'drs.com'],
+      [['bagira'], 'bagirasys.com'],
+      [['aitech'], 'aitechsystems.com'],
+      [['acs motion'], 'acsmotioncontrol.com'],
+      [['experis'], 'experis.co.il'],
+      [['matrix', 'מטריקס'], 'matrix-globals.com'],
+      [['ness', 'נס'], 'ness-tech.co.il'],
+      [['wix'], 'wix.com'],
+      [['monday'], 'monday.com'],
+      [['mobileye'], 'mobileye.com'],
+      [['shapir'], 'shapir.co.il'],
+      [['shikun', 'שיכון ובינוי'], 'shikunbinui.com'],
+      [['electra', 'אלקטרה'], 'electra.co.il'],
+      [['edf'], 'edf-re.com']
+    ];
+
+    function getCompanyLogoHtml(companyName, customLogo) {
+      const rawName = (companyName || 'חברה').trim();
+      const norm = rawName.toLowerCase();
+      
+      let domain = null;
+      for (const [keys, dom] of KNOWN_COMPANY_DOMAINS) {
+        if (keys.some(k => norm.includes(k))) {
+          domain = dom;
+          break;
+        }
+      }
+
+      if (!domain) {
+        const cleanLatin = rawName.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+        if (cleanLatin.length >= 3 && !['חברה', 'israel', 'group', 'ltd'].includes(cleanLatin)) {
+          domain = cleanLatin + '.com';
+        }
+      }
+
+      let cleanWords = rawName
+        .replace(/[()\\[\\]\\-–•,]/g, ' ')
+        .split(/\\s+/)
+        .filter(w => w && !['בע"מ', 'בע״מ', 'ltd', 'ltd.', 'inc', 'inc.', 'group', 'corp', 'israel', 'ישראל'].includes(w.toLowerCase()));
+      if (cleanWords.length === 0) cleanWords = [rawName];
+      
+      let initials = '';
+      if (cleanWords.length >= 2) {
+        initials = (cleanWords[0][0] || '') + (cleanWords[1][0] || '');
+      } else if (cleanWords.length === 1 && cleanWords[0].length >= 2) {
+        initials = cleanWords[0].slice(0, 2);
+      } else {
+        initials = cleanWords[0] ? cleanWords[0][0] : '🏢';
+      }
+      initials = initials.toUpperCase();
+
+      const gradients = [
+        'from-blue-600 to-indigo-700 text-white',
+        'from-sky-600 to-blue-800 text-white',
+        'from-emerald-600 to-teal-800 text-white',
+        'from-violet-600 to-purple-800 text-white',
+        'from-amber-600 to-orange-700 text-white',
+        'from-rose-600 to-pink-800 text-white',
+        'from-cyan-600 to-teal-700 text-white',
+        'from-indigo-600 to-purple-800 text-white'
+      ];
+      let hash = 0;
+      for (let i = 0; i < rawName.length; i++) {
+        hash = (hash << 5) - hash + rawName.charCodeAt(i);
+        hash |= 0;
+      }
+      const gradClass = gradients[Math.abs(hash) % gradients.length];
+      const logoUrl = customLogo || (domain ? `https://unavatar.io/${domain}?fallback=false` : null);
+      const safeComp = rawName.replace(/"/g, '&quot;');
+
+      if (logoUrl) {
+        return `
+          <div class="company-logo-badge relative w-10 h-10 rounded-full border border-slate-700/80 bg-slate-800/90 shadow-sm flex items-center justify-center overflow-hidden shrink-0 mt-0.5" title="${safeComp}">
+            <img src="${logoUrl}" alt="${safeComp}" loading="lazy" class="w-full h-full object-contain p-1 rounded-full bg-slate-900/60" onerror="this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex';" />
+            <div class="fallback-avatar w-full h-full rounded-full hidden items-center justify-center font-bold text-xs bg-gradient-to-br ${gradClass} select-none shadow-inner">
+              ${initials}
+            </div>
+          </div>
+        `;
+      } else {
+        return `
+          <div class="company-logo-badge relative w-10 h-10 rounded-full border border-slate-700/80 shadow-sm flex items-center justify-center overflow-hidden shrink-0 mt-0.5 bg-gradient-to-br ${gradClass} font-bold text-xs select-none shadow-inner" title="${safeComp}">
+            ${initials}
+          </div>
+        `;
+      }
+    }
+
     let jobStates = loadTriageState();
 
     function renderCards() {
@@ -524,6 +681,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const strengths = job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.';
         const highlights = job.key_highlights || (job.work_model ? `מודל עבודה: ${job.work_model} | פתיחות: ${job.junior_openness || '🟢 גבוהה'}` : 'פתיחות להנדסאים בעלי זיקה טכנית ויכולת למידה עצמאית.');
         const companyReqs = job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).';
+        const logoHtml = getCompanyLogoHtml(company, job.logo);
 
         const card = document.createElement('article');
         card.setAttribute('data-id', id);
@@ -531,22 +689,25 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         card.className = 'job-card bg-slate-900/80 border border-slate-800/90 rounded-2xl p-5 shadow-lg relative transition-all hover:border-slate-700';
 
         card.innerHTML = `
-          <!-- Top row: Category tag, Big Title, Match Score -->
-          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 border-b border-slate-800/80 pb-3 mb-4">
-            <div class="flex-1">
-              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${badgeColor} border inline-block mb-1.5">
-                ${sectorBadge}
-              </span>
-              <h2 class="text-lg font-bold text-white tracking-tight">${company} - ${title} <span class="text-xs font-normal text-slate-400 mr-2">• ${loc}</span></h2>
-              <!-- Sub-header: דרישות החברה עבור המשרה -->
-              <div class="mt-2 text-xs bg-slate-950/80 border border-sky-500/25 rounded-xl px-3 py-2 text-slate-300 flex items-start gap-2 shadow-inner">
-                <span class="font-bold text-sky-400 shrink-0 flex items-center gap-1">
-                  <span>📌</span> דרישות החברה עבור המשרה:
+          <!-- Top row: Company Logo + Category tag, Big Title, Match Score -->
+          <div class="flex items-start justify-between gap-3 border-b border-slate-800/80 pb-3 mb-4">
+            <div class="flex items-start gap-3 flex-1 min-w-0">
+              ${logoHtml}
+              <div class="flex-1 min-w-0">
+                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${badgeColor} border inline-block mb-1.5">
+                  ${sectorBadge}
                 </span>
-                <span class="leading-relaxed text-slate-200">${companyReqs}</span>
+                <h2 class="text-lg font-bold text-white tracking-tight leading-snug">${company} - ${title} <span class="text-xs font-normal text-slate-400 mr-2">• ${loc}</span></h2>
+                <!-- Sub-header: דרישות החברה עבור המשרה -->
+                <div class="mt-2 text-xs bg-slate-950/80 border border-sky-500/25 rounded-xl px-3 py-2 text-slate-300 flex items-start gap-2 shadow-inner">
+                  <span class="font-bold text-sky-400 shrink-0 flex items-center gap-1">
+                    <span>📌</span> דרישות החברה עבור המשרה:
+                  </span>
+                  <span class="leading-relaxed text-slate-200">${companyReqs}</span>
+                </div>
               </div>
             </div>
-            <div class="self-start sm:self-auto shrink-0">
+            <div class="self-start shrink-0">
               <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
                 <span>${score}%</span> התאמה
               </span>
