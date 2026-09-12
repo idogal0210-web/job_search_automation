@@ -241,6 +241,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
   <script>
     const rawJobsData = __JOBS_JSON__;
+    const historicalCatalog = __CATALOG_JSON__;
     const initialSavedLinks = __INITIAL_SAVED_JSON__;
     const initialRejectedLinks = __INITIAL_REJECTED_JSON__;
     let currentFilter = 'all';
@@ -475,7 +476,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         return;
       }
 
-      let sortedJobs = [...rawJobsData];
+      const seenLinks = new Set((rawJobsData || []).map(j => j.link));
+      let displayJobs = [...(rawJobsData || [])];
+
+      if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
+        Object.keys(jobStates).forEach(link => {
+          if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
+            displayJobs.push(historicalCatalog[link]);
+            seenLinks.add(link);
+          }
+        });
+      }
+
+      let sortedJobs = [...displayJobs];
       sortedJobs.sort((a, b) => {
         const scoreA = Number(a.match_score) || 0;
         const scoreB = Number(b.match_score) || 0;
@@ -964,7 +977,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     function exportSavedToExcel() {
-      const savedJobs = (rawJobsData || []).filter(job => jobStates[job.link] === 'saved');
+      const seenLinks = new Set((rawJobsData || []).map(j => j.link));
+      let allPotentialSaved = [...(rawJobsData || [])];
+      if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
+        Object.keys(jobStates).forEach(link => {
+          if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
+            allPotentialSaved.push(historicalCatalog[link]);
+            seenLinks.add(link);
+          }
+        });
+      }
+      const savedJobs = allPotentialSaved.filter(job => jobStates[job.link] === 'saved');
       if (savedJobs.length === 0) {
         showToast('⚠️', 'לא נמצאו משרות שמורות לייצוא');
         return;
@@ -1055,10 +1078,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 def generate_interactive_html(jobs, rejected_links, title="דוח משרות אינטראקטיבי | עידו גל", is_weekly=False):
     saved_links = []
     
+    # Load historical catalog to support rendering of all saved jobs
+    project_root = os.path.dirname(os.path.dirname(__file__))
+    catalog_path = os.path.join(project_root, "data", "historical_catalog.json")
+    catalog_data = {}
+    if os.path.exists(catalog_path):
+        try:
+            with open(catalog_path, "r", encoding="utf-8") as f:
+                catalog_data = json.load(f)
+        except Exception:
+            catalog_data = {}
+
     total_jobs = len(jobs)
     now_str = datetime.now().strftime("%d.%m.%Y")
     report_type_label = "סיכום שבועי" if is_weekly else "סריקה יומית"
     jobs_json = json.dumps(jobs, ensure_ascii=False)
+    catalog_json = json.dumps(catalog_data, ensure_ascii=False)
     saved_json = json.dumps(saved_links, ensure_ascii=False)
     rejected_json = json.dumps(rejected_links, ensure_ascii=False)
 
@@ -1068,6 +1103,7 @@ def generate_interactive_html(jobs, rejected_links, title="דוח משרות א�
     html = html.replace("__NOW_STR__", now_str)
     html = html.replace("__TOTAL_JOBS__", str(total_jobs))
     html = html.replace("__JOBS_JSON__", jobs_json)
+    html = html.replace("__CATALOG_JSON__", catalog_json)
     html = html.replace("__INITIAL_SAVED_JSON__", saved_json)
     html = html.replace("__INITIAL_REJECTED_JSON__", rejected_json)
     return html
@@ -1092,6 +1128,22 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set):
         except Exception:
             archive = []
             
+    # Always keep historical catalog updated with all jobs before pruning
+    project_root = os.path.dirname(os.path.dirname(archive_file_path))
+    catalog_path = os.path.join(project_root, "data", "historical_catalog.json")
+    catalog = {}
+    if os.path.exists(catalog_path):
+        try:
+            with open(catalog_path, "r", encoding="utf-8") as f:
+                catalog = json.load(f)
+        except Exception:
+            catalog = {}
+
+    for j in archive:
+        link = j.get("link")
+        if link and link not in catalog:
+            catalog[link] = j
+
     cutoff_date = (datetime.now() - timedelta(days=8)).strftime("%Y-%m-%d")
     archive = [j for j in archive if j.get("date", "") >= cutoff_date]
     
@@ -1108,8 +1160,16 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set):
                 job_copy = dict(job)
                 job_copy["date"] = today_str
                 archive.append(job_copy)
+                if link not in catalog:
+                    catalog[link] = job_copy
             
     with open(archive_file_path, "w", encoding="utf-8") as f:
         json.dump(archive, f, ensure_ascii=False, indent=2)
+
+    try:
+        with open(catalog_path, "w", encoding="utf-8") as f:
+            json.dump(catalog, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
 
     return archive
