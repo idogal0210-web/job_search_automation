@@ -12,3 +12,5 @@ sample_daily_report_preview.html
 sample_daily_report_dark_list_preview.html
 *.pdf
 .DS_Store
+*.bak
+data/*.bak
