@@ -36,7 +36,7 @@
             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
               סריקה יומית
             </span>
-            <span class="text-xs text-slate-400">11.09.2026</span>
+            <span class="text-xs text-slate-400">13.09.2026</span>
           </div>
           <h1 class="text-2xl font-black tracking-tight text-white flex items-center gap-2">
             🚀 דשבורד משרות אינטראקטיבי <span class="text-sky-400 font-medium text-lg">| עידו גל</span>
@@ -796,56 +796,86 @@
         return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
       }
 
-      // Group jobs by key = normalize(company) + '|' + normalize(title)
+      // Filter: ONLY active jobs in "משרות שנשמרו" or "משרות חדשות" (pending)
+      const activeJobs = (rawJobsData || []).filter(job => {
+        const state = jobStates[job.link] || 'pending';
+        return state === 'saved' || state === 'pending';
+      });
+
+      // Group jobs by normalized company + title
       const groups = {};
-      rawJobsData.forEach((job, idx) => {
+      activeJobs.forEach((job, idx) => {
         const key = normalize(job.company) + '|' + normalize(job.title);
         if (!groups[key]) groups[key] = [];
         groups[key].push({ ...job, _idx: idx });
       });
 
-      const dupGroups = Object.values(groups).filter(g => g.length > 1);
+      const dupGroups = Object.entries(groups).filter(([k, g]) => g.length > 1);
 
       if (dupGroups.length === 0) {
         content.innerHTML = `
           <div class="text-center py-8">
             <div class="text-4xl mb-3">✅</div>
             <div class="font-bold text-emerald-400 text-sm">לא נמצאו כפילויות!</div>
-            <div class="text-slate-500 mt-1">כל ${rawJobsData.length} המשרות בדשבורד ייחודיות.</div>
+            <div class="text-slate-400 text-xs mt-1">כל ${activeJobs.length} המשרות הפעילות (שמורות וחדשות) ייחודיות לחלוטין.</div>
           </div>`;
       } else {
-        const totalDups = dupGroups.reduce((sum, g) => sum + g.length - 1, 0);
+        const totalDups = dupGroups.reduce((sum, [k, g]) => sum + g.length - 1, 0);
         let html = `
-          <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 mb-2 flex items-center gap-2">
-            <span class="text-amber-400 font-bold text-sm">⚠️</span>
-            <span class="text-amber-300 font-semibold">נמצאו <span class="text-white">${dupGroups.length}</span> קבוצות עם <span class="text-white">${totalDups}</span> כפילויות בסך הכל</span>
+          <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 mb-2 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 text-xs">
+              <span class="text-amber-400 font-bold text-sm">⚠️</span>
+              <span class="text-amber-300 font-semibold">אותרו <span class="text-white font-bold">${dupGroups.length}</span> קבוצות עם <span class="text-white font-bold">${totalDups}</span> כפילויות במשרות השמורות והחדשות</span>
+            </div>
           </div>`;
 
-        dupGroups.forEach((group, gi) => {
+        dupGroups.forEach(([key, group], gi) => {
           const rep = group[0];
+          const encKey = encodeURIComponent(key);
           html += `
-            <div class="bg-slate-800/60 border border-amber-500/20 rounded-xl p-3 space-y-2">
-              <div class="flex items-center gap-2 font-bold text-amber-300">
-                <span class="bg-amber-500/20 text-amber-400 rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-extrabold shrink-0">${gi + 1}</span>
-                <span>${rep.company || '—'} — ${rep.title || '—'}</span>
-                <span class="mr-auto bg-amber-500/20 text-amber-400 text-[10px] px-2 py-0.5 rounded-full">${group.length} הופעות</span>
+            <div class="bg-slate-800/60 border border-amber-500/20 rounded-xl p-3 space-y-2.5">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-700/60 pb-2">
+                <div class="flex items-center gap-2 font-bold text-amber-300">
+                  <span class="bg-amber-500/20 text-amber-400 rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-extrabold shrink-0">${gi + 1}</span>
+                  <span class="text-xs sm:text-sm text-white">${rep.company || '—'} — ${rep.title || '—'}</span>
+                  <span class="bg-amber-500/20 text-amber-400 text-[10px] px-2 py-0.5 rounded-full font-bold">${group.length} מופעים</span>
+                </div>
+                <button onclick="purgeDuplicateGroup('${encKey}')" class="self-start sm:self-auto px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 rounded-lg text-[11px] font-bold flex items-center gap-1 transition-all active:scale-95" title="שמור מופע אחד ומחק את שאר הכפילויות">
+                  <span>⚡</span> השאר רק אחת ומחק כפילויות
+                </button>
               </div>
-              <div class="space-y-1.5 pr-7">`;
+              <div class="space-y-1.5 pr-2">`;
+
           group.forEach((job, ji) => {
             const score = job.match_score || '—';
             const date = job.date || '—';
             const link = job.link || '#';
+            const encLink = encodeURIComponent(link);
+            const state = jobStates[job.link] || 'pending';
+            const isSaved = state === 'saved';
+            const statusBadge = isSaved
+              ? `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px] font-extrabold flex items-center gap-1"><span>⭐</span> שמורה להגשה</span>`
+              : `<span class="bg-sky-500/20 text-sky-400 border border-sky-500/30 px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1"><span>🆕</span> משרה חדשה</span>`;
+
             html += `
-                <div class="flex items-center justify-between bg-slate-900/70 rounded-lg px-2.5 py-1.5 border border-slate-700/50">
-                  <div class="flex items-center gap-2 text-slate-300">
-                    <span class="text-[10px] text-slate-500">#${ji + 1}</span>
-                    <span class="font-semibold text-emerald-400">${score}%</span>
-                    <span class="text-slate-500">${date}</span>
+                <div class="flex items-center justify-between bg-slate-900/80 rounded-xl p-2.5 border border-slate-700/50 hover:border-slate-600 transition-all gap-2">
+                  <div class="flex flex-wrap items-center gap-2 text-slate-300 text-xs">
+                    <span class="text-[10px] text-slate-500 font-bold">#${ji + 1}</span>
+                    ${statusBadge}
+                    <span class="font-bold text-emerald-400">${score}%</span>
+                    <span class="text-slate-400 text-[11px]">${date}</span>
                   </div>
-                  <a href="${link}" target="_blank" rel="noopener noreferrer"
-                     class="text-sky-400 hover:text-sky-300 font-bold underline underline-offset-2 text-[10px]">
-                    פתח ↗
-                  </a>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <a href="${link}" target="_blank" rel="noopener noreferrer"
+                       class="text-sky-400 hover:text-sky-300 font-bold text-xs underline underline-offset-2 px-2 py-1">
+                      פתח ↗
+                    </a>
+                    <button onclick="purgeSingleJob('${encLink}')"
+                            class="px-2.5 py-1 bg-rose-500/15 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/30 rounded-lg text-xs font-bold flex items-center gap-1 transition-all active:scale-95"
+                            title="מחק כפילות זו">
+                      <span>🗑️</span> מחק
+                    </button>
+                  </div>
                 </div>`;
           });
           html += `</div></div>`;
@@ -855,7 +885,52 @@
       }
 
       document.getElementById('duplicatesModal').classList.remove('hidden');
-      showToast('🔍', dupGroups.length > 0 ? `נמצאו ${dupGroups.length} קבוצות כפולות` : 'לא נמצאו כפילויות!');
+    }
+
+    function purgeSingleJob(encLink) {
+      const link = decodeURIComponent(encLink);
+      if (!link) return;
+      jobStates[link] = 'purged';
+      saveTriageState(jobStates);
+      updateUI();
+      pushCloudSync();
+      showToast('🗑️', 'הכפילות נמחקה בהצלחה');
+      openDuplicatesModal();
+    }
+
+    function purgeDuplicateGroup(encKey) {
+      const targetKey = decodeURIComponent(encKey);
+      function normalize(str) {
+        if (!str) return '';
+        return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
+      }
+
+      const activeJobs = (rawJobsData || []).filter(job => {
+        const state = jobStates[job.link] || 'pending';
+        return (state === 'saved' || state === 'pending') && (normalize(job.company) + '|' + normalize(job.title)) === targetKey;
+      });
+
+      if (activeJobs.length <= 1) return;
+
+      // Sort: keep 'saved' first, then highest score
+      activeJobs.sort((a, b) => {
+        const aSaved = jobStates[a.link] === 'saved' ? 1 : 0;
+        const bSaved = jobStates[b.link] === 'saved' ? 1 : 0;
+        if (aSaved !== bSaved) return bSaved - aSaved;
+        return (Number(b.match_score) || 0) - (Number(a.match_score) || 0);
+      });
+
+      // Keep the first, purge the rest
+      const toPurge = activeJobs.slice(1);
+      toPurge.forEach(j => {
+        jobStates[j.link] = 'purged';
+      });
+
+      saveTriageState(jobStates);
+      updateUI();
+      pushCloudSync();
+      showToast('⚡', `הושארה משרה אחת ונמחקו ${toPurge.length} כפילויות`);
+      openDuplicatesModal();
     }
 
     function closeDuplicatesModal() {
