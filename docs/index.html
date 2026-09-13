@@ -679,18 +679,6 @@
         const companyReqs = job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).';
         const logoHtml = getCompanyLogoHtml(company, job.logo);
 
-        function trimConcise(text, maxLen) {
-          if (!text) return '';
-          const clean = text.trim();
-          if (clean.length <= maxLen) return clean;
-          return clean.slice(0, maxLen).replace(/[\s,.-]+$/, '') + '...';
-        }
-
-        const domainMobile = trimConcise(domain, 80);
-        const jobSumMobile = trimConcise(jobSum, 85);
-        const strengthsMobile = trimConcise(strengths, 85);
-        const companyReqsMobile = trimConcise(companyReqs, 95);
-
         const card = document.createElement('article');
         card.setAttribute('data-id', id);
         card.setAttribute('data-sector', secKey);
@@ -711,15 +699,12 @@
                     📍 ${loc}
                   </span>
                 </h2>
-                <!-- Sub-header: דרישות החברה עבור המשרה -->
-                <div class="mt-2 text-xs bg-slate-950/80 border border-sky-500/25 rounded-xl px-3 py-2 text-slate-300 flex items-start gap-2 shadow-inner">
-                  <span class="font-bold text-sky-400 shrink-0 flex items-center gap-1">
+                <!-- Sub-header: דרישות החברה עבור המשרה (Inline Flow) -->
+                <div class="mt-2 text-xs bg-slate-950/80 border border-sky-500/25 rounded-xl px-3.5 py-2.5 text-slate-300 shadow-inner leading-relaxed break-words">
+                  <span class="font-bold text-sky-400 inline-block ml-1.5">
                     <span>📌</span> דרישות החברה עבור המשרה:
                   </span>
-                  <span class="leading-relaxed text-slate-200 break-words">
-                    <span class="sm:hidden">${companyReqsMobile}</span>
-                    <span class="hidden sm:inline">${companyReqs}</span>
-                  </span>
+                  <span class="text-slate-200 inline leading-relaxed">${companyReqs}</span>
                 </div>
               </div>
             </div>
@@ -730,30 +715,21 @@
             </div>
           </div>
 
-          <!-- 3 Clean, Non-Redundant Sections (Desktop exact original layout, Mobile compact & concise) -->
+          <!-- 3 Clean, Non-Redundant Sections (Inline Flow: continuous text, 100% full width, zero word hiding) -->
           <div class="grid grid-cols-1 gap-2.5 text-xs md:text-sm">
-            <div class="flex items-start gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
-              <span class="font-bold text-sky-400 shrink-0">🏢 תחום ומוצר החברה:</span>
-              <span class="text-slate-300 leading-relaxed break-words">
-                <span class="sm:hidden">${domainMobile}</span>
-                <span class="hidden sm:inline">${domain}</span>
-              </span>
+            <div class="bg-slate-950/60 p-2.5 sm:p-3 rounded-xl border border-slate-800/60 leading-relaxed break-words">
+              <span class="font-bold text-sky-400 inline-block ml-1.5">🏢 תחום ומוצר החברה:</span>
+              <span class="text-slate-300 inline leading-relaxed">${domain}</span>
             </div>
 
-            <div class="flex items-start gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
-              <span class="font-bold text-sky-400 shrink-0">📋 תקציר המשרה:</span>
-              <span class="text-slate-300 leading-relaxed break-words">
-                <span class="sm:hidden">${jobSumMobile}</span>
-                <span class="hidden sm:inline">${jobSum}</span>
-              </span>
+            <div class="bg-slate-950/60 p-2.5 sm:p-3 rounded-xl border border-slate-800/60 leading-relaxed break-words">
+              <span class="font-bold text-sky-400 inline-block ml-1.5">📋 תקציר המשרה:</span>
+              <span class="text-slate-300 inline leading-relaxed">${jobSum}</span>
             </div>
 
-            <div class="flex items-start gap-2 bg-emerald-950/20 p-2.5 rounded-xl border border-emerald-800/40">
-              <span class="font-bold text-emerald-400 shrink-0">💪 נקודות חוזק:</span>
-              <span class="text-slate-200 leading-relaxed break-words">
-                <span class="sm:hidden">${strengthsMobile}</span>
-                <span class="hidden sm:inline">${strengths}</span>
-              </span>
+            <div class="bg-emerald-950/20 p-2.5 sm:p-3 rounded-xl border border-emerald-800/40 leading-relaxed break-words">
+              <span class="font-bold text-emerald-400 inline-block ml-1.5">💪 נקודות חוזק:</span>
+              <span class="text-slate-200 inline leading-relaxed">${strengths}</span>
             </div>
           </div>
 
