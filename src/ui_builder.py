@@ -683,27 +683,47 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const companyReqs = job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).';
         const logoHtml = getCompanyLogoHtml(company, job.logo);
 
+        function trimConcise(text, maxLen) {
+          if (!text) return '';
+          const clean = text.trim();
+          if (clean.length <= maxLen) return clean;
+          return clean.slice(0, maxLen).replace(/[\\s,.-]+$/, '') + '...';
+        }
+
+        const domainMobile = trimConcise(domain, 80);
+        const jobSumMobile = trimConcise(jobSum, 85);
+        const strengthsMobile = trimConcise(strengths, 85);
+        const companyReqsMobile = trimConcise(companyReqs, 95);
+
         const card = document.createElement('article');
         card.setAttribute('data-id', id);
         card.setAttribute('data-sector', secKey);
-        card.className = 'job-card bg-slate-900/80 border border-slate-800/90 rounded-2xl p-5 shadow-lg relative transition-all hover:border-slate-700';
+        card.className = 'job-card bg-slate-900/80 border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-lg relative transition-all hover:border-slate-700';
 
         card.innerHTML = `
           <!-- Top row: Company Logo + Category tag, Big Title, Match Score -->
-          <div class="flex items-start justify-between gap-3 border-b border-slate-800/80 pb-3 mb-4">
+          <div class="flex items-start justify-between gap-3 border-b border-slate-800/80 pb-3 mb-3.5">
             <div class="flex items-start gap-3 flex-1 min-w-0">
               ${logoHtml}
               <div class="flex-1 min-w-0">
                 <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${badgeColor} border inline-block mb-1.5">
                   ${sectorBadge}
                 </span>
-                <h2 class="text-lg font-bold text-white tracking-tight leading-snug break-words">${company} - ${title} <span class="text-xs font-normal text-slate-400 mr-2">• ${loc}</span></h2>
+                <h2 class="text-base sm:text-lg font-bold text-white tracking-tight leading-snug break-words">
+                  ${company} - ${title}
+                  <span class="text-xs font-semibold text-sky-300 mr-2 inline-flex items-center gap-1 bg-sky-950/60 px-2 py-0.5 rounded-md border border-sky-500/30 align-middle">
+                    📍 ${loc}
+                  </span>
+                </h2>
                 <!-- Sub-header: דרישות החברה עבור המשרה -->
-                <div class="mt-2 text-xs bg-slate-950/80 border border-sky-500/25 rounded-xl px-3 py-2 text-slate-300 flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2 shadow-inner">
+                <div class="mt-2 text-xs bg-slate-950/80 border border-sky-500/25 rounded-xl px-3 py-2 text-slate-300 flex items-start gap-2 shadow-inner">
                   <span class="font-bold text-sky-400 shrink-0 flex items-center gap-1">
                     <span>📌</span> דרישות החברה עבור המשרה:
                   </span>
-                  <span class="leading-relaxed text-slate-200 break-words">${companyReqs}</span>
+                  <span class="leading-relaxed text-slate-200 break-words">
+                    <span class="sm:hidden">${companyReqsMobile}</span>
+                    <span class="hidden sm:inline">${companyReqs}</span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -714,21 +734,30 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             </div>
           </div>
 
-          <!-- 3 Clean, Non-Redundant Sections (Stacked on mobile, side-by-side on desktop) -->
+          <!-- 3 Clean, Non-Redundant Sections (Desktop exact original layout, Mobile compact & concise) -->
           <div class="grid grid-cols-1 gap-2.5 text-xs md:text-sm">
-            <div class="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
+            <div class="flex items-start gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
               <span class="font-bold text-sky-400 shrink-0">🏢 תחום ומוצר החברה:</span>
-              <span class="text-slate-300 leading-relaxed break-words">${domain}</span>
+              <span class="text-slate-300 leading-relaxed break-words">
+                <span class="sm:hidden">${domainMobile}</span>
+                <span class="hidden sm:inline">${domain}</span>
+              </span>
             </div>
 
-            <div class="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
+            <div class="flex items-start gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
               <span class="font-bold text-sky-400 shrink-0">📋 תקציר המשרה:</span>
-              <span class="text-slate-300 leading-relaxed break-words">${jobSum}</span>
+              <span class="text-slate-300 leading-relaxed break-words">
+                <span class="sm:hidden">${jobSumMobile}</span>
+                <span class="hidden sm:inline">${jobSum}</span>
+              </span>
             </div>
 
-            <div class="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2 bg-emerald-950/20 p-2.5 rounded-xl border border-emerald-800/40">
+            <div class="flex items-start gap-2 bg-emerald-950/20 p-2.5 rounded-xl border border-emerald-800/40">
               <span class="font-bold text-emerald-400 shrink-0">💪 נקודות חוזק:</span>
-              <span class="text-slate-200 leading-relaxed break-words">${strengths}</span>
+              <span class="text-slate-200 leading-relaxed break-words">
+                <span class="sm:hidden">${strengthsMobile}</span>
+                <span class="hidden sm:inline">${strengths}</span>
+              </span>
             </div>
           </div>
 
