@@ -685,26 +685,29 @@
         card.className = 'job-card bg-slate-900/80 border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-lg relative transition-all hover:border-slate-700';
 
         card.innerHTML = `
-          <!-- Top row: Company Logo + Category tag, Title + Location, Match Score -->
-          <div class="flex items-start justify-between gap-3 border-b border-slate-800/80 pb-3 mb-3.5">
-            <div class="flex items-start gap-3 flex-1 min-w-0">
-              ${logoHtml}
-              <div class="flex-1 min-w-0">
-                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${badgeColor} border inline-block mb-1.5">
-                  ${sectorBadge}
-                </span>
-                <h2 class="text-base sm:text-lg font-bold text-white tracking-tight leading-snug break-words">
-                  ${company} - ${title}
-                </h2>
-                <div class="mt-1 flex items-center gap-1.5 text-xs text-sky-400 font-medium">
-                  <span>📍</span> <span>${loc}</span>
-                </div>
-              </div>
-            </div>
-            <div class="self-start shrink-0">
-              <span class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+          <!-- Top Header: Metadata Row (Badges) + Full Width Title Row (Company & Title Flow Horizontally) -->
+          <div class="border-b border-slate-800/80 pb-3 mb-3.5 space-y-2.5">
+            <!-- Row 1: Sector Badge + Match Score Pill (spread apart) -->
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${badgeColor} border inline-block">
+                ${sectorBadge}
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1 shrink-0">
                 <span>${score}%</span> התאמה
               </span>
+            </div>
+
+            <!-- Row 2: Company Logo + Full-Width Title (Company - Title - Location written horizontally across the full width) -->
+            <div class="flex items-start gap-3 w-full">
+              ${logoHtml}
+              <h2 class="flex-1 min-w-0 text-base sm:text-lg font-bold text-white tracking-tight leading-snug break-words">
+                <span class="text-white">${company}</span>
+                <span class="text-slate-400 font-normal mx-1">-</span>
+                <span class="text-slate-200 font-semibold">${title}</span>
+                <span class="text-xs font-medium text-sky-400 mr-2 inline-flex items-center gap-1 bg-sky-950/50 px-2 py-0.5 rounded-md border border-sky-800/40 align-middle whitespace-nowrap">
+                  📍 ${loc}
+                </span>
+              </h2>
             </div>
           </div>
 
