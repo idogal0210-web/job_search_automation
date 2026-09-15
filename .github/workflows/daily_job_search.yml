@@ -42,6 +42,50 @@ jobs:
         run: |
           python main.py
 
+      name: Daily Job Search Automation
+
+on:
+  schedule:
+    - cron: '17 4 * * 0-5'    # 07:17 שעון ישראל (04:17 UTC) — ימים ראשון עד שישי (ללא שבת)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "daily-job-search"
+  cancel-in-progress: false
+
+jobs:
+  job-search-daily:
+    runs-on: ubuntu-latest
+    name: "Daily Job Search - Ido Gal"
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Daily Energy & Drone Job Searches (with AI Auto-Healer)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
+        run: |
+          python main.py
+
       - name: Commit and push updated history, weekly archive, and interactive docs
         run: |
           git config --global user.name "github-actions[bot]"
@@ -57,6 +101,39 @@ jobs:
           else
             echo "No changes to commit or push."
           fi
+
+      - name: Send Urgent Failure Alert Email (Exceptions Only)
+        if: failure()
+        env:
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 -c "
+          import os, smtplib
+          from email.mime.text import MIMEText
+          from email.mime.multipart import MIMEMultipart
+          from email.header import Header
+
+          sender = os.environ.get('SENDER_EMAIL')
+          pwd = os.environ.get('SENDER_APP_PASSWORD')
+          run_url = os.environ.get('RUN_URL')
+          recipient = 'idogal0210@gmail.com'
+
+          if sender and pwd:
+              msg = MIMEMultipart()
+              msg['Subject'] = Header('⚠️ התראת תקלה: ריצת חיפוש המשרות נכשלה | עידו גל', 'utf-8')
+              msg['From'] = Header(f'Job Search Alert <{sender}>', 'utf-8')
+              msg['To'] = Header(recipient, 'utf-8')
+              body = f'<div dir=\"rtl\" style=\"font-family: Arial; padding: 20px;\"><h2 style=\"color: #dc2626;\">⚠️ התרחשה שגיאה בריצת חיפוש המשרות</h2><p>ריצת האוטומציה נתקלה בשגיאה באחד השלבים.</p><p><a href=\"{run_url}\" style=\"background: #dc2626; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block;\">צפה ביומן הריצה ב-GitHub Actions ↗</a></p></div>'
+              msg.attach(MIMEText(body, 'html', 'utf-8'))
+              server = smtplib.SMTP('smtp.gmail.com', 587, timeout=20)
+              server.starttls()
+              server.login(sender, pwd)
+              server.sendmail(sender, recipient, msg.as_string())
+              server.quit()
+              print('[+] Failure alert email dispatched.')
+          "
 
       - name: Send Urgent Failure Alert Email (Exceptions Only)
         if: failure()
