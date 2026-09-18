@@ -100,9 +100,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <select id="sectorFilter" onchange="filterCards()" class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500">
           <option value="all">🌐 כל התחומים</option>
           <option value="energy">⚡ אנרגיה, גז טבעי ו-SCADA</option>
-          <option value="drones">🚁 רחפנים וכטב״ם אוטונומי</option>
-          <option value="cuas">🛡️ הגנת C-UAS וביטחון</option>
-          <option value="avionics">📡 מטע״דים ואוויוניקה</option>
+          <option value="drones_unified">🚁 רחפנים, תעופה וביטחון (כל התחומים)</option>
         </select>
 
         <button id="sortBtn" onclick="toggleSort()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-slate-800 text-slate-200 text-xs font-bold rounded-xl border border-slate-800 transition-all shadow-sm" title="לחץ לשינוי סדר המיון">
@@ -708,8 +706,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 <span class="text-white">${company}</span>
                 <span class="text-slate-400 font-normal mx-1">-</span>
                 <span class="text-slate-200 font-semibold">${title}</span>
-                <span class="text-xs font-medium text-sky-400 mr-2 inline-flex items-center gap-1 bg-sky-950/50 px-2 py-0.5 rounded-md border border-sky-800/40 align-middle whitespace-nowrap">
+                <span class="text-xs font-medium text-sky-400 mr-2 inline-flex items-center gap-1 bg-sky-950/50 px-2 py-0.5 rounded-md border border-sky-800/40 align-middle whitespace-nowrap mt-1">
                   📍 ${loc}
+                </span>
+                <span class="text-xs font-medium text-emerald-400 mr-1 inline-flex items-center gap-1 bg-emerald-950/50 px-2 py-0.5 rounded-md border border-emerald-800/40 align-middle whitespace-nowrap mt-1">
+                  💰 ${job.salary_range || 'לא צוין במקור'}
                 </span>
               </h2>
             </div>
@@ -865,7 +866,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         else if (currentFilter === 'saved') matchesTab = (state === 'saved');
         else if (currentFilter === 'rejected') matchesTab = (state === 'rejected');
 
-        let matchesSector = (selectedSector === 'all' || sector === selectedSector);
+        let matchesSector = (selectedSector === 'all');
+        if (!matchesSector) {
+          if (selectedSector === 'drones_unified') {
+            matchesSector = ['drones', 'cuas', 'avionics'].includes(sector);
+          } else {
+            matchesSector = (sector === selectedSector);
+          }
+        }
 
         if (matchesTab && matchesSector && state !== 'purged') {
           card.classList.remove('hidden');
@@ -1172,13 +1180,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         'ציון התאמה',
         'תחום',
         'מיקום',
+        'הערכת שכר (AI מחקר)',
         'דרישות החברה עבור המשרה',
         'תחום ומוצר החברה',
         'תקציר המשרה',
         'נקודות חוזק מהניסיון',
         'דגשים ומודל עבודה',
-        'קישור ישיר להגשה',
-        'תאריך'
+        'לינק למשרה',
+        'תאריך איתור'
       ];
 
       const escapeCSV = (val) => {
@@ -1188,13 +1197,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       };
 
       const rows = savedJobs.map(job => {
-        const score = job.match_score ? `${job.match_score}%` : '';
-        const reqs = job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) : '') || '';
+        const score = job.match_score || '';
+        const reqs = job.company_requirements || '';
         const domain = job.company_domain_product || job.company_summary || '';
         const summary = job.job_summary || job.company_summary || '';
         const strengths = job.experience_strengths || job.reasoning || '';
         const highlights = job.key_highlights || (job.work_model ? `מודל: ${job.work_model}` : '');
         const date = job.date || '';
+        const salary = job.salary_range || 'לא צוין';
 
         return [
           escapeCSV(job.company || ''),
@@ -1202,6 +1212,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           escapeCSV(score),
           escapeCSV(job.sector || job.sector_key || ''),
           escapeCSV(job.location || 'ישראל'),
+          escapeCSV(salary),
           escapeCSV(reqs),
           escapeCSV(domain),
           escapeCSV(summary),

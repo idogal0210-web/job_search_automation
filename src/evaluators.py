@@ -87,7 +87,8 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     11. "company_size": string.
     12. "junior_openness": string.
     13. "work_model": string.
-    14. "company_requirements": 1-2 sentence Hebrew summary of company requirements (degree/practical engineer, required experience, certifications, and technical tools).
+    14. "company_requirements": 1-2 sentence Hebrew summary of company requirements.
+    15. "salary_range": Hebrew string. הערך את טווח המשכורת למשרה זו בהתבסס על ידע מקצועי, מחקר שוק למקצוע (בישראל), ושנות הניסיון הנדרשות. אם השכר מופיע במפורש בטקסט - הצג אותו (למשל: "14,000 שח"). אם לא, תן הערכה מבוססת מחקר (לדוגמה: "12,000-15,000 ₪ - מבוסס על ממוצע שוק"). במקרים בהם המשרה מעורפלת לחלוטין ואין לך שום יכולת להעריך, ציין "לא ידוע".
     """
 
     time.sleep(1.5)
@@ -95,10 +96,8 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     health_metrics.gemini_attempts += 1
 
     models_to_try = [
-        "gemini-3.6-flash",
-        "gemini-3.8-flash",
-        "gemini-3.7-flash",
-        "gemini-3.5-flash",
+        "gemini-2.5-flash",
+        "gemini-2.0-flash",
     ]
 
     for model_name in models_to_try:
@@ -113,7 +112,7 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
             data = json.loads(response.text)
 
             # Validation
-            req_keys = ["match_score", "concrete_matches_count", "reasoning", "sector_key"]
+            req_keys = ["match_score", "concrete_matches_count", "reasoning", "sector_key", "salary_range"]
             if not all(k in data for k in req_keys):
                 print(f"[VALIDATION] Missing keys in Gemini response from {model_name}")
                 continue
