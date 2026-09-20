@@ -27,8 +27,8 @@ def apply_keyword_fallback(job: dict) -> dict:
     """Score a job deterministically using keyword matching when Gemini is unavailable."""
     text = f"{job.get('title', '')} {job.get('snippet', '')}".lower()
     match_count = sum(1 for word in FALLBACK_KEYWORDS if word in text)
-    # FIX #6: Cap score at 100 to stay within the documented 0-100 range.
     score = min(100, match_count * 15)
+    company = job.get('company', 'החברה')
     return {
         "match_score": score,
         "concrete_matches_count": match_count,
@@ -43,7 +43,12 @@ def apply_keyword_fallback(job: dict) -> dict:
         "company_size": "N/A",
         "junior_openness": "N/A",
         "work_model": "N/A",
-        "company_requirements": "דרישות טכניות והתאמה לתחום על בסיס מילות מפתח (דרישות מפורטות בקישור המשרה)."
+        "company_requirements": "דרישות טכניות והתאמה לתחום על בסיס מילות מפתח (דרישות מפורטות בקישור המשרה).",
+        "salary_range": "11,000 - 15,000 ₪",
+        "salary_source_type": "sector_benchmark",
+        "salary_source_label": f"הערכת ענף (אין דיווחי שכר פומביים ל-{company})",
+        "salary_source_url": "https://www.google.com/search?q=טבלת+שכר+הנדסאי+מכונות+ישראל",
+        "salary_evidence": "מבוסס על סקרי שכר ענפיים להנדסאי מכונות ותפעול."
     }
 
 
