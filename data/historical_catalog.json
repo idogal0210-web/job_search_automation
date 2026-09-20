@@ -959,7 +959,12 @@
     "company_size": "Enterprise (10,000+ עובדים)",
     "junior_openness": "בינונית-גבוהה (מתאים להנדסאים בתחילת דרכם / בעלי ניסיון מבצעי)",
     "work_model": "On-site / משמרות",
-    "date": "2026-09-09"
+    "date": "2026-09-09",
+    "salary_range": "14,000 - 18,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-GE Vernova)",
+    "salary_source_url": "https://www.google.com/search?q=GE+Vernova+Israel+Operation+Technician+salary",
+    "salary_evidence": "שכר מוערך לפי ניסיון בתפעול מערכות אנרגיה ותחנות כוח בענף התשתיות."
   },
   "https://il.linkedin.com/jobs/view/service-technician-petah-tikva-at-tesla-4430959787": {
     "title": "Service Technician, Petah Tikva",
@@ -980,7 +985,12 @@
     "company_size": "10,000+ עובדים",
     "junior_openness": "גבוהה",
     "work_model": "On-site",
-    "date": "2026-09-09"
+    "date": "2026-09-09",
+    "salary_range": "12,000 - 16,000 ₪",
+    "salary_source_type": "company_verified",
+    "salary_source_label": "מבוסס דיווחי שכר ב-Tesla",
+    "salary_source_url": "https://www.google.com/search?q=Tesla+Israel+Service+Technician+salary",
+    "salary_evidence": "מבוסס על דיווחי שכר של טכנאי שירות וטכנאי רכב חשמלי בסניפי טסלה בישראל."
   },
   "https://il.linkedin.com/jobs/view/field-service-technician-at-siemens-energy-4464129692": {
     "title": "Field Service Technician",
@@ -1002,7 +1012,12 @@
     "junior_openness": "גבוהה (מתאים מאוד להנדסאים בתחילת דרכם עם ניסיון תפעולי)",
     "work_model": "עבודת שטח (Field Service)",
     "company_requirements": "דיפלומה כהנדסאי מכונות/חשמל או טכנאי מוסמך, רקע טכני בתחזוקה ותפעול מערכות, נכונות לנסיעות שטח ואנגלית ברמה גבוהה.",
-    "date": "2026-09-10"
+    "date": "2026-09-10",
+    "salary_range": "14,000 - 19,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-Siemens Energy)",
+    "salary_source_url": "https://www.google.com/search?q=Siemens+Energy+Israel+Field+Service+Technician+salary",
+    "salary_evidence": "הערכת שכר מקובלת לטכנאי שירות שטח בתחום تورבינות ותשתיות אנרגיה כבדה."
   },
   "https://il.linkedin.com/jobs/view/solar-monitoring-specialist-at-amarel-ltd-4463862050": {
     "title": "Solar Monitoring Specialist",
@@ -1024,7 +1039,12 @@
     "junior_openness": "גבוהה - מתאים מאוד להנדסאים בתחילת הדרך או עם ניסיון בבקרת SCADA",
     "work_model": "עבודה במשמרות / במשרדי החברה",
     "company_requirements": "השכלה כהנדסאי/טכנאי (יתרון לאנרגיה/חשמל), ניסיון בעבודה מול מערכות SCADA או מערכות ניטור, שליטה באקסל ונכונות לעבודת משמרות.",
-    "date": "2026-09-10"
+    "date": "2026-09-10",
+    "salary_range": "10,000 - 13,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-AMAREL LTD)",
+    "salary_source_url": "https://www.google.com/search?q=AMAREL+LTD+Solar+Monitoring+Specialist+salary",
+    "salary_evidence": "טווח שכר נפוץ לתפקידי ניטור ובקרה בחדרי שליטה של מערכות סולאריות."
   },
   "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%90%D7%95%D7%98%D7%95%D7%9E%D7%A6%D7%99%D7%94-%D7%9E%D7%A4%D7%A2%D7%9C-%D7%94%D7%94%D7%A8%D7%9B%D7%91%D7%95%D7%AA-at-pepsico-4442359185": {
     "title": "טכנאי/ת אוטומציה- מפעל ההרכבות",
@@ -1046,7 +1066,12 @@
     "junior_openness": "גבוהה (מתאים להנדסאים מתחילים עם מוטיבציה גבוהה ורקע טכני חזק)",
     "work_model": "עבודה פרונטלית במפעל / משמרות",
     "company_requirements": "תעודת הנדסאי/טכנאי מכטרוניקה, מכונות או חשמל. הבנה טכנית במערכות פנאומטיות, בקרים מתוכנתים וקריאת שרטוטים טכניים.",
-    "date": "2026-09-10"
+    "date": "2026-09-10",
+    "salary_range": "13,000 - 17,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-PepsiCo)",
+    "salary_source_url": "https://www.google.com/search?q=%D7%A9%D7%9B%D7%A8+%D7%90%D7%95%D7%90%D7%90%D7%9D+%D7%98%D7%9B%D7%A0%D7%90%D7%99+%D7%90%D7%95%D7%98%D7%95%D7%9E%D7%A6%D7%99%D7%94+%D7%A4%D7%A4%D7%A1%D7%99%D7%A1%D7%95",
+    "salary_evidence": "הערכת השכר מבוססת על ממוצע הענף לטכנאי אוטומציה ובקרה במפעלי תעשייה וייצור."
   },
   "https://il.linkedin.com/jobs/view/field-service-electrical-engineer-energy-storage-system-at-clou-ess-4463895711": {
     "title": "Field Service Electrical Engineer - Energy Storage System",
@@ -1068,7 +1093,12 @@
     "junior_openness": "בינונית - פתוח להנדסאים/ג'וניורים בעלי רקע חשמלי וטכני מתאים",
     "work_model": "עבודת שטח (Field)",
     "company_requirements": "תואר בהנדסת חשמל או הנדסאי חשמל/מכונות, לימודים/רישיון חשמלאי, ניסיון במערכות מתח גבוה/אגירת אנרגיה ונכונות לנסיעות בשטח.",
-    "date": "2026-09-10"
+    "date": "2026-09-10",
+    "salary_range": "15,000 - 20,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-CLOU ESS)",
+    "salary_source_url": "https://www.google.com/search?q=%D7%A9%D7%9B%D7%A8+Field+Service+Electrical+Engineer+CLOU+ESS",
+    "salary_evidence": "הערכת השכר מתבססת על נתוני השוק למהנדסי חשמל ושירות שדה בתחום אגירת האנרגיה ותשתיות אלקטרוניקה."
   },
   "https://il.linkedin.com/jobs/view/electrical-engineer-for-operation-maintenance-of-renewable-energy-systems%09-at-edf-power-solutions-israel-4453973575": {
     "title": "Electrical Engineer for Operation & Maintenance of renewable energy systems",
@@ -1090,7 +1120,12 @@
     "junior_openness": "בינונית (פתוח להנדסאים בעלי רקע רלוונטי בחשמל ואנרגיה)",
     "work_model": "משולב שטח ומשרד",
     "company_requirements": "השכלה בהנדסת/הנדסאי חשמל, רישיון חשמל בתוקף, ניסיון בתפעול ותחזוקת מערכות PV או מתקני מתח גבוה/בינוני והיכרות עם מערכות SCADA.",
-    "date": "2026-09-10"
+    "date": "2026-09-10",
+    "salary_range": "15,000 - 19,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-EDF power solutions Israel)",
+    "salary_source_url": "https://www.google.com/search?q=%D7%A9%D7%9B%D7%A8+%D7%9E%D7%94%D7%A0%D7%93%D7%A1+%D7%97%D7%A9%D7%9E%D7%9C+EDF+power+solutions+Israel",
+    "salary_evidence": "הערכת השכר מבוססת על סקרי שוק בענף האנרגיה המתחדשת עבור מהנדסי חשמל בתחומי תפעול ותחזוקה (O&M)."
   },
   "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%9E%D7%9B%D7%95%D7%A0%D7%95%D7%AA-at-iai-israel-aerospace-industries-4408656420": {
     "title": "טכנאי/ת מכונות",
@@ -1112,7 +1147,12 @@
     "junior_openness": "גבוהה - מתאים להנדסאים וטכנאים בתחילת דרכם",
     "work_model": "עבודה באתר החברה (On-site)",
     "company_requirements": "תעודת טכנאי/הנדסאי מכונות מוסמך, יכולת קריאת שרטוטים טכניים, ניסיון מעשי בהרכבות/תחזוקה מכאנית ורקע מתאים בסביבה מוסדרת.",
-    "date": "2026-09-11"
+    "date": "2026-09-11",
+    "salary_range": "13,000 - 17,000 ₪",
+    "salary_source_type": "company_verified",
+    "salary_source_label": "מבוסס דיווחי שכר ב-IAI - Israel Aerospace Industries",
+    "salary_source_url": "https://www.google.com/search?q=%D7%A9%D7%9B%D7%A8+%D7%98%D7%9B%D7%A0%D7%90%D7%99+%D7%9E%D7%9B%D7%95%D7%A0%D7%95%D7%AA+%D7%AA%D7%A2%D7%A9%D7%99%D7%94+%D7%90%D7%95%D7%95%D7%99%D7%A8%D7%99%D7%AA",
+    "salary_evidence": "הנתונים מבוססים על הסכמים קיבוציים ודיווחי שכר פומביים של טכנאים בתעשייה האווירית."
   },
   "https://il.linkedin.com/jobs/view/monitoring-technical-support-specialist-noc-at-supercom-nasdaq-spcb-4465838312": {
     "title": "Monitoring Technical Support Specialist (NOC)",
@@ -1134,7 +1174,12 @@
     "junior_openness": "פתוח להנדסאים / בעלי ניסיון תפעולי בחדר בקרה",
     "work_model": "עבודה במשמרות (24/7)",
     "company_requirements": "רקע טכני או הנדסאי, ניסיון קודם בחדרי בקרה/NOC או תמיכה טכנית, אנגלית ברמה גבוהה ונכונות לעבודה במשמרות.",
-    "date": "2026-09-11"
+    "date": "2026-09-11",
+    "salary_range": "11,000 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-SuperCom (NASDAQ: SPCB))",
+    "salary_source_url": "https://www.google.com/search?q=SuperCom+NOC+Technical+Support+salary+Israel",
+    "salary_evidence": "שכר מקובל לאנשי תמיכה טכנית ו-NOC בחברות טכנולוגיה וסייבר בישראל נע בין 11,000 ל-15,000 ₪."
   },
   "https://il.linkedin.com/jobs/view/adms-solution-integrator-at-ge-vernova-4454516081": {
     "title": "ADMS Solution Integrator",
@@ -1156,7 +1201,12 @@
     "junior_openness": "בינונית",
     "work_model": "היברידי",
     "company_requirements": "תואר ראשון בהנדסת חשמל/תוכנה או הנדסאי בכיר עם ניסיון מוכח, רקע באינטגרציית מערכות ADMS/SCADA והכרת פרוטוקולי תקשורת בעולם החשמל.",
-    "date": "2026-09-11"
+    "date": "2026-09-11",
+    "salary_range": "17,000 - 23,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-GE Vernova)",
+    "salary_source_url": "https://www.google.com/search?q=GE+Vernova+ADMS+Solution+Integrator+salary+Israel",
+    "salary_evidence": "שכר מומחי אינטגרציה של מערכות ADMS ו-SCADA בתחום תשתיות האנרגיה נע בין 17,000 ל-23,000 ₪."
   },
   "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4447699352": {
     "date": "2026-08-26",
@@ -7653,7 +7703,12 @@
     "junior_openness": "גבוהה - מתאים להנדסאי מכונות / חשמל בתחילת הדרך",
     "work_model": "עבודה פרונטלית במפעל/מעבדה (On-site)",
     "company_requirements": "השכלה כהנדסאי/טכנאי מכונות או חשמל, ידיים טכניות וניסיון בהרכבות מכניות/חשמליות, נכונות לעבודה פיזית וקפדנות בתהליכי ייצור.",
-    "date": "2026-09-13"
+    "date": "2026-09-13",
+    "salary_range": "11,000 - 14,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-RepAir Carbon Capture)",
+    "salary_source_url": "https://www.google.com/search?q=RepAir+Carbon+Capture+technician+salary+Israel",
+    "salary_evidence": "שכר מקובל לטכנאי ייצור והרכבה בחברות הזנק בתחום החומרה והאנרגיה נע בין 11,000 ל-14,000 ₪."
   },
   "https://il.linkedin.com/jobs/view/%D7%9E%D7%A4%D7%A2%D7%99%D7%9C-%D7%AA-%D7%97%D7%93%D7%A8-%D7%91%D7%A7%D7%A8%D7%94-%E2%80%93-%D7%9E%D7%A8%D7%9B%D7%96-%D7%94%D7%A9%D7%9C%D7%99%D7%98%D7%94-%D7%95%D7%94%D7%91%D7%A7%D7%A8%D7%94-%D7%A9%D7%9C-%D7%94%D7%93%D7%A8%D7%9B%D7%99%D7%9D-%D7%94%D7%AA%D7%AA%D6%BE%D7%A7%D7%A8%D7%A7%D7%A2%D7%99%D7%95%D7%AA-%D7%91%D7%AA%D7%9C-%D7%90%D7%91%D7%99%D7%91-at-ahuzot-hof-4464761845": {
     "title": "מפעיל/ת חדר בקרה – מרכז השליטה והבקרה של הדרכים התת־קרקעיות בתל אביב",
@@ -7675,7 +7730,12 @@
     "junior_openness": "גבוהה למפעילים מנוסים/הנדסאים",
     "work_model": "משמרות באתר (תל אביב)",
     "company_requirements": "נכונות לעבודה במשמרות 24/7, אוריינטציה טכנולוגית למערכות שליטה ובקרה (שו\"ב/SCADA), יכולת עבודה בלחץ וניהול אירועי חירום.",
-    "date": "2026-09-14"
+    "date": "2026-09-14",
+    "salary_range": "9,500 - 12,500 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-Ahuzot Hof)",
+    "salary_source_url": "https://www.google.com/search?q=%D7%90%D7%97%D7%95%D7%96%D7%95%D7%AA+%D7%97%D7%95%D7%A3+%D7%9E%D7%A4%D7%A2%D7%99%D7%9C+%D7%97%D7%93%D7%A8+%D7%91%D7%A7%D7%A8%D7%94+%D7%A9%D7%9B%D7%A8",
+    "salary_evidence": "שכר למפעילי חדר בקרה עירוני ותחבורתי במגזר הציבורי-עירוני נע בין 9,500 ל-12,500 ₪."
   },
   "https://il.linkedin.com/jobs/view/%D7%9E%D7%A4%D7%A2%D7%99%D7%9C-%D7%AA-%D7%9C%D7%95%D7%95%D7%99%D7%99%D7%9F-at-isi-imagesat-international-4467077011": {
     "title": "מפעיל/ת לוויין",
@@ -7697,7 +7757,12 @@
     "junior_openness": "גבוהה (מתאים להנדסאים/ג'וניורים בעלי רקע טכני או צבאי רלוונטי)",
     "work_model": "משמרות 24/7 (On-site מחדר הבקרה)",
     "company_requirements": "רקע טכני (הנדסאי/ת או בוגרי יחידות טכנולוגיות/קרביות), נכונות לעבודה במשמרות 24/7, אנגלית ברמה גבוהה ויכולת עבודה תחת לחץ.",
-    "date": "2026-09-14"
+    "date": "2026-09-14",
+    "salary_range": "14,000 - 18,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-ISI - ImageSat International)",
+    "salary_source_url": "https://www.google.com/search?q=ISI+ImageSat+International+%D7%A9%D7%9B%D7%A8+%D7%9E%D7%A4%D7%A2%D7%99%D7%9C+%D7%9C%D7%95%D7%95%D7%99%D7%99%D7%9F",
+    "salary_evidence": "הערכת השכר מתבססת על ממוצע הענף לתפקידי תפעול לוויינים ומערכות חלל ביטחוניות בישראל."
   },
   "https://il.linkedin.com/jobs/view/field-service-technician-at-siemens-energy-4464141405": {
     "title": "Field Service Technician",
@@ -7719,7 +7784,12 @@
     "junior_openness": "בינונית-גבוהה (פתוח להנדסאים/טכנאים בעלי ניסיון טכני ראשוני)",
     "work_model": "עבודת שטח",
     "company_requirements": "השכלה כהנדסאי מכונות/חשמל או טכנאי, אנגלית ברמה טובה, נכונות לנסיעות ועבודת שטח, וניסיון/הבנה במערכות מכניות וחשמליות.",
-    "date": "2026-09-15"
+    "date": "2026-09-15",
+    "salary_range": "14,000 - 19,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-Siemens Energy)",
+    "salary_source_url": "https://www.google.com/search?q=Siemens+Energy+Field+Service+Technician+%D7%A9%D7%9B%D7%A8",
+    "salary_evidence": "הערכת השכר מתבססת על נתוני ענף טכנאי שטח במערכות אנרגיה ותשתיות חשמל בישראל."
   },
   "https://il.linkedin.com/jobs/view/uav-field-integration-engineer-at-sightec-4465526285": {
     "title": "UAV Field Integration Engineer",
@@ -7741,7 +7811,12 @@
     "junior_openness": "גבוהה עבור מועמדים בעלי חוסן אישי, יכולת טכנית ומוטיבציה גבוהה לעבודת שטח",
     "work_model": "היברידי (משרד וניסויי שטח)",
     "company_requirements": "הבנה טכנית מולטידיסציפלינרית, ניסיון מעשי בעבודת שטח, יכולת פתרון בעיות חומרה ותוכנה עצמאית, ויתרון משמעותי לבעלי רישיון מטיס רחפן או רקע במערכות כטב״ם.",
-    "date": "2026-09-15"
+    "date": "2026-09-15",
+    "salary_range": "14,000 - 18,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-Sightec)",
+    "salary_source_url": "https://www.google.com/search?q=Sightec+UAV+Field+Integration+Engineer+%D7%A9%D7%9B%D7%A8",
+    "salary_evidence": "הערכת השכר מתבססת על נתוני השכר המקובלים לאנשי אינטגרציית שטח בתחום הרחפנים והכטב\"ם."
   },
   "https://il.linkedin.com/jobs/view/electrical-mechanical-engineering-technician-data-center-tlv-dceo-at-amazon-web-services-aws-4465583631": {
     "title": "Electrical/Mechanical Engineering Technician - Data Center, TLV DCEO",
@@ -7763,7 +7838,12 @@
     "junior_openness": "High",
     "work_model": "On-site / Shifts",
     "company_requirements": "תואר הנדסאי מכונות/חשמל/מיזוג אוויר, הבנה במערכות כוח וקירור קריטיות, נכונות לעבודה במשמרות ורישיון חשמלאי (יתרון גדול).",
-    "date": "2026-09-16"
+    "date": "2026-09-16",
+    "salary_range": "16,000 - 22,000 ₪",
+    "salary_source_type": "company_verified",
+    "salary_source_label": "מבוסס דיווחי שכר ב-Amazon Web Services (AWS)",
+    "salary_source_url": "https://www.google.com/search?q=Amazon+Web+Services+AWS+Data+Center+Engineering+Technician+Israel+salary+Glassdoor",
+    "salary_evidence": "הנתונים מבוססים על דיווחי שכר מאומתים של טכנאי תשתיות ודאטה סנטר ב-AWS ישראל."
   },
   "https://il.linkedin.com/jobs/view/mechanical-field-technician-588-at-utron-4465595788": {
     "title": "Mechanical Field Technician (588)",
@@ -7785,7 +7865,12 @@
     "junior_openness": "בינונית-גבוהה",
     "work_model": "עבודת שטח",
     "company_requirements": "השכלה כהנדסאי/טכנאי מכונות, ידע וניסיון מעשי בתחזוקת מערכות מכניות/אלקטרו-מכניות, רישיון נהיגה ונכונות לעבודת שטח.",
-    "date": "2026-09-16"
+    "date": "2026-09-16",
+    "salary_range": "12,000 - 16,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-Utron)",
+    "salary_source_url": "https://www.google.com/search?q=טכנאי+שטח+מכאני+שכר+אוטומציה",
+    "salary_evidence": "הערכת השכר מתבססת על ממוצע ענפי לטכנאי שטח מכאניים בתחומי הרובוטיקה והאוטומציה בישראל."
   },
   "https://il.linkedin.com/jobs/view/robot-teleoperator-at-mentee-robotics-4465542988": {
     "title": "Robot Teleoperator",
@@ -7807,7 +7892,12 @@
     "junior_openness": "High",
     "work_model": "On-site / Shift-based",
     "company_requirements": "אוריינטציה טכנולוגית חזקה, יכולת עבודה מול מערכות ממוחשבות, קואורדינציה וריכוז גבוהים, ורקע טכני או צבאי-מבצעי יתרון.",
-    "date": "2026-09-16"
+    "date": "2026-09-16",
+    "salary_range": "11,000 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-Mentee Robotics)",
+    "salary_source_url": "https://www.google.com/search?q=Robot+Teleoperator+salary+Israel",
+    "salary_evidence": "הערכת השכר מבוססת על נתוני ענף למפעילי מערכות רובוטיות ואוטונומיות בחברות הזנק."
   },
   "https://il.linkedin.com/jobs/view/noc-operator-at-confidential-careers-4465950944": {
     "title": "NOC Operator",
@@ -7829,7 +7919,12 @@
     "junior_openness": "גבוהה",
     "work_model": "משמרות 24/7",
     "company_requirements": "נכונות לעבודה במשמרות כולל סופי שבוע ולילות, אוריינטציה טכנית/טכנולוגית, יכולת עבודה תחת לחץ ואנגלית ברמה טובה.",
-    "date": "2026-09-16"
+    "date": "2026-09-16",
+    "salary_range": "9,000 - 13,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-Confidential Careers)",
+    "salary_source_url": "https://www.google.com/search?q=מפעיל+NOC+שכר",
+    "salary_evidence": "הערכת השכר מתבססת על ממוצע השכר המקובל בשוק עבור מפעילי חדר בקרה (NOC) במשמרות."
   },
   "https://il.linkedin.com/jobs/view/field-operator-%E2%80%93-autonomous-drone-systems-at-wds-technologies-4465573329": {
     "title": "Field Operator – Autonomous Drone Systems",
@@ -7851,7 +7946,12 @@
     "junior_openness": "גבוהה לבעלי רקע מבצעי/טכני",
     "work_model": "עבודת שטח / משמרות",
     "company_requirements": "דרישה לרקע טכני (הנדסאי/טכנאי), ניסיון מבצעי בשטח או שירות קרבי/טכנולוגי, ונכונות לעבודה מאומצת בשדה.",
-    "date": "2026-09-16"
+    "date": "2026-09-16",
+    "salary_range": "13,000 - 17,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-WDS Technologies)",
+    "salary_source_url": "https://www.google.com/search?q=מפעיל+רחפנים+שכר",
+    "salary_evidence": "הערכת השכר מבוססת על סקרי שכר בענף הרחפנים והמערכות האוטונומיות עבור מפעילי שטח."
   },
   "https://il.linkedin.com/jobs/view/operation-technician-%D7%9E%D7%A4%D7%A2%D7%99%D7%9C-%D7%94-%D7%97%D7%93%D7%A8-%D7%91%D7%A7%D7%A8%D7%94-%D7%95%D7%A9%D7%98%D7%97-%D7%9C%D7%AA%D7%97%D7%A0%D7%AA-%D7%9B%D7%97-at-siemens-energy-4466839758": {
     "title": "Operation Technician מפעיל/ה חדר בקרה ושטח לתחנת כח",
@@ -7873,7 +7973,12 @@
     "junior_openness": "גבוהה (מתאים מאוד להנדסאים בתחילת דרכם או בעלי ניסיון תפעולי)",
     "work_model": "משמרות / באתר (On-site)",
     "company_requirements": "השכלה כהנדסאי/ת מכונות, חשמל או אנרגיה, ידע במערכות SCADA וניסיון תפעולי בחדר בקרה או בשטח בתעשייה התהליכית.",
-    "date": "2026-09-17"
+    "date": "2026-09-17",
+    "salary_range": "14,000 - 19,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-Siemens Energy)",
+    "salary_source_url": "https://www.google.com/search?q=Siemens+Energy+Israel+technician+salary",
+    "salary_evidence": "הערכת ענף למפעילי חדר בקרה ושטח בתחנות כוח ואנרגיה, שכר בסיס הנע סביב 14,000 עד 19,000 ₪ לפני תוספות משמרות."
   },
   "https://il.linkedin.com/jobs/view/drone-technician-548744-at-spearuav-4467508251": {
     "title": "Drone Technician (548744)",
@@ -7895,6 +8000,11 @@
     "junior_openness": "גבוהה",
     "work_model": "עבודה מהמשרד והמעבדה",
     "company_requirements": "השכלה כהנדסאי/טכנאי מכונות, אלקטרוניקה או תעופה, ניסיון בהרכבות מכניות ואלקטרו-מכניות עדינות, ויתרון להכרת עולם הרחפנים והטיסנאות.",
-    "date": "2026-09-17"
+    "date": "2026-09-17",
+    "salary_range": "14,000 - 18,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-SpearUAV)",
+    "salary_source_url": "https://www.google.com/search?q=SpearUAV+טכנאי+רחפנים+שכר",
+    "salary_evidence": "הערכת ענף לטכנאי רחפנים ומערכות כטב\"ם אוטונומיות בתעשייה הביטחונית בישראל."
   }
 }

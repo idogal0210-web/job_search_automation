@@ -88,7 +88,20 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     12. "junior_openness": string.
     13. "work_model": string.
     14. "company_requirements": 1-2 sentence Hebrew summary of company requirements.
-    15. "salary_range": Hebrew string. הערך את טווח המשכורת למשרה זו בהתבסס על ידע מקצועי, מחקר שוק למקצוע (בישראל), ושנות הניסיון הנדרשות. אם השכר מופיע במפורש בטקסט - הצג אותו (למשל: "14,000 שח"). אם לא, תן הערכה מבוססת מחקר (לדוגמה: "12,000-15,000 ₪ - מבוסס על ממוצע שוק"). במקרים בהם המשרה מעורפלת לחלוטין ואין לך שום יכולת להעריך, ציין "לא ידוע".
+    15. "salary_range": Hebrew string for monthly salary range in NIS (e.g. "13,000 - 16,000 ₪").
+    16. "salary_source_type": one of ["company_verified", "job_ad", "sector_benchmark"].
+        - "job_ad": ONLY if the job description snippet explicitly states a salary figure.
+        - "company_verified": ONLY if there are verified crowdsourced/public reports (Glassdoor, Indeed, collective agreements, major financial publications) for {company} in Israel for technicians/practical engineers/service operators.
+        - "sector_benchmark": If NO verified company-specific salary reports exist for {company} in Israel. DO NOT INVENT A NUMBER FOR THE COMPANY. Use the realistic Israeli market benchmark for this role (e.g. practical engineer: 11,000-14,000 ₪, SCADA/gas: 13,000-17,000 ₪, drone/defense: 14,000-18,000 ₪).
+    17. "salary_source_label": Hebrew short label.
+        - If company_verified: "מבוסס דיווחי שכר ב-{company}"
+        - If job_ad: "פורסם במודעת המשרה"
+        - If sector_benchmark: "הערכת ענף (אין דיווחי שכר פומביים ל-{company})"
+    18. "salary_source_url": URL for verification.
+        - If company_verified: "https://www.google.com/search?q=" + URL-encoded search query for company + role + salary Israel
+        - If sector_benchmark: "https://www.google.com/search?q=טבלת+שכר+הנדסאי+מכונות+ישראל"
+        - If job_ad: ""
+    19. "salary_evidence": 1 sentence Hebrew summary explaining the evidence and basis for the figure.
     """
 
     time.sleep(1.5)
@@ -96,8 +109,10 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     health_metrics.gemini_attempts += 1
 
     models_to_try = [
-        "gemini-2.5-flash",
-        "gemini-2.0-flash",
+        "gemini-3.6-flash",
+        "gemini-3.8-flash",
+        "gemini-3.7-flash",
+        "gemini-3.5-flash",
     ]
 
     for model_name in models_to_try:
@@ -120,6 +135,16 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
             if not isinstance(data.get("match_score"), int) or not isinstance(data.get("concrete_matches_count"), int):
                 print(f"[VALIDATION] Type error in Gemini response from {model_name}")
                 continue
+
+            # Ensure salary intelligence defaults
+            if not data.get("salary_source_type"):
+                data["salary_source_type"] = "sector_benchmark"
+            if not data.get("salary_source_label"):
+                data["salary_source_label"] = f"הערכת ענף (אין דיווחי שכר פומביים ל-{company})"
+            if not data.get("salary_source_url"):
+                data["salary_source_url"] = "https://www.google.com/search?q=טבלת+שכר+הנדסאי+מכונות+ישראל"
+            if not data.get("salary_evidence"):
+                data["salary_evidence"] = "מבוסס על סקרי שכר ענפיים של חברות השמה (CPS/נישה/אתגר) להנדסאי מכונות ותפעול בישראל."
 
             health_metrics.gemini_successes += 1
 

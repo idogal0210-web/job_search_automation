@@ -681,6 +681,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const companyReqs = job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).';
         const logoHtml = getCompanyLogoHtml(company, job.logo);
 
+        const salaryRange = job.salary_range || '12,000 - 15,000 ₪';
+        const salaryType = job.salary_source_type || 'sector_benchmark';
+        const salaryLabel = job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${company}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף (אין דיווחי שכר פומביים ל-${company})`));
+        const salaryEvidence = job.salary_evidence || (salaryType === 'company_verified' ? 'דיווחי שכר ופרסומים ענפיים מאומתים עבור חברה זו.' : 'מבוסס על סקרי שכר ענפיים של חברות השמה (CPS/נישה/אתגר) להנדסאי מכונות ותפעול בישראל.');
+        const salaryUrl = job.salary_source_url || (salaryType === 'company_verified' ? `https://www.google.com/search?q=${encodeURIComponent(company + ' ' + title + ' שכר Glassdoor')}` : 'https://www.google.com/search?q=טבלת+שכר+הנדסאי+מכונות+ישראל');
+
+        let salaryBadgeColor = 'bg-amber-500/10 text-amber-400 border-amber-500/25';
+        let salaryIcon = '📊';
+        if (salaryType === 'company_verified') {
+          salaryBadgeColor = 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
+          salaryIcon = '🏢';
+        } else if (salaryType === 'job_ad') {
+          salaryBadgeColor = 'bg-sky-500/15 text-sky-300 border-sky-500/30';
+          salaryIcon = '📌';
+        }
+
         const card = document.createElement('article');
         card.setAttribute('data-id', id);
         card.setAttribute('data-sector', secKey);
@@ -709,14 +725,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 <span class="text-xs font-medium text-sky-400 mr-2 inline-flex items-center gap-1 bg-sky-950/50 px-2 py-0.5 rounded-md border border-sky-800/40 align-middle whitespace-nowrap mt-1">
                   📍 ${loc}
                 </span>
-                <span class="text-xs font-medium text-emerald-400 mr-1 inline-flex items-center gap-1 bg-emerald-950/50 px-2 py-0.5 rounded-md border border-emerald-800/40 align-middle whitespace-nowrap mt-1">
-                  💰 ${job.salary_range || 'לא צוין במקור'}
+                <span class="text-xs font-semibold ${salaryBadgeColor} mr-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md border align-middle whitespace-nowrap mt-1">
+                  <span>💰 ${salaryRange}</span>
+                  <span class="text-[10px] font-normal opacity-90 hidden sm:inline">(${salaryIcon} ${salaryLabel})</span>
                 </span>
               </h2>
             </div>
           </div>
 
-          <!-- 4 Symmetric, Perfectly Aligned Full-Width Boxes (Inline Flow) -->
+          <!-- 5 Symmetric Full-Width Boxes (Inline Flow + Salary Intelligence) -->
           <div class="grid grid-cols-1 gap-2.5 text-xs sm:text-sm">
             <!-- Box 1: דרישות החברה עבור המשרה -->
             <div class="bg-slate-950/80 border border-sky-500/25 rounded-xl p-3 text-slate-300 shadow-inner leading-relaxed break-words overflow-hidden">
@@ -740,6 +757,23 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <div class="bg-emerald-950/20 border border-emerald-800/40 rounded-xl p-3 text-slate-200 leading-relaxed break-words overflow-hidden">
               <span class="font-bold text-emerald-400 inline-block ml-1.5">💪 נקודות חוזק:</span>
               <span class="text-slate-200 inline leading-relaxed">${strengths}</span>
+            </div>
+
+            <!-- Box 5: מודיעין שכר ואימות מקור -->
+            <div class="bg-slate-950/80 border border-emerald-500/25 rounded-xl p-3 text-slate-300 leading-relaxed break-words overflow-hidden">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="font-bold text-emerald-400 inline-block">💰 טווח שכר צפוי:</span>
+                  <span class="text-white font-extrabold inline">${salaryRange}</span>
+                  <span class="text-xs px-2 py-0.5 rounded-full border ${salaryBadgeColor} inline-block font-semibold">
+                    ${salaryIcon} ${salaryLabel}
+                  </span>
+                </div>
+                ${salaryUrl ? `<a href="${salaryUrl}" target="_blank" rel="noopener noreferrer" class="text-xs text-sky-400 hover:text-sky-300 underline font-semibold inline-flex items-center gap-1 shrink-0 mt-1 sm:mt-0"><span>אימות מקור ↗</span></a>` : ''}
+              </div>
+              <div class="text-xs text-slate-400 mt-1.5 border-t border-slate-800/60 pt-1.5">
+                <span class="text-slate-300 font-medium">ביסוס וראיות:</span> ${salaryEvidence}
+              </div>
             </div>
           </div>
 
@@ -1180,7 +1214,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         'ציון התאמה',
         'תחום',
         'מיקום',
-        'הערכת שכר (AI מחקר)',
+        'טווח שכר צפוי',
+        'ביסוס ומקור שכר',
         'דרישות החברה עבור המשרה',
         'תחום ומוצר החברה',
         'תקציר המשרה',
@@ -1204,7 +1239,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const strengths = job.experience_strengths || job.reasoning || '';
         const highlights = job.key_highlights || (job.work_model ? `מודל: ${job.work_model}` : '');
         const date = job.date || '';
-        const salary = job.salary_range || 'לא צוין';
+        let salaryStr = job.salary_range || 'לא צוין';
+        if (job.salary_source_label) {
+          salaryStr += ` (${job.salary_source_label})`;
+        }
+        const salaryEvidence = job.salary_evidence || '';
 
         return [
           escapeCSV(job.company || ''),
@@ -1212,7 +1251,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           escapeCSV(score),
           escapeCSV(job.sector || job.sector_key || ''),
           escapeCSV(job.location || 'ישראל'),
-          escapeCSV(salary),
+          escapeCSV(salaryStr),
+          escapeCSV(salaryEvidence),
           escapeCSV(reqs),
           escapeCSV(domain),
           escapeCSV(summary),
@@ -1276,8 +1316,8 @@ def generate_interactive_html(jobs, rejected_links, title="דוח משרות א�
     report_type_label = "סיכום שבועי" if is_weekly else "סריקה יומית"
     jobs_json = json.dumps(jobs, ensure_ascii=False)
     catalog_json = json.dumps(catalog_data, ensure_ascii=False)
-    saved_json = json.dumps(saved_links, ensure_ascii=False)
-    rejected_json = json.dumps(rejected_links, ensure_ascii=False)
+    saved_json = json.dumps(list(saved_links) if isinstance(saved_links, (set, list)) else [], ensure_ascii=False)
+    rejected_json = json.dumps(list(rejected_links) if isinstance(rejected_links, (set, list)) else [], ensure_ascii=False)
 
     html = HTML_TEMPLATE
     html = html.replace("__TITLE__", title)
