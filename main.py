@@ -6,7 +6,7 @@ from google import genai
 
 load_dotenv()
 
-from src.fetchers import RunHealth, fetch_linkedin_jobs
+from src.fetchers import RunHealth, fetch_linkedin_jobs, scrape_comeet_companies
 from src.evaluators import evaluate_and_enrich_job_with_gemini, QuotaExhaustedError
 from src.publishers import send_email_report
 from src.ui_builder import build_and_save_docs_app, update_weekly_archive
@@ -63,20 +63,70 @@ def main():
 
     # 2. Fetch Jobs
     energy_keywords = [
-        "SCADA operator", "Power plant technician", "Natural gas operator",
-        "Mechanical technician energy", "מפעיל חדר בקרה"
+        "Control Room Operator", "מפעיל חדר בקרה",
+        "Gas Plant Operator", "מפעיל מתקן גז",
+        "Gas Transmission Technician", "טכנאי הולכת גז",
+        "Gas Systems Controller", "בקר מערכות גז",
+        "Rotating Equipment Mechanic", "מכונאי ציוד סובב",
+        "Burner Technician", "טכנאי מבערים",
+        "Natural Gas Technician", "הנדסאי גז טבעי",
+        "Solar Technician", "הנדסאי סולארי",
+        "Solar Construction Inspector", "מפקח הקמה סולארי",
+        "Solar O&M Technician", "טכנאי תפעול ואחזקה סולארי",
+        "Solar Field Service Engineer", "מהנדס שירות שטח סולארי",
+        "PV Monitoring Operator", "מפעיל מערכות ניטור פאנלים",
+        "High Voltage Technician", "טכנאי מתח עליון",
+        "PV Technician", "טכנאי פוטו-וולטאי",
+        "Power Plant Technician", "טכנאי תחנת כוח",
+        "BMS Operator", "בקר מבנה",
+        "Electro-Mechanical Technician", "טכנאי מערכות אלקטרו-מכניות",
+        "Field Service Engineer", "מהנדס שירות שטח",
+        "Infrastructure Systems Operator", "מפעיל מערכות תשתית",
+        "Energy Control Room Operator", "מפעיל חדר בקרת אנרגיה",
+        "Power Plant Maintenance Mechanic", "מכונאי אחזקת תחנות כוח"
     ]
+    
     drone_keywords = [
-        "Drone operator", "UAV technician", "System integration drone",
-        "מטיס פנים", "כטב\"ם אינטגרציה"
+        "Drone Integrator", "אינטגרטור רחפנים",
+        "UAV Technician", "טכנאי מערכות כטב"ם",
+        "Drone Operator", "מפעיל רחפנים",
+        "Integration and Testing Technician", "טכנאי אינטגרציה ובדיקות",
+        "Internal Pilot", "מטיס פנים",
+        "Aviation and UAV Mechanic", "מכונאי תעופה וכטב"ם",
+        "Payload Technician", "טכנאי מטע"דים"
     ]
+    
+    energy_tech_keywords = [
+        "Energy Storage Technician", "הנדסאי אגירת אנרגיה",
+        "BESS Technician", "טכנאי מערכות סוללות",
+        "Commissioning Technician", "טכנאי מסירה והפעלה",
+        "EV Charging Infrastructure Technician", "טכנאי תשתיות טעינה",
+        "Microgrid Operator", "מפעיל מיקרו-גריד",
+        "Smart Energy Integrator", "אינטגרטור אנרגיה חכמה",
+        "CleanTech Technician", "טכנאי קלינטק"
+    ]
+    
+    # Extend energy keywords with energy tech
+    energy_keywords.extend(energy_tech_keywords)
+
+    comeet_target_companies = [
+        "solaredge", "rafael", "elbit", "percepto", 
+        "airobotics", "xtend", "brenmiller", "augwind",
+        "doral", "enlight"
+    ]
+
 
     print("[FETCH] Scraping LinkedIn (Energy)...")
-    linkedin_energy = fetch_linkedin_jobs(energy_keywords, health, max_pages=1)
+    linkedin_energy = fetch_linkedin_jobs(energy_keywords, health, max_pages=2)
     print("[FETCH] Scraping LinkedIn (Drones)...")
-    linkedin_drones = fetch_linkedin_jobs(drone_keywords, health, max_pages=1)
+    linkedin_drones = fetch_linkedin_jobs(drone_keywords, health, max_pages=2)
 
-    all_raw_jobs = linkedin_energy + linkedin_drones
+    print("[FETCH] Scraping Comeet (Target Companies)...")
+    # Need to import it at the top if not imported, or just use it if imported.
+    # main.py already has: from src.fetchers import fetch_linkedin_jobs, RunHealth, scrape_comeet_companies
+    comeet_jobs = scrape_comeet_companies(comeet_target_companies, health)
+
+    all_raw_jobs = linkedin_energy + linkedin_drones + comeet_jobs
 
     # 3. Filter New Jobs
     # FIX #2: Use j.get("link") to avoid a hard crash (KeyError) if a scraped
