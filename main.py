@@ -88,12 +88,12 @@ def main():
     
     drone_keywords = [
         "Drone Integrator", "אינטגרטור רחפנים",
-        "UAV Technician", "טכנאי מערכות כטב"ם",
+        "UAV Technician", 'טכנאי מערכות כטב"ם',
         "Drone Operator", "מפעיל רחפנים",
         "Integration and Testing Technician", "טכנאי אינטגרציה ובדיקות",
         "Internal Pilot", "מטיס פנים",
-        "Aviation and UAV Mechanic", "מכונאי תעופה וכטב"ם",
-        "Payload Technician", "טכנאי מטע"דים"
+        "Aviation and UAV Mechanic", 'מכונאי תעופה וכטב"ם',
+        "Payload Technician", 'טכנאי מטע"דים'
     ]
     
     energy_tech_keywords = [
