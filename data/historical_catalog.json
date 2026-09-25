@@ -8222,5 +8222,32 @@
     "salary_source_url": "https://www.google.com/search?q=%D7%98%D7%91%D7%90%D7%AA+%D7%A9%D7%9B%D7%A8+%D7%94%D7%A0%D7%93%D7%A1%D7%90%D7%99+%D7%9E%D7%9B%D7%95%D7%A0%D7%95%D7%AA+%D7%99%D7%A9%D7%A8%D7%90%D7%9C",
     "salary_evidence": "הערכת השכר מתבססת על תפקידי הנדסה וניהול פתרונות טכנולוגיים (Solution Engineering) מתחילים עד בינוניים במגזר האנרגיה והתשתיות בישראל.",
     "date": "2026-09-24"
+  },
+  "https://il.linkedin.com/jobs/view/high-pressure-natural-gas-project-remote-at-rina-4469463836": {
+    "title": "High Pressure Natural Gas Project (Remote)",
+    "company": "RINA",
+    "link": "https://il.linkedin.com/jobs/view/high-pressure-natural-gas-project-remote-at-rina-4469463836",
+    "snippet": "High Pressure Natural Gas Project (Remote)",
+    "query": "Gas Plant Operator",
+    "match_score": 95,
+    "concrete_matches_count": 4,
+    "reasoning": "התאמה מצוינת לפרופיל של עידו כהנדסאי מכונות בהתמחות גז טבעי ואנרגיה ירוקה. הפרויקט עוסק בדיוק בליבת תחום התמחותו המקצועית.",
+    "sector_key": "energy",
+    "sector": "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA",
+    "location": "עבודה מרחוק / גלובלי",
+    "company_domain_product": "חברת הנדסה וייעוץ בינלאומית המובילה פרויקטים של פיקוח, בקרה ואישור בתחומי האנרגיה והתשתיות.",
+    "job_summary": "מעורבות ותמיכה טכנית בפרויקט תשתית גז טבעי בלחץ גבוה, תוך פיקוח ובקרה על תהליכים הנדסיים מרחוק.",
+    "experience_strengths": "השכלה ייעודית כהנדסאי גז טבעי ואנרגיה ירוקה מרופין, לצד ניסיון מעשי כבקר מערכות גז ו-SCADA.",
+    "key_highlights": "הבנה מעמיקה במערכות לחץ גבוה וניסיון מוכח בניטור ובקרת זרימת גז טבעי בזמן אמת.",
+    "company_size": "Large Global Enterprise",
+    "junior_openness": "Moderate (התמחות ייחודית בגז טבעי מפצה על חוסר בשנות ניסיון רבות)",
+    "work_model": "Remote",
+    "company_requirements": "הבנה טכנית והנדסית במערכות גז טבעי, היכרות עם תקנים של לחץ גבוה ויכולת עבודה עצמאית בסביבה גלובלית.",
+    "salary_range": "14,000 - 18,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-RINA)",
+    "salary_source_url": "https://www.google.com/search?q=%D7%98%D7%91%D7%9C%D7%AA+%D7%A9%D7%9B%D7%A8+%D7%94%D7%A0%D7%93%D7%A1%D7%90%D7%99+%D7%9E%D7%9B%D7%95%D7%A0%D7%95%D7%AA+%D7%99%D7%A9%D7%A8%D7%90%D7%9C",
+    "salary_evidence": "הערכת השכר מבוססת על טבלאות השכר המקובלות בישראל עבור הנדסאי מכונות מומחים בתחום הגז הטבעי והאנרגיה.",
+    "date": "2026-09-25"
   }
 }
