@@ -917,15 +917,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         let matchesSector = (selectedSector === 'all');
         if (!matchesSector) {
-          if (selectedSector === 'drones') {
-            matchesSector = ['drones', 'cuas', 'avionics'].includes(sector);
-          } else if (selectedSector === 'energy') {
-            matchesSector = ['energy', 'natural_gas', 'solar', 'energy_tech'].includes(sector) || sector === 'energy';
-            if (['natural_gas', 'solar', 'energy_tech'].includes(selectedSector)) {
-                matchesSector = (sector === selectedSector);
-            }
+          // Normalize for robust comparison (lowercase, remove underscores/hyphens/spaces)
+          const normSector = sector.toLowerCase().replace(/[ _-]/g, '');
+          const normSelected = selectedSector.toLowerCase().replace(/[ _-]/g, '');
+
+          if (normSelected === 'drones') {
+            matchesSector = ['drones', 'cuas', 'avionics'].includes(normSector);
+          } else if (normSelected === 'energy') {
+            const energySet = ['energy', 'naturalgas', 'solar', 'energytech'];
+            matchesSector = energySet.includes(normSector);
+          } else if (normSelected === 'naturalgas') {
+            matchesSector = ['naturalgas', 'gas'].includes(normSector);
           } else {
-            matchesSector = (sector === selectedSector);
+            matchesSector = normSector === normSelected;
           }
         }
 
