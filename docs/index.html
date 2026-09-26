@@ -1061,12 +1061,40 @@
         return state === 'saved' || state === 'pending';
       });
 
-      // Group jobs by normalized company + title
+      // Group jobs by normalized company + title OR by LinkedIn Job ID
       const groups = {};
+      
+      function extractJobId(link) {
+        if (!link) return null;
+        // LinkedIn IDs usually look like ...-4469463836 or view/4469463836/
+        const match = link.match(/(\d{9,11})(?:[/?#]|$)/);
+        if (match) return match[1];
+        // Comeet positions usually have an ID like 67-073 or similar alphanumeric slug at the end
+        const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\/?$/);
+        if (comeetMatch && link.includes('comeet')) return comeetMatch[1];
+        return null;
+      }
+
       activeJobs.forEach((job, idx) => {
-        const key = normalize(job.company) + '|' + normalize(job.title);
-        if (!groups[key]) groups[key] = [];
-        groups[key].push({ ...job, _idx: idx });
+        const titleCompKey = normalize(job.company) + '|' + normalize(job.title);
+        // Remove common varying suffixes like (Israel), (Remote), (Hybrid) for the title string
+        let cleanTitle = normalize(job.title).replace(/(israel|remote|hybrid|tel aviv|haifa)$/i, '').trim();
+        const cleanTitleCompKey = normalize(job.company) + '|' + cleanTitle;
+        
+        const jobId = extractJobId(job.link);
+        
+        let foundKey = null;
+        if (jobId) {
+            // Check if we already have a group with this ID
+            foundKey = Object.keys(groups).find(k => k.startsWith('ID: ' + jobId));
+            if (!foundKey) foundKey = 'ID: ' + jobId + ' | ' + titleCompKey;
+        } else {
+            // Fallback to title/company matching (try to match existing similar titles)
+            foundKey = Object.keys(groups).find(k => k.includes(cleanTitleCompKey)) || titleCompKey;
+        }
+        
+        if (!groups[foundKey]) groups[foundKey] = [];
+        groups[foundKey].push({ ...job, _idx: idx });
       });
 
       const dupGroups = Object.entries(groups).filter(([k, g]) => g.length > 1);
@@ -1175,9 +1203,29 @@
         });
       }
 
+      function extractJobId(link) {
+        if (!link) return null;
+        const match = link.match(/(\d{9,11})(?:[/?#]|$)/);
+        if (match) return match[1];
+        const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\/?$/);
+        if (comeetMatch && link.includes('comeet')) return comeetMatch[1];
+        return null;
+      }
+      
       const activeJobs = allJobs.filter(job => {
         const state = jobStates[job.link] || 'pending';
-        return (state === 'saved' || state === 'pending') && (normalize(job.company) + '|' + normalize(job.title)) === targetKey;
+        if (state !== 'saved' && state !== 'pending') return false;
+        
+        const titleCompKey = normalize(job.company) + '|' + normalize(job.title);
+        let cleanTitle = normalize(job.title).replace(/(israel|remote|hybrid|tel aviv|haifa)$/i, '').trim();
+        const cleanTitleCompKey = normalize(job.company) + '|' + cleanTitle;
+        const jobId = extractJobId(job.link);
+        
+        if (targetKey.startsWith('ID: ') && jobId) {
+            return targetKey.includes(jobId);
+        } else {
+            return titleCompKey === targetKey || cleanTitleCompKey === targetKey || targetKey.includes(cleanTitleCompKey);
+        }
       });
 
       if (activeJobs.length <= 1) return;
