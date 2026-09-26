@@ -1046,8 +1046,21 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
       }
 
+      // Combine rawJobsData and historicalCatalog for a comprehensive check
+      const seenLinks = new Set((rawJobsData || []).map(j => j.link));
+      let allJobs = [...(rawJobsData || [])];
+      
+      if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
+        Object.keys(jobStates).forEach(link => {
+          if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
+            allJobs.push(historicalCatalog[link]);
+            seenLinks.add(link);
+          }
+        });
+      }
+
       // Filter: ONLY active jobs in "משרות שנשמרו" or "משרות חדשות" (pending)
-      const activeJobs = (rawJobsData || []).filter(job => {
+      const activeJobs = allJobs.filter(job => {
         const state = jobStates[job.link] || 'pending';
         return state === 'saved' || state === 'pending';
       });
@@ -1155,7 +1168,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
       }
 
-      const activeJobs = (rawJobsData || []).filter(job => {
+      const seenLinks = new Set((rawJobsData || []).map(j => j.link));
+      let allJobs = [...(rawJobsData || [])];
+      if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
+        Object.keys(jobStates).forEach(link => {
+          if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
+            allJobs.push(historicalCatalog[link]);
+            seenLinks.add(link);
+          }
+        });
+      }
+
+      const activeJobs = allJobs.filter(job => {
         const state = jobStates[job.link] || 'pending';
         return (state === 'saved' || state === 'pending') && (normalize(job.company) + '|' + normalize(job.title)) === targetKey;
       });
