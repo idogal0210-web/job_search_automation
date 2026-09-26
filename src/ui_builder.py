@@ -99,13 +99,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <div class="flex flex-wrap items-center gap-2">
         <select id="sectorFilter" onchange="filterCards()" class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500">
           <option value="all">🌐 כל התחומים</option>
-          <option value="energy">⚡ אנרגיה, גז טבעי ו-SCADA</option>
-          <option value="drones_unified">🚁 רחפנים, תעופה וביטחון (כל התחומים)</option>
+          <option value="natural_gas">🏭 גז טבעי</option>
+          <option value="solar">☀️ מערכות סולאריות</option>
+          <option value="energy">⚡ אנרגיה כללית</option>
+          <option value="drones">🚁 רחפנים וכטב"ם</option>
+          <option value="energy_tech">🔋 אנרג'י טק ואגירה</option>
         </select>
 
         <button id="sortBtn" onclick="toggleSort()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-slate-800 text-slate-200 text-xs font-bold rounded-xl border border-slate-800 transition-all shadow-sm" title="לחץ לשינוי סדר המיון">
           <span id="sortIcon">🔽</span>
-          <span id="sortLabel">התאמה: מגבוה לנמוך</span>
+          <span id="sortLabel">מיון: ציון התאמה</span>
         </button>
 
         <button onclick="openDuplicatesModal()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-amber-500/10 text-amber-400 text-xs font-bold rounded-xl border border-slate-800 hover:border-amber-500/40 transition-all shadow-sm" title="סרוק כפילויות משרות">
@@ -243,7 +246,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const initialSavedLinks = __INITIAL_SAVED_JSON__;
     const initialRejectedLinks = __INITIAL_REJECTED_JSON__;
     let currentFilter = 'all';
-    let currentSort = 'desc';
+    let currentSort = 'score_desc';
     const STORAGE_KEY = 'ido_job_triage_store';
 
     function loadTriageState() {
@@ -645,9 +648,20 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
       let sortedJobs = [...displayJobs];
       sortedJobs.sort((a, b) => {
-        const scoreA = Number(a.match_score) || 0;
-        const scoreB = Number(b.match_score) || 0;
-        return currentSort === 'desc' ? scoreB - scoreA : scoreA - scoreB;
+        if (currentSort === 'score_desc') {
+            const scoreA = Number(a.match_score) || 0;
+            const scoreB = Number(b.match_score) || 0;
+            return scoreB - scoreA;
+        } else {
+            const dateA = a.date || '0000-00-00';
+            const dateB = b.date || '0000-00-00';
+            if (dateA > dateB) return -1;
+            if (dateA < dateB) return 1;
+            // Fallback to score if same date
+            const scoreA = Number(a.match_score) || 0;
+            const scoreB = Number(b.match_score) || 0;
+            return scoreB - scoreA;
+        }
       });
 
       sortedJobs.forEach((job, idx) => {
@@ -813,17 +827,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     function toggleSort() {
-      currentSort = currentSort === 'desc' ? 'asc' : 'desc';
+      // Toggle between match_score (desc) and date (desc)
+      currentSort = currentSort === 'score_desc' ? 'date_desc' : 'score_desc';
       const icon = document.getElementById('sortIcon');
       const label = document.getElementById('sortLabel');
-      if (currentSort === 'desc') {
+      if (currentSort === 'score_desc') {
         if (icon) icon.textContent = '🔽';
-        if (label) label.textContent = 'התאמה: מגבוה לנמוך';
+        if (label) label.textContent = 'מיון: ציון התאמה (מגבוה לנמוך)';
         showToast('🔽', 'מיון: ציון התאמה מגבוה לנמוך');
       } else {
-        if (icon) icon.textContent = '🔼';
-        if (label) label.textContent = 'התאמה: מנמוך לגבוה';
-        showToast('🔼', 'מיון: ציון התאמה מנמוך לגבוה');
+        if (icon) icon.textContent = '📅';
+        if (label) label.textContent = 'מיון: התאריך החדש קודם';
+        showToast('📅', 'מיון: התאריך החדש קודם');
       }
       renderCards();
     }
@@ -902,8 +917,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         let matchesSector = (selectedSector === 'all');
         if (!matchesSector) {
-          if (selectedSector === 'drones_unified') {
+          if (selectedSector === 'drones') {
             matchesSector = ['drones', 'cuas', 'avionics'].includes(sector);
+          } else if (selectedSector === 'energy') {
+            matchesSector = ['energy', 'natural_gas', 'solar', 'energy_tech'].includes(sector) || sector === 'energy';
+            if (['natural_gas', 'solar', 'energy_tech'].includes(selectedSector)) {
+                matchesSector = (sector === selectedSector);
+            }
           } else {
             matchesSector = (sector === selectedSector);
           }

@@ -77,8 +77,8 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     1. "match_score": integer (0 to 100).
     2. "concrete_matches_count": integer (0 to 10).
     3. "reasoning": 1-2 sentence Hebrew justification.
-    4. "sector_key": one of ["energy", "drones", "cuas", "avionics", "other"].
-    5. "sector": Hebrew sector title e.g. "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA" or "🚁 רחפנים וכטב״ם אוטונומי".
+    4. "sector_key": one of ["natural_gas", "solar", "energy", "drones", "energy_tech", "other"].
+    5. "sector": Hebrew sector title e.g. "🏭 גז טבעי", "☀️ סולארי", "⚡ אנרגיה כללית", "🚁 רחפנים", or "🔋 אנרג'י-טק".
     6. "location": Hebrew location in 2-4 words.
     7. "company_domain_product": 10-15 words Hebrew concise summary strictly describing the company's core domain and product.
     8. "job_summary": 2-3 sentence Hebrew concise summary of core job duties and responsibilities.
