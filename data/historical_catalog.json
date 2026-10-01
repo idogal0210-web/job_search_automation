@@ -8357,5 +8357,32 @@
     "salary_source_url": "https://www.google.com/search?q=Mobileye+student+operator+salary+Israel",
     "salary_evidence": "דיווחי שכר במשרות סטודנט ותפעול במובילאיי מצביעים על שכר שעתי של 55-70 ש\"ח לשעה (כ-6,000-9,000 ש\"ח בחודש בהיקף משרת סטודנט).",
     "date": "2026-09-30"
+  },
+  "https://il.linkedin.com/jobs/view/electrician-at-mer-group-4472530708": {
+    "title": "Electrician",
+    "company": "MER Group",
+    "link": "https://il.linkedin.com/jobs/view/electrician-at-mer-group-4472530708",
+    "snippet": "Electrician",
+    "query": "High Voltage Technician",
+    "match_score": 72,
+    "concrete_matches_count": 6,
+    "reasoning": "עידו נמצא חודשיים לפני סיום לימודי חשמלאי מוסמך ומחזיק בדיפלומה כהנדסאי מכונות ואנרגיה. המשרה מתאימה להסמכתו החדשה ולרקע הטכני שלו, אך אינה ממצה את מומחיותו הייחודית בבקרת SCADA וגז טבעי.",
+    "sector_key": "energy",
+    "sector": "⚡ אנרגיה ותשתיות",
+    "location": "חולון / מרכז",
+    "company_domain_product": "קבוצת מר מספקת פתרונות תשתית, תקשורת, אבטחה, ומערכות חשמל ואנרגיה מורכבות בישראל ובעולם.",
+    "job_summary": "ביצוע עבודות חשמל, התקנה ותחזוקה של תשתיות ומערכות חשמל בפרויקטים של החברה. התפקיד כולל איתור תקלות, חיווט, בדיקות מתח ועבודה לפי תוכניות חשמל.",
+    "experience_strengths": "הסמכה קרובה כחשמלאי מוסמך יחד עם השכלה כהנדסאי מכונות מעניקות בסיס טכני רחב והבנה מעמיקה של מערכות אנרגיה ותשתיות.",
+    "key_highlights": "רקע חזק במערכות אנרגיה ותפעול, יכולת עבודה פיזית וטכנית בשטח, ומוטיבציה גבוהה להתפתח בתחום החשמל והתשתיות.",
+    "company_size": "500+ עובדים",
+    "junior_openness": "פתוח לג'וניורים / בעלי הסמכה טרייה",
+    "work_model": "משרה מלאה / עבודת שטח",
+    "company_requirements": "רישיון חשמלאי בתוקף (מעשי/מוסמך), יכולת קריאת שרטוטי חשמל, ונכונות לעבודת שטח בפרויקטים.",
+    "salary_range": "11,000 - 14,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-MER Group)",
+    "salary_source_url": "https://www.google.com/search?q=%D7%98%D7%91%D7%9C%D7%AA+%D7%A9%D7%9B%D7%A8+%D7%97%D7%A9%D7%9E%D7%9C%D7%90%D7%99+%D7%9E%D7%95%D7%A1%D7%9E%D7%9A+%D7%94%D7%A0%D7%93%D7%A1%D7%90%D7%99+%D7%99%D7%A9%D7%A8%D7%90%D7%9C",
+    "salary_evidence": "הערכת השכר מבוססת על נתוני ענף החשמל והתשתיות בישראל עבור חשמלאים מוסמכים והנדסאים בתחילת דרכם המקצועית.",
+    "date": "2026-10-01"
   }
 }
