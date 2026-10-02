@@ -9,6 +9,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>__TITLE__</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * {
       transition: background-color 0.2s ease, border-color 0.2s ease;
@@ -105,7 +106,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <option value="drones">🚁 רחפנים וכטב"ם</option>
           <option value="energy_tech">🔋 אנרג'י טק ואגירה</option>
         </select>
-
+<input id="searchInput" type="text" placeholder="חיפוש משרה..." class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500" oninput="filterCards()" />
+<select id="seniorityFilter" onchange="filterCards()" class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500">
+  <option value="all">כל הרמות</option>
+  <option value="junior">Junior</option>
+  <option value="mid">Mid</option>
+  <option value="senior">Senior</option>
+</select>
+<select id="locationFilter" onchange="filterCards()" class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500">
+  <option value="all">כל המיקומים</option>
+  <option value="israel">ישראל</option>
+  <option value="abroad">חו""ל</option>
+</select>
         <button id="sortBtn" onclick="toggleSort()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-slate-800 text-slate-200 text-xs font-bold rounded-xl border border-slate-800 transition-all shadow-sm" title="לחץ לשינוי סדר המיון">
           <span id="sortIcon">🔽</span>
           <span id="sortLabel">מיון: ציון התאמה</span>
@@ -117,6 +129,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </button>
       </div>
     </nav>
+    
+    <!-- Sector Distribution Chart -->
+    <div class="my-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-800/80 shadow-inner flex flex-col items-center">
+        <h3 class="text-xs font-bold text-slate-300 mb-2 w-full text-right">התפלגות מגזרים</h3>
+        <canvas id="sectorChart" class="w-full h-32" style="max-height: 150px;"></canvas>
+    </div>
+
 
     <!-- Contextual Action Bar for Saved Jobs (Export to Excel) -->
     <div id="savedActionBar" class="hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-emerald-950/40 border border-emerald-500/30 p-3.5 rounded-2xl">
@@ -714,6 +733,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const card = document.createElement('article');
         card.setAttribute('data-id', id);
         card.setAttribute('data-sector', secKey);
+        card.setAttribute('data-seniority', job.seniority ? job.seniority.toLowerCase() : 'all');
+        card.setAttribute('data-location', loc.toLowerCase());
         card.className = 'job-card bg-slate-900/80 border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-lg relative transition-all hover:border-slate-700';
 
         card.innerHTML = `
@@ -872,12 +893,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       updateUI();
     }
 
-    function filterCards() {
+      function filterCards() {
       updateUI();
     }
 
     function updateUI() {
       const selectedSector = document.getElementById('sectorFilter').value;
+      const searchInput = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
+      const selectedSeniority = document.getElementById('seniorityFilter') ? document.getElementById('seniorityFilter').value : 'all';
+      const selectedLocation = document.getElementById('locationFilter') ? document.getElementById('locationFilter').value : 'all';
+      
       const cards = document.querySelectorAll('.job-card');
       let visibleCount = 0;
       let saved = 0, rejected = 0, purged = 0;
@@ -886,6 +911,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       cards.forEach(card => {
         const id = card.getAttribute('data-id');
         const sector = card.getAttribute('data-sector');
+        const seniority = card.getAttribute('data-seniority') || 'all';
+        const locationAttr = card.getAttribute('data-location') || '';
         const state = jobStates[id] || 'pending';
 
         if (state === 'saved') saved++;
@@ -932,8 +959,30 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             matchesSector = normSector === normSelected;
           }
         }
+        
+        let matchesSearch = true;
+        if (searchInput) {
+          const cardText = card.textContent.toLowerCase();
+          matchesSearch = cardText.includes(searchInput);
+        }
+        
+        let matchesSeniority = (selectedSeniority === 'all');
+        if (!matchesSeniority) {
+           matchesSeniority = seniority.includes(selectedSeniority) || (selectedSeniority === 'junior' && (seniority === 'entry' || seniority === 'student'));
+        }
+        
+        let matchesLocation = (selectedLocation === 'all');
+        if (!matchesLocation) {
+          if (selectedLocation === 'israel') {
+             matchesLocation = locationAttr.includes('israel') || locationAttr.includes('ישראל') || locationAttr.includes('tel aviv') || locationAttr.includes('תל אביב');
+             // heuristic, assume it's israel if not abroad and not explicitly remote worldwide
+             if (locationAttr === '' || locationAttr === 'all') matchesLocation = true;
+          } else if (selectedLocation === 'abroad') {
+             matchesLocation = locationAttr.includes('remote') || locationAttr.includes('us') || locationAttr.includes('eu') || locationAttr.includes('abroad');
+          }
+        }
 
-        if (matchesTab && matchesSector && state !== 'purged') {
+        if (matchesTab && matchesSector && matchesSearch && matchesSeniority && matchesLocation && state !== 'purged') {
           card.classList.remove('hidden');
           visibleCount++;
         } else {
@@ -996,6 +1045,64 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       } else {
         emptyState.classList.add('hidden');
       }
+      renderSectorChart();
+    }
+
+    let sectorChartInstance = null;
+    function renderSectorChart() {
+      const cards = document.querySelectorAll('.job-card:not(.hidden)');
+      const counts = {};
+      cards.forEach(card => {
+        let sec = card.getAttribute('data-sector') || 'other';
+        const normSector = sec.toLowerCase().replace(/[ _-]/g, '');
+        if (['drones', 'cuas', 'avionics'].includes(normSector)) sec = 'רחפנים וכטב"ם';
+        else if (['energy', 'naturalgas', 'solar', 'energytech'].includes(normSector)) sec = 'אנרגיה וגז';
+        else sec = 'אחר';
+        counts[sec] = (counts[sec] || 0) + 1;
+      });
+
+      const ctx = document.getElementById('sectorChart');
+      if (!ctx) return;
+
+      if (sectorChartInstance) {
+        sectorChartInstance.destroy();
+      }
+
+      const labels = Object.keys(counts);
+      const data = Object.values(counts);
+
+      sectorChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'מספר משרות',
+            data: data,
+            backgroundColor: 'rgba(14, 165, 233, 0.6)',
+            borderColor: 'rgba(14, 165, 233, 1)',
+            borderWidth: 1,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { stepSize: 1, color: '#94a3b8' },
+              grid: { color: 'rgba(51, 65, 85, 0.5)' }
+            },
+            x: {
+              ticks: { color: '#94a3b8' },
+              grid: { display: false }
+            }
+          }
+        }
+      });
     }
 
     function showToast(icon, msg) {
