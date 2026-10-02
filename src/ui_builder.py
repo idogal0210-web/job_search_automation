@@ -783,22 +783,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               <span class="text-slate-200 inline leading-relaxed">${strengths}</span>
             </div>
 
-            <!-- Box 5: מודיעין שכר ואימות מקור -->
-            <div class="bg-slate-950/80 border border-emerald-500/25 rounded-xl p-3 text-slate-300 leading-relaxed break-words overflow-hidden">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span class="font-bold text-emerald-400 inline-block">💰 טווח שכר צפוי:</span>
-                  <span class="text-white font-extrabold inline">${salaryRange}</span>
-                  <span class="text-xs px-2 py-0.5 rounded-full border ${salaryBadgeColor} inline-block font-semibold">
-                    ${salaryIcon} ${salaryLabel}
-                  </span>
-                </div>
-                ${salaryUrl ? `<a href="${salaryUrl}" target="_blank" rel="noopener noreferrer" class="text-xs text-sky-400 hover:text-sky-300 underline font-semibold inline-flex items-center gap-1 shrink-0 mt-1 sm:mt-0"><span>אימות מקור ↗</span></a>` : ''}
-              </div>
-              <div class="text-xs text-slate-400 mt-1.5 border-t border-slate-800/60 pt-1.5">
-                <span class="text-slate-300 font-medium">ביסוס וראיות:</span> ${salaryEvidence}
-              </div>
-            </div>
           </div>
 
           <!-- Action Bar -->
