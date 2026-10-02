@@ -107,17 +107,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <option value="energy_tech">🔋 אנרג'י טק ואגירה</option>
         </select>
 <input id="searchInput" type="text" placeholder="חיפוש משרה..." class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500" oninput="filterCards()" />
-<select id="seniorityFilter" onchange="filterCards()" class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500">
-  <option value="all">כל הרמות</option>
-  <option value="junior">Junior</option>
-  <option value="mid">Mid</option>
-  <option value="senior">Senior</option>
-</select>
-<select id="locationFilter" onchange="filterCards()" class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500">
-  <option value="all">כל המיקומים</option>
-  <option value="israel">ישראל</option>
-  <option value="abroad">חו""ל</option>
-</select>
         <button id="sortBtn" onclick="toggleSort()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-slate-800 text-slate-200 text-xs font-bold rounded-xl border border-slate-800 transition-all shadow-sm" title="לחץ לשינוי סדר המיון">
           <span id="sortIcon">🔽</span>
           <span id="sortLabel">מיון: ציון התאמה</span>
@@ -131,7 +120,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </nav>
     
     <!-- Sector Distribution Chart -->
-    <div class="my-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-800/80 shadow-inner flex flex-col items-center">
+    <div id="sectorChartContainer" class="hidden my-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-800/80 shadow-inner flex flex-col items-center">
         <h3 class="text-xs font-bold text-slate-300 mb-2 w-full text-right">התפלגות מגזרים</h3>
         <canvas id="sectorChart" class="w-full h-32" style="max-height: 150px;"></canvas>
     </div>
@@ -900,8 +889,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     function updateUI() {
       const selectedSector = document.getElementById('sectorFilter').value;
       const searchInput = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
-      const selectedSeniority = document.getElementById('seniorityFilter') ? document.getElementById('seniorityFilter').value : 'all';
-      const selectedLocation = document.getElementById('locationFilter') ? document.getElementById('locationFilter').value : 'all';
       
       const cards = document.querySelectorAll('.job-card');
       let visibleCount = 0;
@@ -911,8 +898,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       cards.forEach(card => {
         const id = card.getAttribute('data-id');
         const sector = card.getAttribute('data-sector');
-        const seniority = card.getAttribute('data-seniority') || 'all';
-        const locationAttr = card.getAttribute('data-location') || '';
         const state = jobStates[id] || 'pending';
 
         if (state === 'saved') saved++;
@@ -965,24 +950,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           const cardText = card.textContent.toLowerCase();
           matchesSearch = cardText.includes(searchInput);
         }
-        
-        let matchesSeniority = (selectedSeniority === 'all');
-        if (!matchesSeniority) {
-           matchesSeniority = seniority.includes(selectedSeniority) || (selectedSeniority === 'junior' && (seniority === 'entry' || seniority === 'student'));
-        }
-        
-        let matchesLocation = (selectedLocation === 'all');
-        if (!matchesLocation) {
-          if (selectedLocation === 'israel') {
-             matchesLocation = locationAttr.includes('israel') || locationAttr.includes('ישראל') || locationAttr.includes('tel aviv') || locationAttr.includes('תל אביב');
-             // heuristic, assume it's israel if not abroad and not explicitly remote worldwide
-             if (locationAttr === '' || locationAttr === 'all') matchesLocation = true;
-          } else if (selectedLocation === 'abroad') {
-             matchesLocation = locationAttr.includes('remote') || locationAttr.includes('us') || locationAttr.includes('eu') || locationAttr.includes('abroad');
-          }
-        }
 
-        if (matchesTab && matchesSector && matchesSearch && matchesSeniority && matchesLocation && state !== 'purged') {
+        if (matchesTab && matchesSector && matchesSearch && state !== 'purged') {
           card.classList.remove('hidden');
           visibleCount++;
         } else {
@@ -1045,7 +1014,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       } else {
         emptyState.classList.add('hidden');
       }
-      renderSectorChart();
+      const chartContainer = document.getElementById('sectorChartContainer');
+      if (currentFilter === 'saved' && visibleCount > 0) {
+        if (chartContainer) chartContainer.classList.remove('hidden', 'flex');
+        if (chartContainer) chartContainer.classList.add('flex');
+        renderSectorChart();
+      } else {
+        if (chartContainer) chartContainer.classList.add('hidden');
+        if (chartContainer) chartContainer.classList.remove('flex');
+      }
     }
 
     let sectorChartInstance = null;
@@ -1055,10 +1032,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       cards.forEach(card => {
         let sec = card.getAttribute('data-sector') || 'other';
         const normSector = sec.toLowerCase().replace(/[ _-]/g, '');
-        if (['drones', 'cuas', 'avionics'].includes(normSector)) sec = 'רחפנים וכטב"ם';
-        else if (['energy', 'naturalgas', 'solar', 'energytech'].includes(normSector)) sec = 'אנרגיה וגז';
-        else sec = 'אחר';
-        counts[sec] = (counts[sec] || 0) + 1;
+        
+        let label = 'אחר';
+        if (['solar', 'pv'].includes(normSector)) label = 'PV ומערכות סולאריות';
+        else if (['naturalgas', 'gas'].includes(normSector)) label = 'גז טבעי ותשתיות';
+        else if (['energytech', 'storage', 'bess'].includes(normSector)) label = 'אגירת אנרגיה / Energy-Tech';
+        else if (['drones', 'uav', 'robotics'].includes(normSector)) label = 'רחפנים אזרחיים ורובוטיקה';
+        else if (['cuas', 'defense', 'military'].includes(normSector)) label = 'ביטחון ומערכות C-UAS';
+        else if (['scada', 'control', 'automation'].includes(normSector)) label = 'בקרה, SCADA ואוטומציה';
+        else if (['operations', 'maintenance'].includes(normSector)) label = 'תפעול שוטף ואחזקה';
+        else if (normSector === 'energy') label = 'אנרגיה (כללי)';
+        
+        counts[label] = (counts[label] || 0) + 1;
       });
 
       const ctx = document.getElementById('sectorChart');
