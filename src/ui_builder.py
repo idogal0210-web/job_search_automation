@@ -1154,7 +1154,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const match = link.match(/(\\d{9,11})(?:[/?#]|$)/);
         if (match) return match[1];
         // Comeet positions usually have an ID like 67-073 or similar alphanumeric slug at the end
-        const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\/?$/);
+        const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\\/?$/);
         if (comeetMatch && link.includes('comeet')) return comeetMatch[1];
         return null;
       }
@@ -1291,7 +1291,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         if (!link) return null;
         const match = link.match(/(\\d{9,11})(?:[/?#]|$)/);
         if (match) return match[1];
-        const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\/?$/);
+        const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\\/?$/);
         if (comeetMatch && link.includes('comeet')) return comeetMatch[1];
         return null;
       }
