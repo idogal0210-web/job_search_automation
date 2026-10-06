@@ -16,7 +16,7 @@ jobs:
   job-search-daily:
     runs-on: ubuntu-latest
     name: "Daily Job Search - Ido Gal"
-    timeout-minutes: 25
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -75,7 +75,7 @@ jobs:
           fi
 
       - name: Send Urgent Failure Alert Email (Exceptions Only)
-        if: failure()
+        if: failure() || cancelled()
         env:
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
