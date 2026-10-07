@@ -20,7 +20,8 @@ STATE_FILE = os.path.join(os.path.dirname(__file__), "data", "jobs_state.json")
 # creating a risk of the two copies diverging silently.
 FALLBACK_KEYWORDS = [
     "gas", "energy", "mechanical", "control",
-    "infrastructure", "cleantech", "drone", "uav", "scada"
+    "infrastructure", "cleantech", "drone", "uav", "scada",
+    "solar", "energy tech"
 ]
 
 def apply_keyword_fallback(job: dict) -> dict:
