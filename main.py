@@ -154,7 +154,7 @@ def main():
     # 4. Evaluate with AI
     client = None
     if os.getenv("GEMINI_API_KEY"):
-        client = genai.Client()
+        client = genai.Client(http_options={'timeout': 20000}) # 20 seconds timeout
     else:
         print("[WARNING] GEMINI_API_KEY missing. Cannot evaluate jobs.")
 
