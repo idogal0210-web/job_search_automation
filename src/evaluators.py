@@ -152,7 +152,8 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
             # Post-Gemini Python Deterministic Enforcement
             if data["concrete_matches_count"] < 3:
                 print(f"[VALIDATION] Job disqualified (concrete matches < 3): {company} - {title}")
-                return None
+                data["match_score"] = 0
+                return data
 
             return data
 
