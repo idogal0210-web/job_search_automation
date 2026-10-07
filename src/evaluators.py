@@ -109,9 +109,8 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     health_metrics.gemini_attempts += 1
 
     models_to_try = [
-        "gemini-3.6-flash",
+        "gemini-3.1-pro-preview",
         "gemini-3.8-flash",
-        "gemini-3.7-flash",
         "gemini-3.5-flash",
     ]
 
@@ -147,6 +146,8 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
                 data["salary_evidence"] = "מבוסס על סקרי שכר ענפיים של חברות השמה (CPS/נישה/אתגר) להנדסאי מכונות ותפעול בישראל."
 
             health_metrics.gemini_successes += 1
+            print(f"[AI] Successfully evaluated using {model_name}")
+
 
             # Post-Gemini Python Deterministic Enforcement
             if data["concrete_matches_count"] < 3:
