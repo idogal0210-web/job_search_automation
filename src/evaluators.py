@@ -164,6 +164,10 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
                 print(f"[CIRCUIT BREAKER] Daily quota exhausted on {model_name}. Skipping all remaining Gemini calls.")
                 health_metrics.gemini_failures += 1
                 raise QuotaExhaustedError(f"Daily quota exhausted: {err_str}") from e
+            elif "503" in err_str or "UNAVAILABLE" in err_str:
+                print(f"[CIRCUIT BREAKER] API is overloaded (503). Skipping Gemini for this run to avoid timeout.")
+                health_metrics.gemini_failures += 1
+                raise QuotaExhaustedError(f"API Overloaded (503): {err_str}") from e
             # Transient errors (503 overload, network blip) → try next model.
             print(f"[GEMINI] Transient failure with {model_name}: {e}. Trying next model.")
             continue
