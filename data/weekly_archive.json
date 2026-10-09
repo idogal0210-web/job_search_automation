@@ -457,5 +457,32 @@
     "salary_source_url": "https://www.google.com/search?q=טבלת+שכר+מנהל+פרויקטים+אנרגיה+סולארית+ישראל",
     "salary_evidence": "השכר מוערך על בסיס טבלאות שכר ענפיות לתפקידי ניהול פרויקטים ואינטגרציה בחברות אנרגיה מתחדשת גדולות.",
     "date": "2026-10-09"
+  },
+  {
+    "title": "Artificial Intelligence (AI) Technician",
+    "company": "Jobgether",
+    "link": "https://il.linkedin.com/jobs/view/artificial-intelligence-ai-technician-at-jobgether-4474685768",
+    "snippet": "This position is listed on behalf of a partner company, who manages all applications and next steps. Our partner is looking for an Artificial Intelligence (AI) Technician based in Israel.\nThis is a remote opportunity for a technically skilled AI professional looking to make a tangible impact across business operations.\nYou will research, implement, and optimize AI, automation, and data-driven technologies across multiple functions.\nThe role combines AI/ML expertise with systems integration, process automation, analytics, and operational improvement.\nYou will identify opportunities to streamline workflows, improve decision-making, and increase efficiency through technology.\nYou will work with a diverse range of platforms spanning finance, accounting, labor management, forecasting, and business intelligence.\nThe position offers a collaborative, cross-functional environment where innovation and practical problem-solving are highly valued.\nYou will also help teams adopt AI solutions effectively through technical support, training, documentation, and continuous optimization.\nAccountabilities\nResearch, assess, and recommend emerging AI technologies and automation solutions that can create measurable business value.\nDeploy and optimize AI models, automation tools, and integrated workflows across different business functions.\nIntegrate and optimize platforms for invoice automation, receipt management, cash-flow forecasting, labor optimization, bookkeeping, and financial reconciliation.\nConnect POS and accounting systems using integration and automation platforms such as Zapier, Make, or Omnivore.\nDevelop and maintain internal AI-powered dashboards using tools such as Power BI or Looker Studio to provide insights into financial, labor, and operational performance.\nStreamline financial data flows, including bank transaction imports and accounting processes.\nImplement and evaluate reconciliation and intelligent bookkeeping solutions to improve accuracy and efficiency.\nMonitor ",
+    "query": "מפעיל מתקן גז",
+    "match_score": 75,
+    "concrete_matches_count": 3,
+    "reasoning": "עידו מביא רקע טכנולוגי רב-תחומי ויכולות אוטומציה באמצעות Python וכלי AI (כגון Gemini ו-Copilot), המשתלבות היטב עם דרישות המשרה לשילוב מערכות ואוטומציה עסקית.",
+    "sector_key": "energy_tech",
+    "sector": "💻 טכנולוגיה ואוטומציה עסקית",
+    "location": "ישראל (מרחוק)",
+    "company_domain_product": "חברת Jobgether פועלת בתחום גיוס העובדים וניהול משרות ומספקת פלטפורמה טכנולוגית לחיבור בין מועמדים לחברות.",
+    "job_summary": "התפקיד כולל מחקר, הטמעה ואופטימיזציה של טכנולוגיות מבוססות בינה מלאכותית, אוטומציה של תהליכים ע עסקיים וחיבור בין מערכות פיננסיות ותפעוליות.",
+    "experience_strengths": "השליטה של עידו באוטומציות Python וכלי AI מעניקה לו בסיס חזק להתמודדות עם תהליכי אינטגרציה ואופטימיזציה של מערכות ממוחשבות.",
+    "key_highlights": "הזדמנות לעבוד מרחוק בתחום מתפתח של שילוב AI בארגונים, תוך ניצול יכולות פיתוח האוטומציה של המועמד.",
+    "company_size": "בינונית",
+    "junior_openness": "פתוח למועמדים עם רקע טכנולוגי מתאים",
+    "work_model": "מרחוק (Remote)",
+    "company_requirements": "ניסיון וידע בטכנולוגיות AI, אוטומציה עסקית, חיבור מערכות (Integrations) ויכולת תמיכה והדרכה של צוותים.",
+    "salary_range": "14,000 - 18,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "הערכת ענף (אין דיווחי שכר פומביים ל-Jobgether)",
+    "salary_source_url": "https://www.google.com/search?q=טבלת+שכר+טכנאי+AI+ואוטומציה+ישראל",
+    "salary_evidence": "השכר מוערך בהתבסס על ממוצע השוק בישראל למשרות טכנולוגיות המשלבות AI ואוטומציה עסקית.",
+    "date": "2026-10-09"
   }
 ]
