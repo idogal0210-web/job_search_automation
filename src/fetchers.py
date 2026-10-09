@@ -1,3 +1,4 @@
+import re
 import time
 import requests
 import random
@@ -31,8 +32,15 @@ class RunHealth:
 
 def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=1):
     headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-        "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7",
+        "sec-ch-ua": '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"macOS"',
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin"
     }
     jobs = []
     for kw in keywords:
@@ -87,14 +95,44 @@ def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=1
 
 
 
+def fetch_linkedin_full_job_description(link: str) -> str:
+    """Attempt to extract full job description from LinkedIn guest API endpoint."""
+    if not link or "linkedin.com/jobs/view" not in link:
+        return ""
+    try:
+        # Extract numeric job ID from the end of the link
+        match = re.search(r"-(\d+)(?:\?|$)", link)
+        if not match:
+            match = re.search(r"/(\d+)(?:\?|$)", link)
+        if not match:
+            return ""
+        job_id = match.group(1)
+        api_url = f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{job_id}"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+            "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
+        }
+        res = requests.get(api_url, headers=headers, timeout=8)
+        if res.status_code == 200:
+            soup = BeautifulSoup(res.text, "html.parser")
+            desc_div = soup.find("div", class_="show-more-less-html__markup") or soup.find("div", class_="description__text")
+            if desc_div:
+                clean_text = desc_div.get_text(separator="\n", strip=True)
+                if len(clean_text) > 100:
+                    return clean_text[:2000]
+    except Exception as e:
+        pass
+    return ""
+
+
 def extract_comeet_credentials(company_name):
-    """Attempt to find Comeet UID and Token from the company's careers page."""
-    # This is a placeholder for future dynamic extraction. 
-    # For now, we will rely on a known mapping or just return None.
-    # In a full implementation, you could fetch 'https://company.com/careers' and regex for the token.
+    """Attempt to find Comeet UID and Token from verified targets."""
     known_tokens = {
         "percepto": {"uid": "44.000", "token": "440154015404400088019802640880"},
-        # Add more known tokens here as they are discovered
+        "enlight": {"uid": "99.006", "token": "996431A9961CC2398456465646132C2FEE996"},
+        "airobotics": {"uid": "AA.005", "token": "AA54A8335395FCD5FCD01FEF1FEF2A94154A"},
+        "regulus": {"uid": "9A.00D", "token": "A9D4A4B35114A4B54E835114A4BA9D153AA9D"},
+        "aitan": {"uid": "FA.006", "token": "AF64CBA4CBA036CE36CE2BD84CBA04CBA"},
     }
     return known_tokens.get(company_name.lower())
 
@@ -130,11 +168,13 @@ def scrape_comeet_companies(companies, health_metrics):
                     if any(kw in lower_title for kw in ["finance", "hr", "sales", "marketing", "legal", "account"]):
                         continue
                         
+                    raw_desc = p.get("description", "")
+                    snippet = raw_desc[:2000] if raw_desc else title
                     jobs.append({
                         "title": title,
                         "company": company.capitalize(),
                         "link": p.get("url_active_page", ""),
-                        "snippet": p.get("description", "No description available")[:200], # truncated for token limit
+                        "snippet": snippet,
                         "query": f"Comeet - {company}"
                     })
                 health_metrics.comeet_companies_successful += 1

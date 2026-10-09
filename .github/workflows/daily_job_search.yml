@@ -16,7 +16,6 @@ jobs:
   job-search-daily:
     runs-on: ubuntu-latest
     name: "Daily Job Search - Ido Gal"
-    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -34,6 +33,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Daily Energy & Drone Job Searches (with AI Auto-Healer)
+        timeout-minutes: 40
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}

@@ -6,7 +6,7 @@ from google import genai
 
 load_dotenv()
 
-from src.fetchers import RunHealth, fetch_linkedin_jobs, scrape_comeet_companies
+from src.fetchers import RunHealth, fetch_linkedin_jobs, scrape_comeet_companies, fetch_linkedin_full_job_description
 from src.evaluators import evaluate_and_enrich_job_with_gemini, QuotaExhaustedError
 from src.publishers import send_email_report
 from src.ui_builder import build_and_save_docs_app, update_weekly_archive
@@ -111,9 +111,7 @@ def main():
     energy_keywords.extend(energy_tech_keywords)
 
     comeet_target_companies = [
-        "solaredge", "rafael", "elbit", "percepto", 
-        "airobotics", "xtend", "brenmiller", "augwind",
-        "doral", "enlight"
+        "percepto", "enlight", "airobotics", "regulus", "aitan"
     ]
 
 
@@ -173,6 +171,12 @@ def main():
                 # Quota already confirmed exhausted — skip Gemini entirely, no sleep needed.
                 print(f"[CIRCUIT BREAKER] Skipping Gemini for: {job.get('title')}")
             else:
+                # Two-Stage Enrichment: If snippet is very brief (< 250 chars) and job is from LinkedIn, fetch full description
+                if "linkedin.com" in job.get("link", "") and len(job.get("snippet", "")) < 250:
+                    full_desc = fetch_linkedin_full_job_description(job["link"])
+                    if full_desc:
+                        job["snippet"] = full_desc
+
                 try:
                     result = evaluate_and_enrich_job_with_gemini(
                         client,
@@ -193,8 +197,8 @@ def main():
                         print(f"[API ERROR] Failure for: {job.get('title')}. Error: {e}. Using keyword fallback.")
                     result = None
                 finally:
-                    # Always sleep after a Gemini attempt to maintain a steady gap.
-                    time.sleep(4)
+                    # Adaptive steady gap between Gemini calls
+                    time.sleep(2)
 
             # Single DRY fallback call handles all failure paths.
             if result is None:

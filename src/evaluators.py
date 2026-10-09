@@ -110,8 +110,9 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
 
     models_to_try = [
         "gemini-3.1-pro-preview",
-        "gemini-3.8-flash",
+        "gemini-3.5-flash-lite",
         "gemini-3.5-flash",
+        "gemini-3.8-flash",
     ]
 
     for model_name in models_to_try:
@@ -159,19 +160,22 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
 
         except Exception as e:
             err_str = str(e)
-            # Circuit Breaker: Hard daily quota exhaustion (429 + "quota" keyword).
-            # Retrying other models wastes the remaining quota — raise immediately
-            # so the caller can skip Gemini for all remaining jobs in this run.
-            if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str) and "quota" in err_str.lower():
-                print(f"[CIRCUIT BREAKER] Daily quota exhausted on {model_name}. Skipping all remaining Gemini calls.")
-                health_metrics.gemini_failures += 1
-                raise QuotaExhaustedError(f"Daily quota exhausted: {err_str}") from e
-            elif "503" in err_str or "UNAVAILABLE" in err_str:
-                print(f"[CIRCUIT BREAKER] API is overloaded (503). Skipping Gemini for this run to avoid timeout.")
-                health_metrics.gemini_failures += 1
-                raise QuotaExhaustedError(f"API Overloaded (503): {err_str}") from e
-            # Transient errors (503 overload, network blip) → try next model.
-            print(f"[GEMINI] Transient failure with {model_name}: {e}. Trying next model.")
+            is_last_model = (model_name == models_to_try[-1])
+
+            # If it's a hard quota exhaustion or overload on the final fallback model,
+            # trip the circuit breaker for all subsequent jobs in this run.
+            if is_last_model:
+                if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str) and "quota" in err_str.lower():
+                    print(f"[CIRCUIT BREAKER] Daily quota exhausted across all models. Skipping all remaining Gemini calls.")
+                    health_metrics.gemini_failures += 1
+                    raise QuotaExhaustedError(f"Daily quota exhausted: {err_str}") from e
+                elif "503" in err_str or "UNAVAILABLE" in err_str:
+                    print(f"[CIRCUIT BREAKER] All models overloaded (503). Skipping Gemini for this run.")
+                    health_metrics.gemini_failures += 1
+                    raise QuotaExhaustedError(f"API Overloaded (503): {err_str}") from e
+
+            # Otherwise, log and proceed to the next fallback model
+            print(f"[GEMINI] {model_name} unavailable ({err_str[:80]}...). Trying next fallback model.")
             continue
 
     print(f"[ERROR] All Gemini models failed for {company} - {title}.")
