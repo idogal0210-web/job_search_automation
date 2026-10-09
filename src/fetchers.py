@@ -12,11 +12,6 @@ class RunHealth:
     linkedin_failures: int = 0
     linkedin_jobs_found: int = 0
     
-    comeet_companies_attempted: int = 0
-    comeet_companies_successful: int = 0
-    comeet_companies_failed: int = 0
-    comeet_jobs_found: int = 0
-
     gemini_attempts: int = 0
     gemini_successes: int = 0
     gemini_failures: int = 0
@@ -125,68 +120,4 @@ def fetch_linkedin_full_job_description(link: str) -> str:
     return ""
 
 
-def extract_comeet_credentials(company_name):
-    """Attempt to find Comeet UID and Token from verified targets."""
-    known_tokens = {
-        "percepto": {"uid": "44.000", "token": "440154015404400088019802640880"},
-        "enlight": {"uid": "99.006", "token": "996431A9961CC2398456465646132C2FEE996"},
-        "airobotics": {"uid": "AA.005", "token": "AA54A8335395FCD5FCD01FEF1FEF2A94154A"},
-        "regulus": {"uid": "9A.00D", "token": "A9D4A4B35114A4B54E835114A4BA9D153AA9D"},
-        "aitan": {"uid": "FA.006", "token": "AF64CBA4CBA036CE36CE2BD84CBA04CBA"},
-    }
-    return known_tokens.get(company_name.lower())
 
-def scrape_comeet_companies(companies, health_metrics):
-    jobs = []
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
-    }
-    
-    for company in companies:
-        health_metrics.comeet_companies_attempted += 1
-        creds = extract_comeet_credentials(company)
-        
-        if not creds:
-            print(f"[SOURCE] Comeet credentials for {company} not in known list. Skipping.")
-            health_metrics.comeet_companies_failed += 1
-            continue
-            
-        uid = creds["uid"]
-        token = creds["token"]
-        url = f"https://www.comeet.co/careers-api/2.0/company/{uid}/positions?token={token}&details=true"
-        
-        try:
-            res = requests.get(url, headers=headers, timeout=15)
-            if res.status_code == 200:
-                positions = res.json()
-                for p in positions:
-                    # Filter for relevant positions (e.g., mechanical, technician, energy, drone)
-                    # We will grab all and let the AI evaluator filter them, or pre-filter here.
-                    title = p.get("name", "")
-                    # Pre-filter to avoid spamming the AI with irrelevant jobs (like HR, Finance)
-                    lower_title = title.lower()
-                    if any(kw in lower_title for kw in ["finance", "hr", "sales", "marketing", "legal", "account"]):
-                        continue
-                        
-                    raw_desc = p.get("description", "")
-                    snippet = raw_desc[:2000] if raw_desc else title
-                    jobs.append({
-                        "title": title,
-                        "company": company.capitalize(),
-                        "link": p.get("url_active_page", ""),
-                        "snippet": snippet,
-                        "query": f"Comeet - {company}"
-                    })
-                health_metrics.comeet_companies_successful += 1
-                print(f"[SOURCE] Fetched {len(positions)} jobs from Comeet ({company}).")
-            else:
-                print(f"[SOURCE] Comeet returned {res.status_code} for {company}.")
-                health_metrics.comeet_companies_failed += 1
-        except Exception as e:
-            print(f"[ERROR] Comeet connection error for {company}: {e}")
-            health_metrics.comeet_companies_failed += 1
-            
-        time.sleep(2)
-        
-    health_metrics.comeet_jobs_found += len(jobs)
-    return jobs

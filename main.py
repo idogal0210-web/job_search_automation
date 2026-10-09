@@ -6,7 +6,7 @@ from google import genai
 
 load_dotenv()
 
-from src.fetchers import RunHealth, fetch_linkedin_jobs, scrape_comeet_companies, fetch_linkedin_full_job_description
+from src.fetchers import RunHealth, fetch_linkedin_jobs, fetch_linkedin_full_job_description
 from src.evaluators import evaluate_and_enrich_job_with_gemini, QuotaExhaustedError
 from src.publishers import send_email_report
 from src.ui_builder import build_and_save_docs_app, update_weekly_archive
@@ -110,22 +110,13 @@ def main():
     # Extend energy keywords with energy tech
     energy_keywords.extend(energy_tech_keywords)
 
-    comeet_target_companies = [
-        "percepto", "enlight", "airobotics", "regulus", "aitan"
-    ]
-
-
     print("[FETCH] Scraping LinkedIn (Energy)...")
     linkedin_energy = fetch_linkedin_jobs(energy_keywords, health, max_pages=2)
     print("[FETCH] Scraping LinkedIn (Drones)...")
     linkedin_drones = fetch_linkedin_jobs(drone_keywords, health, max_pages=2)
 
-    print("[FETCH] Scraping Comeet (Target Companies)...")
-    # Need to import it at the top if not imported, or just use it if imported.
-    # main.py already has: from src.fetchers import fetch_linkedin_jobs, RunHealth, scrape_comeet_companies
-    comeet_jobs = scrape_comeet_companies(comeet_target_companies, health)
-
-    all_raw_jobs = linkedin_energy + linkedin_drones + comeet_jobs
+    # Pure broad industry search across LinkedIn
+    all_raw_jobs = linkedin_energy + linkedin_drones
 
     # 3. Filter New Jobs
     # FIX #2: Use j.get("link") to avoid a hard crash (KeyError) if a scraped
