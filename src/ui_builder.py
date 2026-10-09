@@ -108,8 +108,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </select>
 <input id="searchInput" type="text" placeholder="חיפוש משרה..." class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500" oninput="filterCards()" />
         <button id="sortBtn" onclick="toggleSort()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-slate-800 text-slate-200 text-xs font-bold rounded-xl border border-slate-800 transition-all shadow-sm" title="לחץ לשינוי סדר המיון">
-          <span id="sortIcon">🔽</span>
-          <span id="sortLabel">מיון: ציון התאמה</span>
+          <span id="sortIcon">📅</span>
+          <span id="sortLabel">מיון: התאריך החדש קודם</span>
         </button>
 
         <button onclick="openDuplicatesModal()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-amber-500/10 text-amber-400 text-xs font-bold rounded-xl border border-slate-800 hover:border-amber-500/40 transition-all shadow-sm" title="סרוק כפילויות משרות">
@@ -254,7 +254,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const initialSavedLinks = __INITIAL_SAVED_JSON__;
     const initialRejectedLinks = __INITIAL_REJECTED_JSON__;
     let currentFilter = 'all';
-    let currentSort = 'score_desc';
+    let currentSort = 'date_desc';
     const STORAGE_KEY = 'ido_job_triage_store';
 
     function loadTriageState() {
@@ -1486,7 +1486,18 @@ def generate_interactive_html(jobs, rejected_links, title="דוח משרות א�
     total_jobs = len(jobs)
     now_str = datetime.now().strftime("%d.%m.%Y")
     report_type_label = "סיכום שבועי" if is_weekly else "סריקה יומית"
-    jobs_json = json.dumps(jobs, ensure_ascii=False)
+
+    # Pre-sort jobs by date descending (newest first), then by match_score descending
+    def _sort_key(j):
+        d = j.get("date", "") or "0000-00-00"
+        try:
+            s = int(j.get("match_score", 0) or 0)
+        except Exception:
+            s = 0
+        return (d, s)
+
+    sorted_jobs = sorted(jobs, key=_sort_key, reverse=True)
+    jobs_json = json.dumps(sorted_jobs, ensure_ascii=False)
     catalog_json = json.dumps(catalog_data, ensure_ascii=False)
     saved_json = json.dumps(list(saved_links) if isinstance(saved_links, (set, list)) else [], ensure_ascii=False)
     rejected_json = json.dumps(list(rejected_links) if isinstance(rejected_links, (set, list)) else [], ensure_ascii=False)

@@ -3,10 +3,17 @@ import time
 from google.genai import types
 
 CV_CONTEXT = """
-Name: Ido Gal (עידו גל)
-Title: Gas Controller - Operations & Product (בקר גז - תפעול ומוצר) & Energy Systems | Practical Mechanical Engineer | Real-Time Control & Supply Continuity
-Education: Practical Mechanical Engineer, Natural Gas & Green Energy (הנדסאי מכונות, התמחות בגז טבעי ובאנרגיה ירוקה), Ruppin Academic Center (2024). Certified Electrician Studies (2026 - לקראת סיום הלימודים, חודשיים). NOT a B.Sc. Engineer!
-Skills: Real-time 24/7 SCADA & gas control, pressure/flow monitoring, nomination allocations, Excel, SAP, Python, Gemini/Copilot AI automation, Nahal Reconnaissance demolitions/combat engineering (סיירת נח"ל).
+Candidate: Ido Gal (עידו גל)
+Core Profile: Multidisciplinary Technical Professional & Practical Mechanical Engineer with Deep Specialization in Energy Systems (Natural Gas, Solar PV, BESS Energy Storage), Real-Time Operations Control (SCADA / NOC / 24/7 Control Rooms), Electrical Studies (Certified Electrician in progress), and Combat Engineering / Tactical Field Operations Leadership (סיירת נח"ל).
+Education & Credentials:
+- Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2024).
+- Certified Electrician Studies (חשמלאי מוסמך - לקראת סיום ההסמכה).
+- Military: Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח"ל).
+Key Competencies:
+- Energy & Utilities: Natural gas transmission/distribution control, nomination allocations, pressure/flow monitoring, solar PV field systems, battery storage (BESS), clean-tech integration.
+- Operations, C2 & SCADA: 24/7 mission-critical control room operations, crisis response, supply continuity, process automation.
+- Field, Integration & Hands-on: Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting, drone/UAV integration and flight operations.
+- Tech & AI: Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.
 """
 
 NON_TECHNICAL_TITLES = [
@@ -64,21 +71,30 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     - Snippet/Description: {snippet}
     - Is Drone/Defense domain: {is_drone}
 
-    Evaluation & Screening Rules:
-    1. B.Sc. REQUIREMENT & FLEXIBILITY:
-       - Ido is a certified Practical Mechanical Engineer (הנדסאי מכונות), NOT a B.Sc. engineer.
-       - ONLY allow B.Sc.-titled jobs if you identify genuine flexibility, practical openness, or if the company is known to accept experienced practical engineers (הנדסאים).
-    2. DOMAIN PREFERENCES:
-       - Energy: Give a strong preference / bonus to Solar PV, Energy Storage (BESS), Energy Tech and Natural Gas opportunities.
-    3. MATCH SCORING (0-100):
-       - Score objectively based on Ido's genuine background.
+    Evaluation & Screening Rules (Cognitive & Domain Flexibility):
+    1. COGNITIVE & DOMAIN FLEXIBILITY (גמישות מחשבתית):
+       - DO NOT restrict matches solely to jobs explicitly titled "הנדסאי מכונות".
+       - Actively match and value diverse technical and operational roles connected to Ido's multidisciplinary foundation:
+         * Energy, Solar & Utilities: Solar PV, Energy Storage (BESS), Natural Gas, Power Stations, Cleantech, Microgrids, EV Infrastructure.
+         * Field Leadership & Execution: Site Inspection & Construction Supervision (פיקוח הקמה / אתרים), Commissioning (מסירה והפעלה), Field Service & O&M.
+         * Real-Time Operations & C2: Control Room Operator, NOC/OCC Controller, Supply Continuity Controller, Technical Operations Coordinator.
+         * Autonomous & Tactical Systems: Drone/UAV Integrator, Field Testing & Flight Operator, Payload/Robotics Technician, Counter-UAS (C-UAS).
+         * Technical Projects & Coordination: Multidisciplinary Project Coordinator, Technical Site Supervisor, Operations Specialist.
+    2. B.Sc. REQUIREMENT & PRAGMATIC REALISM:
+       - Ido is a certified Practical Engineer with strong hands-on and operational experience.
+       - If a job mentions B.Sc. or "מהנדס/ת" but the actual day-to-day work is operational, commissioning, field supervision, integration, or control room dispatch where practical engineering and real-world execution matter more than theoretical R&D/academic research — DO NOT disqualify! Award a solid match score and highlight how his practical background provides immediate execution value.
+       - Disqualify only if the role strictly requires academic R&D/deep algorithmic development or purely theoretical design with zero operational/practical aspect.
+    3. DOMAIN PREFERENCES:
+       - Strong preference and bonus for Solar PV, Energy Storage (BESS), Natural Gas, C-UAS/Drone operations, and Mission-Critical Control.
+    4. MATCH SCORING (0-100):
+       - Score based on whether Ido can realistically succeed and thrive in this role given his multidisciplinary toolkit.
 
     Return STRICT JSON with keys:
     1. "match_score": integer (0 to 100).
     2. "concrete_matches_count": integer (0 to 10).
     3. "reasoning": 1-2 sentence Hebrew justification.
     4. "sector_key": one of ["solar", "natural_gas", "energy_tech", "drones", "cuas", "scada", "operations", "energy", "other"].
-    5. "sector": Hebrew sector title (e.g. "☀️ PV ומערכות סולאריות", "🏭 גז טבעי وتשתיות", "🔋 אגירת אנרגיה", "🚁 רחפנים", "🛡️ מערכות C-UAS", "⚙️ בקרה ו-SCADA", "🔧 תפעול ואחזקה").
+    5. "sector": Hebrew sector title (e.g. "☀️ PV ומערכות סולאריות", "🏭 גז טבעי ותשתיות", "🔋 אגירת אנרגיה", "🚁 רחפנים", "🛡️ מערכות C-UAS", "⚙️ בקרה ו-SCADA", "🔧 תפעול ואחזקה", "🏗️ פיקוח והקמה").
     6. "location": Hebrew location in 2-4 words.
     7. "company_domain_product": 10-15 words Hebrew concise summary strictly describing the company's core domain and product.
     8. "job_summary": 2-3 sentence Hebrew concise summary of core job duties and responsibilities.
@@ -150,9 +166,9 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
             print(f"[AI] Successfully evaluated using {model_name}")
 
 
-            # Post-Gemini Python Deterministic Enforcement
-            if data["concrete_matches_count"] < 3:
-                print(f"[VALIDATION] Job disqualified (concrete matches < 3): {company} - {title}")
+            # Post-Gemini Python Deterministic Enforcement (Cognitive Flexibility)
+            if data["concrete_matches_count"] < 2 or data.get("match_score", 0) < 50:
+                print(f"[VALIDATION] Job disqualified (insufficient matches or low score): {company} - {title}")
                 data["match_score"] = 0
                 return data
 
