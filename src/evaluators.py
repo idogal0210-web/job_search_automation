@@ -125,10 +125,9 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     health_metrics.gemini_attempts += 1
 
     models_to_try = [
-        "gemini-3.1-pro-preview",
+        "gemini-3.8-flash",
         "gemini-3.5-flash-lite",
         "gemini-3.5-flash",
-        "gemini-3.8-flash",
     ]
 
     for model_name in models_to_try:
