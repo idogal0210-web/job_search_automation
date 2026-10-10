@@ -6,6 +6,8 @@
   <title>דוח משרות אינטראקטיבי | עידו גל</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     /* Custom helper components aligned with So-Me design tokens */
@@ -18,6 +20,51 @@
       --dashboard-edge: #ffffff29;
       --dashboard-glass: linear-gradient(145deg, #ffffff26, #ffffff0e);
       --dashboard-shadow: inset 0 1px 2px #ffffff2b, 0 18px 55px #0000002e;
+    }
+
+    /* Phosphor Icons Alignment & RTL Duotone Stabilization */
+    i[class^="ph-"], i[class*=" ph-"] {
+      direction: ltr !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 1em !important;
+      height: 1em !important;
+      position: relative !important;
+      vertical-align: -0.15em !important;
+      flex-shrink: 0 !important;
+      line-height: 1 !important;
+      box-sizing: border-box !important;
+    }
+    i[class^="ph-"]::before, i[class*=" ph-"]::before,
+    i[class^="ph-"]::after, i[class*=" ph-"]::after {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin: 0 !important;
+      line-height: 1 !important;
+    }
+    .btn-triage i[class^="ph-"],
+    .btn-triage i[class*=" ph-"],
+    .tool-btn i[class^="ph-"],
+    .tool-btn i[class*=" ph-"],
+    .tab-btn i[class^="ph-"],
+    .tab-btn i[class*=" ph-"],
+    .dashboard-chip i[class^="ph-"],
+    .dashboard-chip i[class*=" ph-"],
+    .btn-apply i[class^="ph-"],
+    .btn-apply i[class*=" ph-"] {
+      font-size: 1.15em;
+    }
+    .tab-btn, .btn-triage, .tool-btn, .dashboard-chip, .btn-apply {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     * {
@@ -615,7 +662,9 @@
   <!-- Top Navigation Pill (So-Me Pill Header) -->
   <header class="dashboard-sidebar">
     <div class="dashboard-sidebar-brand">
-      <div class="brand-icon-pill">🚀</div>
+      <div class="brand-icon-pill">
+        <i class="ph-duotone ph-rocket-launch" style="font-size: 22px; color: #000;"></i>
+      </div>
       <div class="brand-titles">
         <span class="brand-title">עידו גל | בקרת משרות</span>
         <span class="brand-subtitle">אנרגיה, גז טבעי ורחפנים</span>
@@ -624,23 +673,24 @@
 
     <nav>
       <a href="javascript:void(0)" onclick="setFilter('all', this)" class="tab-btn" aria-current="page">
-        משרות חדשות (<span id="countAll">18</span>)
+        <i class="ph-duotone ph-sparkle"></i> משרות חדשות (<span id="countAll">18</span>)
       </a>
       <a href="javascript:void(0)" onclick="setFilter('saved', this)" class="tab-btn">
-        ⭐ שמורות להגשה (<span id="countSaved">0</span>)
+        <i class="ph-duotone ph-bookmark-simple"></i> שמורות להגשה (<span id="countSaved">0</span>)
       </a>
       <a href="javascript:void(0)" onclick="setFilter('rejected', this)" class="tab-btn">
-        ✖️ הוסרו (<span id="countRejected">0</span>)
+        <i class="ph-duotone ph-trash"></i> הוסרו (<span id="countRejected">0</span>)
       </a>
     </nav>
 
     <div class="header-actions-group">
       <div id="cloudSyncStatus" class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); display: flex; align-items: center; gap: 6px;">
         <span class="dashboard-dot"></span>
+        <i class="ph-duotone ph-cloud-check"></i>
         <span>ענן מסונכרן</span>
       </div>
       <button onclick="triggerSyncModal()" class="dashboard-settings-link" style="cursor: pointer;" title="פתח הגדרות וסנכרון ענן">
-        ☁️ סנכרן
+        <i class="ph-duotone ph-cloud-arrow-up"></i> סנכרן
       </button>
     </div>
   </header>
@@ -656,7 +706,7 @@
       <div style="display: flex; align-items: center; gap: 10px;">
         <span>תאריך סריקה: <strong>11.10.2026</strong></span>
         <span class="dashboard-divider">|</span>
-        <span class="dashboard-chip" style="font-size: 11px; padding: 2px 10px;">סריקה יומית</span>
+        <span class="dashboard-chip" style="font-size: 11px; padding: 2px 10px;">סיכום שבועי</span>
       </div>
     </div>
 
@@ -690,17 +740,23 @@
         <!-- 3 Stat Squircles matching the reference screenshot -->
         <div class="stat-squircles-row">
           <div class="stat-squircle-card">
-            <div class="stat-icon-squircle lime">🆕</div>
+            <div class="stat-icon-squircle lime">
+              <i class="ph-duotone ph-sparkle" style="font-size: 20px;"></i>
+            </div>
             <div id="statNewCount" style="font-size: 20px; font-weight: 700; color: #fff;">18</div>
             <div style="font-size: 12px; color: var(--dashboard-muted);">משרות חדשות</div>
           </div>
           <div class="stat-squircle-card">
-            <div class="stat-icon-squircle cyan">⭐</div>
+            <div class="stat-icon-squircle cyan">
+              <i class="ph-duotone ph-bookmark-simple" style="font-size: 20px;"></i>
+            </div>
             <div id="statSavedCount" style="font-size: 20px; font-weight: 700; color: #fff;">0</div>
             <div style="font-size: 12px; color: var(--dashboard-muted);">שמורות להגשה</div>
           </div>
           <div class="stat-squircle-card">
-            <div class="stat-icon-squircle gold">✖️</div>
+            <div class="stat-icon-squircle gold">
+              <i class="ph-duotone ph-trash" style="font-size: 20px;"></i>
+            </div>
             <div id="statRejectedCount" style="font-size: 20px; font-weight: 700; color: #fff;">0</div>
             <div style="font-size: 12px; color: var(--dashboard-muted);">הוסרו מהסבב</div>
           </div>
@@ -723,24 +779,24 @@
 
         <div class="controls-inputs-stack">
           <select id="sectorFilter" onchange="filterCards()">
-            <option value="all">🌐 כל התחומים</option>
-            <option value="scada">⚙️ בקרה ו-SCADA</option>
-            <option value="solar">☀️ מערכות סולאריות</option>
-            <option value="natural_gas">🏭 גז טבעי</option>
-            <option value="drones">🚁 רחפנים וכטב"ם</option>
-            <option value="energy_tech">🔋 אגירה ו-Energy Tech</option>
-            <option value="operations">🔧 תפעול ואחזקה</option>
-            <option value="energy">⚡ אנרגיה כללית</option>
+            <option value="all">כל התחומים</option>
+            <option value="scada">בקרה ו-SCADA</option>
+            <option value="solar">מערכות סולאריות</option>
+            <option value="natural_gas">גז טבעי</option>
+            <option value="drones">רחפנים וכטב"ם</option>
+            <option value="energy_tech">אגירה ו-Energy Tech</option>
+            <option value="operations">תפעול ואחזקה</option>
+            <option value="energy">אנרגיה כללית</option>
           </select>
           <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה טכנית..." oninput="filterCards()" />
           
           <div class="controls-buttons-row">
             <button id="sortBtn" onclick="toggleSort()" class="tool-btn" style="flex: 1;" title="לחץ לשינוי סדר המיון">
-              <span id="sortIcon">📅</span>
+              <span id="sortIcon"><i class="ph-duotone ph-calendar-blank"></i></span>
               <span id="sortLabel">מיון: התאריך החדש קודם</span>
             </button>
             <button onclick="openDuplicatesModal()" class="tool-btn" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="סרוק כפילויות משרות">
-              <span>🔍</span>
+              <span><i class="ph-duotone ph-magnifying-glass"></i></span>
               <span>בדיקת כפילויות</span>
             </button>
           </div>
@@ -759,7 +815,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: var(--dashboard-muted);">
           <span>מקורות: LinkedIn & Comeet</span>
           <button onclick="shareSyncLink()" class="dashboard-chip" style="cursor: pointer; font-size: 11px; padding: 3px 10px;">
-            📲 שיתוף קישור
+            <i class="ph-duotone ph-share-network"></i> שיתוף קישור
           </button>
         </div>
       </div>
@@ -769,28 +825,32 @@
     <!-- Contextual Action Bar for Saved Jobs (Export to Excel) -->
     <div id="savedActionBar" class="context-action-bar saved" style="display: none;">
       <div style="display: flex; align-items: center; gap: 14px;">
-        <span style="font-size: 28px;">⭐</span>
+        <div class="stat-icon-squircle cyan" style="width: 44px; height: 44px; font-size: 24px;">
+          <i class="ph-duotone ph-bookmark-simple"></i>
+        </div>
         <div>
           <div style="font-size: 16px; font-weight: 600; color: var(--dashboard-cyan);">משרות ששמרת להגשה</div>
           <div style="font-size: 13px; color: var(--dashboard-muted);">ייצוא מהיר של כל המשרות השמורות לקובץ Excel מסודר עם קישורים ישירים ונתוני שכר.</div>
         </div>
       </div>
       <button onclick="exportSavedToExcel()" class="dashboard-primary" style="white-space: nowrap;">
-        <span>📊 ייצוא לאקסל (Excel)</span>
+        <i class="ph-duotone ph-file-xls"></i> <span>ייצוא לאקסל (Excel)</span>
       </button>
     </div>
 
     <!-- Contextual Action Bar for Rejected Jobs (Permanent Delete & Reset) -->
     <div id="rejectedActionBar" class="context-action-bar rejected" style="display: none;">
       <div style="display: flex; align-items: center; gap: 14px;">
-        <span style="font-size: 28px;">🗑️</span>
+        <div class="stat-icon-squircle gold" style="width: 44px; height: 44px; font-size: 24px; color: #fca5a5;">
+          <i class="ph-duotone ph-trash"></i>
+        </div>
         <div>
-          <div style="font-size: 16px; font-weight: 600; color: #fca5a5;">משרות שסומנו להסרה (✖️)</div>
+          <div style="font-size: 16px; font-weight: 600; color: #fca5a5;">משרות שסומנו להסרה</div>
           <div style="font-size: 13px; color: var(--dashboard-muted);">לחיצה על מחיקה תנקה את כל הרשימה לצמיתות מכל המכשירים ותאפס את המספר ל-0.</div>
         </div>
       </div>
       <button onclick="clearAllRejected()" class="btn-triage" style="background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-color: rgba(239, 68, 68, 0.5); white-space: nowrap;">
-        <span>🗑️ מחיקה לצמיתות ואיפוס</span>
+        <i class="ph-duotone ph-trash-simple"></i> <span>מחיקה לצמיתות ואיפוס</span>
       </button>
     </div>
 
@@ -799,7 +859,9 @@
 
     <!-- Empty State -->
     <div id="emptyState" class="dashboard-card" style="display: none; text-align: center; padding: 48px 24px;">
-      <div id="emptyStateIcon" style="font-size: 44px; margin-bottom: 12px;">🔍</div>
+      <div id="emptyStateIcon" style="font-size: 44px; margin-bottom: 12px; color: var(--dashboard-cyan);">
+        <i class="ph-duotone ph-magnifying-glass"></i>
+      </div>
       <h3 id="emptyStateTitle" style="font-size: 20px; margin-bottom: 8px;">לא נמצאו משרות בהתאם לסינון</h3>
       <p id="emptyStateDesc" style="color: var(--dashboard-muted); font-size: 15px; margin: 0;">נסה לבחור לשונית או תחום אחר.</p>
     </div>
@@ -817,22 +879,28 @@
     <div class="dashboard-card dashboard-modal-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 14px;">
         <div style="display: flex; align-items: center; gap: 12px;">
-          <div class="stat-icon-squircle cyan">☁️</div>
+          <div class="stat-icon-squircle cyan">
+            <i class="ph-duotone ph-cloud-arrow-up"></i>
+          </div>
           <div>
             <h3 style="margin: 0; font-size: 18px; font-weight: 600;">סנכרון משרות למערכת</h3>
             <small style="color: var(--dashboard-muted);">שמירת משרות שמורות והסרת משרות שנדחו</small>
           </div>
         </div>
-        <button onclick="closeSyncModal()" style="min-height: 36px; padding: 6px 14px; font-size: 18px; cursor: pointer; border-radius: 999px;">✕</button>
+        <button onclick="closeSyncModal()" class="tool-btn" style="min-height: 36px; padding: 6px 12px; font-size: 16px; cursor: pointer; border-radius: 999px;" aria-label="סגור"><i class="ph-bold ph-x"></i></button>
       </div>
 
       <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--dashboard-edge); border-radius: 18px; padding: 16px; margin-bottom: 16px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <span style="display: flex; align-items: center; gap: 8px;"><span>⭐</span> משרות שמורות להגשה:</span>
+          <span style="display: flex; align-items: center; gap: 8px;">
+            <i class="ph-duotone ph-bookmark-simple" style="color: var(--dashboard-lime);"></i> משרות שמורות להגשה:
+          </span>
           <span id="syncSavedCount" style="font-size: 18px; font-weight: 700; color: var(--dashboard-cyan);">0</span>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08);">
-          <span style="display: flex; align-items: center; gap: 8px;"><span>✖️</span> משרות שסומנו להסרה:</span>
+          <span style="display: flex; align-items: center; gap: 8px;">
+            <i class="ph-duotone ph-trash" style="color: #fca5a5;"></i> משרות שסומנו להסרה:
+          </span>
           <span id="syncRejectedCount" style="font-size: 18px; font-weight: 700; color: #fca5a5;">0</span>
         </div>
       </div>
@@ -844,7 +912,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; padding: 12px 16px; background: rgba(137,244,231,0.06); border: 1px solid rgba(137,244,231,0.2); border-radius: 16px;">
         <span style="font-size: 13px; color: var(--dashboard-muted);">סנכרון מיידי בין מכשירים:</span>
         <button onclick="shareSyncLink()" class="dashboard-chip" style="cursor: pointer; padding: 7px 16px; font-size: 13px;">
-          📲 שיתוף קישור סנכרון
+          <i class="ph-duotone ph-share-network"></i> שיתוף קישור סנכרון
         </button>
       </div>
 
@@ -862,13 +930,15 @@
     <div class="dashboard-card dashboard-modal-box" style="max-width: 680px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
         <div style="display: flex; align-items: center; gap: 12px;">
-          <div class="stat-icon-squircle gold">🔍</div>
+          <div class="stat-icon-squircle gold">
+            <i class="ph-duotone ph-magnifying-glass"></i>
+          </div>
           <div>
             <h3 style="margin: 0; font-size: 18px; font-weight: 600;">בדיקת כפילות משרות</h3>
             <small style="color: var(--dashboard-muted);">זיהוי משרות זהות או דומות לפי כותרת, מזהה וחברה</small>
           </div>
         </div>
-        <button onclick="closeDuplicatesModal()" style="min-height: 36px; padding: 6px 14px; font-size: 18px; cursor: pointer; border-radius: 999px;">✕</button>
+        <button onclick="closeDuplicatesModal()" class="tool-btn" style="min-height: 36px; padding: 6px 12px; font-size: 16px; cursor: pointer; border-radius: 999px;" aria-label="סגור"><i class="ph-bold ph-x"></i></button>
       </div>
 
       <div id="duplicatesContent" style="max-height: 55vh; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 14px;">
@@ -883,7 +953,7 @@
 
   <!-- Toast Notification -->
   <div id="toast" class="dashboard-toast">
-    <span id="toastIcon">🔔</span>
+    <span id="toastIcon"><i class="ph-duotone ph-bell-simple"></i></span>
     <span id="toastMsg">ההודעה עודכנה</span>
   </div>
 
@@ -1067,7 +1137,7 @@
           saveTriageState(jobStates);
           window.history.replaceState({}, document.title, window.location.pathname);
           setTimeout(() => {
-            showToast('🎉', count > 0 ? `סונכרנו בהצלחה ${count} משרות חדשות!` : 'הדשבורד מסונכרן ומעודכן!');
+            showToast('ph-check-circle', count > 0 ? `סונכרנו בהצלחה ${count} משרות חדשות!` : 'הדשבורד מסונכרן ומעודכן!');
             updateUI();
           }, 300);
         }
@@ -1091,14 +1161,14 @@
           text: deltaKeys.length > 0 ? `סנכרון ${deltaKeys.length} משרות חדשות שסימנתי` : 'דשבורד משרות מעודכן',
           url: shareUrl
         });
-        showToast('📲', 'הקישור שותף בהצלחה!');
+        showToast('ph-share-network', 'הקישור שותף בהצלחה!');
         return;
       } catch (err) {}
     }
     
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(shareUrl).then(() => {
-        showToast('🔗', 'קישור סנכרון הועתק! פתח אותו במכשיר השני');
+        showToast('ph-link', 'קישור סנכרון הועתק! פתח אותו במכשיר השני');
       }).catch(() => {
         prompt('פתח קישור זה במכשיר השני לסנכרון מיידי:', shareUrl);
       });
@@ -1224,14 +1294,18 @@
     if (cleanWords.length === 0) cleanWords = [rawName];
     
     let initials = '';
+    let isIcon = false;
     if (cleanWords.length >= 2) {
       initials = (cleanWords[0][0] || '') + (cleanWords[1][0] || '');
     } else if (cleanWords.length === 1 && cleanWords[0].length >= 2) {
       initials = cleanWords[0].slice(0, 2);
+    } else if (cleanWords.length === 1 && cleanWords[0].length === 1) {
+      initials = cleanWords[0][0];
     } else {
-      initials = cleanWords[0] ? cleanWords[0][0] : '🏢';
+      initials = '<i class="ph-duotone ph-buildings" style="font-size: 20px;"></i>';
+      isIcon = true;
     }
-    initials = initials.toUpperCase();
+    if (!isIcon) initials = initials.toUpperCase();
 
     const logoUrl = customLogo || (domain ? `https://unavatar.io/${domain}?fallback=false` : null);
     const safeComp = rawName.replace(/"/g, '&quot;');
@@ -1253,39 +1327,39 @@
   }
 
   function classifyJobSector(job) {
-    if (!job) return '⚡ אנרגיה';
+    if (!job) return 'אנרגיה';
     const secKey = (job.sector_key || '').toLowerCase().trim();
     const sec = (job.sector || '').toLowerCase().trim();
     const title = (job.title || '').toLowerCase().trim();
 
     // 1. Solar
     if (secKey === 'solar' || ['סולאר', 'solar', 'pv'].some(k => sec.includes(k))) {
-      return '☀️ סולאר';
+      return 'סולאר';
     }
     // 2. Drones / Defense / Avionics
     if (['drones', 'cuas', 'avionics'].includes(secKey) || ['רחפן', 'כטב', 'drone', 'uav', 'אוויוניקה', 'תעופה', 'ביטחון'].some(k => sec.includes(k))) {
-      return '🚁 רחפנים';
+      return 'רחפנים';
     }
     // 3. Natural Gas
     if (['natural_gas', 'naturalgas', 'gas'].includes(secKey) || ['גז טבעי', ' גז', 'gas'].some(k => sec.includes(k))) {
-      return '🏭 גז טבעי';
+      return 'גז טבעי';
     }
     // 4. SCADA & Control (Combined into one column as requested by user)
     if (['scada', 'control', 'automation'].includes(secKey) || 
         ['scada', 'בקרה', 'control', 'אוטומציה', 'noc'].some(k => sec.includes(k)) || 
         ['scada', 'בקרה', 'control room', 'noc operator', 'בקר'].some(k => title.includes(k))) {
-      return '⚙️ בקרה ו-SCADA';
+      return 'בקרה ו-SCADA';
     }
     // 5. Storage & Energy Tech
     if (['energy_tech', 'energytech', 'storage', 'bess'].includes(secKey) || ['אגירה', 'storage', 'bess', "אנרג'י"].some(k => sec.includes(k))) {
-      return '🔋 אגירה';
+      return 'אגירה';
     }
     // 6. Operations & Maintenance
     if (['operations', 'maintenance'].includes(secKey) || ['תפעול', 'אחזקה', 'מכונות', 'ייצור'].some(k => sec.includes(k))) {
-      return '🔧 תפעול ואחזקה';
+      return 'תפעול ואחזקה';
     }
     // 7. Energy General
-    return '⚡ אנרגיה';
+    return 'אנרגיה';
   }
 
   let jobStates = loadTriageState();
@@ -1338,38 +1412,46 @@
       const jobDate = job.date || 'היום';
       const classifiedSector = classifyJobSector(job);
       
-      let sectorBadge = '⚡ תשתיות אנרגיה';
+      let sectorBadge = '<i class="ph-duotone ph-lightning"></i> תשתיות אנרגיה';
       let sectorChipStyle = 'color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4); background: rgba(255, 211, 104, 0.1);';
       if (['drones', 'cuas', 'avionics'].includes(secKey)) {
         if (secKey === 'cuas') {
-          sectorBadge = '🛡️ מערכות הגנת C-UAS וביטחון';
+          sectorBadge = '<i class="ph-duotone ph-shield-check"></i> הגנת C-UAS וביטחון';
           sectorChipStyle = 'color: #fca5a5; border-color: rgba(252, 165, 165, 0.4); background: rgba(239, 68, 68, 0.12);';
         } else if (secKey === 'avionics') {
-          sectorBadge = '📡 מטע"דים ואוויוניקה';
+          sectorBadge = '<i class="ph-duotone ph-broadcast"></i> מטע"דים ואוויוניקה';
           sectorChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); background: rgba(137, 244, 231, 0.12);';
         } else {
-          sectorBadge = '🚁 רחפנים וכטב"ם אוטונומי';
+          sectorBadge = '<i class="ph-duotone ph-crosshair"></i> רחפנים וכטב"ם אוטונומי';
           sectorChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.4); background: rgba(220, 255, 114, 0.12);';
         }
-      } else if (secKey === 'solar') {
-        sectorBadge = '☀️ מערכות סולאריות ו-PV';
+      } else if (secKey === 'solar' || classifiedSector === 'סולאר') {
+        sectorBadge = '<i class="ph-duotone ph-sun"></i> מערכות סולאריות ו-PV';
         sectorChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.4); background: rgba(220, 255, 114, 0.12);';
-      } else if (secKey === 'natural_gas') {
-        sectorBadge = '🏭 גז טבעי ותחנות כוח';
+      } else if (secKey === 'natural_gas' || classifiedSector === 'גז טבעי') {
+        sectorBadge = '<i class="ph-duotone ph-flame"></i> גז טבעי ותחנות כוח';
         sectorChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); background: rgba(137, 244, 231, 0.12);';
-      } else if (secKey === 'energy_tech') {
-        sectorBadge = '🔋 אגירת אנרגיה ו-Energy-Tech';
+      } else if (secKey === 'energy_tech' || classifiedSector === 'אגירה') {
+        sectorBadge = '<i class="ph-duotone ph-battery-charging"></i> אגירה ו-Energy-Tech';
         sectorChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); background: rgba(137, 244, 231, 0.12);';
-      } else if (secKey === 'scada' || classifiedSector === '⚙️ בקרה ו-SCADA') {
-        sectorBadge = '⚙️ בקרה ו-SCADA';
+      } else if (secKey === 'scada' || classifiedSector === 'בקרה ו-SCADA') {
+        sectorBadge = '<i class="ph-duotone ph-cpu"></i> בקרה ו-SCADA';
         sectorChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); background: rgba(137, 244, 231, 0.12);';
-      } else if (secKey === 'operations' || classifiedSector === '🔧 תפעול ואחזקה') {
-        sectorBadge = '🔧 תפעול ואחזקה';
+      } else if (secKey === 'operations' || classifiedSector === 'תפעול ואחזקה') {
+        sectorBadge = '<i class="ph-duotone ph-wrench"></i> תפעול ואחזקה';
         sectorChipStyle = 'color: #b4fcf1; border-color: rgba(180, 252, 241, 0.4); background: rgba(180, 252, 241, 0.12);';
       }
 
       if (job.sector && job.sector.length > 2 && !job.sector.includes('(')) {
-        sectorBadge = job.sector;
+        const cleanText = job.sector.replace(/^[^א-תa-zA-Z0-9]+/, '').trim();
+        let iconTag = '<i class="ph-duotone ph-lightning"></i>';
+        if (classifiedSector === 'סולאר') iconTag = '<i class="ph-duotone ph-sun"></i>';
+        else if (classifiedSector === 'רחפנים') iconTag = '<i class="ph-duotone ph-crosshair"></i>';
+        else if (classifiedSector === 'גז טבעי') iconTag = '<i class="ph-duotone ph-flame"></i>';
+        else if (classifiedSector === 'בקרה ו-SCADA') iconTag = '<i class="ph-duotone ph-cpu"></i>';
+        else if (classifiedSector === 'אגירה') iconTag = '<i class="ph-duotone ph-battery-charging"></i>';
+        else if (classifiedSector === 'תפעול ואחזקה') iconTag = '<i class="ph-duotone ph-wrench"></i>';
+        sectorBadge = `${iconTag} ${cleanText}`;
       }
 
       let scoreClass = 'badge-score-high';
@@ -1406,10 +1488,12 @@
         <div class="job-card-topbar">
           <div class="job-card-topbar-tags">
             <span class="dashboard-chip" style="${sectorChipStyle}">${sectorBadge}</span>
-            <span class="dashboard-chip" style="color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.2);">📅 ${jobDate}</span>
+            <span class="dashboard-chip" style="color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.2);">
+              <i class="ph-duotone ph-calendar-blank"></i> ${jobDate}
+            </span>
           </div>
           <div class="badge-score ${scoreClass}">
-            <span>⚡ ${score}%</span> התאמה
+            <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
           </div>
         </div>
 
@@ -1423,9 +1507,11 @@
               <span class="job-title-text">${title}</span>
             </h2>
             <div class="job-header-chips">
-              <span class="dashboard-chip" style="font-size: 12px; padding: 3px 10px;">📍 ${loc}</span>
+              <span class="dashboard-chip" style="font-size: 12px; padding: 3px 10px;">
+                <i class="ph-duotone ph-map-pin"></i> ${loc}
+              </span>
               <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 12px; padding: 3px 10px;">
-                💰 ${salaryRange} <small style="display: inline; opacity: 0.85;">(${salaryLabel})</small>
+                <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;">(${salaryLabel})</small>
               </span>
             </div>
           </div>
@@ -1434,19 +1520,19 @@
         <!-- 4 Structured Information Boxes -->
         <div class="job-boxes-grid">
           <div class="job-box">
-            <strong>📌 דרישות החברה עבור המשרה:</strong>
+            <strong><i class="ph-duotone ph-check-square"></i> דרישות החברה עבור המשרה:</strong>
             <span>${companyReqs}</span>
           </div>
           <div class="job-box">
-            <strong>🏢 תחום ומוצר החברה:</strong>
+            <strong><i class="ph-duotone ph-buildings"></i> תחום ומוצר החברה:</strong>
             <span>${domain}</span>
           </div>
           <div class="job-box">
-            <strong>📋 תקציר המשרה:</strong>
+            <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
             <span>${jobSum}</span>
           </div>
           <div class="job-box highlight">
-            <strong>💪 נקודות חוזק מהניסיון:</strong>
+            <strong><i class="ph-duotone ph-target"></i> נקודות חוזק מהניסיון:</strong>
             <span>${strengths}</span>
           </div>
         </div>
@@ -1455,14 +1541,14 @@
         <div class="job-actions-bar">
           <div class="action-btn-group">
             <button onclick="toggleAction('${id.replace(/'/g, "\'")}', 'saved')" class="btn-triage action-save-btn">
-              <span>✔️</span> <span class="btn-text">שמור להגשה</span>
+              <i class="ph-duotone ph-bookmark-simple"></i> <span class="btn-text">שמור להגשה</span>
             </button>
             <button onclick="toggleAction('${id.replace(/'/g, "\'")}', 'rejected')" class="btn-triage action-reject-btn">
-              <span>✖️</span> <span>הסר משרה</span>
+              <i class="ph-duotone ph-x"></i> <span>הסר משרה</span>
             </button>
           </div>
           <a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-apply" style="color: #000000 !important;">
-            <span style="color: #000000 !important;">הגש מועמדות ↗</span>
+            <span style="color: #000000 !important;">הגש מועמדות</span> <i class="ph-duotone ph-arrow-up-right" style="color: #000000 !important;"></i>
           </a>
         </div>
       `;
@@ -1477,13 +1563,13 @@
     const icon = document.getElementById('sortIcon');
     const label = document.getElementById('sortLabel');
     if (currentSort === 'score_desc') {
-      if (icon) icon.textContent = '🔽';
+      if (icon) icon.innerHTML = '<i class="ph-duotone ph-sort-descending"></i>';
       if (label) label.textContent = 'מיון: ציון התאמה (מגבוה לנמוך)';
-      showToast('🔽', 'מיון: ציון התאמה מגבוה לנמוך');
+      showToast('ph-sort-descending', 'מיון: ציון התאמה מגבוה לנמוך');
     } else {
-      if (icon) icon.textContent = '📅';
+      if (icon) icon.innerHTML = '<i class="ph-duotone ph-calendar-blank"></i>';
       if (label) label.textContent = 'מיון: התאריך החדש קודם';
-      showToast('📅', 'מיון: התאריך החדש קודם');
+      showToast('ph-calendar-blank', 'מיון: התאריך החדש קודם');
     }
     renderCards();
   }
@@ -1492,13 +1578,13 @@
     const current = jobStates[id];
     if (current === action) {
       delete jobStates[id];
-      showToast('ℹ️', 'הסטטוס אופס למצב ממתין');
+      showToast('ph-arrow-counter-clockwise', 'הסטטוס אופס למצב ממתין');
     } else {
       jobStates[id] = action;
       if (action === 'saved') {
-        showToast('✔️', 'המשרה נשמרה להגשה');
+        showToast('ph-bookmark-simple', 'המשרה נשמרה להגשה');
       } else if (action === 'rejected') {
-        showToast('✖️', 'המשרה הוסרה ולא תוצג שוב');
+        showToast('ph-trash', 'המשרה הוסרה ולא תוצג שוב');
       }
     }
     saveTriageState(jobStates);
@@ -1564,19 +1650,19 @@
       if (!matchesSector) {
         const classifiedSector = card.getAttribute('data-classified-sector');
         if (selectedSector === 'scada') {
-          matchesSector = (classifiedSector === '⚙️ בקרה ו-SCADA');
+          matchesSector = (classifiedSector === 'בקרה ו-SCADA');
         } else if (selectedSector === 'solar') {
-          matchesSector = (classifiedSector === '☀️ סולאר');
+          matchesSector = (classifiedSector === 'סולאר');
         } else if (selectedSector === 'natural_gas') {
-          matchesSector = (classifiedSector === '🏭 גז טבעי');
+          matchesSector = (classifiedSector === 'גז טבעי');
         } else if (selectedSector === 'drones') {
-          matchesSector = (classifiedSector === '🚁 רחפנים');
+          matchesSector = (classifiedSector === 'רחפנים');
         } else if (selectedSector === 'energy_tech') {
-          matchesSector = (classifiedSector === '🔋 אגירה');
+          matchesSector = (classifiedSector === 'אגירה');
         } else if (selectedSector === 'operations') {
-          matchesSector = (classifiedSector === '🔧 תפעול ואחזקה');
+          matchesSector = (classifiedSector === 'תפעול ואחזקה');
         } else if (selectedSector === 'energy') {
-          matchesSector = (classifiedSector === '⚡ אנרגיה');
+          matchesSector = (classifiedSector === 'אנרגיה');
         } else {
           matchesSector = true;
         }
@@ -1660,15 +1746,15 @@
         const titleEl = document.getElementById('emptyStateTitle');
         const descEl = document.getElementById('emptyStateDesc');
         if (currentFilter === 'rejected') {
-          if (iconEl) iconEl.textContent = '🗑️';
+          if (iconEl) iconEl.innerHTML = '<i class="ph-duotone ph-trash"></i>';
           if (titleEl) titleEl.textContent = `כל ${totalRejectedInStore} המשרות שהוסרו מנוטרלות לצמיתות`;
           if (descEl) descEl.textContent = 'משרות אלו סוננו מחלון ההזדמנויות השבועי ולא ישובו להופיע בדוחות הבאים.';
         } else if (currentFilter === 'saved') {
-          if (iconEl) iconEl.textContent = '⭐';
+          if (iconEl) iconEl.innerHTML = '<i class="ph-duotone ph-bookmark-simple"></i>';
           if (titleEl) titleEl.textContent = 'עדיין לא סימנת משרות שמורות מתוך מקבץ זה';
           if (descEl) descEl.textContent = 'לחץ על "שמור להגשה" בכל כרטיס משרה שמעניינת אותך.';
         } else {
-          if (iconEl) iconEl.textContent = '🎉';
+          if (iconEl) iconEl.innerHTML = '<i class="ph-duotone ph-sparkle"></i>';
           if (titleEl) titleEl.textContent = 'סיימת לסקור את כל המשרות החדשות!';
           if (descEl) descEl.textContent = 'כל המשרות במקבץ זה כבר מוינו (נשמרו או הוסרו).';
         }
@@ -1708,7 +1794,7 @@
       sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'saved');
       if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שמורות';
       if (chartChipEl) {
-        chartChipEl.textContent = `⭐ ${sourceJobs.length} שמורות`;
+        chartChipEl.innerHTML = `<i class="ph-duotone ph-bookmark-simple"></i> ${sourceJobs.length} שמורות`;
         chartChipEl.style.color = 'var(--dashboard-lime)';
         chartChipEl.style.borderColor = 'rgba(220, 255, 114, 0.4)';
       }
@@ -1716,7 +1802,7 @@
       sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'rejected');
       if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שהוסרו';
       if (chartChipEl) {
-        chartChipEl.textContent = `✖️ ${sourceJobs.length} הוסרו`;
+        chartChipEl.innerHTML = `<i class="ph-duotone ph-trash"></i> ${sourceJobs.length} הוסרו`;
         chartChipEl.style.color = '#fca5a5';
         chartChipEl.style.borderColor = 'rgba(252, 165, 165, 0.4)';
       }
@@ -1731,7 +1817,7 @@
       }
       if (chartTitleEl) chartTitleEl.textContent = 'התפלגות תחומים';
       if (chartChipEl) {
-        chartChipEl.textContent = `פעיל השבוע (${sourceJobs.length})`;
+        chartChipEl.innerHTML = `<i class="ph-duotone ph-chart-bar"></i> פעיל השבוע (${sourceJobs.length})`;
         chartChipEl.style.color = 'var(--dashboard-cyan)';
         chartChipEl.style.borderColor = 'rgba(137, 244, 231, 0.35)';
       }
@@ -1756,13 +1842,13 @@
     const data = Object.values(counts);
 
     const colorMap = {
-      '☀️ סולאר': '#ffd368',
-      '⚙️ בקרה ו-SCADA': '#89f4e7',
-      '🚁 רחפנים': '#dcff72',
-      '🔧 תפעול ואחזקה': '#b4fcf1',
-      '🔋 אגירה': '#a0c03e',
-      '🏭 גז טבעי': '#fca5a5',
-      '⚡ אנרגיה': '#38bdf8',
+      'סולאר': '#ffd368',
+      'בקרה ו-SCADA': '#89f4e7',
+      'רחפנים': '#dcff72',
+      'תפעול ואחזקה': '#b4fcf1',
+      'אגירה': '#a0c03e',
+      'גז טבעי': '#fca5a5',
+      'אנרגיה': '#38bdf8',
       'אין משרות להצגה': '#c0c5be'
     };
 
@@ -1822,7 +1908,14 @@
   function showToast(icon, msg) {
     const toast = document.getElementById('toast');
     if (!toast) return;
-    document.getElementById('toastIcon').textContent = icon;
+    const iconEl = document.getElementById('toastIcon');
+    if (iconEl) {
+      if (typeof icon === 'string' && icon.startsWith('ph-')) {
+        iconEl.innerHTML = `<i class="ph-duotone ${icon}"></i>`;
+      } else {
+        iconEl.innerHTML = icon;
+      }
+    }
     document.getElementById('toastMsg').textContent = msg;
     toast.classList.add('show');
     setTimeout(() => {
@@ -1856,7 +1949,7 @@
     await pushCloudSync();
 
     closeSyncModal();
-    showToast('☁️', `כל הסימונים סונכרנו לענן בהצלחה! (${savedList.length} שמורות, ${rejectedList.length} הוסרו)`);
+    showToast('ph-cloud-check', `כל הסימונים סונכרנו לענן בהצלחה! (${savedList.length} שמורות, ${rejectedList.length} הוסרו)`);
     if (syncBtn) {
       syncBtn.disabled = false;
       syncBtn.textContent = "אשר וסנכרן עכשיו";
@@ -1922,7 +2015,7 @@
     if (dupGroups.length === 0) {
       content.innerHTML = `
         <div style="text-align: center; padding: 32px 12px;">
-          <div style="font-size: 40px; margin-bottom: 12px;">✅</div>
+          <div style="font-size: 40px; margin-bottom: 12px; color: var(--dashboard-lime);"><i class="ph-duotone ph-check-circle"></i></div>
           <div style="font-weight: 700; color: var(--dashboard-lime); font-size: 16px;">לא נמצאו כפילויות!</div>
           <div style="color: var(--dashboard-muted); font-size: 13px; margin-top: 6px;">כל ${activeJobs.length} המשרות הפעילות (שמורות וחדשות) ייחודיות לחלוטין.</div>
         </div>`;
@@ -1931,7 +2024,7 @@
       let html = `
         <div style="background: rgba(255, 211, 104, 0.12); border: 1px solid rgba(255, 211, 104, 0.35); border-radius: 16px; padding: 12px 16px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
           <div style="display: flex; align-items: center; gap: 8px; font-size: 13px;">
-            <span style="font-size: 16px;">⚠️</span>
+            <span style="font-size: 18px; color: var(--dashboard-gold);"><i class="ph-duotone ph-warning"></i></span>
             <span style="color: var(--dashboard-gold); font-weight: 600;">אותרו <strong>${dupGroups.length}</strong> קבוצות עם <strong>${totalDups}</strong> כפילויות</span>
           </div>
         </div>`;
@@ -1948,7 +2041,7 @@
                 <span class="dashboard-chip" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4); font-size: 11px; padding: 2px 8px;">${group.length} מופעים</span>
               </div>
               <button onclick="purgeDuplicateGroup('${encKey}')" class="tool-btn" style="min-height: 36px; padding: 6px 14px; font-size: 12px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="שמור מופע אחד ומחק את שאר הכפילויות">
-                ⚡ השאר אחת
+                <i class="ph-duotone ph-lightning"></i> השאר אחת
               </button>
             </div>
             <div style="display: flex; flex-direction: column; gap: 8px;">`;
@@ -1961,8 +2054,8 @@
           const state = jobStates[job.link] || 'pending';
           const isSaved = state === 'saved';
           const statusBadge = isSaved
-            ? `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); font-size: 11px; padding: 2px 8px;">⭐ שמורה</span>`
-            : `<span class="dashboard-chip" style="color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.4); font-size: 11px; padding: 2px 8px;">🆕 חדשה</span>`;
+            ? `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); font-size: 11px; padding: 2px 8px;"><i class="ph-duotone ph-bookmark-simple"></i> שמורה</span>`
+            : `<span class="dashboard-chip" style="color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.4); font-size: 11px; padding: 2px 8px;"><i class="ph-duotone ph-sparkle"></i> חדשה</span>`;
 
           html += `
             <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 10px 14px; gap: 10px;">
@@ -1973,11 +2066,11 @@
                 <span style="color: var(--dashboard-muted); font-size: 12px;">${date}</span>
               </div>
               <div style="display: flex; align-items: center; gap: 8px;">
-                <a href="${link}" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); font-weight: 600; font-size: 13px; text-decoration: underline; text-underline-offset: 3px;">
-                  פתח ↗
+                <a href="${link}" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); font-weight: 600; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 4px;">
+                  פתח <i class="ph-duotone ph-arrow-up-right"></i>
                 </a>
-                <button onclick="purgeSingleJob('${encLink}')" class="btn-triage" style="min-height: 32px; padding: 4px 10px; font-size: 12px; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4);" title="מחק כפילות זו">
-                  🗑️
+                <button onclick="purgeSingleJob('${encLink}')" class="btn-triage" style="min-height: 32px; padding: 4px 10px; font-size: 14px; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4);" title="מחק כפילות זו">
+                  <i class="ph-duotone ph-trash"></i>
                 </button>
               </div>
             </div>`;
@@ -1998,7 +2091,7 @@
     saveTriageState(jobStates);
     updateUI();
     pushCloudSync();
-    showToast('🗑️', 'הכפילות נמחקה בהצלחה');
+    showToast('ph-trash', 'הכפילות נמחקה בהצלחה');
     openDuplicatesModal();
   }
 
@@ -2062,7 +2155,7 @@
     saveTriageState(jobStates);
     updateUI();
     pushCloudSync();
-    showToast('⚡', `הושארה משרה אחת ונמחקו ${toPurge.length} כפילויות`);
+    showToast('ph-lightning', `הושארה משרה אחת ונמחקו ${toPurge.length} כפילויות`);
     openDuplicatesModal();
   }
 
@@ -2073,7 +2166,7 @@
   function clearAllRejected() {
     const rejectedKeys = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
     if (rejectedKeys.length === 0) {
-      showToast('ℹ️', 'אין משרות מוסרות למחיקה');
+      showToast('ph-info', 'אין משרות מוסרות למחיקה');
       return;
     }
 
@@ -2088,7 +2181,7 @@
     saveTriageState(jobStates);
     updateUI();
     pushCloudSync();
-    showToast('🗑️', `כל ${rejectedKeys.length} המשרות שהוסרו נמחקו לצמיתות והמונה אופס ל-0`);
+    showToast('ph-trash', `כל ${rejectedKeys.length} המשרות שהוסרו נמחקו לצמיתות והמונה אופס ל-0`);
   }
 
   function exportSavedToExcel() {
@@ -2104,7 +2197,7 @@
     }
     const savedJobs = allPotentialSaved.filter(job => jobStates[job.link] === 'saved');
     if (savedJobs.length === 0) {
-      showToast('⚠️', 'לא נמצאו משרות שמורות לייצוא');
+      showToast('ph-warning', 'לא נמצאו משרות שמורות לייצוא');
       return;
     }
 
@@ -2176,7 +2269,7 @@
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    showToast('📊', `יוצאו ${savedJobs.length} משרות שמורות לאקסל בהצלחה!`);
+    showToast('ph-file-xls', `יוצאו ${savedJobs.length} משרות שמורות לאקסל בהצלחה!`);
   }
 
   window.onload = () => {
