@@ -1816,17 +1816,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         chartChipEl.style.borderColor = 'rgba(252, 165, 165, 0.4)';
       }
     } else {
-      // Default / All: pending jobs in current weekly batch, or all weekly batch if none pending
+      // Default / All: pending jobs in current weekly batch
       sourceJobs = (rawJobsData || []).filter(j => {
         const st = jobStates[j.link] || 'pending';
         return st !== 'saved' && st !== 'rejected' && st !== 'purged';
       });
-      if (sourceJobs.length === 0) {
-        sourceJobs = (rawJobsData && rawJobsData.length > 0) ? rawJobsData : [];
-      }
       if (chartTitleEl) chartTitleEl.textContent = 'התפלגות תחומים';
       if (chartChipEl) {
-        chartChipEl.innerHTML = `<i class="ph-duotone ph-chart-bar"></i> פעיל השבוע (${sourceJobs.length})`;
+        if (sourceJobs.length === 0) {
+          chartChipEl.innerHTML = '<i class="ph-duotone ph-chart-bar"></i> 0 משרות';
+        } else {
+          chartChipEl.innerHTML = `<i class="ph-duotone ph-chart-bar"></i> פעיל השבוע (${sourceJobs.length})`;
+        }
         chartChipEl.style.color = 'var(--dashboard-cyan)';
         chartChipEl.style.borderColor = 'rgba(137, 244, 231, 0.35)';
       }
@@ -1839,7 +1840,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     });
 
     if (Object.keys(counts).length === 0) {
-      counts['אין משרות להצגה'] = 0;
+      ['סולאר', 'רחפנים', 'תפעול ואחזקה', 'בקרה ו-SCADA', 'גז טבעי', 'אגירה'].forEach(s => {
+        counts[s] = 0;
+      });
     }
 
     if (sectorChartInstance) {
@@ -1902,6 +1905,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         scales: {
           y: {
             beginAtZero: true,
+            suggestedMax: 5,
             ticks: { stepSize: 1, color: '#c0c5be', font: { family: 'Google Sans', size: 11 } },
             grid: { color: 'rgba(255, 255, 255, 0.08)' }
           },
