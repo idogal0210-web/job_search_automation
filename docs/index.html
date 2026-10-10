@@ -724,11 +724,13 @@
         <div class="controls-inputs-stack">
           <select id="sectorFilter" onchange="filterCards()">
             <option value="all">🌐 כל התחומים</option>
-            <option value="natural_gas">🏭 גז טבעי</option>
+            <option value="scada">⚙️ בקרה ו-SCADA</option>
             <option value="solar">☀️ מערכות סולאריות</option>
-            <option value="energy">⚡ אנרגיה כללית</option>
+            <option value="natural_gas">🏭 גז טבעי</option>
             <option value="drones">🚁 רחפנים וכטב"ם</option>
-            <option value="energy_tech">🔋 אנרג'י טק ואגירה</option>
+            <option value="energy_tech">🔋 אגירה ו-Energy Tech</option>
+            <option value="operations">🔧 תפעול ואחזקה</option>
+            <option value="energy">⚡ אנרגיה כללית</option>
           </select>
           <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה טכנית..." oninput="filterCards()" />
           
@@ -748,8 +750,8 @@
       <!-- Card 3: התפלגות לפי תחומים -->
       <div class="dashboard-card" style="margin-bottom: 0; display: flex; flex-direction: column;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <h3 style="margin: 0; font-size: 18px; font-weight: 600;">התפלגות תחומים</h3>
-          <span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35);">פעיל השבוע</span>
+          <h3 id="chartTitle" style="margin: 0; font-size: 18px; font-weight: 600;">התפלגות תחומים</h3>
+          <span id="chartChip" class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35);">פעיל השבוע</span>
         </div>
         <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 160px;">
           <canvas id="sectorChart" style="max-height: 160px; width: 100%;"></canvas>
@@ -1250,6 +1252,42 @@
     }
   }
 
+  function classifyJobSector(job) {
+    if (!job) return '⚡ אנרגיה';
+    const secKey = (job.sector_key || '').toLowerCase().trim();
+    const sec = (job.sector || '').toLowerCase().trim();
+    const title = (job.title || '').toLowerCase().trim();
+
+    // 1. Solar
+    if (secKey === 'solar' || ['סולאר', 'solar', 'pv'].some(k => sec.includes(k))) {
+      return '☀️ סולאר';
+    }
+    // 2. Drones / Defense / Avionics
+    if (['drones', 'cuas', 'avionics'].includes(secKey) || ['רחפן', 'כטב', 'drone', 'uav', 'אוויוניקה', 'תעופה', 'ביטחון'].some(k => sec.includes(k))) {
+      return '🚁 רחפנים';
+    }
+    // 3. Natural Gas
+    if (['natural_gas', 'naturalgas', 'gas'].includes(secKey) || ['גז טבעי', ' גז', 'gas'].some(k => sec.includes(k))) {
+      return '🏭 גז טבעי';
+    }
+    // 4. SCADA & Control (Combined into one column as requested by user)
+    if (['scada', 'control', 'automation'].includes(secKey) || 
+        ['scada', 'בקרה', 'control', 'אוטומציה', 'noc'].some(k => sec.includes(k)) || 
+        ['scada', 'בקרה', 'control room', 'noc operator', 'בקר'].some(k => title.includes(k))) {
+      return '⚙️ בקרה ו-SCADA';
+    }
+    // 5. Storage & Energy Tech
+    if (['energy_tech', 'energytech', 'storage', 'bess'].includes(secKey) || ['אגירה', 'storage', 'bess', "אנרג'י"].some(k => sec.includes(k))) {
+      return '🔋 אגירה';
+    }
+    // 6. Operations & Maintenance
+    if (['operations', 'maintenance'].includes(secKey) || ['תפעול', 'אחזקה', 'מכונות', 'ייצור'].some(k => sec.includes(k))) {
+      return '🔧 תפעול ואחזקה';
+    }
+    // 7. Energy General
+    return '⚡ אנרגיה';
+  }
+
   let jobStates = loadTriageState();
 
   function renderCards() {
@@ -1298,8 +1336,9 @@
       const link = job.link || '#';
       const secKey = job.sector_key || 'energy';
       const jobDate = job.date || 'היום';
+      const classifiedSector = classifyJobSector(job);
       
-      let sectorBadge = '⚡ תשתיות אנרגיה ו-SCADA';
+      let sectorBadge = '⚡ תשתיות אנרגיה';
       let sectorChipStyle = 'color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4); background: rgba(255, 211, 104, 0.1);';
       if (['drones', 'cuas', 'avionics'].includes(secKey)) {
         if (secKey === 'cuas') {
@@ -1321,6 +1360,16 @@
       } else if (secKey === 'energy_tech') {
         sectorBadge = '🔋 אגירת אנרגיה ו-Energy-Tech';
         sectorChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); background: rgba(137, 244, 231, 0.12);';
+      } else if (secKey === 'scada' || classifiedSector === '⚙️ בקרה ו-SCADA') {
+        sectorBadge = '⚙️ בקרה ו-SCADA';
+        sectorChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); background: rgba(137, 244, 231, 0.12);';
+      } else if (secKey === 'operations' || classifiedSector === '🔧 תפעול ואחזקה') {
+        sectorBadge = '🔧 תפעול ואחזקה';
+        sectorChipStyle = 'color: #b4fcf1; border-color: rgba(180, 252, 241, 0.4); background: rgba(180, 252, 241, 0.12);';
+      }
+
+      if (job.sector && job.sector.length > 2 && !job.sector.includes('(')) {
+        sectorBadge = job.sector;
       }
 
       let scoreClass = 'badge-score-high';
@@ -1348,6 +1397,7 @@
       const card = document.createElement('article');
       card.setAttribute('data-id', id);
       card.setAttribute('data-sector', secKey);
+      card.setAttribute('data-classified-sector', classifiedSector);
       card.setAttribute('data-location', loc.toLowerCase());
       card.className = 'dashboard-card job-card';
 
@@ -1512,18 +1562,23 @@
 
       let matchesSector = (selectedSector === 'all');
       if (!matchesSector) {
-        const normSector = sector.toLowerCase().replace(/[ _-]/g, '');
-        const normSelected = selectedSector.toLowerCase().replace(/[ _-]/g, '');
-
-        if (normSelected === 'drones') {
-          matchesSector = ['drones', 'cuas', 'avionics'].includes(normSector);
-        } else if (normSelected === 'energy') {
-          const energySet = ['energy', 'naturalgas', 'solar', 'energytech'];
-          matchesSector = energySet.includes(normSector);
-        } else if (normSelected === 'naturalgas') {
-          matchesSector = ['naturalgas', 'gas'].includes(normSector);
+        const classifiedSector = card.getAttribute('data-classified-sector');
+        if (selectedSector === 'scada') {
+          matchesSector = (classifiedSector === '⚙️ בקרה ו-SCADA');
+        } else if (selectedSector === 'solar') {
+          matchesSector = (classifiedSector === '☀️ סולאר');
+        } else if (selectedSector === 'natural_gas') {
+          matchesSector = (classifiedSector === '🏭 גז טבעי');
+        } else if (selectedSector === 'drones') {
+          matchesSector = (classifiedSector === '🚁 רחפנים');
+        } else if (selectedSector === 'energy_tech') {
+          matchesSector = (classifiedSector === '🔋 אגירה');
+        } else if (selectedSector === 'operations') {
+          matchesSector = (classifiedSector === '🔧 תפעול ואחזקה');
+        } else if (selectedSector === 'energy') {
+          matchesSector = (classifiedSector === '⚡ אנרגיה');
         } else {
-          matchesSector = normSector === normSelected;
+          matchesSector = true;
         }
       }
       
@@ -1633,38 +1688,85 @@
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Collect full universe of jobs: weekly batch + historical catalog
+    const seenLinks = new Set((rawJobsData || []).map(j => j.link));
+    let allAvailableJobs = [...(rawJobsData || [])];
+    if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
+      Object.keys(jobStates).forEach(link => {
+        if (!seenLinks.has(link) && historicalCatalog[link]) {
+          allAvailableJobs.push(historicalCatalog[link]);
+          seenLinks.add(link);
+        }
+      });
+    }
+
+    let sourceJobs = [];
+    const chartTitleEl = document.getElementById('chartTitle');
+    const chartChipEl = document.getElementById('chartChip');
+
+    if (currentFilter === 'saved') {
+      sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'saved');
+      if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שמורות';
+      if (chartChipEl) {
+        chartChipEl.textContent = `⭐ ${sourceJobs.length} שמורות`;
+        chartChipEl.style.color = 'var(--dashboard-lime)';
+        chartChipEl.style.borderColor = 'rgba(220, 255, 114, 0.4)';
+      }
+    } else if (currentFilter === 'rejected') {
+      sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'rejected');
+      if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שהוסרו';
+      if (chartChipEl) {
+        chartChipEl.textContent = `✖️ ${sourceJobs.length} הוסרו`;
+        chartChipEl.style.color = '#fca5a5';
+        chartChipEl.style.borderColor = 'rgba(252, 165, 165, 0.4)';
+      }
+    } else {
+      // Default / All: pending jobs in current weekly batch, or all weekly batch if none pending
+      sourceJobs = (rawJobsData || []).filter(j => {
+        const st = jobStates[j.link] || 'pending';
+        return st !== 'saved' && st !== 'rejected' && st !== 'purged';
+      });
+      if (sourceJobs.length === 0) {
+        sourceJobs = (rawJobsData && rawJobsData.length > 0) ? rawJobsData : [];
+      }
+      if (chartTitleEl) chartTitleEl.textContent = 'התפלגות תחומים';
+      if (chartChipEl) {
+        chartChipEl.textContent = `פעיל השבוע (${sourceJobs.length})`;
+        chartChipEl.style.color = 'var(--dashboard-cyan)';
+        chartChipEl.style.borderColor = 'rgba(137, 244, 231, 0.35)';
+      }
+    }
+
     const counts = {};
-    const sourceJobs = (rawJobsData && rawJobsData.length > 0) ? rawJobsData : [];
     sourceJobs.forEach(job => {
-      let sec = job.sector_key || job.sector || 'energy';
-      const normSector = sec.toLowerCase().replace(/[ _-]/g, '');
-      let label = '⚡ אנרגיה';
-      if (['solar', 'pv'].includes(normSector)) label = '☀️ סולאר';
-      else if (['naturalgas', 'gas'].includes(normSector)) label = '🏭 גז טבעי';
-      else if (['energytech', 'storage', 'bess'].includes(normSector)) label = '🔋 אגירה';
-      else if (['drones', 'uav', 'robotics'].includes(normSector)) label = '🚁 רחפנים';
-      else if (['cuas', 'defense'].includes(normSector)) label = '🛡️ ביטחון';
+      const label = classifyJobSector(job);
       counts[label] = (counts[label] || 0) + 1;
     });
 
     if (Object.keys(counts).length === 0) {
-      counts['ללא משרות'] = 0;
+      counts['אין משרות להצגה'] = 0;
     }
 
     if (sectorChartInstance) {
       sectorChartInstance.destroy();
+      sectorChartInstance = null;
     }
 
     const labels = Object.keys(counts);
     const data = Object.values(counts);
-    const barColors = [
-      '#dcff72', // Lime
-      '#89f4e7', // Cyan
-      '#ffd368', // Gold
-      '#b4fcf1', // Teal
-      '#a0c03e', // Olive Lime
-      '#c0c5be'  // Muted
-    ];
+
+    const colorMap = {
+      '☀️ סולאר': '#ffd368',
+      '⚙️ בקרה ו-SCADA': '#89f4e7',
+      '🚁 רחפנים': '#dcff72',
+      '🔧 תפעול ואחזקה': '#b4fcf1',
+      '🔋 אגירה': '#a0c03e',
+      '🏭 גז טבעי': '#fca5a5',
+      '⚡ אנרגיה': '#38bdf8',
+      'אין משרות להצגה': '#c0c5be'
+    };
+
+    const barColors = labels.map(l => colorMap[l] || '#89f4e7');
 
     sectorChartInstance = new Chart(ctx, {
       type: 'bar',
@@ -1672,7 +1774,7 @@
         labels: labels,
         datasets: [{
           data: data,
-          backgroundColor: barColors.slice(0, labels.length),
+          backgroundColor: barColors,
           borderRadius: 8,
           borderSkipped: false,
           maxBarThickness: 32
@@ -1681,6 +1783,9 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+          duration: 350
+        },
         plugins: {
           legend: { display: false },
           tooltip: {
@@ -1691,7 +1796,12 @@
             borderWidth: 1,
             cornerRadius: 12,
             rtl: true,
-            textDirection: 'rtl'
+            textDirection: 'rtl',
+            callbacks: {
+              label: function(ctx) {
+                return ` ${ctx.raw} משרות`;
+              }
+            }
           }
         },
         scales: {
@@ -1701,7 +1811,7 @@
             grid: { color: 'rgba(255, 255, 255, 0.08)' }
           },
           x: {
-            ticks: { color: '#c0c5be', font: { family: 'Google Sans', size: 11 } },
+            ticks: { color: '#c0c5be', font: { family: 'Google Sans', size: 10 } },
             grid: { display: false }
           }
         }
