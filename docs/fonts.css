@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fonts/google-sans-400.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(assets/fonts/google-sans-500.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(assets/fonts/google-sans-600.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Google Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(assets/fonts/google-sans-700.woff2) format('woff2');
+}
+
+:root { --font-ui: "Google Sans", Arial, sans-serif; }
+html:lang(he) body, html:lang(he) body * { font-family: var(--font-ui); }

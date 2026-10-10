@@ -3,1469 +3,2089 @@ import json
 from datetime import datetime, timedelta
 
 HTML_TEMPLATE = """<!DOCTYPE html>
-<html lang="he" dir="rtl" class="dark">
+<html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>__TITLE__</title>
-  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
+    /* Custom helper components aligned with So-Me design tokens */
+    :root {
+      --dashboard-text: #f5f6f0;
+      --dashboard-muted: #c0c5be;
+      --dashboard-lime: #dcff72;
+      --dashboard-cyan: #89f4e7;
+      --dashboard-gold: #ffd368;
+      --dashboard-edge: #ffffff29;
+      --dashboard-glass: linear-gradient(145deg, #ffffff26, #ffffff0e);
+      --dashboard-shadow: inset 0 1px 2px #ffffff2b, 0 18px 55px #0000002e;
+    }
+
     * {
-      transition: background-color 0.2s ease, border-color 0.2s ease;
+      box-sizing: border-box;
     }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
     }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: transparent;
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
     }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 4px;
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.32);
+    }
+
+    /* Header Nav Enhancements */
+    .dashboard-sidebar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    .dashboard-sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+    .brand-icon-pill {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, rgba(220, 255, 114, 0.28), rgba(255, 255, 255, 0.08));
+      border: 1px solid rgba(220, 255, 114, 0.4);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .brand-titles {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .brand-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--dashboard-text);
+      line-height: 1.2;
+    }
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--dashboard-muted);
+      letter-spacing: 0.5px;
+    }
+    .header-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    /* Stats Overview Grid */
+    .dashboard-stats-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1.3fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 1120px) {
+      .dashboard-stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .dashboard-stats-grid > .dashboard-card:nth-child(3) {
+        grid-column: span 2;
+      }
+    }
+    @media (max-width: 750px) {
+      .dashboard-stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .dashboard-stats-grid > .dashboard-card:nth-child(3) {
+        grid-column: span 1;
+      }
+    }
+
+    /* Progress Segmented Bar */
+    .segmented-progress {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      overflow: hidden;
+      gap: 2px;
+      margin: 12px 0 10px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+    .segmented-progress-bar {
+      height: 100%;
+      transition: width 0.4s ease;
+    }
+    .stat-squircles-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .stat-squircle-card {
+      background: rgba(0, 0, 0, 0.22);
+      border: 1px solid var(--dashboard-edge);
+      border-radius: 20px;
+      padding: 12px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 4px;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.08);
+    }
+    .stat-icon-squircle {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+    }
+    .stat-icon-squircle.lime { background: var(--dashboard-lime); color: #171c12; }
+    .stat-icon-squircle.cyan { background: var(--dashboard-cyan); color: #171c12; }
+    .stat-icon-squircle.gold { background: var(--dashboard-gold); color: #171c12; }
+
+    /* Controls Panel */
+    .controls-inputs-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .controls-buttons-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .tool-btn {
+      min-height: 44px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 999px;
+      cursor: pointer;
+      border: 1px solid var(--dashboard-edge);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.07));
+      color: var(--dashboard-text);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .tool-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Contextual Action Bars */
+    .context-action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-radius: 24px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      -webkit-backdrop-filter: blur(22px);
+      backdrop-filter: blur(22px);
+    }
+    .context-action-bar.saved {
+      background: linear-gradient(145deg, rgba(137, 244, 231, 0.14), rgba(220, 255, 114, 0.08));
+      border: 1px solid rgba(137, 244, 231, 0.35);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+    .context-action-bar.rejected {
+      background: linear-gradient(145deg, rgba(239, 68, 68, 0.16), rgba(0, 0, 0, 0.3));
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Job Card Styling */
+    .job-card {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      position: relative;
+    }
+    .job-card:hover {
+      border-color: rgba(255, 255, 255, 0.36);
+    }
+    .job-card-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .job-card-topbar-tags {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .badge-score {
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge-score-high {
+      background: rgba(220, 255, 114, 0.16);
+      color: var(--dashboard-lime);
+      border: 1px solid rgba(220, 255, 114, 0.38);
+      box-shadow: 0 0 16px rgba(220, 255, 114, 0.15);
+    }
+    .badge-score-med {
+      background: rgba(137, 244, 231, 0.16);
+      color: var(--dashboard-cyan);
+      border: 1px solid rgba(137, 244, 231, 0.38);
+      box-shadow: 0 0 16px rgba(137, 244, 231, 0.15);
+    }
+    .badge-score-fair {
+      background: rgba(255, 211, 104, 0.16);
+      color: var(--dashboard-gold);
+      border: 1px solid rgba(255, 211, 104, 0.38);
+      box-shadow: 0 0 16px rgba(255, 211, 104, 0.15);
+    }
+
+    /* Job Card Header with Logo */
+    .job-card-main-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .job-company-logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      background: #191d1b;
+      border: 1px solid var(--dashboard-edge);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .job-company-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 6px;
+    }
+    .job-company-avatar {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--dashboard-text);
+      background: linear-gradient(135deg, rgba(220, 255, 114, 0.25), rgba(137, 244, 231, 0.2));
+    }
+    .job-header-text {
+      flex: 1;
+      min-width: 0;
+    }
+    .job-header-text h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--dashboard-text);
+      margin: 0 0 6px;
+      line-height: 1.35;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .job-company-name {
+      color: #fff;
+    }
+    .job-title-sep {
+      color: var(--dashboard-muted);
+      font-weight: 400;
+    }
+    .job-title-text {
+      color: #e5e9e2;
+    }
+    .job-header-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    /* 4 Structured Information Panels */
+    .job-boxes-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .job-box {
+      background: rgba(0, 0, 0, 0.24);
+      border: 1px solid var(--dashboard-edge);
+      border-radius: 20px;
+      padding: 14px 18px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--dashboard-text);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.05);
+      overflow-wrap: anywhere;
+    }
+    .job-box.highlight {
+      background: rgba(137, 244, 231, 0.06);
+      border-color: rgba(137, 244, 231, 0.28);
+    }
+    .job-box strong {
+      color: var(--dashboard-cyan);
+      margin-inline-end: 6px;
+      display: inline;
+    }
+    .job-box.highlight strong {
+      color: var(--dashboard-lime);
+    }
+
+    /* Job Card Actions Bar */
+    .job-actions-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+    }
+    .action-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-triage {
+      min-height: 44px;
+      padding: 9px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 999px;
+      cursor: pointer;
+      border: 1px solid var(--dashboard-edge);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+      color: var(--dashboard-text);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-triage:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .btn-triage.saved-active {
+      background: rgba(137, 244, 231, 0.24);
+      color: #b4fcf1;
+      border-color: var(--dashboard-cyan);
+      box-shadow: 0 0 14px rgba(137, 244, 231, 0.25);
+    }
+    .btn-triage.rejected-active {
+      background: rgba(239, 68, 68, 0.25);
+      color: #fca5a5;
+      border-color: #ef4444;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.25);
+    }
+    .btn-apply {
+      min-height: 44px;
+      padding: 10px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 999px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--dashboard-lime);
+      color: #171c12;
+      border: 1px solid #ebffab99;
+      box-shadow: inset 0 1px 2px #ffffff80, 0 4px 18px rgba(164, 203, 46, 0.28);
+      transition: background 0.2s ease;
+    }
+    .btn-apply:hover {
+      background: #e7ff9c;
+    }
+
+    /* Modals and Overlays */
+    .dashboard-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 13, 12, 0.78);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .dashboard-modal-backdrop.hidden {
+      display: none !important;
+    }
+    .dashboard-modal-box {
+      max-width: 620px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      margin-bottom: 0;
+    }
+
+    /* Toast Notification */
+    .dashboard-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      background: rgba(25, 30, 27, 0.95);
+      border: 1px solid var(--dashboard-edge);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.55);
+      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px);
+      border-radius: 999px;
+      padding: 12px 24px;
+      color: var(--dashboard-text);
+      font-size: 15px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .dashboard-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Responsive Media Queries */
+    @media (max-width: 750px) {
+      body, html {
+        overflow-x: hidden;
+      }
+      .dashboard-app {
+        padding: 16px 14px 24px;
+        overflow-x: hidden;
+      }
+      .dashboard-sidebar {
+        border-radius: 28px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 14px;
+      }
+      .dashboard-sidebar-brand {
+        justify-content: space-between;
+        width: 100%;
+      }
+      .dashboard-sidebar nav {
+        width: 100%;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 4px;
+        padding: 4px;
+      }
+      .dashboard-sidebar nav a {
+        font-size: 12px;
+        padding: 8px 4px;
+        min-height: 42px;
+        justify-content: center;
+        text-align: center;
+      }
+      .header-actions-group {
+        justify-content: space-between;
+        width: 100%;
+      }
+      .dashboard-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 0 4px 12px;
+      }
+      .dashboard-card {
+        border-radius: 26px;
+        padding: 20px 16px;
+      }
+      .stat-squircles-row {
+        gap: 6px;
+      }
+      .stat-squircle-card {
+        padding: 10px 4px;
+      }
+      .stat-icon-squircle {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+      .job-card-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .job-card-topbar-tags {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .job-card-main-header {
+        gap: 12px;
+      }
+      .job-header-text h2 {
+        font-size: 17px;
+      }
+      .job-actions-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .action-btn-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+      }
+      .btn-triage {
+        width: 100%;
+        justify-content: center;
+        min-height: 44px;
+      }
+      .btn-apply {
+        width: 100%;
+        justify-content: center;
+        min-height: 44px;
+      }
+      .context-action-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 16px;
+      }
+      .context-action-bar button {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-6 font-sans antialiased selection:bg-sky-500 selection:text-white">
+<body>
+<div class="dashboard-app" dir="rtl">
 
-  <div class="max-w-4xl mx-auto space-y-5">
-    
-    <!-- Top Bar: Header & Actions -->
-    <header class="bg-slate-900/90 border border-slate-800 backdrop-blur-md rounded-2xl p-5 shadow-xl relative overflow-hidden">
-      <div class="absolute -top-24 -left-24 w-60 h-60 bg-sky-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute -bottom-24 -right-24 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
-        <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20">
-              __REPORT_TYPE_LABEL__
-            </span>
-            <span class="text-xs text-slate-400">__NOW_STR__</span>
-          </div>
-          <h1 class="text-2xl font-black tracking-tight text-white flex items-center gap-2">
-            🚀 דשבורד משרות אינטראקטיבי <span class="text-sky-400 font-medium text-lg">| עידו גל</span>
-          </h1>
-          <p class="text-xs md:text-sm text-slate-400 mt-1">
-            סינון, ניהול וסנכרון חכם של משרות אנרגיה ורחפנים בזמן אמת.
-          </p>
-        </div>
-
-        <div class="flex items-center gap-2.5 self-start md:self-auto">
-          <div id="cloudSyncStatus" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-xs font-bold text-emerald-400">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>ענן מסונכרן בלייב</span>
-          </div>
-
-          <button onclick="toggleTheme()" id="themeBtn" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/60 shadow-sm" title="החלף ערכת נושא">
-            <span id="themeIcon">🌙</span>
-          </button>
-
-          <button onclick="triggerSyncModal()" class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-bold text-xs md:text-sm rounded-xl shadow-lg shadow-sky-500/20 active:scale-95 transition-all">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-            <span>סנכרון ענן</span>
-          </button>
-        </div>
+  <!-- Top Navigation Pill (So-Me Pill Header) -->
+  <header class="dashboard-sidebar">
+    <div class="dashboard-sidebar-brand">
+      <div class="brand-icon-pill">🚀</div>
+      <div class="brand-titles">
+        <span class="brand-title">עידו גל | בקרת משרות</span>
+        <span class="brand-subtitle">אנרגיה, גז טבעי ורחפנים</span>
       </div>
-
-      <!-- Progress Bar -->
-      <div class="mt-5 pt-4 border-t border-slate-800/80">
-        <div class="flex justify-between items-center text-xs font-semibold mb-1.5">
-          <span class="text-slate-300 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            התקדמות סקירה
-          </span>
-          <span id="progressText" class="text-sky-400">סקרת 0 מתוך __TOTAL_JOBS__ משרות (0%)</span>
-        </div>
-        <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden p-0.5">
-          <div id="progressBar" class="h-full bg-gradient-to-r from-sky-400 via-teal-400 to-emerald-400 rounded-full transition-all duration-500" style="width: 0%"></div>
-        </div>
-      </div>
-    </header>
-
-    <!-- Filter & Segment Controls -->
-    <nav class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 bg-slate-900/60 p-2 rounded-2xl border border-slate-800/80">
-      <div class="flex items-center gap-1 bg-slate-950/70 p-1 rounded-xl border border-slate-800/70">
-        <button onclick="setFilter('all', this)" class="tab-btn active px-3.5 py-1.5 text-xs font-bold rounded-lg bg-sky-600 text-white shadow-sm">
-          משרות חדשות (<span id="countAll">__TOTAL_JOBS__</span>)
-        </button>
-        <button onclick="setFilter('saved', this)" class="tab-btn px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white">
-          ✔️ שמורות להגשה (<span id="countSaved">0</span>)
-        </button>
-        <button onclick="setFilter('rejected', this)" class="tab-btn px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-400 hover:text-white">
-          ✖️ הוסרו (<span id="countRejected">0</span>)
-        </button>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-2">
-        <select id="sectorFilter" onchange="filterCards()" class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500">
-          <option value="all">🌐 כל התחומים</option>
-          <option value="natural_gas">🏭 גז טבעי</option>
-          <option value="solar">☀️ מערכות סולאריות</option>
-          <option value="energy">⚡ אנרגיה כללית</option>
-          <option value="drones">🚁 רחפנים וכטב"ם</option>
-          <option value="energy_tech">🔋 אנרג'י טק ואגירה</option>
-        </select>
-<input id="searchInput" type="text" placeholder="חיפוש משרה..." class="w-full sm:w-auto bg-slate-950 text-slate-200 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-800 focus:outline-none focus:border-sky-500" oninput="filterCards()" />
-        <button id="sortBtn" onclick="toggleSort()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-slate-800 text-slate-200 text-xs font-bold rounded-xl border border-slate-800 transition-all shadow-sm" title="לחץ לשינוי סדר המיון">
-          <span id="sortIcon">📅</span>
-          <span id="sortLabel">מיון: התאריך החדש קודם</span>
-        </button>
-
-        <button onclick="openDuplicatesModal()" class="flex items-center gap-1.5 px-3.5 py-2 bg-slate-950 hover:bg-amber-500/10 text-amber-400 text-xs font-bold rounded-xl border border-slate-800 hover:border-amber-500/40 transition-all shadow-sm" title="סרוק כפילויות משרות">
-          <span>🔍</span>
-          <span>בדיקת כפילות משרות</span>
-        </button>
-      </div>
-    </nav>
-    
-    <!-- Sector Distribution Chart -->
-    <div id="sectorChartContainer" class="hidden my-4 bg-slate-900/50 p-4 rounded-2xl border border-slate-800/80 shadow-inner flex flex-col items-center">
-        <h3 class="text-xs font-bold text-slate-300 mb-2 w-full text-right">התפלגות מגזרים</h3>
-        <canvas id="sectorChart" class="w-full h-32" style="max-height: 150px;"></canvas>
     </div>
 
+    <nav>
+      <a href="javascript:void(0)" onclick="setFilter('all', this)" class="tab-btn" aria-current="page">
+        משרות חדשות (<span id="countAll">__TOTAL_JOBS__</span>)
+      </a>
+      <a href="javascript:void(0)" onclick="setFilter('saved', this)" class="tab-btn">
+        ⭐ שמורות להגשה (<span id="countSaved">0</span>)
+      </a>
+      <a href="javascript:void(0)" onclick="setFilter('rejected', this)" class="tab-btn">
+        ✖️ הוסרו (<span id="countRejected">0</span>)
+      </a>
+    </nav>
 
-    <!-- Contextual Action Bar for Saved Jobs (Export to Excel) -->
-    <div id="savedActionBar" class="hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-emerald-950/40 border border-emerald-500/30 p-3.5 rounded-2xl">
-      <div class="flex items-center gap-2.5">
-        <span class="text-xl">⭐</span>
-        <div>
-          <div class="text-xs font-bold text-emerald-300">משרות ששמרת להגשה</div>
-          <div class="text-[11px] text-slate-400">ייצוא מהיר של כל המשרות השמורות לקובץ Excel מסודר עם קישורים ישירים.</div>
+    <div class="header-actions-group">
+      <div id="cloudSyncStatus" class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); display: flex; align-items: center; gap: 6px;">
+        <span class="dashboard-dot"></span>
+        <span>ענן מסונכרן</span>
+      </div>
+      <button onclick="triggerSyncModal()" class="dashboard-settings-link" style="cursor: pointer;" title="פתח הגדרות וסנכרון ענן">
+        ☁️ סנכרן
+      </button>
+    </div>
+  </header>
+
+  <div class="dashboard-main">
+
+    <!-- Sub-header Information Strip -->
+    <div class="dashboard-topbar">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span class="dashboard-dot"></span>
+        <span class="dashboard-local">סריקה יומית חכמה • התאמה לפרופיל הנדסאי מכונות, אנרגיה ורחפנים</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span>תאריך סריקה: <strong>__NOW_STR__</strong></span>
+        <span class="dashboard-divider">|</span>
+        <span class="dashboard-chip" style="font-size: 11px; padding: 2px 10px;">__REPORT_TYPE_LABEL__</span>
+      </div>
+    </div>
+
+    <!-- 3 Overview Cards (Progress Statistics, Search/Filters, Sector Distribution) -->
+    <div class="dashboard-stats-grid">
+      
+      <!-- Card 1: סטטיסטיקת סקירה והתקדמות -->
+      <div class="dashboard-card" style="margin-bottom: 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="margin: 0; font-size: 18px; font-weight: 600;">התקדמות סקירה</h3>
+          <span class="dashboard-chip" id="progressSummaryChip">0% נסקרו</span>
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px;">
+          <span id="progressPctText" style="font-size: 38px; font-weight: 700; color: #fff; line-height: 1;">0%</span>
+          <span style="font-size: 14px; color: var(--dashboard-muted);">סך הכל מוינו במקבץ השבועי</span>
+        </div>
+
+        <!-- 3-Segment Color Progress Bar (Lime, Cyan, Gold) -->
+        <div class="segmented-progress">
+          <div id="progressSegNew" class="segmented-progress-bar" style="background: var(--dashboard-lime); width: 100%;"></div>
+          <div id="progressSegSaved" class="segmented-progress-bar" style="background: var(--dashboard-cyan); width: 0%;"></div>
+          <div id="progressSegRejected" class="segmented-progress-bar" style="background: var(--dashboard-gold); width: 0%;"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--dashboard-muted); margin-bottom: 12px;">
+          <span id="pctLabelNew">100% חדשות</span>
+          <span id="pctLabelSaved">0% שמורות</span>
+          <span id="pctLabelRejected">0% הוסרו</span>
+        </div>
+
+        <!-- 3 Stat Squircles matching the reference screenshot -->
+        <div class="stat-squircles-row">
+          <div class="stat-squircle-card">
+            <div class="stat-icon-squircle lime">🆕</div>
+            <div id="statNewCount" style="font-size: 20px; font-weight: 700; color: #fff;">__TOTAL_JOBS__</div>
+            <div style="font-size: 12px; color: var(--dashboard-muted);">משרות חדשות</div>
+          </div>
+          <div class="stat-squircle-card">
+            <div class="stat-icon-squircle cyan">⭐</div>
+            <div id="statSavedCount" style="font-size: 20px; font-weight: 700; color: #fff;">0</div>
+            <div style="font-size: 12px; color: var(--dashboard-muted);">שמורות להגשה</div>
+          </div>
+          <div class="stat-squircle-card">
+            <div class="stat-icon-squircle gold">✖️</div>
+            <div id="statRejectedCount" style="font-size: 20px; font-weight: 700; color: #fff;">0</div>
+            <div style="font-size: 12px; color: var(--dashboard-muted);">הוסרו מהסבב</div>
+          </div>
         </div>
       </div>
-      <button onclick="exportSavedToExcel()" class="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md shadow-emerald-500/20 active:scale-95 transition-all">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-        <span>ייצוא לאקסל (Excel)</span>
+
+      <!-- Card 2: סינון ואיתור משרות -->
+      <div class="dashboard-card" style="margin-bottom: 0;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div style="display: flex; gap: 8px;">
+            <span class="dashboard-chip">סינון חכם</span>
+            <span class="dashboard-chip" style="color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.1);">סריקה עדכנית</span>
+          </div>
+          <small style="color: var(--dashboard-muted); font-size: 13px;">מיון ואיסוף</small>
+        </div>
+        <h3 style="margin: 0 0 6px; font-size: 18px; font-weight: 600;">סינון ואיתור משרות</h3>
+        <p style="color: var(--dashboard-muted); font-size: 14px; margin-bottom: 12px;">
+          סינון לפי מגזרי אנרגיה ורחפנים, איתור כפילויות ומיון לפי התאמה או תאריך.
+        </p>
+
+        <div class="controls-inputs-stack">
+          <select id="sectorFilter" onchange="filterCards()">
+            <option value="all">🌐 כל התחומים</option>
+            <option value="natural_gas">🏭 גז טבעי</option>
+            <option value="solar">☀️ מערכות סולאריות</option>
+            <option value="energy">⚡ אנרגיה כללית</option>
+            <option value="drones">🚁 רחפנים וכטב"ם</option>
+            <option value="energy_tech">🔋 אנרג'י טק ואגירה</option>
+          </select>
+          <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה טכנית..." oninput="filterCards()" />
+          
+          <div class="controls-buttons-row">
+            <button id="sortBtn" onclick="toggleSort()" class="tool-btn" style="flex: 1;" title="לחץ לשינוי סדר המיון">
+              <span id="sortIcon">📅</span>
+              <span id="sortLabel">מיון: התאריך החדש קודם</span>
+            </button>
+            <button onclick="openDuplicatesModal()" class="tool-btn" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="סרוק כפילויות משרות">
+              <span>🔍</span>
+              <span>בדיקת כפילויות</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: התפלגות לפי תחומים -->
+      <div class="dashboard-card" style="margin-bottom: 0; display: flex; flex-direction: column;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="margin: 0; font-size: 18px; font-weight: 600;">התפלגות תחומים</h3>
+          <span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35);">פעיל השבוע</span>
+        </div>
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 160px;">
+          <canvas id="sectorChart" style="max-height: 160px; width: 100%;"></canvas>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: var(--dashboard-muted);">
+          <span>מקורות: LinkedIn & Comeet</span>
+          <button onclick="shareSyncLink()" class="dashboard-chip" style="cursor: pointer; font-size: 11px; padding: 3px 10px;">
+            📲 שיתוף קישור
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Contextual Action Bar for Saved Jobs (Export to Excel) -->
+    <div id="savedActionBar" class="context-action-bar saved" style="display: none;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <span style="font-size: 28px;">⭐</span>
+        <div>
+          <div style="font-size: 16px; font-weight: 600; color: var(--dashboard-cyan);">משרות ששמרת להגשה</div>
+          <div style="font-size: 13px; color: var(--dashboard-muted);">ייצוא מהיר של כל המשרות השמורות לקובץ Excel מסודר עם קישורים ישירים ונתוני שכר.</div>
+        </div>
+      </div>
+      <button onclick="exportSavedToExcel()" class="dashboard-primary" style="white-space: nowrap;">
+        <span>📊 ייצוא לאקסל (Excel)</span>
       </button>
     </div>
 
     <!-- Contextual Action Bar for Rejected Jobs (Permanent Delete & Reset) -->
-    <div id="rejectedActionBar" class="hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-rose-950/40 border border-rose-500/30 p-3.5 rounded-2xl">
-      <div class="flex items-center gap-2.5">
-        <span class="text-xl">🗑️</span>
+    <div id="rejectedActionBar" class="context-action-bar rejected" style="display: none;">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <span style="font-size: 28px;">🗑️</span>
         <div>
-          <div class="text-xs font-bold text-rose-300">משרות שסומנו להסרה (✖️)</div>
-          <div class="text-[11px] text-slate-400">לחיצה על מחיקה תנקה את כל הרשימה לצמיתות מכל המכשירים ותאפס את המספר ל-0.</div>
+          <div style="font-size: 16px; font-weight: 600; color: #fca5a5;">משרות שסומנו להסרה (✖️)</div>
+          <div style="font-size: 13px; color: var(--dashboard-muted);">לחיצה על מחיקה תנקה את כל הרשימה לצמיתות מכל המכשירים ותאפס את המספר ל-0.</div>
         </div>
       </div>
-      <button onclick="clearAllRejected()" class="flex items-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow-md shadow-rose-500/20 active:scale-95 transition-all">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-        <span>מחיקה לצמיתות ואיפוס</span>
+      <button onclick="clearAllRejected()" class="btn-triage" style="background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-color: rgba(239, 68, 68, 0.5); white-space: nowrap;">
+        <span>🗑️ מחיקה לצמיתות ואיפוס</span>
       </button>
     </div>
 
     <!-- Job Cards List -->
-    <main id="cardsContainer" class="space-y-4"></main>
+    <main id="cardsContainer"></main>
 
     <!-- Empty State -->
-    <div id="emptyState" class="hidden text-center py-12 bg-slate-900/40 border border-slate-800 rounded-2xl">
-      <div class="text-4xl mb-2">🔍</div>
-      <div class="text-sm font-bold text-slate-300">לא נמצאו משרות בהתאם לסינון</div>
-      <div class="text-xs text-slate-500 mt-1">נסה לבחור לשונית או תחום אחר.</div>
+    <div id="emptyState" class="dashboard-card" style="display: none; text-align: center; padding: 48px 24px;">
+      <div id="emptyStateIcon" style="font-size: 44px; margin-bottom: 12px;">🔍</div>
+      <h3 id="emptyStateTitle" style="font-size: 20px; margin-bottom: 8px;">לא נמצאו משרות בהתאם לסינון</h3>
+      <p id="emptyStateDesc" style="color: var(--dashboard-muted); font-size: 15px; margin: 0;">נסה לבחור לשונית או תחום אחר.</p>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-slate-800 border border-slate-700 text-white px-4 py-3 rounded-xl shadow-2xl text-xs font-bold flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
-      <span id="toastIcon">🔔</span>
-      <span id="toastMsg">ההודעה עודכנה</span>
-    </div>
-
-    <!-- Sync Modal -->
-    <div id="syncModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-md w-full shadow-2xl space-y-4">
-        <div class="flex items-center gap-3">
-          <div class="p-2.5 rounded-full bg-sky-500/20 text-sky-400">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-          </div>
-          <div>
-            <h3 class="font-bold text-base text-white">סנכרון משרות למערכת</h3>
-            <p class="text-xs text-slate-400">שמירת המשרות שהוסרו (✖️) למניעת הצגתן בעתיד</p>
-          </div>
-        </div>
-
-        <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 text-xs space-y-2">
-          <div class="flex justify-between items-center text-slate-300">
-            <span class="flex items-center gap-1.5"><span class="text-emerald-400">✔️</span> משרות שמורות להגשה:</span>
-            <span id="syncSavedCount" class="font-bold text-emerald-400 text-sm">0</span>
-          </div>
-          <div class="text-[11px] text-slate-400 mr-5">יעד: <span class="font-mono text-emerald-400">Firebase (Cloud Sync)</span></div>
-
-          <div class="flex justify-between items-center text-slate-300 pt-1 border-t border-slate-800/80">
-            <span class="flex items-center gap-1.5"><span class="text-rose-400">✖️</span> משרות שסומנו להסרה:</span>
-            <span id="syncRejectedCount" class="font-bold text-rose-400 text-sm">0</span>
-          </div>
-        </div>
-
-        <p class="text-xs text-slate-400 leading-relaxed">
-          הדשבורד שומר ומעדכן את כל המשרות שסימנת באופן רציף. כל המשרות השמורות והמוסרות נשמרות בהתאמה אישית עבורך.
-        </p>
-
-        <div class="pt-2.5 border-t border-slate-800/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 text-xs">
-          <span class="text-slate-400">סנכרון מיידי בין מכשירים:</span>
-          <button onclick="shareSyncLink()" class="px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all" title="פתח את כל המשרות המסומנות במכשיר אחר בלחיצה אחת ללא קודים">
-            <span>📲</span> סנכרן למכשיר אחר (בלי קודים)
-          </button>
-        </div>
-
-        <div class="flex gap-2 justify-end pt-2">
-          <button onclick="closeSyncModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white bg-slate-800">
-            סגור
-          </button>
-          <button id="syncConfirmBtn" onclick="confirmSync()" class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-sky-500 hover:bg-sky-400 shadow-md shadow-sky-500/20 transition-all">
-            אשר ושמור
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Duplicates Modal -->
-    <div id="duplicatesModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-lg w-full shadow-2xl space-y-4 max-h-[80vh] flex flex-col">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <div class="p-2.5 rounded-full bg-amber-500/20 text-amber-400">
-              <span class="text-xl">🔍</span>
-            </div>
-            <div>
-              <h3 class="font-bold text-base text-white">בדיקת כפילות משרות</h3>
-              <p class="text-xs text-slate-400">זיהוי משרות זהות או דומות לפי כותרת וחברה</p>
-            </div>
-          </div>
-          <button onclick="closeDuplicatesModal()" class="text-slate-500 hover:text-white text-xl font-bold leading-none">✕</button>
-        </div>
-
-        <div id="duplicatesContent" class="overflow-y-auto custom-scrollbar flex-1 space-y-3 text-xs">
-          <!-- filled by JS -->
-        </div>
-
-        <div class="pt-3 border-t border-slate-800/80 flex justify-end">
-          <button onclick="closeDuplicatesModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white bg-slate-800">סגור</button>
-        </div>
-      </div>
-    </div>
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+      <div>דשבורד משרות אוטומטי • מותאם עבור עידו גל</div>
+      <div>מעוצב בהשראת ערכת So-Me Design System • Google Sans & Glass Materials</div>
+    </footer>
 
   </div>
 
-  <script>
-    const rawJobsData = __JOBS_JSON__;
-    const historicalCatalog = __CATALOG_JSON__;
-    const initialSavedLinks = __INITIAL_SAVED_JSON__;
-    const initialRejectedLinks = __INITIAL_REJECTED_JSON__;
-    let currentFilter = 'all';
-    let currentSort = 'date_desc';
-    const STORAGE_KEY = 'ido_job_triage_store';
+  <!-- Sync Modal -->
+  <div id="syncModal" class="dashboard-modal-backdrop hidden" onclick="if(event.target===this)closeSyncModal()">
+    <div class="dashboard-card dashboard-modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 14px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="stat-icon-squircle cyan">☁️</div>
+          <div>
+            <h3 style="margin: 0; font-size: 18px; font-weight: 600;">סנכרון משרות למערכת</h3>
+            <small style="color: var(--dashboard-muted);">שמירת משרות שמורות והסרת משרות שנדחו</small>
+          </div>
+        </div>
+        <button onclick="closeSyncModal()" style="min-height: 36px; padding: 6px 14px; font-size: 18px; cursor: pointer; border-radius: 999px;">✕</button>
+      </div>
 
-    function loadTriageState() {
-      let state = {};
-      if (typeof initialSavedLinks !== 'undefined' && Array.isArray(initialSavedLinks)) {
-        initialSavedLinks.forEach(link => { state[link] = 'saved'; });
-      }
-      if (typeof initialRejectedLinks !== 'undefined' && Array.isArray(initialRejectedLinks)) {
-        initialRejectedLinks.forEach(link => { state[link] = 'rejected'; });
-      }
-      try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          const userState = JSON.parse(stored);
-          Object.assign(state, userState);
-        }
-      } catch (e) {}
-      return state;
+      <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--dashboard-edge); border-radius: 18px; padding: 16px; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <span style="display: flex; align-items: center; gap: 8px;"><span>⭐</span> משרות שמורות להגשה:</span>
+          <span id="syncSavedCount" style="font-size: 18px; font-weight: 700; color: var(--dashboard-cyan);">0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08);">
+          <span style="display: flex; align-items: center; gap: 8px;"><span>✖️</span> משרות שסומנו להסרה:</span>
+          <span id="syncRejectedCount" style="font-size: 18px; font-weight: 700; color: #fca5a5;">0</span>
+        </div>
+      </div>
+
+      <p style="font-size: 14px; color: var(--dashboard-muted); line-height: 1.6; margin-bottom: 18px;">
+        הדשבורד שומר ומעדכן את כל המשרות שסימנת באופן רציף. סנכרון ישיר מאפשר לפתוח את הסימונים בכל מכשיר.
+      </p>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; padding: 12px 16px; background: rgba(137,244,231,0.06); border: 1px solid rgba(137,244,231,0.2); border-radius: 16px;">
+        <span style="font-size: 13px; color: var(--dashboard-muted);">סנכרון מיידי בין מכשירים:</span>
+        <button onclick="shareSyncLink()" class="dashboard-chip" style="cursor: pointer; padding: 7px 16px; font-size: 13px;">
+          📲 שיתוף קישור סנכרון
+        </button>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 12px;">
+        <button onclick="closeSyncModal()" class="tool-btn">סגור</button>
+        <button id="syncConfirmBtn" onclick="confirmSync()" class="dashboard-primary">
+          אשר וסנכרן עכשיו
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Duplicates Modal -->
+  <div id="duplicatesModal" class="dashboard-modal-backdrop hidden" onclick="if(event.target===this)closeDuplicatesModal()">
+    <div class="dashboard-card dashboard-modal-box" style="max-width: 680px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="stat-icon-squircle gold">🔍</div>
+          <div>
+            <h3 style="margin: 0; font-size: 18px; font-weight: 600;">בדיקת כפילות משרות</h3>
+            <small style="color: var(--dashboard-muted);">זיהוי משרות זהות או דומות לפי כותרת, מזהה וחברה</small>
+          </div>
+        </div>
+        <button onclick="closeDuplicatesModal()" style="min-height: 36px; padding: 6px 14px; font-size: 18px; cursor: pointer; border-radius: 999px;">✕</button>
+      </div>
+
+      <div id="duplicatesContent" style="max-height: 55vh; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 14px;">
+        <!-- Filled by JS -->
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 18px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <button onclick="closeDuplicatesModal()" class="tool-btn">סגור</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="dashboard-toast">
+    <span id="toastIcon">🔔</span>
+    <span id="toastMsg">ההודעה עודכנה</span>
+  </div>
+
+</div>
+
+<script>
+  const rawJobsData = __JOBS_JSON__;
+  const historicalCatalog = __CATALOG_JSON__;
+  const initialSavedLinks = __INITIAL_SAVED_JSON__;
+  const initialRejectedLinks = __INITIAL_REJECTED_JSON__;
+  let currentFilter = 'all';
+  let currentSort = 'date_desc';
+  const STORAGE_KEY = 'ido_job_triage_store';
+
+  function loadTriageState() {
+    let state = {};
+    if (typeof initialSavedLinks !== 'undefined' && Array.isArray(initialSavedLinks)) {
+      initialSavedLinks.forEach(link => { state[link] = 'saved'; });
     }
+    if (typeof initialRejectedLinks !== 'undefined' && Array.isArray(initialRejectedLinks)) {
+      initialRejectedLinks.forEach(link => { state[link] = 'rejected'; });
+    }
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const userState = JSON.parse(stored);
+        Object.assign(state, userState);
+      }
+    } catch (e) {}
+    return state;
+  }
 
-    
-    const CLOUD_SYNC_URL = 'https://job-finder-auto-default-rtdb.firebaseio.com/triage.json';
-    let cloudSyncTimeout = null;
-    let cloudLastUpdated = 0;
+  const CLOUD_SYNC_URL = 'https://job-finder-auto-default-rtdb.firebaseio.com/triage.json';
+  let cloudSyncTimeout = null;
+  let cloudLastUpdated = 0;
 
-    async function fetchCloudSync() {
-      const cloudBadge = document.getElementById('cloudSyncStatus');
-      try {
-        const resp = await fetch(CLOUD_SYNC_URL, { cache: 'no-cache' });
-        if (resp.ok) {
-          const data = await resp.json();
-          if (data) {
-            if (data.updated_at) {
-              cloudLastUpdated = new Date(data.updated_at).getTime();
-            }
-            let changed = false;
-            if (Array.isArray(data.purged)) {
-              data.purged.forEach(link => {
-                if (jobStates[link] !== 'purged') {
-                  jobStates[link] = 'purged';
+  async function fetchCloudSync() {
+    const cloudBadge = document.getElementById('cloudSyncStatus');
+    try {
+      const resp = await fetch(CLOUD_SYNC_URL, { cache: 'no-cache' });
+      if (resp.ok) {
+        const data = await resp.json();
+        if (data) {
+          if (data.updated_at) {
+            cloudLastUpdated = new Date(data.updated_at).getTime();
+          }
+          let changed = false;
+          if (Array.isArray(data.purged)) {
+            data.purged.forEach(link => {
+              if (jobStates[link] !== 'purged') {
+                jobStates[link] = 'purged';
+                changed = true;
+              }
+            });
+          }
+          if (Array.isArray(data.saved)) {
+            data.saved.forEach(link => {
+              if (jobStates[link] !== 'saved') {
+                jobStates[link] = 'saved';
+                changed = true;
+              }
+            });
+          }
+          if (Array.isArray(data.rejected)) {
+            data.rejected.forEach(link => {
+              if (jobStates[link] !== 'purged' && jobStates[link] !== 'saved') {
+                if (jobStates[link] !== 'rejected') {
+                  jobStates[link] = 'rejected';
                   changed = true;
                 }
-              });
-            }
-            if (Array.isArray(data.saved)) {
-              data.saved.forEach(link => {
-                if (jobStates[link] !== 'saved') {
-                  jobStates[link] = 'saved';
-                  changed = true;
-                }
-              });
-            }
-            if (Array.isArray(data.rejected)) {
-              data.rejected.forEach(link => {
-                // If the job was purged locally, NEVER resurrect it to rejected
-                if (jobStates[link] !== 'purged' && jobStates[link] !== 'saved') {
-                  if (jobStates[link] !== 'rejected') {
-                    jobStates[link] = 'rejected';
-                    changed = true;
-                  }
-                }
-              });
-            }
-            if (changed) {
-              saveTriageState(jobStates);
-              updateUI();
-            }
-            if (cloudBadge) {
-              cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> <span>ענן מסונכרן</span>';
-            }
+              }
+            });
+          }
+          if (changed) {
+            saveTriageState(jobStates);
+            updateUI();
+          }
+          if (cloudBadge) {
+            cloudBadge.innerHTML = '<span class="dashboard-dot"></span> <span>ענן מסונכרן</span>';
           }
         }
-      } catch (e) {
-        if (cloudBadge) {
-          cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-500"></span> <span>מקומי</span>';
-        }
       }
-    }
-
-    function scheduleCloudPush() {
-      if (cloudSyncTimeout) clearTimeout(cloudSyncTimeout);
-      cloudSyncTimeout = setTimeout(pushCloudSync, 400);
-    }
-
-    async function pushCloudSync() {
-      const cloudBadge = document.getElementById('cloudSyncStatus');
+    } catch (e) {
       if (cloudBadge) {
-        cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> <span>מעדכן ענן...</span>';
+        cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: #94a3b8;"></span> <span>מקומי</span>';
       }
+    }
+  }
 
+  function scheduleCloudPush() {
+    if (cloudSyncTimeout) clearTimeout(cloudSyncTimeout);
+    cloudSyncTimeout = setTimeout(pushCloudSync, 400);
+  }
+
+  async function pushCloudSync() {
+    const cloudBadge = document.getElementById('cloudSyncStatus');
+    if (cloudBadge) {
+      cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: var(--dashboard-gold);"></span> <span>מעדכן ענן...</span>';
+    }
+
+    try {
+      const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
+      const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
+      const purgedList = Object.keys(jobStates).filter(id => jobStates[id] === 'purged');
+      
+      const timestamp = new Date().toISOString();
+      const payload = {
+        saved: savedList,
+        rejected: rejectedList,
+        purged: purgedList,
+        updated_at: timestamp
+      };
+
+      const resp = await fetch(CLOUD_SYNC_URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (resp.ok && cloudBadge) {
+        cloudBadge.innerHTML = '<span class="dashboard-dot"></span> <span>ענן מסונכרן</span>';
+      }
+    } catch (e) {
+      if (cloudBadge) {
+        cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: #94a3b8;"></span> <span>מקומי</span>';
+      }
+    }
+  }
+
+  function extractJobId(link) {
+    if (!link) return '';
+    const match = link.match(/(\\d{7,12})/);
+    return match ? match[1] : link;
+  }
+
+  function getSyncDelta() {
+    const delta = {};
+    const baseSaved = new Set(typeof initialSavedLinks !== 'undefined' && Array.isArray(initialSavedLinks) ? initialSavedLinks : []);
+    const baseRejected = new Set(typeof initialRejectedLinks !== 'undefined' && Array.isArray(initialRejectedLinks) ? initialRejectedLinks : []);
+
+    for (const [link, state] of Object.entries(jobStates)) {
+      const wasSaved = baseSaved.has(link);
+      const wasRejected = baseRejected.has(link);
+      if (state === 'saved' && !wasSaved) {
+        delta[extractJobId(link)] = 's';
+      } else if (state === 'rejected' && !wasRejected) {
+        delta[extractJobId(link)] = 'r';
+      }
+    }
+    return delta;
+  }
+
+  function checkUrlSync() {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const syncData = urlParams.get('sync');
+      if (syncData) {
+        let incomingDelta = null;
+        try {
+          incomingDelta = JSON.parse(atob(decodeURIComponent(syncData)));
+        } catch(e) {
+          try {
+            incomingDelta = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(syncData)))));
+          } catch(e2) {
+            incomingDelta = JSON.parse(decodeURIComponent(syncData));
+          }
+        }
+
+        if (incomingDelta && typeof incomingDelta === 'object') {
+          let count = 0;
+          for (const [idOrLink, val] of Object.entries(incomingDelta)) {
+            const fullState = (val === 's' || val === 'saved') ? 'saved' : 'rejected';
+            const match = rawJobsData.find(j => j.link && (j.link === idOrLink || j.link.includes(idOrLink)));
+            if (match) {
+              jobStates[match.link] = fullState;
+              count++;
+            } else {
+              jobStates[idOrLink] = fullState;
+              count++;
+            }
+          }
+          saveTriageState(jobStates);
+          window.history.replaceState({}, document.title, window.location.pathname);
+          setTimeout(() => {
+            showToast('🎉', count > 0 ? `סונכרנו בהצלחה ${count} משרות חדשות!` : 'הדשבורד מסונכרן ומעודכן!');
+            updateUI();
+          }, 300);
+        }
+      }
+    } catch (e) {}
+  }
+
+  async function shareSyncLink() {
+    const delta = getSyncDelta();
+    const deltaKeys = Object.keys(delta);
+    let shareUrl = window.location.origin + window.location.pathname;
+    if (deltaKeys.length > 0) {
+      const payload = encodeURIComponent(btoa(JSON.stringify(delta)));
+      shareUrl += '?sync=' + payload;
+    }
+    
+    if (navigator.share) {
       try {
-        const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
-        const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
-        const purgedList = Object.keys(jobStates).filter(id => jobStates[id] === 'purged');
-        
-        const timestamp = new Date().toISOString();
-        const payload = {
-          saved: savedList,
-          rejected: rejectedList,
-          purged: purgedList,
-          updated_at: timestamp
-        };
-
-        const resp = await fetch(CLOUD_SYNC_URL, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+        await navigator.share({
+          title: 'דשבורד משרות - עידו גל',
+          text: deltaKeys.length > 0 ? `סנכרון ${deltaKeys.length} משרות חדשות שסימנתי` : 'דשבורד משרות מעודכן',
+          url: shareUrl
         });
-        if (resp.ok && cloudBadge) {
-          cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span> <span>ענן מסונכרן</span>';
+        showToast('📲', 'הקישור שותף בהצלחה!');
+        return;
+      } catch (err) {}
+    }
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        showToast('🔗', 'קישור סנכרון הועתק! פתח אותו במכשיר השני');
+      }).catch(() => {
+        prompt('פתח קישור זה במכשיר השני לסנכרון מיידי:', shareUrl);
+      });
+    } else {
+      prompt('פתח קישור זה במכשיר השני לסנכרון מיידי:', shareUrl);
+    }
+  }
+
+  function saveTriageState(state) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
+
+  const KNOWN_COMPANY_DOMAINS = [
+    [['elbit', 'אלביט'], 'elbitsystems.com'],
+    [['rafael', 'רפאל'], 'rafael.co.il'],
+    [['solaredge'], 'solaredge.com'],
+    [['applied materials'], 'appliedmaterials.com'],
+    [['nova'], 'novami.com'],
+    [['ormat'], 'ormat.com'],
+    [['iai', 'התעשייה האווירית', 'israel aerospace'], 'iai.co.il'],
+    [['tower'], 'towersemi.com'],
+    [['intel', 'realsense'], 'intel.com'],
+    [['apple'], 'apple.com'],
+    [['amazon', 'aws'], 'amazon.com'],
+    [['nvidia'], 'nvidia.com'],
+    [['cato networks'], 'catonetworks.com'],
+    [['check point', 'checkpoint'], 'checkpoint.com'],
+    [['palo alto'], 'paloaltonetworks.com'],
+    [['cyberark'], 'cyberark.com'],
+    [['siemens'], 'siemens.com'],
+    [['hitachi'], 'hitachienergy.com'],
+    [['schneider'], 'se.com'],
+    [['ge vernova', 'ge '], 'gevernova.com'],
+    [['icl group'], 'icl-group.com'],
+    [['enlight'], 'enlightenergy.co.il'],
+    [['energix'], 'energix-group.com'],
+    [['doral'], 'doral-energy.com'],
+    [['netafim'], 'netafim.com'],
+    [['iscar'], 'iscar.com'],
+    [['kla'], 'kla.com'],
+    [['tesla'], 'tesla.com'],
+    [['xtend'], 'xtend.me'],
+    [['nextvision'], 'nextvision-sys.com'],
+    [['d-fend'], 'd-fendsolutions.com'],
+    [['smartshooter', 'smart shooter'], 'smart-shooter.com'],
+    [['spearuav'], 'spearuav.com'],
+    [['controp'], 'controp.com'],
+    [['bird aero'], 'birdaero.com'],
+    [['bluebird'], 'bluebird-uav.com'],
+    [['airobotics', 'איירובוטיקס'], 'airoboticsdrones.com'],
+    [['aerotor'], 'aerotor.com'],
+    [['heven'], 'hevenaerotech.com'],
+    [['sentrycs'], 'sentrycs.com'],
+    [['roboteam'], 'robo-team.com'],
+    [['opc energy'], 'opc-energy.com'],
+    [['חברת החשמל', 'iec '], 'iec.co.il'],
+    [['ashtrom'], 'ashtrom.co.il'],
+    [['alstom'], 'alstom.com'],
+    [['biocatch'], 'biocatch.com'],
+    [['claroty'], 'claroty.com'],
+    [['cheq'], 'cheq.ai'],
+    [['stratasys'], 'stratasys.com'],
+    [['philips'], 'philips.com'],
+    [['adama'], 'adama.com'],
+    [['airwayz'], 'airwayz.co'],
+    [['alumeshet'], 'alumeshet.co.il'],
+    [['bet shemesh', 'מנועי בית שמש'], 'bseltd.com'],
+    [['bruker'], 'bruker.com'],
+    [['fiverr'], 'fiverr.com'],
+    [['gett'], 'gett.com'],
+    [['lemonade'], 'lemonade.com'],
+    [['nestle', 'nestlé'], 'nestle.com'],
+    [['pepsico', 'קוקה קולה', 'central bottling'], 'pepsico.com'],
+    [["l'oréal", 'loreal'], 'loreal.com'],
+    [['manpower'], 'manpower.co.il'],
+    [['sqlink'], 'sqlink.com'],
+    [['flytrex'], 'flytrex.com'],
+    [['percepto'], 'percepto.com'],
+    [['parazero'], 'parazero.com'],
+    [['sightec'], 'sightec.com'],
+    [['regulus'], 'regulus.com'],
+    [['rada'], 'drs.com'],
+    [['bagira'], 'bagirasys.com'],
+    [['aitech'], 'aitechsystems.com'],
+    [['acs motion'], 'acsmotioncontrol.com'],
+    [['experis'], 'experis.co.il'],
+    [['matrix', 'מטריקס'], 'matrix-globals.com'],
+    [['ness', 'נס'], 'ness-tech.co.il'],
+    [['wix'], 'wix.com'],
+    [['monday'], 'monday.com'],
+    [['mobileye'], 'mobileye.com'],
+    [['shapir'], 'shapir.co.il'],
+    [['shikun', 'שיכון ובינוי'], 'shikunbinui.com'],
+    [['electra', 'אלקטרה'], 'electra.co.il'],
+    [['edf'], 'edf-re.com']
+  ];
+
+  function getCompanyLogoHtml(companyName, customLogo) {
+    const rawName = (companyName || 'חברה').trim();
+    const norm = rawName.toLowerCase();
+    
+    let domain = null;
+    for (const [keys, dom] of KNOWN_COMPANY_DOMAINS) {
+      if (keys.some(k => norm.includes(k))) {
+        domain = dom;
+        break;
+      }
+    }
+
+    if (!domain) {
+      const cleanLatin = rawName.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+      if (cleanLatin.length >= 3 && !['חברה', 'israel', 'group', 'ltd'].includes(cleanLatin)) {
+        domain = cleanLatin + '.com';
+      }
+    }
+
+    let cleanWords = rawName
+      .replace(/[()\\[\\]\\-–•,]/g, ' ')
+      .split(/\\s+/)
+      .filter(w => w && !['בע"מ', 'בע״מ', 'ltd', 'ltd.', 'inc', 'inc.', 'group', 'corp', 'israel', 'ישראל'].includes(w.toLowerCase()));
+    if (cleanWords.length === 0) cleanWords = [rawName];
+    
+    let initials = '';
+    if (cleanWords.length >= 2) {
+      initials = (cleanWords[0][0] || '') + (cleanWords[1][0] || '');
+    } else if (cleanWords.length === 1 && cleanWords[0].length >= 2) {
+      initials = cleanWords[0].slice(0, 2);
+    } else {
+      initials = cleanWords[0] ? cleanWords[0][0] : '🏢';
+    }
+    initials = initials.toUpperCase();
+
+    const logoUrl = customLogo || (domain ? `https://unavatar.io/${domain}?fallback=false` : null);
+    const safeComp = rawName.replace(/"/g, '&quot;');
+
+    if (logoUrl) {
+      return `
+        <div class="job-company-logo" title="${safeComp}">
+          <img src="${logoUrl}" alt="${safeComp}" loading="lazy" onerror="this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex';" />
+          <div class="job-company-avatar" style="display: none;">${initials}</div>
+        </div>
+      `;
+    } else {
+      return `
+        <div class="job-company-logo" title="${safeComp}">
+          <div class="job-company-avatar">${initials}</div>
+        </div>
+      `;
+    }
+  }
+
+  let jobStates = loadTriageState();
+
+  function renderCards() {
+    const container = document.getElementById('cardsContainer');
+    container.innerHTML = '';
+
+    if (!rawJobsData || rawJobsData.length === 0) {
+      document.getElementById('emptyState').style.display = 'block';
+      return;
+    }
+
+    const seenLinks = new Set((rawJobsData || []).map(j => j.link));
+    let displayJobs = [...(rawJobsData || [])];
+
+    if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
+      Object.keys(jobStates).forEach(link => {
+        if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
+          displayJobs.push(historicalCatalog[link]);
+          seenLinks.add(link);
         }
-      } catch (e) {
-        if (cloudBadge) {
-          cloudBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-slate-500"></span> <span>מקומי</span>';
+      });
+    }
+
+    let sortedJobs = [...displayJobs];
+    sortedJobs.sort((a, b) => {
+      if (currentSort === 'score_desc') {
+        const scoreA = Number(a.match_score) || 0;
+        const scoreB = Number(b.match_score) || 0;
+        return scoreB - scoreA;
+      } else {
+        const dateA = a.date || '0000-00-00';
+        const dateB = b.date || '0000-00-00';
+        if (dateA > dateB) return -1;
+        if (dateA < dateB) return 1;
+        const scoreA = Number(a.match_score) || 0;
+        const scoreB = Number(b.match_score) || 0;
+        return scoreB - scoreA;
+      }
+    });
+
+    sortedJobs.forEach((job, idx) => {
+      const id = job.link || `job_${idx}`;
+      const score = Number(job.match_score) || 85;
+      const company = job.company || 'חברה';
+      const title = job.title || 'משרה ללא כותרת';
+      const link = job.link || '#';
+      const secKey = job.sector_key || 'energy';
+      const jobDate = job.date || 'היום';
+      
+      let sectorBadge = '⚡ תשתיות אנרגיה ו-SCADA';
+      let sectorChipStyle = 'color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4); background: rgba(255, 211, 104, 0.1);';
+      if (['drones', 'cuas', 'avionics'].includes(secKey)) {
+        if (secKey === 'cuas') {
+          sectorBadge = '🛡️ מערכות הגנת C-UAS וביטחון';
+          sectorChipStyle = 'color: #fca5a5; border-color: rgba(252, 165, 165, 0.4); background: rgba(239, 68, 68, 0.12);';
+        } else if (secKey === 'avionics') {
+          sectorBadge = '📡 מטע"דים ואוויוניקה';
+          sectorChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); background: rgba(137, 244, 231, 0.12);';
+        } else {
+          sectorBadge = '🚁 רחפנים וכטב"ם אוטונומי';
+          sectorChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.4); background: rgba(220, 255, 114, 0.12);';
+        }
+      } else if (secKey === 'solar') {
+        sectorBadge = '☀️ מערכות סולאריות ו-PV';
+        sectorChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.4); background: rgba(220, 255, 114, 0.12);';
+      } else if (secKey === 'natural_gas') {
+        sectorBadge = '🏭 גז טבעי ותחנות כוח';
+        sectorChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); background: rgba(137, 244, 231, 0.12);';
+      } else if (secKey === 'energy_tech') {
+        sectorBadge = '🔋 אגירת אנרגיה ו-Energy-Tech';
+        sectorChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); background: rgba(137, 244, 231, 0.12);';
+      }
+
+      let scoreClass = 'badge-score-high';
+      if (score < 80) scoreClass = 'badge-score-fair';
+      else if (score < 90) scoreClass = 'badge-score-med';
+
+      const domain = job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה';
+      const loc = job.location || 'ישראל / היברידי';
+      const jobSum = job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.';
+      const strengths = job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.';
+      const companyReqs = job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).';
+      const logoHtml = getCompanyLogoHtml(company, job.logo);
+
+      const salaryRange = job.salary_range || '12,000 - 15,000 ₪';
+      const salaryType = job.salary_source_type || 'sector_benchmark';
+      const salaryLabel = job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${company}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף`));
+      
+      let salaryChipStyle = 'color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08);';
+      if (salaryType === 'company_verified') {
+        salaryChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.08);';
+      } else if (salaryType === 'job_ad') {
+        salaryChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08);';
+      }
+
+      const card = document.createElement('article');
+      card.setAttribute('data-id', id);
+      card.setAttribute('data-sector', secKey);
+      card.setAttribute('data-location', loc.toLowerCase());
+      card.className = 'dashboard-card job-card';
+
+      card.innerHTML = `
+        <!-- Top Meta Row -->
+        <div class="job-card-topbar">
+          <div class="job-card-topbar-tags">
+            <span class="dashboard-chip" style="${sectorChipStyle}">${sectorBadge}</span>
+            <span class="dashboard-chip" style="color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.2);">📅 ${jobDate}</span>
+          </div>
+          <div class="badge-score ${scoreClass}">
+            <span>⚡ ${score}%</span> התאמה
+          </div>
+        </div>
+
+        <!-- Title & Company Header -->
+        <div class="job-card-main-header">
+          ${logoHtml}
+          <div class="job-header-text">
+            <h2>
+              <span class="job-company-name">${company}</span>
+              <span class="job-title-sep">—</span>
+              <span class="job-title-text">${title}</span>
+            </h2>
+            <div class="job-header-chips">
+              <span class="dashboard-chip" style="font-size: 12px; padding: 3px 10px;">📍 ${loc}</span>
+              <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 12px; padding: 3px 10px;">
+                💰 ${salaryRange} <small style="display: inline; opacity: 0.85;">(${salaryLabel})</small>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Structured Information Boxes -->
+        <div class="job-boxes-grid">
+          <div class="job-box">
+            <strong>📌 דרישות החברה עבור המשרה:</strong>
+            <span>${companyReqs}</span>
+          </div>
+          <div class="job-box">
+            <strong>🏢 תחום ומוצר החברה:</strong>
+            <span>${domain}</span>
+          </div>
+          <div class="job-box">
+            <strong>📋 תקציר המשרה:</strong>
+            <span>${jobSum}</span>
+          </div>
+          <div class="job-box highlight">
+            <strong>💪 נקודות חוזק מהניסיון:</strong>
+            <span>${strengths}</span>
+          </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="job-actions-bar">
+          <div class="action-btn-group">
+            <button onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'saved')" class="btn-triage action-save-btn">
+              <span>✔️</span> <span class="btn-text">שמור להגשה</span>
+            </button>
+            <button onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'rejected')" class="btn-triage action-reject-btn">
+              <span>✖️</span> <span>הסר משרה</span>
+            </button>
+          </div>
+          <a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-apply">
+            <span>הגש מועמדות ↗</span>
+          </a>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    updateUI();
+  }
+
+  function toggleSort() {
+    currentSort = currentSort === 'score_desc' ? 'date_desc' : 'score_desc';
+    const icon = document.getElementById('sortIcon');
+    const label = document.getElementById('sortLabel');
+    if (currentSort === 'score_desc') {
+      if (icon) icon.textContent = '🔽';
+      if (label) label.textContent = 'מיון: ציון התאמה (מגבוה לנמוך)';
+      showToast('🔽', 'מיון: ציון התאמה מגבוה לנמוך');
+    } else {
+      if (icon) icon.textContent = '📅';
+      if (label) label.textContent = 'מיון: התאריך החדש קודם';
+      showToast('📅', 'מיון: התאריך החדש קודם');
+    }
+    renderCards();
+  }
+
+  function toggleAction(id, action) {
+    const current = jobStates[id];
+    if (current === action) {
+      delete jobStates[id];
+      showToast('ℹ️', 'הסטטוס אופס למצב ממתין');
+    } else {
+      jobStates[id] = action;
+      if (action === 'saved') {
+        showToast('✔️', 'המשרה נשמרה להגשה');
+      } else if (action === 'rejected') {
+        showToast('✖️', 'המשרה הוסרה ולא תוצג שוב');
+      }
+    }
+    saveTriageState(jobStates);
+    updateUI();
+    scheduleCloudPush();
+  }
+
+  function setFilter(filter, el) {
+    currentFilter = filter;
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.removeAttribute('aria-current');
+    });
+    if (el) el.setAttribute('aria-current', 'page');
+    updateUI();
+  }
+
+  function filterCards() {
+    updateUI();
+  }
+
+  function updateUI() {
+    const selectedSector = document.getElementById('sectorFilter').value;
+    const searchInput = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
+    
+    const cards = document.querySelectorAll('.job-card');
+    let visibleCount = 0;
+    let saved = 0, rejected = 0, purged = 0;
+    const total = cards.length;
+
+    cards.forEach(card => {
+      const id = card.getAttribute('data-id');
+      const sector = card.getAttribute('data-sector');
+      const state = jobStates[id] || 'pending';
+
+      if (state === 'saved') saved++;
+      if (state === 'rejected') rejected++;
+      if (state === 'purged') purged++;
+
+      const saveBtn = card.querySelector('.action-save-btn');
+      const rejectBtn = card.querySelector('.action-reject-btn');
+      const saveText = saveBtn.querySelector('.btn-text');
+
+      if (state === 'saved') {
+        saveBtn.className = "btn-triage action-save-btn saved-active";
+        saveText.textContent = "נשמר להגשה";
+        rejectBtn.className = "btn-triage action-reject-btn";
+      } else if (state === 'rejected') {
+        rejectBtn.className = "btn-triage action-reject-btn rejected-active";
+        saveBtn.className = "btn-triage action-save-btn";
+        saveText.textContent = "שמור להגשה";
+      } else {
+        saveBtn.className = "btn-triage action-save-btn";
+        rejectBtn.className = "btn-triage action-reject-btn";
+        saveText.textContent = "שמור להגשה";
+      }
+
+      let matchesTab = false;
+      if (currentFilter === 'all') matchesTab = (state !== 'saved' && state !== 'rejected' && state !== 'purged');
+      else if (currentFilter === 'saved') matchesTab = (state === 'saved');
+      else if (currentFilter === 'rejected') matchesTab = (state === 'rejected');
+
+      let matchesSector = (selectedSector === 'all');
+      if (!matchesSector) {
+        const normSector = sector.toLowerCase().replace(/[ _-]/g, '');
+        const normSelected = selectedSector.toLowerCase().replace(/[ _-]/g, '');
+
+        if (normSelected === 'drones') {
+          matchesSector = ['drones', 'cuas', 'avionics'].includes(normSector);
+        } else if (normSelected === 'energy') {
+          const energySet = ['energy', 'naturalgas', 'solar', 'energytech'];
+          matchesSector = energySet.includes(normSector);
+        } else if (normSelected === 'naturalgas') {
+          matchesSector = ['naturalgas', 'gas'].includes(normSector);
+        } else {
+          matchesSector = normSector === normSelected;
         }
       }
+      
+      let matchesSearch = true;
+      if (searchInput) {
+        const cardText = card.textContent.toLowerCase();
+        matchesSearch = cardText.includes(searchInput);
+      }
+
+      if (matchesTab && matchesSector && matchesSearch && state !== 'purged') {
+        card.style.display = 'flex';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    const totalSavedInStore = Object.values(jobStates).filter(s => s === 'saved').length;
+    const totalRejectedInStore = Object.values(jobStates).filter(s => s === 'rejected').length;
+    const pendingInBatch = total - (saved + rejected + purged);
+
+    // Update Counts in Nav & Stats Cards
+    const countAllEl = document.getElementById('countAll');
+    const countSavedEl = document.getElementById('countSaved');
+    const countRejectedEl = document.getElementById('countRejected');
+    if (countAllEl) countAllEl.textContent = Math.max(0, pendingInBatch);
+    if (countSavedEl) countSavedEl.textContent = totalSavedInStore;
+    if (countRejectedEl) countRejectedEl.textContent = totalRejectedInStore;
+
+    const statNewEl = document.getElementById('statNewCount');
+    const statSavedEl = document.getElementById('statSavedCount');
+    const statRejectedEl = document.getElementById('statRejectedCount');
+    if (statNewEl) statNewEl.textContent = Math.max(0, pendingInBatch);
+    if (statSavedEl) statSavedEl.textContent = totalSavedInStore;
+    if (statRejectedEl) statRejectedEl.textContent = totalRejectedInStore;
+
+    // Progress Bar Calculations
+    const triaged = saved + rejected + purged;
+    const pct = total > 0 ? Math.round((triaged / total) * 100) : 0;
+    
+    const pctTextEl = document.getElementById('progressPctText');
+    const summaryChipEl = document.getElementById('progressSummaryChip');
+    if (pctTextEl) pctTextEl.textContent = pct + '%';
+    if (summaryChipEl) summaryChipEl.textContent = pct + '% נסקרו';
+
+    const pNew = total > 0 ? Math.round((Math.max(0, pendingInBatch) / total) * 100) : 0;
+    const pSaved = total > 0 ? Math.round((saved / total) * 100) : 0;
+    const pRej = Math.max(0, 100 - pNew - pSaved);
+
+    const segNew = document.getElementById('progressSegNew');
+    const segSaved = document.getElementById('progressSegSaved');
+    const segRej = document.getElementById('progressSegRejected');
+    if (segNew) segNew.style.width = pNew + '%';
+    if (segSaved) segSaved.style.width = pSaved + '%';
+    if (segRej) segRej.style.width = pRej + '%';
+
+    const lblNew = document.getElementById('pctLabelNew');
+    const lblSaved = document.getElementById('pctLabelSaved');
+    const lblRej = document.getElementById('pctLabelRejected');
+    if (lblNew) lblNew.textContent = pNew + '% חדשות';
+    if (lblSaved) lblSaved.textContent = pSaved + '% שמורות';
+    if (lblRej) lblRej.textContent = pRej + '% הוסרו';
+
+    // Contextual Action Bars
+    const savedBar = document.getElementById('savedActionBar');
+    const rejectedBar = document.getElementById('rejectedActionBar');
+    if (savedBar) {
+      savedBar.style.display = (currentFilter === 'saved') ? 'flex' : 'none';
+    }
+    if (rejectedBar) {
+      rejectedBar.style.display = (currentFilter === 'rejected') ? 'flex' : 'none';
+    }
+
+    // Empty State Handling
+    const emptyState = document.getElementById('emptyState');
+    if (emptyState) {
+      if (visibleCount === 0) {
+        const iconEl = document.getElementById('emptyStateIcon');
+        const titleEl = document.getElementById('emptyStateTitle');
+        const descEl = document.getElementById('emptyStateDesc');
+        if (currentFilter === 'rejected') {
+          if (iconEl) iconEl.textContent = '🗑️';
+          if (titleEl) titleEl.textContent = `כל ${totalRejectedInStore} המשרות שהוסרו מנוטרלות לצמיתות`;
+          if (descEl) descEl.textContent = 'משרות אלו סוננו מחלון ההזדמנויות השבועי ולא ישובו להופיע בדוחות הבאים.';
+        } else if (currentFilter === 'saved') {
+          if (iconEl) iconEl.textContent = '⭐';
+          if (titleEl) titleEl.textContent = 'עדיין לא סימנת משרות שמורות מתוך מקבץ זה';
+          if (descEl) descEl.textContent = 'לחץ על "שמור להגשה" בכל כרטיס משרה שמעניינת אותך.';
+        } else {
+          if (iconEl) iconEl.textContent = '🎉';
+          if (titleEl) titleEl.textContent = 'סיימת לסקור את כל המשרות החדשות!';
+          if (descEl) descEl.textContent = 'כל המשרות במקבץ זה כבר מוינו (נשמרו או הוסרו).';
+        }
+        emptyState.style.display = 'block';
+      } else {
+        emptyState.style.display = 'none';
+      }
+    }
+
+    renderSectorChart();
+  }
+
+  let sectorChartInstance = null;
+  function renderSectorChart() {
+    const canvas = document.getElementById('sectorChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const counts = {};
+    const sourceJobs = (rawJobsData && rawJobsData.length > 0) ? rawJobsData : [];
+    sourceJobs.forEach(job => {
+      let sec = job.sector_key || job.sector || 'energy';
+      const normSector = sec.toLowerCase().replace(/[ _-]/g, '');
+      let label = '⚡ אנרגיה';
+      if (['solar', 'pv'].includes(normSector)) label = '☀️ סולאר';
+      else if (['naturalgas', 'gas'].includes(normSector)) label = '🏭 גז טבעי';
+      else if (['energytech', 'storage', 'bess'].includes(normSector)) label = '🔋 אגירה';
+      else if (['drones', 'uav', 'robotics'].includes(normSector)) label = '🚁 רחפנים';
+      else if (['cuas', 'defense'].includes(normSector)) label = '🛡️ ביטחון';
+      counts[label] = (counts[label] || 0) + 1;
+    });
+
+    if (Object.keys(counts).length === 0) {
+      counts['ללא משרות'] = 0;
+    }
+
+    if (sectorChartInstance) {
+      sectorChartInstance.destroy();
+    }
+
+    const labels = Object.keys(counts);
+    const data = Object.values(counts);
+    const barColors = [
+      '#dcff72', // Lime
+      '#89f4e7', // Cyan
+      '#ffd368', // Gold
+      '#b4fcf1', // Teal
+      '#a0c03e', // Olive Lime
+      '#c0c5be'  // Muted
+    ];
+
+    sectorChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: barColors.slice(0, labels.length),
+          borderRadius: 8,
+          borderSkipped: false,
+          maxBarThickness: 32
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#191d1b',
+            titleColor: '#f5f6f0',
+            bodyColor: '#c0c5be',
+            borderColor: 'rgba(255, 255, 255, 0.16)',
+            borderWidth: 1,
+            cornerRadius: 12,
+            rtl: true,
+            textDirection: 'rtl'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1, color: '#c0c5be', font: { family: 'Google Sans', size: 11 } },
+            grid: { color: 'rgba(255, 255, 255, 0.08)' }
+          },
+          x: {
+            ticks: { color: '#c0c5be', font: { family: 'Google Sans', size: 11 } },
+            grid: { display: false }
+          }
+        }
+      }
+    });
+  }
+
+  function showToast(icon, msg) {
+    const toast = document.getElementById('toast');
+    if (!toast) return;
+    document.getElementById('toastIcon').textContent = icon;
+    document.getElementById('toastMsg').textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2800);
+  }
+
+  function triggerSyncModal() {
+    const savedCount = Object.values(jobStates).filter(s => s === 'saved').length;
+    const rejectedCount = Object.values(jobStates).filter(s => s === 'rejected').length;
+    document.getElementById('syncSavedCount').textContent = savedCount;
+    document.getElementById('syncRejectedCount').textContent = rejectedCount;
+    document.getElementById('syncModal').classList.remove('hidden');
+  }
+
+  function closeSyncModal() {
+    document.getElementById('syncModal').classList.add('hidden');
+  }
+
+  async function confirmSync() {
+    const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
+    const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
+    
+    const syncBtn = document.getElementById('syncConfirmBtn');
+    if (syncBtn) {
+      syncBtn.disabled = true;
+      syncBtn.textContent = "סנכרון מתבצע...";
+    }
+
+    saveTriageState(jobStates);
+    await pushCloudSync();
+
+    closeSyncModal();
+    showToast('☁️', `כל הסימונים סונכרנו לענן בהצלחה! (${savedList.length} שמורות, ${rejectedList.length} הוסרו)`);
+    if (syncBtn) {
+      syncBtn.disabled = false;
+      syncBtn.textContent = "אשר וסנכרן עכשיו";
+    }
+  }
+
+  function openDuplicatesModal() {
+    const content = document.getElementById('duplicatesContent');
+
+    function normalize(str) {
+      if (!str) return '';
+      return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
+    }
+
+    const seenLinks = new Set((rawJobsData || []).map(j => j.link));
+    let allJobs = [...(rawJobsData || [])];
+    
+    if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
+      Object.keys(jobStates).forEach(link => {
+        if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
+          allJobs.push(historicalCatalog[link]);
+          seenLinks.add(link);
+        }
+      });
+    }
+
+    const activeJobs = allJobs.filter(job => {
+      const state = jobStates[job.link] || 'pending';
+      return state === 'saved' || state === 'pending';
+    });
+
+    const groups = {};
+    
+    function extractJobId(link) {
+      if (!link) return null;
+      const match = link.match(/(\\d{9,11})(?:[/?#]|$)/);
+      if (match) return match[1];
+      const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\\/?$/);
+      if (comeetMatch && link.includes('comeet')) return comeetMatch[1];
+      return null;
+    }
+
+    activeJobs.forEach((job, idx) => {
+      const titleCompKey = normalize(job.company) + '|' + normalize(job.title);
+      let cleanTitle = normalize(job.title).replace(/(israel|remote|hybrid|tel aviv|haifa)$/i, '').trim();
+      const cleanTitleCompKey = normalize(job.company) + '|' + cleanTitle;
+      const jobId = extractJobId(job.link);
+      
+      let foundKey = null;
+      if (jobId) {
+        foundKey = Object.keys(groups).find(k => k.startsWith('ID: ' + jobId));
+        if (!foundKey) foundKey = 'ID: ' + jobId + ' | ' + titleCompKey;
+      } else {
+        foundKey = Object.keys(groups).find(k => k.includes(cleanTitleCompKey)) || titleCompKey;
+      }
+      
+      if (!groups[foundKey]) groups[foundKey] = [];
+      groups[foundKey].push({ ...job, _idx: idx });
+    });
+
+    const dupGroups = Object.entries(groups).filter(([k, g]) => g.length > 1);
+
+    if (dupGroups.length === 0) {
+      content.innerHTML = `
+        <div style="text-align: center; padding: 32px 12px;">
+          <div style="font-size: 40px; margin-bottom: 12px;">✅</div>
+          <div style="font-weight: 700; color: var(--dashboard-lime); font-size: 16px;">לא נמצאו כפילויות!</div>
+          <div style="color: var(--dashboard-muted); font-size: 13px; margin-top: 6px;">כל ${activeJobs.length} המשרות הפעילות (שמורות וחדשות) ייחודיות לחלוטין.</div>
+        </div>`;
+    } else {
+      const totalDups = dupGroups.reduce((sum, [k, g]) => sum + g.length - 1, 0);
+      let html = `
+        <div style="background: rgba(255, 211, 104, 0.12); border: 1px solid rgba(255, 211, 104, 0.35); border-radius: 16px; padding: 12px 16px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px;">
+            <span style="font-size: 16px;">⚠️</span>
+            <span style="color: var(--dashboard-gold); font-weight: 600;">אותרו <strong>${dupGroups.length}</strong> קבוצות עם <strong>${totalDups}</strong> כפילויות</span>
+          </div>
+        </div>`;
+
+      dupGroups.forEach(([key, group], gi) => {
+        const rep = group[0];
+        const encKey = encodeURIComponent(key);
+        html += `
+          <div style="background: rgba(0, 0, 0, 0.28); border: 1px solid var(--dashboard-edge); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px;">
+                <span class="dashboard-chip" style="font-size: 11px; padding: 2px 8px;">#${gi + 1}</span>
+                <span style="color: #fff;">${rep.company || '—'} — ${rep.title || '—'}</span>
+                <span class="dashboard-chip" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4); font-size: 11px; padding: 2px 8px;">${group.length} מופעים</span>
+              </div>
+              <button onclick="purgeDuplicateGroup('${encKey}')" class="tool-btn" style="min-height: 36px; padding: 6px 14px; font-size: 12px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="שמור מופע אחד ומחק את שאר הכפילויות">
+                ⚡ השאר אחת
+              </button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">`;
+
+        group.forEach((job, ji) => {
+          const score = job.match_score || '—';
+          const date = job.date || '—';
+          const link = job.link || '#';
+          const encLink = encodeURIComponent(link);
+          const state = jobStates[job.link] || 'pending';
+          const isSaved = state === 'saved';
+          const statusBadge = isSaved
+            ? `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); font-size: 11px; padding: 2px 8px;">⭐ שמורה</span>`
+            : `<span class="dashboard-chip" style="color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.4); font-size: 11px; padding: 2px 8px;">🆕 חדשה</span>`;
+
+          html += `
+            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 10px 14px; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 13px;">
+                <span style="font-size: 11px; color: var(--dashboard-muted);">#${ji + 1}</span>
+                ${statusBadge}
+                <span style="font-weight: 700; color: var(--dashboard-lime);">${score}%</span>
+                <span style="color: var(--dashboard-muted); font-size: 12px;">${date}</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <a href="${link}" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); font-weight: 600; font-size: 13px; text-decoration: underline; text-underline-offset: 3px;">
+                  פתח ↗
+                </a>
+                <button onclick="purgeSingleJob('${encLink}')" class="btn-triage" style="min-height: 32px; padding: 4px 10px; font-size: 12px; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4);" title="מחק כפילות זו">
+                  🗑️
+                </button>
+              </div>
+            </div>`;
+        });
+        html += `</div></div>`;
+      });
+
+      content.innerHTML = html;
+    }
+
+    document.getElementById('duplicatesModal').classList.remove('hidden');
+  }
+
+  function purgeSingleJob(encLink) {
+    const link = decodeURIComponent(encLink);
+    if (!link) return;
+    jobStates[link] = 'purged';
+    saveTriageState(jobStates);
+    updateUI();
+    pushCloudSync();
+    showToast('🗑️', 'הכפילות נמחקה בהצלחה');
+    openDuplicatesModal();
+  }
+
+  function purgeDuplicateGroup(encKey) {
+    const targetKey = decodeURIComponent(encKey);
+    function normalize(str) {
+      if (!str) return '';
+      return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
+    }
+
+    const seenLinks = new Set((rawJobsData || []).map(j => j.link));
+    let allJobs = [...(rawJobsData || [])];
+    if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
+      Object.keys(jobStates).forEach(link => {
+        if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
+          allJobs.push(historicalCatalog[link]);
+          seenLinks.add(link);
+        }
+      });
     }
 
     function extractJobId(link) {
-      if (!link) return '';
-      const match = link.match(/(\\d{7,12})/);
-      return match ? match[1] : link;
+      if (!link) return null;
+      const match = link.match(/(\\d{9,11})(?:[/?#]|$)/);
+      if (match) return match[1];
+      const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\\/?$/);
+      if (comeetMatch && link.includes('comeet')) return comeetMatch[1];
+      return null;
     }
-
-    function getSyncDelta() {
-      const delta = {};
-      const baseSaved = new Set(typeof initialSavedLinks !== 'undefined' && Array.isArray(initialSavedLinks) ? initialSavedLinks : []);
-      const baseRejected = new Set(typeof initialRejectedLinks !== 'undefined' && Array.isArray(initialRejectedLinks) ? initialRejectedLinks : []);
-
-      for (const [link, state] of Object.entries(jobStates)) {
-        const wasSaved = baseSaved.has(link);
-        const wasRejected = baseRejected.has(link);
-        if (state === 'saved' && !wasSaved) {
-          delta[extractJobId(link)] = 's';
-        } else if (state === 'rejected' && !wasRejected) {
-          delta[extractJobId(link)] = 'r';
-        }
-      }
-      return delta;
-    }
-
-    function checkUrlSync() {
-      try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const syncData = urlParams.get('sync');
-        if (syncData) {
-          let incomingDelta = null;
-          try {
-            incomingDelta = JSON.parse(atob(decodeURIComponent(syncData)));
-          } catch(e) {
-            try {
-              incomingDelta = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(syncData)))));
-            } catch(e2) {
-              incomingDelta = JSON.parse(decodeURIComponent(syncData));
-            }
-          }
-
-          if (incomingDelta && typeof incomingDelta === 'object') {
-            let count = 0;
-            for (const [idOrLink, val] of Object.entries(incomingDelta)) {
-              const fullState = (val === 's' || val === 'saved') ? 'saved' : 'rejected';
-              const match = rawJobsData.find(j => j.link && (j.link === idOrLink || j.link.includes(idOrLink)));
-              if (match) {
-                jobStates[match.link] = fullState;
-                count++;
-              } else {
-                jobStates[idOrLink] = fullState;
-                count++;
-              }
-            }
-            saveTriageState(jobStates);
-            window.history.replaceState({}, document.title, window.location.pathname);
-            setTimeout(() => {
-              showToast('🎉', count > 0 ? `סונכרנו בהצלחה ${count} משרות חדשות!` : 'הדשבורד מסונכרן ומעודכן!');
-              updateUI();
-            }, 300);
-          }
-        }
-      } catch (e) {}
-    }
-
-    async function shareSyncLink() {
-      const delta = getSyncDelta();
-      const deltaKeys = Object.keys(delta);
-      let shareUrl = window.location.origin + window.location.pathname;
-      if (deltaKeys.length > 0) {
-        const payload = encodeURIComponent(btoa(JSON.stringify(delta)));
-        shareUrl += '?sync=' + payload;
-      }
+    
+    const activeJobs = allJobs.filter(job => {
+      const state = jobStates[job.link] || 'pending';
+      if (state !== 'saved' && state !== 'pending') return false;
       
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: 'דשבורד משרות - עידו גל',
-            text: deltaKeys.length > 0 ? `סנכרון ${deltaKeys.length} משרות חדשות שסימנתי` : 'דשבורד משרות מעודכן',
-            url: shareUrl
-          });
-          showToast('📲', 'הקישור שותף בהצלחה!');
-          return;
-        } catch (err) {}
-      }
+      const titleCompKey = normalize(job.company) + '|' + normalize(job.title);
+      let cleanTitle = normalize(job.title).replace(/(israel|remote|hybrid|tel aviv|haifa)$/i, '').trim();
+      const cleanTitleCompKey = normalize(job.company) + '|' + cleanTitle;
+      const jobId = extractJobId(job.link);
       
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(shareUrl).then(() => {
-          showToast('🔗', 'קישור סנכרון הועתק! פתח אותו במכשיר השני');
-        }).catch(() => {
-          prompt('פתח קישור זה במכשיר השני לסנכרון מיידי:', shareUrl);
-        });
+      if (targetKey.startsWith('ID: ') && jobId) {
+        return targetKey.includes(jobId);
       } else {
-        prompt('פתח קישור זה במכשיר השני לסנכרון מיידי:', shareUrl);
+        return titleCompKey === targetKey || cleanTitleCompKey === targetKey || targetKey.includes(cleanTitleCompKey);
       }
+    });
+
+    if (activeJobs.length <= 1) return;
+
+    activeJobs.sort((a, b) => {
+      const aSaved = jobStates[a.link] === 'saved' ? 1 : 0;
+      const bSaved = jobStates[b.link] === 'saved' ? 1 : 0;
+      if (aSaved !== bSaved) return bSaved - aSaved;
+      return (Number(b.match_score) || 0) - (Number(a.match_score) || 0);
+    });
+
+    const toPurge = activeJobs.slice(1);
+    toPurge.forEach(j => {
+      jobStates[j.link] = 'purged';
+    });
+
+    saveTriageState(jobStates);
+    updateUI();
+    pushCloudSync();
+    showToast('⚡', `הושארה משרה אחת ונמחקו ${toPurge.length} כפילויות`);
+    openDuplicatesModal();
+  }
+
+  function closeDuplicatesModal() {
+    document.getElementById('duplicatesModal').classList.add('hidden');
+  }
+
+  function clearAllRejected() {
+    const rejectedKeys = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
+    if (rejectedKeys.length === 0) {
+      showToast('ℹ️', 'אין משרות מוסרות למחיקה');
+      return;
     }
 
-    function saveTriageState(state) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch (e) {}
+    if (!confirm(`האם אתה בטוח שברצונך למחוק לצמיתות ${rejectedKeys.length} משרות שהוסרו ולאפס את המונה?`)) {
+      return;
     }
 
-    const KNOWN_COMPANY_DOMAINS = [
-      [['elbit', 'אלביט'], 'elbitsystems.com'],
-      [['rafael', 'רפאל'], 'rafael.co.il'],
-      [['solaredge'], 'solaredge.com'],
-      [['applied materials'], 'appliedmaterials.com'],
-      [['nova'], 'novami.com'],
-      [['ormat'], 'ormat.com'],
-      [['iai', 'התעשייה האווירית', 'israel aerospace'], 'iai.co.il'],
-      [['tower'], 'towersemi.com'],
-      [['intel', 'realsense'], 'intel.com'],
-      [['apple'], 'apple.com'],
-      [['amazon', 'aws'], 'amazon.com'],
-      [['nvidia'], 'nvidia.com'],
-      [['cato networks'], 'catonetworks.com'],
-      [['check point', 'checkpoint'], 'checkpoint.com'],
-      [['palo alto'], 'paloaltonetworks.com'],
-      [['cyberark'], 'cyberark.com'],
-      [['siemens'], 'siemens.com'],
-      [['hitachi'], 'hitachienergy.com'],
-      [['schneider'], 'se.com'],
-      [['ge vernova', 'ge '], 'gevernova.com'],
-      [['icl group'], 'icl-group.com'],
-      [['enlight'], 'enlightenergy.co.il'],
-      [['energix'], 'energix-group.com'],
-      [['doral'], 'doral-energy.com'],
-      [['netafim'], 'netafim.com'],
-      [['iscar'], 'iscar.com'],
-      [['kla'], 'kla.com'],
-      [['tesla'], 'tesla.com'],
-      [['xtend'], 'xtend.me'],
-      [['nextvision'], 'nextvision-sys.com'],
-      [['d-fend'], 'd-fendsolutions.com'],
-      [['smartshooter', 'smart shooter'], 'smart-shooter.com'],
-      [['spearuav'], 'spearuav.com'],
-      [['controp'], 'controp.com'],
-      [['bird aero'], 'birdaero.com'],
-      [['bluebird'], 'bluebird-uav.com'],
-      [['airobotics', 'איירובוטיקס'], 'airoboticsdrones.com'],
-      [['aerotor'], 'aerotor.com'],
-      [['heven'], 'hevenaerotech.com'],
-      [['sentrycs'], 'sentrycs.com'],
-      [['roboteam'], 'robo-team.com'],
-      [['opc energy'], 'opc-energy.com'],
-      [['חברת החשמל', 'iec '], 'iec.co.il'],
-      [['ashtrom'], 'ashtrom.co.il'],
-      [['alstom'], 'alstom.com'],
-      [['biocatch'], 'biocatch.com'],
-      [['claroty'], 'claroty.com'],
-      [['cheq'], 'cheq.ai'],
-      [['stratasys'], 'stratasys.com'],
-      [['philips'], 'philips.com'],
-      [['adama'], 'adama.com'],
-      [['airwayz'], 'airwayz.co'],
-      [['alumeshet'], 'alumeshet.co.il'],
-      [['bet shemesh', 'מנועי בית שמש'], 'bseltd.com'],
-      [['bruker'], 'bruker.com'],
-      [['fiverr'], 'fiverr.com'],
-      [['gett'], 'gett.com'],
-      [['lemonade'], 'lemonade.com'],
-      [['nestle', 'nestlé'], 'nestle.com'],
-      [['pepsico', 'קוקה קולה', 'central bottling'], 'pepsico.com'],
-      [["l'oréal", 'loreal'], 'loreal.com'],
-      [['manpower'], 'manpower.co.il'],
-      [['sqlink'], 'sqlink.com'],
-      [['flytrex'], 'flytrex.com'],
-      [['percepto'], 'percepto.com'],
-      [['parazero'], 'parazero.com'],
-      [['sightec'], 'sightec.com'],
-      [['regulus'], 'regulus.com'],
-      [['rada'], 'drs.com'],
-      [['bagira'], 'bagirasys.com'],
-      [['aitech'], 'aitechsystems.com'],
-      [['acs motion'], 'acsmotioncontrol.com'],
-      [['experis'], 'experis.co.il'],
-      [['matrix', 'מטריקס'], 'matrix-globals.com'],
-      [['ness', 'נס'], 'ness-tech.co.il'],
-      [['wix'], 'wix.com'],
-      [['monday'], 'monday.com'],
-      [['mobileye'], 'mobileye.com'],
-      [['shapir'], 'shapir.co.il'],
-      [['shikun', 'שיכון ובינוי'], 'shikunbinui.com'],
-      [['electra', 'אלקטרה'], 'electra.co.il'],
-      [['edf'], 'edf-re.com']
+    rejectedKeys.forEach(id => {
+      jobStates[id] = 'purged';
+    });
+
+    saveTriageState(jobStates);
+    updateUI();
+    pushCloudSync();
+    showToast('🗑️', `כל ${rejectedKeys.length} המשרות שהוסרו נמחקו לצמיתות והמונה אופס ל-0`);
+  }
+
+  function exportSavedToExcel() {
+    const seenLinks = new Set((rawJobsData || []).map(j => j.link));
+    let allPotentialSaved = [...(rawJobsData || [])];
+    if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
+      Object.keys(jobStates).forEach(link => {
+        if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
+          allPotentialSaved.push(historicalCatalog[link]);
+          seenLinks.add(link);
+        }
+      });
+    }
+    const savedJobs = allPotentialSaved.filter(job => jobStates[job.link] === 'saved');
+    if (savedJobs.length === 0) {
+      showToast('⚠️', 'לא נמצאו משרות שמורות לייצוא');
+      return;
+    }
+
+    const BOM = '\\uFEFF';
+    const headers = [
+      'חברה',
+      'כותרת משרה',
+      'ציון התאמה',
+      'תחום',
+      'מיקום',
+      'טווח שכר צפוי',
+      'ביסוס ומקור שכר',
+      'דרישות החברה עבור המשרה',
+      'תחום ומוצר החברה',
+      'תקציר המשרה',
+      'נקודות חוזק מהניסיון',
+      'דגשים ומודל עבודה',
+      'לינק למשרה',
+      'תאריך איתור'
     ];
 
-    function getCompanyLogoHtml(companyName, customLogo) {
-      const rawName = (companyName || 'חברה').trim();
-      const norm = rawName.toLowerCase();
-      
-      let domain = null;
-      for (const [keys, dom] of KNOWN_COMPANY_DOMAINS) {
-        if (keys.some(k => norm.includes(k))) {
-          domain = dom;
-          break;
-        }
-      }
-
-      if (!domain) {
-        const cleanLatin = rawName.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-        if (cleanLatin.length >= 3 && !['חברה', 'israel', 'group', 'ltd'].includes(cleanLatin)) {
-          domain = cleanLatin + '.com';
-        }
-      }
-
-      let cleanWords = rawName
-        .replace(/[()\\[\\]\\-–•,]/g, ' ')
-        .split(/\\s+/)
-        .filter(w => w && !['בע"מ', 'בע״מ', 'ltd', 'ltd.', 'inc', 'inc.', 'group', 'corp', 'israel', 'ישראל'].includes(w.toLowerCase()));
-      if (cleanWords.length === 0) cleanWords = [rawName];
-      
-      let initials = '';
-      if (cleanWords.length >= 2) {
-        initials = (cleanWords[0][0] || '') + (cleanWords[1][0] || '');
-      } else if (cleanWords.length === 1 && cleanWords[0].length >= 2) {
-        initials = cleanWords[0].slice(0, 2);
-      } else {
-        initials = cleanWords[0] ? cleanWords[0][0] : '🏢';
-      }
-      initials = initials.toUpperCase();
-
-      const gradients = [
-        'from-blue-600 to-indigo-700 text-white',
-        'from-sky-600 to-blue-800 text-white',
-        'from-emerald-600 to-teal-800 text-white',
-        'from-violet-600 to-purple-800 text-white',
-        'from-amber-600 to-orange-700 text-white',
-        'from-rose-600 to-pink-800 text-white',
-        'from-cyan-600 to-teal-700 text-white',
-        'from-indigo-600 to-purple-800 text-white'
-      ];
-      let hash = 0;
-      for (let i = 0; i < rawName.length; i++) {
-        hash = (hash << 5) - hash + rawName.charCodeAt(i);
-        hash |= 0;
-      }
-      const gradClass = gradients[Math.abs(hash) % gradients.length];
-      const logoUrl = customLogo || (domain ? `https://unavatar.io/${domain}?fallback=false` : null);
-      const safeComp = rawName.replace(/"/g, '&quot;');
-
-      if (logoUrl) {
-        return `
-          <div class="company-logo-badge relative w-10 h-10 rounded-full border border-slate-700/80 bg-slate-800/90 shadow-sm flex items-center justify-center overflow-hidden shrink-0 mt-0.5" title="${safeComp}">
-            <img src="${logoUrl}" alt="${safeComp}" loading="lazy" class="w-full h-full object-contain p-1 rounded-full bg-slate-900/60" onerror="this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex';" />
-            <div class="fallback-avatar w-full h-full rounded-full hidden items-center justify-center font-bold text-xs bg-gradient-to-br ${gradClass} select-none shadow-inner">
-              ${initials}
-            </div>
-          </div>
-        `;
-      } else {
-        return `
-          <div class="company-logo-badge relative w-10 h-10 rounded-full border border-slate-700/80 shadow-sm flex items-center justify-center overflow-hidden shrink-0 mt-0.5 bg-gradient-to-br ${gradClass} font-bold text-xs select-none shadow-inner" title="${safeComp}">
-            ${initials}
-          </div>
-        `;
-      }
-    }
-
-    let jobStates = loadTriageState();
-
-    function renderCards() {
-      const container = document.getElementById('cardsContainer');
-      container.innerHTML = '';
-
-      if (!rawJobsData || rawJobsData.length === 0) {
-        document.getElementById('emptyState').classList.remove('hidden');
-        return;
-      }
-
-      const seenLinks = new Set((rawJobsData || []).map(j => j.link));
-      let displayJobs = [...(rawJobsData || [])];
-
-      if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
-        Object.keys(jobStates).forEach(link => {
-          if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
-            displayJobs.push(historicalCatalog[link]);
-            seenLinks.add(link);
-          }
-        });
-      }
-
-      let sortedJobs = [...displayJobs];
-      sortedJobs.sort((a, b) => {
-        if (currentSort === 'score_desc') {
-            const scoreA = Number(a.match_score) || 0;
-            const scoreB = Number(b.match_score) || 0;
-            return scoreB - scoreA;
-        } else {
-            const dateA = a.date || '0000-00-00';
-            const dateB = b.date || '0000-00-00';
-            if (dateA > dateB) return -1;
-            if (dateA < dateB) return 1;
-            // Fallback to score if same date
-            const scoreA = Number(a.match_score) || 0;
-            const scoreB = Number(b.match_score) || 0;
-            return scoreB - scoreA;
-        }
-      });
-
-      sortedJobs.forEach((job, idx) => {
-        const id = job.link || `job_${idx}`;
-        const score = job.match_score || 85;
-        const company = job.company || 'חברה';
-        const title = job.title || 'משרה ללא כותרת';
-        const link = job.link || '#';
-        const secKey = job.sector_key || 'energy';
-        
-        let sectorBadge = '⚡ תשתיות אנרגיה ו-SCADA';
-        let badgeColor = 'bg-amber-500/10 text-amber-400 border-amber-500/20';
-        if (['drones', 'cuas', 'avionics'].includes(secKey)) {
-          if (secKey === 'cuas') {
-            sectorBadge = '🛡️ מערכות הגנת C-UAS וביטחון';
-            badgeColor = 'bg-rose-500/10 text-rose-400 border-rose-500/20';
-          } else if (secKey === 'avionics') {
-            sectorBadge = '📡 מטע"דים ואוויוניקה';
-            badgeColor = 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20';
-          } else {
-            sectorBadge = '🚁 רחפנים וכטב"ם אוטונומי';
-            badgeColor = 'bg-purple-500/10 text-purple-400 border-purple-500/20';
-          }
-        }
-
-        const domain = job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה';
-        const loc = job.location || 'ישראל / היברידי';
-        const jobSum = job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.';
-        const strengths = job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.';
-        const highlights = job.key_highlights || (job.work_model ? `מודל עבודה: ${job.work_model} | פתיחות: ${job.junior_openness || '🟢 גבוהה'}` : 'פתיחות להנדסאים בעלי זיקה טכנית ויכולת למידה עצמאית.');
-        const companyReqs = job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).';
-        const logoHtml = getCompanyLogoHtml(company, job.logo);
-
-        const salaryRange = job.salary_range || '12,000 - 15,000 ₪';
-        const salaryType = job.salary_source_type || 'sector_benchmark';
-        const salaryLabel = job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${company}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף (אין דיווחי שכר פומביים ל-${company})`));
-        const salaryEvidence = job.salary_evidence || (salaryType === 'company_verified' ? 'דיווחי שכר ופרסומים ענפיים מאומתים עבור חברה זו.' : 'מבוסס על סקרי שכר ענפיים של חברות השמה (CPS/נישה/אתגר) להנדסאי מכונות ותפעול בישראל.');
-        const salaryUrl = job.salary_source_url || (salaryType === 'company_verified' ? `https://www.google.com/search?q=${encodeURIComponent(company + ' ' + title + ' שכר Glassdoor')}` : 'https://www.google.com/search?q=טבלת+שכר+הנדסאי+מכונות+ישראל');
-
-        let salaryBadgeColor = 'bg-amber-500/10 text-amber-400 border-amber-500/25';
-        let salaryIcon = '📊';
-        if (salaryType === 'company_verified') {
-          salaryBadgeColor = 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
-          salaryIcon = '🏢';
-        } else if (salaryType === 'job_ad') {
-          salaryBadgeColor = 'bg-sky-500/15 text-sky-300 border-sky-500/30';
-          salaryIcon = '📌';
-        }
-
-        const card = document.createElement('article');
-        card.setAttribute('data-id', id);
-        card.setAttribute('data-sector', secKey);
-        card.setAttribute('data-seniority', job.seniority ? job.seniority.toLowerCase() : 'all');
-        card.setAttribute('data-location', loc.toLowerCase());
-        card.className = 'job-card bg-slate-900/80 border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-lg relative transition-all hover:border-slate-700';
-
-        card.innerHTML = `
-          <!-- Top Header: Metadata Row (Badges) + Full Width Title Row (Company & Title Flow Horizontally) -->
-          <div class="border-b border-slate-800/80 pb-3 mb-3.5 space-y-2.5">
-            <!-- Row 1: Sector Badge + Match Score Pill (spread apart) -->
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${badgeColor} border inline-block">
-                ${sectorBadge}
-              </span>
-              <span class="px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1 shrink-0">
-                <span>${score}%</span> התאמה
-              </span>
-            </div>
-
-            <!-- Row 2: Company Logo + Full-Width Title (Company - Title - Location written horizontally across the full width) -->
-            <div class="flex items-start gap-3 w-full">
-              ${logoHtml}
-              <h2 class="flex-1 min-w-0 text-base sm:text-lg font-bold text-white tracking-tight leading-snug break-words">
-                <span class="text-white">${company}</span>
-                <span class="text-slate-400 font-normal mx-1">-</span>
-                <span class="text-slate-200 font-semibold">${title}</span>
-                <span class="text-xs font-medium text-sky-400 mr-2 inline-flex items-center gap-1 bg-sky-950/50 px-2 py-0.5 rounded-md border border-sky-800/40 align-middle whitespace-nowrap mt-1">
-                  📍 ${loc}
-                </span>
-                <span class="text-xs font-semibold ${salaryBadgeColor} mr-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md border align-middle whitespace-nowrap mt-1">
-                  <span>💰 ${salaryRange}</span>
-                  <span class="text-[10px] font-normal opacity-90 hidden sm:inline">(${salaryIcon} ${salaryLabel})</span>
-                </span>
-              </h2>
-            </div>
-          </div>
-
-          <!-- 5 Symmetric Full-Width Boxes (Inline Flow + Salary Intelligence) -->
-          <div class="grid grid-cols-1 gap-2.5 text-xs sm:text-sm">
-            <!-- Box 1: דרישות החברה עבור המשרה -->
-            <div class="bg-slate-950/80 border border-sky-500/25 rounded-xl p-3 text-slate-300 shadow-inner leading-relaxed break-words overflow-hidden">
-              <span class="font-bold text-sky-400 inline-block ml-1.5">📌 דרישות החברה עבור המשרה:</span>
-              <span class="text-slate-200 inline leading-relaxed">${companyReqs}</span>
-            </div>
-
-            <!-- Box 2: תחום ומוצר החברה -->
-            <div class="bg-slate-950/60 border border-slate-800/60 rounded-xl p-3 text-slate-300 leading-relaxed break-words overflow-hidden">
-              <span class="font-bold text-sky-400 inline-block ml-1.5">🏢 תחום ומוצר החברה:</span>
-              <span class="text-slate-300 inline leading-relaxed">${domain}</span>
-            </div>
-
-            <!-- Box 3: תקציר המשרה -->
-            <div class="bg-slate-950/60 border border-slate-800/60 rounded-xl p-3 text-slate-300 leading-relaxed break-words overflow-hidden">
-              <span class="font-bold text-sky-400 inline-block ml-1.5">📋 תקציר המשרה:</span>
-              <span class="text-slate-300 inline leading-relaxed">${jobSum}</span>
-            </div>
-
-            <!-- Box 4: נקודות חוזק -->
-            <div class="bg-emerald-950/20 border border-emerald-800/40 rounded-xl p-3 text-slate-200 leading-relaxed break-words overflow-hidden">
-              <span class="font-bold text-emerald-400 inline-block ml-1.5">💪 נקודות חוזק:</span>
-              <span class="text-slate-200 inline leading-relaxed">${strengths}</span>
-            </div>
-
-          </div>
-
-          <!-- Action Bar -->
-          <div class="flex items-center justify-between gap-3 mt-4 pt-3.5 border-t border-slate-800/80">
-            <div class="flex items-center gap-2">
-              <button onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'saved')" class="action-save-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all">
-                <span>✔️</span> <span class="btn-text">שמור להגשה</span>
-              </button>
-              <button onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'rejected')" class="action-reject-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all">
-                <span>✖️</span> הסר משרה
-              </button>
-            </div>
-
-            <a href="${link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold shadow-md shadow-sky-500/20">
-              <span>הגש מועמדות ↗</span>
-            </a>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-
-      updateUI();
-    }
-
-    function toggleTheme() {
-      const html = document.documentElement;
-      const isDark = html.classList.toggle('dark');
-      document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
-      if (!isDark) {
-        document.body.classList.remove('bg-slate-950', 'text-slate-100');
-        document.body.classList.add('bg-slate-100', 'text-slate-900');
-      } else {
-        document.body.classList.add('bg-slate-950', 'text-slate-100');
-        document.body.classList.remove('bg-slate-100', 'text-slate-900');
-      }
-    }
-
-    function toggleSort() {
-      // Toggle between match_score (desc) and date (desc)
-      currentSort = currentSort === 'score_desc' ? 'date_desc' : 'score_desc';
-      const icon = document.getElementById('sortIcon');
-      const label = document.getElementById('sortLabel');
-      if (currentSort === 'score_desc') {
-        if (icon) icon.textContent = '🔽';
-        if (label) label.textContent = 'מיון: ציון התאמה (מגבוה לנמוך)';
-        showToast('🔽', 'מיון: ציון התאמה מגבוה לנמוך');
-      } else {
-        if (icon) icon.textContent = '📅';
-        if (label) label.textContent = 'מיון: התאריך החדש קודם';
-        showToast('📅', 'מיון: התאריך החדש קודם');
-      }
-      renderCards();
-    }
-
-    function toggleAction(id, action) {
-      const current = jobStates[id];
-      if (current === action) {
-        delete jobStates[id];
-        showToast('ℹ️', 'הסטטוס אופס למצב ממתין');
-      } else {
-        jobStates[id] = action;
-        if (action === 'saved') {
-          showToast('✔️', 'המשרה נשמרה להגשה');
-        } else if (action === 'rejected') {
-          showToast('✖️', 'המשרה הוסרה ולא תוצג שוב');
-        }
-      }
-      saveTriageState(jobStates);
-      updateUI();
-      scheduleCloudPush();
-    }
-
-    function setFilter(filter, el) {
-      currentFilter = filter;
-      document.querySelectorAll('.tab-btn').forEach(b => {
-        b.classList.remove('bg-sky-600', 'text-white');
-        b.classList.add('text-slate-400');
-      });
-      el.classList.add('bg-sky-600', 'text-white');
-      el.classList.remove('text-slate-400');
-      updateUI();
-    }
-
-      function filterCards() {
-      updateUI();
-    }
-
-    function updateUI() {
-      const selectedSector = document.getElementById('sectorFilter').value;
-      const searchInput = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
-      
-      const cards = document.querySelectorAll('.job-card');
-      let visibleCount = 0;
-      let saved = 0, rejected = 0, purged = 0;
-      const total = cards.length;
-
-      cards.forEach(card => {
-        const id = card.getAttribute('data-id');
-        const sector = card.getAttribute('data-sector');
-        const state = jobStates[id] || 'pending';
-
-        if (state === 'saved') saved++;
-        if (state === 'rejected') rejected++;
-        if (state === 'purged') purged++;
-
-        const saveBtn = card.querySelector('.action-save-btn');
-        const rejectBtn = card.querySelector('.action-reject-btn');
-        const saveText = saveBtn.querySelector('.btn-text');
-
-        if (state === 'saved') {
-          saveBtn.className = "action-save-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-emerald-500 text-white border-emerald-600 shadow-sm shadow-emerald-500/20";
-          saveText.textContent = "נשמר להגשה";
-          rejectBtn.className = "action-reject-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-rose-500/10 hover:text-rose-400";
-        } else if (state === 'rejected') {
-          rejectBtn.className = "action-reject-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-rose-500 text-white border-rose-600 shadow-sm shadow-rose-500/20";
-          saveBtn.className = "action-save-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-emerald-500/10 hover:text-emerald-400";
-          saveText.textContent = "שמור להגשה";
-        } else {
-          saveBtn.className = "action-save-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-emerald-500/10 hover:text-emerald-400";
-          rejectBtn.className = "action-reject-btn px-3 py-1.5 text-xs font-bold rounded-lg border flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border-slate-700 hover:bg-rose-500/10 hover:text-rose-400";
-          saveText.textContent = "שמור להגשה";
-        }
-
-        let matchesTab = false;
-        if (currentFilter === 'all') matchesTab = (state !== 'saved' && state !== 'rejected' && state !== 'purged');
-        else if (currentFilter === 'saved') matchesTab = (state === 'saved');
-        else if (currentFilter === 'rejected') matchesTab = (state === 'rejected');
-
-        let matchesSector = (selectedSector === 'all');
-        if (!matchesSector) {
-          // Normalize for robust comparison (lowercase, remove underscores/hyphens/spaces)
-          const normSector = sector.toLowerCase().replace(/[ _-]/g, '');
-          const normSelected = selectedSector.toLowerCase().replace(/[ _-]/g, '');
-
-          if (normSelected === 'drones') {
-            matchesSector = ['drones', 'cuas', 'avionics'].includes(normSector);
-          } else if (normSelected === 'energy') {
-            const energySet = ['energy', 'naturalgas', 'solar', 'energytech'];
-            matchesSector = energySet.includes(normSector);
-          } else if (normSelected === 'naturalgas') {
-            matchesSector = ['naturalgas', 'gas'].includes(normSector);
-          } else {
-            matchesSector = normSector === normSelected;
-          }
-        }
-        
-        let matchesSearch = true;
-        if (searchInput) {
-          const cardText = card.textContent.toLowerCase();
-          matchesSearch = cardText.includes(searchInput);
-        }
-
-        if (matchesTab && matchesSector && matchesSearch && state !== 'purged') {
-          card.classList.remove('hidden');
-          visibleCount++;
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-
-      const totalSavedInStore = Object.values(jobStates).filter(s => s === 'saved').length;
-      const totalRejectedInStore = Object.values(jobStates).filter(s => s === 'rejected').length;
-      const pendingInBatch = total - (saved + rejected + purged);
-
-      document.getElementById('countAll').textContent = Math.max(0, pendingInBatch);
-      document.getElementById('countSaved').textContent = totalSavedInStore;
-      document.getElementById('countRejected').textContent = totalRejectedInStore;
-
-      const triaged = saved + rejected + purged;
-      const pct = total > 0 ? Math.round((triaged / total) * 100) : 0;
-      document.getElementById('progressBar').style.width = pct + '%';
-      document.getElementById('progressText').textContent = `סקרת ${triaged} מתוך ${total} משרות השבוע (${pct}%) • סה"כ שמורות: ${totalSavedInStore} | סה"כ הוסרו: ${totalRejectedInStore}`;
-
-      const savedBar = document.getElementById('savedActionBar');
-      const rejectedBar = document.getElementById('rejectedActionBar');
-      if (savedBar) {
-        if (currentFilter === 'saved') {
-          savedBar.classList.remove('hidden');
-        } else {
-          savedBar.classList.add('hidden');
-        }
-      }
-      if (rejectedBar) {
-        if (currentFilter === 'rejected') {
-          rejectedBar.classList.remove('hidden');
-        } else {
-          rejectedBar.classList.add('hidden');
-        }
-      }
-
-      const emptyState = document.getElementById('emptyState');
-      if (visibleCount === 0) {
-        if (currentFilter === 'rejected') {
-          emptyState.innerHTML = `
-            <div class="text-4xl mb-2">🗑️</div>
-            <div class="text-sm font-bold text-slate-300">כל ${totalRejectedInStore} המשרות שהוסרו מנוטרלות לצמיתות</div>
-            <div class="text-xs text-slate-500 mt-1">משרות אלו סוננו מחלון ההזדמנויות השבועי ולא ישובו להופיע בדוחות הבאים.</div>
-          `;
-        } else if (currentFilter === 'saved') {
-          emptyState.innerHTML = `
-            <div class="text-4xl mb-2">⭐</div>
-            <div class="text-sm font-bold text-slate-300">עדיין לא סימנת משרות שמורות מתוך מקבץ זה</div>
-            <div class="text-xs text-slate-500 mt-1">לחץ על 'שמור להגשה' בכל כרטיס משרה שמעניינת אותך.</div>
-          `;
-        } else {
-          emptyState.innerHTML = `
-            <div class="text-4xl mb-2">🎉</div>
-            <div class="text-sm font-bold text-slate-300">סיימת לסקור את כל המשרות החדשות!</div>
-            <div class="text-xs text-slate-500 mt-1">כל המשרות במקבץ זה כבר מוינו (נשמרו או הוסרו).</div>
-          `;
-        }
-        emptyState.classList.remove('hidden');
-      } else {
-        emptyState.classList.add('hidden');
-      }
-      const chartContainer = document.getElementById('sectorChartContainer');
-      if (currentFilter === 'saved' && visibleCount > 0) {
-        if (chartContainer) chartContainer.classList.remove('hidden', 'flex');
-        if (chartContainer) chartContainer.classList.add('flex');
-        renderSectorChart();
-      } else {
-        if (chartContainer) chartContainer.classList.add('hidden');
-        if (chartContainer) chartContainer.classList.remove('flex');
-      }
-    }
-
-    let sectorChartInstance = null;
-    function renderSectorChart() {
-      const cards = document.querySelectorAll('.job-card:not(.hidden)');
-      const counts = {};
-      cards.forEach(card => {
-        let sec = card.getAttribute('data-sector') || 'other';
-        const normSector = sec.toLowerCase().replace(/[ _-]/g, '');
-        
-        let label = 'אחר';
-        if (['solar', 'pv'].includes(normSector)) label = 'PV ומערכות סולאריות';
-        else if (['naturalgas', 'gas'].includes(normSector)) label = 'גז טבעי ותשתיות';
-        else if (['energytech', 'storage', 'bess'].includes(normSector)) label = 'אגירת אנרגיה / Energy-Tech';
-        else if (['drones', 'uav', 'robotics'].includes(normSector)) label = 'רחפנים אזרחיים ורובוטיקה';
-        else if (['cuas', 'defense', 'military'].includes(normSector)) label = 'ביטחון ומערכות C-UAS';
-        else if (['scada', 'control', 'automation'].includes(normSector)) label = 'בקרה, SCADA ואוטומציה';
-        else if (['operations', 'maintenance'].includes(normSector)) label = 'תפעול שוטף ואחזקה';
-        else if (normSector === 'energy') label = 'אנרגיה (כללי)';
-        
-        counts[label] = (counts[label] || 0) + 1;
-      });
-
-      const ctx = document.getElementById('sectorChart');
-      if (!ctx) return;
-
-      if (sectorChartInstance) {
-        sectorChartInstance.destroy();
-      }
-
-      const labels = Object.keys(counts);
-      const data = Object.values(counts);
-
-      sectorChartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'מספר משרות',
-            data: data,
-            backgroundColor: 'rgba(14, 165, 233, 0.6)',
-            borderColor: 'rgba(14, 165, 233, 1)',
-            borderWidth: 1,
-            borderRadius: 4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: { stepSize: 1, color: '#94a3b8' },
-              grid: { color: 'rgba(51, 65, 85, 0.5)' }
-            },
-            x: {
-              ticks: { color: '#94a3b8' },
-              grid: { display: false }
-            }
-          }
-        }
-      });
-    }
-
-    function showToast(icon, msg) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toastIcon').textContent = icon;
-      document.getElementById('toastMsg').textContent = msg;
-      toast.classList.remove('translate-y-20', 'opacity-0');
-      setTimeout(() => {
-        toast.classList.add('translate-y-20', 'opacity-0');
-      }, 2500);
-    }
-
-    function triggerSyncModal() {
-      const savedCount = Object.values(jobStates).filter(s => s === 'saved').length;
-      const rejectedCount = Object.values(jobStates).filter(s => s === 'rejected').length;
-      document.getElementById('syncSavedCount').textContent = savedCount;
-      document.getElementById('syncRejectedCount').textContent = rejectedCount;
-      document.getElementById('syncModal').classList.remove('hidden');
-    }
-
-    function closeSyncModal() {
-      document.getElementById('syncModal').classList.add('hidden');
-    }
-
-    async function confirmSync() {
-      const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
-      const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
-      
-      const syncBtn = document.getElementById('syncConfirmBtn');
-      if (syncBtn) {
-        syncBtn.disabled = true;
-        syncBtn.textContent = "שומר סימונים...";
-      }
-
-      saveTriageState(jobStates);
-      await pushCloudSync();
-
-      closeSyncModal();
-      showToast('☁️', `כל הסימונים סונכרנו לענן בהצלחה! (${savedList.length} שמורות, ${rejectedList.length} הוסרו)`);
-      if (syncBtn) {
-        syncBtn.disabled = false;
-        syncBtn.textContent = "סנכרן עכשיו לענן";
-      }
-    }
-
-    function openDuplicatesModal() {
-      const content = document.getElementById('duplicatesContent');
-
-      // Normalize: lowercase, strip punctuation, collapse spaces
-      function normalize(str) {
-        if (!str) return '';
-        return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
-      }
-
-      // Combine rawJobsData and historicalCatalog for a comprehensive check
-      const seenLinks = new Set((rawJobsData || []).map(j => j.link));
-      let allJobs = [...(rawJobsData || [])];
-      
-      if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
-        Object.keys(jobStates).forEach(link => {
-          if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
-            allJobs.push(historicalCatalog[link]);
-            seenLinks.add(link);
-          }
-        });
-      }
-
-      // Filter: ONLY active jobs in "משרות שנשמרו" or "משרות חדשות" (pending)
-      const activeJobs = allJobs.filter(job => {
-        const state = jobStates[job.link] || 'pending';
-        return state === 'saved' || state === 'pending';
-      });
-
-      // Group jobs by normalized company + title OR by LinkedIn Job ID
-      const groups = {};
-      
-      function extractJobId(link) {
-        if (!link) return null;
-        // LinkedIn IDs usually look like ...-4469463836 or view/4469463836/
-        const match = link.match(/(\\d{9,11})(?:[/?#]|$)/);
-        if (match) return match[1];
-        // Comeet positions usually have an ID like 67-073 or similar alphanumeric slug at the end
-        const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\\/?$/);
-        if (comeetMatch && link.includes('comeet')) return comeetMatch[1];
-        return null;
-      }
-
-      activeJobs.forEach((job, idx) => {
-        const titleCompKey = normalize(job.company) + '|' + normalize(job.title);
-        // Remove common varying suffixes like (Israel), (Remote), (Hybrid) for the title string
-        let cleanTitle = normalize(job.title).replace(/(israel|remote|hybrid|tel aviv|haifa)$/i, '').trim();
-        const cleanTitleCompKey = normalize(job.company) + '|' + cleanTitle;
-        
-        const jobId = extractJobId(job.link);
-        
-        let foundKey = null;
-        if (jobId) {
-            // Check if we already have a group with this ID
-            foundKey = Object.keys(groups).find(k => k.startsWith('ID: ' + jobId));
-            if (!foundKey) foundKey = 'ID: ' + jobId + ' | ' + titleCompKey;
-        } else {
-            // Fallback to title/company matching (try to match existing similar titles)
-            foundKey = Object.keys(groups).find(k => k.includes(cleanTitleCompKey)) || titleCompKey;
-        }
-        
-        if (!groups[foundKey]) groups[foundKey] = [];
-        groups[foundKey].push({ ...job, _idx: idx });
-      });
-
-      const dupGroups = Object.entries(groups).filter(([k, g]) => g.length > 1);
-
-      if (dupGroups.length === 0) {
-        content.innerHTML = `
-          <div class="text-center py-8">
-            <div class="text-4xl mb-3">✅</div>
-            <div class="font-bold text-emerald-400 text-sm">לא נמצאו כפילויות!</div>
-            <div class="text-slate-400 text-xs mt-1">כל ${activeJobs.length} המשרות הפעילות (שמורות וחדשות) ייחודיות לחלוטין.</div>
-          </div>`;
-      } else {
-        const totalDups = dupGroups.reduce((sum, [k, g]) => sum + g.length - 1, 0);
-        let html = `
-          <div class="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 mb-2 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2 text-xs">
-              <span class="text-amber-400 font-bold text-sm">⚠️</span>
-              <span class="text-amber-300 font-semibold">אותרו <span class="text-white font-bold">${dupGroups.length}</span> קבוצות עם <span class="text-white font-bold">${totalDups}</span> כפילויות במשרות השמורות והחדשות</span>
-            </div>
-          </div>`;
-
-        dupGroups.forEach(([key, group], gi) => {
-          const rep = group[0];
-          const encKey = encodeURIComponent(key);
-          html += `
-            <div class="bg-slate-800/60 border border-amber-500/20 rounded-xl p-3 space-y-2.5">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-700/60 pb-2">
-                <div class="flex items-center gap-2 font-bold text-amber-300">
-                  <span class="bg-amber-500/20 text-amber-400 rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-extrabold shrink-0">${gi + 1}</span>
-                  <span class="text-xs sm:text-sm text-white">${rep.company || '—'} — ${rep.title || '—'}</span>
-                  <span class="bg-amber-500/20 text-amber-400 text-[10px] px-2 py-0.5 rounded-full font-bold">${group.length} מופעים</span>
-                </div>
-                <button onclick="purgeDuplicateGroup('${encKey}')" class="self-start sm:self-auto px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 rounded-lg text-[11px] font-bold flex items-center gap-1 transition-all active:scale-95" title="שמור מופע אחד ומחק את שאר הכפילויות">
-                  <span>⚡</span> השאר רק אחת ומחק כפילויות
-                </button>
-              </div>
-              <div class="space-y-1.5 pr-2">`;
-
-          group.forEach((job, ji) => {
-            const score = job.match_score || '—';
-            const date = job.date || '—';
-            const link = job.link || '#';
-            const encLink = encodeURIComponent(link);
-            const state = jobStates[job.link] || 'pending';
-            const isSaved = state === 'saved';
-            const statusBadge = isSaved
-              ? `<span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px] font-extrabold flex items-center gap-1"><span>⭐</span> שמורה להגשה</span>`
-              : `<span class="bg-sky-500/20 text-sky-400 border border-sky-500/30 px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1"><span>🆕</span> משרה חדשה</span>`;
-
-            html += `
-                <div class="flex items-center justify-between bg-slate-900/80 rounded-xl p-2.5 border border-slate-700/50 hover:border-slate-600 transition-all gap-2">
-                  <div class="flex flex-wrap items-center gap-2 text-slate-300 text-xs">
-                    <span class="text-[10px] text-slate-500 font-bold">#${ji + 1}</span>
-                    ${statusBadge}
-                    <span class="font-bold text-emerald-400">${score}%</span>
-                    <span class="text-slate-400 text-[11px]">${date}</span>
-                  </div>
-                  <div class="flex items-center gap-2 shrink-0">
-                    <a href="${link}" target="_blank" rel="noopener noreferrer"
-                       class="text-sky-400 hover:text-sky-300 font-bold text-xs underline underline-offset-2 px-2 py-1">
-                      פתח ↗
-                    </a>
-                    <button onclick="purgeSingleJob('${encLink}')"
-                            class="px-2.5 py-1 bg-rose-500/15 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-500/30 rounded-lg text-xs font-bold flex items-center gap-1 transition-all active:scale-95"
-                            title="מחק כפילות זו">
-                      <span>🗑️</span> מחק
-                    </button>
-                  </div>
-                </div>`;
-          });
-          html += `</div></div>`;
-        });
-
-        content.innerHTML = html;
-      }
-
-      document.getElementById('duplicatesModal').classList.remove('hidden');
-    }
-
-    function purgeSingleJob(encLink) {
-      const link = decodeURIComponent(encLink);
-      if (!link) return;
-      jobStates[link] = 'purged';
-      saveTriageState(jobStates);
-      updateUI();
-      pushCloudSync();
-      showToast('🗑️', 'הכפילות נמחקה בהצלחה');
-      openDuplicatesModal();
-    }
-
-    function purgeDuplicateGroup(encKey) {
-      const targetKey = decodeURIComponent(encKey);
-      function normalize(str) {
-        if (!str) return '';
-        return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
-      }
-
-      const seenLinks = new Set((rawJobsData || []).map(j => j.link));
-      let allJobs = [...(rawJobsData || [])];
-      if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
-        Object.keys(jobStates).forEach(link => {
-          if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
-            allJobs.push(historicalCatalog[link]);
-            seenLinks.add(link);
-          }
-        });
-      }
-
-      function extractJobId(link) {
-        if (!link) return null;
-        const match = link.match(/(\\d{9,11})(?:[/?#]|$)/);
-        if (match) return match[1];
-        const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\\/?$/);
-        if (comeetMatch && link.includes('comeet')) return comeetMatch[1];
-        return null;
-      }
-      
-      const activeJobs = allJobs.filter(job => {
-        const state = jobStates[job.link] || 'pending';
-        if (state !== 'saved' && state !== 'pending') return false;
-        
-        const titleCompKey = normalize(job.company) + '|' + normalize(job.title);
-        let cleanTitle = normalize(job.title).replace(/(israel|remote|hybrid|tel aviv|haifa)$/i, '').trim();
-        const cleanTitleCompKey = normalize(job.company) + '|' + cleanTitle;
-        const jobId = extractJobId(job.link);
-        
-        if (targetKey.startsWith('ID: ') && jobId) {
-            return targetKey.includes(jobId);
-        } else {
-            return titleCompKey === targetKey || cleanTitleCompKey === targetKey || targetKey.includes(cleanTitleCompKey);
-        }
-      });
-
-      if (activeJobs.length <= 1) return;
-
-      // Sort: keep 'saved' first, then highest score
-      activeJobs.sort((a, b) => {
-        const aSaved = jobStates[a.link] === 'saved' ? 1 : 0;
-        const bSaved = jobStates[b.link] === 'saved' ? 1 : 0;
-        if (aSaved !== bSaved) return bSaved - aSaved;
-        return (Number(b.match_score) || 0) - (Number(a.match_score) || 0);
-      });
-
-      // Keep the first, purge the rest
-      const toPurge = activeJobs.slice(1);
-      toPurge.forEach(j => {
-        jobStates[j.link] = 'purged';
-      });
-
-      saveTriageState(jobStates);
-      updateUI();
-      pushCloudSync();
-      showToast('⚡', `הושארה משרה אחת ונמחקו ${toPurge.length} כפילויות`);
-      openDuplicatesModal();
-    }
-
-    function closeDuplicatesModal() {
-      document.getElementById('duplicatesModal').classList.add('hidden');
-    }
-
-    function clearAllRejected() {
-      const rejectedKeys = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
-      if (rejectedKeys.length === 0) {
-        showToast('ℹ️', 'אין משרות מוסרות למחיקה');
-        return;
-      }
-
-      if (!confirm(`האם אתה בטוח שברצונך למחוק לצמיתות ${rejectedKeys.length} משרות שהוסרו ולאפס את המונה?`)) {
-        return;
-      }
-
-      // Mark as purged: NEVER show in new jobs, and NEVER show in rejected
-      rejectedKeys.forEach(id => {
-        jobStates[id] = 'purged';
-      });
-
-      saveTriageState(jobStates);
-      updateUI();
-      pushCloudSync();
-      showToast('🗑️', `כל ${rejectedKeys.length} המשרות שהוסרו נמחקו לצמיתות והמונה אופס ל-0`);
-    }
-
-    function exportSavedToExcel() {
-      const seenLinks = new Set((rawJobsData || []).map(j => j.link));
-      let allPotentialSaved = [...(rawJobsData || [])];
-      if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
-        Object.keys(jobStates).forEach(link => {
-          if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
-            allPotentialSaved.push(historicalCatalog[link]);
-            seenLinks.add(link);
-          }
-        });
-      }
-      const savedJobs = allPotentialSaved.filter(job => jobStates[job.link] === 'saved');
-      if (savedJobs.length === 0) {
-        showToast('⚠️', 'לא נמצאו משרות שמורות לייצוא');
-        return;
-      }
-
-      // UTF-8 BOM for seamless Hebrew display in Microsoft Excel
-      const BOM = '\uFEFF';
-      const headers = [
-        'חברה',
-        'כותרת משרה',
-        'ציון התאמה',
-        'תחום',
-        'מיקום',
-        'טווח שכר צפוי',
-        'ביסוס ומקור שכר',
-        'דרישות החברה עבור המשרה',
-        'תחום ומוצר החברה',
-        'תקציר המשרה',
-        'נקודות חוזק מהניסיון',
-        'דגשים ומודל עבודה',
-        'לינק למשרה',
-        'תאריך איתור'
-      ];
-
-      const escapeCSV = (val) => {
-        if (val === null || val === undefined) return '""';
-        const str = String(val).replace(/"/g, '""');
-        return `"${str}"`;
-      };
-
-      const rows = savedJobs.map(job => {
-        const score = job.match_score || '';
-        const reqs = job.company_requirements || '';
-        const domain = job.company_domain_product || job.company_summary || '';
-        const summary = job.job_summary || job.company_summary || '';
-        const strengths = job.experience_strengths || job.reasoning || '';
-        const highlights = job.key_highlights || (job.work_model ? `מודל: ${job.work_model}` : '');
-        const date = job.date || '';
-        let salaryStr = job.salary_range || 'לא צוין';
-        if (job.salary_source_label) {
-          salaryStr += ` (${job.salary_source_label})`;
-        }
-        const salaryEvidence = job.salary_evidence || '';
-
-        return [
-          escapeCSV(job.company || ''),
-          escapeCSV(job.title || ''),
-          escapeCSV(score),
-          escapeCSV(job.sector || job.sector_key || ''),
-          escapeCSV(job.location || 'ישראל'),
-          escapeCSV(salaryStr),
-          escapeCSV(salaryEvidence),
-          escapeCSV(reqs),
-          escapeCSV(domain),
-          escapeCSV(summary),
-          escapeCSV(strengths),
-          escapeCSV(highlights),
-          escapeCSV(job.link || ''),
-          escapeCSV(date)
-        ].join(',');
-      });
-
-      const csvContent = BOM + [headers.map(escapeCSV).join(','), ...rows].join(String.fromCharCode(13, 10));
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      const dateStr = new Date().toISOString().slice(0, 10);
-      a.href = url;
-      a.download = `משרות_שמורות_עידו_גל_${dateStr}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      showToast('📊', `יוצאו ${savedJobs.length} משרות שמורות לאקסל בהצלחה!`);
-    }
-
-    window.onload = () => {
-      checkUrlSync();
-      renderCards();
-      fetchCloudSync();
+    const escapeCSV = (val) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val).replace(/"/g, '""');
+      return `"${str}"`;
     };
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') {
-        fetchCloudSync();
+    const rows = savedJobs.map(job => {
+      const score = job.match_score || '';
+      const reqs = job.company_requirements || '';
+      const domain = job.company_domain_product || job.company_summary || '';
+      const summary = job.job_summary || job.company_summary || '';
+      const strengths = job.experience_strengths || job.reasoning || '';
+      const highlights = job.key_highlights || (job.work_model ? `מודל: ${job.work_model}` : '');
+      const date = job.date || '';
+      let salaryStr = job.salary_range || 'לא צוין';
+      if (job.salary_source_label) {
+        salaryStr += ` (${job.salary_source_label})`;
       }
+      const salaryEvidence = job.salary_evidence || '';
+
+      return [
+        escapeCSV(job.company || ''),
+        escapeCSV(job.title || ''),
+        escapeCSV(score),
+        escapeCSV(job.sector || job.sector_key || ''),
+        escapeCSV(job.location || 'ישראל'),
+        escapeCSV(salaryStr),
+        escapeCSV(salaryEvidence),
+        escapeCSV(reqs),
+        escapeCSV(domain),
+        escapeCSV(summary),
+        escapeCSV(strengths),
+        escapeCSV(highlights),
+        escapeCSV(job.link || ''),
+        escapeCSV(date)
+      ].join(',');
     });
 
-    window.addEventListener('focus', () => {
+    const csvContent = BOM + [headers.map(escapeCSV).join(','), ...rows].join(String.fromCharCode(13, 10));
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const dateStr = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `משרות_שמורות_עידו_גל_${dateStr}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showToast('📊', `יוצאו ${savedJobs.length} משרות שמורות לאקסל בהצלחה!`);
+  }
+
+  window.onload = () => {
+    checkUrlSync();
+    renderCards();
+    fetchCloudSync();
+
+    const hash = window.location.hash.replace('#', '');
+    if (hash === 'saved' || hash === 'rejected') {
+      const tabs = document.querySelectorAll('.tab-btn');
+      const targetTab = hash === 'saved' ? tabs[1] : tabs[2];
+      if (targetTab) setFilter(hash, targetTab);
+    }
+  };
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
       fetchCloudSync();
-    });
-  </script>
+    }
+  });
+
+  window.addEventListener('focus', () => {
+    fetchCloudSync();
+  });
+</script>
 </body>
 </html>"""
 
