@@ -822,7 +822,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <canvas id="sectorChart" style="max-height: 160px; width: 100%;"></canvas>
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: var(--dashboard-muted);">
-          <span>מקורות: LinkedIn & Comeet</span>
+          <span>מקורות: LinkedIn, Drushim & Comeet</span>
           <button onclick="shareSyncLink()" class="dashboard-chip" style="cursor: pointer; font-size: 11px; padding: 3px 10px;">
             <i class="ph-duotone ph-share-network"></i> שיתוף קישור
           </button>
@@ -1500,6 +1500,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <span class="dashboard-chip" style="color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.2);">
               <i class="ph-duotone ph-calendar-blank"></i> ${jobDate}
             </span>
+            ${job.source ? `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.25); background: rgba(137, 244, 231, 0.05); font-size: 11px; padding: 2px 8px;"><i class="ph-duotone ph-globe"></i> ${job.source}</span>` : ''}
           </div>
           <div class="badge-score ${scoreClass}">
             <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
@@ -1998,6 +1999,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     
     function extractJobId(link) {
       if (!link) return null;
+      const drushimMatch = link.match(/\\/job\\/(\\d+)\\//);
+      if (drushimMatch) return 'drushim-' + drushimMatch[1];
       const match = link.match(/(\\d{9,11})(?:[/?#]|$)/);
       if (match) return match[1];
       const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\\/?$/);
@@ -2128,6 +2131,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     function extractJobId(link) {
       if (!link) return null;
+      const drushimMatch = link.match(/\\/job\\/(\\d+)\\//);
+      if (drushimMatch) return 'drushim-' + drushimMatch[1];
       const match = link.match(/(\\d{9,11})(?:[/?#]|$)/);
       if (match) return match[1];
       const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\\/?$/);

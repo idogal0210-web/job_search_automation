@@ -6,7 +6,13 @@ from google import genai
 
 load_dotenv()
 
-from src.fetchers import RunHealth, fetch_linkedin_jobs, fetch_linkedin_full_job_description
+from src.fetchers import (
+    RunHealth,
+    fetch_linkedin_jobs,
+    fetch_linkedin_full_job_description,
+    fetch_drushim_jobs,
+    fetch_drushim_full_job_description
+)
 from src.evaluators import evaluate_and_enrich_job_with_gemini, QuotaExhaustedError
 from src.publishers import send_email_report
 from src.ui_builder import build_and_save_docs_app, update_weekly_archive
@@ -115,8 +121,22 @@ def main():
     print("[FETCH] Scraping LinkedIn (Drones)...")
     linkedin_drones = fetch_linkedin_jobs(drone_keywords, health, max_pages=2)
 
-    # Pure broad industry search across LinkedIn
-    all_raw_jobs = linkedin_energy + linkedin_drones
+    print("[FETCH] Scraping Drushim (Israeli Industry, Energy & Operations)...")
+    drushim_keywords = [
+        "מפעיל חדר בקרה",
+        "הנדסאי מכונות",
+        "גז טבעי",
+        "סולארי",
+        "בקרת מבנה",
+        "תחנת כוח",
+        "טכנאי שירות",
+        "רחפנים",
+        'טכנאי כטב"ם'
+    ]
+    drushim_jobs = fetch_drushim_jobs(drushim_keywords, health, max_pages=1)
+
+    # Pure broad industry search across LinkedIn and Drushim
+    all_raw_jobs = linkedin_energy + linkedin_drones + drushim_jobs
 
     # 3. Filter New Jobs
     # FIX #2: Use j.get("link") to avoid a hard crash (KeyError) if a scraped
@@ -162,9 +182,13 @@ def main():
                 # Quota already confirmed exhausted — skip Gemini entirely, no sleep needed.
                 print(f"[CIRCUIT BREAKER] Skipping Gemini for: {job.get('title')}")
             else:
-                # Two-Stage Enrichment: If snippet is very brief (< 250 chars) and job is from LinkedIn, fetch full description
+                # Two-Stage Enrichment: If snippet is very brief (< 250 chars), fetch full description
                 if "linkedin.com" in job.get("link", "") and len(job.get("snippet", "")) < 250:
                     full_desc = fetch_linkedin_full_job_description(job["link"])
+                    if full_desc:
+                        job["snippet"] = full_desc
+                elif "drushim.co.il" in job.get("link", "") and len(job.get("snippet", "")) < 250:
+                    full_desc = fetch_drushim_full_job_description(job["link"])
                     if full_desc:
                         job["snippet"] = full_desc
 
@@ -282,7 +306,7 @@ def main():
             sys.exit(1)
         else:
             health.final_status = "DEGRADED_FALLBACK"
-    elif health.linkedin_failures > 0:
+    elif health.linkedin_failures > 0 or health.drushim_failures > 0:
         health.final_status = "DEGRADED"
     elif email_configured and not health.email_success:
         health.final_status = "FAILED_EMAIL"
