@@ -71,6 +71,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       gap: 8px;
     }
 
+    body {
+      direction: rtl;
+      text-align: right;
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -660,7 +665,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
   </style>
 </head>
-<body>
+<body dir="rtl">
 <div class="dashboard-app" dir="rtl">
 
   <!-- Top Navigation Pill (So-Me Pill Header) -->
