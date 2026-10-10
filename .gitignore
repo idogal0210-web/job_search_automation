@@ -14,3 +14,5 @@ sample_daily_report_dark_list_preview.html
 .DS_Store
 *.bak
 data/*.bak
+logs/
+*.log
