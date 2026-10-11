@@ -21,9 +21,9 @@ NON_TECHNICAL_TITLES = [
     "הנהלת חשבונות", "מנהל חשבונות", "מנהלת חשבונות", "רואה חשבון", "רואת חשבון", "חשב שכר", "חשבת שכר",
     "יועץ משפטי", "יועצת משפטית", "עורך דין", "עורכת דין", "משפטי", "סיעוד", "אח מוסמך", "אחות מוסמכת",
     "רופא", "רופאה", "רוקח", "רוקחת", "מכירות טלפוניות", "טלמרקטינג", "נציג שירות", "נציגת שירות",
-    "נציג מכירות", "נציגת מכירות", "מוקד", "קופאי", "קופאית", "מלצר", "מלצרית", "מזכיר", "מזכירה",
+    "נציג מכירות", "נציגת מכירות", "מוקד", "מוקדן רואה", "מוקדן מצלמות", "בקר מצלמות", "סייר מוקד", "מוקדן ביטחון", "מוקדן אבטחה", "מוקד 106", "קופאי", "קופאית", "מלצר", "מלצרית", "מזכיר", "מזכירה",
     "מנהל משרד", "מנהלת משרד", "קוסמטיקה", "טיפוח", "ביוטי", "רכש", "קניין", "קניינית",
-    "ניקיון", "עובד ניקיון", "עובדת ניקיון", "בוחן חיובים", "בוחנת חיובים", "מנתח מערכות data",
+    "ניקיון", "עובד ניקיון", "עובדת ניקיון", "בוחן חיובים", "בוחנת חיובים", "מנתח מערכות data", "cctv operator", "security dispatcher",
     "brand manager", "marketing", "digital marketing", "social media", "seo", "human resources",
     "talent acquisition", "recruiter", "sourcer", "accountant", "bookkeeper", "payroll",
     "finance manager", "cfo", "legal counsel", "attorney", "lawyer", "compliance officer",
@@ -84,9 +84,17 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
        - Ido is a certified Practical Engineer with strong hands-on and operational experience.
        - If a job mentions B.Sc. or "מהנדס/ת" but the actual day-to-day work is operational, commissioning, field supervision, integration, or control room dispatch where practical engineering and real-world execution matter more than theoretical R&D/academic research — DO NOT disqualify! Award a solid match score and highlight how his practical background provides immediate execution value.
        - Disqualify only if the role strictly requires academic R&D/deep algorithmic development or purely theoretical design with zero operational/practical aspect.
-    3. DOMAIN PREFERENCES:
+    3. STRICT CONTROL ROOM FILTERING RULE (חדר בקרה):
+       - Ido is an experienced gas controller at Energean specializing in mission-critical SCADA operations.
+       - If a target job is a Control Room / Monitoring / Dispatch role (חדר בקרה, בקר, מפעיל חדר בקרה, מוקד בקרה, control room):
+         DO NOT qualify or recommend it UNLESS:
+         a) It explicitly involves SCADA, industrial telemetry, PLC, HMI, BMS, or critical infrastructure (גז, חשמל, אנרגיה, מים, מתקנים תעשייתיים).
+         OR
+         b) It offers a very high salary (שכר גבוה מאוד - 18,000+ ₪ ומעלה).
+       - Generic security camera monitoring (מוקד רואה/מצלמות), municipal/parking dispatch, or low-level/minimum-wage control room positions MUST BE DISQUALIFIED (match_score = 0, concrete_matches_count = 0)!
+    4. DOMAIN PREFERENCES:
        - Strong preference and bonus for Solar PV, Energy Storage (BESS), Natural Gas, C-UAS/Drone operations, and Mission-Critical Control.
-    4. MATCH SCORING (0-100):
+    5. MATCH SCORING (0-100):
        - Score based on whether Ido can realistically succeed and thrive in this role given his multidisciplinary toolkit.
 
     Return STRICT JSON with keys:
@@ -165,11 +173,26 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
             print(f"[AI] Successfully evaluated using {model_name}")
 
 
-            # Post-Gemini Python Deterministic Enforcement (Cognitive Flexibility)
+            # Post-Gemini Python Deterministic Enforcement
+            # 1. Minimum matches and score
             if data["concrete_matches_count"] < 2 or data.get("match_score", 0) < 50:
                 print(f"[VALIDATION] Job disqualified (insufficient matches or low score): {company} - {title}")
                 data["match_score"] = 0
                 return data
+
+            # 2. Strict Control Room Guardrail: Disqualify control room roles without SCADA or high salary (>= 18k)
+            is_control_room = any(k in title_lower or k in snippet.lower() for k in ["חדר בקרה", "מוקד בקרה", "בקרת חדר", "control room"])
+            if is_control_room:
+                full_text_lower = f"{title_lower} {snippet.lower()} {str(data.get('job_summary', '')).lower()}"
+                has_scada = any(k in full_text_lower for k in ["scada", "סקאדה", "plc", "hmi", "bms", "טלמטריה", "תשתיות", "גז", "אנרגיה", "טורבינ", "חשמל", "תחנת כוח"])
+                import re
+                salary_str = str(data.get("salary_range", ""))
+                salary_nums = [int(n) for n in re.findall(r"\b(\d{2}),000\b", salary_str)]
+                has_high_salary = any(n >= 18 for n in salary_nums)
+                if not has_scada and not has_high_salary:
+                    print(f"[FILTER] Disqualifying Control Room job lacking SCADA or high salary: {company} - {title}")
+                    data["match_score"] = 0
+                    return data
 
             return data
 

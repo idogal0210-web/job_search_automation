@@ -70,7 +70,7 @@ def main():
 
     # 2. Fetch Jobs
     energy_keywords = [
-        "Control Room Operator", "מפעיל חדר בקרה",
+        "SCADA Control Room Operator", "מפעיל חדר בקרה SCADA", "בקר SCADA",
         "Gas Plant Operator", "מפעיל מתקן גז",
         "Gas Transmission Technician", "טכנאי הולכת גז",
         "Gas Systems Controller", "בקר מערכות גז",
@@ -123,7 +123,8 @@ def main():
 
     print("[FETCH] Scraping Drushim (Israeli Industry, Energy & Operations)...")
     drushim_keywords = [
-        "מפעיל חדר בקרה",
+        "מפעיל חדר בקרה SCADA",
+        "בקר SCADA",
         "הנדסאי מכונות",
         "גז טבעי",
         "סולארי",
