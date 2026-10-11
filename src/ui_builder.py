@@ -681,13 +681,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </div>
 
     <nav>
-      <a href="javascript:void(0)" onclick="setFilter('all', this)" class="tab-btn" aria-current="page">
+      <a href="javascript:void(0)" id="tabAll" onclick="setFilter('all', this)" class="tab-btn" aria-current="page">
         <i class="ph-duotone ph-sparkle"></i> משרות חדשות (<span id="countAll">__TOTAL_JOBS__</span>)
       </a>
-      <a href="javascript:void(0)" onclick="setFilter('saved', this)" class="tab-btn">
+      <a href="javascript:void(0)" id="tabSaved" onclick="setFilter('saved', this)" class="tab-btn">
         <i class="ph-duotone ph-bookmark-simple"></i> שמורות להגשה (<span id="countSaved">0</span>)
       </a>
-      <a href="javascript:void(0)" onclick="setFilter('rejected', this)" class="tab-btn">
+      <a href="javascript:void(0)" id="tabRejected" onclick="setFilter('rejected', this)" class="tab-btn">
         <i class="ph-duotone ph-trash"></i> הוסרו (<span id="countRejected">0</span>)
       </a>
     </nav>
@@ -992,6 +992,20 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         Object.assign(state, userState);
       }
     } catch (e) {}
+
+    // Deduplicate / canonicalize pure numeric IDs to full URLs
+    Object.keys(state).forEach(key => {
+      if (/^\\d+$/.test(key)) {
+        const matchingLink = Object.keys(state).find(k => k !== key && k.includes(key));
+        if (matchingLink) {
+          if (state[key] === 'saved' && state[matchingLink] !== 'saved') {
+            state[matchingLink] = 'saved';
+          }
+          delete state[key];
+        }
+      }
+    });
+
     return state;
   }
 
@@ -1020,12 +1034,24 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           }
           if (Array.isArray(data.saved)) {
             data.saved.forEach(link => {
+              if (/^\\d+$/.test(link) && data.saved.some(s => s !== link && s.includes(link))) {
+                return;
+              }
               if (jobStates[link] !== 'saved') {
                 jobStates[link] = 'saved';
                 changed = true;
               }
             });
           }
+          Object.keys(jobStates).forEach(key => {
+            if (/^\\d+$/.test(key)) {
+              const matchingLink = Object.keys(jobStates).find(k => k !== key && k.includes(key));
+              if (matchingLink) {
+                delete jobStates[key];
+                changed = true;
+              }
+            }
+          });
           if (Array.isArray(data.rejected)) {
             data.rejected.forEach(link => {
               if (jobStates[link] !== 'purged' && jobStates[link] !== 'saved') {
@@ -1038,6 +1064,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           }
           if (changed) {
             saveTriageState(jobStates);
+            renderCards();
             updateUI();
           }
           if (cloudBadge) {
@@ -1373,25 +1400,28 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
   let jobStates = loadTriageState();
 
+  function getAllAvailableJobs() {
+    const seenLinks = new Set((rawJobsData || []).map(j => j.link));
+    const all = [...(rawJobsData || [])];
+    if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
+      Object.keys(jobStates).forEach(link => {
+        if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
+          all.push(historicalCatalog[link]);
+          seenLinks.add(link);
+        }
+      });
+    }
+    return all;
+  }
+
   function renderCards() {
     const container = document.getElementById('cardsContainer');
     container.innerHTML = '';
 
-    if (!rawJobsData || rawJobsData.length === 0) {
+    const displayJobs = getAllAvailableJobs();
+    if (!displayJobs || displayJobs.length === 0) {
       document.getElementById('emptyState').style.display = 'block';
       return;
-    }
-
-    const seenLinks = new Set((rawJobsData || []).map(j => j.link));
-    let displayJobs = [...(rawJobsData || [])];
-
-    if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
-      Object.keys(jobStates).forEach(link => {
-        if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
-          displayJobs.push(historicalCatalog[link]);
-          seenLinks.add(link);
-        }
-      });
     }
 
     let sortedJobs = [...displayJobs];
@@ -1485,6 +1515,25 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         salaryChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08);';
       }
 
+      // Source detection & styling
+      let sourceName = job.source;
+      if (!sourceName) {
+        if (link.includes('drushim.co.il')) sourceName = 'דרושים';
+        else if (link.includes('comeet.com') || link.includes('comeet')) sourceName = 'Comeet';
+        else if (link.includes('linkedin.com')) sourceName = 'LinkedIn';
+        else sourceName = 'LinkedIn';
+      }
+
+      let sourceChipStyle = 'color: #38bdf8; border-color: rgba(56, 189, 248, 0.35); background: rgba(56, 189, 248, 0.1);';
+      let sourceIcon = 'ph-linkedin-logo';
+      if (sourceName.toLowerCase().includes('drushim') || sourceName.includes('דרושים')) {
+        sourceChipStyle = 'color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4); background: rgba(255, 211, 104, 0.12);';
+        sourceIcon = 'ph-briefcase';
+      } else if (sourceName.toLowerCase().includes('comeet')) {
+        sourceChipStyle = 'color: #c084fc; border-color: rgba(192, 132, 252, 0.4); background: rgba(192, 132, 252, 0.12);';
+        sourceIcon = 'ph-buildings';
+      }
+
       const card = document.createElement('article');
       card.setAttribute('data-id', id);
       card.setAttribute('data-sector', secKey);
@@ -1500,7 +1549,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <span class="dashboard-chip" style="color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.2);">
               <i class="ph-duotone ph-calendar-blank"></i> ${jobDate}
             </span>
-            ${job.source ? `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.25); background: rgba(137, 244, 231, 0.05); font-size: 11px; padding: 2px 8px;"><i class="ph-duotone ph-globe"></i> ${job.source}</span>` : ''}
+            <span class="dashboard-chip" style="${sourceChipStyle}; font-size: 11px; padding: 2px 8px;">
+              <i class="ph-duotone ${sourceIcon}"></i> ${sourceName}
+            </span>
           </div>
           <div class="badge-score ${scoreClass}">
             <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
@@ -1608,6 +1659,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       b.removeAttribute('aria-current');
     });
     if (el) el.setAttribute('aria-current', 'page');
+
+    const currentCardCount = document.querySelectorAll('.job-card').length;
+    const availableCount = getAllAvailableJobs().length;
+    if (currentCardCount < availableCount) {
+      renderCards();
+    }
+
     updateUI();
   }
 
@@ -1692,8 +1750,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       }
     });
 
-    const totalSavedInStore = Object.values(jobStates).filter(s => s === 'saved').length;
-    const totalRejectedInStore = Object.values(jobStates).filter(s => s === 'rejected').length;
+    const allAvailable = getAllAvailableJobs();
+    const totalSavedInStore = allAvailable.filter(j => jobStates[j.link] === 'saved').length;
+    const totalRejectedInStore = allAvailable.filter(j => jobStates[j.link] === 'rejected').length;
     const pendingInBatch = total - (saved + rejected + purged);
 
     // Update Counts in Nav & Stats Cards
@@ -1784,17 +1843,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Collect full universe of jobs: weekly batch + historical catalog
-    const seenLinks = new Set((rawJobsData || []).map(j => j.link));
-    let allAvailableJobs = [...(rawJobsData || [])];
-    if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
-      Object.keys(jobStates).forEach(link => {
-        if (!seenLinks.has(link) && historicalCatalog[link]) {
-          allAvailableJobs.push(historicalCatalog[link]);
-          seenLinks.add(link);
-        }
-      });
-    }
+    const allAvailableJobs = getAllAvailableJobs();
 
     let sourceJobs = [];
     const chartTitleEl = document.getElementById('chartTitle');
@@ -1978,17 +2027,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
     }
 
-    const seenLinks = new Set((rawJobsData || []).map(j => j.link));
-    let allJobs = [...(rawJobsData || [])];
-    
-    if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
-      Object.keys(jobStates).forEach(link => {
-        if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
-          allJobs.push(historicalCatalog[link]);
-          seenLinks.add(link);
-        }
-      });
-    }
+    const allJobs = getAllAvailableJobs();
 
     const activeJobs = allJobs.filter(job => {
       const state = jobStates[job.link] || 'pending';
@@ -2118,16 +2157,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
     }
 
-    const seenLinks = new Set((rawJobsData || []).map(j => j.link));
-    let allJobs = [...(rawJobsData || [])];
-    if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
-      Object.keys(jobStates).forEach(link => {
-        if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
-          allJobs.push(historicalCatalog[link]);
-          seenLinks.add(link);
-        }
-      });
-    }
+    const allJobs = getAllAvailableJobs();
 
     function extractJobId(link) {
       if (!link) return null;
@@ -2203,16 +2233,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   }
 
   function exportSavedToExcel() {
-    const seenLinks = new Set((rawJobsData || []).map(j => j.link));
-    let allPotentialSaved = [...(rawJobsData || [])];
-    if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
-      Object.keys(jobStates).forEach(link => {
-        if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
-          allPotentialSaved.push(historicalCatalog[link]);
-          seenLinks.add(link);
-        }
-      });
-    }
+    const allPotentialSaved = getAllAvailableJobs();
     const savedJobs = allPotentialSaved.filter(job => jobStates[job.link] === 'saved');
     if (savedJobs.length === 0) {
       showToast('ph-warning', 'לא נמצאו משרות שמורות לייצוא');
@@ -2318,6 +2339,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
 def generate_interactive_html(jobs, rejected_links, title="דוח משרות אינטראקטיבי | עידו גל", is_weekly=False):
     saved_links = []
+    try:
+        import requests
+        r = requests.get("https://job-finder-auto-default-rtdb.firebaseio.com/triage.json", timeout=3)
+        if r.status_code == 200:
+            cdata = r.json()
+            if cdata and isinstance(cdata.get("saved"), list):
+                raw_s = cdata["saved"]
+                saved_links = [s for s in raw_s if not (s.isdigit() and any(x != s and s in x for x in raw_s))]
+    except Exception:
+        pass
     
     # Load historical catalog to support rendering of all saved jobs
     project_root = os.path.dirname(os.path.dirname(__file__))

@@ -8816,5 +8816,33 @@
     "salary_source_url": "https://www.google.com/search?q=טבלת+שכר+טכנאי+AI+ואוטומציה+ישראל",
     "salary_evidence": "השכר מוערך בהתבסס על ממוצע השוק בישראל למשרות טכנולוגיות המשלבות AI ואוטומציה עסקית.",
     "date": "2026-10-09"
+  },
+  "https://il.linkedin.com/jobs/view/senior-global-capacity-planner-at-nvidia-4458301887": {
+    "title": "Senior Global Capacity Planner",
+    "company": "NVIDIA",
+    "link": "https://il.linkedin.com/jobs/view/senior-global-capacity-planner-at-nvidia-4458301887",
+    "snippet": "NVIDIA is seeking a creative and analytical Capacity Planner to join our Operations team and drive the scaling of our Boards & Systems manufacturing across all business units. In this cross-functional role, you will lead the weekly planning cycle, collaborate with Operations, Manufacturing, Supply Chain, Engineering, Finance, and Business Units, and leverage advanced analytical models to resolve c",
+    "query": "תפעול ייצור מכונות",
+    "match_score": 85,
+    "concrete_matches_count": 3,
+    "reasoning": "תפקיד תכנון ותפעול קיבולת ייצור גלובלית ב-NVIDIA יקנעם, המתאים ליכולות אנליטיות וניהול מערכות תפעול מורכבות.",
+    "sector_key": "operations",
+    "sector": "⚙️ תפעול, אחזקה וניהול ייצור",
+    "location": "יקנעם עילית (Yokneam Illit)",
+    "company_domain_product": "אנבידיה (NVIDIA) מובילה עולמית בפיתוח מעבדים גרפיים, שבבי AI, מערכות תקשורת מתקדמות (Mellanox) ומרכזי נתונים.",
+    "job_summary": "תכנון קיבולת ייצור גלובלית למערכות ולוחות (Boards & Systems), הובלת מחזורי תכנון שבועיים, ותיאום בין מחלקות התפעול, הייצור ושרשרת האספקה.",
+    "experience_strengths": "רקע חזק בהנדסה, ניתוח נתונים, ראייה תהליכית מערכתית וניסיון מבצעי מתאים לניהול תהליכי תפעול עתירי דיוק.",
+    "key_highlights": "הזדמנות להשתלב באחת מחברות הטכנולוגיה המובילות בעולם באתר יקנעם בתפקיד תפעולי בעל השפעה רחבה.",
+    "company_size": "גלובלי (מעל 10,000 עובדים)",
+    "junior_openness": "בינוני",
+    "work_model": "היברידי",
+    "company_requirements": "ניסיון בתכנון תפעולי או שרשרת אספקה, יכולות אנליטיות גבוהות, שליטה באנגלית ברמה מעולה.",
+    "salary_range": "24,000 - 32,000 ₪",
+    "salary_source_type": "company_verified",
+    "salary_source_label": "מבוסס דיווחי שכר ב-NVIDIA",
+    "salary_source_url": "https://www.google.com/search?q=טבלת+שכר+אנבידיה+ישראל",
+    "salary_evidence": "מבוסס על סקרי שכר ודיווחי עובדים בתחומי התפעול ושרשרת האספקה ב-NVIDIA ישראל.",
+    "date": "2026-10-09",
+    "source": "LinkedIn"
   }
 }
