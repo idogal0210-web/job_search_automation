@@ -1,88 +1,180 @@
 ---
 name: save-and-sync
 description: |
-  Protocol executed whenever the user says "שמור ועדכן", "שמור וסנכרן", or "Save and update".
-  It validates project integrity with comprehensive quality checks, enforces zero‑waste directory hygiene, persists files, commits and pushes to GitHub, and produces a structured RTL executive summary.
+  פרוטוקול העל המאוחד לשמירה, ניקוי, אבטחה וסנכרון ("שמור ועדכן", "שמור וסנכרן", "Save and sync").
+  מבצע: 1. סריקת התיקייה המקומית, זיהוי ומחיקת קבצים מיותרים/מיושנים (Zero-Waste Hygiene).
+  2. בדיקות איכות, תקינות קוד ותחביר (Code & Data Integrity).
+  3. סריקת אבטחה ומניעת דליפת מפתחות וסיסמאות (Anti-Leak Secret Scanning).
+  4. סנכרון מלא ודו-כיווני מול ה-Remote (GitOps Cloud Guardian - מניעת דחיות, קונפליקטים ו-non-fast-forward).
+  5. דחיפה אטומית לענן והפקת סיכום מנהלים מעוצב ב-RTL.
 ---
 
-# Save & Sync Protocol ("שמור ועדכן")
+# Save & Sync Master Protocol ("שמור ועדכן") 🛡️🚀
 
-> **Purpose**: Provide a deterministic, safe, and idempotent workflow for persisting project state and synchronizing it with a remote GitHub repository. The protocol can run in normal, dry‑run, or test mode.
+> **מטרת העל:** פרוטוקול שלם, דטרמיניסטי ועמיד המבטיח תיקיית עבודה נקייה, מסודרת ומאובטחת ב-100%, אפס דליפות סודות, וסנכרון מושלם ודו-כיווני (1:1) מול מאגר ה-GitHub ללא דחיות או קונפליקטים.
 
-## Configuration (optional overrides)
-- `DRY_RUN=false`  # Set to `true` to simulate actions without modifying the filesystem or remote.
-- `RETRY_PUSH=3`   # Number of retry attempts for `git push` on transient failures.
-- `MAX_LOG_LINES=200` # Maximum lines to retain in the log artifact.
+מופעל אוטומטית בכל פעם שהמשתמש כותב: **"שמור ועדכן"**, **"שמור וסנכרן"**, או **"Save and sync"**.
 
-## Step 1 – Code & Data Integrity Validation (בדיקת איכות ותקינות מקיפה)
-> **הוראת ביצוע מרכזית לבדיקת איכות:**
-> בצע בדיקת איכות מקיפה למשימות שסומנו כהושלמו בצ׳קליסט. אמת כל סעיף מול הקוד והממשק בפועל. בדוק תקינות, נגישות, מובייל, שמירה, גרסאות, אישורים וטיפול בכשלים. השתמש בנתוני בדיקה מבודדים, תעדף תקלות לפי השפעתן ותקן אותן. הרץ בדיקות מתאימות ועדכן את הצ׳קליסט לפי הממצאים. אל תוסיף פיצ׳רים, תשנה את הקו העיצובי, תפעיל שירותים בתשלום או תפרסם תוכן. בסיום הצג בקצרה מה תוקן, מה אומת ומה עדיין דורש טיפול.
+---
 
-1. **Compilation / Syntax Check** – הרץ בדיקות קומפילציה, לינט ותחביר לשפת הפרויקט (למשל `python3 -m py_compile **/*.py`, `npm run lint`).
-2. **Configuration & Data Validation** – אמת תקינות קובצי הגדרות ונתונים (`json.load`, `yaml.safe_load`).
-3. **Import & Dependency Check** – ודא אפס ייבואים שבורים ואפס תלויות חסרות.
-4. **Isolated Test Execution** – הרץ בדיקות מתאימות בסביבת בדיקה מבודדת ללא פגיעה במידע קיים.
-> **Safety Guard**: במידה ונמצאו שגיאות קריטיות שלא ניתנות לתיקון אוטומטי בטוח, עצור ודווח במדויק על התקלה לפני שממשיכים.
+## ⚙️ הגדרות תצורה (Configuration Overrides)
+* `DRY_RUN=false` — הפעל כמצב הדמיה (סימולציה) ללא מחיקות או פקודות push בפועל.
+* `RETRY_PUSH=3` — מספר ניסיונות דחיפה חוזרים עם Exponential Backoff במקרה של כשל רשת זמני.
+* `AUTO_CLEAN=true` — הפעלה אוטומטית של טיהור קבצים מיותרים או מיושנים.
 
-## Step 2 – Zero‑Waste & Lean Directory Hygiene
-- **Enforced Rule**: No file may exist in the repository that is not referenced by the build or runtime configuration.
-- **Automated Clean‑up** includes:
-  - Legacy directories (`legacy/`, `old/`)
-  - Duplicate root wrappers
-  - Deprecated feature scripts
-  - Drafts, temp files (`tmp_*.py`, `sample_*.html`, `*.log`)
-  - Cache artefacts (`__pycache__/`, `*.pyc`, `.DS_Store`)
-- **Safety Guard** (explicit list of protected paths):
-  - `main.py`, any file under `src/`
-  - Database files under `data/`
-  - Critical configs: `.env`, `requirements.txt`, `.gitignore`
-  - Documentation: `README.md`, `docs/`
-  - CI/CD pipelines: `.github/workflows/`
-- **Dry‑Run Mode** lists files that *would* be removed without deleting them.
+---
 
-## Step 3 – Local Persistence & Build
-1. **Persist Changes** – Ensure all edited/created files are flushed to disk.
-2. **Run Build Scripts** – Execute project‑specific build commands if present (`make`, `npm run build`, `cargo build`).
-3. **Validate .gitignore** – Confirm it excludes generated files and secrets.
+## 🧹 שלב 1: סריקת התיקייה המקומית וטיהור קבצים מיותרים ומיושנים (Zero-Waste Hygiene)
 
-## Step 4 – GitHub Synchronisation
-> **All Git operations assume GitHub as the remote.**
-1. **Detect Current Branch** – `git rev-parse --abbrev-ref HEAD`. Abort if in detached HEAD.
-2. **Stage All Changes** – `git add -A` (skip if `DRY_RUN`).
-3. **Generate Semantic Commit Message** –
-   - If there are only deletions: `chore(clean): remove unused files`
-   - If there are additions/updates: `feat(sync): update project assets`
-   - Include a short summary of changed modules (auto‑generated).
-4. **Commit** – `git commit -m "<generated message>"` (skip if no changes).
-5. **Push with Retries** – Attempt `git push origin <branch>` up to `RETRY_PUSH` times, backing off exponentially.
-6. **Post‑Push Verification** – Ensure `git status --porcelain` is clean.
-7. **Optional Remote Validation** – Run `git ls-remote --exit-code origin <branch>` to confirm remote acceptance.
+חוק הברזל: **שום קובץ שאינו נחוץ, מיושן, כפול או בלתי מקושר לקוד הפעיל לא יישאר בתיקיית העבודה.**
 
-## Step 5 – RTL Executive Summary (HTML fragment)
+### 1.1 סריקה ואיתור קבצים מיושנים ומיותרים:
+הסוכן סורק את עץ הפרויקט ומזהה:
+1. **קבצים ישנים וזמניים:** קובצי טיוטה, גיבויים ידניים וקבצים זמניים (`tmp_*`, `temp_*`, `sample_*`, `*.bak`, `*.old`, `test_output.*`).
+2. **סקריפטים מיושנים:** גרסאות קוד קודמות שהוחלפו על ידי קובץ מרכזי חדש ואינן נקראות עוד.
+3. **פסולת מערכת וקאש:** `.DS_Store`, ספריות `__pycache__/`, קובצי `*.pyc`, `.pytest_cache/`, וקובצי לוג ישנים (`*.log`).
+4. **נעילות Git שבורות:** אם קיים קובץ `.git/index.lock` ישן שנתקע מתהליך קודם — להסירו בבטחה:
+   ```bash
+   if [ -f .git/index.lock ]; then rm -f .git/index.lock; fi
+   ```
+
+### 1.2 רשימת קבצים ונתיבים מוגנים (Protected Paths - אין למחוק לעולם!):
+* קובצי הליבה הפעילים (`daily_job_search_unified.py`, `main.py`, וכל קובץ תחת `src/`).
+* מסדי נתונים ומידע פעיל (`data/job_state.db`, `data/jobs.json`, וכל קובץ תחת `data/`).
+* קונפיגורציה קריטית: `.env`, `requirements.txt`, `.gitignore`.
+* תיעוד וממשק: `README.md`, קבצים תחת `docs/` (`docs/index.html`).
+* אוטומציות ענן: `.github/workflows/`.
+
+### 1.3 ביצוע הניקוי:
+מחיקה פיזית של כל הקבצים המיותרים שאותרו, והשארת מבנה תיקייה שטוח, נקי, קריא ורזה.
+
+---
+
+## 🧪 שלב 2: בדיקת איכות ותקינות קוד ונתונים (Code & Integrity Check)
+
+לפני ששומרים ומסנכרנים, מוודאים שהקוד תקין ואינו שבור:
+1. **בדיקת תחביר וקומפילציה:**
+   * בפייתון: `python3 -m py_compile **/*.py` לוודא אפס שגיאות תחביר.
+2. **אימות קובצי נתונים:** בדיקת שלמות קובצי הגדרות ונתונים (`json.load`, `yaml.safe_load`).
+3. **ייבואים ותלויות:** וידוא שאין ייבואים שבורים של ספריות שאינן מותקנות.
+4. **עצירת חירום במקרה של שגיאה קריטית:** אם נמצאה שגיאת קוד קריטית שלא ניתן לתקן בבטחה, יש לעצור, לא לבצע Push, ולדווח במדויק למשתמש.
+
+---
+
+## 🛡️ שלב 3: היגיינת אבטחה וסריקת סודות לפני קומיט (Anti-Leak Secret Scanner)
+
+**חוק ברזל: שום מפתח API, סיסמה או טוקן לא ייחשפו או יידחפו לענן לעולם!**
+
+### 3.1 אימות קובץ `.gitignore`:
+ודא שקובץ ה-`.gitignore` קיים ומכיל באופן הרמטי:
+```gitignore
+# Credentials & Secrets
+.env
+.env.*
+*.pem
+*.key
+*token*
+*secret*
+
+# System & Cache
+__pycache__/
+*.pyc
+venv/
+.DS_Store
+*.log
+```
+
+### 3.2 סריקה אוטומטית מקדימה של השינויים (Pre-Commit Regex Scan):
+לפני ה-Commit, יש לסרוק את כל הקבצים שנוספו ל-Staging:
+```bash
+git diff --cached --name-only | xargs grep -nEi \
+  '(ghp_|AIza[A-Za-z0-9_-]{35}|sk-[A-Za-z0-9]{32,}|AQ\.Ab|password\s*=|secret\s*=|token\s*=)' \
+  2>/dev/null
+```
+* **במידה ונמצא סוד כלשהו:** **STOP מיידי! לא מבצעים Commit.** מסירים את המפתח מהקוד, מעבירים אותו ל-`.env` (או GitHub Secrets), ורק לאחר מכן ממשיכים.
+
+---
+
+## 🌐 שלב 4: סנכרון מלא ודו-כיווני מול ה-Remote (GitOps Cloud Guardian)
+
+מניעת שגיאות `[rejected - non-fast-forward]`, מניעת קונפליקטים, וסנכרון אטומי מול GitHub:
+
+```bash
+BRANCH=$(git branch --show-current)
+if [ -z "$BRANCH" ]; then
+  echo "Error: Detached HEAD detected. Switch to a branch."
+  exit 1
+fi
+
+# 1. הוספת כל השינויים (כולל מחיקות הקבצים המיותרים משלב 1)
+git add -A
+
+# 2. בדיקה האם יש שינויים לקמט
+if ! git diff --staged --quiet; then
+  git commit -m "chore(sync): automated save, clean & sync [skip ci]"
+else
+  echo "No changes staged. Working tree clean."
+fi
+
+# 3. בדיקת פערים מול ה-Remote וסנכרון מקדים (Pull Rebase)
+git fetch origin --prune
+BEHIND=$(git rev-list --count HEAD..origin/$BRANCH)
+
+if [ "$BEHIND" -gt 0 ]; then
+  echo "Remote is ahead by $BEHIND commit(s). Applying safe rebase..."
+  git pull --rebase origin $BRANCH
+fi
+
+# 4. דחיפה אטומית לענן עם מנגנון Retry
+PUSH_SUCCESS=false
+for i in $(seq 1 3); do
+  if git push origin $BRANCH; then
+    PUSH_SUCCESS=true
+    break
+  else
+    echo "Push attempt $i failed. Retrying in $((i * 2))s..."
+    sleep $((i * 2))
+  fi
+done
+
+if [ "$PUSH_SUCCESS" = false ]; then
+  echo "❌ Git push failed after 3 attempts."
+  exit 1
+fi
+
+# 5. אימות התאמה מוחלטת (1:1) בין המחשב לענן
+LOCAL_REV=$(git rev-parse HEAD)
+REMOTE_REV=$(git rev-parse origin/$BRANCH)
+STATUS_OUTPUT=$(git status --porcelain)
+
+if [ "$LOCAL_REV" = "$REMOTE_REV" ] && [ -z "$STATUS_OUTPUT" ]; then
+  echo "✅ SYNC VERIFIED: 100% match between local and cloud!"
+else
+  echo "⚠️ Warning: Divergence detected between local ($LOCAL_REV) and remote ($REMOTE_REV)!"
+  exit 1
+fi
+```
+
+### 4.1 טיפול בכשלים (Disaster Recovery):
+* **אם נוצר קונפליקט ב-rebase:** עצור מיד `git rebase --abort`, דווח למשתמש והצע פתרון ממוקד ללא דריסת שינויים.
+* **לעולם אין לבצע `--force` push** שעלול לדרוס היסטוריה בענן.
+
+---
+
+## 📊 שלב 5: סיכום מנהלים מעוצב (RTL Executive Summary)
+
+בסיום ביצוע כל השלבים, מוצג למשתמש סיכום מנהלים קצר וברור:
+
 ```html
 <div dir="rtl" style="text-align: right; font-family: system-ui, sans-serif;">
-  <h3>✅ סיכום ביצוע</h3>
+  <h3>✅ סיכום שמירה, ניקוי וסנכרון ("שמור ועדכן")</h3>
   <ul>
-    <li>🔧 <strong>בדיקת איכות ותקינות:</strong> מה תוקן, מה אומת ומה עדיין דורש טיפול</li>
-    <li>🧹 <strong>טיהור קבצים מיותרים:</strong> <span id="cleanup-count">0 קבצים</span></li>
-    <li>📂 <strong>קבצים נשמרו:</strong> <span id="saved-files-count">0 קבצים</span></li>
-    <li>🚀 <strong>סינכרון GitHub:</strong> <span id="git-status">✅ דחיפה הצליחה</span></li>
-    <li>🔗 <strong>Commit Hash:</strong> <code id="commit-hash">N/A</code></li>
+    <li>🧹 <strong>טיהור קבצים:</strong> התיקייה נסרקה, קבצים מיושנים ומיותרים נמחקו, המבנה נקי ומעודכן.</li>
+    <li>🧪 <strong>בדיקת איכות:</strong> תחביר, הגדרות ונתונים אומתו בהצלחה (0 שגיאות קריטיות).</li>
+    <li>🛡️ <strong>בדיקת אבטחה:</strong> אפס דליפות סודות / מפתחות; קובץ .gitignore מאומת.</li>
+    <li>🚀 <strong>סנכרון GitHub:</strong> שינויים נדחפו בהצלחה, תאימות 1:1 מלאה מול הענן ללא קונפליקטים.</li>
+    <li>🔗 <strong>Commit Hash:</strong> <code>[HASH]</code> | ענף: <code>[BRANCH]</code></li>
   </ul>
-  <p>הפרויקט רזה, נקי, ומסונכרן במלואו.</p>
+  <p><strong>הפרויקט רזה, מאובטח, מעודכן ומסונכרן במלואו! 🎉</strong></p>
 </div>
 ```
-The UI layer that renders the skill should inject the above HTML into the chat output.
-
-## Logging & Auditing
-- All steps write to `logs/save-and-sync.log` (rotated daily, keep last `MAX_LOG_LINES`).
-- In `DRY_RUN` mode, actions are logged with the prefix `[DRY‑RUN]`.
-- Errors are returned with a JSON payload `{"error": "<msg>", "step": <number>}` for downstream handling.
-
-## Idempotence Guarantees
-- Re‑running the skill on a clean working tree results in a no‑op commit (`git commit` will skip if no changes).
-- Cleanup only removes files that match the explicit patterns and are not in the safety‑guard list.
-- Push retries do not create duplicate commits.
-
----
-*This skill is designed for Antigravity 2.0+ and follows the Conventional Commits specification.*

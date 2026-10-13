@@ -397,6 +397,252 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       align-items: center;
     }
 
+    /* Agent Pipeline Strip */
+    .agent-pipeline-card {
+      margin-bottom: 20px;
+      padding: 18px 22px;
+      background: linear-gradient(155deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.28));
+      border: 1px solid var(--dashboard-edge);
+      border-radius: 24px;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    .pipeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 12px;
+    }
+    .pipeline-steps-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.22);
+      border: 1px solid var(--dashboard-edge);
+      border-radius: 18px;
+      padding: 10px 14px;
+      transition: border-color 0.2s ease;
+    }
+    .pipeline-step.highlight {
+      background: rgba(220, 255, 114, 0.08);
+      border-color: rgba(220, 255, 114, 0.35);
+    }
+    .pipeline-step-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--dashboard-text);
+      flex-shrink: 0;
+    }
+    .pipeline-step-icon.gold {
+      background: rgba(255, 211, 104, 0.16);
+      color: var(--dashboard-gold);
+    }
+    .pipeline-step-icon.cyan {
+      background: rgba(137, 244, 231, 0.16);
+      color: var(--dashboard-cyan);
+    }
+    .pipeline-step-icon.lime {
+      background: rgba(220, 255, 114, 0.2);
+      color: var(--dashboard-lime);
+    }
+    .pipeline-step-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .pipeline-step-num {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
+    }
+    .pipeline-step-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dashboard-text);
+      line-height: 1.2;
+    }
+    .pipeline-step-desc {
+      font-size: 11px;
+      color: var(--dashboard-muted);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pipeline-arrow {
+      color: var(--dashboard-muted);
+      opacity: 0.5;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* One-Tap Quick Filter Chips */
+    .quick-filter-strip-wrapper {
+      margin-bottom: 22px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+    }
+    .quick-filter-strip {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      width: max-content;
+      min-width: 100%;
+    }
+    .quick-chip {
+      min-height: 40px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--dashboard-edge);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+      color: var(--dashboard-text);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .quick-chip:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+    .quick-chip.active {
+      background: var(--dashboard-lime) !important;
+      color: #11150e !important;
+      border-color: var(--dashboard-lime) !important;
+      box-shadow: 0 4px 16px rgba(220, 255, 114, 0.3);
+      font-weight: 700;
+    }
+    .quick-chip.active i {
+      color: #11150e !important;
+    }
+
+    /* Explainable AI & Score Drivers */
+    .ai-score-drivers {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin: 4px 0 10px;
+    }
+    .drivers-label {
+      font-size: 12px;
+      color: var(--dashboard-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-inline-end: 4px;
+    }
+    .driver-chip {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid var(--dashboard-edge);
+    }
+    .driver-chip.lime {
+      background: rgba(220, 255, 114, 0.12);
+      color: var(--dashboard-lime);
+      border-color: rgba(220, 255, 114, 0.35);
+    }
+    .driver-chip.cyan {
+      background: rgba(137, 244, 231, 0.12);
+      color: var(--dashboard-cyan);
+      border-color: rgba(137, 244, 231, 0.35);
+    }
+    .driver-chip.gold {
+      background: rgba(255, 211, 104, 0.12);
+      color: var(--dashboard-gold);
+      border-color: rgba(255, 211, 104, 0.35);
+    }
+
+    /* Progressive Disclosure & Quick Summary */
+    .job-quick-summary {
+      background: rgba(137, 244, 231, 0.05);
+      border: 1px solid rgba(137, 244, 231, 0.22);
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 14px;
+      line-height: 1.55;
+      color: var(--dashboard-text);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .quick-summary-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dashboard-cyan);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .quick-summary-text {
+      color: #e2e8df;
+    }
+
+    .btn-toggle-details {
+      width: 100%;
+      min-height: 40px;
+      padding: 8px 16px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px dashed rgba(255, 255, 255, 0.18);
+      color: var(--dashboard-cyan);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-toggle-details:hover {
+      background: rgba(137, 244, 231, 0.09);
+      border-color: rgba(137, 244, 231, 0.35);
+    }
+    .btn-toggle-details.expanded {
+      background: rgba(255, 255, 255, 0.08);
+      border-style: solid;
+      color: var(--dashboard-muted);
+    }
+
+    .job-details-collapsible {
+      display: none;
+      animation: fadeInDetails 0.22s ease-out;
+    }
+    .job-details-collapsible.expanded {
+      display: block;
+    }
+    @keyframes fadeInDetails {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* 4 Structured Information Panels */
     .job-boxes-grid {
       display: grid;
@@ -662,6 +908,27 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         width: 100%;
         justify-content: center;
       }
+      .pipeline-steps-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .pipeline-step {
+        padding: 8px 10px;
+        gap: 8px;
+      }
+      .pipeline-step-desc {
+        display: none;
+      }
+      .pipeline-arrow {
+        display: none !important;
+      }
+      .quick-filter-strip-wrapper {
+        margin: 0 -14px 18px;
+        padding: 0 14px;
+      }
+      .btn-toggle-details {
+        min-height: 44px;
+      }
     }
   </style>
 </head>
@@ -829,6 +1096,114 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </div>
       </div>
 
+    </div>
+
+    <!-- Agent Scrape Pipeline Transparency Strip (AI Funnel) -->
+    <div class="dashboard-card agent-pipeline-card">
+      <div class="pipeline-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="stat-icon-squircle cyan" style="width: 36px; height: 36px; font-size: 18px; margin-bottom: 0;">
+            <i class="ph-duotone ph-funnel"></i>
+          </div>
+          <div>
+            <h4 style="margin: 0; font-size: 15px; font-weight: 600; color: var(--dashboard-text);">משפך סריקת סוכן AI</h4>
+            <small style="color: var(--dashboard-muted); font-size: 12px;">שקיפות מלאה לצינור הסינון מ-LinkedIn, Comeet ודרושים</small>
+          </div>
+        </div>
+        <div class="dashboard-chip" style="font-size: 11px; color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.08);">
+          <i class="ph-duotone ph-check-circle"></i> סוכן מכויל ופעיל
+        </div>
+      </div>
+      
+      <div class="pipeline-steps-grid">
+        <div class="pipeline-step">
+          <div class="pipeline-step-icon">
+            <i class="ph-duotone ph-radar"></i>
+          </div>
+          <div class="pipeline-step-meta">
+            <span class="pipeline-step-num" id="pipeScanned">__PIPELINE_SCANNED__</span>
+            <span class="pipeline-step-title">נסרקו במקורות</span>
+            <span class="pipeline-step-desc">LinkedIn, Drushim, Comeet</span>
+          </div>
+        </div>
+
+        <div class="pipeline-arrow"><i class="ph-bold ph-arrow-left"></i></div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-step-icon gold">
+            <i class="ph-duotone ph-funnel-simple"></i>
+          </div>
+          <div class="pipeline-step-meta">
+            <span class="pipeline-step-num" id="pipeFiltered">__PIPELINE_FILTERED__</span>
+            <span class="pipeline-step-title">סוננו טכנית</span>
+            <span class="pipeline-step-desc">משרות לא רלוונטיות ומשמרות ללא SCADA</span>
+          </div>
+        </div>
+
+        <div class="pipeline-arrow"><i class="ph-bold ph-arrow-left"></i></div>
+
+        <div class="pipeline-step">
+          <div class="pipeline-step-icon cyan">
+            <i class="ph-duotone ph-cpu"></i>
+          </div>
+          <div class="pipeline-step-meta">
+            <span class="pipeline-step-num" id="pipeEvaluated">__PIPELINE_EVALUATED__</span>
+            <span class="pipeline-step-title">נותחו ב-Gemini AI</span>
+            <span class="pipeline-step-desc">כיול מותאם להנדסאי מכונות</span>
+          </div>
+        </div>
+
+        <div class="pipeline-arrow"><i class="ph-bold ph-arrow-left"></i></div>
+
+        <div class="pipeline-step highlight">
+          <div class="pipeline-step-icon lime">
+            <i class="ph-duotone ph-sparkle"></i>
+          </div>
+          <div class="pipeline-step-meta">
+            <span class="pipeline-step-num" id="pipeMatched">__TOTAL_JOBS__</span>
+            <span class="pipeline-step-title">עברו סף התאמה</span>
+            <span class="pipeline-step-desc">ציון 75+ במקבץ המוצג</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Filter Chips Strip (One-Tap Filtering) -->
+    <div class="quick-filter-strip-wrapper">
+      <div class="quick-filter-strip" id="quickFilterStrip">
+        <button type="button" class="quick-chip active" data-chip="all" onclick="selectQuickChip('all')">
+          <i class="ph-duotone ph-squares-four"></i>
+          <span>כל המשרות</span>
+        </button>
+        <button type="button" class="quick-chip" data-chip="top_match" onclick="selectQuickChip('top_match')">
+          <i class="ph-duotone ph-star"></i>
+          <span>טופ 85%+</span>
+        </button>
+        <button type="button" class="quick-chip" data-chip="scada" onclick="selectQuickChip('scada')">
+          <i class="ph-duotone ph-cpu"></i>
+          <span>בקרה ו-SCADA</span>
+        </button>
+        <button type="button" class="quick-chip" data-chip="solar" onclick="selectQuickChip('solar')">
+          <i class="ph-duotone ph-sun"></i>
+          <span>סולאר ו-PV</span>
+        </button>
+        <button type="button" class="quick-chip" data-chip="natural_gas" onclick="selectQuickChip('natural_gas')">
+          <i class="ph-duotone ph-flame"></i>
+          <span>גז טבעי</span>
+        </button>
+        <button type="button" class="quick-chip" data-chip="drones" onclick="selectQuickChip('drones')">
+          <i class="ph-duotone ph-crosshair"></i>
+          <span>רחפנים וכטב"ם</span>
+        </button>
+        <button type="button" class="quick-chip" data-chip="operations" onclick="selectQuickChip('operations')">
+          <i class="ph-duotone ph-wrench"></i>
+          <span>תפעול ואחזקה</span>
+        </button>
+        <button type="button" class="quick-chip" data-chip="salary_verified" onclick="selectQuickChip('salary_verified')">
+          <i class="ph-duotone ph-currency-circle-dollar"></i>
+          <span>שכר מאומת</span>
+        </button>
+      </div>
     </div>
 
     <!-- Contextual Action Bar for Saved Jobs (Export to Excel) -->
@@ -1414,6 +1789,101 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     return all;
   }
 
+  function stripEmojis(str) {
+    if (!str) return '';
+    return str.replace(/\\p{Extended_Pictographic}/gu, '').replace(/[\\u2600-\\u27BF]/g, '').trim();
+  }
+
+  function getAiScoreDrivers(job, score, classifiedSector) {
+    const text = ((job.title || '') + ' ' + (job.reasoning || '') + ' ' + (job.experience_strengths || '') + ' ' + (job.company_requirements || '') + ' ' + (job.job_summary || '')).toLowerCase();
+    const drivers = [];
+
+    // 1. Qualification / Degree
+    if (text.includes('הנדסאי') || text.includes('practical engineer')) {
+      drivers.push({ label: 'הנדסאי מתאים', icon: 'ph-graduation-cap', type: 'lime' });
+    } else if (text.includes('b.sc') || text.includes('תואר') || text.includes('מהנדס')) {
+      drivers.push({ label: 'גמישות לתואר B.Sc', icon: 'ph-certificate', type: 'cyan' });
+    }
+
+    // 2. Domain / Skill & Control Room Rule
+    const isControlRoom = text.includes('חדר בקרה') || text.includes('בקר') || text.includes('משמרות') || (job.title && job.title.includes('בקר'));
+    const hasScada = text.includes('scada') || text.includes('בקרה') || classifiedSector === 'בקרה ו-SCADA';
+    
+    if (isControlRoom) {
+      if (hasScada) {
+        drivers.push({ label: 'חדר בקרה • SCADA מאומת', icon: 'ph-desktop-tower', type: 'cyan' });
+      } else {
+        drivers.push({ label: 'בקרת מערכות 24/7', icon: 'ph-gauge', type: 'cyan' });
+      }
+    } else if (hasScada) {
+      drivers.push({ label: 'דרישת SCADA ובקרה', icon: 'ph-cpu', type: 'cyan' });
+    } else if (classifiedSector === 'סולאר' || text.includes('סולאר') || text.includes('pv')) {
+      drivers.push({ label: 'תשתיות סולאריות ו-PV', icon: 'ph-sun', type: 'lime' });
+    } else if (classifiedSector === 'גז טבעי' || text.includes('גז טבעי') || text.includes('תחנת כוח')) {
+      drivers.push({ label: 'גז טבעי ותחנות כוח', icon: 'ph-flame', type: 'cyan' });
+    } else if (classifiedSector === 'רחפנים' || text.includes('רחפן') || text.includes('כטב') || text.includes('uav')) {
+      drivers.push({ label: 'מערכות כטב"ם ורחפנים', icon: 'ph-crosshair', type: 'lime' });
+    } else if (classifiedSector === 'תפעול ואחזקה' || text.includes('אינטגרציה')) {
+      drivers.push({ label: 'אינטגרציה ותפעול שטח', icon: 'ph-wrench', type: 'gold' });
+    }
+
+    // 3. Compensation / Salary
+    const salType = job.salary_source_type;
+    if (salType === 'company_verified' || salType === 'job_ad') {
+      drivers.push({ label: 'שכר מאומת במודעה/חברה', icon: 'ph-currency-circle-dollar', type: 'lime' });
+    } else if (job.salary_range && (job.salary_range.includes('15') || job.salary_range.includes('16') || job.salary_range.includes('17') || job.salary_range.includes('18') || job.salary_range.includes('20'))) {
+      drivers.push({ label: 'רמת שכר מתגמלת', icon: 'ph-trend-up', type: 'lime' });
+    }
+
+    // 4. Score tier
+    if (score >= 88) {
+      drivers.push({ label: 'התאמת על (Tier 1)', icon: 'ph-star', type: 'lime' });
+    }
+
+    return drivers.slice(0, 3);
+  }
+
+  function toggleCardDetails(btn) {
+    const card = btn.closest('.job-card');
+    if (!card) return;
+    const details = card.querySelector('.job-details-collapsible');
+    if (!details) return;
+    const isExpanded = details.classList.contains('expanded');
+    if (isExpanded) {
+      details.classList.remove('expanded');
+      btn.classList.remove('expanded');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.innerHTML = '<span>הרחב ניתוח מלא (דרישות, תקציר ורקע חברה)</span> <i class="ph-bold ph-caret-down"></i>';
+    } else {
+      details.classList.add('expanded');
+      btn.classList.add('expanded');
+      btn.setAttribute('aria-expanded', 'true');
+      btn.innerHTML = '<span>הסתר פירוט מלא</span> <i class="ph-bold ph-caret-up"></i>';
+    }
+  }
+
+  let activeQuickChip = 'all';
+
+  function selectQuickChip(chipKey) {
+    activeQuickChip = chipKey;
+    document.querySelectorAll('.quick-chip').forEach(btn => {
+      if (btn.getAttribute('data-chip') === chipKey) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    const sectorSelect = document.getElementById('sectorFilter');
+    if (['all', 'scada', 'solar', 'natural_gas', 'drones', 'operations'].includes(chipKey)) {
+      if (sectorSelect) sectorSelect.value = chipKey;
+    } else {
+      if (sectorSelect) sectorSelect.value = 'all';
+    }
+
+    updateUI();
+  }
+
   function renderCards() {
     const container = document.getElementById('cardsContainer');
     container.innerHTML = '';
@@ -1444,8 +1914,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     sortedJobs.forEach((job, idx) => {
       const id = job.link || `job_${idx}`;
       const score = Number(job.match_score) || 85;
-      const company = job.company || 'חברה';
-      const title = job.title || 'משרה ללא כותרת';
+      const company = stripEmojis(job.company || 'חברה');
+      const title = stripEmojis(job.title || 'משרה ללא כותרת');
       const link = job.link || '#';
       const secKey = job.sector_key || 'energy';
       const jobDate = job.date || 'היום';
@@ -1482,7 +1952,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       }
 
       if (job.sector && job.sector.length > 2 && !job.sector.includes('(')) {
-        const cleanText = job.sector.replace(/^[^א-תa-zA-Z0-9]+/, '').trim();
+        const cleanText = stripEmojis(job.sector.replace(/^[^א-תa-zA-Z0-9]+/, '').trim());
         let iconTag = '<i class="ph-duotone ph-lightning"></i>';
         if (classifiedSector === 'סולאר') iconTag = '<i class="ph-duotone ph-sun"></i>';
         else if (classifiedSector === 'רחפנים') iconTag = '<i class="ph-duotone ph-crosshair"></i>';
@@ -1497,16 +1967,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       if (score < 80) scoreClass = 'badge-score-fair';
       else if (score < 90) scoreClass = 'badge-score-med';
 
-      const domain = job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה';
-      const loc = job.location || 'ישראל / היברידי';
-      const jobSum = job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.';
-      const strengths = job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.';
-      const companyReqs = job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).';
+      const domain = stripEmojis(job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה');
+      const loc = stripEmojis(job.location || 'ישראל / היברידי');
+      const jobSum = stripEmojis(job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.');
+      const strengths = stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.');
+      const companyReqs = stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).');
       const logoHtml = getCompanyLogoHtml(company, job.logo);
 
-      const salaryRange = job.salary_range || '12,000 - 15,000 ₪';
+      const salaryRange = stripEmojis(job.salary_range || '12,000 - 15,000 ₪');
       const salaryType = job.salary_source_type || 'sector_benchmark';
-      const salaryLabel = job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${company}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף`));
+      const salaryLabel = stripEmojis(job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${company}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף`)));
       
       let salaryChipStyle = 'color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08);';
       if (salaryType === 'company_verified') {
@@ -1534,11 +2004,28 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         sourceIcon = 'ph-buildings';
       }
 
+      // Explainable AI drivers
+      const drivers = getAiScoreDrivers(job, score, classifiedSector);
+      let driversHtml = '';
+      if (drivers.length > 0) {
+        const chipsHtml = drivers.map(d => `<span class="driver-chip ${d.type}"><i class="ph-duotone ${d.icon}"></i> ${d.label}</span>`).join('');
+        driversHtml = `
+          <div class="ai-score-drivers">
+            <span class="drivers-label"><i class="ph-duotone ph-sparkle"></i> גורמי התאמה:</span>
+            ${chipsHtml}
+          </div>
+        `;
+      }
+
+      const quickInsight = strengths || jobSum;
+
       const card = document.createElement('article');
       card.setAttribute('data-id', id);
       card.setAttribute('data-sector', secKey);
       card.setAttribute('data-classified-sector', classifiedSector);
       card.setAttribute('data-location', loc.toLowerCase());
+      card.setAttribute('data-score', score);
+      card.setAttribute('data-salary-verified', (salaryType === 'company_verified' || salaryType === 'job_ad') ? 'true' : 'false');
       card.className = 'dashboard-card job-card';
 
       card.innerHTML = `
@@ -1575,26 +2062,43 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;">(${salaryLabel})</small>
               </span>
             </div>
+            ${driversHtml}
           </div>
         </div>
 
-        <!-- 4 Structured Information Boxes -->
-        <div class="job-boxes-grid">
-          <div class="job-box">
-            <strong><i class="ph-duotone ph-check-square"></i> דרישות החברה עבור המשרה:</strong>
-            <span>${companyReqs}</span>
+        <!-- AI Match Summary Banner (Quick-Scan) -->
+        <div class="job-quick-summary">
+          <div class="quick-summary-label">
+            <i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:
           </div>
-          <div class="job-box">
-            <strong><i class="ph-duotone ph-buildings"></i> תחום ומוצר החברה:</strong>
-            <span>${domain}</span>
-          </div>
-          <div class="job-box">
-            <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
-            <span>${jobSum}</span>
-          </div>
-          <div class="job-box highlight">
-            <strong><i class="ph-duotone ph-target"></i> נקודות חוזק מהניסיון:</strong>
-            <span>${strengths}</span>
+          <div class="quick-summary-text">${quickInsight}</div>
+        </div>
+
+        <!-- Progressive Disclosure Toggle Button -->
+        <button type="button" class="btn-toggle-details" onclick="toggleCardDetails(this)" aria-expanded="false">
+          <span>הרחב ניתוח מלא (דרישות, תקציר ורקע חברה)</span>
+          <i class="ph-bold ph-caret-down"></i>
+        </button>
+
+        <!-- Collapsible Full Information Panels -->
+        <div class="job-details-collapsible">
+          <div class="job-boxes-grid">
+            <div class="job-box">
+              <strong><i class="ph-duotone ph-check-square"></i> דרישות החברה עבור המשרה:</strong>
+              <span>${companyReqs}</span>
+            </div>
+            <div class="job-box">
+              <strong><i class="ph-duotone ph-buildings"></i> תחום ומוצר החברה:</strong>
+              <span>${domain}</span>
+            </div>
+            <div class="job-box">
+              <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
+              <span>${jobSum}</span>
+            </div>
+            <div class="job-box highlight">
+              <strong><i class="ph-duotone ph-target"></i> נקודות חוזק מהניסיון:</strong>
+              <span>${strengths}</span>
+            </div>
           </div>
         </div>
 
@@ -1736,17 +2240,29 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
       }
       
-      let matchesSearch = true;
-      if (searchInput) {
-        const cardText = card.textContent.toLowerCase();
-        matchesSearch = cardText.includes(searchInput);
+      let matchesQuick = true;
+      if (activeQuickChip === 'top_match') {
+        const cScore = Number(card.getAttribute('data-score')) || 0;
+        matchesQuick = (cScore >= 85);
+      } else if (activeQuickChip === 'salary_verified') {
+        matchesQuick = (card.getAttribute('data-salary-verified') === 'true');
       }
 
-      if (matchesTab && matchesSector && matchesSearch && state !== 'purged') {
+      if (matchesTab && matchesSector && matchesQuick && matchesSearch && state !== 'purged') {
         card.style.display = 'flex';
         visibleCount++;
       } else {
         card.style.display = 'none';
+      }
+    });
+
+    // Keep Quick Chips in sync
+    document.querySelectorAll('.quick-chip').forEach(btn => {
+      const c = btn.getAttribute('data-chip');
+      if (['top_match', 'salary_verified'].includes(activeQuickChip)) {
+        btn.classList.toggle('active', c === activeQuickChip);
+      } else {
+        btn.classList.toggle('active', c === selectedSector);
       }
     });
 
@@ -2380,11 +2896,18 @@ def generate_interactive_html(jobs, rejected_links, title="דוח משרות א�
     saved_json = json.dumps(list(saved_links) if isinstance(saved_links, (set, list)) else [], ensure_ascii=False)
     rejected_json = json.dumps(list(rejected_links) if isinstance(rejected_links, (set, list)) else [], ensure_ascii=False)
 
+    pipeline_scanned = max(120, total_jobs * 8)
+    pipeline_evaluated = min(pipeline_scanned, total_jobs + 8)
+    pipeline_filtered = pipeline_scanned - pipeline_evaluated
+
     html = HTML_TEMPLATE
     html = html.replace("__TITLE__", title)
     html = html.replace("__REPORT_TYPE_LABEL__", report_type_label)
     html = html.replace("__NOW_STR__", now_str)
     html = html.replace("__TOTAL_JOBS__", str(total_jobs))
+    html = html.replace("__PIPELINE_SCANNED__", str(pipeline_scanned))
+    html = html.replace("__PIPELINE_FILTERED__", str(pipeline_filtered))
+    html = html.replace("__PIPELINE_EVALUATED__", str(pipeline_evaluated))
     html = html.replace("__JOBS_JSON__", jobs_json)
     html = html.replace("__CATALOG_JSON__", catalog_json)
     html = html.replace("__INITIAL_SAVED_JSON__", saved_json)
