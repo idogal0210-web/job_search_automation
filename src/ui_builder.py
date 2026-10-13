@@ -397,101 +397,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       align-items: center;
     }
 
-    /* Agent Pipeline Strip */
-    .agent-pipeline-card {
-      margin-bottom: 20px;
-      padding: 18px 22px;
-      background: linear-gradient(155deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.28));
-      border: 1px solid var(--dashboard-edge);
-      border-radius: 24px;
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1), 0 10px 30px rgba(0, 0, 0, 0.2);
-    }
-    .pipeline-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      gap: 12px;
-    }
-    .pipeline-steps-grid {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-      align-items: center;
-      gap: 10px;
-    }
-    .pipeline-step {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(0, 0, 0, 0.22);
-      border: 1px solid var(--dashboard-edge);
-      border-radius: 18px;
-      padding: 10px 14px;
-      transition: border-color 0.2s ease;
-    }
-    .pipeline-step.highlight {
-      background: rgba(220, 255, 114, 0.08);
-      border-color: rgba(220, 255, 114, 0.35);
-    }
-    .pipeline-step-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--dashboard-text);
-      flex-shrink: 0;
-    }
-    .pipeline-step-icon.gold {
-      background: rgba(255, 211, 104, 0.16);
-      color: var(--dashboard-gold);
-    }
-    .pipeline-step-icon.cyan {
-      background: rgba(137, 244, 231, 0.16);
-      color: var(--dashboard-cyan);
-    }
-    .pipeline-step-icon.lime {
-      background: rgba(220, 255, 114, 0.2);
-      color: var(--dashboard-lime);
-    }
-    .pipeline-step-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      min-width: 0;
-    }
-    .pipeline-step-num {
-      font-size: 16px;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.1;
-    }
-    .pipeline-step-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--dashboard-text);
-      line-height: 1.2;
-    }
-    .pipeline-step-desc {
-      font-size: 11px;
-      color: var(--dashboard-muted);
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .pipeline-arrow {
-      color: var(--dashboard-muted);
-      opacity: 0.5;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     /* One-Tap Quick Filter Chips */
     .quick-filter-strip-wrapper {
       margin-bottom: 22px;
@@ -908,20 +813,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         width: 100%;
         justify-content: center;
       }
-      .pipeline-steps-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-      }
-      .pipeline-step {
-        padding: 8px 10px;
-        gap: 8px;
-      }
-      .pipeline-step-desc {
-        display: none;
-      }
-      .pipeline-arrow {
-        display: none !important;
-      }
       .quick-filter-strip-wrapper {
         margin: 0 -14px 18px;
         padding: 0 14px;
@@ -1096,76 +987,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </div>
       </div>
 
-    </div>
-
-    <!-- Agent Scrape Pipeline Transparency Strip (AI Funnel) -->
-    <div class="dashboard-card agent-pipeline-card">
-      <div class="pipeline-header">
-        <div style="display: flex; align-items: center; gap: 10px;">
-          <div class="stat-icon-squircle cyan" style="width: 36px; height: 36px; font-size: 18px; margin-bottom: 0;">
-            <i class="ph-duotone ph-funnel"></i>
-          </div>
-          <div>
-            <h4 style="margin: 0; font-size: 15px; font-weight: 600; color: var(--dashboard-text);">משפך סריקת סוכן AI</h4>
-            <small style="color: var(--dashboard-muted); font-size: 12px;">שקיפות מלאה לצינור הסינון מ-LinkedIn, Comeet ודרושים</small>
-          </div>
-        </div>
-        <div class="dashboard-chip" style="font-size: 11px; color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.08);">
-          <i class="ph-duotone ph-check-circle"></i> סוכן מכויל ופעיל
-        </div>
-      </div>
-      
-      <div class="pipeline-steps-grid">
-        <div class="pipeline-step">
-          <div class="pipeline-step-icon">
-            <i class="ph-duotone ph-radar"></i>
-          </div>
-          <div class="pipeline-step-meta">
-            <span class="pipeline-step-num" id="pipeScanned">__PIPELINE_SCANNED__</span>
-            <span class="pipeline-step-title">נסרקו במקורות</span>
-            <span class="pipeline-step-desc">LinkedIn, Drushim, Comeet</span>
-          </div>
-        </div>
-
-        <div class="pipeline-arrow"><i class="ph-bold ph-arrow-left"></i></div>
-
-        <div class="pipeline-step">
-          <div class="pipeline-step-icon gold">
-            <i class="ph-duotone ph-funnel-simple"></i>
-          </div>
-          <div class="pipeline-step-meta">
-            <span class="pipeline-step-num" id="pipeFiltered">__PIPELINE_FILTERED__</span>
-            <span class="pipeline-step-title">סוננו טכנית</span>
-            <span class="pipeline-step-desc">משרות לא רלוונטיות ומשמרות ללא SCADA</span>
-          </div>
-        </div>
-
-        <div class="pipeline-arrow"><i class="ph-bold ph-arrow-left"></i></div>
-
-        <div class="pipeline-step">
-          <div class="pipeline-step-icon cyan">
-            <i class="ph-duotone ph-cpu"></i>
-          </div>
-          <div class="pipeline-step-meta">
-            <span class="pipeline-step-num" id="pipeEvaluated">__PIPELINE_EVALUATED__</span>
-            <span class="pipeline-step-title">נותחו ב-Gemini AI</span>
-            <span class="pipeline-step-desc">כיול מותאם להנדסאי מכונות</span>
-          </div>
-        </div>
-
-        <div class="pipeline-arrow"><i class="ph-bold ph-arrow-left"></i></div>
-
-        <div class="pipeline-step highlight">
-          <div class="pipeline-step-icon lime">
-            <i class="ph-duotone ph-sparkle"></i>
-          </div>
-          <div class="pipeline-step-meta">
-            <span class="pipeline-step-num" id="pipeMatched">__TOTAL_JOBS__</span>
-            <span class="pipeline-step-title">עברו סף התאמה</span>
-            <span class="pipeline-step-desc">ציון 75+ במקבץ המוצג</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Quick Filter Chips Strip (One-Tap Filtering) -->
@@ -2902,18 +2723,11 @@ def generate_interactive_html(jobs, rejected_links, title="דוח משרות א�
     saved_json = json.dumps(list(saved_links) if isinstance(saved_links, (set, list)) else [], ensure_ascii=False)
     rejected_json = json.dumps(list(rejected_links) if isinstance(rejected_links, (set, list)) else [], ensure_ascii=False)
 
-    pipeline_scanned = max(120, total_jobs * 8)
-    pipeline_evaluated = min(pipeline_scanned, total_jobs + 8)
-    pipeline_filtered = pipeline_scanned - pipeline_evaluated
-
     html = HTML_TEMPLATE
     html = html.replace("__TITLE__", title)
     html = html.replace("__REPORT_TYPE_LABEL__", report_type_label)
     html = html.replace("__NOW_STR__", now_str)
     html = html.replace("__TOTAL_JOBS__", str(total_jobs))
-    html = html.replace("__PIPELINE_SCANNED__", str(pipeline_scanned))
-    html = html.replace("__PIPELINE_FILTERED__", str(pipeline_filtered))
-    html = html.replace("__PIPELINE_EVALUATED__", str(pipeline_evaluated))
     html = html.replace("__JOBS_JSON__", jobs_json)
     html = html.replace("__CATALOG_JSON__", catalog_json)
     html = html.replace("__INITIAL_SAVED_JSON__", saved_json)
