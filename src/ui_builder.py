@@ -2166,7 +2166,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     const currentCardCount = document.querySelectorAll('.job-card').length;
     const availableCount = getAllAvailableJobs().length;
-    if (currentCardCount < availableCount) {
+    if (currentCardCount !== availableCount) {
       renderCards();
     }
 
@@ -2246,6 +2246,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         matchesQuick = (cScore >= 85);
       } else if (activeQuickChip === 'salary_verified') {
         matchesQuick = (card.getAttribute('data-salary-verified') === 'true');
+      }
+
+      let matchesSearch = true;
+      if (searchInput) {
+        const cardText = card.textContent.toLowerCase();
+        matchesSearch = cardText.includes(searchInput);
       }
 
       if (matchesTab && matchesSector && matchesQuick && matchesSearch && state !== 'purged') {
