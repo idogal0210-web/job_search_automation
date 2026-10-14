@@ -273,32 +273,60 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     }
 
-    /* Job Card Styling */
+    /* Job Cards Grid Container (Cubes Layout) */
+    #cardsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+      gap: 22px;
+      margin-bottom: 28px;
+      align-items: start;
+    }
+    @media (max-width: 820px) {
+      #cardsContainer {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+
+    /* Job Card Cube Styling */
     .job-card {
-      margin-bottom: 24px;
+      margin-bottom: 0;
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      transition: border-color 0.2s ease, transform 0.2s ease;
+      justify-content: flex-start;
+      gap: 15px;
+      border-radius: 26px;
+      padding: 22px;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
       position: relative;
+      background: var(--dashboard-glass);
+      border: 1px solid var(--dashboard-edge);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
     }
     .job-card:hover {
       border-color: rgba(255, 255, 255, 0.36);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.38);
     }
     .job-card-topbar {
       display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .job-card-topbar-primary {
+      display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 8px;
+      width: 100%;
     }
-    .job-card-topbar-tags {
+    .job-card-topbar-meta {
       display: flex;
       align-items: center;
+      gap: 6px;
       flex-wrap: wrap;
-      gap: 8px;
     }
     .badge-score {
       padding: 5px 14px;
@@ -369,31 +397,26 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       flex: 1;
       min-width: 0;
     }
-    .job-header-text h2 {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--dashboard-text);
-      margin: 0 0 6px;
-      line-height: 1.35;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-    }
     .job-company-name {
-      color: #fff;
-    }
-    .job-title-sep {
-      color: var(--dashboard-muted);
-      font-weight: 400;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--dashboard-cyan);
+      margin-bottom: 2px;
+      letter-spacing: 0.2px;
+      overflow-wrap: anywhere;
     }
     .job-title-text {
-      color: #e5e9e2;
+      font-size: 17.5px;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 0 0 8px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
     }
     .job-header-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
     }
 
@@ -581,23 +604,24 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     /* Job Card Actions Bar */
     .job-actions-bar {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      flex-direction: column;
+      gap: 9px;
       padding-top: 14px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      flex-wrap: wrap;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: auto;
+      width: 100%;
     }
     .action-btn-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
     }
     .btn-triage {
-      min-height: 44px;
-      padding: 9px 18px;
-      font-size: 14px;
+      width: 100%;
+      min-height: 40px;
+      padding: 8px 10px;
+      font-size: 13px;
       font-weight: 600;
       border-radius: 999px;
       cursor: pointer;
@@ -607,7 +631,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
+      white-space: nowrap;
     }
     .btn-triage:hover {
       background: rgba(255, 255, 255, 0.2);
@@ -632,15 +658,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       color: #000000 !important;
     }
     .btn-apply {
+      width: 100%;
       min-height: 44px;
-      padding: 10px 24px;
-      font-size: 15px;
+      padding: 9px 18px;
+      font-size: 14px;
       font-weight: 600;
       border-radius: 999px;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
+      white-space: nowrap;
       background: var(--dashboard-lime);
       color: #000000 !important;
       border: 1px solid #ebffab99;
@@ -779,8 +808,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       .job-card-main-header {
         gap: 12px;
       }
-      .job-header-text h2 {
-        font-size: 17px;
+      .job-title-text {
+        font-size: 16px;
       }
       .job-actions-bar {
         flex-direction: column;
@@ -1852,17 +1881,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       card.innerHTML = `
         <!-- Top Meta Row -->
         <div class="job-card-topbar">
-          <div class="job-card-topbar-tags">
+          <div class="job-card-topbar-primary">
             <span class="dashboard-chip" style="${sectorChipStyle}">${sectorBadge}</span>
-            <span class="dashboard-chip" style="color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.2);">
+            <div class="badge-score ${scoreClass}">
+              <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
+            </div>
+          </div>
+          <div class="job-card-topbar-meta">
+            <span class="dashboard-chip" style="color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.2); font-size: 11px; padding: 2px 8px;">
               <i class="ph-duotone ph-calendar-blank"></i> ${jobDate}
             </span>
             <span class="dashboard-chip" style="${sourceChipStyle}; font-size: 11px; padding: 2px 8px;">
               <i class="ph-duotone ${sourceIcon}"></i> ${sourceName}
             </span>
-          </div>
-          <div class="badge-score ${scoreClass}">
-            <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
           </div>
         </div>
 
@@ -1870,11 +1901,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <div class="job-card-main-header">
           ${logoHtml}
           <div class="job-header-text">
-            <h2>
-              <span class="job-company-name">${company}</span>
-              <span class="job-title-sep">—</span>
-              <span class="job-title-text">${title}</span>
-            </h2>
+            <div class="job-company-name" dir="auto">${company}</div>
+            <h2 class="job-title-text" dir="auto">${title}</h2>
             <div class="job-header-chips">
               <span class="dashboard-chip" style="font-size: 12px; padding: 3px 10px;">
                 <i class="ph-duotone ph-map-pin"></i> ${loc}
