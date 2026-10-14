@@ -1703,7 +1703,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       details.classList.remove('expanded');
       btn.classList.remove('expanded');
       btn.setAttribute('aria-expanded', 'false');
-      btn.innerHTML = '<span>הרחב ניתוח מלא (דרישות, תקציר ורקע חברה)</span> <i class="ph-bold ph-caret-down"></i>';
+      btn.innerHTML = '<span>הרחב ניתוח מלא (תקציר, התאמה ורקע חברה)</span> <i class="ph-bold ph-caret-down"></i>';
     } else {
       details.classList.add('expanded');
       btn.classList.add('expanded');
@@ -1915,26 +1915,26 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           </div>
         </div>
 
-        <!-- AI Match Summary Banner (Quick-Scan) -->
+        <!-- Company Requirements Banner (Direct View on Cube) -->
         <div class="job-quick-summary">
           <div class="quick-summary-label">
-            <i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:
+            <i class="ph-duotone ph-check-square"></i> דרישות החברה עבור המשרה:
           </div>
-          <div class="quick-summary-text">${quickInsight}</div>
+          <div class="quick-summary-text">${companyReqs}</div>
         </div>
 
         <!-- Progressive Disclosure Toggle Button -->
         <button type="button" class="btn-toggle-details" onclick="toggleCardDetails(this)" aria-expanded="false">
-          <span>הרחב ניתוח מלא (דרישות, תקציר ורקע חברה)</span>
+          <span>הרחב ניתוח מלא (תקציר, התאמה ורקע חברה)</span>
           <i class="ph-bold ph-caret-down"></i>
         </button>
 
         <!-- Collapsible Full Information Panels -->
         <div class="job-details-collapsible">
           <div class="job-boxes-grid">
-            <div class="job-box">
-              <strong><i class="ph-duotone ph-check-square"></i> דרישות החברה עבור המשרה:</strong>
-              <span>${companyReqs}</span>
+            <div class="job-box highlight">
+              <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
+              <span>${quickInsight}</span>
             </div>
             <div class="job-box">
               <strong><i class="ph-duotone ph-buildings"></i> תחום ומוצר החברה:</strong>
