@@ -38,7 +38,7 @@ Evaluate relevant dimensions:
 - **Functional correctness:** Does the code run without crashes or uncaught exceptions?
 - **Task completion:** Were all configured search sources scraped and evaluated?
 - **Output accuracy:** Are the generated Match Scores and explanations faithful to the job description?
-- **Instruction compliance:** Are blacklisted companies (`Raycatch`, `Energean`, `Chevron`, `INGL`) strictly eliminated?
+- **Instruction compliance:** Are blacklisted companies (`Energean`, `Chevron`, `INGL`) strictly eliminated?
 - **Reliability:** Does the pipeline gracefully recover from network timeouts or API rate limits?
 - **Error recovery:** Does state rollback or record failure without corrupting SQLite/JSON state?
 - **Latency & Cost:** Token consumption and execution time per job evaluation.

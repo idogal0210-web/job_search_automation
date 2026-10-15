@@ -56,7 +56,6 @@ description: מקור האמת הבלעדי (Single Source of Truth) לארכי�
 * **Energean (אנרג'יאן)** – המעסיק הנוכחי.
 * **INGL (נתג"ז / נתיבי הגז הטבעי לישראל)** – ממשק עבודה ישיר קיים.
 * **Chevron (שברון)** – שותפות תפעולית הדוקה.
-* **Raycatch (רייקאץ')** – מוחרגת קשיחה ברמת הקוד.
 * **משרות מטה ואדמיניסטרציה:** פסילה דטרמיניסטית של משרות HR, כספים, שיווק, מכירות, וניקיון עוד לפני הפנייה ל-Gemini.
 
 ---
@@ -78,7 +77,7 @@ description: מקור האמת הבלעדי (Single Source of Truth) לארכי�
 תן בונוס בציון ההתאמה ובבחירה ל-Top Picks עבור:
 1. **חברות Scale-up ממומנות בצמיחה מהירה:**
    * רחפנים וכטב״ם: XTEND, Percepto, Spear UAV, Robotican, Steadicopter, Third Eye Systems, High Lander.
-   * אנרגיה: Doral, Enlight, Nofar, Augwind.
+   * אנרגיה: Doral, Enlight, Nofar, Augwind, Raycatch.
 2. **חברות ענק מבוססות מובילות שכר ותנאים:**
    * ביטחוני: אלביט מערכות (Elbit), רפאל (Rafael), התעשייה האווירית (IAI).
    * אנרגיה ותשתיות: OPC Energy, Ormat Technologies, דליה אנרגיות (Dalia Power), אדלטק (Edeltech), שיכון ובינוי אנרגיה.
