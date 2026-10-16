@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "source": "User-supplied Pasted text(1).txt, 2026-10-16",
+  "excluded_employers": [
+    "Energean",
+    "INGL",
+    "נתיבי הגז הטבעי לישראל",
+    "נתג״ז",
+    "Chevron"
+  ],
+  "excluded_role_families": [
+    "HR",
+    "finance",
+    "marketing",
+    "sales",
+    "cleaning",
+    "nontechnical administrative roles",
+    "security/CCTV monitoring",
+    "customer-service call centers"
+  ],
+  "domains": {
+    "energy": {
+      "threshold": 60,
+      "priority": [
+        "Solar PV",
+        "natural gas",
+        "power stations"
+      ],
+      "also_consider": [
+        "BESS",
+        "electrical grid",
+        "thermal systems",
+        "turbines",
+        "engines",
+        "industrial facilities"
+      ]
+    },
+    "uav_defence": {
+      "threshold": 70,
+      "areas": [
+        "UAV integration",
+        "flight-test operations",
+        "mechanical assembly",
+        "C-UAS",
+        "payloads",
+        "avionics"
+      ]
+    }
+  },
+  "control_room_rule": {
+    "require": "Explicit industrial SCADA/telemetry OR explicitly advertised salary >= 18000 ILS per month",
+    "precedence": "Excluded nontechnical/security/customer-service roles remain excluded even if salary is high. Unknown salary is not evidence that the salary threshold is met."
+  },
+  "minimum_distinct_matches": 3,
+  "maximum_daily_picks": 5,
+  "target_companies": [
+    "XTEND",
+    "Percepto",
+    "Spear UAV",
+    "Robotican",
+    "Steadicopter",
+    "Third Eye Systems",
+    "High Lander",
+    "Doral",
+    "Enlight",
+    "Nofar",
+    "Augwind",
+    "Raycatch",
+    "Elbit",
+    "Rafael",
+    "IAI",
+    "OPC Energy",
+    "Ormat Technologies",
+    "Dalia Power",
+    "Edeltech",
+    "Shikun & Binui Energy"
+  ],
+  "target_company_note": "User preferences, not verified assertions about current funding, growth or compensation. Never override mandatory requirements.",
+  "score_policy": "Use existing inspected and documented scoring formula. Without one, do not fabricate a numerical score or alter production ranking without approval.",
+  "insufficient_evidence_policy": "NEEDS_REVIEW; no automatic shortlist inclusion until requirements and three distinct matches are evidenced.",
+  "schedule_intent": {
+    "local_time": "07:17",
+    "timezone": "Asia/Jerusalem",
+    "days": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "status": "Imported intent only; verify actual workflow and DST behavior. Do not create schedule automatically."
+  }
+}

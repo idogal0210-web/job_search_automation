@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "status": "configured",
+  "scope": "project",
+  "project_root": "/Users/ido/.gemini/antigravity/scratch/job_search_automation",
+  "project_identity": "job_search_automation",
+  "approved_by_user": true,
+  "evidence": [
+    "daily_job_search_unified.py",
+    "src/evaluators.py",
+    "docs/index.html"
+  ]
+}
