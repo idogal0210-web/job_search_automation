@@ -1046,39 +1046,246 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       color: #11150e !important;
     }
 
-    /* Compact List View Mode */
+    /* Proportional & Professional List View Mode */
     #cardsContainer.view-list {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
     #cardsContainer.view-list .job-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 240px;
+      grid-template-areas:
+        "topbar  actions"
+        "header  actions"
+        "summary actions"
+        "toggle  toggle"
+        "details details";
+      column-gap: 24px;
+      row-gap: 12px;
+      align-items: center;
+      padding: 18px 22px;
       border-radius: 20px;
-      padding: 16px 20px;
-      gap: 12px;
-      background: rgba(17, 24, 39, 0.7);
+      background: rgba(17, 24, 39, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+      height: auto;
+      box-sizing: border-box;
     }
     #cardsContainer.view-list .job-card:hover {
       transform: translateX(-4px);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
     }
     #cardsContainer.view-list .job-card-topbar {
+      grid-area: topbar;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
       padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      width: 100%;
+      flex-wrap: wrap;
     }
-    #cardsContainer.view-list .job-quick-summary {
-      padding: 10px 14px;
-      font-size: 13px;
+    #cardsContainer.view-list .job-card-topbar-primary {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: auto;
     }
-    #cardsContainer.view-list .job-title-text {
-      font-size: 16.5px;
-      margin: 0 0 6px;
+    #cardsContainer.view-list .job-card-topbar-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-inline-start: auto;
+    }
+    #cardsContainer.view-list .job-card-main-header {
+      grid-area: header;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin: 2px 0;
+      width: 100%;
     }
     #cardsContainer.view-list .job-company-logo {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border-radius: 12px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    #cardsContainer.view-list .job-header-text {
+      flex: 1;
+      min-width: 0;
+    }
+    #cardsContainer.view-list .job-company-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dashboard-cyan);
+      margin-bottom: 2px;
+    }
+    #cardsContainer.view-list .job-title-text {
+      font-size: 17.5px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.3;
+      margin: 0 0 6px;
+    }
+    #cardsContainer.view-list .job-header-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 2px;
+    }
+    #cardsContainer.view-list .ai-score-drivers {
+      margin: 4px 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+    }
+    #cardsContainer.view-list .job-quick-summary {
+      grid-area: summary;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 9px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 8px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #cardsContainer.view-list .quick-summary-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--dashboard-cyan);
+      white-space: nowrap;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    #cardsContainer.view-list .quick-summary-text {
+      color: #cbd5e1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
     }
     #cardsContainer.view-list .job-actions-bar {
-      padding-top: 10px;
+      grid-area: actions;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+      gap: 10px;
+      border-top: none;
+      border-inline-start: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 0;
+      margin-top: 0;
+      padding-inline-start: 22px;
+      height: 100%;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    #cardsContainer.view-list .btn-apply {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 14px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(220, 255, 114, 0.22);
+      order: 1;
+    }
+    #cardsContainer.view-list .action-btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      width: 100%;
+      order: 2;
+    }
+    #cardsContainer.view-list .btn-triage {
+      min-height: 36px;
+      padding: 6px 8px;
+      font-size: 11.5px;
+      border-radius: 10px;
+    }
+    #cardsContainer.view-list .btn-toggle-details {
+      grid-area: toggle;
+      grid-column: 1 / -1;
+      min-height: 32px;
+      padding: 6px 14px;
+      font-size: 12px;
+      border-radius: 10px;
+      margin-top: 2px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed rgba(255, 255, 255, 0.12);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    #cardsContainer.view-list .btn-toggle-details:hover {
+      background: rgba(137, 244, 231, 0.06);
+      border-color: rgba(137, 244, 231, 0.3);
+    }
+    #cardsContainer.view-list .job-details-collapsible {
+      grid-area: details;
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+    #cardsContainer.view-list .job-boxes-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    #cardsContainer.view-list .job-box {
+      padding: 12px 16px;
+      font-size: 13.5px;
+      border-radius: 14px;
+    }
+
+    @media (max-width: 860px) {
+      #cardsContainer.view-list .job-card {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+      }
+      #cardsContainer.view-list .job-card-topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      #cardsContainer.view-list .job-card-topbar-primary {
+        justify-content: space-between;
+        width: 100%;
+      }
+      #cardsContainer.view-list .job-card-topbar-meta {
+        margin-inline-start: 0;
+      }
+      #cardsContainer.view-list .job-quick-summary {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      #cardsContainer.view-list .job-actions-bar {
+        border-inline-start: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-inline-start: 0;
+        padding-top: 12px;
+        height: auto;
+      }
+      #cardsContainer.view-list .job-boxes-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -2549,7 +2756,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       }
 
       if (matchesTab && matchesSector && matchesRegion && matchesQuick && matchesSearch && state !== 'purged') {
-        card.style.display = 'flex';
+        card.style.display = '';
         visibleCount++;
       } else {
         card.style.display = 'none';
