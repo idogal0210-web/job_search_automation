@@ -806,6 +806,81 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       overflow-y: auto;
       margin-bottom: 0;
     }
+    .job-details-modal-box {
+      max-width: 640px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      padding: 0 !important;
+      overflow: hidden;
+      border-radius: 24px;
+      background: #111827;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+    .job-modal-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(17, 24, 39, 0.98);
+      flex-shrink: 0;
+    }
+    .job-modal-close-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .job-modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+    .job-modal-body {
+      padding: 18px 20px 24px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .job-modal-bottom-bar {
+      padding: 12px 18px 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(15, 20, 31, 0.98);
+      backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .job-modal-bottom-bar .btn-apply {
+      width: 100%;
+      min-height: 44px;
+      font-size: 14.5px;
+      font-weight: 700;
+    }
+    .job-modal-triage-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+    }
+    .job-modal-triage-group .btn-triage {
+      min-height: 38px;
+      font-size: 12.5px;
+    }
 
     /* Toast Notification */
     .dashboard-toast {
@@ -837,21 +912,21 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       pointer-events: auto;
     }
 
-    /* Responsive Media Queries */
-    @media (max-width: 750px) {
+    /* Responsive Media Queries (Mobile & iPhone First) */
+    @media (max-width: 768px) {
       body, html {
         overflow-x: hidden;
       }
       .dashboard-app {
-        padding: 16px 14px 24px;
+        padding: 14px 12px 24px;
         overflow-x: hidden;
       }
       .dashboard-sidebar {
-        border-radius: 28px;
+        border-radius: 24px;
         flex-direction: column;
         align-items: stretch;
-        gap: 14px;
-        padding: 14px;
+        gap: 12px;
+        padding: 14px 12px;
       }
       .dashboard-sidebar-brand {
         justify-content: space-between;
@@ -860,35 +935,51 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       .header-progress-hub {
         flex-direction: column;
         width: 100%;
-        gap: 12px;
+        gap: 10px;
       }
       .header-progress-info {
         width: 100%;
         max-width: 100%;
       }
+
+      /* Compact 4 Header Stat Cubes on iPhone */
       .header-stat-cubes {
-        width: 100%;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 6px;
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        padding: 2px 0 !important;
+        width: 100% !important;
       }
       .stat-cube-btn {
-        min-width: 0;
-        padding: 6px 3px;
-        border-radius: 14px;
+        min-width: 0 !important;
+        padding: 8px 3px !important;
+        border-radius: 16px !important;
+        height: auto !important;
       }
       .stat-cube-icon {
-        width: 28px;
-        height: 28px;
-        font-size: 14px;
+        width: 22px !important;
+        height: 22px !important;
+        border-radius: 8px !important;
+        margin-bottom: 2px !important;
+        font-size: 12px !important;
+      }
+      .stat-cube-icon i {
+        font-size: 12px !important;
       }
       .stat-cube-count {
-        font-size: 15px;
+        font-size: 1.1rem !important;
+        line-height: 1.1 !important;
+        margin: 2px 0 !important;
+        font-weight: 700 !important;
       }
       .stat-cube-label {
-        font-size: 10px;
-        white-space: normal;
-        line-height: 1.15;
+        font-size: 0.62rem !important;
+        line-height: 1.15 !important;
+        white-space: normal !important;
+        letter-spacing: -0.2px !important;
+        word-break: break-word !important;
       }
+
       .header-actions-group {
         justify-content: space-between;
         width: 100%;
@@ -897,47 +988,283 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         flex-direction: column;
         align-items: flex-start;
         gap: 6px;
-        padding: 0 4px 12px;
+        padding: 0 4px 10px;
       }
-      .dashboard-card {
-        border-radius: 26px;
-        padding: 20px 16px;
+
+      /* Compact Search & Filter Section on Mobile */
+      .dashboard-stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+        margin-bottom: 12px !important;
       }
-      .job-card-topbar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
+      .dashboard-stats-grid > .dashboard-card:nth-child(2) {
+        display: none !important; /* Hide sector chart on mobile to save ~250px vertical space */
       }
-      .job-card-topbar-tags {
-        width: 100%;
-        justify-content: space-between;
+      .dashboard-stats-grid > .dashboard-card:first-child {
+        padding: 10px 14px 12px !important;
+        border-radius: 18px !important;
       }
-      .job-card-main-header {
-        gap: 12px;
+      .dashboard-stats-grid > .dashboard-card:first-child p {
+        display: none !important; /* Hide descriptive paragraph */
       }
-      .job-title-text {
-        font-size: 16px;
+      .dashboard-stats-grid > .dashboard-card:first-child > div:first-child {
+        display: none !important; /* Hide decorative header tags */
       }
-      .job-actions-bar {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
+      .dashboard-stats-grid > .dashboard-card:first-child h3 {
+        font-size: 14.5px !important;
+        margin: 0 0 8px !important;
+        color: #ffffff !important;
       }
-      .action-btn-group {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        width: 100%;
+      .controls-inputs-stack {
+        gap: 6px !important;
       }
-      .btn-triage {
-        width: 100%;
-        justify-content: center;
-        min-height: 44px;
+      .controls-inputs-stack input,
+      .controls-inputs-stack select {
+        padding: 6px 10px !important;
+        font-size: 12.5px !important;
+        min-height: 36px !important;
+        border-radius: 10px !important;
       }
-      .btn-apply {
-        width: 100%;
-        justify-content: center;
-        min-height: 44px;
+      .controls-buttons-row {
+        gap: 6px !important;
+      }
+      .controls-buttons-row .tool-btn {
+        min-height: 34px !important;
+        padding: 5px 10px !important;
+        font-size: 11.5px !important;
+        border-radius: 10px !important;
+      }
+
+      /* 2 Cubes Per Row in Grid Mode on iPhone */
+      #cardsContainer:not(.view-list) {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+        margin-bottom: 18px !important;
+      }
+      #cardsContainer:not(.view-list) .job-card {
+        padding: 10px 8px !important;
+        border-radius: 16px !important;
+        gap: 6px !important;
+        cursor: pointer !important;
+        min-height: 175px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        background: rgba(17, 24, 39, 0.75) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      }
+      #cardsContainer:not(.view-list) .job-card:active {
+        transform: scale(0.98) !important;
+        border-color: var(--dashboard-cyan) !important;
+      }
+      #cardsContainer:not(.view-list) .job-quick-summary,
+      #cardsContainer:not(.view-list) .btn-toggle-details,
+      #cardsContainer:not(.view-list) .job-details-collapsible,
+      #cardsContainer:not(.view-list) .job-actions-bar,
+      #cardsContainer:not(.view-list) .ai-score-drivers,
+      #cardsContainer:not(.view-list) .job-card-topbar-meta {
+        display: none !important;
+      }
+      #cardsContainer:not(.view-list) .job-card-topbar {
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 4px !important;
+      }
+      #cardsContainer:not(.view-list) .job-card-topbar-primary {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 4px !important;
+      }
+      #cardsContainer:not(.view-list) .job-card-topbar-primary > div:first-child .dashboard-chip {
+        display: none !important;
+      }
+      #cardsContainer:not(.view-list) .badge-score {
+        padding: 2px 6px !important;
+        font-size: 10.5px !important;
+        border-radius: 999px !important;
+      }
+      #cardsContainer:not(.view-list) .btn-star {
+        width: 24px !important;
+        height: 24px !important;
+        font-size: 13px !important;
+        border-radius: 7px !important;
+      }
+      #cardsContainer:not(.view-list) .job-card-main-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+        flex: 1 !important;
+        margin: 0 !important;
+      }
+      #cardsContainer:not(.view-list) .job-company-logo {
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 8px !important;
+        margin: 0 !important;
+      }
+      #cardsContainer:not(.view-list) .job-company-name {
+        font-size: 11px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 130px !important;
+      }
+      #cardsContainer:not(.view-list) .job-title-text {
+        font-size: 12.5px !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        margin: 1px 0 3px !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+      }
+      #cardsContainer:not(.view-list) .job-header-chips {
+        gap: 3px !important;
+        margin-top: auto !important;
+      }
+      #cardsContainer:not(.view-list) .job-header-chips .dashboard-chip {
+        font-size: 9.5px !important;
+        padding: 1px 5px !important;
+        max-width: 125px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+
+      /* Proportional Mobile List View Layout on iPhone */
+      #cardsContainer.view-list {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+      }
+      #cardsContainer.view-list .job-card {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 10px 12px !important;
+        border-radius: 16px !important;
+        background: rgba(17, 24, 39, 0.75) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        cursor: pointer !important;
+        min-height: 72px !important;
+        gap: 10px !important;
+      }
+      #cardsContainer.view-list .job-card:active {
+        background: rgba(255, 255, 255, 0.05) !important;
+      }
+      #cardsContainer.view-list .job-quick-summary,
+      #cardsContainer.view-list .btn-toggle-details,
+      #cardsContainer.view-list .job-details-collapsible,
+      #cardsContainer.view-list .job-actions-bar,
+      #cardsContainer.view-list .ai-score-drivers,
+      #cardsContainer.view-list .job-card-topbar-meta {
+        display: none !important;
+      }
+      #cardsContainer.view-list .job-card-main-header {
+        order: 1 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 10px !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+      }
+      #cardsContainer.view-list .job-company-logo {
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 10px !important;
+        flex-shrink: 0 !important;
+        margin: 0 !important;
+      }
+      #cardsContainer.view-list .job-header-text {
+        flex: 1 !important;
+        min-width: 0 !important;
+      }
+      #cardsContainer.view-list .job-company-name {
+        font-size: 11px !important;
+        color: var(--dashboard-cyan) !important;
+        margin-bottom: 2px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+      #cardsContainer.view-list .job-title-text {
+        font-size: 13.5px !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        line-height: 1.25 !important;
+        margin: 0 0 2px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+      #cardsContainer.view-list .job-header-chips {
+        gap: 4px !important;
+      }
+      #cardsContainer.view-list .job-header-chips .dashboard-chip {
+        font-size: 10px !important;
+        padding: 1px 6px !important;
+      }
+      #cardsContainer.view-list .job-card-topbar {
+        order: 2 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+        width: auto !important;
+        flex-shrink: 0 !important;
+      }
+      #cardsContainer.view-list .job-card-topbar-primary {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        gap: 4px !important;
+        width: auto !important;
+      }
+      #cardsContainer.view-list .job-card-topbar-primary > div:first-child {
+        order: 2 !important;
+      }
+      #cardsContainer.view-list .job-card-topbar-primary > div:first-child .dashboard-chip {
+        display: none !important;
+      }
+      #cardsContainer.view-list .job-card-topbar-primary .badge-score {
+        order: 1 !important;
+        padding: 2px 7px !important;
+        font-size: 11px !important;
+      }
+      #cardsContainer.view-list .btn-star {
+        width: 26px !important;
+        height: 26px !important;
+        font-size: 13px !important;
+        border-radius: 8px !important;
+      }
+
+      /* Modal Sheet Styling on iPhone */
+      #jobDetailsModal {
+        padding: 0 !important;
+        align-items: flex-end !important;
+      }
+      .job-details-modal-box {
+        max-width: 100% !important;
+        width: 100% !important;
+        max-height: 94vh !important;
+        height: 94vh !important;
+        border-radius: 24px 24px 0 0 !important;
+        border-bottom: none !important;
+      }
+      .job-modal-body {
+        padding: 14px 16px 20px !important;
       }
       .context-action-bar {
         flex-direction: column;
@@ -950,11 +1277,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         justify-content: center;
       }
       .quick-filter-strip-wrapper {
-        margin: 0 -14px 18px;
-        padding: 0 14px;
-      }
-      .btn-toggle-details {
-        min-height: 44px;
+        margin: 0 -12px 14px;
+        padding: 0 12px;
       }
     }
 
@@ -1659,6 +1983,32 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     </div>
   </div>
 
+  <!-- Dedicated Mobile Job Details Modal / Screen -->
+  <div id="jobDetailsModal" class="dashboard-modal-backdrop hidden" onclick="if(event.target===this)closeJobModal()">
+    <div class="dashboard-card dashboard-modal-box job-details-modal-box" id="jobModalBox">
+      <!-- Modal Header Bar -->
+      <div class="job-modal-header-bar">
+        <button type="button" onclick="closeJobModal()" class="job-modal-close-btn" title="סגור וחזור לרשימת המשרות">
+          <i class="ph-bold ph-arrow-right"></i>
+          <span>חזור למשרות</span>
+        </button>
+        <div id="jobModalTopActions" style="display: flex; align-items: center; gap: 8px;">
+          <!-- Dynamically populated: Star button and Match score badge -->
+        </div>
+      </div>
+
+      <!-- Scrollable Modal Body -->
+      <div id="jobModalBody" class="job-modal-body">
+        <!-- Dynamically populated: Full job info, drivers, analysis boxes, and requirements -->
+      </div>
+
+      <!-- Sticky Bottom Action Hub -->
+      <div id="jobModalBottomBar" class="job-modal-bottom-bar">
+        <!-- Dynamically populated: Apply link and Save/Reject buttons -->
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div id="toast" class="dashboard-toast">
     <span id="toastIcon"><i class="ph-duotone ph-bell-simple"></i></span>
@@ -1678,6 +2028,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   const STARRED_STORAGE_KEY = 'ido_job_starred_store';
   const VIEW_MODE_KEY = 'ido_job_view_mode';
   let currentViewMode = 'grid';
+  let allJobsMap = {};
   try {
     currentViewMode = localStorage.getItem(VIEW_MODE_KEY) || 'grid';
   } catch(e) {}
@@ -2603,10 +2954,170 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           </a>
         </div>
       `;
+
+      allJobsMap[id] = job;
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.btn-star') || e.target.closest('.btn-triage') || e.target.closest('.btn-apply') || e.target.closest('.btn-toggle-details')) {
+          return;
+        }
+        if (window.innerWidth <= 768) {
+          openJobModal(id);
+        }
+      });
+
       container.appendChild(card);
     });
 
     updateUI();
+  }
+
+  function openJobModal(id) {
+    const job = allJobsMap[id];
+    if (!job) return;
+
+    const modal = document.getElementById('jobDetailsModal');
+    const headerActions = document.getElementById('jobModalTopActions');
+    const body = document.getElementById('jobModalBody');
+    const bottomBar = document.getElementById('jobModalBottomBar');
+    if (!modal || !headerActions || !body || !bottomBar) return;
+
+    const score = Number(job.match_score) || 85;
+    const company = stripEmojis(job.company || 'חברה');
+    const title = stripEmojis(job.title || 'משרה ללא כותרת');
+    const link = job.link || '#';
+    const loc = stripEmojis(job.location || 'ישראל / היברידי');
+    const jobDate = job.date || 'היום';
+    const classifiedSector = classifyJobSector(job);
+    const domain = stripEmojis(job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה');
+    const jobSum = stripEmojis(job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.');
+    const strengths = stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.');
+    const companyReqs = stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה.');
+    const quickInsight = strengths || jobSum;
+    const logoHtml = getCompanyLogoHtml(company, job.logo);
+    const salaryRange = stripEmojis(job.salary_range || '12,000 - 15,000 ₪');
+    const salaryType = job.salary_source_type || 'sector_benchmark';
+    const salaryLabel = stripEmojis(job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${company}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף`)));
+
+    let scoreClass = 'badge-score-high';
+    if (score < 80) scoreClass = 'badge-score-fair';
+    else if (score < 90) scoreClass = 'badge-score-med';
+
+    const isStarred = Boolean(starredJobs[id]);
+    const state = jobStates[id] || 'pending';
+
+    headerActions.innerHTML = `
+      <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\\'")}', event); updateModalStar('${id.replace(/'/g, "\\'")}');" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
+        <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
+      </button>
+      <div class="badge-score ${scoreClass}">
+        <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
+      </div>
+    `;
+
+    const drivers = getAiScoreDrivers(job, score, classifiedSector);
+    let driversHtml = '';
+    if (drivers.length > 0) {
+      const chipsHtml = drivers.map(d => `<span class="driver-chip ${d.type}"><i class="ph-duotone ${d.icon}"></i> ${d.label}</span>`).join('');
+      driversHtml = `
+        <div class="ai-score-drivers" style="margin: 8px 0 0;">
+          <span class="drivers-label"><i class="ph-duotone ph-sparkle"></i> גורמי התאמה:</span>
+          ${chipsHtml}
+        </div>
+      `;
+    }
+
+    const expChipHtml = getExperienceChip(job);
+
+    body.innerHTML = `
+      <div style="display: flex; align-items: flex-start; gap: 14px;">
+        ${logoHtml}
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-size: 13.5px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 2px;" dir="auto">${company}</div>
+          <h2 style="font-size: 17.5px; font-weight: 700; color: #fff; margin: 0 0 6px; line-height: 1.3;" dir="auto">${title}</h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
+            <span class="dashboard-chip" style="font-size: 11px; padding: 3px 8px;">
+              <i class="ph-duotone ph-map-pin"></i> ${loc}
+            </span>
+            <span class="dashboard-chip" style="font-size: 11px; padding: 3px 8px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08);">
+              <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;">(${salaryLabel})</small>
+            </span>
+            ${expChipHtml}
+          </div>
+          ${driversHtml}
+        </div>
+      </div>
+
+      <div class="job-quick-summary" style="background: rgba(137, 244, 231, 0.05); border: 1px solid rgba(137, 244, 231, 0.22); border-radius: 14px; padding: 12px 14px;">
+        <div class="quick-summary-label" style="font-size: 12px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 4px;">
+          <i class="ph-duotone ph-check-square"></i> דרישות החברה עבור המשרה:
+        </div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: #e2e8df;">${companyReqs}</div>
+      </div>
+
+      <div class="job-boxes-grid" style="grid-template-columns: 1fr; gap: 10px;">
+        <div class="job-box highlight">
+          <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
+          <span>${quickInsight}</span>
+        </div>
+        <div class="job-box">
+          <strong><i class="ph-duotone ph-buildings"></i> תחום ומוצר החברה:</strong>
+          <span>${domain}</span>
+        </div>
+        <div class="job-box">
+          <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
+          <span>${jobSum}</span>
+        </div>
+        <div class="job-box highlight">
+          <strong><i class="ph-duotone ph-target"></i> נקודות חוזק מהניסיון:</strong>
+          <span>${strengths}</span>
+        </div>
+      </div>
+    `;
+
+    bottomBar.innerHTML = `
+      <a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-apply" style="color: #000000 !important;">
+        <span style="color: #000000 !important;">הגש מועמדות באתר המשרה</span> <i class="ph-duotone ph-arrow-up-right" style="color: #000000 !important;"></i>
+      </a>
+      <div class="job-modal-triage-group">
+        <button id="modalSaveBtn" onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'saved'); updateModalTriageButtons('${id.replace(/'/g, "\\'")}');" class="btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}">
+          <i class="ph-duotone ph-bookmark-simple"></i> <span>${state === 'saved' ? 'נשמר להגשה' : 'שמור להגשה'}</span>
+        </button>
+        <button id="modalRejectBtn" onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'rejected'); updateModalTriageButtons('${id.replace(/'/g, "\\'")}');" class="btn-triage action-reject-btn ${state === 'rejected' ? 'rejected-active' : ''}">
+          <i class="ph-duotone ph-x"></i> <span>הסר משרה</span>
+        </button>
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function updateModalStar(id) {
+    const isStarred = Boolean(starredJobs[id]);
+    const starBtn = document.querySelector('#jobModalTopActions .btn-star');
+    if (starBtn) {
+      starBtn.className = `btn-star ${isStarred ? 'is-starred' : ''}`;
+      starBtn.innerHTML = `<i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>`;
+    }
+  }
+
+  function updateModalTriageButtons(id) {
+    const state = jobStates[id] || 'pending';
+    const saveBtn = document.getElementById('modalSaveBtn');
+    const rejectBtn = document.getElementById('modalRejectBtn');
+    if (saveBtn) {
+      saveBtn.className = `btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}`;
+      saveBtn.querySelector('span').textContent = state === 'saved' ? 'נשמר להגשה' : 'שמור להגשה';
+    }
+    if (rejectBtn) {
+      rejectBtn.className = `btn-triage action-reject-btn ${state === 'rejected' ? 'rejected-active' : ''}`;
+    }
+  }
+
+  function closeJobModal() {
+    const modal = document.getElementById('jobDetailsModal');
+    if (modal) modal.classList.add('hidden');
+    document.body.style.overflow = '';
   }
 
   function toggleSort() {
