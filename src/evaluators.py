@@ -6,7 +6,7 @@ CV_CONTEXT = """
 Candidate: Ido Gal (עידו גל)
 Core Profile: Multidisciplinary Technical Professional & Practical Mechanical Engineer with Deep Specialization in Energy Systems (Natural Gas, Solar PV, BESS Energy Storage), Real-Time Operations Control (SCADA / NOC / 24/7 Control Rooms), Electrical Studies (Certified Electrician in progress), and Combat Engineering / Tactical Field Operations Leadership (סיירת נח"ל).
 Education & Credentials:
-- Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2024).
+- Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).
 - Certified Electrician Studies (חשמלאי מוסמך - לקראת סיום ההסמכה).
 - Military: Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח"ל).
 Key Competencies:
