@@ -16,3 +16,6 @@ sample_daily_report_dark_list_preview.html
 data/*.bak
 logs/
 *.log
+.env.*
+*.pem
+*.key
