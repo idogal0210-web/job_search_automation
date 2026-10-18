@@ -1031,26 +1031,32 @@
         border-radius: 10px !important;
       }
 
-      /* 2 Cubes Per Row in Grid Mode on iPhone */
+      /* 2 Cubes Per Row in Grid Mode on iPhone (Symmetrical, Proportional, No Crammed Words) */
       #cardsContainer:not(.view-list) {
+        display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 8px !important;
-        margin-bottom: 18px !important;
+        gap: 10px !important;
+        margin-bottom: 22px !important;
       }
       #cardsContainer:not(.view-list) .job-card {
-        padding: 10px 8px !important;
-        border-radius: 16px !important;
-        gap: 6px !important;
-        cursor: pointer !important;
-        min-height: 175px !important;
+        height: 198px !important;
+        box-sizing: border-box !important;
+        padding: 12px 10px !important;
+        border-radius: 20px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
-        background: rgba(17, 24, 39, 0.75) !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        align-items: stretch !important;
+        background: rgba(18, 24, 38, 0.85) !important;
+        border: 1px solid rgba(255, 255, 255, 0.09) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3) !important;
+        cursor: pointer !important;
+        position: relative !important;
+        overflow: hidden !important;
+        transition: transform 0.15s ease, border-color 0.15s ease !important;
       }
       #cardsContainer:not(.view-list) .job-card:active {
-        transform: scale(0.98) !important;
+        transform: scale(0.97) !important;
         border-color: var(--dashboard-cyan) !important;
       }
       #cardsContainer:not(.view-list) .job-quick-summary,
@@ -1063,104 +1069,184 @@
       }
       #cardsContainer:not(.view-list) .job-card-topbar {
         border-bottom: none !important;
-        padding-bottom: 0 !important;
-        flex-direction: row !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-        gap: 4px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        display: flex !important;
       }
       #cardsContainer:not(.view-list) .job-card-topbar-primary {
         width: 100% !important;
         display: flex !important;
+        flex-direction: row-reverse !important;
         justify-content: space-between !important;
         align-items: center !important;
-        gap: 4px !important;
       }
       #cardsContainer:not(.view-list) .job-card-topbar-primary > div:first-child .dashboard-chip {
         display: none !important;
       }
       #cardsContainer:not(.view-list) .badge-score {
-        padding: 2px 6px !important;
-        font-size: 10.5px !important;
+        font-size: 0 !important;
+        padding: 0 8px !important;
+        height: 24px !important;
+        box-sizing: border-box !important;
         border-radius: 999px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        line-height: 1 !important;
+        box-shadow: none !important;
+      }
+      #cardsContainer:not(.view-list) .badge-score span {
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 3px !important;
+        letter-spacing: -0.2px !important;
       }
       #cardsContainer:not(.view-list) .btn-star {
         width: 24px !important;
         height: 24px !important;
         font-size: 13px !important;
-        border-radius: 7px !important;
+        border-radius: 999px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: var(--dashboard-muted) !important;
+        transition: all 0.15s ease !important;
+      }
+      #cardsContainer:not(.view-list) .btn-star.is-starred {
+        background: rgba(255, 211, 104, 0.2) !important;
+        border-color: rgba(255, 211, 104, 0.5) !important;
+        color: var(--dashboard-gold) !important;
       }
       #cardsContainer:not(.view-list) .job-card-main-header {
+        display: flex !important;
         flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 4px !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 5px !important;
+        width: 100% !important;
+        margin: auto 0 !important;
         flex: 1 !important;
-        margin: 0 !important;
+        justify-content: center !important;
       }
       #cardsContainer:not(.view-list) .job-company-logo {
-        width: 32px !important;
-        height: 32px !important;
-        border-radius: 8px !important;
-        margin: 0 !important;
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 12px !important;
+        margin: 0 auto !important;
+        flex-shrink: 0 !important;
+        background: #191e28 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
+      }
+      #cardsContainer:not(.view-list) .job-company-avatar {
+        font-size: 14px !important;
+        font-weight: 700 !important;
+      }
+      #cardsContainer:not(.view-list) .job-header-text {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 2px !important;
       }
       #cardsContainer:not(.view-list) .job-company-name {
         font-size: 11px !important;
+        color: var(--dashboard-cyan) !important;
+        font-weight: 500 !important;
+        max-width: 145px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
-        max-width: 130px !important;
+        text-align: center !important;
+        margin: 0 !important;
+        line-height: 1.2 !important;
       }
       #cardsContainer:not(.view-list) .job-title-text {
         font-size: 12.5px !important;
         font-weight: 700 !important;
-        line-height: 1.25 !important;
-        margin: 1px 0 3px !important;
+        color: #ffffff !important;
+        line-height: 1.3 !important;
+        height: 33px !important;
+        max-height: 33px !important;
         display: -webkit-box !important;
         -webkit-line-clamp: 2 !important;
         -webkit-box-orient: vertical !important;
         overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        text-align: center !important;
+        margin: 0 !important;
+        letter-spacing: -0.2px !important;
       }
       #cardsContainer:not(.view-list) .job-header-chips {
-        gap: 3px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
         margin-top: auto !important;
+        margin-bottom: 0 !important;
+        gap: 0 !important;
       }
       #cardsContainer:not(.view-list) .job-header-chips .dashboard-chip {
-        font-size: 9.5px !important;
-        padding: 1px 5px !important;
-        max-width: 125px !important;
+        display: none !important;
+      }
+      #cardsContainer:not(.view-list) .job-header-chips .dashboard-chip:first-child {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        font-size: 10px !important;
+        padding: 3px 8px !important;
+        border-radius: 999px !important;
+        max-width: 145px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.09) !important;
+        color: var(--dashboard-muted) !important;
+        line-height: 1 !important;
       }
 
-      /* Proportional Mobile List View Layout on iPhone */
+      /* Proportional & Symmetrical Mobile List View on iPhone */
       #cardsContainer.view-list {
         display: flex !important;
         flex-direction: column !important;
         gap: 8px !important;
+        margin-bottom: 22px !important;
       }
       #cardsContainer.view-list .job-card {
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
         justify-content: space-between !important;
+        height: 72px !important;
+        box-sizing: border-box !important;
         padding: 10px 12px !important;
         border-radius: 16px !important;
-        background: rgba(17, 24, 39, 0.75) !important;
+        background: rgba(18, 24, 38, 0.85) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        cursor: pointer !important;
-        min-height: 72px !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
         gap: 10px !important;
+        cursor: pointer !important;
+        transition: background 0.15s ease, transform 0.15s ease !important;
       }
       #cardsContainer.view-list .job-card:active {
-        background: rgba(255, 255, 255, 0.05) !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        transform: scale(0.99) !important;
       }
       #cardsContainer.view-list .job-quick-summary,
       #cardsContainer.view-list .btn-toggle-details,
       #cardsContainer.view-list .job-details-collapsible,
       #cardsContainer.view-list .job-actions-bar,
       #cardsContainer.view-list .ai-score-drivers,
-      #cardsContainer.view-list .job-card-topbar-meta {
+      #cardsContainer.view-list .job-card-topbar-meta,
+      #cardsContainer.view-list .job-header-chips {
         display: none !important;
       }
       #cardsContainer.view-list .job-card-main-header {
@@ -1174,76 +1260,105 @@
         margin: 0 !important;
       }
       #cardsContainer.view-list .job-company-logo {
-        width: 36px !important;
-        height: 36px !important;
-        border-radius: 10px !important;
+        width: 42px !important;
+        height: 42px !important;
+        border-radius: 12px !important;
         flex-shrink: 0 !important;
         margin: 0 !important;
+        background: #191e28 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      }
+      #cardsContainer.view-list .job-company-avatar {
+        font-size: 15px !important;
+        font-weight: 700 !important;
       }
       #cardsContainer.view-list .job-header-text {
         flex: 1 !important;
         min-width: 0 !important;
-      }
-      #cardsContainer.view-list .job-company-name {
-        font-size: 11px !important;
-        color: var(--dashboard-cyan) !important;
-        margin-bottom: 2px !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        gap: 3px !important;
       }
       #cardsContainer.view-list .job-title-text {
         font-size: 13.5px !important;
         font-weight: 700 !important;
         color: #ffffff !important;
         line-height: 1.25 !important;
-        margin: 0 0 2px !important;
+        margin: 0 !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        letter-spacing: -0.2px !important;
       }
-      #cardsContainer.view-list .job-header-chips {
-        gap: 4px !important;
-      }
-      #cardsContainer.view-list .job-header-chips .dashboard-chip {
-        font-size: 10px !important;
-        padding: 1px 6px !important;
+      #cardsContainer.view-list .job-company-name {
+        font-size: 11.5px !important;
+        color: var(--dashboard-cyan) !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        font-weight: 500 !important;
       }
       #cardsContainer.view-list .job-card-topbar {
         order: 2 !important;
         display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-end !important;
-        justify-content: center !important;
-        gap: 4px !important;
+        flex-direction: row-reverse !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 6px !important;
         border-bottom: none !important;
-        padding-bottom: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
         width: auto !important;
         flex-shrink: 0 !important;
       }
       #cardsContainer.view-list .job-card-topbar-primary {
         display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-end !important;
-        gap: 4px !important;
+        flex-direction: row-reverse !important;
+        align-items: center !important;
+        gap: 6px !important;
         width: auto !important;
-      }
-      #cardsContainer.view-list .job-card-topbar-primary > div:first-child {
-        order: 2 !important;
       }
       #cardsContainer.view-list .job-card-topbar-primary > div:first-child .dashboard-chip {
         display: none !important;
       }
-      #cardsContainer.view-list .job-card-topbar-primary .badge-score {
-        order: 1 !important;
-        padding: 2px 7px !important;
+      #cardsContainer.view-list .badge-score {
+        font-size: 0 !important;
+        padding: 0 8px !important;
+        border-radius: 999px !important;
+        line-height: 1 !important;
+        height: 24px !important;
+        box-sizing: border-box !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: none !important;
+      }
+      #cardsContainer.view-list .badge-score span {
         font-size: 11px !important;
+        font-weight: 700 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 3px !important;
+        letter-spacing: -0.2px !important;
       }
       #cardsContainer.view-list .btn-star {
         width: 26px !important;
         height: 26px !important;
         font-size: 13px !important;
-        border-radius: 8px !important;
+        border-radius: 999px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: var(--dashboard-muted) !important;
+      }
+      #cardsContainer.view-list .btn-star.is-starred {
+        background: rgba(255, 211, 104, 0.2) !important;
+        border-color: rgba(255, 211, 104, 0.5) !important;
+        color: var(--dashboard-gold) !important;
       }
 
       /* Modal Sheet Styling on iPhone */
@@ -1574,7 +1689,7 @@
       border-radius: 14px;
     }
 
-    @media (max-width: 860px) {
+    @media (min-width: 769px) and (max-width: 860px) {
       #cardsContainer.view-list .job-card {
         display: flex;
         flex-direction: column;
