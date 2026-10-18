@@ -2111,7 +2111,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <div class="cards-view-header">
       <div class="cards-count-summary">
         <i class="ph-duotone ph-briefcase" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
-        <span id="visibleJobsCountText">מציג __TOTAL_JOBS__ משרות</span>
+        <span id="visibleJobsCountText">סה״כ משרות חדשות: __TOTAL_JOBS__</span>
       </div>
       <div class="view-mode-toggle" role="group" aria-label="מצב תצוגה">
         <button type="button" id="viewGridBtn" class="view-toggle-btn active" onclick="setViewMode('grid')" title="תצוגת קוביות (Grid)">
@@ -3542,11 +3542,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       }
     });
 
-    const visibleJobsCountEl = document.getElementById('visibleJobsCountText');
-    if (visibleJobsCountEl) {
-      visibleJobsCountEl.textContent = `מציג ${visibleCount} מתוך ${total} משרות`;
-    }
-
     // Keep Quick Chips in sync
     document.querySelectorAll('.quick-chip').forEach(btn => {
       const c = btn.getAttribute('data-chip');
@@ -3560,8 +3555,38 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const allAvailable = getAllAvailableJobs();
     const totalSavedInStore = allAvailable.filter(j => jobStates[j.link] === 'saved').length;
     const totalRejectedInStore = allAvailable.filter(j => jobStates[j.link] === 'rejected').length;
-    const totalStarredInStore = allAvailable.filter(j => Boolean(starredJobs[j.link])).length;
+    const totalStarredInStore = allAvailable.filter(j => Boolean(starredJobs[j.link]) && jobStates[j.link] !== 'rejected' && jobStates[j.link] !== 'purged').length;
     const pendingInBatch = total - (saved + rejected + purged);
+
+    let tabTotal = 0;
+    let tabLabel = '';
+    let tabNoun = '';
+    if (currentFilter === 'saved') {
+      tabTotal = totalSavedInStore;
+      tabLabel = `סה״כ משרות שנשמרו: ${tabTotal}`;
+      tabNoun = 'משרות שנשמרו';
+    } else if (currentFilter === 'starred') {
+      tabTotal = totalStarredInStore;
+      tabLabel = `סה״כ משרות שסומנו בכוכב: ${tabTotal}`;
+      tabNoun = 'משרות שסומנו בכוכב';
+    } else if (currentFilter === 'rejected') {
+      tabTotal = totalRejectedInStore;
+      tabLabel = `סה״כ משרות שהוסרו: ${tabTotal}`;
+      tabNoun = 'משרות שהוסרו';
+    } else {
+      tabTotal = Math.max(0, pendingInBatch);
+      tabLabel = `סה״כ משרות חדשות: ${tabTotal}`;
+      tabNoun = 'משרות חדשות';
+    }
+
+    const visibleJobsCountEl = document.getElementById('visibleJobsCountText');
+    if (visibleJobsCountEl) {
+      if (visibleCount === tabTotal) {
+        visibleJobsCountEl.textContent = tabLabel;
+      } else {
+        visibleJobsCountEl.textContent = `מציג ${visibleCount} מתוך סה״כ ${tabTotal} ${tabNoun}`;
+      }
+    }
 
     // Update Counts in Nav & Stats Cards
     const countAllEl = document.getElementById('countAll');
