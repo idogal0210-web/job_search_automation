@@ -6,7 +6,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>__TITLE__</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="theme.css">
@@ -912,6 +912,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       pointer-events: auto;
     }
 
+    /* Hidden card helper (strictly overrides any !important on display in grid/list) */
+    .job-card.is-hidden,
+    .job-card[style*="display: none"],
+    #cardsContainer .job-card.is-hidden,
+    #cardsContainer .job-card[style*="display: none"] {
+      display: none !important;
+    }
+
     /* Responsive Media Queries (Mobile & iPhone First) */
     @media (max-width: 768px) {
       body, html {
@@ -1365,6 +1373,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         color: var(--dashboard-gold) !important;
       }
 
+      /* Force hidden state over all grid and list rules on iPhone */
+      #cardsContainer:not(.view-list) .job-card.is-hidden,
+      #cardsContainer.view-list .job-card.is-hidden,
+      #cardsContainer .job-card.is-hidden,
+      #cardsContainer .job-card[style*="display: none"],
+      .job-card.is-hidden {
+        display: none !important;
+      }
+
       /* Modal Sheet Styling on iPhone */
       #jobDetailsModal {
         padding: 0 !important;
@@ -1381,6 +1398,51 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       .job-modal-body {
         padding: 14px 16px 20px !important;
       }
+      .job-modal-bottom-bar {
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+      }
+      .dashboard-toast {
+        bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+        right: 16px !important;
+        left: 16px !important;
+        max-width: calc(100% - 32px) !important;
+      }
+
+      /* Duplicates Modal Sheet on iPhone */
+      #duplicatesModal {
+        padding: 0 !important;
+        align-items: flex-end !important;
+      }
+      #duplicatesModal .dashboard-modal-box {
+        max-width: 100% !important;
+        width: 100% !important;
+        max-height: 88vh !important;
+        border-radius: 24px 24px 0 0 !important;
+        border-bottom: none !important;
+        margin: 0 !important;
+        padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px)) !important;
+        animation: slideUpModal 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      }
+
+      /* Compact Modal Score Badge on Mobile */
+      #jobModalTopActions .badge-score {
+        padding: 4px 10px !important;
+        font-size: 0 !important;
+        white-space: nowrap !important;
+      }
+      #jobModalTopActions .badge-score span {
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+      }
+
+      /* Mobile Empty State */
+      #emptyState {
+        padding: 32px 16px !important;
+        border-radius: 20px !important;
+        margin: 12px 0 24px !important;
+      }
+
       .context-action-bar {
         flex-direction: column;
         align-items: stretch;
@@ -1394,6 +1456,53 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       .quick-filter-strip-wrapper {
         margin: 0 -12px 14px;
         padding: 0 12px;
+      }
+    }
+
+    /* Mobile Landscape Adaptation (iPhone 14 / SE / Pro Max in Landscape) */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .dashboard-sidebar {
+        padding: 8px 14px !important;
+        border-radius: 18px !important;
+        margin-bottom: 12px !important;
+      }
+      .header-stat-cubes {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 8px !important;
+        margin: 8px 0 !important;
+      }
+      .stat-cube-btn {
+        height: 64px !important;
+        padding: 4px 6px !important;
+      }
+      .stat-cube-btn .stat-icon {
+        width: 16px !important;
+        height: 16px !important;
+        margin-bottom: 2px !important;
+      }
+      .stat-cube-btn .stat-number {
+        font-size: 15px !important;
+        margin-bottom: 1px !important;
+      }
+      .stat-cube-btn .stat-label {
+        font-size: 9px !important;
+        line-height: 1.1 !important;
+      }
+      #cardsContainer:not(.view-list) {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+      }
+      .job-details-modal-box {
+        max-height: 96vh !important;
+        height: 96vh !important;
+      }
+      .job-modal-body {
+        max-height: calc(96vh - 120px) !important;
+      }
+      #duplicatesModal .dashboard-modal-box {
+        max-height: 92vh !important;
       }
     }
 
@@ -1412,6 +1521,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       font-size: 17px;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       flex-shrink: 0;
+      position: relative;
+    }
+    .btn-star::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      pointer-events: auto;
     }
     .btn-star:hover {
       background: rgba(251, 191, 36, 0.15);
@@ -2005,7 +2127,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <main id="cardsContainer"></main>
 
     <!-- Empty State -->
-    <div id="emptyState" class="dashboard-card" style="display: none; text-align: center; padding: 48px 24px;">
+    <div id="emptyState" class="dashboard-card empty-state" style="display: none; text-align: center; padding: 48px 24px;">
       <div id="emptyStateIcon" style="font-size: 44px; margin-bottom: 12px; color: var(--dashboard-cyan);">
         <i class="ph-duotone ph-magnifying-glass"></i>
       </div>
@@ -2251,69 +2373,90 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   let cloudSyncTimeout = null;
   let cloudLastUpdated = 0;
 
-  async function fetchCloudSync() {
+  function setCloudSyncStatus(status) {
     const cloudBadge = document.getElementById('cloudSyncStatus');
+    if (!cloudBadge) return;
+    if (status === 'synced') {
+      cloudBadge.className = 'dashboard-chip cloud-synced';
+      cloudBadge.style.color = 'var(--dashboard-cyan)';
+      cloudBadge.style.borderColor = 'rgba(137, 244, 231, 0.4)';
+      cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: var(--dashboard-cyan); box-shadow: 0 0 8px var(--dashboard-cyan);"></span> <i class="ph-duotone ph-cloud-check"></i> <span>ענן מסונכרן</span>';
+    } else if (status === 'syncing') {
+      cloudBadge.className = 'dashboard-chip cloud-syncing';
+      cloudBadge.style.color = 'var(--dashboard-gold)';
+      cloudBadge.style.borderColor = 'rgba(255, 211, 104, 0.4)';
+      cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: var(--dashboard-gold); box-shadow: 0 0 8px var(--dashboard-gold);"></span> <i class="ph-duotone ph-cloud-arrow-up"></i> <span>מעדכן ענן...</span>';
+    } else if (status === 'offline' || status === 'error') {
+      cloudBadge.className = 'dashboard-chip cloud-offline';
+      cloudBadge.style.color = '#f87171';
+      cloudBadge.style.borderColor = 'rgba(248, 113, 113, 0.4)';
+      cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: #f87171; box-shadow: 0 0 8px rgba(248, 113, 113, 0.6);"></span> <i class="ph-duotone ph-cloud-slash"></i> <span>לא מקוון</span>';
+    }
+  }
+
+  async function fetchCloudSync() {
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      setCloudSyncStatus('offline');
+      return;
+    }
     try {
       const resp = await fetch(CLOUD_SYNC_URL, { cache: 'no-cache' });
-      if (resp.ok) {
-        const data = await resp.json();
-        if (data) {
-          if (data.updated_at) {
-            cloudLastUpdated = new Date(data.updated_at).getTime();
+      if (!resp.ok) {
+        throw new Error('Sync status: ' + resp.status);
+      }
+      const data = await resp.json();
+      if (data) {
+        if (data.updated_at) {
+          cloudLastUpdated = new Date(data.updated_at).getTime();
+        }
+        let changed = false;
+        if (Array.isArray(data.purged)) {
+          data.purged.forEach(link => {
+            if (jobStates[link] !== 'purged') {
+              jobStates[link] = 'purged';
+              changed = true;
+            }
+          });
+        }
+        if (Array.isArray(data.saved)) {
+          data.saved.forEach(link => {
+            if (/^\\d+$/.test(link) && data.saved.some(s => s !== link && s.includes(link))) {
+              return;
+            }
+            if (jobStates[link] !== 'saved') {
+              jobStates[link] = 'saved';
+              changed = true;
+            }
+          });
+        }
+        Object.keys(jobStates).forEach(key => {
+          if (/^\\d+$/.test(key)) {
+            const matchingLink = Object.keys(jobStates).find(k => k !== key && k.includes(key));
+            if (matchingLink) {
+              delete jobStates[key];
+              changed = true;
+            }
           }
-          let changed = false;
-          if (Array.isArray(data.purged)) {
-            data.purged.forEach(link => {
-              if (jobStates[link] !== 'purged') {
-                jobStates[link] = 'purged';
-                changed = true;
-              }
-            });
-          }
-          if (Array.isArray(data.saved)) {
-            data.saved.forEach(link => {
-              if (/^\\d+$/.test(link) && data.saved.some(s => s !== link && s.includes(link))) {
-                return;
-              }
-              if (jobStates[link] !== 'saved') {
-                jobStates[link] = 'saved';
-                changed = true;
-              }
-            });
-          }
-          Object.keys(jobStates).forEach(key => {
-            if (/^\\d+$/.test(key)) {
-              const matchingLink = Object.keys(jobStates).find(k => k !== key && k.includes(key));
-              if (matchingLink) {
-                delete jobStates[key];
+        });
+        if (Array.isArray(data.rejected)) {
+          data.rejected.forEach(link => {
+            if (jobStates[link] !== 'purged' && jobStates[link] !== 'saved') {
+              if (jobStates[link] !== 'rejected') {
+                jobStates[link] = 'rejected';
                 changed = true;
               }
             }
           });
-          if (Array.isArray(data.rejected)) {
-            data.rejected.forEach(link => {
-              if (jobStates[link] !== 'purged' && jobStates[link] !== 'saved') {
-                if (jobStates[link] !== 'rejected') {
-                  jobStates[link] = 'rejected';
-                  changed = true;
-                }
-              }
-            });
-          }
-          if (changed) {
-            saveTriageState(jobStates);
-            renderCards();
-            updateUI();
-          }
-          if (cloudBadge) {
-            cloudBadge.innerHTML = '<span class="dashboard-dot"></span> <span>ענן מסונכרן</span>';
-          }
         }
+        if (changed) {
+          saveTriageState(jobStates);
+          renderCards();
+          updateUI();
+        }
+        setCloudSyncStatus('synced');
       }
     } catch (e) {
-      if (cloudBadge) {
-        cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: #94a3b8;"></span> <span>מקומי</span>';
-      }
+      setCloudSyncStatus('offline');
     }
   }
 
@@ -2323,10 +2466,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   }
 
   async function pushCloudSync() {
-    const cloudBadge = document.getElementById('cloudSyncStatus');
-    if (cloudBadge) {
-      cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: var(--dashboard-gold);"></span> <span>מעדכן ענן...</span>';
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      setCloudSyncStatus('offline');
+      return;
     }
+    setCloudSyncStatus('syncing');
 
     try {
       const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
@@ -2346,14 +2490,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      if (resp.ok && cloudBadge) {
-        cloudBadge.innerHTML = '<span class="dashboard-dot"></span> <span>ענן מסונכרן</span>';
+      if (resp.ok) {
+        setCloudSyncStatus('synced');
+      } else {
+        setCloudSyncStatus('offline');
       }
     } catch (e) {
-      if (cloudBadge) {
-        cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: #94a3b8;"></span> <span>מקומי</span>';
-      }
+      setCloudSyncStatus('offline');
     }
+  }
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('online', () => { fetchCloudSync(); });
+    window.addEventListener('offline', () => { setCloudSyncStatus('offline'); });
   }
 
   function extractJobId(link) {
@@ -2918,7 +3067,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
       const salaryRange = stripEmojis(job.salary_range || '12,000 - 15,000 ₪');
       const salaryType = job.salary_source_type || 'sector_benchmark';
-      const salaryLabel = stripEmojis(job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${company}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף`)));
+      const companyBdi = `<bdi dir="auto">${company}</bdi>`;
+      const salaryLabel = stripEmojis(job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${companyBdi}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף`)));
       
       let salaryChipStyle = 'color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08);';
       if (salaryType === 'company_verified') {
@@ -3010,7 +3160,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
                 <i class="ph-duotone ph-map-pin"></i> ${loc}
               </span>
               <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 12px; padding: 3px 10px;">
-                <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;">(${salaryLabel})</small>
+                <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;" dir="ltr"><bdi dir="rtl">(${salaryLabel})</bdi></small>
               </span>
               ${expChipHtml}
             </div>
@@ -3111,7 +3261,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const logoHtml = getCompanyLogoHtml(company, job.logo);
     const salaryRange = stripEmojis(job.salary_range || '12,000 - 15,000 ₪');
     const salaryType = job.salary_source_type || 'sector_benchmark';
-    const salaryLabel = stripEmojis(job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${company}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף`)));
+    const companyBdi = `<bdi dir="auto">${company}</bdi>`;
+    const salaryLabel = stripEmojis(job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${companyBdi}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף`)));
 
     let scoreClass = 'badge-score-high';
     if (score < 80) scoreClass = 'badge-score-fair';
@@ -3124,8 +3275,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\\'")}', event); updateModalStar('${id.replace(/'/g, "\\'")}');" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
         <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
       </button>
-      <div class="badge-score ${scoreClass}">
-        <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
+      <div class="badge-score ${scoreClass}" title="ציון התאמה ${score}%">
+        <span><i class="ph-duotone ph-lightning"></i> ${score}%</span>
       </div>
     `;
 
@@ -3154,7 +3305,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               <i class="ph-duotone ph-map-pin"></i> ${loc}
             </span>
             <span class="dashboard-chip" style="font-size: 11px; padding: 3px 8px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08);">
-              <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;">(${salaryLabel})</small>
+              <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;" dir="ltr"><bdi dir="rtl">(${salaryLabel})</bdi></small>
             </span>
             ${expChipHtml}
           </div>
@@ -3383,9 +3534,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
       if (matchesTab && matchesSector && matchesRegion && matchesQuick && matchesSearch && state !== 'purged') {
         card.style.display = '';
+        card.classList.remove('is-hidden');
         visibleCount++;
       } else {
         card.style.display = 'none';
+        card.classList.add('is-hidden');
       }
     });
 
