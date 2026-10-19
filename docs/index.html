@@ -3187,12 +3187,98 @@
     'מרוחק': [32.0853, 34.7818]
   };
 
+  // Company Headquarters & Primary Campuses Geolocation Dictionary
+  const COMPANY_HQ_LOCATIONS_GEO = [
+    // Semiconductors & High-Tech Hardware
+    [['tower semiconductor', 'טאואר', 'towersemi'], [32.6738, 35.2415], 'מגדל העמק'],
+    [['ultra clean', 'uct'], [32.6738, 35.2415], 'מגדל העמק'],
+    [['kla', 'קיי אל איי'], [32.6738, 35.2415], 'מגדל העמק'],
+    [['applied materials', 'אפלייד מטיריאלס', 'אפלייד'], [31.9077, 34.8080], 'פארק המדע רחובות'],
+    [['nova', 'נובה'], [31.9055, 34.8075], 'פארק המדע רחובות'],
+    [['stratasys', 'סטראטסיס'], [31.9055, 34.8075], 'פארק המדע רחובות'],
+    [['merck', 'מרק'], [31.9055, 34.8075], 'פארק המדע רחובות'],
+    [['edwards vacuum', 'edwards', 'אדוורדס'], [31.6100, 34.7642], 'קריית גת'],
+    [['intel', 'אינטל'], [31.6100, 34.7642], 'קריית גת'],
+
+    // Energy, Gas, Solar, Utilities & CleanTech
+    [['siemens energy', 'סימנס אנרגיה', 'siemens'], [32.0833, 34.9572], 'פארק אפק, ראש העין'],
+    [['alumenergy', 'אלומאנרג׳י', 'אלומאנרגי', 'אלומושת'], [32.6517, 35.3524], 'אלון תבור'],
+    [['nt-tao', 'compact fusion'], [32.1528, 34.8878], 'הוד השרון'],
+    [['solaredge', 'סולאראדג'], [32.1624, 34.8080], 'הרצליה פיתוח'],
+    [['enlight', 'אנלייט'], [32.0833, 34.9572], 'ראש העין'],
+    [['energix', 'אנרג׳יקס', 'אנרגיקס'], [32.0822, 34.8020], 'בורסת רמת גן'],
+    [['doral', 'דוראל'], [32.0822, 34.8050], 'רמת גן'],
+    [['ormat', 'אורמת'], [31.8781, 34.7397], 'יבנה'],
+    [['jinko', 'ג׳ינקו', 'גינקו'], [32.1624, 34.8447], 'הרצליה'],
+    [['solar solutions', 'פתרונות סולאריים'], [32.3850, 34.9000], 'עמק חפר'],
+    [['plant supervision'], [32.6517, 35.3524], 'אלון תבור'],
+    [['bazan', 'בז״ן', 'בזן', 'בתי זיקוק'], [32.7980, 35.0450], 'מפרץ חיפה'],
+    [['paz', 'פז'], [32.2530, 34.8450], 'יקום'],
+    [['sonol', 'סונול'], [32.2783, 34.8572], 'פולג, נתניה'],
+    [['delek', 'דלק', 'ניו-מד', 'newmed'], [32.1624, 34.8080], 'הרצליה'],
+    [['isramco', 'ישראמקו', 'נפטא'], [32.0840, 34.8650], 'פתח תקווה'],
+
+    // Defense, Aerospace, UAVs, Drones & Robotics
+    [['elbit', 'אלביט'], [32.7880, 34.9580], 'מת״ם חיפה'],
+    [['iai', 'התעשייה האווירית', 'התעשיה האווירית', 'אלתא', 'elta'], [32.0030, 34.8850], 'נתב״ג / לוד'],
+    [['rafael', 'רפאל'], [32.8650, 35.0850], 'מכון דוד, קריות'],
+    [['controp', 'קונטרופ'], [32.1528, 34.8878], 'הוד השרון'],
+    [['assatec', 'אסאטק'], [32.9278, 35.0817], 'עכו / נהריה'],
+    [['allpha', 'אלפא אינוביישן'], [32.8120, 35.0340], 'מספנות חיפה'],
+    [['bagira', 'בגירה'], [32.0158, 34.7874], 'חולון'],
+    [['israel shipyards', 'מספנות ישראל'], [32.8120, 35.0340], 'נמל חיפה'],
+    [['airobotics', 'איירובוטיקס'], [32.0910, 34.8650], 'פתח תקווה'],
+    [['percepto', 'פרספטו'], [31.8986, 35.0104], 'פארק טכנולוגי מודיעין'],
+    [['hevendrones', 'הוונדרונס'], [32.6100, 35.0500], 'פארק מבוא כרמל'],
+    [['steadicopter', 'סטדיקופטר'], [32.6738, 35.2415], 'מגדל העמק'],
+    [['bluebird', 'בלובריד'], [32.2850, 34.9150], 'קדימה-צורן'],
+    [['aeronautics', 'אירונאוטיקס'], [31.8781, 34.7397], 'יבנה'],
+    [['copterpix', 'קופטרפיקס'], [31.9986, 34.9458], 'שוהם'],
+
+    // Aviation, Logistics & Transportation
+    [['swissport', 'סוויספורט'], [32.0005, 34.8707], 'נתב״ג'],
+    [['alstom', 'אלסטום'], [32.0628, 34.7865], 'תל אביב'],
+    [['pb', 'parsons brinckerhoff'], [32.0120, 34.9220], 'איירפורט סיטי'],
+
+    // Infrastructure, Water, AgTech & Construction
+    [['netafim', 'נטפים'], [32.0715, 34.7930], 'תל אביב'],
+    [['nextcom', 'נקסטקום'], [32.6595, 35.1102], 'יקנעם עילית'],
+    [['shikun', 'שיכון ובינוי'], [32.0120, 34.9220], 'איירפורט סיטי'],
+    [['adama', 'אדמה'], [32.0120, 34.9220], 'איירפורט סיטי'],
+    [['danya', 'דניה סיבוס', 'דניה'], [32.0294, 34.8572], 'אור יהודה'],
+    [['electra', 'אלקטרה'], [31.9850, 34.7750], 'ראשון לציון'],
+    [['ashtrom', 'אשטרום'], [32.0620, 34.7870], 'תל אביב'],
+    [['shapir', 'שפיר'], [32.0840, 34.8650], 'פתח תקווה'],
+    [['baran', 'ברן'], [32.0020, 34.8290], 'בית דגן'],
+    [['icl', 'כי״ל', 'כימיקלים לישראל', 'כיל'], [31.2589, 34.8050], 'באר שבע'],
+
+    // Tech, Telecom, Software, Hospitals & Services
+    [['michlol', 'מכלול'], [32.0910, 34.8650], 'פתח תקווה'],
+    [['e2e solutions', 'e2e'], [32.1100, 34.8350], 'רמת החייל, תל אביב'],
+    [['elad', 'אלעד מערכות'], [32.1100, 34.8350], 'רמת החייל, תל אביב'],
+    [['sheba', 'שיבא', 'תל השומר'], [32.0460, 34.8430], 'רמת גן'],
+    [['mobileye', 'מובילאיי'], [31.8020, 35.2150], 'הר חוצבים, ירושלים'],
+    [['check point', 'checkpoint', "צ'ק פוינט"], [32.0720, 34.7950], 'תל אביב'],
+    [['cross river'], [31.8020, 35.2150], 'הר חוצבים, ירושלים'],
+    [['jll'], [32.0715, 34.7930], 'תל אביב'],
+    [['wix', 'וויקס'], [32.1000, 34.7750], 'נמל תל אביב'],
+    [['monday', 'מאנדיי'], [32.0650, 34.7750], 'שדרות רוטשילד, תל אביב'],
+    [['fiverr', 'פייבר'], [32.0600, 34.7750], 'תל אביב']
+  ];
+
+  const GENERIC_LOCATION_TERMS = new Set([
+    'ישראל', 'israel', 'ארצי', 'היברידי', 'remote', 'מרוחק', 'כל הארץ', 
+    'מרכז הארץ', 'מרכז', 'center', 'שרון', 'sharon', 'דרום', 'south', 
+    'צפון', 'north', 'שפלה', 'סדנה ויציאה לשטח', 'בשטח'
+  ]);
+
   function getJobLatLng(job) {
-    const locStr = ((job.location || '') + ' ' + (job.company || '')).toLowerCase();
+    const rawLoc = (job.location || '').toLowerCase();
+    const rawComp = (job.company || '').toLowerCase();
     
-    // Deterministic jitter based on job link
+    // Deterministic jitter based on job link / ID
     let hash = 0;
-    const linkStr = job.link || job.id || '';
+    const linkStr = job.link || job.id || (rawComp + rawLoc);
     for (let i = 0; i < linkStr.length; i++) {
       hash = ((hash << 5) - hash) + linkStr.charCodeAt(i);
       hash |= 0;
@@ -3200,12 +3286,30 @@
     const jitterLat = (((Math.abs(hash) % 100) - 50) / 50) * 0.014;
     const jitterLng = (((Math.abs(hash * 31) % 100) - 50) / 50) * 0.014;
 
+    // Step 1: Check if the job location mentions a SPECIFIC municipality or industrial site
+    // (excluding generic national/regional terms)
     for (const [key, coords] of Object.entries(ISRAEL_LOCATIONS_GEO)) {
-      if (locStr.includes(key)) {
+      if (!GENERIC_LOCATION_TERMS.has(key) && rawLoc.includes(key)) {
         return [coords[0] + jitterLat, coords[1] + jitterLng];
       }
     }
 
+    // Step 2: Company Headquarters & Main Campus Geo-Mapping
+    // If location is generic or unspecified, resolve by company HQ!
+    for (const [keys, coords, desc] of COMPANY_HQ_LOCATIONS_GEO) {
+      if (keys.some(k => rawComp.includes(k))) {
+        return [coords[0] + jitterLat, coords[1] + jitterLng];
+      }
+    }
+
+    // Step 3: Regional location matches (e.g., 'שרון', 'שפלה', 'צפון', 'דרום', 'מרכז')
+    for (const [key, coords] of Object.entries(ISRAEL_LOCATIONS_GEO)) {
+      if (rawLoc.includes(key)) {
+        return [coords[0] + jitterLat, coords[1] + jitterLng];
+      }
+    }
+
+    // Step 4: Fallback to Central Israel (Tel Aviv)
     return [32.0853 + jitterLat, 34.7818 + jitterLng];
   }
 
