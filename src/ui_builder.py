@@ -1676,11 +1676,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), z-index 0.1s ease;
+      width: 96px !important;
+      height: 70px !important;
+      pointer-events: auto;
     }
     .custom-map-marker:hover {
-      transform: scale(1.15) translateY(-4px) !important;
-      z-index: 9999 !important;
+      z-index: 10000 !important;
     }
     .custom-map-marker-inner {
       display: flex;
@@ -1689,6 +1690,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       justify-content: center;
       text-align: center;
       filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s ease;
+      will-change: transform;
+      transform-origin: center bottom;
+      pointer-events: auto;
+    }
+    .custom-map-marker:hover .custom-map-marker-inner {
+      transform: scale(1.12) translateY(-4px);
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.85));
     }
     .map-pin-logo-bubble {
       width: 40px;
@@ -1772,10 +1781,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
     .leaflet-tile-container {
       will-change: transform, opacity;
-    }
-    .leaflet-marker-icon {
-      transition: transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.2s ease !important;
-      will-change: transform;
     }
 
     /* Proportional & Professional List View Mode */
