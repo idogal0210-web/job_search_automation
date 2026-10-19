@@ -2920,9 +2920,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     // 3. Compensation / Salary
     const salType = job.salary_source_type;
-    if (salType === 'company_verified' || salType === 'job_ad') {
-      drivers.push({ label: 'שכר מאומת במודעה/חברה', icon: 'ph-currency-circle-dollar', type: 'lime' });
-    } else if (job.salary_range && (job.salary_range.includes('15') || job.salary_range.includes('16') || job.salary_range.includes('17') || job.salary_range.includes('18') || job.salary_range.includes('20'))) {
+    if (salType === 'job_ad') {
+      drivers.push({ label: 'שכר מאומת במודעה', icon: 'ph-currency-circle-dollar', type: 'lime' });
+    } else if (job.salary_range && (job.salary_range.includes('משמרות') || job.salary_range.includes('24/7'))) {
+      drivers.push({ label: 'תגמול משמרות מוגדל', icon: 'ph-trend-up', type: 'lime' });
+    } else if (job.salary_range && job.salary_range.includes('רכב צמוד')) {
+      drivers.push({ label: 'כולל רכב חברה צמוד', icon: 'ph-car', type: 'cyan' });
+    } else if (job.salary_range && (job.salary_range.includes('16') || job.salary_range.includes('17') || job.salary_range.includes('18') || job.salary_range.includes('19') || job.salary_range.includes('20') || job.salary_range.includes('21'))) {
       drivers.push({ label: 'רמת שכר מתגמלת', icon: 'ph-trend-up', type: 'lime' });
     }
 
@@ -3065,16 +3069,26 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       const companyReqs = stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).');
       const logoHtml = getCompanyLogoHtml(company, job.logo);
 
-      const salaryRange = stripEmojis(job.salary_range || '12,000 - 15,000 ₪');
-      const salaryType = job.salary_source_type || 'sector_benchmark';
+      let salaryRange = stripEmojis(job.salary_range || '');
+      let salaryType = job.salary_source_type || '';
       const companyBdi = `<bdi dir="auto">${company}</bdi>`;
-      const salaryLabel = stripEmojis(job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${companyBdi}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף`)));
-      
-      let salaryChipStyle = 'color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08);';
-      if (salaryType === 'company_verified') {
+      let salaryLabel = stripEmojis(job.salary_source_label || '');
+      const salaryEvidence = stripEmojis(job.salary_evidence || '');
+      const salaryUrl = job.salary_source_url || '';
+
+      if (!salaryRange || salaryRange === 'לא צוין' || salaryType === 'none') {
+        salaryRange = 'לא צוין במודעה';
+        salaryLabel = 'לא צוין שכר';
+        salaryType = 'none';
+      }
+
+      let salaryChipStyle = 'color: #94a3b8; border-color: rgba(148, 163, 184, 0.25); background: rgba(148, 163, 184, 0.06);';
+      if (salaryType === 'job_ad') {
         salaryChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.08);';
-      } else if (salaryType === 'job_ad') {
+      } else if (salaryType === 'sector_benchmark') {
         salaryChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08);';
+      } else if (salaryType === 'company_verified') {
+        salaryChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.08);';
       }
 
       // Source detection & styling
@@ -3159,9 +3173,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               <span class="dashboard-chip" style="font-size: 12px; padding: 3px 10px;">
                 <i class="ph-duotone ph-map-pin"></i> ${loc}
               </span>
-              <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 12px; padding: 3px 10px;">
-                <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;" dir="ltr"><bdi dir="rtl">(${salaryLabel})</bdi></small>
-              </span>
+              ${salaryType === 'none' ? `
+                <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 12px; padding: 3px 10px;" title="לא צוין שכר במודעת המשרה">
+                  <i class="ph-duotone ph-currency-circle-dollar"></i> לא צוין במודעה
+                </span>
+              ` : `
+                <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 12px; padding: 3px 10px;" title="${escapeHtml(salaryEvidence || salaryLabel)}">
+                  <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;" dir="ltr"><bdi dir="rtl">(${salaryLabel})</bdi></small>
+                </span>
+              `}
               ${expChipHtml}
             </div>
             ${driversHtml}
@@ -3259,10 +3279,27 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const companyReqs = stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה.');
     const quickInsight = strengths || jobSum;
     const logoHtml = getCompanyLogoHtml(company, job.logo);
-    const salaryRange = stripEmojis(job.salary_range || '12,000 - 15,000 ₪');
-    const salaryType = job.salary_source_type || 'sector_benchmark';
+    let salaryRange = stripEmojis(job.salary_range || '');
+    let salaryType = job.salary_source_type || '';
     const companyBdi = `<bdi dir="auto">${company}</bdi>`;
-    const salaryLabel = stripEmojis(job.salary_source_label || (salaryType === 'company_verified' ? `מבוסס דיווחי שכר ב-${companyBdi}` : (salaryType === 'job_ad' ? 'פורסם במודעת המשרה' : `הערכת ענף`)));
+    let salaryLabel = stripEmojis(job.salary_source_label || '');
+    const salaryEvidence = stripEmojis(job.salary_evidence || '');
+    const salaryUrl = job.salary_source_url || '';
+
+    if (!salaryRange || salaryRange === 'לא צוין' || salaryType === 'none') {
+      salaryRange = 'לא צוין במודעה';
+      salaryLabel = 'לא צוין שכר';
+      salaryType = 'none';
+    }
+
+    let salaryChipStyle = 'color: #94a3b8; border-color: rgba(148, 163, 184, 0.25); background: rgba(148, 163, 184, 0.06);';
+    if (salaryType === 'job_ad') {
+      salaryChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.08);';
+    } else if (salaryType === 'sector_benchmark') {
+      salaryChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08);';
+    } else if (salaryType === 'company_verified') {
+      salaryChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.08);';
+    }
 
     let scoreClass = 'badge-score-high';
     if (score < 80) scoreClass = 'badge-score-fair';
@@ -3304,9 +3341,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <span class="dashboard-chip" style="font-size: 11px; padding: 3px 8px;">
               <i class="ph-duotone ph-map-pin"></i> ${loc}
             </span>
-            <span class="dashboard-chip" style="font-size: 11px; padding: 3px 8px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08);">
-              <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;" dir="ltr"><bdi dir="rtl">(${salaryLabel})</bdi></small>
-            </span>
+            ${salaryType === 'none' ? `
+              <span class="dashboard-chip" style="font-size: 11px; padding: 3px 8px; ${salaryChipStyle}">
+                <i class="ph-duotone ph-currency-circle-dollar"></i> לא צוין במודעה
+              </span>
+            ` : `
+              <span class="dashboard-chip" style="font-size: 11px; padding: 3px 8px; ${salaryChipStyle}">
+                <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;" dir="ltr"><bdi dir="rtl">(${salaryLabel})</bdi></small>
+              </span>
+            `}
             ${expChipHtml}
           </div>
           ${driversHtml}
@@ -3321,6 +3364,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       </div>
 
       <div class="job-boxes-grid" style="grid-template-columns: 1fr; gap: 10px;">
+        <div class="job-box highlight" style="border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.05);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <strong style="color: var(--dashboard-cyan);"><i class="ph-duotone ph-currency-circle-dollar"></i> הערכת שכר ואמינות מקור:</strong>
+            <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 11px; padding: 2px 8px;">${salaryLabel}</span>
+          </div>
+          <div style="font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">
+            ${salaryRange}
+          </div>
+          ${salaryEvidence ? `<div style="font-size: 12.5px; color: #cbd5e1; line-height: 1.45; margin-bottom: 6px;">${salaryEvidence}</div>` : ''}
+          ${salaryUrl ? `<a href="${salaryUrl}" target="_blank" rel="noopener noreferrer" style="font-size: 11.5px; color: var(--dashboard-cyan); text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;"><span>עיון בטבלת שכר ענפית מוסמכת</span> <i class="ph-duotone ph-arrow-square-out"></i></a>` : ''}
+        </div>
         <div class="job-box highlight">
           <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
           <span>${quickInsight}</span>

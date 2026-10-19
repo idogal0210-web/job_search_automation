@@ -1,6 +1,7 @@
 import json
 import time
 from google.genai import types
+from src.salary_engine import evaluate_job_salary
 
 CV_CONTEXT = """
 Candidate: Ido Gal (עידו גל)
@@ -159,15 +160,14 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
                 print(f"[VALIDATION] Type error in Gemini response from {model_name}")
                 continue
 
-            # Ensure salary intelligence defaults
-            if not data.get("salary_source_type"):
-                data["salary_source_type"] = "sector_benchmark"
-            if not data.get("salary_source_label"):
-                data["salary_source_label"] = f"הערכת ענף (אין דיווחי שכר פומביים ל-{company})"
-            if not data.get("salary_source_url"):
-                data["salary_source_url"] = "https://www.google.com/search?q=טבלת+שכר+הנדסאי+מכונות+ישראל"
-            if not data.get("salary_evidence"):
-                data["salary_evidence"] = "מבוסס על סקרי שכר ענפיים של חברות השמה (CPS/נישה/אתגר) להנדסאי מכונות ותפעול בישראל."
+            # Authoritative Multi-Tier Salary Intelligence (Option 1)
+            sal_intel = evaluate_job_salary({
+                "title": title,
+                "company": company,
+                "snippet": snippet,
+                "sector_key": data.get("sector_key", "")
+            })
+            data.update(sal_intel)
 
             health_metrics.gemini_successes += 1
             print(f"[AI] Successfully evaluated using {model_name}")

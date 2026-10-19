@@ -43,7 +43,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
                 <div>
                     <div style="font-weight: 800; color: #f8fafc; font-size: 15.5px;">{idx}. {pick.get('company')} – {pick.get('title')}</div>
                     <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">
-                        <span style="color: #34d399; font-weight: bold;">{pick.get('match_score')}% התאמה</span> • 💰 <span style="color: #38bdf8; font-weight: bold;">{pick.get('salary_range', 'לא צוין')}</span> • {comp_domain}
+                        <span style="color: #34d399; font-weight: bold;">{pick.get('match_score')}% התאמה</span> • <span style="color: #38bdf8; font-weight: bold;">{pick.get('salary_range', 'לא צוין')}</span> • {comp_domain}
                     </div>
                 </div>
                 <div>
@@ -53,7 +53,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
             """
         top_3_html = f"""
         <div style="background-color: #0f172a; border: 1px solid #f59e0b; border-radius: 14px; padding: 18px; margin-bottom: 26px; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.15);">
-            <div style="font-size: 16px; font-weight: 800; color: #fbbf24; margin-bottom: 14px;">⭐ משרות הזהב המובילות (Top 3 Picks):</div>
+            <div style="font-size: 16px; font-weight: 800; color: #fbbf24; margin-bottom: 14px;">משרות הזהב המובילות (Top 3 Picks):</div>
             {top_items}
         </div>
         """
@@ -83,14 +83,14 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
 
             boxes_html = ""
             if comp_domain and comp_domain.strip():
-                boxes_html += f'<div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #38bdf8; font-weight: bold;">🏢 תחום ומוצר החברה:</span> {comp_domain}</div>'
+                boxes_html += f'<div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #38bdf8; font-weight: bold;">תחום ומוצר החברה:</span> {comp_domain}</div>'
             if job_sum and job_sum.strip():
-                boxes_html += f'<div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #38bdf8; font-weight: bold;">📋 תקציר המשרה:</span> {job_sum}</div>'
+                boxes_html += f'<div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #38bdf8; font-weight: bold;">תקציר המשרה:</span> {job_sum}</div>'
             if strengths and strengths.strip():
-                boxes_html += f'<div style="background-color: rgba(6, 78, 59, 0.2); border: 1px solid rgba(5, 150, 105, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;"><span style="color: #4ade80; font-weight: bold;">💪 נקודות חוזק מהניסיון שלך:</span> {strengths}</div>'
+                boxes_html += f'<div style="background-color: rgba(6, 78, 59, 0.2); border: 1px solid rgba(5, 150, 105, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;"><span style="color: #4ade80; font-weight: bold;">נקודות חוזק מהניסיון:</span> {strengths}</div>'
             comp_reqs = j.get('company_requirements', j.get('key_highlights', ''))
             if comp_reqs and comp_reqs.strip():
-                boxes_html += f'<div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(14, 165, 233, 0.4); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #38bdf8; font-weight: bold;">🎯 דרישות החברה עבור המשרה:</span> {comp_reqs}</div>'
+                boxes_html += f'<div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(14, 165, 233, 0.4); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #38bdf8; font-weight: bold;">דרישות החברה עבור המשרה:</span> {comp_reqs}</div>'
 
             sal_range = j.get('salary_range')
             if sal_range:
@@ -98,7 +98,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
                 sal_evidence = j.get('salary_evidence', '')
                 sal_url = j.get('salary_source_url', '')
                 sal_link_html = f' <a href="{sal_url}" target="_blank" style="color: #38bdf8; text-decoration: underline; font-size: 11px; margin-right: 8px;">[אימות מקור ↗]</a>' if sal_url else ''
-                boxes_html += f'<div style="background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;"><span style="color: #34d399; font-weight: bold;">💰 טווח שכר צפוי:</span> <strong style="color: #ffffff;">{sal_range}</strong> <span style="font-size: 11.5px; color: #94a3b8;">({sal_label})</span>{sal_link_html}<br><span style="font-size: 11px; color: #cbd5e1;">{sal_evidence}</span></div>'
+                boxes_html += f'<div style="background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;"><span style="color: #34d399; font-weight: bold;">הערכת שכר ומקור הנתון:</span> <strong style="color: #ffffff;">{sal_range}</strong> <span style="font-size: 11.5px; color: #94a3b8;">({sal_label})</span>{sal_link_html}<br><span style="font-size: 11px; color: #cbd5e1;">{sal_evidence}</span></div>'
 
             cards_html += f"""
             <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 20px; margin-bottom: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.35);">

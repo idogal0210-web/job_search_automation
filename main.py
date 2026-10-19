@@ -14,6 +14,7 @@ from src.fetchers import (
     fetch_drushim_full_job_description
 )
 from src.evaluators import evaluate_and_enrich_job_with_gemini, QuotaExhaustedError
+from src.salary_engine import evaluate_job_salary
 from src.publishers import send_email_report
 from src.ui_builder import build_and_save_docs_app, update_weekly_archive
 from src.state_manager import load_state, save_state_atomic
@@ -35,7 +36,7 @@ def apply_keyword_fallback(job: dict) -> dict:
     text = f"{job.get('title', '')} {job.get('snippet', '')}".lower()
     match_count = sum(1 for word in FALLBACK_KEYWORDS if word in text)
     score = min(100, match_count * 15)
-    company = job.get('company', 'החברה')
+    sal_intel = evaluate_job_salary(job)
     return {
         "match_score": score,
         "concrete_matches_count": match_count,
@@ -51,11 +52,12 @@ def apply_keyword_fallback(job: dict) -> dict:
         "junior_openness": "N/A",
         "work_model": "N/A",
         "company_requirements": "דרישות טכניות והתאמה לתחום על בסיס מילות מפתח (דרישות מפורטות בקישור המשרה).",
-        "salary_range": "11,000 - 15,000 ₪",
-        "salary_source_type": "sector_benchmark",
-        "salary_source_label": f"הערכת ענף (אין דיווחי שכר פומביים ל-{company})",
-        "salary_source_url": "https://www.google.com/search?q=טבלת+שכר+הנדסאי+מכונות+ישראל",
-        "salary_evidence": "מבוסס על סקרי שכר ענפיים להנדסאי מכונות ותפעול."
+        "salary_range": sal_intel["salary_range"],
+        "salary_source_type": sal_intel["salary_source_type"],
+        "salary_source_label": sal_intel["salary_source_label"],
+        "salary_source_url": sal_intel["salary_source_url"],
+        "salary_evidence": sal_intel["salary_evidence"],
+        "salary_confidence": sal_intel.get("salary_confidence", "medium"),
     }
 
 
