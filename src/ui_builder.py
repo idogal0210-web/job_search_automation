@@ -3660,12 +3660,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       details.classList.remove('expanded');
       btn.classList.remove('expanded');
       btn.setAttribute('aria-expanded', 'false');
-      btn.innerHTML = '<span>הרחב ניתוח מלא (תקציר, התאמה ורקע חברה)</span> <i class="ph-bold ph-caret-down"></i>';
+      btn.innerHTML = '<span>הרחב ניתוח מלא</span> <i class="ph-bold ph-caret-down"></i>';
     } else {
       details.classList.add('expanded');
       btn.classList.add('expanded');
       btn.setAttribute('aria-expanded', 'true');
-      btn.innerHTML = '<span>הסתר פירוט מלא</span> <i class="ph-bold ph-caret-up"></i>';
+      btn.innerHTML = '<span>הסתר ניתוח מלא</span> <i class="ph-bold ph-caret-up"></i>';
     }
   }
 
@@ -3835,7 +3835,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         `;
       }
 
-      const quickInsight = strengths || jobSum;
+      const quickInsight = stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.');
       const isStarred = Boolean(starredJobs[id]);
       const classifiedRegion = classifyJobRegion(loc);
       const expChipHtml = getExperienceChip(job);
@@ -3900,38 +3900,37 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           </div>
         </div>
 
-        <!-- Company Requirements Banner (Direct View on Cube) -->
+        <!-- Company Requirements & Domain Overview (Direct View on Cube) -->
         <div class="job-quick-summary">
           <div class="quick-summary-label">
-            <i class="ph-duotone ph-check-square"></i> דרישות החברה עבור המשרה:
+            <i class="ph-duotone ph-briefcase"></i> תחום החברה ודרישות המשרה:
           </div>
-          <div class="quick-summary-text">${companyReqs}</div>
+          <div class="quick-summary-text">
+            <div style="margin-bottom: 5px;">
+              <strong style="color: var(--dashboard-cyan);"><i class="ph-duotone ph-buildings"></i> תחום ומוצר:</strong> <span>${domain}</span>
+            </div>
+            <div>
+              <strong style="color: var(--dashboard-lime);"><i class="ph-duotone ph-check-square"></i> דרישות המשרה:</strong> <span>${companyReqs}</span>
+            </div>
+          </div>
         </div>
 
         <!-- Progressive Disclosure Toggle Button -->
         <button type="button" class="btn-toggle-details" onclick="toggleCardDetails(this)" aria-expanded="false">
-          <span>הרחב ניתוח מלא (תקציר, התאמה ורקע חברה)</span>
+          <span>הרחב ניתוח מלא</span>
           <i class="ph-bold ph-caret-down"></i>
         </button>
 
         <!-- Collapsible Full Information Panels -->
         <div class="job-details-collapsible">
           <div class="job-boxes-grid">
-            <div class="job-box highlight">
-              <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
-              <span>${quickInsight}</span>
-            </div>
-            <div class="job-box">
-              <strong><i class="ph-duotone ph-buildings"></i> תחום ומוצר החברה:</strong>
-              <span>${domain}</span>
-            </div>
             <div class="job-box">
               <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
               <span>${jobSum}</span>
             </div>
             <div class="job-box highlight">
-              <strong><i class="ph-duotone ph-target"></i> נקודות חוזק מהניסיון:</strong>
-              <span>${strengths}</span>
+              <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
+              <span>${quickInsight}</span>
             </div>
           </div>
         </div>
@@ -3989,7 +3988,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const jobSum = stripEmojis(job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.');
     const strengths = stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.');
     const companyReqs = stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה.');
-    const quickInsight = strengths || jobSum;
+    const quickInsight = stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.');
     const logoHtml = getCompanyLogoHtml(company, job.logo);
     let salaryRange = stripEmojis(job.salary_range || '');
     let salaryType = job.salary_source_type || '';
@@ -4069,10 +4068,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       </div>
 
       <div class="job-quick-summary" style="background: rgba(137, 244, 231, 0.05); border: 1px solid rgba(137, 244, 231, 0.22); border-radius: 14px; padding: 12px 14px;">
-        <div class="quick-summary-label" style="font-size: 12px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 4px;">
-          <i class="ph-duotone ph-check-square"></i> דרישות החברה עבור המשרה:
+        <div class="quick-summary-label" style="font-size: 12px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 5px;">
+          <i class="ph-duotone ph-briefcase"></i> תחום החברה ודרישות המשרה:
         </div>
-        <div style="font-size: 13.5px; line-height: 1.5; color: #e2e8df;">${companyReqs}</div>
+        <div style="font-size: 13.5px; line-height: 1.5; color: #e2e8df;">
+          <div style="margin-bottom: 5px;">
+            <strong style="color: var(--dashboard-cyan);"><i class="ph-duotone ph-buildings"></i> תחום ומוצר:</strong> <span>${domain}</span>
+          </div>
+          <div>
+            <strong style="color: var(--dashboard-lime);"><i class="ph-duotone ph-check-square"></i> דרישות המשרה:</strong> <span>${companyReqs}</span>
+          </div>
+        </div>
       </div>
 
       <div class="job-boxes-grid" style="grid-template-columns: 1fr; gap: 10px;">
@@ -4087,21 +4093,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           ${salaryEvidence ? `<div style="font-size: 12.5px; color: #cbd5e1; line-height: 1.45; margin-bottom: 6px;">${salaryEvidence}</div>` : ''}
           ${salaryUrl ? `<a href="${salaryUrl}" target="_blank" rel="noopener noreferrer" style="font-size: 11.5px; color: var(--dashboard-cyan); text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;"><span>עיון בטבלת שכר ענפית מוסמכת</span> <i class="ph-duotone ph-arrow-square-out"></i></a>` : ''}
         </div>
-        <div class="job-box highlight">
-          <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
-          <span>${quickInsight}</span>
-        </div>
-        <div class="job-box">
-          <strong><i class="ph-duotone ph-buildings"></i> תחום ומוצר החברה:</strong>
-          <span>${domain}</span>
-        </div>
         <div class="job-box">
           <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
           <span>${jobSum}</span>
         </div>
         <div class="job-box highlight">
-          <strong><i class="ph-duotone ph-target"></i> נקודות חוזק מהניסיון:</strong>
-          <span>${strengths}</span>
+          <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
+          <span>${quickInsight}</span>
         </div>
       </div>
     `;
