@@ -571,26 +571,41 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       margin: 4px 0 10px;
     }
     .drivers-label {
-      font-size: 12px;
+      font-size: 11px;
+      font-weight: 600;
       color: var(--dashboard-muted);
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      margin-inline-end: 4px;
+      gap: 4px;
+      margin-inline-end: 2px;
+      height: 22px;
+      line-height: 1;
+    }
+    .drivers-label i {
+      font-size: 12px;
     }
     .driver-chip {
       font-size: 11px;
       font-weight: 600;
-      padding: 3px 10px;
+      padding: 2.5px 8px;
       border-radius: 999px;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
+      height: 22px;
+      min-height: 22px;
+      box-sizing: border-box;
+      line-height: 1;
       border: 1px solid var(--dashboard-edge);
+      white-space: nowrap;
+    }
+    .driver-chip i {
+      font-size: 12px;
+      line-height: 1;
     }
     .driver-chip.lime {
       background: rgba(220, 255, 114, 0.12);
@@ -608,28 +623,66 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       border-color: rgba(255, 211, 104, 0.35);
     }
 
-    /* Progressive Disclosure & Quick Summary */
-    .job-quick-summary {
-      background: rgba(137, 244, 231, 0.05);
-      border: 1px solid rgba(137, 244, 231, 0.22);
-      border-radius: 16px;
-      padding: 12px 16px;
-      font-size: 14px;
-      line-height: 1.55;
-      color: var(--dashboard-text);
+    /* Proportional & Symmetrical Tags (Both Grid & List views) */
+    .job-card .dashboard-chip,
+    .job-card .driver-chip {
+      font-size: 11px !important;
+      font-weight: 600 !important;
+      line-height: 1.25 !important;
+      padding: 2.5px 8px !important;
+      border-radius: 999px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+      min-height: 22px !important;
+      height: auto !important;
+      box-sizing: border-box !important;
+      white-space: nowrap !important;
+    }
+    .job-card .dashboard-chip i,
+    .job-card .driver-chip i {
+      font-size: 12px !important;
+      line-height: 1 !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* 2 Distinct Bubbles: Domain & Requirements */
+    .job-bubbles-wrapper {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 7px;
+      margin-bottom: 2px;
     }
-    .quick-summary-label {
-      font-size: 12px;
-      font-weight: 600;
+    .job-bubble {
+      border-radius: 14px;
+      padding: 9px 13px;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+    .job-bubble-domain {
+      background: rgba(137, 244, 231, 0.05);
+      border: 1px solid rgba(137, 244, 231, 0.22);
+      color: #e2e8df;
+    }
+    .job-bubble-domain .bubble-title {
       color: var(--dashboard-cyan);
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      margin-inline-end: 5px;
+      display: inline;
+      font-weight: 700;
     }
-    .quick-summary-text {
+    .job-bubble-reqs {
+      background: rgba(220, 255, 114, 0.04);
+      border: 1px solid rgba(220, 255, 114, 0.22);
+      color: #e2e8df;
+    }
+    .job-bubble-reqs .bubble-title {
+      color: var(--dashboard-lime);
+      margin-inline-end: 5px;
+      display: inline;
+      font-weight: 700;
+    }
+    .job-bubble .bubble-content {
       color: #e2e8df;
     }
 
@@ -1074,6 +1127,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         border-color: var(--dashboard-cyan) !important;
       }
       #cardsContainer:not(.view-list) .job-quick-summary,
+      #cardsContainer:not(.view-list) .job-bubbles-wrapper,
       #cardsContainer:not(.view-list) .btn-toggle-details,
       #cardsContainer:not(.view-list) .job-details-collapsible,
       #cardsContainer:not(.view-list) .job-actions-bar,
@@ -1255,6 +1309,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         transform: scale(0.99) !important;
       }
       #cardsContainer.view-list .job-quick-summary,
+      #cardsContainer.view-list .job-bubbles-wrapper,
       #cardsContainer.view-list .btn-toggle-details,
       #cardsContainer.view-list .job-details-collapsible,
       #cardsContainer.view-list .job-actions-bar,
@@ -1902,39 +1957,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       gap: 5px;
       align-items: center;
     }
-    #cardsContainer.view-list .job-quick-summary {
+    #cardsContainer.view-list .job-bubbles-wrapper {
       grid-area: summary;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 12px;
-      padding: 9px 14px;
-      font-size: 13px;
-      line-height: 1.5;
       display: flex;
-      flex-direction: row;
-      align-items: baseline;
-      gap: 8px;
+      flex-direction: column;
+      gap: 6px;
       width: 100%;
       box-sizing: border-box;
     }
-    #cardsContainer.view-list .quick-summary-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--dashboard-cyan);
-      white-space: nowrap;
-      flex-shrink: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-    }
-    #cardsContainer.view-list .quick-summary-text {
-      color: #cbd5e1;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      flex: 1;
+    #cardsContainer.view-list .job-bubble {
+      padding: 7px 12px;
+      font-size: 12.5px;
+      line-height: 1.45;
+      border-radius: 11px;
     }
     #cardsContainer.view-list .job-actions-bar {
       grid-area: actions;
@@ -2026,7 +2061,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       #cardsContainer.view-list .job-card-topbar-meta {
         margin-inline-start: 0;
       }
-      #cardsContainer.view-list .job-quick-summary {
+      #cardsContainer.view-list .job-bubbles-wrapper {
         flex-direction: column;
         align-items: flex-start;
       }
@@ -3586,7 +3621,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     return `
-      <span class="dashboard-chip exp-chip" style="${style}; font-size: 12px; padding: 3px 10px;" title="רמת ניסיון: ${escapeHtml(job.junior_openness || label)}">
+      <span class="dashboard-chip exp-chip" style="${style}; font-size: 11px; padding: 2.5px 8px;" title="רמת ניסיון: ${escapeHtml(job.junior_openness || label)}">
         <i class="ph-duotone ${icon}"></i> ${label}
       </span>
     `;
@@ -3859,17 +3894,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\\'")}', event)" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
                 <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
               </button>
-              <span class="dashboard-chip" style="${sectorChipStyle}">${sectorBadge}</span>
+              <span class="dashboard-chip" style="${sectorChipStyle}; font-size: 11px; padding: 2.5px 8px;">${sectorBadge}</span>
             </div>
             <div class="badge-score ${scoreClass}">
               <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
             </div>
           </div>
           <div class="job-card-topbar-meta">
-            <span class="dashboard-chip" style="color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.2); font-size: 11px; padding: 2px 8px;">
+            <span class="dashboard-chip" style="color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.2); font-size: 11px; padding: 2.5px 8px;">
               <i class="ph-duotone ph-calendar-blank"></i> ${jobDate}
             </span>
-            <span class="dashboard-chip" style="${sourceChipStyle}; font-size: 11px; padding: 2px 8px;">
+            <span class="dashboard-chip" style="${sourceChipStyle}; font-size: 11px; padding: 2.5px 8px;">
               <i class="ph-duotone ${sourceIcon}"></i> ${sourceName}
             </span>
           </div>
@@ -3882,16 +3917,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <div class="job-company-name" dir="auto">${company}</div>
             <h2 class="job-title-text" dir="auto">${title}</h2>
             <div class="job-header-chips">
-              <span class="dashboard-chip" style="font-size: 12px; padding: 3px 10px;">
+              <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px;">
                 <i class="ph-duotone ph-map-pin"></i> ${loc}
               </span>
               ${salaryType === 'none' ? `
-                <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 12px; padding: 3px 10px;" title="לא צוין שכר במודעת המשרה">
+                <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 11px; padding: 2.5px 8px;" title="לא צוין שכר במודעת המשרה">
                   <i class="ph-duotone ph-currency-circle-dollar"></i> לא צוין במודעה
                 </span>
               ` : `
-                <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 12px; padding: 3px 10px;" title="${escapeHtml(salaryEvidence || salaryLabel)}">
-                  <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;" dir="ltr"><bdi dir="rtl">(${salaryLabel})</bdi></small>
+                <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 11px; padding: 2.5px 8px;" title="${escapeHtml(salaryEvidence || salaryLabel)}">
+                  <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange}
                 </span>
               `}
               ${expChipHtml}
@@ -3900,18 +3935,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           </div>
         </div>
 
-        <!-- Company Requirements & Domain Overview (Direct View on Cube) -->
-        <div class="job-quick-summary">
-          <div class="quick-summary-label">
-            <i class="ph-duotone ph-briefcase"></i> תחום החברה ודרישות המשרה:
+        <!-- 2 Distinct Bubbles: Domain & Requirements -->
+        <div class="job-bubbles-wrapper">
+          <div class="job-bubble job-bubble-domain">
+            <strong class="bubble-title"><i class="ph-duotone ph-buildings"></i> תחום ומוצר:</strong>
+            <span class="bubble-content">${domain}</span>
           </div>
-          <div class="quick-summary-text">
-            <div style="margin-bottom: 5px;">
-              <strong style="color: var(--dashboard-cyan);"><i class="ph-duotone ph-buildings"></i> תחום ומוצר:</strong> <span>${domain}</span>
-            </div>
-            <div>
-              <strong style="color: var(--dashboard-lime);"><i class="ph-duotone ph-check-square"></i> דרישות המשרה:</strong> <span>${companyReqs}</span>
-            </div>
+          <div class="job-bubble job-bubble-reqs">
+            <strong class="bubble-title"><i class="ph-duotone ph-check-square"></i> דרישות המשרה:</strong>
+            <span class="bubble-content">${companyReqs}</span>
           </div>
         </div>
 
@@ -4049,16 +4081,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <div style="font-size: 13.5px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 2px;" dir="auto">${company}</div>
           <h2 style="font-size: 17.5px; font-weight: 700; color: #fff; margin: 0 0 6px; line-height: 1.3;" dir="auto">${title}</h2>
           <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
-            <span class="dashboard-chip" style="font-size: 11px; padding: 3px 8px;">
+            <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px;">
               <i class="ph-duotone ph-map-pin"></i> ${loc}
             </span>
             ${salaryType === 'none' ? `
-              <span class="dashboard-chip" style="font-size: 11px; padding: 3px 8px; ${salaryChipStyle}">
+              <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px; ${salaryChipStyle}">
                 <i class="ph-duotone ph-currency-circle-dollar"></i> לא צוין במודעה
               </span>
             ` : `
-              <span class="dashboard-chip" style="font-size: 11px; padding: 3px 8px; ${salaryChipStyle}">
-                <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange} <small style="display: inline; opacity: 0.85;" dir="ltr"><bdi dir="rtl">(${salaryLabel})</bdi></small>
+              <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px; ${salaryChipStyle}">
+                <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange}
               </span>
             `}
             ${expChipHtml}
@@ -4067,17 +4099,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </div>
       </div>
 
-      <div class="job-quick-summary" style="background: rgba(137, 244, 231, 0.05); border: 1px solid rgba(137, 244, 231, 0.22); border-radius: 14px; padding: 12px 14px;">
-        <div class="quick-summary-label" style="font-size: 12px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 5px;">
-          <i class="ph-duotone ph-briefcase"></i> תחום החברה ודרישות המשרה:
+      <!-- 2 Distinct Bubbles: Domain & Requirements -->
+      <div class="job-bubbles-wrapper" style="margin: 4px 0 6px;">
+        <div class="job-bubble job-bubble-domain" style="padding: 10px 14px; font-size: 13.5px;">
+          <strong class="bubble-title"><i class="ph-duotone ph-buildings"></i> תחום ומוצר:</strong>
+          <span class="bubble-content">${domain}</span>
         </div>
-        <div style="font-size: 13.5px; line-height: 1.5; color: #e2e8df;">
-          <div style="margin-bottom: 5px;">
-            <strong style="color: var(--dashboard-cyan);"><i class="ph-duotone ph-buildings"></i> תחום ומוצר:</strong> <span>${domain}</span>
-          </div>
-          <div>
-            <strong style="color: var(--dashboard-lime);"><i class="ph-duotone ph-check-square"></i> דרישות המשרה:</strong> <span>${companyReqs}</span>
-          </div>
+        <div class="job-bubble job-bubble-reqs" style="padding: 10px 14px; font-size: 13.5px;">
+          <strong class="bubble-title"><i class="ph-duotone ph-check-square"></i> דרישות המשרה:</strong>
+          <span class="bubble-content">${companyReqs}</span>
         </div>
       </div>
 
