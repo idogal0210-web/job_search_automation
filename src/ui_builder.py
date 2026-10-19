@@ -2114,12 +2114,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <!-- Segmented Progress Bar -->
         <div class="segmented-progress">
           <div id="progressSegNew" class="segmented-progress-bar" style="background: var(--dashboard-lime); width: 100%;"></div>
+          <div id="progressSegStarred" class="segmented-progress-bar" style="background: var(--dashboard-gold); width: 0%;"></div>
           <div id="progressSegSaved" class="segmented-progress-bar" style="background: var(--dashboard-cyan); width: 0%;"></div>
-          <div id="progressSegRejected" class="segmented-progress-bar" style="background: var(--dashboard-gold); width: 0%;"></div>
+          <div id="progressSegRejected" class="segmented-progress-bar" style="background: #fca5a5; width: 0%;"></div>
         </div>
 
         <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--dashboard-muted);">
           <span id="pctLabelNew">100% חדשות</span>
+          <span id="pctLabelStarred">0% כוכב</span>
           <span id="pctLabelSaved">0% שמורות</span>
           <span id="pctLabelRejected">0% הוסרו</span>
         </div>
@@ -2558,6 +2560,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         card.setAttribute('data-starred', isStarred ? 'true' : 'false');
       }
     });
+
+    const currentCardCount = document.querySelectorAll('.job-card').length;
+    const availableCount = getAllAvailableJobs().length;
+    if (currentCardCount !== availableCount) {
+      renderCards();
+      return;
+    }
 
     updateUI();
   }
@@ -3707,6 +3716,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   let activeQuickChip = 'all';
 
   function selectQuickChip(chipKey) {
+    if (chipKey === 'starred') {
+      activeQuickChip = 'starred';
+      setFilter('starred');
+      return;
+    }
+    if (chipKey === 'all' && currentFilter === 'starred') {
+      setFilter('all');
+    }
     activeQuickChip = chipKey;
     document.querySelectorAll('.quick-chip').forEach(btn => {
       if (btn.getAttribute('data-chip') === chipKey) {
@@ -4216,6 +4233,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
   function setFilter(filter, el) {
     currentFilter = filter;
+    if (filter === 'starred') {
+      activeQuickChip = 'starred';
+    } else if (activeQuickChip === 'starred') {
+      activeQuickChip = 'all';
+    }
     document.querySelectorAll('.stat-cube-btn').forEach(b => {
       b.classList.remove('active');
       b.removeAttribute('aria-current');
@@ -4275,11 +4297,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         saveText.textContent = "שמור להגשה";
       }
 
+      const isStarred = Boolean(starredJobs[id]);
+
       let matchesTab = false;
-      if (currentFilter === 'all') matchesTab = (state !== 'saved' && state !== 'rejected' && state !== 'purged');
-      else if (currentFilter === 'starred') matchesTab = (Boolean(starredJobs[id]) && state !== 'rejected' && state !== 'purged');
-      else if (currentFilter === 'saved') matchesTab = (state === 'saved');
-      else if (currentFilter === 'rejected') matchesTab = (state === 'rejected');
+      if (currentFilter === 'all') {
+        matchesTab = (!isStarred && state !== 'saved' && state !== 'rejected' && state !== 'purged');
+      } else if (currentFilter === 'starred') {
+        matchesTab = (isStarred && state !== 'rejected' && state !== 'purged');
+      } else if (currentFilter === 'saved') {
+        matchesTab = (state === 'saved' && !isStarred);
+      } else if (currentFilter === 'rejected') {
+        matchesTab = (state === 'rejected');
+      }
 
       let matchesSector = (selectedSector === 'all');
       if (!matchesSector) {
@@ -4312,7 +4341,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       
       let matchesQuick = true;
       if (activeQuickChip === 'starred') {
-        matchesQuick = Boolean(starredJobs[id]);
+        matchesQuick = isStarred;
       } else if (activeQuickChip === 'top_match') {
         const cScore = Number(card.getAttribute('data-score')) || 0;
         matchesQuick = (cScore >= 85);
@@ -4339,7 +4368,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     // Keep Quick Chips in sync
     document.querySelectorAll('.quick-chip').forEach(btn => {
       const c = btn.getAttribute('data-chip');
-      if (['top_match', 'salary_verified', 'starred'].includes(activeQuickChip)) {
+      if (currentFilter === 'starred') {
+        btn.classList.toggle('active', c === 'starred');
+      } else if (['top_match', 'salary_verified'].includes(activeQuickChip)) {
         btn.classList.toggle('active', c === activeQuickChip);
       } else {
         btn.classList.toggle('active', c === selectedSector);
@@ -4347,10 +4378,24 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     });
 
     const allAvailable = getAllAvailableJobs();
-    const totalSavedInStore = allAvailable.filter(j => jobStates[j.link] === 'saved').length;
-    const totalRejectedInStore = allAvailable.filter(j => jobStates[j.link] === 'rejected').length;
-    const totalStarredInStore = allAvailable.filter(j => Boolean(starredJobs[j.link]) && jobStates[j.link] !== 'rejected' && jobStates[j.link] !== 'purged').length;
-    const pendingInBatch = total - (saved + rejected + purged);
+    let totalNewInStore = 0;
+    let totalStarredInStore = 0;
+    let totalSavedInStore = 0;
+    let totalRejectedInStore = 0;
+
+    allAvailable.forEach(j => {
+      const st = jobStates[j.link] || 'pending';
+      const isSt = Boolean(starredJobs[j.link]);
+      if (st === 'rejected' || st === 'purged') {
+        totalRejectedInStore++;
+      } else if (isSt) {
+        totalStarredInStore++;
+      } else if (st === 'saved') {
+        totalSavedInStore++;
+      } else {
+        totalNewInStore++;
+      }
+    });
 
     let tabTotal = 0;
     let tabLabel = '';
@@ -4368,7 +4413,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       tabLabel = `סה״כ משרות שהוסרו: ${tabTotal}`;
       tabNoun = 'משרות שהוסרו';
     } else {
-      tabTotal = Math.max(0, pendingInBatch);
+      tabTotal = totalNewInStore;
       tabLabel = `סה״כ משרות חדשות: ${tabTotal}`;
       tabNoun = 'משרות חדשות';
     }
@@ -4388,7 +4433,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const countRejectedEl = document.getElementById('countRejected');
     const countStarredNavEl = document.getElementById('countStarredNav');
     const countStarredEl = document.getElementById('countStarred');
-    if (countAllEl) countAllEl.textContent = Math.max(0, pendingInBatch);
+    if (countAllEl) countAllEl.textContent = totalNewInStore;
     if (countSavedEl) countSavedEl.textContent = totalSavedInStore;
     if (countRejectedEl) countRejectedEl.textContent = totalRejectedInStore;
     if (countStarredNavEl) countStarredNavEl.textContent = totalStarredInStore;
@@ -4398,7 +4443,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const statStarredEl = document.getElementById('statStarredCount');
     const statSavedEl = document.getElementById('statSavedCount');
     const statRejectedEl = document.getElementById('statRejectedCount');
-    if (statNewEl) statNewEl.textContent = Math.max(0, pendingInBatch);
+    if (statNewEl) statNewEl.textContent = totalNewInStore;
     if (statStarredEl) statStarredEl.textContent = totalStarredInStore;
     if (statSavedEl) statSavedEl.textContent = totalSavedInStore;
     if (statRejectedEl) statRejectedEl.textContent = totalRejectedInStore;
@@ -4415,29 +4460,35 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     // Progress Bar Calculations
-    const triaged = saved + rejected + purged;
-    const pct = total > 0 ? Math.round((triaged / total) * 100) : 0;
+    const totalCount = allAvailable.length;
+    const triaged = totalStarredInStore + totalSavedInStore + totalRejectedInStore;
+    const pct = totalCount > 0 ? Math.round((triaged / totalCount) * 100) : 0;
     
     const pctTextEl = document.getElementById('progressPctText');
     const summaryChipEl = document.getElementById('progressSummaryChip');
     if (pctTextEl) pctTextEl.textContent = pct + '%';
-    if (summaryChipEl) summaryChipEl.textContent = pct + '% נסקרו';
+    if (summaryChipEl) summaryChipEl.textContent = pct + '% מוינו';
 
-    const pNew = total > 0 ? Math.round((Math.max(0, pendingInBatch) / total) * 100) : 0;
-    const pSaved = total > 0 ? Math.round((saved / total) * 100) : 0;
-    const pRej = Math.max(0, 100 - pNew - pSaved);
+    const pNew = totalCount > 0 ? Math.round((totalNewInStore / totalCount) * 100) : 0;
+    const pStarred = totalCount > 0 ? Math.round((totalStarredInStore / totalCount) * 100) : 0;
+    const pSaved = totalCount > 0 ? Math.round((totalSavedInStore / totalCount) * 100) : 0;
+    const pRej = Math.max(0, 100 - pNew - pStarred - pSaved);
 
     const segNew = document.getElementById('progressSegNew');
+    const segStarred = document.getElementById('progressSegStarred');
     const segSaved = document.getElementById('progressSegSaved');
     const segRej = document.getElementById('progressSegRejected');
     if (segNew) segNew.style.width = pNew + '%';
+    if (segStarred) segStarred.style.width = pStarred + '%';
     if (segSaved) segSaved.style.width = pSaved + '%';
     if (segRej) segRej.style.width = pRej + '%';
 
     const lblNew = document.getElementById('pctLabelNew');
+    const lblStarred = document.getElementById('pctLabelStarred');
     const lblSaved = document.getElementById('pctLabelSaved');
     const lblRej = document.getElementById('pctLabelRejected');
     if (lblNew) lblNew.textContent = pNew + '% חדשות';
+    if (lblStarred) lblStarred.textContent = pStarred + '% כוכב';
     if (lblSaved) lblSaved.textContent = pSaved + '% שמורות';
     if (lblRej) lblRej.textContent = pRej + '% הוסרו';
 
@@ -4469,11 +4520,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         } else if (currentFilter === 'starred') {
           if (iconEl) iconEl.innerHTML = '<i class="ph-fill ph-star" style="color: var(--dashboard-gold);"></i>';
           if (titleEl) titleEl.textContent = 'עדיין לא סימנת משרות בכוכב';
-          if (descEl) descEl.textContent = 'לחץ על סמל הכוכב בפינת כל כרטיס משרה כדי להוסיף אותה לרשימת המועדפים שלך.';
+          if (descEl) descEl.textContent = 'לחץ על סמל הכוכב בפינת כל כרטיס משרה כדי להעביר אותה לכאן.';
         } else {
           if (iconEl) iconEl.innerHTML = '<i class="ph-duotone ph-sparkle"></i>';
           if (titleEl) titleEl.textContent = 'סיימת לסקור את כל המשרות החדשות!';
-          if (descEl) descEl.textContent = 'כל המשרות במקבץ זה כבר מוינו (נשמרו או הוסרו).';
+          if (descEl) descEl.textContent = 'כל המשרות במקבץ זה כבר מוינו (נשמרו, סומנו בכוכב או הוסרו).';
         }
         emptyState.style.display = 'block';
       } else {
@@ -4502,12 +4553,20 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const chartChipEl = document.getElementById('chartChip');
 
     if (currentFilter === 'saved') {
-      sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'saved');
+      sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'saved' && !starredJobs[j.link]);
       if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שמורות';
       if (chartChipEl) {
         chartChipEl.innerHTML = `<i class="ph-duotone ph-bookmark-simple"></i> ${sourceJobs.length} שמורות`;
         chartChipEl.style.color = 'var(--dashboard-lime)';
         chartChipEl.style.borderColor = 'rgba(220, 255, 114, 0.4)';
+      }
+    } else if (currentFilter === 'starred') {
+      sourceJobs = allAvailableJobs.filter(j => Boolean(starredJobs[j.link]) && jobStates[j.link] !== 'rejected' && jobStates[j.link] !== 'purged');
+      if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות בכוכב';
+      if (chartChipEl) {
+        chartChipEl.innerHTML = `<i class="ph-fill ph-star"></i> ${sourceJobs.length} בכוכב`;
+        chartChipEl.style.color = 'var(--dashboard-gold)';
+        chartChipEl.style.borderColor = 'rgba(255, 211, 104, 0.4)';
       }
     } else if (currentFilter === 'rejected') {
       sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'rejected');
@@ -4518,17 +4577,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         chartChipEl.style.borderColor = 'rgba(252, 165, 165, 0.4)';
       }
     } else {
-      // Default / All: pending jobs in current weekly batch
-      sourceJobs = (rawJobsData || []).filter(j => {
+      // Default / All: pending, unstarred jobs in current batch
+      sourceJobs = (allAvailableJobs || []).filter(j => {
         const st = jobStates[j.link] || 'pending';
-        return st !== 'saved' && st !== 'rejected' && st !== 'purged';
+        const isSt = Boolean(starredJobs[j.link]);
+        return !isSt && st !== 'saved' && st !== 'rejected' && st !== 'purged';
       });
-      if (chartTitleEl) chartTitleEl.textContent = 'התפלגות תחומים';
+      if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות חדשות';
       if (chartChipEl) {
         if (sourceJobs.length === 0) {
           chartChipEl.innerHTML = '<i class="ph-duotone ph-chart-bar"></i> 0 משרות';
         } else {
-          chartChipEl.innerHTML = `<i class="ph-duotone ph-chart-bar"></i> פעיל השבוע (${sourceJobs.length})`;
+          chartChipEl.innerHTML = `<i class="ph-duotone ph-chart-bar"></i> חדשות (${sourceJobs.length})`;
         }
         chartChipEl.style.color = 'var(--dashboard-cyan)';
         chartChipEl.style.borderColor = 'rgba(137, 244, 231, 0.35)';
