@@ -1666,11 +1666,112 @@
       color: var(--dashboard-cyan) !important;
     }
     .custom-map-marker {
-      background: transparent;
-      border: none;
-      width: 120px !important;
-      height: 32px !important;
+      background: transparent !important;
+      border: none !important;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), z-index 0.1s ease;
+    }
+    .custom-map-marker:hover {
+      transform: scale(1.15) translateY(-4px) !important;
+      z-index: 9999 !important;
+    }
+    .custom-map-marker-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
+    }
+    .map-pin-logo-bubble {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #0f172a;
+      border: 2.5px solid var(--dashboard-cyan);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: visible;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+    .map-pin-logo-img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      border-radius: 6px;
+      display: block;
+    }
+    .map-pin-avatar-fallback {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg, rgba(220, 255, 114, 0.3), rgba(137, 244, 231, 0.25));
+    }
+    .map-pin-score-badge {
+      position: absolute;
+      top: -5px;
+      right: -7px;
+      font-size: 9.5px;
+      font-weight: 800;
+      border-radius: 999px;
+      padding: 1px 4.5px;
+      line-height: 1.1;
+      border: 1.5px solid #0f172a;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+      white-space: nowrap;
+    }
+    .map-pin-pointer {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid var(--dashboard-cyan);
+      margin-top: -1px;
+      margin-bottom: 2px;
+    }
+    .map-pin-company-name {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+      border-radius: 8px;
+      padding: 1.5px 7px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #f1f5f9;
+      max-width: 96px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: center;
+      line-height: 1.35;
+      backdrop-filter: blur(6px);
+      letter-spacing: 0.2px;
+    }
+
+    /* Silky-Smooth Leaflet Zoom Animations */
+    .leaflet-zoom-animated {
+      transition: transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
+      will-change: transform;
+    }
+    .leaflet-tile-container {
+      will-change: transform, opacity;
+    }
+    .leaflet-marker-icon {
+      transition: transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.2s ease !important;
+      will-change: transform;
     }
 
     /* Proportional & Professional List View Mode */
@@ -2843,7 +2944,7 @@
     [["l'oréal", 'loreal', 'לוריאל'], 'loreal.com']
   ];
 
-  function getCompanyLogoHtml(companyName, customLogo) {
+  function getCompanyLogoInfo(companyName, customLogo) {
     const rawName = (companyName || 'חברה').trim();
     const norm = rawName.toLowerCase();
     
@@ -2888,20 +2989,26 @@
     if (!isIcon) initials = initials.toUpperCase();
 
     const logoUrl = customLogo || (domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=128` : null);
-    const safeComp = rawName.replace(/"/g, '&quot;');
+    const fallbackUrl = domain ? `https://unavatar.io/${domain}?fallback=false` : '';
 
-    if (logoUrl) {
-      const fallbackUrl = domain ? `https://unavatar.io/${domain}?fallback=false` : '';
+    return { rawName, domain, initials, isIcon, logoUrl, fallbackUrl };
+  }
+
+  function getCompanyLogoHtml(companyName, customLogo) {
+    const info = getCompanyLogoInfo(companyName, customLogo);
+    const safeComp = info.rawName.replace(/"/g, '&quot;');
+
+    if (info.logoUrl) {
       return `
         <div class="job-company-logo" title="${safeComp}">
-          <img src="${logoUrl}" alt="${safeComp}" loading="lazy" onload="if(this.naturalWidth <= 16 && this.naturalHeight <= 16){ this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }" onerror="if(this.dataset.fallbackTried !== '1' && '${fallbackUrl}'){ this.dataset.fallbackTried = '1'; this.src = '${fallbackUrl}'; } else { this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }" />
-          <div class="job-company-avatar" style="display: none;">${initials}</div>
+          <img src="${info.logoUrl}" alt="${safeComp}" loading="lazy" onload="if(this.naturalWidth <= 16 && this.naturalHeight <= 16){ this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }" onerror="if(this.dataset.fallbackTried !== '1' && '${info.fallbackUrl}'){ this.dataset.fallbackTried = '1'; this.src = '${info.fallbackUrl}'; } else { this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }" />
+          <div class="job-company-avatar" style="display: none;">${info.initials}</div>
         </div>
       `;
     } else {
       return `
         <div class="job-company-logo" title="${safeComp}">
-          <div class="job-company-avatar">${initials}</div>
+          <div class="job-company-avatar">${info.initials}</div>
         </div>
       `;
     }
@@ -3068,8 +3175,8 @@
       hash = ((hash << 5) - hash) + linkStr.charCodeAt(i);
       hash |= 0;
     }
-    const jitterLat = (((Math.abs(hash) % 100) - 50) / 50) * 0.007;
-    const jitterLng = (((Math.abs(hash * 31) % 100) - 50) / 50) * 0.007;
+    const jitterLat = (((Math.abs(hash) % 100) - 50) / 50) * 0.014;
+    const jitterLng = (((Math.abs(hash * 31) % 100) - 50) / 50) * 0.014;
 
     for (const [key, coords] of Object.entries(ISRAEL_LOCATIONS_GEO)) {
       if (locStr.includes(key)) {
@@ -3090,12 +3197,23 @@
     try {
       liveJobsMapInstance = L.map('liveJobsMap', {
         scrollWheelZoom: true,
-        zoomControl: true
+        zoomControl: true,
+        zoomSnap: 0.5,
+        zoomDelta: 0.5,
+        wheelPxPerZoomLevel: 120,
+        wheelDebounceTime: 40,
+        zoomAnimation: true,
+        zoomAnimationThreshold: 8,
+        fadeAnimation: true,
+        markerZoomAnimation: true
       }).setView([32.0853, 34.85], 8);
 
       // Official Google Maps tile layer in English (hl=en)
       L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=en', {
         maxZoom: 19,
+        keepBuffer: 6,
+        updateWhenZooming: false,
+        updateWhenIdle: true,
         attribution: '&copy; Google Maps'
       }).addTo(liveJobsMapInstance);
 
@@ -3136,24 +3254,40 @@
       const titleClean = stripEmojis(job.title || 'משרה');
       const salaryRangeStr = (job.salary_range && job.salary_range !== 'לא צוין') ? stripEmojis(job.salary_range) : 'ללא ציון שכר במודעה';
 
-      const customIcon = L.divIcon({
-        className: 'custom-map-marker',
-        html: `
-          <div style="background: rgba(15, 23, 42, 0.95); border: 2px solid ${scoreBorder}; border-radius: 18px; padding: 4px 8px; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 4px 14px rgba(0,0,0,0.6); cursor: pointer; white-space: nowrap; width: 100%; height: 100%; box-sizing: border-box; justify-content: center;">
-            <span style="font-weight: 800; font-size: 11px; color: ${scoreColor};">${score}%</span>
-            <span style="font-size: 11px; font-weight: 600; color: #fff; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${companyNameClean}</span>
-          </div>
-        `,
-        iconSize: [120, 32],
-        iconAnchor: [60, 16]
-      });
-
-      const marker = L.marker([lat, lng], { icon: customIcon });
-
+      const logoInfo = getCompanyLogoInfo(job.company, job.logo);
       const safeComp = companyNameClean.replace(/"/g, '&quot;');
       const safeTitle = titleClean.replace(/"/g, '&quot;');
       const safeLink = job.link || '#';
       const safeId = encodeURIComponent(id);
+
+      const markerLogoInner = logoInfo.logoUrl ? `
+        <img src="${logoInfo.logoUrl}" alt="${safeComp}" loading="lazy" class="map-pin-logo-img"
+             onload="if(this.naturalWidth <= 16 && this.naturalHeight <= 16){ this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }"
+             onerror="if(this.dataset.fallbackTried !== '1' && '${logoInfo.fallbackUrl}'){ this.dataset.fallbackTried = '1'; this.src = '${logoInfo.fallbackUrl}'; } else { this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }" />
+        <div class="map-pin-avatar-fallback" style="display: none;">${logoInfo.initials}</div>
+      ` : `
+        <div class="map-pin-avatar-fallback">${logoInfo.initials}</div>
+      `;
+
+      const customIcon = L.divIcon({
+        className: 'custom-map-marker',
+        html: `
+          <div class="custom-map-marker-inner" title="${safeComp} - ${safeTitle}">
+            <div class="map-pin-logo-bubble" style="border-color: ${scoreBorder};">
+              <span class="map-pin-score-badge" style="background: ${scoreColor}; color: #0f172a;">${score}%</span>
+              ${markerLogoInner}
+            </div>
+            <div class="map-pin-pointer" style="border-top-color: ${scoreBorder};"></div>
+            <div class="map-pin-company-name" dir="auto">${companyNameClean}</div>
+          </div>
+        `,
+        iconSize: [96, 70],
+        iconAnchor: [48, 45],
+        popupAnchor: [0, -45]
+      });
+
+      const marker = L.marker([lat, lng], { icon: customIcon });
+
       const logoHtml = getCompanyLogoHtml(job.company, job.logo);
 
       const popupHtml = `
