@@ -4386,7 +4386,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     allAvailable.forEach(j => {
       const st = jobStates[j.link] || 'pending';
       const isSt = Boolean(starredJobs[j.link]);
-      if (st === 'rejected' || st === 'purged') {
+      if (st === 'purged') {
+        return;
+      }
+      if (st === 'rejected') {
         totalRejectedInStore++;
       } else if (isSt) {
         totalStarredInStore++;
@@ -4460,18 +4463,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     // Progress Bar Calculations
-    const totalCount = allAvailable.length;
+    const activeBatchCount = totalNewInStore + totalStarredInStore + totalSavedInStore + totalRejectedInStore;
     const triaged = totalStarredInStore + totalSavedInStore + totalRejectedInStore;
-    const pct = totalCount > 0 ? Math.round((triaged / totalCount) * 100) : 0;
+    const pct = activeBatchCount > 0 ? Math.round((triaged / activeBatchCount) * 100) : 0;
     
     const pctTextEl = document.getElementById('progressPctText');
     const summaryChipEl = document.getElementById('progressSummaryChip');
     if (pctTextEl) pctTextEl.textContent = pct + '%';
     if (summaryChipEl) summaryChipEl.textContent = pct + '% מוינו';
 
-    const pNew = totalCount > 0 ? Math.round((totalNewInStore / totalCount) * 100) : 0;
-    const pStarred = totalCount > 0 ? Math.round((totalStarredInStore / totalCount) * 100) : 0;
-    const pSaved = totalCount > 0 ? Math.round((totalSavedInStore / totalCount) * 100) : 0;
+    const pNew = activeBatchCount > 0 ? Math.round((totalNewInStore / activeBatchCount) * 100) : 0;
+    const pStarred = activeBatchCount > 0 ? Math.round((totalStarredInStore / activeBatchCount) * 100) : 0;
+    const pSaved = activeBatchCount > 0 ? Math.round((totalSavedInStore / activeBatchCount) * 100) : 0;
     const pRej = Math.max(0, 100 - pNew - pStarred - pSaved);
 
     const segNew = document.getElementById('progressSegNew');
@@ -4511,8 +4514,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const descEl = document.getElementById('emptyStateDesc');
         if (currentFilter === 'rejected') {
           if (iconEl) iconEl.innerHTML = '<i class="ph-duotone ph-trash"></i>';
-          if (titleEl) titleEl.textContent = `כל ${totalRejectedInStore} המשרות שהוסרו מנוטרלות לצמיתות`;
-          if (descEl) descEl.textContent = 'משרות אלו סוננו מחלון ההזדמנויות השבועי ולא ישובו להופיע בדוחות הבאים.';
+          if (titleEl) titleEl.textContent = totalRejectedInStore > 0 ? `כל ${totalRejectedInStore} המשרות שהוסרו מנוטרלות לצמיתות` : 'אין כרגע משרות שהוסרו מהסבב';
+          if (descEl) descEl.textContent = totalRejectedInStore > 0 ? 'משרות אלו סוננו מחלון ההזדמנויות השבועי ולא ישובו להופיע בדוחות הבאים.' : 'כאשר תסיר משרה מהסבב, היא תופיע כאן.';
         } else if (currentFilter === 'saved') {
           if (iconEl) iconEl.innerHTML = '<i class="ph-duotone ph-bookmark-simple"></i>';
           if (titleEl) titleEl.textContent = 'עדיין לא סימנת משרות שמורות מתוך מקבץ זה';
