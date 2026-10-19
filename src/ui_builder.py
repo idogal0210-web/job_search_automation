@@ -14,6 +14,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <style>
     /* Custom helper components aligned with So-Me design tokens */
     :root {
@@ -1607,6 +1609,74 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       color: #11150e !important;
     }
 
+    /* Live Jobs Map Mode */
+    #mapViewContainer {
+      border: 1px solid var(--dashboard-edge);
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(14px);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+      margin-bottom: 30px;
+    }
+    #liveJobsMap {
+      width: 100%;
+      height: 640px;
+      z-index: 1;
+    }
+    @media (max-width: 768px) {
+      #liveJobsMap {
+        height: 500px;
+      }
+    }
+    .leaflet-popup-content-wrapper {
+      background: rgba(15, 23, 42, 0.96) !important;
+      color: var(--dashboard-text) !important;
+      border: 1px solid var(--dashboard-edge) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65) !important;
+      backdrop-filter: blur(14px) !important;
+      padding: 0 !important;
+    }
+    .leaflet-popup-tip {
+      background: rgba(15, 23, 42, 0.96) !important;
+    }
+    .leaflet-popup-content {
+      margin: 12px 14px !important;
+      line-height: 1.4 !important;
+      font-family: 'Assistant', sans-serif !important;
+      direction: rtl !important;
+      text-align: right !important;
+    }
+    .leaflet-container {
+      font-family: 'Assistant', sans-serif !important;
+      background: #0f172a !important;
+    }
+    .leaflet-control-zoom a {
+      background: rgba(15, 23, 42, 0.9) !important;
+      color: #fff !important;
+      border-color: var(--dashboard-edge) !important;
+    }
+    .leaflet-control-zoom a:hover {
+      background: rgba(30, 41, 59, 1) !important;
+      color: var(--dashboard-cyan) !important;
+    }
+    .leaflet-control-attribution {
+      background: rgba(15, 23, 42, 0.75) !important;
+      color: var(--dashboard-muted) !important;
+      font-size: 11px !important;
+    }
+    .leaflet-control-attribution a {
+      color: var(--dashboard-cyan) !important;
+    }
+    .custom-map-marker {
+      background: transparent;
+      border: none;
+      width: 120px !important;
+      height: 32px !important;
+      cursor: pointer;
+    }
+
     /* Proportional & Professional List View Mode */
     #cardsContainer.view-list {
       display: flex;
@@ -2120,11 +2190,29 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <button type="button" id="viewListBtn" class="view-toggle-btn" onclick="setViewMode('list')" title="תצוגת רשימה קומפקטית (List)">
           <i class="ph-bold ph-list-dashes"></i> <span>רשימה</span>
         </button>
+        <button type="button" id="viewMapBtn" class="view-toggle-btn" onclick="setViewMode('map')" title="תצוגת מפה חיה (Map)">
+          <i class="ph-bold ph-map-trifold"></i> <span>מפה</span>
+        </button>
       </div>
     </div>
 
     <!-- Job Cards List -->
     <main id="cardsContainer"></main>
+
+    <!-- Map View Container -->
+    <div id="mapViewContainer" style="display: none;">
+      <div id="mapHeaderBar" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: rgba(15, 23, 42, 0.75); border-bottom: 1px solid var(--dashboard-edge); font-size: 13px; flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px; color: var(--dashboard-cyan); font-weight: 700;">
+          <i class="ph-duotone ph-map-pin" style="font-size: 18px;"></i>
+          <span id="mapMarkersCountText">מציג משרות על המפה</span>
+        </div>
+        <div style="font-size: 12px; color: var(--dashboard-muted); display: flex; align-items: center; gap: 6px;">
+          <i class="ph-duotone ph-info"></i>
+          <span>מפת Google Maps באנגלית • לחץ על סמן לצפייה בפרטי המשרה</span>
+        </div>
+      </div>
+      <div id="liveJobsMap"></div>
+    </div>
 
     <!-- Empty State -->
     <div id="emptyState" class="dashboard-card empty-state" style="display: none; text-align: center; padding: 48px 24px;">
@@ -2322,18 +2410,42 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       localStorage.setItem(VIEW_MODE_KEY, mode);
     } catch(e) {}
     const container = document.getElementById('cardsContainer');
+    const mapContainer = document.getElementById('mapViewContainer');
     const gridBtn = document.getElementById('viewGridBtn');
     const listBtn = document.getElementById('viewListBtn');
-    if (!container) return;
+    const mapBtn = document.getElementById('viewMapBtn');
+    if (!container || !mapContainer) return;
 
-    if (mode === 'list') {
+    if (mode === 'map') {
+      container.style.display = 'none';
+      mapContainer.style.display = 'block';
+      if (gridBtn) gridBtn.classList.remove('active');
+      if (listBtn) listBtn.classList.remove('active');
+      if (mapBtn) mapBtn.classList.add('active');
+
+      if (!liveJobsMapInstance) {
+        initLiveJobsMap();
+      }
+      setTimeout(() => {
+        if (liveJobsMapInstance) {
+          liveJobsMapInstance.invalidateSize();
+        }
+      }, 150);
+      updateMapMarkers();
+    } else if (mode === 'list') {
+      mapContainer.style.display = 'none';
+      container.style.display = '';
       container.classList.add('view-list');
       if (gridBtn) gridBtn.classList.remove('active');
       if (listBtn) listBtn.classList.add('active');
+      if (mapBtn) mapBtn.classList.remove('active');
     } else {
+      mapContainer.style.display = 'none';
+      container.style.display = '';
       container.classList.remove('view-list');
       if (gridBtn) gridBtn.classList.add('active');
       if (listBtn) listBtn.classList.remove('active');
+      if (mapBtn) mapBtn.classList.remove('active');
     }
   }
 
@@ -2607,88 +2719,132 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   }
 
   const KNOWN_COMPANY_DOMAINS = [
+    // Energy / Gas / Solar / Infrastructure
+    [['iec', 'חברת החשמל', 'חברת חשמל'], 'iec.co.il'],
+    [['energean', "אנרג'יאן", "אנרג׳יאן", "אנרג'אן"], 'energean.com'],
+    [['alumenergy', "אלומאנרג'י", "אלומנרג'י", "אלומנרג׳י", 'אלומוט'], 'alumenergy.co.il'],
+    [['opc', 'או פי סי', 'רותם', 'חדרה'], 'opc-energy.com'],
+    [['bazan', 'בזן', 'בז״ן', 'בתי זיקוק'], 'bazan.co.il'],
+    [['supergas', 'סופרגז'], 'supergas.co.il'],
+    [['paz', 'פז'], 'paz.co.il'],
+    [['amisragas', 'אמישראגז', 'אמישרא גז'], 'amisragas.co.il'],
+    [['delek', 'דלק'], 'delek.co.il'],
+    [['newmed', 'ניומד'], 'newmedenergy.com'],
+    [['ratio', 'רציו'], 'ratio-petroleum.com'],
+    [['sonol', 'סונול'], 'sonol.co.il'],
+    [['dor alon', 'דור אלון'], 'doralon.co.il'],
+    [['solaredge', "סולאראדג'", "סולאראדג׳"], 'solaredge.com'],
+    [['enlight', 'אנלייט'], 'enlightenergy.co.il'],
+    [['energix', "אנרג'יקס", "אנרג׳יקס"], 'energix-group.com'],
+    [['doral', 'דוראל'], 'doral-energy.com'],
+    [['siemens energy', 'סימנס אנרגיה', 'siemens-energy'], 'siemens-energy.com'],
+    [['siemens', 'סימנס'], 'siemens.com'],
+    [['ge vernova', 'ge ', "ג'נרל אלקטריק"], 'gevernova.com'],
+    [['schneider', 'שניידר'], 'se.com'],
+    [['hitachi', "היטאצ'י"], 'hitachienergy.com'],
+    [['ormat', 'אורמת'], 'ormat.com'],
+    [['edf', 'אי די אף'], 'edf-re.com'],
+    [['jinko', "ג'ינקו"], 'jinkosolar.com'],
+    [['nt-tao', 'nt tao', 'נו טאו'], 'nt-tao.com'],
+    [['concentric power', 'concentric'], 'concentricpower.com'],
+    [['plant supervision'], 'plantsupervision.com'],
+    [['solar solutions', 'פתרונות סולאריים'], 'solarsolutions.co.il'],
+    [['nextcom', 'נקסטקום'], 'nextcom.co.il'],
+    [['allpha innovation', 'allpha'], 'allpha.com'],
+    [['edwards vacuum', 'edwards'], 'edwardsvacuum.com'],
+    [['ultra clean technology', 'uct'], 'uct.com'],
+    [['assatec robotics', 'assatec'], 'assatec.com'],
+    [['e2e solutions', 'e2e'], 'e2e-il.com'],
+    [['michlol solutions', 'מיכלול'], 'michlol-sol.co.il'],
+    [['swissport', 'סוויספורט', 'סוויספורט שרותי מטען'], 'swissport.com'],
+    [['sheba', 'שיבא', 'מרכז רפואי שיבא', 'תל השומר'], 'sheba.co.il'],
+    [['jll', "ג'ונס לאנג"], 'jll.com'],
+    [['merck', 'מרק'], 'merckgroup.com'],
+    [['cross river', 'קרוס ריבר'], 'crossriver.com'],
+    [['elad software', 'אלעד מערכות'], 'elad.co.il'],
+    [['linked magic'], 'linkedmagic.com'],
+    [['or holdings', 'אור אחזקות', 'ר.א אור'], 'or-holdings.co.il'],
+
+    // Defense / Aerospace / UAV / Drones
     [['elbit', 'אלביט'], 'elbitsystems.com'],
     [['rafael', 'רפאל'], 'rafael.co.il'],
-    [['solaredge'], 'solaredge.com'],
-    [['applied materials'], 'appliedmaterials.com'],
-    [['nova'], 'novami.com'],
-    [['ormat'], 'ormat.com'],
-    [['iai', 'התעשייה האווירית', 'israel aerospace'], 'iai.co.il'],
-    [['tower'], 'towersemi.com'],
-    [['intel', 'realsense'], 'intel.com'],
-    [['apple'], 'apple.com'],
-    [['amazon', 'aws'], 'amazon.com'],
-    [['nvidia'], 'nvidia.com'],
-    [['cato networks'], 'catonetworks.com'],
-    [['check point', 'checkpoint'], 'checkpoint.com'],
-    [['palo alto'], 'paloaltonetworks.com'],
-    [['cyberark'], 'cyberark.com'],
-    [['siemens'], 'siemens.com'],
-    [['hitachi'], 'hitachienergy.com'],
-    [['schneider'], 'se.com'],
-    [['ge vernova', 'ge '], 'gevernova.com'],
-    [['icl group'], 'icl-group.com'],
-    [['enlight'], 'enlightenergy.co.il'],
-    [['energix'], 'energix-group.com'],
-    [['doral'], 'doral-energy.com'],
-    [['netafim'], 'netafim.com'],
-    [['iscar'], 'iscar.com'],
-    [['kla'], 'kla.com'],
-    [['tesla'], 'tesla.com'],
+    [['iai', 'התעשייה האווירית', 'התעשיה האווירית', 'israel aerospace'], 'iai.co.il'],
+    [['controp', 'קונטרופ'], 'controp.com'],
     [['xtend'], 'xtend.me'],
-    [['nextvision'], 'nextvision-sys.com'],
-    [['d-fend'], 'd-fendsolutions.com'],
-    [['smartshooter', 'smart shooter'], 'smart-shooter.com'],
-    [['spearuav'], 'spearuav.com'],
-    [['controp'], 'controp.com'],
-    [['bird aero'], 'birdaero.com'],
-    [['bluebird'], 'bluebird-uav.com'],
+    [['percepto', 'פרספטו'], 'percepto.com'],
     [['airobotics', 'איירובוטיקס'], 'airoboticsdrones.com'],
+    [['bluebird', 'בלובירד'], 'bluebird-uav.com'],
+    [['spearuav', 'ספיר'], 'spearuav.com'],
+    [['parazero'], 'parazero.com'],
+    [['flytrex'], 'flytrex.com'],
+    [['d-fend', 'די פנד'], 'd-fendsolutions.com'],
+    [['smartshooter', 'smart shooter'], 'smart-shooter.com'],
+    [['nextvision'], 'nextvision-sys.com'],
+    [['birdaero', 'bird aero'], 'birdaero.com'],
     [['aerotor'], 'aerotor.com'],
     [['heven'], 'hevenaerotech.com'],
     [['sentrycs'], 'sentrycs.com'],
     [['roboteam'], 'robo-team.com'],
-    [['opc energy'], 'opc-energy.com'],
-    [['חברת החשמל', 'iec '], 'iec.co.il'],
-    [['ashtrom'], 'ashtrom.co.il'],
-    [['alstom'], 'alstom.com'],
+    [['sightec'], 'sightec.com'],
+    [['regulus'], 'regulus.com'],
+    [['rada', 'דראס'], 'drs.com'],
+    [['bagira', 'בגירה'], 'bagirasys.com'],
+    [['aitech'], 'aitechsystems.com'],
+    [['airwayz'], 'airwayz.co'],
+    [['bet shemesh', 'מנועי בית שמש'], 'bseltd.com'],
+
+    // Industry / Engineering / Infrastructure
+    [['netafim', 'נטפים'], 'netafim.com'],
+    [['iscar', 'ישקר'], 'iscar.com'],
+    [['tower', 'טאוור'], 'towersemi.com'],
+    [['applied materials', 'אפלייד'], 'appliedmaterials.com'],
+    [['nova', 'נובה'], 'novami.com'],
+    [['kla', 'קיי אל איי'], 'kla.com'],
+    [['icl group', 'כימיקלים לישראל', 'כי״ל', 'כיל'], 'icl-group.com'],
+    [['adama', 'אדמה'], 'adama.com'],
+    [['alumeshet', 'אלומושת'], 'alumeshet.co.il'],
+    [['stratasys', 'סטראטסיס'], 'stratasys.com'],
+    [['acs motion', 'acs'], 'acsmotioncontrol.com'],
+    [['ashtrom', 'אשטרום'], 'ashtrom.co.il'],
+    [['shapir', 'שפיר'], 'shapir.co.il'],
+    [['shikun', 'שיכון ובינוי'], 'shikunbinui.com'],
+    [['electra', 'אלקטרה'], 'electra.co.il'],
+    [['danya cebus', 'דניה סיבוס', 'דניה'], 'danya-cebus.co.il'],
+    [['baran', 'ברן'], 'baran-group.com'],
+    [['alstom', 'אלסטום'], 'alstom.com'],
+    [['teva', 'טבע'], 'teva.co.il'],
+    [['bruker'], 'bruker.com'],
+    [['philips', 'פיליפס'], 'philips.com'],
+
+    // Tech / Software / Staffing
+    [['intel', 'realsense', 'אינטל'], 'intel.com'],
+    [['apple', 'אפל'], 'apple.com'],
+    [['amazon', 'aws', 'אמזון'], 'amazon.com'],
+    [['nvidia', 'אנבידיה'], 'nvidia.com'],
+    [['tesla', 'טסלה'], 'tesla.com'],
+    [['mobileye', 'מובילאיי'], 'mobileye.com'],
+    [['cato networks', 'קאטו'], 'catonetworks.com'],
+    [['check point', 'checkpoint', "צ'ק פוינט"], 'checkpoint.com'],
+    [['palo alto', 'פאלו אלטו'], 'paloaltonetworks.com'],
+    [['cyberark', 'סייברארק'], 'cyberark.com'],
     [['biocatch'], 'biocatch.com'],
     [['claroty'], 'claroty.com'],
     [['cheq'], 'cheq.ai'],
-    [['stratasys'], 'stratasys.com'],
-    [['philips'], 'philips.com'],
-    [['adama'], 'adama.com'],
-    [['airwayz'], 'airwayz.co'],
-    [['alumeshet'], 'alumeshet.co.il'],
-    [['bet shemesh', 'מנועי בית שמש'], 'bseltd.com'],
-    [['bruker'], 'bruker.com'],
-    [['fiverr'], 'fiverr.com'],
-    [['gett'], 'gett.com'],
+    [['wix', 'וויקס'], 'wix.com'],
+    [['monday', 'מאנדיי'], 'monday.com'],
+    [['fiverr', 'פייבר'], 'fiverr.com'],
+    [['gett', 'גט'], 'gett.com'],
     [['lemonade'], 'lemonade.com'],
-    [['nestle', 'nestlé'], 'nestle.com'],
-    [['pepsico', 'קוקה קולה', 'central bottling'], 'pepsico.com'],
-    [["l'oréal", 'loreal'], 'loreal.com'],
-    [['manpower'], 'manpower.co.il'],
-    [['sqlink'], 'sqlink.com'],
-    [['flytrex'], 'flytrex.com'],
-    [['percepto'], 'percepto.com'],
-    [['parazero'], 'parazero.com'],
-    [['sightec'], 'sightec.com'],
-    [['regulus'], 'regulus.com'],
-    [['rada'], 'drs.com'],
-    [['bagira'], 'bagirasys.com'],
-    [['aitech'], 'aitechsystems.com'],
-    [['acs motion'], 'acsmotioncontrol.com'],
-    [['experis'], 'experis.co.il'],
     [['matrix', 'מטריקס'], 'matrix-globals.com'],
     [['ness', 'נס'], 'ness-tech.co.il'],
-    [['wix'], 'wix.com'],
-    [['monday'], 'monday.com'],
-    [['mobileye'], 'mobileye.com'],
-    [['shapir'], 'shapir.co.il'],
-    [['shikun', 'שיכון ובינוי'], 'shikunbinui.com'],
-    [['electra', 'אלקטרה'], 'electra.co.il'],
-    [['edf'], 'edf-re.com']
+    [['manpower', 'מנפאואר'], 'manpower.co.il'],
+    [['experis'], 'experis.co.il'],
+    [['sqlink'], 'sqlink.com'],
+    [['nestle', 'אסם'], 'nestle.com'],
+    [['pepsico', 'קוקה קולה', 'החברה המרכזית'], 'pepsico.com'],
+    [['strauss', 'שטראוס'], 'strauss-group.com'],
+    [['tnuva', 'תנובה'], 'tnuva.co.il'],
+    [["l'oréal", 'loreal', 'לוריאל'], 'loreal.com']
   ];
 
   function getCompanyLogoHtml(companyName, customLogo) {
@@ -2697,7 +2853,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     
     let domain = null;
     for (const [keys, dom] of KNOWN_COMPANY_DOMAINS) {
-      if (keys.some(k => norm.includes(k))) {
+      if (keys.some(k => {
+        if (k.length <= 4) {
+          return (' ' + norm + ' ').includes(' ' + k + ' ') || norm === k;
+        }
+        return norm.includes(k);
+      })) {
         domain = dom;
         break;
       }
@@ -2730,13 +2891,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
     if (!isIcon) initials = initials.toUpperCase();
 
-    const logoUrl = customLogo || (domain ? `https://unavatar.io/${domain}?fallback=false` : null);
+    const logoUrl = customLogo || (domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=128` : null);
     const safeComp = rawName.replace(/"/g, '&quot;');
 
     if (logoUrl) {
+      const fallbackUrl = domain ? `https://unavatar.io/${domain}?fallback=false` : '';
       return `
         <div class="job-company-logo" title="${safeComp}">
-          <img src="${logoUrl}" alt="${safeComp}" loading="lazy" onerror="this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex';" />
+          <img src="${logoUrl}" alt="${safeComp}" loading="lazy" onload="if(this.naturalWidth <= 16 && this.naturalHeight <= 16){ this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }" onerror="if(this.dataset.fallbackTried !== '1' && '${fallbackUrl}'){ this.dataset.fallbackTried = '1'; this.src = '${fallbackUrl}'; } else { this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }" />
           <div class="job-company-avatar" style="display: none;">${initials}</div>
         </div>
       `;
@@ -2746,6 +2908,296 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <div class="job-company-avatar">${initials}</div>
         </div>
       `;
+    }
+  }
+
+  // Israeli Geolocation Coordinate Dictionary (Latitude, Longitude)
+  const ISRAEL_LOCATIONS_GEO = {
+    // Tel Aviv & Dan
+    'תל אביב': [32.0853, 34.7818],
+    'tel aviv': [32.0853, 34.7818],
+    'גוש דן': [32.0853, 34.7818],
+    'רמת גן': [32.0822, 34.8143],
+    'ramat gan': [32.0822, 34.8143],
+    'שיבא': [32.0460, 34.8430],
+    'תל השומר': [32.0460, 34.8430],
+    'גבעתיים': [32.0722, 34.8089],
+    'בני ברק': [32.0833, 34.8333],
+    'פתח תקווה': [32.0840, 34.8878],
+    'petah tikva': [32.0840, 34.8878],
+    'פתח תקוה': [32.0840, 34.8878],
+    'חולון': [32.0158, 34.7874],
+    'holon': [32.0158, 34.7874],
+    'בת ים': [32.0194, 34.7500],
+    'bat yam': [32.0194, 34.7500],
+    'ראשון לציון': [31.9730, 34.7925],
+    'rishon': [31.9730, 34.7925],
+    'אור יהודה': [32.0294, 34.8572],
+    'קריית אונו': [32.0536, 34.8586],
+    'יהוד': [32.0333, 34.8833],
+    
+    // Center & Shfela & Airport
+    'נתב"ג': [32.0005, 34.8707],
+    'נתב״ג': [32.0005, 34.8707],
+    'לוד': [31.9519, 34.8967],
+    'lod': [31.9519, 34.8967],
+    'רמלה': [31.9284, 34.8687],
+    'ramla': [31.9284, 34.8687],
+    'איירפורט סיטי': [32.0120, 34.9220],
+    'airport city': [32.0120, 34.9220],
+    'נמל תעופה': [32.0005, 34.8707],
+    'מודיעין': [31.8986, 35.0104],
+    'modiin': [31.8986, 35.0104],
+    'שוהם': [31.9986, 34.9458],
+    'נס ציונה': [31.9317, 34.7981],
+    'נס-ציונה': [31.9317, 34.7981],
+    'רחובות': [31.8928, 34.8113],
+    'rehovot': [31.8928, 34.8113],
+    'יבנה': [31.8781, 34.7397],
+    'yavne': [31.8781, 34.7397],
+    'שפלה': [31.8928, 34.8113],
+    'מרכז': [32.0853, 34.7818],
+    'center': [32.0853, 34.7818],
+    'מרכז הארץ': [32.0853, 34.7818],
+
+    // Sharon
+    'הרצליה': [32.1624, 34.8447],
+    'herzliya': [32.1624, 34.8447],
+    'רעננה': [32.1848, 34.8713],
+    'raanana': [32.1848, 34.8713],
+    'כפר סבא': [32.1750, 34.9069],
+    'kfar saba': [32.1750, 34.9069],
+    'הוד השרון': [32.1528, 34.8878],
+    'hod hasharon': [32.1528, 34.8878],
+    'נתניה': [32.3215, 34.8532],
+    'netanya': [32.3215, 34.8532],
+    'פולג': [32.2783, 34.8572],
+    'חדרה': [32.4340, 34.9197],
+    'hadera': [32.4340, 34.9197],
+    'קיסריה': [32.5020, 34.9350],
+    'caesarea': [32.5020, 34.9350],
+    'עמק חפר': [32.3850, 34.9000],
+    'שרון': [32.1848, 34.8713],
+    'sharon': [32.1848, 34.8713],
+
+    // South & Ashdod / Ashkelon / Negev
+    'אשדוד': [31.8014, 34.6435],
+    'ashdod': [31.8014, 34.6435],
+    'נמל אשדוד': [31.8260, 34.6530],
+    'נמל הדרום': [31.8260, 34.6530],
+    'אשקלון': [31.6688, 34.5743],
+    'ashkelon': [31.6688, 34.5743],
+    'קריית גת': [31.6100, 34.7642],
+    'kiryat gat': [31.6100, 34.7642],
+    'באר שבע': [31.2529, 34.7915],
+    'beer sheva': [31.2529, 34.7915],
+    'beersheba': [31.2529, 34.7915],
+    'דימונה': [31.0667, 35.0333],
+    'dimona': [31.0667, 35.0333],
+    'נאות חובב': [31.1350, 34.7890],
+    'רמת חובב': [31.1350, 34.7890],
+    'ערד': [31.2589, 35.2128],
+    'שדרות': [31.5211, 34.5967],
+    'קריית מלאכי': [31.7289, 34.7456],
+    'אילת': [29.5577, 34.9519],
+    'דרום': [31.2529, 34.7915],
+    'south': [31.2529, 34.7915],
+    'נגב': [31.2529, 34.7915],
+
+    // North & Haifa & Valleys & Galilee
+    'חיפה': [32.7940, 34.9896],
+    'haifa': [32.7940, 34.9896],
+    'מת״ם': [32.7880, 34.9580],
+    'מתם': [32.7880, 34.9580],
+    'קריות': [32.8300, 35.0700],
+    'קריית אתא': [32.8028, 35.1075],
+    'קריית ביאליק': [32.8272, 35.0847],
+    'קריית מוצקין': [32.8347, 35.0778],
+    'קריית ים': [32.8464, 35.0686],
+    'נשר': [32.7667, 35.0333],
+    'טירת כרמל': [32.7611, 34.9722],
+    'עכו': [32.9278, 35.0817],
+    'akko': [32.9278, 35.0817],
+    'acre': [32.9278, 35.0817],
+    'נהריה': [33.0059, 35.0941],
+    'nahariya': [33.0059, 35.0941],
+    'כרמיאל': [32.9199, 35.2901],
+    'karmiel': [32.9199, 35.2901],
+    'תפן': [32.9772, 35.2683],
+    'יקנעם': [32.6595, 35.1102],
+    'yokneam': [32.6595, 35.1102],
+    'יקנעם עילית': [32.6595, 35.1102],
+    'מגדל העמק': [32.6738, 35.2415],
+    'migdal haemek': [32.6738, 35.2415],
+    'עפולה': [32.6078, 35.2894],
+    'afula': [32.6078, 35.2894],
+    'אלון תבור': [32.6517, 35.3524],
+    'alon tavor': [32.6517, 35.3524],
+    'נצרת': [32.6996, 35.3035],
+    'נוף הגליל': [32.7050, 35.3350],
+    'ציפורית': [32.7600, 35.3400],
+    'טבריה': [32.7922, 35.5312],
+    'קריית שמונה': [33.2075, 35.5697],
+    'kiryat shmona': [33.2075, 35.5697],
+    'קצרין': [32.9917, 35.6900],
+    'משגב': [32.8600, 35.2500],
+    'צפון': [32.7940, 34.9896],
+    'north': [32.7940, 34.9896],
+    'גליל': [32.9199, 35.2901],
+    'עמקים': [32.6078, 35.2894],
+
+    // Jerusalem & Judea
+    'ירושלים': [31.7683, 35.2137],
+    'jerusalem': [31.7683, 35.2137],
+    'בית שמש': [31.7470, 34.9881],
+    'beit shemesh': [31.7470, 34.9881],
+    'מעלה אדומים': [31.7917, 35.2972],
+
+    // General Countrywide / Default
+    'ישראל': [32.0853, 34.7818],
+    'israel': [32.0853, 34.7818],
+    'ארצי': [32.0853, 34.7818],
+    'היברידי': [32.0853, 34.7818],
+    'remote': [32.0853, 34.7818],
+    'מרוחק': [32.0853, 34.7818]
+  };
+
+  function getJobLatLng(job) {
+    const locStr = ((job.location || '') + ' ' + (job.company || '')).toLowerCase();
+    
+    // Deterministic jitter based on job link
+    let hash = 0;
+    const linkStr = job.link || job.id || '';
+    for (let i = 0; i < linkStr.length; i++) {
+      hash = ((hash << 5) - hash) + linkStr.charCodeAt(i);
+      hash |= 0;
+    }
+    const jitterLat = (((Math.abs(hash) % 100) - 50) / 50) * 0.007;
+    const jitterLng = (((Math.abs(hash * 31) % 100) - 50) / 50) * 0.007;
+
+    for (const [key, coords] of Object.entries(ISRAEL_LOCATIONS_GEO)) {
+      if (locStr.includes(key)) {
+        return [coords[0] + jitterLat, coords[1] + jitterLng];
+      }
+    }
+
+    return [32.0853 + jitterLat, 34.7818 + jitterLng];
+  }
+
+  let liveJobsMapInstance = null;
+  let markersLayerGroup = null;
+
+  function initLiveJobsMap() {
+    const mapEl = document.getElementById('liveJobsMap');
+    if (!mapEl || liveJobsMapInstance) return;
+
+    try {
+      liveJobsMapInstance = L.map('liveJobsMap', {
+        scrollWheelZoom: true,
+        zoomControl: true
+      }).setView([32.0853, 34.85], 8);
+
+      // Official Google Maps tile layer in English (hl=en)
+      L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=en', {
+        maxZoom: 19,
+        attribution: '&copy; Google Maps'
+      }).addTo(liveJobsMapInstance);
+
+      markersLayerGroup = L.layerGroup().addTo(liveJobsMapInstance);
+    } catch(e) {
+      console.error('Error initializing Live Jobs Map:', e);
+    }
+  }
+
+  function updateMapMarkers() {
+    if (!liveJobsMapInstance || !markersLayerGroup) return;
+
+    markersLayerGroup.clearLayers();
+
+    const visibleCards = document.querySelectorAll('.job-card:not(.is-hidden)');
+    const markerCountEl = document.getElementById('mapMarkersCountText');
+    if (markerCountEl) {
+      markerCountEl.textContent = `מציג ${visibleCards.length} משרות על המפה`;
+    }
+
+    if (visibleCards.length === 0) return;
+
+    const latLngBounds = [];
+
+    visibleCards.forEach(card => {
+      const id = card.getAttribute('data-id');
+      const job = allJobsMap[id];
+      if (!job) return;
+
+      const [lat, lng] = getJobLatLng(job);
+      latLngBounds.push([lat, lng]);
+
+      const score = Number(job.match_score) || 85;
+      const scoreColor = score >= 85 ? 'var(--dashboard-cyan)' : (score >= 70 ? 'var(--dashboard-lime)' : 'var(--dashboard-gold)');
+      const scoreBorder = score >= 85 ? 'rgba(137, 244, 231, 0.8)' : (score >= 70 ? 'rgba(220, 255, 114, 0.8)' : 'rgba(255, 211, 104, 0.8)');
+
+      const companyNameClean = stripEmojis(job.company || 'חברה');
+      const titleClean = stripEmojis(job.title || 'משרה');
+      const salaryRangeStr = (job.salary_range && job.salary_range !== 'לא צוין') ? stripEmojis(job.salary_range) : 'ללא ציון שכר במודעה';
+
+      const customIcon = L.divIcon({
+        className: 'custom-map-marker',
+        html: `
+          <div style="background: rgba(15, 23, 42, 0.95); border: 2px solid ${scoreBorder}; border-radius: 18px; padding: 4px 8px; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 4px 14px rgba(0,0,0,0.6); cursor: pointer; white-space: nowrap; width: 100%; height: 100%; box-sizing: border-box; justify-content: center;">
+            <span style="font-weight: 800; font-size: 11px; color: ${scoreColor};">${score}%</span>
+            <span style="font-size: 11px; font-weight: 600; color: #fff; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${companyNameClean}</span>
+          </div>
+        `,
+        iconSize: [120, 32],
+        iconAnchor: [60, 16]
+      });
+
+      const marker = L.marker([lat, lng], { icon: customIcon });
+
+      const safeComp = companyNameClean.replace(/"/g, '&quot;');
+      const safeTitle = titleClean.replace(/"/g, '&quot;');
+      const safeLink = job.link || '#';
+      const safeId = encodeURIComponent(id);
+      const logoHtml = getCompanyLogoHtml(job.company, job.logo);
+
+      const popupHtml = `
+        <div style="direction: rtl; text-align: right; min-width: 220px; max-width: 280px; font-family: 'Assistant', sans-serif;">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <div style="flex-shrink: 0;">${logoHtml}</div>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 11px; color: var(--dashboard-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${safeComp}</div>
+              <div style="font-size: 13px; font-weight: 700; color: #fff; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${safeTitle}</div>
+            </div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px;">
+            <span class="dashboard-chip" style="font-size: 10.5px; padding: 2px 6px;"><i class="ph-duotone ph-map-pin"></i> ${job.location || 'ישראל'}</span>
+            <span class="dashboard-chip" style="font-size: 10.5px; padding: 2px 6px; border-color: rgba(220, 255, 114, 0.4); color: var(--dashboard-lime);"><i class="ph-duotone ph-coins"></i> ${salaryRangeStr}</span>
+            <span class="dashboard-chip" style="font-size: 10.5px; padding: 2px 6px; border-color: ${scoreBorder}; color: ${scoreColor};"><i class="ph-duotone ph-chart-line-up"></i> התאמה ${score}%</span>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button onclick="openJobModal(decodeURIComponent('${safeId}'))" class="btn-triage" style="flex: 1; padding: 5px 8px; font-size: 11.5px; justify-content: center; background: rgba(137, 244, 231, 0.15); color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4);">
+              <i class="ph-duotone ph-eye"></i> צפה בכרטיס
+            </button>
+            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply" style="padding: 5px 10px; font-size: 11.5px; justify-content: center; text-decoration: none;">
+              <i class="ph-bold ph-arrow-square-out"></i> הגש
+            </a>
+          </div>
+        </div>
+      `;
+
+      marker.bindPopup(popupHtml, {
+        maxWidth: 300,
+        className: 'glass-leaflet-popup'
+      });
+
+      marker.addTo(markersLayerGroup);
+    });
+
+    if (latLngBounds.length > 0) {
+      try {
+        const bounds = L.latLngBounds(latLngBounds);
+        liveJobsMapInstance.fitBounds(bounds, { padding: [40, 40], maxZoom: 12 });
+      } catch(e) {}
     }
   }
 
@@ -3742,6 +4194,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     renderSectorChart();
+
+    if (liveJobsMapInstance || currentViewMode === 'map') {
+      updateMapMarkers();
+    }
   }
 
   let sectorChartInstance = null;
@@ -4221,8 +4677,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
   window.onload = () => {
     checkUrlSync();
-    setViewMode(currentViewMode);
     renderCards();
+    setViewMode(currentViewMode);
     fetchCloudSync();
 
     const hash = window.location.hash.replace('#', '');
