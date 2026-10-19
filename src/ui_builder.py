@@ -1648,6 +1648,23 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       direction: rtl !important;
       text-align: right !important;
     }
+    .glass-leaflet-popup .leaflet-popup-content .btn-apply,
+    .glass-leaflet-popup .leaflet-popup-content .btn-triage {
+      flex: 1 1 0% !important;
+      width: auto !important;
+      min-height: 34px !important;
+      height: 34px !important;
+      padding: 6px 10px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      border-radius: 999px !important;
+      box-sizing: border-box !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 5px !important;
+      white-space: nowrap !important;
+    }
     .leaflet-container {
       font-family: 'Assistant', sans-serif !important;
       background: #0f172a !important;
@@ -3313,12 +3330,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <span class="dashboard-chip" style="font-size: 10.5px; padding: 2px 6px; border-color: rgba(220, 255, 114, 0.4); color: var(--dashboard-lime);"><i class="ph-duotone ph-coins"></i> ${salaryRangeStr}</span>
             <span class="dashboard-chip" style="font-size: 10.5px; padding: 2px 6px; border-color: ${scoreBorder}; color: ${scoreColor};"><i class="ph-duotone ph-chart-line-up"></i> התאמה ${score}%</span>
           </div>
-          <div style="display: flex; gap: 6px;">
-            <button onclick="openJobModal(decodeURIComponent('${safeId}'))" class="btn-triage" style="flex: 1; padding: 5px 8px; font-size: 11.5px; justify-content: center; background: rgba(137, 244, 231, 0.15); color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4);">
-              <i class="ph-duotone ph-eye"></i> צפה בכרטיס
+          <div style="display: flex; gap: 8px; margin-top: 4px;">
+            <button onclick="openJobModal(decodeURIComponent('${safeId}'))" class="btn-triage" style="flex: 1; width: auto; min-height: 34px; height: 34px; padding: 6px 10px; font-size: 12px; font-weight: 600; justify-content: center; background: rgba(137, 244, 231, 0.15); color: var(--dashboard-cyan); border: 1px solid rgba(137, 244, 231, 0.4); border-radius: 999px; box-sizing: border-box;">
+              <i class="ph-duotone ph-eye" style="font-size: 14px;"></i> צפה בכרטיס
             </button>
-            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply" style="padding: 5px 10px; font-size: 11.5px; justify-content: center; text-decoration: none;">
-              <i class="ph-bold ph-arrow-square-out"></i> הגש
+            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply" style="flex: 1; width: auto; min-height: 34px; height: 34px; padding: 6px 10px; font-size: 12px; font-weight: 600; justify-content: center; text-decoration: none; border-radius: 999px; box-sizing: border-box;">
+              <i class="ph-bold ph-arrow-square-out" style="font-size: 14px;"></i> הגש
             </a>
           </div>
         </div>
