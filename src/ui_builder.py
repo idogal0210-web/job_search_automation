@@ -293,35 +293,104 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       transition: width 0.4s ease;
     }
 
-    /* Controls Panel */
+    /* Controls Panel - Proportional Typography and Harmonized Heights */
     .controls-inputs-stack {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 9px;
+    }
+    .dashboard-app .controls-inputs-stack select,
+    .dashboard-app .controls-inputs-stack input {
+      height: 38px !important;
+      min-height: 38px !important;
+      padding: 0 12px !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      color: var(--dashboard-text) !important;
+      background: rgba(0, 0, 0, 0.28) !important;
+      border: 1px solid var(--dashboard-edge) !important;
+      border-radius: 12px !important;
+      box-sizing: border-box !important;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      line-height: 36px !important;
+    }
+    .dashboard-app .controls-inputs-stack select:focus,
+    .dashboard-app .controls-inputs-stack input:focus {
+      outline: none !important;
+      border-color: var(--dashboard-cyan) !important;
+      box-shadow: 0 0 10px rgba(137, 244, 231, 0.2) !important;
+    }
+    .dashboard-app .controls-inputs-stack input::placeholder {
+      color: rgba(255, 255, 255, 0.42) !important;
+      font-size: 13px !important;
     }
     .controls-buttons-row {
       display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .tool-btn {
-      min-height: 44px;
-      padding: 8px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      border-radius: 999px;
-      cursor: pointer;
-      border: 1px solid var(--dashboard-edge);
-      background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.07));
-      color: var(--dashboard-text);
-      display: inline-flex;
+      gap: 8px;
       align-items: center;
-      gap: 6px;
+    }
+    .sort-select-container {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      min-width: 160px;
+      height: 38px;
+    }
+    .dashboard-app .sort-select-container select {
+      width: 100% !important;
+      height: 38px !important;
+      min-height: 38px !important;
+      border-radius: 999px !important;
+      padding: 0 34px 0 12px !important;
+      font-size: 12.5px !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06)) !important;
+      border: 1px solid var(--dashboard-edge) !important;
+      color: var(--dashboard-text) !important;
+      text-align: right !important;
+      direction: rtl !important;
+      box-sizing: border-box !important;
+      line-height: 36px !important;
+    }
+    .dashboard-app .sort-select-container select:hover {
+      background: rgba(255, 255, 255, 0.16) !important;
+      border-color: rgba(255, 255, 255, 0.38) !important;
+    }
+    .sort-select-container #sortIcon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--dashboard-cyan);
+      font-size: 15px;
+      z-index: 2;
+    }
+    .dashboard-app .controls-buttons-row .tool-btn {
+      height: 38px !important;
+      min-height: 38px !important;
+      padding: 0 16px !important;
+      font-size: 12.5px !important;
+      font-weight: 600 !important;
+      border-radius: 999px !important;
+      cursor: pointer !important;
+      border: 1px solid var(--dashboard-edge) !important;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.07)) !important;
+      color: var(--dashboard-text) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      box-sizing: border-box !important;
+      white-space: nowrap !important;
+      line-height: 36px !important;
       transition: background 0.2s ease, border-color 0.2s ease;
     }
-    .tool-btn:hover {
-      background: rgba(255, 255, 255, 0.18);
-      border-color: rgba(255, 255, 255, 0.4);
+    .dashboard-app .controls-buttons-row .tool-btn:hover {
+      background: rgba(255, 255, 255, 0.18) !important;
+      border-color: rgba(255, 255, 255, 0.4) !important;
     }
 
     /* Contextual Action Bars */
@@ -1084,18 +1153,28 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         gap: 6px !important;
       }
       .controls-inputs-stack input,
-      .controls-inputs-stack select {
-        padding: 6px 10px !important;
-        font-size: 12.5px !important;
-        min-height: 36px !important;
+      .controls-inputs-stack select,
+      .sort-select-container select {
+        padding: 0 10px !important;
+        font-size: 12px !important;
+        height: 35px !important;
+        min-height: 35px !important;
         border-radius: 10px !important;
+        line-height: 33px !important;
+      }
+      .sort-select-container {
+        height: 35px !important;
+      }
+      .sort-select-container select {
+        padding-right: 30px !important;
       }
       .controls-buttons-row {
         gap: 6px !important;
       }
       .controls-buttons-row .tool-btn {
-        min-height: 34px !important;
-        padding: 5px 10px !important;
+        height: 35px !important;
+        min-height: 35px !important;
+        padding: 0 10px !important;
         font-size: 11.5px !important;
         border-radius: 10px !important;
       }
@@ -2201,14 +2280,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <div class="dashboard-card" style="margin-bottom: 0;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <div style="display: flex; gap: 8px;">
-            <span class="dashboard-chip">סינון חכם</span>
-            <span class="dashboard-chip" style="color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.1);">סריקה עדכנית</span>
+            <span class="dashboard-chip" style="font-size: 11.5px; padding: 3px 9px;">סינון חכם</span>
+            <span class="dashboard-chip" style="font-size: 11.5px; padding: 3px 9px; color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.1);">סריקה עדכנית</span>
           </div>
-          <small style="color: var(--dashboard-muted); font-size: 13px;">מיון ואיסוף</small>
+          <small style="color: var(--dashboard-muted); font-size: 12px;">מיון ואיסוף</small>
         </div>
-        <h3 style="margin: 0 0 6px; font-size: 18px; font-weight: 600;">סינון ואיתור משרות</h3>
-        <p style="color: var(--dashboard-muted); font-size: 14px; margin-bottom: 12px;">
-          סינון לפי מגזרי אנרגיה ורחפנים, איתור כפילויות ומיון לפי התאמה או תאריך.
+        <h3 style="margin: 0 0 5px; font-size: 17px; font-weight: 700;">סינון ואיתור משרות</h3>
+        <p style="color: var(--dashboard-muted); font-size: 13px; line-height: 1.45; margin-bottom: 12px;">
+          סינון לפי מגזרי אנרגיה ורחפנים, איתור כפילויות ומיון לפי התאמה, שכר או תאריך.
         </p>
 
         <div class="controls-inputs-stack">
@@ -2235,9 +2314,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה טכנית..." oninput="filterCards()" />
           
           <div class="controls-buttons-row">
-            <div style="flex: 1; position: relative; min-width: 170px;">
-              <i id="sortIcon" class="ph-duotone ph-calendar-blank" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--dashboard-cyan); font-size: 15px; z-index: 2;"></i>
-              <select id="sortSelect" onchange="changeSort(this.value)" class="tool-btn" style="width: 100%; border-radius: 999px; padding-right: 38px; padding-left: 14px; padding-top: 8px; padding-bottom: 8px; font-size: 13px; font-weight: 600; cursor: pointer; background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.07)); border: 1px solid var(--dashboard-edge); color: var(--dashboard-text); text-align: right; direction: rtl;" title="בחר אפשרות מיון משרות">
+            <div class="sort-select-container">
+              <i id="sortIcon" class="ph-duotone ph-calendar-blank"></i>
+              <select id="sortSelect" onchange="changeSort(this.value)" title="בחר אפשרות מיון משרות">
                 <option value="date_desc" style="background: #171c12; color: #fff;">מיון: התאריך החדש קודם</option>
                 <option value="score_desc" style="background: #171c12; color: #fff;">מיון: ציון התאמה (מגבוה לנמוך)</option>
                 <option value="salary_desc" style="background: #171c12; color: #fff;">מיון: רמת שכר (מהגבוה לנמוך)</option>
