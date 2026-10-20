@@ -2235,10 +2235,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה טכנית..." oninput="filterCards()" />
           
           <div class="controls-buttons-row">
-            <button id="sortBtn" onclick="toggleSort()" class="tool-btn" style="flex: 1;" title="לחץ לשינוי סדר המיון">
-              <span id="sortIcon"><i class="ph-duotone ph-calendar-blank"></i></span>
-              <span id="sortLabel">מיון: התאריך החדש קודם</span>
-            </button>
+            <div style="flex: 1; position: relative; min-width: 170px;">
+              <i id="sortIcon" class="ph-duotone ph-calendar-blank" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--dashboard-cyan); font-size: 15px; z-index: 2;"></i>
+              <select id="sortSelect" onchange="changeSort(this.value)" class="tool-btn" style="width: 100%; border-radius: 999px; padding-right: 38px; padding-left: 14px; padding-top: 8px; padding-bottom: 8px; font-size: 13px; font-weight: 600; cursor: pointer; background: linear-gradient(160deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.07)); border: 1px solid var(--dashboard-edge); color: var(--dashboard-text); text-align: right; direction: rtl;" title="בחר אפשרות מיון משרות">
+                <option value="date_desc" style="background: #171c12; color: #fff;">מיון: התאריך החדש קודם</option>
+                <option value="score_desc" style="background: #171c12; color: #fff;">מיון: ציון התאמה (מגבוה לנמוך)</option>
+                <option value="salary_desc" style="background: #171c12; color: #fff;">מיון: רמת שכר (מהגבוה לנמוך)</option>
+                <option value="company_asc" style="background: #171c12; color: #fff;">מיון: שם חברה (א׳ עד ת׳)</option>
+              </select>
+            </div>
             <button onclick="openDuplicatesModal()" class="tool-btn" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="סרוק כפילויות משרות">
               <span><i class="ph-duotone ph-magnifying-glass"></i></span>
               <span>בדיקת כפילויות</span>
@@ -2515,10 +2520,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   const STORAGE_KEY = 'ido_job_triage_store';
   const STARRED_STORAGE_KEY = 'ido_job_starred_store';
   const VIEW_MODE_KEY = 'ido_job_view_mode';
+  const SORT_STORAGE_KEY = 'ido_job_sort_mode';
   let currentViewMode = 'grid';
   let allJobsMap = {};
   try {
     currentViewMode = localStorage.getItem(VIEW_MODE_KEY) || 'grid';
+  } catch(e) {}
+  try {
+    currentSort = localStorage.getItem(SORT_STORAGE_KEY) || 'date_desc';
   } catch(e) {}
   let starredJobs = loadStarredJobs();
 
@@ -3746,6 +3755,24 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     updateUI();
   }
 
+  function getJobSalaryVal(job) {
+    if (!job) return 0;
+    if (typeof job.p50 === 'number' && !isNaN(job.p50) && job.p50 > 0) return job.p50;
+    if (typeof job.p75 === 'number' && !isNaN(job.p75) && job.p75 > 0) return job.p75;
+    if (typeof job.p25 === 'number' && !isNaN(job.p25) && job.p25 > 0) return job.p25;
+    if (job.salary_range && typeof job.salary_range === 'string' && job.salary_range !== 'לא צוין במודעה') {
+      const clean = job.salary_range.replace(/,/g, '');
+      const matches = clean.match(/\\d{4,6}/g);
+      if (matches && matches.length > 0) {
+        if (matches.length >= 2) {
+          return (Number(matches[0]) + Number(matches[1])) / 2;
+        }
+        return Number(matches[0]);
+      }
+    }
+    return 0;
+  }
+
   function renderCards() {
     const container = document.getElementById('cardsContainer');
     container.innerHTML = '';
@@ -3761,7 +3788,31 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       if (currentSort === 'score_desc') {
         const scoreA = Number(a.match_score) || 0;
         const scoreB = Number(b.match_score) || 0;
-        return scoreB - scoreA;
+        if (scoreB !== scoreA) return scoreB - scoreA;
+        const dateA = a.date || '0000-00-00';
+        const dateB = b.date || '0000-00-00';
+        return dateB.localeCompare(dateA);
+      } else if (currentSort === 'salary_desc') {
+        const salA = getJobSalaryVal(a);
+        const salB = getJobSalaryVal(b);
+        if (salB !== salA) return salB - salA;
+        const scoreA = Number(a.match_score) || 0;
+        const scoreB = Number(b.match_score) || 0;
+        if (scoreB !== scoreA) return scoreB - scoreA;
+        const dateA = a.date || '0000-00-00';
+        const dateB = b.date || '0000-00-00';
+        return dateB.localeCompare(dateA);
+      } else if (currentSort === 'company_asc') {
+        const compA = (a.company || '').trim();
+        const compB = (b.company || '').trim();
+        const compDiff = compA.localeCompare(compB, 'he', { sensitivity: 'base' });
+        if (compDiff !== 0) return compDiff;
+        const scoreA = Number(a.match_score) || 0;
+        const scoreB = Number(b.match_score) || 0;
+        if (scoreB !== scoreA) return scoreB - scoreA;
+        const dateA = a.date || '0000-00-00';
+        const dateB = b.date || '0000-00-00';
+        return dateB.localeCompare(dateA);
       } else {
         const dateA = a.date || '0000-00-00';
         const dateB = b.date || '0000-00-00';
@@ -4203,20 +4254,51 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     document.body.style.overflow = '';
   }
 
-  function toggleSort() {
-    currentSort = currentSort === 'score_desc' ? 'date_desc' : 'score_desc';
+  function updateSortIconAndToast(sortVal, showUserToast = true) {
     const icon = document.getElementById('sortIcon');
-    const label = document.getElementById('sortLabel');
-    if (currentSort === 'score_desc') {
-      if (icon) icon.innerHTML = '<i class="ph-duotone ph-sort-descending"></i>';
-      if (label) label.textContent = 'מיון: ציון התאמה (מגבוה לנמוך)';
-      showToast('ph-sort-descending', 'מיון: ציון התאמה מגבוה לנמוך');
-    } else {
-      if (icon) icon.innerHTML = '<i class="ph-duotone ph-calendar-blank"></i>';
-      if (label) label.textContent = 'מיון: התאריך החדש קודם';
-      showToast('ph-calendar-blank', 'מיון: התאריך החדש קודם');
+    const select = document.getElementById('sortSelect');
+    if (select && select.value !== sortVal) {
+      select.value = sortVal;
     }
+    let iconClass = 'ph-calendar-blank';
+    let toastMsg = 'מיון: התאריך החדש קודם';
+
+    if (sortVal === 'score_desc') {
+      iconClass = 'ph-sort-descending';
+      toastMsg = 'מיון: ציון התאמה מגבוה לנמוך';
+    } else if (sortVal === 'salary_desc') {
+      iconClass = 'ph-currency-circle-dollar';
+      toastMsg = 'מיון: רמת שכר מגבוה לנמוך';
+    } else if (sortVal === 'company_asc') {
+      iconClass = 'ph-buildings';
+      toastMsg = 'מיון: שם חברה מא׳ עד ת׳';
+    } else {
+      iconClass = 'ph-calendar-blank';
+      toastMsg = 'מיון: התאריך החדש קודם';
+    }
+
+    if (icon) {
+      icon.className = `ph-duotone ${iconClass}`;
+    }
+    if (showUserToast) {
+      showToast(iconClass, toastMsg);
+    }
+  }
+
+  function changeSort(sortVal) {
+    currentSort = sortVal;
+    try {
+      localStorage.setItem(SORT_STORAGE_KEY, sortVal);
+    } catch(e) {}
+    updateSortIconAndToast(sortVal, true);
     renderCards();
+  }
+
+  function toggleSort() {
+    const cycle = ['date_desc', 'score_desc', 'salary_desc', 'company_asc'];
+    const currentIdx = cycle.indexOf(currentSort);
+    const nextSort = cycle[(currentIdx + 1) % cycle.length];
+    changeSort(nextSort);
   }
 
   function toggleAction(id, action) {
@@ -5034,6 +5116,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
   window.onload = () => {
     checkUrlSync();
+    updateSortIconAndToast(currentSort, false);
     renderCards();
     setViewMode(currentViewMode);
     fetchCloudSync();
