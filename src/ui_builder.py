@@ -532,6 +532,21 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       gap: 8px;
       width: 100%;
     }
+    .job-card-topbar-primary > div:first-child {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      flex: 1;
+      overflow: hidden;
+    }
+    .job-card-topbar-primary .sector-tag-chip {
+      max-width: 180px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex-shrink: 1;
+    }
     .job-card-topbar-meta {
       display: flex;
       align-items: center;
@@ -539,13 +554,20 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       flex-wrap: wrap;
     }
     .badge-score {
-      padding: 5px 14px;
+      padding: 5px 12px;
       border-radius: 999px;
       font-weight: 700;
-      font-size: 13px;
+      font-size: 12.5px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      white-space: nowrap !important;
+      word-break: keep-all !important;
+      flex-shrink: 0 !important;
+      line-height: 1.2 !important;
+    }
+    .badge-score span {
+      white-space: nowrap !important;
     }
     .badge-score-high {
       background: rgba(220, 255, 114, 0.16);
@@ -613,7 +635,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       color: var(--dashboard-cyan);
       margin-bottom: 2px;
       letter-spacing: 0.2px;
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
+      word-break: normal;
     }
     .job-title-text {
       font-size: 17.5px;
@@ -621,7 +644,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       color: #ffffff;
       margin: 0 0 8px;
       line-height: 1.35;
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
+      word-break: normal;
     }
     .job-header-chips {
       display: flex;
@@ -767,7 +791,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       padding: 9px 13px;
       font-size: 13px;
       line-height: 1.5;
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
+      word-break: normal;
     }
     .job-bubble-domain {
       background: rgba(137, 244, 231, 0.05);
@@ -849,7 +874,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       line-height: 1.6;
       color: var(--dashboard-text);
       box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.05);
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
+      word-break: normal;
     }
     .job-box.highlight {
       background: rgba(137, 244, 231, 0.06);
@@ -2431,6 +2457,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               <span>בדיקת כפילויות</span>
             </button>
           </div>
+
+          <!-- Bottom Control Hub: Realtime Result Summary & Quick Reset -->
+          <div class="filter-card-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: var(--dashboard-muted); min-height: 31px;">
+            <div id="filterResultSummary" style="display: flex; align-items: center; gap: 6px; font-weight: 500;">
+              <span class="dashboard-dot" style="background: var(--dashboard-cyan); width: 6px; height: 6px; border-radius: 50%; display: inline-block;"></span>
+              <span id="filterStatusText">מוצגות כל המשרות הפעילות</span>
+            </div>
+            <button type="button" id="btnResetFilters" onclick="resetAllFilters()" class="dashboard-chip" style="cursor: pointer; font-size: 11px; padding: 3px 10px; border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.04); color: var(--dashboard-muted); display: inline-flex; align-items: center; gap: 4px;" title="איפוס כל המסננים והחיפוש">
+              <i class="ph-duotone ph-arrow-counter-clockwise"></i>
+              <span>איפוס מסננים</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -3103,6 +3141,37 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     [['enlight', 'אנלייט'], 'enlightenergy.co.il'],
     [['energix', "אנרג'יקס", "אנרג׳יקס"], 'energix-group.com'],
     [['doral', 'דוראל'], 'doral-energy.com'],
+    [['nofar', 'נופר אנרגיה', 'נופר'], 'nofar-energy.com'],
+    [['shikun & binui', 'שיכון ובינוי'], 'shikunbinui.com'],
+    [['econergy', 'אקונרגיה', 'אקונרג׳י', "אקונרג'י"], 'econergy-international.com'],
+    [['teralight', 'טראלייט'], 'teralight-energy.com'],
+    [['meshek energy', 'משק אנרגיה', 'סולגרין'], 'meshek-energy.co.il'],
+    [['prime energy', 'פריים אנרגיה', "פריים אנרג'י"], 'prime-energy.co.il'],
+    [['h2pro'], 'h2pro.co'],
+    [['storedot'], 'store-dot.com'],
+    [['electreon', 'אלקטריאון'], 'electreon.com'],
+    [['mprest', 'אמפרסט'], 'mprest.com'],
+    [['phinergy', 'פינרגיה', "פינרג'י"], 'phinergy.com'],
+    [['brenmiller', 'ברנמילר', 'brenx'], 'bren-energy.com'],
+    [['augwind', 'אוגווינד', 'airangy'], 'aug-wind.com'],
+    [['addionics'], 'addionics.com'],
+    [['zooz power', 'zooz', "צ'אקראטק"], 'zoozpower.com'],
+    [['isramco', 'ישראמקו'], 'isramco.co.il'],
+    [['edeltech', 'אדלטק'], 'edeltech.co.il'],
+    [['dalia', 'דליה אנרגיות', 'צפית'], 'dalia-energy.co.il'],
+    [['navitas', 'נאוויטס'], 'navitaspet.com'],
+    [['tamar petroleum', 'תמר פטרוליום'], 'tamarpetroleum.co.il'],
+    [['rimon', 'רימון'], 'rimon.co.il'],
+    [['raycatch', "רייקאץ'", 'רייקאץ׳'], 'raycatch.com'],
+    [['augury', 'אוגורי'], 'augury.com'],
+    [['airtouch', 'איירטאץ', 'איירטאץ׳'], 'airtouchsolar.com'],
+    [['ecoppia', 'אקופיה'], 'ecoppia.com'],
+    [['gencell', "ג'נסל"], 'gencellenergy.com'],
+    [['driivz', 'דרייבז'], 'driivz.com'],
+    [['solcold', 'סולקולד'], 'solcold.com'],
+    [['nostromo', 'נוסטרומו'], 'nostromo.energy'],
+    [['zutacore'], 'zutacore.com'],
+    [['eco wave power'], 'ecowavepower.com'],
     [['siemens energy', 'סימנס אנרגיה', 'siemens-energy'], 'siemens-energy.com'],
     [['siemens', 'סימנס'], 'siemens.com'],
     [['ge vernova', 'ge ', "ג'נרל אלקטריק"], 'gevernova.com'],
@@ -3143,7 +3212,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     [['spearuav', 'ספיר'], 'spearuav.com'],
     [['parazero'], 'parazero.com'],
     [['flytrex'], 'flytrex.com'],
-    [['d-fend', 'די פנד'], 'd-fendsolutions.com'],
+    [['d-fend', 'די פנד', 'די-פנד'], 'd-fendsolutions.com'],
+    [['robotican', 'רובוטיקאן'], 'robotican.co'],
+    [['high lander', 'היי לנדר', 'highlander'], 'highlander.io'],
+    [['steadicopter', 'סטדיקופטר'], 'steadicopter.com'],
+    [['third eye', 'עין שלישית'], 'thirdeye-systems.com'],
     [['smartshooter', 'smart shooter'], 'smart-shooter.com'],
     [['nextvision'], 'nextvision-sys.com'],
     [['birdaero', 'bird aero'], 'birdaero.com'],
@@ -4155,7 +4228,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               <button type="button" class="btn-copy-link" onclick="copyJobLink('${link.replace(/'/g, "\\'")}', event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
                 <i class="ph-bold ph-share-network"></i>
               </button>
-              <span class="dashboard-chip" style="${sectorChipStyle}; font-size: 11px; padding: 2.5px 8px;">${sectorBadge}</span>
+              <span class="dashboard-chip sector-tag-chip" style="${sectorChipStyle}; font-size: 11px; padding: 2.5px 8px;" title="${escapeHtml(sectorBadge.replace(/<[^>]+>/g, '').trim())}">${sectorBadge}</span>
             </div>
             <div class="badge-score ${scoreClass}">
               <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
@@ -4622,6 +4695,26 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     });
   }
 
+  function resetAllFilters() {
+    const sec = document.getElementById('sectorFilter');
+    const reg = document.getElementById('regionFilter');
+    const inp = document.getElementById('searchInput');
+    const wrap = document.getElementById('searchInputWrapper');
+
+    if (sec) sec.value = 'all';
+    if (reg) reg.value = 'all';
+    if (inp) inp.value = '';
+    if (wrap) wrap.classList.remove('has-value');
+
+    activeQuickChip = 'all';
+    document.querySelectorAll('.quick-chip').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-chip') === 'all');
+    });
+
+    filterCards();
+    showToast('ph-arrow-counter-clockwise', 'המסננים וחיפוש המשרות אופסו בהצלחה');
+  }
+
   function filterCards() {
     updateUI();
   }
@@ -4810,6 +4903,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         visibleJobsCountEl.textContent = tabLabel;
       } else {
         visibleJobsCountEl.textContent = `מציג ${visibleCount} מתוך סה״כ ${tabTotal} ${tabNoun}`;
+      }
+    }
+
+    // Update Filter Card Footer Result Summary
+    const filterStatusTextEl = document.getElementById('filterStatusText');
+    if (filterStatusTextEl) {
+      const isFiltered = (selectedSector !== 'all' || (document.getElementById('regionFilter') && document.getElementById('regionFilter').value !== 'all') || searchRaw.length > 0 || (activeQuickChip !== 'all' && activeQuickChip !== currentFilter));
+      if (isFiltered) {
+        filterStatusTextEl.textContent = `נמצאו ${visibleCount} משרות תואמות`;
+      } else {
+        filterStatusTextEl.textContent = `מוצגות כל ${visibleCount} המשרות הפעילות`;
       }
     }
 
