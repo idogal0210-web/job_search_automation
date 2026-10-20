@@ -1,7 +1,99 @@
 import json
+import os
+import re
 import time
 from google.genai import types
 from src.salary_engine import evaluate_job_salary
+
+def load_target_companies():
+    """Load user-approved target companies and categories from search-preferences.json."""
+    pref_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        ".agents", "skills", "job-search-automation-state", "references", "search-preferences.json"
+    )
+    if os.path.exists(pref_path):
+        try:
+            with open(pref_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                return data.get("target_companies", []), data.get("target_companies_by_category", {})
+        except Exception as e:
+            print(f"[WARN] Failed to load search-preferences.json: {e}")
+    return [], {}
+
+TARGET_COMPANIES, TARGET_COMPANIES_BY_CATEGORY = load_target_companies()
+
+HEBREW_COMPANY_ALIASES = {
+    "אלביט": "Elbit",
+    "אלביט מערכות": "Elbit",
+    "רפאל": "Rafael",
+    "תעשייה אווירית": "IAI",
+    "תעשיה אווירית": "IAI",
+    "תע\"א": "IAI",
+    "אנלייט": "Enlight",
+    "אנרג'יקס": "Energix",
+    "אנרגיקס": "Energix",
+    "אורמת": "Ormat Technologies",
+    "דוראל": "Doral",
+    "נופר": "Nofar",
+    "נופר אנרגיה": "Nofar",
+    "שיכון ובינוי": "Shikun & Binui Energy",
+    "שיכון ובינוי אנרגיה": "Shikun & Binui Energy",
+    "אקונרג'י": "Econergy",
+    "טראילייט": "Teralight",
+    "סולאראדג'": "SolarEdge",
+    "סולאראדג": "SolarEdge",
+    "סולאר אדג'": "SolarEdge",
+    "סופרגז": "Supergas",
+    "קבוצת רימון": "Rimon Group",
+    "רימון": "Rimon Group",
+    "ניו-מד": "NewMed Energy",
+    "ניומד": "NewMed Energy",
+    "ישראמקו": "Isramco",
+    "או פי סי": "OPC Energy",
+    "אדלטק": "Edeltech",
+    "דליה": "Dalia Power",
+    "דליה אנרגיות": "Dalia Power",
+    "אקופיה": "Ecoppia",
+    "רובוטיקאן": "Robotican",
+    "פרספטו": "Percepto",
+    "אקסטנד": "XTEND",
+    "היי לנדר": "High Lander",
+    "נקסט ויז'ן": "NextVision",
+    "נקסט ויזן": "NextVision",
+    "סטדיקופטר": "Steadicopter",
+    "העין השלישית": "Third Eye Systems"
+}
+
+def is_target_company(company_name: str) -> tuple[bool, str]:
+    """Check if company_name matches any priority target company in English or Hebrew.
+    Returns (is_match, category_key).
+    """
+    if not company_name:
+        return False, ""
+    c_lower = company_name.lower().strip()
+
+    # 1. Check Hebrew aliases first
+    for heb_name, eng_canonical in HEBREW_COMPANY_ALIASES.items():
+        if heb_name in c_lower or c_lower in heb_name:
+            for cat, comps in TARGET_COMPANIES_BY_CATEGORY.items():
+                if any(eng_canonical.lower() in c.lower() for c in comps):
+                    return True, cat
+            return True, "general_target"
+
+    # 2. Check categorized target companies
+    for cat, comps in TARGET_COMPANIES_BY_CATEGORY.items():
+        for comp in comps:
+            target_lower = comp.lower().strip()
+            if target_lower in c_lower or c_lower in target_lower:
+                return True, cat
+
+    # 3. Check flat list
+    for comp in TARGET_COMPANIES:
+        target_lower = comp.lower().strip()
+        if target_lower in c_lower or c_lower in target_lower:
+            return True, "general_target"
+
+    return False, ""
 
 CV_CONTEXT = """
 Candidate: Ido Gal (עידו גל)
@@ -60,6 +152,9 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
             print(f"[FILTER] Disqualifying non-technical role: {company} - {title} ('{non_tech}')")
             return None
 
+    # Check if employer is a user-approved target company
+    is_target, target_category = is_target_company(company)
+
     prompt = f"""
     You are an expert AI Technical Career Coach evaluating a job opportunity for Ido Gal.
 
@@ -68,12 +163,20 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
 
     Target Job Details:
     - Title: {title}
-    - Company: {company}
+    - Company: {company} (Priority Target Employer: {is_target}, Category: {target_category})
     - Snippet/Description: {snippet}
     - Is Drone/Defense domain: {is_drone}
 
     Evaluation & Screening Rules (Cognitive & Domain Flexibility):
-    1. COGNITIVE & DOMAIN FLEXIBILITY (גמישות מחשבתית):
+    1. TARGET COMPANY PRIORITIZATION WITH STRICT ROLE FIT ENFORCEMENT:
+       - The candidate maintains a directory of priority target companies (Energy, Solar PV, Storage, Natural Gas, Drones/Defense, Cleantech).
+       - Is this job from a priority target company? {is_target}
+       - CRITICAL MANDATORY RULE: Being a target company DOES NOT grant automatic qualification! The specific job MUST still strictly comply with candidate criteria:
+         * In Energy, Solar, Gas, Storage & Cleantech: The role MUST be technical, electro-mechanical, site supervision, commissioning, field operations, or SCADA control room. Administrative, pure sales, HR, marketing, accounting, or non-technical support roles at target companies MUST BE STRICTLY DISQUALIFIED (match_score = 0)!
+         * In Drones, UAV & Defense (e.g. Elbit, IAI, Rafael, XTEND, Percepto, Robotican, High Lander, Spear UAV): The specific drone/defense role guidelines apply (UAV flight operations, test/field testing, payload integration, C-UAS systems, drone technician). Academic deep algorithmic R&D positions remain disqualified.
+         * If and ONLY IF the role meets the technical criteria AND is from a priority target employer ({is_target}), award a +5 to +10 relevance bonus in match_score and note this employer priority in reasoning.
+
+    2. COGNITIVE & DOMAIN FLEXIBILITY (גמישות מחשבתית):
        - DO NOT restrict matches solely to jobs explicitly titled "הנדסאי מכונות".
        - Actively match and value diverse technical and operational roles connected to Ido's multidisciplinary foundation:
          * Energy, Solar & Utilities: Solar PV, Energy Storage (BESS), Natural Gas, Power Stations, Cleantech, Microgrids, EV Infrastructure.
@@ -81,11 +184,13 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
          * Real-Time Operations & C2: Control Room Operator, NOC/OCC Controller, Supply Continuity Controller, Technical Operations Coordinator.
          * Autonomous & Tactical Systems: Drone/UAV Integrator, Field Testing & Flight Operator, Payload/Robotics Technician, Counter-UAS (C-UAS).
          * Technical Projects & Coordination: Multidisciplinary Project Coordinator, Technical Site Supervisor, Operations Specialist.
-    2. B.Sc. REQUIREMENT & PRAGMATIC REALISM:
+
+    3. B.Sc. REQUIREMENT & PRAGMATIC REALISM:
        - Ido is a certified Practical Engineer with strong hands-on and operational experience.
        - If a job mentions B.Sc. or "מהנדס/ת" but the actual day-to-day work is operational, commissioning, field supervision, integration, or control room dispatch where practical engineering and real-world execution matter more than theoretical R&D/academic research — DO NOT disqualify! Award a solid match score and highlight how his practical background provides immediate execution value.
        - Disqualify only if the role strictly requires academic R&D/deep algorithmic development or purely theoretical design with zero operational/practical aspect.
-    3. STRICT CONTROL ROOM FILTERING RULE (חדר בקרה):
+
+    4. STRICT CONTROL ROOM FILTERING RULE (חדר בקרה):
        - Ido is an experienced gas controller at Energean specializing in mission-critical SCADA operations.
        - If a target job is a Control Room / Monitoring / Dispatch role (חדר בקרה, בקר, מפעיל חדר בקרה, מוקד בקרה, control room):
          DO NOT qualify or recommend it UNLESS:
@@ -93,10 +198,13 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
          OR
          b) It offers a very high salary (שכר גבוה מאוד - 18,000+ ₪ ומעלה).
        - Generic security camera monitoring (מוקד רואה/מצלמות), municipal/parking dispatch, or low-level/minimum-wage control room positions MUST BE DISQUALIFIED (match_score = 0, concrete_matches_count = 0)!
-    4. DOMAIN PREFERENCES:
+
+    5. DOMAIN PREFERENCES:
        - Strong preference and bonus for Solar PV, Energy Storage (BESS), Natural Gas, C-UAS/Drone operations, and Mission-Critical Control.
-    5. MATCH SCORING (0-100):
+
+    6. MATCH SCORING (0-100):
        - Score based on whether Ido can realistically succeed and thrive in this role given his multidisciplinary toolkit.
+       - If target employer is matched and role is technically qualified, score should reflect the priority tier (typically 80-95%).
 
     Return STRICT JSON with keys:
     1. "match_score": integer (0 to 100).
@@ -180,7 +288,17 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
                 data["match_score"] = 0
                 return data
 
-            # 2. Strict Control Room Guardrail: Disqualify control room roles without SCADA or high salary (>= 18k)
+            # 2. Target Company Priority Bonus (Only for qualified jobs)
+            if is_target and data.get("match_score", 0) >= 65:
+                # Add targeted metadata flag
+                data["is_target_company"] = True
+                data["target_category"] = target_category
+                # Reinforce priority score
+                original_score = data["match_score"]
+                data["match_score"] = min(98, original_score + 5)
+                print(f"[PRIORITY] Awarded Target Employer bonus (+5) to {company} - {title}: {original_score} -> {data['match_score']}")
+
+            # 3. Strict Control Room Guardrail: Disqualify control room roles without SCADA or high salary (>= 18k)
             is_control_room = any(k in title_lower or k in snippet.lower() for k in ["חדר בקרה", "מוקד בקרה", "בקרת חדר", "control room"])
             if is_control_room:
                 full_text_lower = f"{title_lower} {snippet.lower()} {str(data.get('job_summary', '')).lower()}"
