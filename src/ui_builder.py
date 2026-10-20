@@ -556,14 +556,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       border-color: rgba(255, 255, 255, 0.35);
     }
     .quick-chip.active {
-      background: var(--dashboard-lime) !important;
-      color: #11150e !important;
-      border-color: var(--dashboard-lime) !important;
-      box-shadow: 0 4px 16px rgba(220, 255, 114, 0.3);
+      background: linear-gradient(135deg, rgba(137, 244, 231, 0.22), rgba(45, 212, 191, 0.28)) !important;
+      color: #ffffff !important;
+      border-color: var(--dashboard-cyan) !important;
+      box-shadow: 0 4px 14px rgba(137, 244, 231, 0.2);
       font-weight: 700;
     }
     .quick-chip.active i {
-      color: #11150e !important;
+      color: var(--dashboard-cyan) !important;
     }
 
     /* Explainable AI & Score Drivers */
@@ -809,7 +809,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     .dashboard-app a.btn-apply span,
     .btn-apply,
     .btn-apply span {
-      color: #000000 !important;
+      color: #ffffff !important;
     }
     .btn-apply {
       width: 100%;
@@ -824,18 +824,20 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       justify-content: center;
       gap: 8px;
       white-space: nowrap;
-      background: var(--dashboard-lime);
-      color: #000000 !important;
-      border: 1px solid #ebffab99;
-      box-shadow: inset 0 1px 2px #ffffff80, 0 4px 18px rgba(164, 203, 46, 0.28);
-      transition: background 0.2s ease;
+      background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+      color: #ffffff !important;
+      border: 1px solid rgba(137, 244, 231, 0.4);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 4px 14px rgba(13, 148, 136, 0.3);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .dashboard-app a.btn-apply:hover,
     .dashboard-app a.btn-apply:hover span,
     .btn-apply:hover,
     .btn-apply:hover span {
-      background: #e7ff9c;
-      color: #000000 !important;
+      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+      color: #ffffff !important;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 6px 18px rgba(20, 184, 166, 0.4);
+      transform: translateY(-1px);
     }
 
     /* Modals and Overlays */
@@ -1656,12 +1658,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       background: rgba(255, 255, 255, 0.08);
     }
     .view-toggle-btn.active {
-      background: var(--dashboard-lime);
-      color: #11150e;
-      box-shadow: 0 2px 10px rgba(220, 255, 114, 0.25);
+      background: linear-gradient(135deg, rgba(137, 244, 231, 0.2), rgba(45, 212, 191, 0.25));
+      color: var(--dashboard-cyan);
+      border: 1px solid rgba(137, 244, 231, 0.45);
+      box-shadow: 0 2px 10px rgba(137, 244, 231, 0.2);
     }
     .view-toggle-btn.active i {
-      color: #11150e !important;
+      color: var(--dashboard-cyan) !important;
     }
 
     /* Live Jobs Map Mode */
@@ -3848,11 +3851,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
       let salaryChipStyle = 'color: #94a3b8; border-color: rgba(148, 163, 184, 0.25); background: rgba(148, 163, 184, 0.06);';
       if (salaryType === 'job_ad') {
-        salaryChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.08);';
+        salaryChipStyle = 'color: #34d399; border-color: rgba(52, 211, 153, 0.35); background: rgba(52, 211, 153, 0.08);';
       } else if (salaryType === 'sector_benchmark') {
         salaryChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08);';
       } else if (salaryType === 'company_verified') {
-        salaryChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.08);';
+        salaryChipStyle = 'color: #34d399; border-color: rgba(52, 211, 153, 0.35); background: rgba(52, 211, 153, 0.08);';
       }
 
       // Source detection & styling
@@ -3994,8 +3997,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               <i class="ph-duotone ph-x"></i> <span>הסר משרה</span>
             </button>
           </div>
-          <a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-apply" style="color: #000000 !important;">
-            <span style="color: #000000 !important;">הגש מועמדות</span> <i class="ph-duotone ph-arrow-up-right" style="color: #000000 !important;"></i>
+          <a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-apply">
+            <span>הגש מועמדות</span> <i class="ph-duotone ph-arrow-up-right"></i>
           </a>
         </div>
       `;
@@ -4054,11 +4057,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     let salaryChipStyle = 'color: #94a3b8; border-color: rgba(148, 163, 184, 0.25); background: rgba(148, 163, 184, 0.06);';
     if (salaryType === 'job_ad') {
-      salaryChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.08);';
+      salaryChipStyle = 'color: #34d399; border-color: rgba(52, 211, 153, 0.35); background: rgba(52, 211, 153, 0.08);';
     } else if (salaryType === 'sector_benchmark') {
       salaryChipStyle = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08);';
     } else if (salaryType === 'company_verified') {
-      salaryChipStyle = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.35); background: rgba(220, 255, 114, 0.08);';
+      salaryChipStyle = 'color: #34d399; border-color: rgba(52, 211, 153, 0.35); background: rgba(52, 211, 153, 0.08);';
     }
 
     let scoreClass = 'badge-score-high';
@@ -4134,8 +4137,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <strong style="color: var(--dashboard-cyan);"><i class="ph-duotone ph-currency-circle-dollar"></i> הערכת שכר ואמינות מקור:</strong>
             <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 11px; padding: 2px 8px;">${salaryLabel}</span>
           </div>
-          <div style="font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 4px;">
+          <div style="font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 2px;">
             ${salaryRange}
+          </div>
+          <div style="font-size: 11px; color: var(--dashboard-muted); margin-bottom: 6px;">
+            בסיס נתונים: שכר חודשי ברוטו למשרה מלאה (100% משרה)
           </div>
           ${salaryEvidence ? `<div style="font-size: 12.5px; color: #cbd5e1; line-height: 1.45; margin-bottom: 6px;">${salaryEvidence}</div>` : ''}
           ${salaryUrl ? `<a href="${salaryUrl}" target="_blank" rel="noopener noreferrer" style="font-size: 11.5px; color: var(--dashboard-cyan); text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;"><span>עיון בטבלת שכר ענפית מוסמכת</span> <i class="ph-duotone ph-arrow-square-out"></i></a>` : ''}
@@ -4152,8 +4158,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     `;
 
     bottomBar.innerHTML = `
-      <a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-apply" style="color: #000000 !important;">
-        <span style="color: #000000 !important;">הגש מועמדות באתר המשרה</span> <i class="ph-duotone ph-arrow-up-right" style="color: #000000 !important;"></i>
+      <a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-apply">
+        <span>הגש מועמדות באתר המשרה</span> <i class="ph-duotone ph-arrow-up-right"></i>
       </a>
       <div class="job-modal-triage-group">
         <button id="modalSaveBtn" onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'saved'); updateModalTriageButtons('${id.replace(/'/g, "\\'")}');" class="btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}">

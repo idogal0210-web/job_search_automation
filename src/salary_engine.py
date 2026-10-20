@@ -140,8 +140,16 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
             "salary_source_url": "",
             "salary_evidence": f"שכר שפורסם במפורש בגוף מודעת המשרה ({low:,} - {high:,} ₪ בחודש).",
             "salary_confidence": "high",
+            "quality_level": "high",
+            "quality_reasons": ["שכר נקוב שפורסם ישירות בגוף מודעת המשרה על ידי המעסיק"],
+            "estimate_type": "advertised",
+            "compensation_basis": "gross_base",
+            "pay_period": "month",
             "extracted_min": low,
             "extracted_max": high,
+            "p25": low,
+            "p50": (low + high) // 2,
+            "p75": high,
         }
 
     # Pattern B: Notation with 'K' (e.g. 15k - 18k or 15K-18K)
@@ -159,8 +167,16 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
             "salary_source_url": "",
             "salary_evidence": f"שכר שפורסם במפורש במודעה בקיצור אלפים ({match_k.group(0)}).",
             "salary_confidence": "high",
+            "quality_level": "high",
+            "quality_reasons": ["שכר נקוב שפורסם ישירות במודעה בקיצור אלפים"],
+            "estimate_type": "advertised",
+            "compensation_basis": "gross_base",
+            "pay_period": "month",
             "extracted_min": low,
             "extracted_max": high,
+            "p25": low,
+            "p50": (low + high) // 2,
+            "p75": high,
         }
 
     # Pattern C: Explicit single monthly amount (e.g. שכר של 16,000 ש"ח או שכר 15000)
@@ -180,8 +196,16 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
             "salary_source_url": "",
             "salary_evidence": f"שכר נקוב שפורסם במפורש במודעה ({amount:,} ₪).",
             "salary_confidence": "high",
+            "quality_level": "high",
+            "quality_reasons": ["שכר נקוב שפורסם ישירות במודעת המשרה על ידי המעסיק"],
+            "estimate_type": "advertised",
+            "compensation_basis": "gross_base",
+            "pay_period": "month",
             "extracted_min": low,
             "extracted_max": high,
+            "p25": low,
+            "p50": amount,
+            "p75": high,
         }
 
     # Pattern D: Hourly rate (e.g. 55 ש"ח לשעה -> converted to standard 182 monthly hours)
@@ -199,8 +223,16 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
             "salary_source_url": "",
             "salary_evidence": f"שכר שעתי נקוב של {hourly} ₪ לשעה במשרה מלאה (182 שעות חודשיות = {monthly:,} ₪ ברוטו).",
             "salary_confidence": "high",
+            "quality_level": "high",
+            "quality_reasons": ["שכר שעתי נקוב שפורסם במודעת המשרה (חישוב לפי 182 שעות חודשיות במשרה מלאה)"],
+            "estimate_type": "advertised",
+            "compensation_basis": "gross_base",
+            "pay_period": "hour",
             "extracted_min": monthly,
             "extracted_max": monthly,
+            "p25": monthly,
+            "p50": monthly,
+            "p75": monthly,
         }
 
     return None
@@ -241,13 +273,13 @@ def classify_role_category(title: str, sector_key: str, snippet: str) -> str:
     ]):
         return "industrial_operations"
 
-    return "industrial_operations"
+    return "unspecified"
 
 
 def evaluate_job_salary(job: Dict[str, Any]) -> Dict[str, Any]:
     """
     Authoritative Multi-Tier Salary Intelligence Evaluator.
-    Evaluates tier 1 (ad extraction), tier 2 (benchmark matrix + perks), or tier 3 (neutral).
+    Evaluates tier 1 (ad extraction), tier 2 (benchmark matrix + perks), or tier 3 (neutral abstention).
     """
     title = str(job.get("title", ""))
     company = str(job.get("company", ""))
@@ -260,13 +292,36 @@ def evaluate_job_salary(job: Dict[str, Any]) -> Dict[str, Any]:
     if ad_sal:
         return ad_sal
 
+    has_shifts = detect_shifts(full_text)
+    has_car = detect_company_car(full_text)
+    has_on_call = detect_on_call(full_text)
+
     # Tier 2: Benchmark Matrix
     cat_key = classify_role_category(title, sector_key, snippet)
-    bench = BENCHMARK_MATRIX.get(cat_key, BENCHMARK_MATRIX["industrial_operations"])
+    if cat_key == "unspecified" or cat_key not in BENCHMARK_MATRIX:
+        # Graceful Abstention (No fabricated salary numbers)
+        return {
+            "salary_range": "לא צוין במודעה",
+            "salary_source_type": "none",
+            "salary_source_label": "לא צוין שכר",
+            "salary_source_url": "",
+            "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
+            "salary_confidence": "insufficient",
+            "quality_level": "insufficient",
+            "quality_reasons": ["מודעת המשרה אינה כוללת שכר נקוב", "התפקיד אינו משויך לטבלאות השכר המאושרות"],
+            "estimate_type": "insufficient_data",
+            "compensation_basis": "unknown",
+            "pay_period": "month",
+            "has_shifts": has_shifts,
+            "has_company_car": has_car,
+            "has_on_call": has_on_call,
+            "p25": None,
+            "p50": None,
+            "p75": None,
+        }
 
-    has_shifts = detect_shifts(full_text)
-    has_car = detect_company_car(full_text) or bench.get("has_vehicle_norm", False)
-    has_on_call = detect_on_call(full_text)
+    bench = BENCHMARK_MATRIX[cat_key]
+    has_car = has_car or bench.get("has_vehicle_norm", False)
 
     # For SCADA and control room roles, shifts are very common
     if cat_key == "scada_control_room":
@@ -311,7 +366,15 @@ def evaluate_job_salary(job: Dict[str, Any]) -> Dict[str, Any]:
         "salary_source_url": bench["url"],
         "salary_evidence": evidence,
         "salary_confidence": "medium",
+        "quality_level": "medium",
+        "quality_reasons": ["מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)", f"התאמה למגזר: {bench['title']}"],
+        "estimate_type": "market_estimate",
+        "compensation_basis": "gross_base",
+        "pay_period": "month",
         "has_shifts": has_shifts,
         "has_company_car": has_car,
         "has_on_call": has_on_call,
+        "p25": sal_min,
+        "p50": (sal_min + sal_max) // 2,
+        "p75": sal_max,
     }

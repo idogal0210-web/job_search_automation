@@ -29,7 +29,18 @@
     "salary_confidence": "medium",
     "has_shifts": true,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות)"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 16000,
+    "p50": 18500,
+    "p75": 21000
   },
   {
     "title": "NOC Analyst",
@@ -61,7 +72,18 @@
     "salary_confidence": "medium",
     "has_shifts": true,
     "has_company_car": false,
-    "has_on_call": true
+    "has_on_call": true,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות)"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 16000,
+    "p50": 18500,
+    "p75": 21000
   },
   {
     "title": "Integrator",
@@ -93,7 +115,18 @@
     "salary_confidence": "medium",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: רחפנים, כטב״ם ומערכות C-UAS"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 14000,
+    "p50": 16500,
+    "p75": 19000
   },
   {
     "title": "מפעילת חדר בקרה",
@@ -125,7 +158,18 @@
     "salary_confidence": "medium",
     "has_shifts": true,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות)"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 16000,
+    "p50": 18500,
+    "p75": 21000
   },
   {
     "title": "Control Engineer",
@@ -157,7 +201,18 @@
     "salary_confidence": "medium",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות)"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 13000,
+    "p50": 14500,
+    "p75": 16000
   },
   {
     "title": "Junior QA",
@@ -180,16 +235,27 @@
     "junior_openness": "פתוח לג'וניורים עם דרישה להסמכות SQA",
     "work_model": "היברידי / משרדי",
     "company_requirements": "הסמכת SQA חובה, רקע בבדיקת מערכות רב-תחומיות, שליטה באנגלית וניסיון בעבודה עם סביבת Windows.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-11",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "אינטגרטור מערכות חימוש",
@@ -221,7 +287,18 @@
     "salary_confidence": "medium",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: רחפנים, כטב״ם ומערכות C-UAS"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 14000,
+    "p50": 16500,
+    "p75": 19000
   },
   {
     "title": "Natural Gas Engineer",
@@ -253,7 +330,18 @@
     "salary_confidence": "medium",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: גז טבעי ותחנות כוח"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 14000,
+    "p50": 16250,
+    "p75": 18500
   },
   {
     "title": "Manager, Facilities",
@@ -276,16 +364,27 @@
     "junior_openness": "בינוני-גבוה",
     "work_model": "היברידי / פרונטלי",
     "company_requirements": "רישיון חשמלאי מוסמך חובה, יכולת התמודדות עם מצבי לחץ, כישורי אסרטיביות וניהול ממשקים מרובים.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-11",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "למרכז הרפואי שיבא דרוש/ה ראש/ת ענף מחלקת חשמל",
@@ -317,7 +416,18 @@
     "salary_confidence": "medium",
     "has_shifts": true,
     "has_company_car": false,
-    "has_on_call": true
+    "has_on_call": true,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 13500,
+    "p50": 15500,
+    "p75": 17500
   },
   {
     "title": "מנהל אחזקה למתחם מסחרי",
@@ -349,7 +459,18 @@
     "salary_confidence": "medium",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 11500,
+    "p50": 13250,
+    "p75": 15000
   },
   {
     "title": "Equipment Maintenance Technician",
@@ -372,16 +493,27 @@
     "junior_openness": "בינוני-גבוה",
     "work_model": "משמרות / נוכחות מלאה באתר",
     "company_requirements": "הנדסאי מכונות/חשמל/אלקטרוניקה חובה, ניסיון מעשי של לפחות שנתיים בתעשייה או בצבא, אוריינטציה טכנית מובהקת.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-12",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "Tech Electronic",
@@ -404,16 +536,27 @@
     "junior_openness": "בינונית (דרוש ניסיון מעשי בתשתיות ואחזקת ציוד תעשייתי)",
     "work_model": "אתר החברה (On-site)",
     "company_requirements": "הנדסאי מכונות או מכטרוניקה, הסמכת חשמלאי מוסמך, ניסיון באחזקת ציוד תהליכי ותשתיות תעשייתיות, ונכונות לשעות נוספות וכוננויות.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-12",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "טכנאי אינטגרציה — מערכות אוטונומיות",
@@ -445,7 +588,18 @@
     "salary_confidence": "medium",
     "has_shifts": false,
     "has_company_car": true,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: סולארי ואגירת אנרגיה (PV / BESS)"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 12500,
+    "p50": 14500,
+    "p75": 16500
   },
   {
     "title": "Basic Operation Shift Manager",
@@ -468,16 +622,27 @@
     "junior_openness": "בינוני-גבוה",
     "work_model": "משמרות",
     "company_requirements": "ניסיון בניהול צוותים, רקע הנדסי/טכני במערכות תעשייתיות, שליטה בנהלי בטיחות איכות ותפעול.",
-    "salary_range": "13,500 - 17,500 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • כולל משמרות",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר ענפי מוסמך להנדסאי (2-4 שנות ניסיון), כולל תוספת עבודת משמרות.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-12",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": true,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "Senior Site Manager",
@@ -500,16 +665,27 @@
     "junior_openness": "בינוני-גבוה",
     "work_model": "היברידי / שטח",
     "company_requirements": "ניסיון בניהול אתרים, הבנה הנדסית מוצקה ויכולת הובלת תהליכי הקמה ופיקוח.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-12",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "ESS Field Application Engineer -Israel",
@@ -541,7 +717,18 @@
     "salary_confidence": "medium",
     "has_shifts": false,
     "has_company_car": true,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: סולארי ואגירת אנרגיה (PV / BESS)"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 12500,
+    "p50": 14500,
+    "p75": 16500
   },
   {
     "title": "Elevator & Escalator Modernization and Maintenance Technician",
@@ -564,16 +751,27 @@
     "junior_openness": "גבוהה",
     "work_model": "עבודת שטח מלאה",
     "company_requirements": "רקע טכני/הנדסאי במכונות או חשמל, ידיים טכניות, נכונות לעבודת שטח, יתרון מובהק לדוברי רוסית.",
-    "salary_range": "11,500 - 15,000 ₪ + רכב צמוד",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון + רכב צמוד.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-14",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": true,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "Experimental Systems Engineer",
@@ -596,16 +794,27 @@
     "junior_openness": "בינונית-גבוהה לתפקידי Hands-on בעלי זיקה מעשית חזקה",
     "work_model": "היברידי / פרונטלי במעבדה",
     "company_requirements": "ניסיון מעשי בתפעול מערכות מורכבות, רקע במכונות/אלקטרוניקה, יכולת אבחון ופתרון תקלות עצמאי, ואנגלית טובה.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-15",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "תהליכי בקרה ו-AI",
@@ -628,16 +837,27 @@
     "junior_openness": "גבוהה (השכלה רלוונטית חובה, ניסיון ניתוח נתונים כיתרון בלבד)",
     "work_model": "מהמשרד / היברידי (אשדוד)",
     "company_requirements": "השכלה רלוונטית בתחום, שליטה גבוהה מאוד ב-Excel ובכלי AI (Copilot, ChatGPT, Gemini וכד'), יכולת ניתוח נתונים ובניית מצגות.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-15",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "Maintenance Engineer",
@@ -660,16 +880,27 @@
     "junior_openness": "פתוח לג'וניורים / הנדסאים בעלי מוטיבציה גבוהה ויכולת למידה עצמית",
     "work_model": "עבודה באתר במשמרות מלאות (On-site)",
     "company_requirements": "יכולת עבודה פיזית בעמידה ממושכת, דיוק והקפדה על פרוצדורות ובטיחות, ונכונות למשמרות לילה וסופי שבוע.",
-    "salary_range": "13,500 - 17,500 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • כולל משמרות",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר ענפי מוסמך להנדסאי (2-4 שנות ניסיון), כולל תוספת עבודת משמרות.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-15",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": true,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "Satellite Operator (1007916)",
@@ -692,17 +923,28 @@
     "junior_openness": "בינונית",
     "work_model": "היברידי / משמרות",
     "company_requirements": "יכולת שיפוט ואחריות ברמה גבוהה, אנגלית טובה, זמינות לטווח ארוך וניסיון בהפעלת מערכות שליטה ובקרה כיתרון משמעותי.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "is_good_match": true,
     "date": "2026-10-15",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "NOC Engineer",
@@ -734,7 +976,18 @@
     "salary_confidence": "medium",
     "has_shifts": true,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות)"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 16000,
+    "p50": 18500,
+    "p75": 21000
   },
   {
     "title": "System Engineer - Renewable Energy & Energy Storage Projects",
@@ -757,16 +1010,27 @@
     "junior_openness": "מתאים להנדסאים עם רקע מעשי מוכק באנרגיה ותשתיות",
     "work_model": "היברידי / שטח",
     "company_requirements": "השכלה כמהנדס/ת או הנדסאי/ת מכונות/חשמל, ניסיון בפרויקטים בתחום האנרגיה המתחדשת או תשתיות חשמל, יכולת ניהול ממשקים ועבודה עצמאית.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-18",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "Field Service Engineer (Ashdod)",
@@ -789,16 +1053,27 @@
     "junior_openness": "בינונית (התפקיד מוגדר כ-Senior אך הרקע הייעודי בגז טבעי ובקרה פותח דלת משמעותית להנדסאי מוכשר)",
     "work_model": "עבודת שטח באתר הלקוח (אשדוד)",
     "company_requirements": "רקע במכונות או חשמל, ניסיון מעשי בשירות שדה או בקרה של טורבינות גז, ויכולת הובלת סקרים ובדיקות תפעוליות מורכבות.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-18",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "OCS Technician",
@@ -821,16 +1096,27 @@
     "junior_openness": "בינונית-גבוהה (מתאים להנדסאים/טכנאים בעלי אוריינטציה טכנית מעשית ונכונות להכשרה)",
     "work_model": "עבודת שטח ואחזקה",
     "company_requirements": "רקע טכני במכונות/חשמל, יכולת עבודה בצוות, פתרון תקלות דרג ב', ונכונות לעבודת שטח ואחזקה לפי תקני איכות ובטיחות.",
-    "salary_range": "11,500 - 15,000 ₪ + רכב צמוד",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון + רכב צמוד.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-18",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": true,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "CAD Operator - Haifa Nazareth LRT Project",
@@ -853,16 +1139,27 @@
     "junior_openness": "בינונית (פתוח להנדסאי מכונות מתחילים בעלי שליטה טובה ב-AutoCAD)",
     "work_model": "היברידי / שילוב משרד חיפה וסיורי שטח בתוואי",
     "company_requirements": "שליטה מלאה ב-AutoCAD, יכולת קריאת מסמכים הנדסיים מורכבים והבנה בשרטוטי מסילה והרכבות מכניות לתשתיות.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-18",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "Automation Field Service Technician - Remote",
@@ -885,16 +1182,27 @@
     "junior_openness": "בינוני",
     "work_model": "מרחוק / שטח",
     "company_requirements": "ניסיון בתחזוקה ומערכות אוטומטיות תעשייתיות, יכולת עבודה עצמאית מול לקוחות, ואמינות גבוהה.",
-    "salary_range": "13,500 - 17,500 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • כולל משמרות",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר ענפי מוסמך להנדסאי (2-4 שנות ניסיון), כולל תוספת עבודת משמרות.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-18",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": true,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   },
   {
     "title": "טכנאי/ת שטח – מערכות גז טבעי דחוס  CNG",
@@ -926,7 +1234,18 @@
     "salary_confidence": "medium",
     "has_shifts": true,
     "has_company_car": true,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: גז טבעי ותחנות כוח"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 17000,
+    "p50": 19500,
+    "p75": 22000
   },
   {
     "title": "UAV Integrator",
@@ -958,7 +1277,18 @@
     "salary_confidence": "medium",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: רחפנים, כטב״ם ומערכות C-UAS"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 14000,
+    "p50": 16500,
+    "p75": 19000
   },
   {
     "title": "חשמלאי/ת מוסמך/ת - מערכות אוטומציה ורובוטיקה",
@@ -990,7 +1320,18 @@
     "salary_confidence": "medium",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "medium",
+    "quality_reasons": [
+      "מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "p25": 11500,
+    "p50": 13250,
+    "p75": 15000
   },
   {
     "title": "Facilities Coordinator",
@@ -1013,15 +1354,26 @@
     "junior_openness": "פתוח למועמדים בעלי רקע טכני ותפעולי מתאים",
     "work_model": "היברידי / פרונטלי במשרדי הלקוח",
     "company_requirements": "דרישה לניסיון בניהול מתקנים, כישורי מנהיגות ומעורבות בכירה מול לקוחות, ויכולות מעולות של פתרון בעיות ותקשורת.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "סקר ענפי 2026 • הנדסאי 2-4 שנים",
-    "salary_source_url": "https://www.alljobs.co.il/SalarySurvey.aspx",
-    "salary_evidence": "מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_source_url": "",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
     "date": "2026-10-19",
-    "salary_confidence": "medium",
+    "salary_confidence": "insufficient",
     "has_shifts": false,
     "has_company_car": false,
-    "has_on_call": false
+    "has_on_call": false,
+    "quality_level": "insufficient",
+    "quality_reasons": [
+      "מודעת המשרה אינה כוללת שכר נקוב",
+      "התפקיד אינו משויך לטבלאות השכר המאושרות"
+    ],
+    "estimate_type": "insufficient_data",
+    "compensation_basis": "unknown",
+    "pay_period": "month",
+    "p25": null,
+    "p50": null,
+    "p75": null
   }
 ]
