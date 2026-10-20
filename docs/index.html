@@ -295,6 +295,46 @@
       flex-direction: column;
       gap: 9px;
     }
+    .search-input-wrapper {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .dashboard-app .search-input-wrapper input {
+      padding-inline-start: 12px !important;
+      padding-inline-end: 36px !important;
+    }
+    .btn-clear-search {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.12);
+      border: none;
+      color: var(--dashboard-muted);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 13px;
+      padding: 0 !important;
+      min-height: 24px !important;
+      line-height: 1 !important;
+      transition: all 0.18s ease;
+      z-index: 2;
+    }
+    .btn-clear-search:hover {
+      background: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+      transform: translateY(-50%) scale(1.08);
+    }
+    .search-input-wrapper.has-value .btn-clear-search {
+      display: flex;
+    }
     .dashboard-app .controls-inputs-stack select,
     .dashboard-app .controls-inputs-stack input {
       height: 38px !important;
@@ -1004,6 +1044,56 @@
       font-size: 12.5px;
     }
 
+    /* Search Query Term Highlight */
+    mark.search-highlight {
+      background: rgba(137, 244, 231, 0.24) !important;
+      color: #ffffff !important;
+      border-radius: 4px;
+      padding: 0 3px;
+      box-shadow: 0 0 8px rgba(137, 244, 231, 0.35);
+      font-weight: inherit;
+    }
+
+    /* Back To Top Floating Button */
+    .btn-back-to-top {
+      position: fixed;
+      bottom: 26px;
+      left: 26px;
+      z-index: 99;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(17, 24, 39, 0.85);
+      border: 1px solid var(--dashboard-edge);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      color: var(--dashboard-cyan);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      padding: 0 !important;
+      min-height: 44px !important;
+    }
+    .btn-back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .btn-back-to-top:hover {
+      background: rgba(137, 244, 231, 0.18);
+      border-color: var(--dashboard-cyan);
+      color: #ffffff;
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px rgba(137, 244, 231, 0.25);
+    }
+
     /* Toast Notification */
     .dashboard-toast {
       position: fixed;
@@ -1640,8 +1730,9 @@
       }
     }
 
-    /* Star Button & Starred Card Highlight */
-    .btn-star {
+    /* Star & Copy Link Buttons */
+    .btn-star,
+    .btn-copy-link {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.16);
       color: var(--dashboard-muted);
@@ -1652,12 +1743,13 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 17px;
+      font-size: 16px;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       flex-shrink: 0;
       position: relative;
     }
-    .btn-star::after {
+    .btn-star::after,
+    .btn-copy-link::after {
       content: '';
       position: absolute;
       top: 50%;
@@ -1673,6 +1765,12 @@
       background: rgba(251, 191, 36, 0.15);
       border-color: rgba(251, 191, 36, 0.5);
       color: var(--dashboard-gold);
+      transform: scale(1.08);
+    }
+    .btn-copy-link:hover {
+      background: rgba(137, 244, 231, 0.15);
+      border-color: rgba(137, 244, 231, 0.5);
+      color: var(--dashboard-cyan);
       transform: scale(1.08);
     }
     .btn-star.is-starred {
@@ -2263,9 +2361,9 @@
         <span class="dashboard-local">סריקה יומית חכמה • התאמה לפרופיל הנדסאי מכונות, אנרגיה ורחפנים</span>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
-        <span>תאריך סריקה: <strong>20.10.2026</strong></span>
+        <span>תאריך סריקה: <strong>21.10.2026</strong></span>
         <span class="dashboard-divider">|</span>
-        <span class="dashboard-chip" style="font-size: 11px; padding: 2px 10px;">סיכום שבועי</span>
+        <span class="dashboard-chip" style="font-size: 11px; padding: 2px 10px;">סריקה יומית</span>
       </div>
     </div>
 
@@ -2307,7 +2405,12 @@
               <option value="nationwide">פריסה ארצית / שטח</option>
             </select>
           </div>
-          <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה טכנית..." oninput="filterCards()" />
+          <div class="search-input-wrapper" id="searchInputWrapper">
+            <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה טכנית..." oninput="onSearchInput(this.value)" />
+            <button type="button" class="btn-clear-search" onclick="clearSearchInput()" title="נקה חיפוש" aria-label="נקה חיפוש">
+              <i class="ph-bold ph-x"></i>
+            </button>
+          </div>
           
           <div class="controls-buttons-row">
             <div class="sort-select-container">
@@ -2582,6 +2685,11 @@
     <span id="toastIcon"><i class="ph-duotone ph-bell-simple"></i></span>
     <span id="toastMsg">ההודעה עודכנה</span>
   </div>
+
+  <!-- Back to Top Floating Button -->
+  <button id="btnBackToTop" class="btn-back-to-top" onclick="scrollToTop()" title="חזרה לראש העמוד" aria-label="חזרה לראש העמוד">
+    <i class="ph-bold ph-arrow-up"></i>
+  </button>
 
 </div>
 
@@ -4040,6 +4148,9 @@
               <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\'")}', event)" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
                 <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
               </button>
+              <button type="button" class="btn-copy-link" onclick="copyJobLink('${link.replace(/'/g, "\'")}', event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
+                <i class="ph-bold ph-share-network"></i>
+              </button>
               <span class="dashboard-chip" style="${sectorChipStyle}; font-size: 11px; padding: 2.5px 8px;">${sectorBadge}</span>
             </div>
             <div class="badge-score ${scoreClass}">
@@ -4131,7 +4242,7 @@
 
       allJobsMap[id] = job;
       card.addEventListener('click', (e) => {
-        if (e.target.closest('.btn-star') || e.target.closest('.btn-triage') || e.target.closest('.btn-apply') || e.target.closest('.btn-toggle-details')) {
+        if (e.target.closest('.btn-star') || e.target.closest('.btn-copy-link') || e.target.closest('.btn-triage') || e.target.closest('.btn-apply') || e.target.closest('.btn-toggle-details')) {
           return;
         }
         if (window.innerWidth <= 768) {
@@ -4200,6 +4311,9 @@
     headerActions.innerHTML = `
       <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\'")}', event); updateModalStar('${id.replace(/'/g, "\'")}');" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
         <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
+      </button>
+      <button type="button" class="btn-copy-link" onclick="copyJobLink('${link.replace(/'/g, "\'")}', event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
+        <i class="ph-bold ph-share-network"></i>
       </button>
       <div class="badge-score ${scoreClass}" title="ציון התאמה ${score}%">
         <span><i class="ph-duotone ph-lightning"></i> ${score}%</span>
@@ -4420,13 +4534,104 @@
     updateUI();
   }
 
+  function onSearchInput(val) {
+    const wrapper = document.getElementById('searchInputWrapper');
+    if (wrapper) {
+      wrapper.classList.toggle('has-value', Boolean(val && val.trim().length > 0));
+    }
+    filterCards();
+  }
+
+  function clearSearchInput() {
+    const input = document.getElementById('searchInput');
+    const wrapper = document.getElementById('searchInputWrapper');
+    if (input) {
+      input.value = '';
+      input.focus();
+    }
+    if (wrapper) {
+      wrapper.classList.remove('has-value');
+    }
+    filterCards();
+  }
+
+  function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function highlightSearchTerms(el, terms) {
+    if (!el) return;
+    if (!el.__originalHtml) {
+      el.__originalHtml = el.innerHTML;
+    }
+    if (!terms || terms.length === 0) {
+      el.innerHTML = el.__originalHtml;
+      return;
+    }
+
+    let html = el.__originalHtml;
+    terms.forEach(term => {
+      const regex = new RegExp(`(?![^<]*>)(${escapeRegex(term)})`, 'gi');
+      html = html.replace(regex, '<mark class="search-highlight">$1</mark>');
+    });
+    el.innerHTML = html;
+  }
+
+  function copyJobLink(link, event) {
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    if (!link) return;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).then(() => {
+        showToast('ph-share-network', 'הקישור למשרה הועתק ללוח בהצלחה!');
+      }).catch(() => {
+        fallbackCopy(link);
+      });
+    } else {
+      fallbackCopy(link);
+    }
+  }
+
+  function fallbackCopy(text) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('ph-share-network', 'הקישור למשרה הועתק ללוח בהצלחה!');
+    } catch(e) {
+      showToast('ph-link', 'לא ניתן להעתיק אוטומטית');
+    }
+  }
+
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+
   function filterCards() {
     updateUI();
   }
 
   function updateUI() {
     const selectedSector = document.getElementById('sectorFilter').value;
-    const searchInput = document.getElementById('searchInput') ? document.getElementById('searchInput').value.toLowerCase() : '';
+    const searchRaw = document.getElementById('searchInput') ? document.getElementById('searchInput').value.trim() : '';
+    const searchInput = searchRaw.toLowerCase();
+    const searchTerms = searchRaw.split(/\s+/).filter(t => t.length >= 2);
+    
+    const wrapper = document.getElementById('searchInputWrapper');
+    if (wrapper) {
+      wrapper.classList.toggle('has-value', Boolean(searchRaw.length > 0));
+    }
     
     const cards = document.querySelectorAll('.job-card');
     let visibleCount = 0;
@@ -4522,6 +4727,17 @@
         card.style.display = '';
         card.classList.remove('is-hidden');
         visibleCount++;
+
+        // Apply highlighting to key visible text elements when search is active
+        const titleEl = card.querySelector('.job-title-text');
+        const compEl = card.querySelector('.job-company-name');
+        const domainEl = card.querySelector('.job-bubble-domain .bubble-content');
+        const reqsEl = card.querySelector('.job-bubble-reqs .bubble-content');
+
+        if (titleEl) highlightSearchTerms(titleEl, searchTerms);
+        if (compEl) highlightSearchTerms(compEl, searchTerms);
+        if (domainEl) highlightSearchTerms(domainEl, searchTerms);
+        if (reqsEl) highlightSearchTerms(reqsEl, searchTerms);
       } else {
         card.style.display = 'none';
         card.classList.add('is-hidden');
@@ -5212,6 +5428,16 @@
   window.addEventListener('focus', () => {
     fetchCloudSync();
   });
+
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('btnBackToTop');
+    if (!btn) return;
+    if (window.scrollY > 380) {
+      btn.classList.add('visible');
+    } else {
+      btn.classList.remove('visible');
+    }
+  }, { passive: true });
 </script>
 </body>
 </html>
