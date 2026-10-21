@@ -51,7 +51,15 @@ def main():
         "Field Service Engineer", "מהנדס שירות שטח",
         "Infrastructure Systems Operator", "מפעיל מערכות תשתית",
         "Energy Control Room Operator", "מפעיל חדר בקרת אנרגיה",
-        "Power Plant Maintenance Mechanic", "מכונאי אחזקת תחנות כוח"
+        "Power Plant Maintenance Mechanic", "מכונאי אחזקת תחנות כוח",
+        "Power Dispatcher", "מתאם סחר בחשמל", "בקר סחר באנרגיה",
+        "Commercial Energy Operations", "בקר תפעול מסחרי",
+        "Solar Site Manager", "מנהל אתר סולארי", "מנהל עבודה סולארי",
+        "Solar Project Coordinator", "הנדסאי פרויקטים סולאריים",
+        "Electrical Inspector", "מפקח עבודות חשמל",
+        "Turbine Technician", "טכנאי טורבינות",
+        "Thermal Plant Technician", "טכנאי מתקני אנרגיה תרמית",
+        "I&C Technician", "טכנאי מכשור ובקרה"
     ]
     
     drone_keywords = [
@@ -61,7 +69,10 @@ def main():
         "Integration and Testing Technician", "טכנאי אינטגרציה ובדיקות",
         "Internal Pilot", "מטיס פנים",
         "Aviation and UAV Mechanic", 'מכונאי תעופה וכטב"ם',
-        "Payload Technician", 'טכנאי מטע"דים'
+        "Payload Technician", 'טכנאי מטע"דים',
+        "Field Test Operator", "מפעיל ניסויי שדה", "טכנאי ניסויי טיסה",
+        "Tactical Drone Specialist", "מומחה מוצר שטח רחפנים",
+        "Mechanical Assembler UAV", 'מרכיב מכאני כטב"ם'
     ]
     
     energy_tech_keywords = [
