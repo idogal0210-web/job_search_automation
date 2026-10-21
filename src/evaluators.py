@@ -180,8 +180,8 @@ Job JSON:
     data = None
     errors = {}
 
-    # Prefer Groq if PREFER_GROQ is not disabled and groq_pool has an API key
-    prefer_groq = os.getenv("PREFER_GROQ", "true").lower() in ("true", "1", "yes")
+    # Prefer Groq if PREFER_GROQ is explicitly true (default is false: Gemini first, Groq fallback)
+    prefer_groq = os.getenv("PREFER_GROQ", "false").lower() in ("true", "1", "yes")
     providers = []
     if prefer_groq and groq_pool is not None and getattr(groq_pool, "api_key", None):
         providers.append(("groq", groq_pool))

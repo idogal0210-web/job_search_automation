@@ -87,7 +87,7 @@ class GeminiPool:
     """One pool per run; no global cross-job shutdown on a single model error."""
     def __init__(self, models=None, *, clock=time.monotonic, sleep=time.sleep,
                  jitter=lambda: random.uniform(0, 0.5), max_attempts=2, min_interval=2):
-        configured = os.getenv("GEMINI_MODELS") or "gemini-3.8-flash,gemini-3.7-flash,gemini-3.5-flash-lite,gemini-3.5-flash"
+        configured = os.getenv("GEMINI_MODELS") or "gemini-3.8-flash,gemini-3.5-flash-lite,gemini-3.5-flash"
         self.models = tuple(dict.fromkeys(models if models is not None else
                                          [m.strip() for m in configured.split(",") if m.strip()]))
         if not self.models:
