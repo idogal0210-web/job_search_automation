@@ -12,7 +12,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 
 class Evaluation(BaseModel):
-    model_config = ConfigDict(strict=True, extra="forbid")
+    model_config = ConfigDict(strict=True)
     status: Literal["QUALIFIED", "DISQUALIFIED"]
     technical_role: bool
     match_score: int = Field(ge=0, le=100)
@@ -80,7 +80,7 @@ class GeminiPool:
     """One pool per run; no global cross-job shutdown on a single model error."""
     def __init__(self, models=None, *, clock=time.monotonic, sleep=time.sleep,
                  jitter=lambda: random.uniform(0, 0.5), max_attempts=2, min_interval=2):
-        configured = os.getenv("GEMINI_MODELS") or "gemini-3.8-flash,gemini-3.5-flash-lite,gemini-3.5-flash"
+        configured = os.getenv("GEMINI_MODELS") or "gemini-3.8-flash,gemini-3.7-flash,gemini-3.5-flash-lite,gemini-3.5-flash"
         self.models = tuple(dict.fromkeys(models if models is not None else
                                          [m.strip() for m in configured.split(",") if m.strip()]))
         if not self.models:
@@ -116,7 +116,7 @@ class GeminiPool:
                     kind = classify_error(error)
                     reasons[name] = kind
                     health.gemini_failures += 1
-                    print(f"[MODEL_ERROR] model={name} kind={kind} attempt={attempt+1}", flush=True)
+                    print(f"[MODEL_ERROR] model={name} kind={kind} attempt={attempt+1} error={error}", flush=True)
                     delay = max(2 ** (attempt + 1) + self.jitter(), retry_after(error))
                     if (kind in {"invalid_response", "timeout", "unavailable", "rate_limit"}
                             and attempt + 1 < self.max_attempts and delay <= 8):
