@@ -52,7 +52,7 @@ class TestGroqRuntime(unittest.TestCase):
         data = pool.evaluate("Test prompt", health)
         self.assertEqual(data["status"], "QUALIFIED")
         self.assertEqual(data["evaluation_source"], "groq")
-        self.assertEqual(data["evaluation_model"], "llama-3.3-70b-versatile")
+        self.assertEqual(data["evaluation_model"], "openai/gpt-oss-120b")
         self.assertTrue(data["evaluation_complete"])
         self.assertEqual(health.gemini_successes, 1)
 

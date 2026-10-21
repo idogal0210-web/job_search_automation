@@ -15,7 +15,7 @@ class GroqPool:
     def __init__(self, api_key=None, models=None, *, clock=time.monotonic, sleep=time.sleep,
                  jitter=lambda: random.uniform(0, 0.5), max_attempts=2, timeout=20):
         self.api_key = api_key if api_key is not None else os.getenv("GROQ_API_KEY")
-        configured = os.getenv("GROQ_MODELS") or "llama-3.3-70b-versatile,llama-3.1-8b-instant"
+        configured = os.getenv("GROQ_MODELS") or "openai/gpt-oss-120b,openai/gpt-oss-20b,qwen/qwen3.8-27b"
         self.models = tuple(dict.fromkeys(models if models is not None else
                                          [m.strip() for m in configured.split(",") if m.strip()]))
         if not self.models:
@@ -57,7 +57,13 @@ class GroqPool:
                             {"role": "system", "content": system_msg},
                             {"role": "user", "content": prompt}
                         ],
-                        "response_format": {"type": "json_object"},
+                        "response_format": {
+                            "type": "json_schema",
+                            "json_schema": {
+                                "name": "Evaluation",
+                                "schema": Evaluation.model_json_schema()
+                            }
+                        },
                         "temperature": 0.1
                     }
                     resp = requests.post(url, headers=headers, json=payload, timeout=self.timeout)

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from typing import Literal
 
 from google.genai import types
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
 
 class Evaluation(BaseModel):
@@ -29,6 +29,13 @@ class Evaluation(BaseModel):
     junior_openness: str = "לא צוין"
     work_model: str = "לא צוין"
     company_requirements: str = "לא צוין"
+
+    @field_validator("junior_openness", mode="before")
+    @classmethod
+    def normalize_junior_openness(cls, v):
+        if isinstance(v, bool):
+            return "כן" if v else "לא"
+        return str(v) if v is not None else "לא צוין"
 
 
 class EvaluationUnavailable(RuntimeError):
