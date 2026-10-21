@@ -1,6 +1,7 @@
 import os
 import json
 from datetime import datetime, timedelta
+from src.state_manager import save_state_atomic
 
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="he" dir="rtl">
@@ -5680,13 +5681,15 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set):
                 if link not in catalog:
                     catalog[link] = job_copy
             
-    with open(archive_file_path, "w", encoding="utf-8") as f:
-        json.dump(archive, f, ensure_ascii=False, indent=2)
+    save_state_atomic(archive_file_path, archive)
 
     try:
-        with open(catalog_path, "w", encoding="utf-8") as f:
-            json.dump(catalog, f, ensure_ascii=False, indent=2)
-    except Exception:
-        pass
+        # Retention policy: prune historical catalog to max 1500 items if needed, preserving newest
+        if len(catalog) > 1500:
+            sorted_items = sorted(catalog.items(), key=lambda kv: kv[1].get("date", ""), reverse=True)
+            catalog = dict(sorted_items[:1500])
+        save_state_atomic(catalog_path, catalog)
+    except Exception as e:
+        print(f"[WARN] Failed to atomically save historical catalog: {e}")
 
     return archive
