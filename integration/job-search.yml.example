@@ -1,0 +1,95 @@
+# Integration template, NOT an additional scheduled workflow.
+# Merge into the existing workflow; preserve its original schedule and secrets.
+# Requires Settings > Pages > Source: GitHub Actions for explicit deployment.
+name: Job Search with Recovery
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: job-search-state-main
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  search:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    outputs:
+      publish: ${{ steps.report.outputs.publish }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover tests/ -v
+      - name: Search and evaluate
+        id: search
+        continue-on-error: true
+        env:
+          PYTHONUNBUFFERED: '1'
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+          SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
+          # Optional. An empty repository variable uses the existing model order.
+          GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
+        run: python -u main.py
+      - name: Persist checkpoints even when search fails
+        if: ${{ always() && (steps.search.outcome == 'success' || steps.search.outcome == 'failure') }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          for path in data/jobs_state.json data/evaluation_state.json data/weekly_archive.json data/historical_catalog.json docs/index.html; do
+            if test -f "$path"; then git add -- "$path"; fi
+          done
+          if ! git diff --cached --quiet; then
+            git commit -m 'chore: save job evaluations and dashboard [skip ci]'
+            # Never discard state or ignore a rebase conflict.
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Report completion and allow deployment only after a nonfatal run
+        id: report
+        if: ${{ always() && (steps.search.outcome == 'success' || steps.search.outcome == 'failure') }}
+        env:
+          SEARCH_OUTCOME: ${{ steps.search.outcome }}
+        run: |
+          if test "$SEARCH_OUTCOME" != 'success'; then
+            echo 'Search failed; checkpoints were attempted above. Inspect the state commit step.' >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo 'publish=true' >> "$GITHUB_OUTPUT"
+      - name: Upload dashboard artifact
+        if: success() && steps.report.outputs.publish == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: search
+    if: needs.search.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy and wait for GitHub Pages status
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Confirm publication
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: echo "GitHub Pages deployment succeeded. URL $PAGE_URL" >> "$GITHUB_STEP_SUMMARY"

@@ -15,16 +15,20 @@ concurrency:
 jobs:
   job-search-daily:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     name: "Daily Job Search - Ido Gal"
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version-file: .python-version
           cache: 'pip'
 
       - name: Install dependencies
@@ -34,34 +38,39 @@ jobs:
 
       - name: Run Test Suite (Quality & Reliability Gate)
         run: |
-          python -m unittest discover tests/
+          python -m unittest discover tests/ -v
 
-      - name: Run Daily Energy & Drone Job Searches (with AI Auto-Healer)
+      - name: Run Daily Energy & Drone Job Searches
+        id: search
+        continue-on-error: true
         timeout-minutes: 40
         env:
+          PYTHONUNBUFFERED: '1'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
           SENDER_APP_PASSWORD: ${{ secrets.SENDER_APP_PASSWORD }}
+          GEMINI_MODELS: ${{ vars.GEMINI_MODELS }}
         run: |
-          python main.py
+          python -u main.py
 
-      - name: Commit and push updated history, weekly archive, and interactive docs
+      - name: Persist checkpoints even when search fails
+        if: ${{ always() && (steps.search.outcome == 'success' || steps.search.outcome == 'failure') }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Only add specific directories to avoid committing AI healer patched python scripts
-          git add data/ docs/
+          for path in data/jobs_state.json data/evaluation_state.json data/weekly_archive.json data/historical_catalog.json docs/index.html; do
+            if test -f "$path"; then git add -- "$path"; fi
+          done
           
           if ! git diff --staged --quiet; then
-            git commit -m "chore: update history, archive and interactive docs [skip ci]"
+            git commit -m "chore: save job evaluations and dashboard [skip ci]"
             
             pushed=false
             for attempt in 1 2 3; do
               echo "Push attempt $attempt..."
-              git pull --rebase origin main || true
-              if git push origin main; then
+              if git pull --rebase origin main && git push origin HEAD:main; then
                 pushed=true
                 echo "Successfully pushed to origin/main on attempt $attempt"
                 break
@@ -76,6 +85,17 @@ jobs:
             fi
           else
             echo "No changes to commit or push."
+          fi
+
+      - name: Verify Search Outcome
+        id: report
+        if: ${{ always() && (steps.search.outcome == 'success' || steps.search.outcome == 'failure') }}
+        env:
+          SEARCH_OUTCOME: ${{ steps.search.outcome }}
+        run: |
+          if test "$SEARCH_OUTCOME" != 'success'; then
+            echo 'Search failed; checkpoints were attempted above. Inspect the state commit step.' >> "$GITHUB_STEP_SUMMARY"
+            exit 1
           fi
 
       - name: Send Urgent Failure Alert Email (Exceptions Only)
@@ -101,7 +121,7 @@ jobs:
               msg['Subject'] = Header('⚠️ התראת תקלה: ריצת חיפוש המשרות נכשלה | עידו גל', 'utf-8')
               msg['From'] = Header(f'Job Search Alert <{sender}>', 'utf-8')
               msg['To'] = Header(recipient, 'utf-8')
-              body = f'<div dir="rtl" style="font-family: Arial; padding: 20px;"><h2 style="color: #dc2626;">⚠️ התרחשה שגיאה בריצת חיפוש המשרות</h2><p>ריצת האוטומציה נתקלה בשגיאה באחד השלבים.</p><p><a href="{run_url}" style="background: #dc2626; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block;">צפה ביומן הריצה ב-GitHub Actions ↗</a></p></div>'
+              body = f'<div dir=\"rtl\" style=\"font-family: Arial; padding: 20px;\"><h2 style=\"color: #dc2626;\">⚠️ התרחשה שגיאה בריצת חיפוש המשרות</h2><p>ריצת האוטומציה נתקלה בשגיאה באחד השלבים.</p><p><a href=\"{run_url}\" style=\"background: #dc2626; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block;\">צפה ביומן הריצה ב-GitHub Actions ↗</a></p></div>'
               msg.attach(MIMEText(body, 'html', 'utf-8'))
               server = smtplib.SMTP('smtp.gmail.com', 587, timeout=20)
               server.starttls()

@@ -8,7 +8,7 @@ Tests for Phase B upgrades:
 """
 
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 from src.salary_engine import evaluate_job_salary, extract_salary_from_ad, detect_shifts, detect_company_car
 from src.evaluators import is_target_company, evaluate_and_enrich_job_with_gemini
 
@@ -54,6 +54,9 @@ class TestPhaseBPrecision(unittest.TestCase):
         self.assertIn("+ רכב צמוד", res_exp["salary_range"])
         self.assertTrue(res_exp["has_company_car"])
 
+    @patch('src.evaluators.TARGET_COMPANIES_BY_CATEGORY', {
+        'natural_gas_israel': ['Dalia Power'],
+        'drones_uav_and_defense': ['Elbit']})
     def test_target_company_no_false_substring_match(self):
         # 'דליה' is a target power station (Dalia Power), but 'דליה כהן חנות בגדים' must NOT match!
         is_target, _ = is_target_company("דליה כהן חנות בגדים בע\"מ")

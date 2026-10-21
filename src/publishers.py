@@ -6,15 +6,20 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header
 from datetime import datetime
 
-def build_unified_html_email(jobs, top_3, dashboard_url):
+def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
     now_str = datetime.now().strftime("%d.%m.%Y")
     
+    pending = getattr(health, 'pending_evaluations', 0) if health else 0
+    incomplete = bool(health and (pending or health.linkedin_failures or health.drushim_failures or health.final_status.startswith('FAILED_')))
+    run_notice = (f'הריצה הושלמה חלקית. {pending} משרות ממתינות לבדיקה מלאה; ייתכנו תוצאות חסרות.'
+                  if incomplete else 'בדיקת המשרות הושלמה.')
     if not jobs:
         return f"""<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <body style="font-family: Arial, sans-serif; background-color: #020617; color: #f8fafc; padding: 20px; direction: rtl; text-align: center;">
     <h1 style="color: #38bdf8;">🎯 דוח משרות יומי - {now_str}</h1>
-    <p>הסריקה עברה בהצלחה, אך לא נמצאו משרות רלוונטיות היום שעוברות את רף הציון הנדרש.</p>
+    <p>{run_notice}</p>
+    <p>אין משרות חדשות שאושרו בדוח זה.</p>
     <p>נמשיך לסרוק מחר!</p>
 </body>
 </html>
@@ -152,6 +157,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
             </a>
         </div>
 
+        <p style="color:#fbbf24;">{run_notice}</p>
         {top_3_html}
         {sector_blocks_html}
 
@@ -165,10 +171,12 @@ def build_unified_html_email(jobs, top_3, dashboard_url):
     return html
 
 def send_email_report(sender_email, sender_pwd, processed_jobs, curated_email_jobs, top_3, dashboard_url, health):
-    email_html = build_unified_html_email(curated_email_jobs, top_3, dashboard_url)
+    email_html = build_unified_html_email(curated_email_jobs, top_3, dashboard_url, health)
 
     msg = MIMEMultipart()
-    if not processed_jobs:
+    if health.pending_evaluations or health.linkedin_failures or health.drushim_failures or health.final_status.startswith('FAILED_'):
+        msg['Subject'] = Header('⚠️ דוח משרות חלקי — נותרו בדיקות להשלמה | עידו גל', 'utf-8')
+    elif not processed_jobs:
         msg['Subject'] = Header(f"ℹ️ דוח משרות יומי - אין משרות חדשות שעברו סף | עידו גל", 'utf-8')
     else:
         msg['Subject'] = Header(f"🎯 דוח משרות יומי מאוחד ({len(curated_email_jobs)} משרות נבחרות) | עידו גל", 'utf-8')

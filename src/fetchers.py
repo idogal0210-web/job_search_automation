@@ -24,6 +24,10 @@ class RunHealth:
     candidates_found: int = 0
     jobs_evaluated: int = 0
     jobs_passed: int = 0
+    jobs_rejected: int = 0
+    pending_evaluations: int = 0
+    fallback_evaluations: int = 0
+    cached_evaluations: int = 0
     
     email_attempts: int = 0
     email_success: bool = False
@@ -233,7 +237,3 @@ def fetch_drushim_full_job_description(link: str) -> str:
     except Exception:
         pass
     return ""
-
-
-
-

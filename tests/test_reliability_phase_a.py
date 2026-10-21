@@ -57,7 +57,7 @@ class TestEvaluationAndFallbackReliability(unittest.TestCase):
         self.assertEqual(res.get("status"), "DISQUALIFIED")
         self.assertEqual(res.get("match_score"), 0)
 
-    def test_fallback_qualifies_genuine_technical_job(self):
+    def test_fallback_defers_genuine_technical_job(self):
         job = {
             "title": "הנדסאי מכונות - מפעיל חדר בקרה SCADA",
             "snippet": "דרוש הנדסאי מכונות לתפעול ובקרה בתחנת כוח גז טבעי.",
@@ -65,8 +65,9 @@ class TestEvaluationAndFallbackReliability(unittest.TestCase):
         }
         res = apply_keyword_fallback(job)
         self.assertIsNotNone(res)
-        self.assertEqual(res.get("status"), "QUALIFIED")
-        self.assertGreaterEqual(res.get("match_score"), 60)
+        self.assertEqual(res.get("status"), "RETRY_PENDING")
+        self.assertFalse(res["evaluation_complete"])
+        self.assertGreater(res.get("keyword_score"), 0)
 
 if __name__ == "__main__":
     unittest.main()
