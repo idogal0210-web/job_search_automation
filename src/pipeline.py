@@ -22,7 +22,7 @@ def enrich(job):
         job["snippet"] = full
 
 
-def evaluate_candidates(jobs, client, health, ledger, *, pool=None, enrich_job=enrich):
+def evaluate_candidates(jobs, client, health, ledger, *, pool=None, groq_pool=None, enrich_job=enrich):
     pool = pool or GeminiPool()
     ledger.stage_candidates(jobs)
     passed, audit = [], []
@@ -49,11 +49,11 @@ def evaluate_candidates(jobs, client, health, ledger, *, pool=None, enrich_job=e
                     result = deterministic_filter(job)
                     if result is None:
                         try:
-                            if client is None:
+                            if client is None and (groq_pool is None or not getattr(groq_pool, "api_key", None)):
                                 raise EvaluationUnavailable({"client": "missing_or_invalid_configuration"})
                             result = evaluate_and_enrich_job_with_gemini(
                                 client, job["title"], job["company"], job["snippet"],
-                                is_drone_job(job), health, pool=pool)
+                                is_drone_job(job), health, pool=pool, groq_pool=groq_pool)
                         except EvaluationUnavailable as error:
                             result = apply_keyword_fallback(job, str(error))
             ledger.record(job, result)

@@ -18,9 +18,10 @@ class MainIntegrationTests(unittest.TestCase):
                    'company': 'Example', 'snippet': 'Industrial solar maintenance and commissioning. ' * 10}
             client = MagicMock()
             client.models.generate_content.side_effect = APIError(503)
-            def evaluate(jobs, ai, health, ledger):
+            def evaluate(jobs, ai, health, ledger, **kwargs):
                 runtime, _ = pool(('one',))
-                return evaluate_candidates(jobs, ai, health, ledger, pool=runtime, enrich_job=lambda j: None)
+                kwargs.pop("pool", None)
+                return evaluate_candidates(jobs, ai, health, ledger, pool=runtime, enrich_job=lambda j: None, **kwargs)
             delivery_success = [True, False, True]
             def send(*args):
                 args[-1].email_success = delivery_success.pop(0)

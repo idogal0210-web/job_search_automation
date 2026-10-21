@@ -12,6 +12,7 @@ from src.pipeline import evaluate_candidates, final_status, run_report
 from src.publishers import send_email_report
 from src.ui_builder import build_and_save_docs_app, update_weekly_archive
 from src.state_manager import load_state, save_state_atomic, EvaluationLedger
+from src.groq_runtime import GroqPool
 
 load_dotenv()
 STATE_FILE = os.path.join(os.path.dirname(__file__), "data", "jobs_state.json")
@@ -110,11 +111,21 @@ def main():
                 http_options=types.HttpOptions(timeout=20000,
                     retry_options=types.HttpRetryOptions(attempts=1)))
         except Exception as error:
-            print(f"[AI_CONFIG] Could not initialize client: {type(error).__name__}", flush=True)
-    else:
-        print("[AI_CONFIG] No GEMINI_API_KEY; unresolved jobs will remain pending", flush=True)
+            print(f"[AI_CONFIG] Could not initialize Gemini client: {type(error).__name__}", flush=True)
+
+    groq_pool = None
+    if os.getenv("GROQ_API_KEY"):
+        try:
+            groq_pool = GroqPool()
+            print("[AI_CONFIG] Groq (Llama 3.3 70B) configured as AI provider", flush=True)
+        except Exception as error:
+            print(f"[AI_CONFIG] Could not initialize Groq pool: {type(error).__name__}", flush=True)
+
+    if client is None and groq_pool is None:
+        print("[AI_CONFIG] No GEMINI_API_KEY or GROQ_API_KEY; unresolved jobs will remain pending", flush=True)
+
     try:
-        processed_jobs, audit = evaluate_candidates(new_jobs, client, health, ledger)
+        processed_jobs, audit = evaluate_candidates(new_jobs, client, health, ledger, groq_pool=groq_pool)
     finally:
         if client is not None:
             client.close()

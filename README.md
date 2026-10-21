@@ -45,6 +45,8 @@ pip install -r requirements.txt
 להרצה מקומית, צור קובץ `.env` בשורש הפרויקט:
 ```env
 GEMINI_API_KEY="your-google-gemini-api-key"
+GROQ_API_KEY="your-groq-api-key"       # אופציונלי: Llama 3.3 70B עם מכסה חינמית של 14,400 בקשות ליום
+PREFER_GROQ="true"                     # תעדוף Groq על פני Gemini (או להפך)
 SENDER_EMAIL="your-email@gmail.com"
 SENDER_APP_PASSWORD="your-google-app-password"
 ```
