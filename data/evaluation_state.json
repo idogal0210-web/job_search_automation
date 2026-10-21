@@ -18,12 +18,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:44.499414+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.753135+00:00"
     },
     "https://il.linkedin.com/jobs/view/cto-at-cust2mate-a2z-nasdaq-az-4481105250": {
       "stage": "RETRY_PENDING",
@@ -42,12 +42,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:44.705946+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.763497+00:00"
     },
     "https://il.linkedin.com/jobs/view/electrical-engineer-at-enlight-renewable-energy-ltd-enlt-4482072993": {
       "stage": "RETRY_PENDING",
@@ -69,12 +69,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:44.956980+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.767996+00:00"
     },
     "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%97%D7%A9%D7%91%D7%95%D7%A0%D7%95%D7%AA-at-fresenius-medical-care-4475853058": {
       "stage": "RETRY_PENDING",
@@ -93,12 +93,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:45.281913+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.772836+00:00"
     },
     "https://il.linkedin.com/jobs/view/head-of-product-at-dazn-4479255163": {
       "stage": "RETRY_PENDING",
@@ -117,12 +117,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:45.495607+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.778036+00:00"
     },
     "https://il.linkedin.com/jobs/view/%D7%90%D7%99%D7%A9-%D7%AA-it-%D7%91%D7%A9%D7%99%D7%9C%D7%95%D7%91-helpdesk-50%25-at-rivhit-%D7%A8%D7%99%D7%95%D7%95%D7%97%D7%99%D7%AA-%D7%A4%D7%AA%D7%A8%D7%95%D7%A0%D7%95%D7%AA-%D7%9C%D7%A0%D7%99%D7%94%D7%95%D7%9C-%D7%A2%D7%A1%D7%A7%D7%99%D7%9D-4479414029": {
       "stage": "RETRY_PENDING",
@@ -143,12 +143,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:45.690506+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.781963+00:00"
     },
     "https://il.linkedin.com/jobs/view/electrical-engineer-at-enlight-renewable-energy-ltd-enlt-4482105119": {
       "stage": "RETRY_PENDING",
@@ -170,12 +170,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:45.952744+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.785463+00:00"
     },
     "https://il.linkedin.com/jobs/view/creative-copywriter-at-skyers-4479406357": {
       "stage": "COMPLETE",
@@ -216,12 +216,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:46.246208+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.789422+00:00"
     },
     "https://il.linkedin.com/jobs/view/optical-lab-technician-at-kla-4451769923": {
       "stage": "RETRY_PENDING",
@@ -242,12 +242,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:46.450600+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.793405+00:00"
     },
     "https://il.linkedin.com/jobs/view/office-manager-at-faddom-4478992423": {
       "stage": "COMPLETE",
@@ -288,12 +288,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:46.682795+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.798111+00:00"
     },
     "https://il.linkedin.com/jobs/view/devops-technical-lead-at-pacaya-hr-experts-4479930327": {
       "stage": "RETRY_PENDING",
@@ -312,12 +312,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:46.931407+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.802052+00:00"
     },
     "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%AA%D7%A4%D7%A2%D7%95%D7%9C-rf-at-phantom-technologies-ltd-4479402480": {
       "stage": "RETRY_PENDING",
@@ -338,12 +338,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:47.193225+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.805691+00:00"
     },
     "https://il.linkedin.com/jobs/view/lead-software-architect-insignito-at-sentrycs-counter-drone-solutions-adapting-at-the-speed-of-threats-4482092598": {
       "stage": "RETRY_PENDING",
@@ -364,12 +364,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:47.436767+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.809727+00:00"
     },
     "https://il.linkedin.com/jobs/view/customer-success-manager-chinese-market-at-mize-4480489692": {
       "stage": "RETRY_PENDING",
@@ -388,12 +388,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:47.651705+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.813788+00:00"
     },
     "https://il.linkedin.com/jobs/view/ground-support-equipment-technician-at-airhaifa-4482089542": {
       "stage": "RETRY_PENDING",
@@ -412,12 +412,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:47.884185+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.816896+00:00"
     },
     "https://www.drushim.co.il/job/38765418/056e99c6/": {
       "stage": "COMPLETE",
@@ -461,12 +461,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:47.890724+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.820179+00:00"
     },
     "https://www.drushim.co.il/job/38498050/cce9d0ec/": {
       "stage": "RETRY_PENDING",
@@ -485,12 +485,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:47.894159+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.823711+00:00"
     },
     "https://www.drushim.co.il/job/38501147/e6250655/": {
       "stage": "RETRY_PENDING",
@@ -509,12 +509,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:47.897044+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.826615+00:00"
     },
     "https://www.drushim.co.il/job/38658961/55651ee9/": {
       "stage": "RETRY_PENDING",
@@ -533,12 +533,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:47.899954+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.829518+00:00"
     },
     "https://www.drushim.co.il/job/38797851/a371a3ef/": {
       "stage": "RETRY_PENDING",
@@ -557,12 +557,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:47.903204+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.832674+00:00"
     },
     "https://www.drushim.co.il/job/38803627/53af43d4/": {
       "stage": "RETRY_PENDING",
@@ -581,12 +581,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:47.906679+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.835801+00:00"
     },
     "https://www.drushim.co.il/job/38808244/8e4c24a7/": {
       "stage": "RETRY_PENDING",
@@ -605,12 +605,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:47.909781+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.838655+00:00"
     },
     "https://www.drushim.co.il/job/38572454/1465b9d1/": {
       "stage": "RETRY_PENDING",
@@ -631,12 +631,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:48.663955+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.842173+00:00"
     },
     "https://www.drushim.co.il/job/38817801/7d21e8b2/": {
       "stage": "RETRY_PENDING",
@@ -655,12 +655,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:48.677443+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.845201+00:00"
     },
     "https://www.drushim.co.il/job/38625122/97e1e16c/": {
       "stage": "RETRY_PENDING",
@@ -679,12 +679,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:48.687956+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.848738+00:00"
     },
     "https://www.drushim.co.il/job/38771061/8c05671d/": {
       "stage": "RETRY_PENDING",
@@ -705,12 +705,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:48.696808+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.852042+00:00"
     },
     "https://www.drushim.co.il/job/38766349/1924334b/": {
       "stage": "RETRY_PENDING",
@@ -729,12 +729,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.411115+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.855357+00:00"
     },
     "https://www.drushim.co.il/job/38553910/3aa844a0/": {
       "stage": "RETRY_PENDING",
@@ -753,12 +753,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.415083+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.858786+00:00"
     },
     "https://www.drushim.co.il/job/38719305/4392805e/": {
       "stage": "RETRY_PENDING",
@@ -777,12 +777,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.418418+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.861724+00:00"
     },
     "https://www.drushim.co.il/job/38738191/b2ed9cf5/": {
       "stage": "RETRY_PENDING",
@@ -801,12 +801,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.422301+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.864939+00:00"
     },
     "https://www.drushim.co.il/job/38821962/29b042ec/": {
       "stage": "RETRY_PENDING",
@@ -825,12 +825,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.425767+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.868028+00:00"
     },
     "https://www.drushim.co.il/job/38596280/6d3e2e48/": {
       "stage": "RETRY_PENDING",
@@ -849,12 +849,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.429231+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.871047+00:00"
     },
     "https://www.drushim.co.il/job/38500254/36371a95/": {
       "stage": "RETRY_PENDING",
@@ -875,12 +875,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.432830+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.874280+00:00"
     },
     "https://www.drushim.co.il/job/38502059/9a335c25/": {
       "stage": "RETRY_PENDING",
@@ -899,12 +899,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.436344+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.877392+00:00"
     },
     "https://www.drushim.co.il/job/38785501/e7207e4d/": {
       "stage": "RETRY_PENDING",
@@ -923,12 +923,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.439819+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.880410+00:00"
     },
     "https://www.drushim.co.il/job/38521990/60e6cb40/": {
       "stage": "RETRY_PENDING",
@@ -947,12 +947,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.443536+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.883708+00:00"
     },
     "https://www.drushim.co.il/job/38652292/c450cea7/": {
       "stage": "RETRY_PENDING",
@@ -971,12 +971,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.446897+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.886631+00:00"
     },
     "https://www.drushim.co.il/job/38599776/27bf63d2/": {
       "stage": "RETRY_PENDING",
@@ -995,12 +995,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.450510+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.889864+00:00"
     },
     "https://www.drushim.co.il/job/38574088/a3c8b9cb/": {
       "stage": "RETRY_PENDING",
@@ -1019,12 +1019,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.454328+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.893197+00:00"
     },
     "https://www.drushim.co.il/job/38566659/0e94973f/": {
       "stage": "RETRY_PENDING",
@@ -1043,12 +1043,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.457796+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.896225+00:00"
     },
     "https://www.drushim.co.il/job/38586571/4bb82a4c/": {
       "stage": "RETRY_PENDING",
@@ -1067,12 +1067,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:49.461336+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.899132+00:00"
     },
     "https://www.drushim.co.il/job/38696562/dd16c04d/": {
       "stage": "RETRY_PENDING",
@@ -1093,12 +1093,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:50.253001+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.902370+00:00"
     },
     "https://www.drushim.co.il/job/38696429/93928ab3/": {
       "stage": "RETRY_PENDING",
@@ -1117,12 +1117,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:50.256603+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.905212+00:00"
     },
     "https://www.drushim.co.il/job/38603253/ff17f77b/": {
       "stage": "COMPLETE",
@@ -1163,12 +1163,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:50.262505+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.908569+00:00"
     },
     "https://www.drushim.co.il/job/38772543/b22f3f5c/": {
       "stage": "RETRY_PENDING",
@@ -1187,12 +1187,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:50.265996+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.912187+00:00"
     },
     "https://www.drushim.co.il/job/38573689/81de0c90/": {
       "stage": "RETRY_PENDING",
@@ -1211,12 +1211,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:50.269435+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.915564+00:00"
     },
     "https://www.drushim.co.il/job/38803361/bf7793f3/": {
       "stage": "RETRY_PENDING",
@@ -1238,12 +1238,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:50.272998+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.919132+00:00"
     },
     "https://www.drushim.co.il/job/38762188/5cab4cf7/": {
       "stage": "RETRY_PENDING",
@@ -1262,12 +1262,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:50.276440+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.922294+00:00"
     },
     "https://www.drushim.co.il/job/38803304/cec0c08d/": {
       "stage": "RETRY_PENDING",
@@ -1289,12 +1289,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:50.280066+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.925752+00:00"
     },
     "https://www.drushim.co.il/job/38803342/8a0adc3d/": {
       "stage": "RETRY_PENDING",
@@ -1316,12 +1316,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:50.283749+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.929189+00:00"
     },
     "https://www.drushim.co.il/job/38650088/dee0cc7c/": {
       "stage": "RETRY_PENDING",
@@ -1340,12 +1340,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:50.287139+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.932272+00:00"
     },
     "https://www.drushim.co.il/job/38703725/3c1241ab/": {
       "stage": "RETRY_PENDING",
@@ -1364,12 +1364,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:51.050852+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.935777+00:00"
     },
     "https://www.drushim.co.il/job/38685447/43b7ad1e/": {
       "stage": "RETRY_PENDING",
@@ -1388,12 +1388,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:51.054711+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.938550+00:00"
     },
     "https://www.drushim.co.il/job/38578439/a40dcc99/": {
       "stage": "RETRY_PENDING",
@@ -1414,12 +1414,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:51.058398+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.941840+00:00"
     },
     "https://www.drushim.co.il/job/38822380/1484f6a7/": {
       "stage": "RETRY_PENDING",
@@ -1438,12 +1438,12 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
-      "attempts": 1,
-      "updated_at": "2026-10-21T13:41:51.062555+00:00"
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.945173+00:00"
     },
     "https://www.drushim.co.il/job/38662970/2b5d92aa/": {
       "stage": "RETRY_PENDING",
@@ -1465,12 +1465,331 @@
         "concrete_matches_count": 0,
         "evaluation_complete": false,
         "evaluation_source": "keyword_fallback",
-        "retry_reason": "{\"gemini-3.5-flash\": \"configuration\", \"gemini-3.5-flash-lite\": \"configuration\", \"gemini-3.8-flash\": \"configuration\"}",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 2,
+      "updated_at": "2026-10-21T15:05:55.948374+00:00"
+    },
+    "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%9E%D7%97%D7%9C%D7%A7%D7%AA-%D7%90%D7%95-%D7%A9-at-sheba-medical-center-tel-hashomer-4478995092": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%9E%D7%97%D7%9C%D7%A7%D7%AA-%D7%90%D7%95-%D7%A9-at-sheba-medical-center-tel-hashomer-4478995092",
+        "title": "מנהל/ת מחלקת או\"ש",
+        "company": "Sheba Medical Center, Tel Hashomer",
+        "snippet": "למרכז הרפואי שיבא דרוש/ה מנהל/ת מחלקת או\"ש ומצוינות\nהתפקיד כולל:\nחבר/ת הנהלת אגף שיווק, חווית אדם ונכסים\nניהול צוות מהנדסי תעשייה וניהול: תעדוף, חניכה, סטנדרטים ובקרת איכות.\nהובלת פרויקטים והצגת תובנות  מול הנהלת בית החולים בתחומים :\nניהול אופרציה תפעולית - זרימת מטופלים ומשאבים, אופטימיזציה של משאבים וחיזוי עומסים.\nמערכות מידע - מיכון תהליכים ושדרוג כלים תומכים, דיגיטציה AI וכיו\"ב.\nמסעות לקוח\n- מומחיות באפיון מסעות מטופל\nארגון ושיטות -\nייזום, תכנון והובלת פרויקטים לשיפור תהליכים, אופטימיזציה, זיהוי צווארי בקבוק וקיצור זמני המתנה ושהייה בכלל יחידות בית החולים (מחלקות האשפוז, מכונים ומרפאות חוץ, חדרי ניתוח ועוד).\nאנליזת נתונים\n- לטובת קבלת החלטות מבוססות נתונים: ניתוח נתונים תפעוליים ממערכות בית החולים, הקמה וניהול של מדדי ביצוע מרכזיים (KPIs) בהתאם ליעדי המחלקה, בניית דוחות, ניתוח נתונים קליניים ותפעוליים ממערכות ארגוניות שונות והפקת תובנות לשיפור\nשיפור חווית מטופל -\nמיפוי, ניתוח ואופטימיזציה של \"מסע המטופל.ת\" (Patient Journey) מקצה לקצה- זיהוי פערי זרימה, איתור חסמים והמלצות אופרטיביות לשיפור תהליכי עבודה.,תרגום משובי מטופלים (סקרים, תלונות) לתוכניות עבודה פרקטיות, ועיצוב מחדש של נקודות הממשק בין המטופל לצוות הרפואי והמנהלי.\nבחינת כלכליות ותקציב\n- הערכת עלויות מול תועלת, ניתוח משאבים, תקני כח אדם וליווי החלטות תקציביות\nמערכות מידע  -\nסיוע באפיון, הטמעה ותחזוקה של מערכות טכנולוגיות מתקדמות לשיפור תהליכי עבודה/ זרימת מידע,\nהגדרת דרישות להטמעת כלי בינה מלאכותית (AI) ואוטומציות לטובת שדרוג תהליכי עבודה, ייעול כתיבה ותיעוד בתיק הרפואי ואוטומציה של ניתוחי נתונים.\nביצוע תצפיות ואיסוף נתונים על פעילות המחלקות לטובת וזיהוי סוגיות/ כשלים /חסמים הדורשים יישום שינוי.\nביצוע תפקידים נוספים, בתחום המקצועי, ע\"פ הנחיות הממונה.\nדרישות התפקיד:\nתואר בהנדסה תעשייה וניהול\nניסיון ניהולי של צוות מהנדסים רב מערכתיים במסגרת ניהול פרויקטים מורכבים\nניסיון בהובלה וניהול של פרויקטים חוצי ארגון ותהליכים אסטרטגיים\nיכולת ביטוי גבוהה בכתב ובע\"פ\nתודעת שירות ויכולת תקשורת עם בעלי תפקיד ברמות ניהול שונות\nראייה מערכתית לצד ירידה לפרטים- הבנת האסטרטגיה הכוללת של בית החולים במקביל ליכולת לנתח תתי-תהליכים",
+        "query": "מפעיל חדר בקרה SCADA",
+        "source": "LinkedIn",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 0,
+        "matched_keyword_groups": [],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
         "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
         "priority_bonus": 0
       },
       "attempts": 1,
-      "updated_at": "2026-10-21T13:41:51.078229+00:00"
+      "updated_at": "2026-10-21T15:05:56.455856+00:00"
+    },
+    "https://il.linkedin.com/jobs/view/ai-engineer-detection-agents-at-ocean-4481118510": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://il.linkedin.com/jobs/view/ai-engineer-detection-agents-at-ocean-4481118510",
+        "title": "AI Engineer- Detection & Agents",
+        "company": "Ocean",
+        "snippet": "About Ocean\nOcean is an email security company. Our research & detection team is the analytical core behind the product: we build AI systems that catch the attacks that slip past everyone else — phishing, social engineering, BEC, impersonation, AiTM/credential phishing, and AI-generated campaigns — and we back our customers' security teams with deep investigation and research.\n﻿About The Role\nWe're hiring an AI Engineer to build autonomous agents at the heart of our detection work. You'll join a multi disciplinary research & detection team spanning three disciplines - cyber research, classical ML, and agent engineering — and you'll own the agent-building side: designing, shipping, and iterating on autonomous systems that investigate and detect email threats end-to-end.\nThis role is for a builder who gets excited by a new framework, invents solutions in a space that doesn't have a playbook yet, and turns detection and cyber insight into working agentic systems.\nYou need to be a strong engineer who understands how detection and attacks work, is genuinely energized by agents, and learns fast in a field that's changing every month.\nResponsibilities:\nDesign and build autonomous investigation and detection agents on frameworks like deepagents / LangGraph — orchestration, tools, memory, and state — and take them to production with an eye on reliability, latency, and cost\nFold detection and cyber understanding (phishing, social engineering, BEC, impersonation) directly into how the agents reason and decide\nWork hands-on with LLMs — prompting, tool/function calling, model routing, and evaluating agent behavior\nPartner with the cyber researchers and data scientists on the team to close detection gaps quickly\nStay on top of a fast-moving space and bring new techniques back into the product\nRequirements:\nAt least six years of professional experience\nStrong, production-grade Python engineering\nReal enthusiasm for building LLM agents / agentic workflows (LangGraph, deepagents, La",
+        "query": "מכונאי ציוד סובב",
+        "source": "LinkedIn",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 0,
+        "matched_keyword_groups": [],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:05:56.988613+00:00"
+    },
+    "https://il.linkedin.com/jobs/view/ohle-pos-quality-inspector-at-alstom-4478237391": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://il.linkedin.com/jobs/view/ohle-pos-quality-inspector-at-alstom-4478237391",
+        "title": "OHLE & POS Quality Inspector",
+        "company": "Alstom",
+        "snippet": "At Alstom, we understand transport networks and what moves people. From high-speed trains, metros, monorails, and trams, to turnkey systems, services, infrastructure, signalling and digital mobility, we offer our diverse customers the broadest portfolio in the industry. Every day, more than 80 000 colleagues lead the way to greener and smarter mobility worldwide, connecting cities as we reduce carbon and replace cars.\nPURPOSE OF THE JOB\nEnsure Construction Quality compliance according to Customer & Internal specifications.\nInspection of part / product / installation\nReporting of defects & ensure product compliance (check after rework), especially for Special Processes\nMain Responsabilities\nAccountabilities & Authorities:\nSupport POS&OHLE Quality Manager in her / his scope\nPerform inspections and ensure product compliance (check after rework) according to ITP.\nRecords inspection results in the digital tools as required\nManage NCR: Support Quality team to complete characterization until closure using Problem Solving methodology Qualify construction teams regarding the Self-Inspection\nManage Construction Inspection Checklists\nPerform destructive & non-destructive examination.\nEnsure collection of samples for laboratory tests and comparative measurements to achieve correct and reliable measurements.\nPerformance measurements:\nPunch List Item Reduction\nInspection method time adherence\nSelf-Inspection effectiveness\nProper defect characterization (e.g. Defect catalogue, 5W2H, Acceptance criteria’s, …)\nManagement of rework (Validation included)\nMain Required Competences\nEducational Requirements\nMandatory:\nAssociates degree, technical major preferred\nMust be able to read drawings / specifications and familiar with a variety of test equipment\nQuality Processes knowledge for civil/railway construction\nDesirable:\nRailway experience is a \"plus\"\nExperience\n2+ years quality inspection experience within manufacturing industry including using of digital tools\nDesirable:\nInternational",
+        "query": "Solar Construction Inspector",
+        "source": "LinkedIn",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 0,
+        "matched_keyword_groups": [],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:06:45.521289+00:00"
+    },
+    "https://il.linkedin.com/jobs/view/director-of-business-development-at-doral-4478276742": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://il.linkedin.com/jobs/view/director-of-business-development-at-doral-4478276742",
+        "title": "Director of Business Development",
+        "company": "Doral",
+        "snippet": "דוראל תשתיות סביבתיות, חברת בת של קבוצת דוראל העוסקת בתחום פסולת חקלאית בארץ ובעולם מגייסת דירקטור פיתוח עסקי בעל/ת ניסיון ניהולי ורקע מוכח בהובלת עסקאות ופיתוח שווקים חדשים בחו\"ל.\nתיאור התפקיד:\nאחריות על הובלת הצמיחה הגלובלית של החברה, זיהוי והובלת הזדמנויות עסקיות אסטרטגיות, פיתוח שותפויות ארוכות טווח וניהול מהלכים עסקיים בהיקפים משמעותיים\nתחומי אחריות מרכזיים:\nהובלת עסקאות גדולות ומורכבות בארץ ובחו\"ל פיתוח והטמעת אסטרטגיות חדירה וצמיחה בשווקים חדשים הובלת תהליכי מימון פרוייקטלי וסגירות פיננסיות יצירת שותפויות אסטרטגיות עם שחקנים מובילים בקרה וניתוח פיננסי מעמיק של פרויקטים והזדמנויות השקעה ניהול קשרי מפתח עם משקיעים, שותפים, רשויות ובעלי עניין אחרים\nדרישות:\nתואר ראשון אקמי רלוונטי בתחומים משםפטים/ מנע\"ס/ כלכלה- חובה. רקע בהנדסת תהליך - יתרון.\nניסיון ניהולי בתפקיד מקביל או דומה – חובה.\nרקע משמעותי ומוכח בתחום האנרגיה והתשתיות – חובה.\nהכרת הרגולציה האירופאית בתחום כדוגמת REDII/III , RFNBO\nניסיון מוכח בהובלת עסקאות בינלאומיות ובהתקשרויות מורכבות ניסיון ושליטה בעבודה עם מודלים פיננסיים\nביצוע מחקרי שוק לזיהוי מגמות והזדמנויות קידום פרויקטים מורכבים עד למועד תחילת הקמתם\nניסיון במימון פרוייקטלי\nהבנה עסקית רחבה\nאוריינטציה שיווקית\nיכולת ניהול מו\"מ בשפה האנגלית\nיחסי אנוש מצוינים ויכולת עבודה בצוות\nתושייה, עצמאות ויכולת להוביל ולדחוף תהליכים קדימה\nאנגלית ברמה גבוהה מאוד\nנכונות לנסיעות לחו\"ל\nיתרון -רקע בתחום הביומתאן.\nהמודעה פונה לנשים וגברים כאחד\nרק פניות מתאימות יענו",
+        "query": "הנדסאי אגירת אנרגיה",
+        "source": "LinkedIn",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 15,
+        "matched_keyword_groups": [
+          "control"
+        ],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:06:45.953516+00:00"
+    },
+    "https://il.linkedin.com/jobs/view/country-manager-israel-at-stripe-4481280031": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://il.linkedin.com/jobs/view/country-manager-israel-at-stripe-4481280031",
+        "title": "Country Manager, Israel",
+        "company": "Stripe",
+        "snippet": "Who we are\nAbout Stripe\nStripe is a financial infrastructure platform for businesses. Millions of companies from the world’s largest enterprises to the most ambitious startups use Stripe to accept payments, grow their revenue, and accelerate new business opportunities. Our mission is to increase the GDP of the internet, and we have a staggering amount of work ahead. This means you’ll have an unprecedented opportunity to put the global economy within everyone’s reach while doing the most important work of your career.\nAbout The Team\nStripe’s Israel team helps businesses of all sizes from startups and small and medium-sized businesses to large commercial and enterprise organisations grow using modern financial infrastructure. We work with users to power innovative business models, reduce costs, expand internationally, and deliver outstanding experiences for their customers.\nIsrael is a strategically important market for Stripe, with a vibrant technology ecosystem and significant opportunities for long-term growth. As we deepen our presence in the country we are building the leadership and cross-functional capabilities required to serve our users and partners at greater scale.\nWhat you’ll do\nAs Country Leader for Israel, you will act as the general manager for Stripe in the market. You will set the vision and strategy for Israel, lead the local revenue organisation, and be accountable for sustainable growth across all user segments from startups and SMBs to commercial, digital-native and enterprise businesses.\nThis is a highly cross-functional leadership role. You will bring together teams across Sales, Product, Engineering, Legal, Finance, Risk, Compliance, Policy and Partnerships to establish and execute Stripe’s market strategy.\nYou will lead and coach a high-performing team of account executives delivering ambitious targets across Stripe’s product portfolio. You will combine strong commercial leadership with a long-term, user-first mindset, ensuring that our local ",
+        "query": "מפעיל מיקרו-גריד",
+        "source": "LinkedIn",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 0,
+        "matched_keyword_groups": [],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:06:46.479854+00:00"
+    },
+    "https://il.linkedin.com/jobs/view/software-qa-tester-34008-at-%D7%9E%D7%A8%D7%98%D7%A0%D7%A1-mertens-%E2%80%93-%D7%9E%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%9E%D7%9C%D7%9D-%D7%AA%D7%99%D7%9D-4480974633": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://il.linkedin.com/jobs/view/software-qa-tester-34008-at-%D7%9E%D7%A8%D7%98%D7%A0%D7%A1-mertens-%E2%80%93-%D7%9E%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%9E%D7%9C%D7%9D-%D7%AA%D7%99%D7%9D-4480974633",
+        "title": "Software QA Tester (34008)",
+        "company": "מרטנס | Mertens – מקבוצת מלם תים",
+        "snippet": "Software QA Tester | Holon\nMertens - MalamTeam is hiring a Software QA Tester for a defense organization in Holon.\nKey Responsibilities:\nTest complex systems with multiple interfaces\nReview specification documents and translate requirements into test documentation\nPerform software testing in Linux environments and work with SQL\nRequirements:\nAt least 3 years of experience in software testing\nExperience writing test documentation\nExperience testing complex operational systems\nExperience working with SQL\nExperience working in Linux environments – Significant Advantage\nSecurity clearance – Advantage",
+        "query": "מפעיל מיקרו-גריד",
+        "source": "LinkedIn",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 0,
+        "matched_keyword_groups": [],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:06:46.898545+00:00"
+    },
+    "https://il.linkedin.com/jobs/view/ml-audio-engineer-at-motorola-solutions-4480998246": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://il.linkedin.com/jobs/view/ml-audio-engineer-at-motorola-solutions-4480998246",
+        "title": "ML Audio Engineer",
+        "company": "Motorola Solutions",
+        "snippet": "Company Overview\nAt Motorola Solutions, we believe that everything starts with our people. We’re a global close-knit community, united by the relentless pursuit to help keep people safer everywhere. We build and connect technologies to help protect people, property and places. Our solutions foster the collaboration that’s critical for safer communities, safer schools, safer hospitals, safer businesses, and ultimately, safer nations. Connect with a career that matters, and help us build a safer future.\nDepartment Overview\nWe work at the intersection of deep learning, audio signal processing, and edge computing. You'll join a small team who owns detection and classification models end-to-end — from data pipeline through training to optimized inference on embedded hardware.\nJob Description\nWhat you'll do\nDesign, train, and iterate on deep learning models for acoustic classification against noisy real-world audio.\nEnhance and optimize audio lineups for sound classification\nBuild and maintain the data pipeline: field recordings, augmentation, labeling, dataset versioning.\nOptimize models for edge deployment to meet latency and power budgets.\nMLOps stack: training infra, experiment tracking, reproducible pipelines, deployed-model monitoring.\nWhy this role\nSmall team, broad ownership, short loop between model and field. Super interesting job. Your work directly determines whether the system meets its targets.\nBasic Requirements\nRequired\n2–5 yrs ML engineering\nB.Sc in EE or Computer Science\nExperience with audio processing, microphone arrays\nHands-on model deployment to constrained hardware (quantization, conversion, runtime tuning).\nMLOps practices experience: dataset versioning, experiment tracking, reproducible training.\nNice to have\nBeamforming, Acoustic event detection, sound classification, or related DSP-heavy ML.\nComfort with field work and iterating on hardware.\nTravel Requirements\nNone\nRelocation Provided\nNone\nPosition Type\nExperienced\nReferral Payment Plan\nNo\nCom",
+        "query": "מפעיל מיקרו-גריד",
+        "source": "LinkedIn",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 0,
+        "matched_keyword_groups": [],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:06:47.278186+00:00"
+    },
+    "https://il.linkedin.com/jobs/view/salesforce-project-manager-37764-at-%D7%9E%D7%A8%D7%98%D7%A0%D7%A1-mertens-%E2%80%93-%D7%9E%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%9E%D7%9C%D7%9D-%D7%AA%D7%99%D7%9D-4480963772": {
+      "stage": "COMPLETE",
+      "job": {
+        "link": "https://il.linkedin.com/jobs/view/salesforce-project-manager-37764-at-%D7%9E%D7%A8%D7%98%D7%A0%D7%A1-mertens-%E2%80%93-%D7%9E%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%9E%D7%9C%D7%9D-%D7%AA%D7%99%D7%9D-4480963772",
+        "title": "Salesforce Project Manager (37764)",
+        "company": "מרטנס | Mertens – מקבוצת מלם תים",
+        "snippet": "Salesforce Project Manager (37764)",
+        "query": "מפעיל מיקרו-גריד",
+        "source": "LinkedIn",
+        "status": "DISQUALIFIED",
+        "match_score": 0,
+        "base_match_score": 0,
+        "concrete_matches_count": 0,
+        "reasoning": "תפקיד שנפסל לפי הכותרת: salesforce",
+        "disqualification_reason": "non_technical_role",
+        "evaluation_complete": true,
+        "evaluation_source": "deterministic",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:06:47.282355+00:00"
+    },
+    "https://il.linkedin.com/jobs/view/prototyping-engineer-at-nextpower-4472832577": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://il.linkedin.com/jobs/view/prototyping-engineer-at-nextpower-4472832577",
+        "title": "Prototyping Engineer",
+        "company": "Nextpower",
+        "snippet": "Job Description\nThe role involves operating workshop equipment, manufacturing and assembling prototype parts, 3D printing, machining, supporting mechanical experiments and field trials, and working closely with our Mechanical and Electronics R&D teams.\nThe ideal candidate is organized, practical, technically capable, and eager to learn and develop in a multidisciplinary R&D environment.\nKey Responsibilities\nOperate workshop machines, tools, and equipment.\nBuild, assemble, modify, and repair R&D prototypes.\nOperate and maintain 3D printers and produce prototype parts.\nPerform machining and fabrication of mechanical parts.\nBuild mechanical models, fixtures, and test setups.\nPrepare and execute mechanical experiments and tests.\nSupport the Workshop Manager in the day-to-day operation and organization of the workshop.\nSupport Mechanical and Electronics Engineering teams with prototype builds, test setups, and testing activities.\nPrepare equipment, prototypes, tools, and materials for field trials.\nParticipate in field experiments and testing activities as required.\nManage workshop inventory, materials, tools, and spare parts.\nMaintain an organized, safe, and efficient workshop environment.\nQualifications\nStrong technical aptitude and hands-on mechanical skills.\nExperience working with workshop tools and machinery.\nExperience with prototype fabrication and assembly.\nBasic machining and mechanical fabrication capabilities.\nAbility to understand technical drawings and mechanical assemblies.\nHighly organized and methodical, with strong attention to detail.\nPractical problem-solving skills and ability to work independently.\nStrong willingness to learn, develop new technical skills, and take on new responsibilities.\nAbility to work effectively with multidisciplinary engineering teams.\nPreferred Qualifications\nExperience in an R&D workshop or prototype development environment – an advantage.\nExperience supporting mechanical testing and field trials – an advantage.\nAt Nextpower",
+        "query": "טכנאי מערכות כטב\"ם",
+        "source": "LinkedIn",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 15,
+        "matched_keyword_groups": [
+          "mechanical"
+        ],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:06:47.709104+00:00"
+    },
+    "https://il.linkedin.com/jobs/view/senior-product-manager-on-site-at-pick-hr-4479412672": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://il.linkedin.com/jobs/view/senior-product-manager-on-site-at-pick-hr-4479412672",
+        "title": "Senior Product Manager - On-site",
+        "company": "PICK HR",
+        "snippet": "A leading financial institution in Israel is seeking an experienced Senior Product Manager to lead a strategic product domain within its growing digital financial services and payments ecosystem\nThis is a high-impact role for a product leader who combines strong business acumen, customer-centric thinking, and the ability to drive products from strategy through execution in a complex, regulated environment.\nQualifications\n* 5+ years of Product Management experience, including at least 2–3 years in FinTech, Digital Payments, Banking, or Financial Services.\n* Proven track record of leading large-scale B2C digital products.\n* Experience with Digital Payments, Digital Wallets, Payment Applications, or Digital Banking products.\n* Strong understanding of regulated financial environments.\n* Demonstrated ability to translate strategy into execution and measurable business results.\n* Experience leading customer-centric product discovery, UX, and design initiatives.\n* Experience working in Agile development environments.\n* Strong analytical skills and data-driven decision-making capabilities.\n* Excellent stakeholder management and leadership skills.\n* Bachelor's degree in a relevant field required; Master's degree is an advantage.\nLocation: Modi'in - full-time, on-site position (not hybrid)",
+        "query": "מפעיל רחפנים",
+        "source": "LinkedIn",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 0,
+        "matched_keyword_groups": [],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:06:48.197304+00:00"
+    },
+    "https://www.drushim.co.il/job/38571675/5a9eeeb7/": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://www.drushim.co.il/job/38571675/5a9eeeb7/",
+        "title": "מפעיל/ת GIS | ג'וניור| ראשון לציון",
+        "company": "ONE BPO",
+        "snippet": "מפעיל/ת GIS | ג'וניור| ראשון לציון | ONE BPO | מספר מקומות | ראשון לציון | גן שורק | חולון | בת ים | תל אביב | 1-2 שנים | משרה חלקית | לפני 1 שעות | לפרויקט בתחום מערכות מידע גיאוגרפיות דרוש/ה מפעיל/ת GIS לעבודה הכוללת קליטה, עדכון ובקרת נתונים במערכות מתקדמות. מיקום: ראשון לציון – אזור גן שורק היקף משרה:מלאה/חלקית (מתאים גם לסטודנטים) תחומי אחריות: * קליטה ועדכון נתונים במערכות GIS מבוססות ArcGIS * הזנת נתונים למערכות ממוחשבות * אימות נתונים מול מפות ומקורות מידע * ביצוע בקרות איכות על נתונים * הפקת דוחות וניתוח מידע | הגשת מועמדות",
+        "query": "מפעיל מערכות SCADA",
+        "source": "Drushim",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 0,
+        "matched_keyword_groups": [],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:06:48.203129+00:00"
+    },
+    "https://www.drushim.co.il/job/31937863/7172a3ef/": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://www.drushim.co.il/job/31937863/7172a3ef/",
+        "title": "דרוש/ה מפעיל מכונה עם יכולות ניהוליות",
+        "company": "חברה מובילה (דיסקרטי)",
+        "snippet": "חסוי | דרוש/ה מפעיל מכונה עם יכולות ניהוליות | - חסוי - | בית שמש | 1-2 שנים | משרה מלאה | ועוד | משרה מלאה | משמרות | לפני 1 שעות | דרוש/ה מפעיל/ת מכונה עם יכולות ניהוליות ניסיון בהפעלת מכונות תפעול והפעלת מכונות הייצור על פי תוכנית הייצור, בקרה על איכות המוצרים בתחנת העבודה ושמירה על מדדי איכות פתרון בעיות ותקלות למכונות בקווי הייצור. הצפת בעיות העלולות לפגוע באיכות המוצר, בטיחותו או בטיחות העובדים ועבודה משוטפת במציאת פתרונות תפעוליים. התנהלות שוטפת אל מול מנהלי המשמרת והאחזקה במהלך המשמרת בהיבטי תקלות טכניות ותפעולן. | הגשת מועמדות",
+        "query": "מפעיל מערכות SCADA",
+        "source": "Drushim",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 30,
+        "matched_keyword_groups": [
+          "mechanical",
+          "control"
+        ],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:06:48.207400+00:00"
+    },
+    "https://www.drushim.co.il/job/38616154/01c97010/": {
+      "stage": "RETRY_PENDING",
+      "job": {
+        "link": "https://www.drushim.co.il/job/38616154/01c97010/",
+        "title": "טכנאי/ת מערכות חניונים ואלקטרוניקה",
+        "company": "שיידט את בכמן ישראל",
+        "snippet": "ש | טכנאי/ת מערכות חניונים ואלקטרוניקה | שיידט את בכמן ישראל | לוד | 1-2 שנים | משרה מלאה | לפני 1 שעות | חברה בינלאומית מובילה ויציבה הממוקמת בלוד, העוסקת במערכות חניונים ובקרה, דרוש/ה טכנאי/ת לתפקיד טכני, דינאמי ומגוון הכולל עבודה בשטח ובאתרי לקוחות. שירות של מערכות חניונים, מחסומים, מצלמות, מערכות בקרה וציוד אלקטרוני. איתור תקלות, טיפול במערכות ומתן שירות טכני ללקוחות החברה. נסיעות לאתרי לקוחות ברחבי הארץ. | הגשת מועמדות",
+        "query": "טכנאי מערכות BMS",
+        "source": "Drushim",
+        "status": "RETRY_PENDING",
+        "match_score": 0,
+        "base_match_score": 0,
+        "keyword_score": 15,
+        "matched_keyword_groups": [
+          "control"
+        ],
+        "concrete_matches_count": 0,
+        "evaluation_complete": false,
+        "evaluation_source": "keyword_fallback",
+        "retry_reason": "{\"gemini-3.5-flash\": \"unavailable\", \"gemini-3.5-flash-lite\": \"timeout\", \"gemini-3.7-flash\": \"daily_quota\", \"gemini-3.8-flash\": \"daily_quota\"}",
+        "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
+        "priority_bonus": 0
+      },
+      "attempts": 1,
+      "updated_at": "2026-10-21T15:06:48.211175+00:00"
     }
   }
 }
