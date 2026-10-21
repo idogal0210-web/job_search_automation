@@ -32,6 +32,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Run Test Suite (Quality & Reliability Gate)
+        run: |
+          python -m unittest discover tests/
+
       - name: Run Daily Energy & Drone Job Searches (with AI Auto-Healer)
         timeout-minutes: 40
         env:

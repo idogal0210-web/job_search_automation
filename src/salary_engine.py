@@ -75,14 +75,47 @@ BENCHMARK_MATRIX = {
     },
 }
 
+NON_SALARY_COUNTERWORDS = [
+    "משתמשים", "לקוחות", "עובדים", "סטודנטים", "צפיות", "עוקבים", "מנויים",
+    "משתמש", "לקוח", "עובד", "הורדות", "פניות", "users", "customers", "clients",
+    "subscribers", "followers", "downloads", "tickets", "sqm", "מ\"ר", "ק\"מ", "km"
+]
+
+SALARY_CONTEXT_WORDS = [
+    "שכר", "משכורת", "שכר בסיס", "שכר שעתי", "שכר חודשי", "תגמול", "ש\"ח", "שח", "שקלים",
+    "₪", "nis", "ils", "salary", "comp", "compensation", "wage", "rate", "gross", "ברוטו"
+]
+
+SHIFT_NEGATION_PATTERNS = [
+    r"ללא\s+(?:סבב\s+)?משמרות",
+    r"ללא\s+לילות",
+    r"ללא\s+שבתות",
+    r"ללא\s+סופי\s+שבוע",
+    r"אין\s+משמרות",
+    r"לא\s+משמרות",
+    r"משרת\s+בוקר\s+(?:בלבד|ללא\s+משמרות)",
+    r"no\s+shifts",
+    r"without\s+shifts",
+    r"day\s+job\s+only"
+]
+
+COMPANY_CAR_NEGATION_PATTERNS = [
+    r"ללא\s+רכב",
+    r"אין\s+רכב",
+    r"לא\s+כולל\s+רכב",
+    r"רכב\s+פרטי\s+(?:חובה|נדרש)",
+    r"no\s+car",
+    r"no\s+company\s+car"
+]
+
 SHIFT_KEYWORDS = [
     "משמרות", "סבב משמרות", "24/7", "7/24", "לילות", "לילה", "סופי שבוע",
-    "שבתות", "משמרת לילה", "עבודה במשמרות", "shifts", "shift work", "shift"
+    "שבתות", "משמרת לילה", "עבודה במשמרות", "shifts", "shift work"
 ]
 
 COMPANY_CAR_KEYWORDS = [
     "רכב צמוד", "רכב חברה", "כולל רכב", "רכב שירות", "רכב צמוד מלא",
-    "company car", "vehicle"
+    "company car"
 ]
 
 ON_CALL_KEYWORDS = [
@@ -91,18 +124,24 @@ ON_CALL_KEYWORDS = [
 
 
 def detect_shifts(text: str) -> bool:
-    """Check if the job posting explicitly mentions shift work."""
+    """Check if the job posting explicitly mentions shift work, taking negations into account."""
     if not text:
         return False
     lower = text.lower()
+    for neg_pat in SHIFT_NEGATION_PATTERNS:
+        if re.search(neg_pat, lower):
+            return False
     return any(kw in lower for kw in SHIFT_KEYWORDS)
 
 
 def detect_company_car(text: str) -> bool:
-    """Check if the job posting mentions a company vehicle."""
+    """Check if the job posting explicitly mentions a company vehicle, taking negations into account."""
     if not text:
         return False
     lower = text.lower()
+    for neg_pat in COMPANY_CAR_NEGATION_PATTERNS:
+        if re.search(neg_pat, lower):
+            return False
     return any(kw in lower for kw in COMPANY_CAR_KEYWORDS)
 
 
@@ -118,39 +157,54 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
     """
     Tier 1 Parser: Extracts explicit salary statements directly from job text.
     Handles ranges in thousands, direct monthly NIS amounts, and hourly wages.
+    Strictly validates salary context and rejects counters/metrics (users, followers, etc.).
     """
     if not text:
         return None
 
-    # Pattern A: Monthly range with explicit numbers (e.g. 14,000 - 18,000 ₪ or 14000-18000)
+    lower_text = text.lower()
+
+    # Pattern A: Monthly range with explicit numbers (e.g. 14,000 - 18,000 ₪ or שכר: 14,000-18,000)
     match_range = re.search(
         r'(\d{1,2})[,.]?000\s*[-–עדto]+\s*(\d{1,2})[,.]?000\s*(?:₪|ש"ח|שח|שקלים|nis)?',
         text,
         re.IGNORECASE
     )
     if match_range:
-        num1 = int(match_range.group(1)) * 1000
-        num2 = int(match_range.group(2)) * 1000
-        low = min(num1, num2)
-        high = max(num1, num2)
-        return {
-            "salary_range": f"{low:,} - {high:,} ₪",
-            "salary_source_type": "job_ad",
-            "salary_source_label": "פורסם במודעת המשרה",
-            "salary_source_url": "",
-            "salary_evidence": f"שכר שפורסם במפורש בגוף מודעת המשרה ({low:,} - {high:,} ₪ בחודש).",
-            "salary_confidence": "high",
-            "quality_level": "high",
-            "quality_reasons": ["שכר נקוב שפורסם ישירות בגוף מודעת המשרה על ידי המעסיק"],
-            "estimate_type": "advertised",
-            "compensation_basis": "gross_base",
-            "pay_period": "month",
-            "extracted_min": low,
-            "extracted_max": high,
-            "p25": low,
-            "p50": (low + high) // 2,
-            "p75": high,
-        }
+        start_idx = max(0, match_range.start() - 40)
+        end_idx = min(len(text), match_range.end() + 40)
+        window = text[start_idx:end_idx].lower()
+
+        # Reject if counter/volume words appear immediately near the match
+        has_counter = any(w in window for w in NON_SALARY_COUNTERWORDS)
+        # Require explicit currency symbol or salary context
+        has_currency = any(curr in match_range.group(0).lower() for curr in ["₪", "ש\"ח", "שח", "שקלים", "nis"])
+        has_salary_word = any(w in window for w in SALARY_CONTEXT_WORDS)
+
+        if not has_counter and (has_currency or has_salary_word):
+            num1 = int(match_range.group(1)) * 1000
+            num2 = int(match_range.group(2)) * 1000
+            low = min(num1, num2)
+            high = max(num1, num2)
+            if 6000 <= low <= 50000 and 6000 <= high <= 60000:
+                return {
+                    "salary_range": f"{low:,} - {high:,} ₪",
+                    "salary_source_type": "job_ad",
+                    "salary_source_label": "פורסם במודעת המשרה",
+                    "salary_source_url": "",
+                    "salary_evidence": f"שכר שפורסם במפורש בגוף מודעת המשרה ({low:,} - {high:,} ₪ בחודש).",
+                    "salary_confidence": "high",
+                    "quality_level": "high",
+                    "quality_reasons": ["שכר נקוב שפורסם ישירות בגוף מודעת המשרה על ידי המעסיק"],
+                    "estimate_type": "advertised",
+                    "compensation_basis": "gross_base",
+                    "pay_period": "month",
+                    "extracted_min": low,
+                    "extracted_max": high,
+                    "p25": low,
+                    "p50": (low + high) // 2,
+                    "p75": high,
+                }
 
     # Pattern B: Notation with 'K' (e.g. 15k - 18k or 15K-18K)
     match_k = re.search(
@@ -158,26 +212,35 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
         text
     )
     if match_k:
-        low = min(int(match_k.group(1)), int(match_k.group(2))) * 1000
-        high = max(int(match_k.group(1)), int(match_k.group(2))) * 1000
-        return {
-            "salary_range": f"{low:,} - {high:,} ₪",
-            "salary_source_type": "job_ad",
-            "salary_source_label": "פורסם במודעת המשרה (אמינות 100%)",
-            "salary_source_url": "",
-            "salary_evidence": f"שכר שפורסם במפורש במודעה בקיצור אלפים ({match_k.group(0)}).",
-            "salary_confidence": "high",
-            "quality_level": "high",
-            "quality_reasons": ["שכר נקוב שפורסם ישירות במודעה בקיצור אלפים"],
-            "estimate_type": "advertised",
-            "compensation_basis": "gross_base",
-            "pay_period": "month",
-            "extracted_min": low,
-            "extracted_max": high,
-            "p25": low,
-            "p50": (low + high) // 2,
-            "p75": high,
-        }
+        start_idx = max(0, match_k.start() - 40)
+        end_idx = min(len(text), match_k.end() + 40)
+        window = text[start_idx:end_idx].lower()
+
+        has_counter = any(w in window for w in NON_SALARY_COUNTERWORDS)
+        has_salary_word = any(w in window for w in SALARY_CONTEXT_WORDS)
+
+        if not has_counter and (has_salary_word or "שכר" in lower_text or "comp" in lower_text or "salary" in lower_text):
+            low = min(int(match_k.group(1)), int(match_k.group(2))) * 1000
+            high = max(int(match_k.group(1)), int(match_k.group(2))) * 1000
+            if 6000 <= low <= 50000 and 6000 <= high <= 60000:
+                return {
+                    "salary_range": f"{low:,} - {high:,} ₪",
+                    "salary_source_type": "job_ad",
+                    "salary_source_label": "פורסם במודעת המשרה",
+                    "salary_source_url": "",
+                    "salary_evidence": f"שכר שפורסם במפורש במודעה בקיצור אלפים ({match_k.group(0)}).",
+                    "salary_confidence": "high",
+                    "quality_level": "high",
+                    "quality_reasons": ["שכר נקוב שפורסם ישירות במודעה בקיצור אלפים"],
+                    "estimate_type": "advertised",
+                    "compensation_basis": "gross_base",
+                    "pay_period": "month",
+                    "extracted_min": low,
+                    "extracted_max": high,
+                    "p25": low,
+                    "p50": (low + high) // 2,
+                    "p75": high,
+                }
 
     # Pattern C: Explicit single monthly amount (e.g. שכר של 16,000 ש"ח או שכר 15000)
     match_single = re.search(
@@ -187,26 +250,27 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
     )
     if match_single:
         amount = int(match_single.group(1)) * 1000
-        low = int(amount * 0.95)
-        high = int(amount * 1.05)
-        return {
-            "salary_range": f"{amount:,} ₪",
-            "salary_source_type": "job_ad",
-            "salary_source_label": "פורסם במודעת המשרה (אמינות 100%)",
-            "salary_source_url": "",
-            "salary_evidence": f"שכר נקוב שפורסם במפורש במודעה ({amount:,} ₪).",
-            "salary_confidence": "high",
-            "quality_level": "high",
-            "quality_reasons": ["שכר נקוב שפורסם ישירות במודעת המשרה על ידי המעסיק"],
-            "estimate_type": "advertised",
-            "compensation_basis": "gross_base",
-            "pay_period": "month",
-            "extracted_min": low,
-            "extracted_max": high,
-            "p25": low,
-            "p50": amount,
-            "p75": high,
-        }
+        if 6000 <= amount <= 60000:
+            low = int(amount * 0.95)
+            high = int(amount * 1.05)
+            return {
+                "salary_range": f"{amount:,} ₪",
+                "salary_source_type": "job_ad",
+                "salary_source_label": "פורסם במודעת המשרה",
+                "salary_source_url": "",
+                "salary_evidence": f"שכר נקוב שפורסם במפורש במודעה ({amount:,} ₪).",
+                "salary_confidence": "high",
+                "quality_level": "high",
+                "quality_reasons": ["שכר נקוב שפורסם ישירות במודעת המשרה על ידי המעסיק"],
+                "estimate_type": "advertised",
+                "compensation_basis": "gross_base",
+                "pay_period": "month",
+                "extracted_min": low,
+                "extracted_max": high,
+                "p25": low,
+                "p50": amount,
+                "p75": high,
+            }
 
     # Pattern D: Hourly rate (e.g. 55 ש"ח לשעה -> converted to standard 182 monthly hours)
     match_hourly = re.search(
@@ -215,25 +279,26 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
     )
     if match_hourly:
         hourly = int(match_hourly.group(1))
-        monthly = hourly * 182
-        return {
-            "salary_range": f"{monthly:,} ₪ (לפי {hourly} ₪/שעה)",
-            "salary_source_type": "job_ad",
-            "salary_source_label": "פורסם במודעת המשרה (שכר שעתי)",
-            "salary_source_url": "",
-            "salary_evidence": f"שכר שעתי נקוב של {hourly} ₪ לשעה במשרה מלאה (182 שעות חודשיות = {monthly:,} ₪ ברוטו).",
-            "salary_confidence": "high",
-            "quality_level": "high",
-            "quality_reasons": ["שכר שעתי נקוב שפורסם במודעת המשרה (חישוב לפי 182 שעות חודשיות במשרה מלאה)"],
-            "estimate_type": "advertised",
-            "compensation_basis": "gross_base",
-            "pay_period": "hour",
-            "extracted_min": monthly,
-            "extracted_max": monthly,
-            "p25": monthly,
-            "p50": monthly,
-            "p75": monthly,
-        }
+        if 32 <= hourly <= 250:
+            monthly = hourly * 182
+            return {
+                "salary_range": f"{monthly:,} ₪ (לפי {hourly} ₪/שעה)",
+                "salary_source_type": "job_ad",
+                "salary_source_label": "פורסם במודעת המשרה (שכר שעתי)",
+                "salary_source_url": "",
+                "salary_evidence": f"שכר שעתי נקוב של {hourly} ₪ לשעה במשרה מלאה (182 שעות חודשיות = {monthly:,} ₪ ברוטו).",
+                "salary_confidence": "high",
+                "quality_level": "high",
+                "quality_reasons": ["שכר שעתי נקוב שפורסם במודעת המשרה (חישוב לפי 182 שעות חודשיות במשרה מלאה)"],
+                "estimate_type": "advertised",
+                "compensation_basis": "gross_base",
+                "pay_period": "hour",
+                "extracted_min": monthly,
+                "extracted_max": monthly,
+                "p25": monthly,
+                "p50": monthly,
+                "p75": monthly,
+            }
 
     return None
 
@@ -321,12 +386,14 @@ def evaluate_job_salary(job: Dict[str, Any]) -> Dict[str, Any]:
         }
 
     bench = BENCHMARK_MATRIX[cat_key]
-    has_car = has_car or bench.get("has_vehicle_norm", False)
+    # Distinguish vehicle: explicit in ad vs benchmark assumption
+    car_explicit = has_car
+    car_normative = bench.get("has_vehicle_norm", False) and not car_explicit
 
     # For SCADA and control room roles, shifts are very common
     if cat_key == "scada_control_room":
-        # If control room mentions shifts or 24/7 or is a typical operator role
-        if has_shifts or "מפעיל" in title or "בקר" in title or "operator" in title.lower():
+        # If control room mentions shifts or 24/7 or is a typical operator role (unless negated)
+        if has_shifts or ("מפעיל" in title or "בקר" in title or "operator" in title.lower()) and not any(re.search(p, full_text.lower()) for p in SHIFT_NEGATION_PATTERNS):
             sal_min = bench["shift_min"]
             sal_max = bench["shift_max"]
             sal_range = f"{sal_min:,} - {sal_max:,} ₪"
@@ -352,12 +419,14 @@ def evaluate_job_salary(job: Dict[str, Any]) -> Dict[str, Any]:
             sal_min = bench["base_min"]
             sal_max = bench["base_max"]
             sal_range = f"{sal_min:,} - {sal_max:,} ₪"
-            car_note = " + רכב צמוד" if has_car else ""
+            car_note = " (כולל רכב מפורסם)" if car_explicit else (" (הערכת ענף: מקובל רכב שירות)" if car_normative else "")
             evidence = f"מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון{car_note}."
             label = "סקר ענפי 2026 • הנדסאי 2-4 שנים"
 
-    if has_car:
+    if car_explicit:
         sal_range += " + רכב צמוד"
+    elif car_normative:
+        sal_range += " (מקובל רכב ענפי)"
 
     return {
         "salary_range": sal_range,
@@ -372,7 +441,8 @@ def evaluate_job_salary(job: Dict[str, Any]) -> Dict[str, Any]:
         "compensation_basis": "gross_base",
         "pay_period": "month",
         "has_shifts": has_shifts,
-        "has_company_car": has_car,
+        "has_company_car": car_explicit,
+        "is_normative_vehicle": car_normative,
         "has_on_call": has_on_call,
         "p25": sal_min,
         "p50": (sal_min + sal_max) // 2,

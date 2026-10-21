@@ -51,8 +51,9 @@ HEBREW_COMPANY_ALIASES = {
     "ישראמקו": "Isramco",
     "או פי סי": "OPC Energy",
     "אדלטק": "Edeltech",
-    "דליה": "Dalia Power",
     "דליה אנרגיות": "Dalia Power",
+    "דליה אנרגיה": "Dalia Power",
+    "דליה פאוור": "Dalia Power",
     "אקופיה": "Ecoppia",
     "רובוטיקאן": "Robotican",
     "פרספטו": "Percepto",
@@ -64,33 +65,54 @@ HEBREW_COMPANY_ALIASES = {
     "העין השלישית": "Third Eye Systems"
 }
 
+def _normalize_company_name(name: str) -> str:
+    """Normalize company name by stripping legal suffixes and excess punctuation."""
+    if not name:
+        return ""
+    n = name.lower().strip()
+    n = re.sub(r'\b(בע"מ|בע״מ|ltd\.?|inc\.?|corp\.?|llc|group|קבוצת|חברת)\b', '', n)
+    n = re.sub(r'[\(\)\[\]\-_,.]+', ' ', n)
+    return " ".join(n.split())
+
+
+def _matches_company_target(candidate: str, target: str) -> bool:
+    """Accurately match candidate company against target without false substring positives."""
+    cand_norm = _normalize_company_name(candidate)
+    target_norm = _normalize_company_name(target)
+    if not cand_norm or not target_norm:
+        return False
+    if cand_norm == target_norm:
+        return True
+    # Word boundary match
+    pattern = rf'(?:^|\s){re.escape(target_norm)}(?:$|\s)'
+    return bool(re.search(pattern, cand_norm))
+
+
 def is_target_company(company_name: str) -> tuple[bool, str]:
-    """Check if company_name matches any priority target company in English or Hebrew.
+    """Check if company_name accurately matches any priority target company in English or Hebrew.
+    Prevents false substring matches (e.g. 'דליה כהן' matching 'דליה').
     Returns (is_match, category_key).
     """
     if not company_name:
         return False, ""
-    c_lower = company_name.lower().strip()
 
     # 1. Check Hebrew aliases first
     for heb_name, eng_canonical in HEBREW_COMPANY_ALIASES.items():
-        if heb_name in c_lower or c_lower in heb_name:
+        if _matches_company_target(company_name, heb_name):
             for cat, comps in TARGET_COMPANIES_BY_CATEGORY.items():
-                if any(eng_canonical.lower() in c.lower() for c in comps):
+                if any(_matches_company_target(c, eng_canonical) for c in comps):
                     return True, cat
             return True, "general_target"
 
     # 2. Check categorized target companies
     for cat, comps in TARGET_COMPANIES_BY_CATEGORY.items():
         for comp in comps:
-            target_lower = comp.lower().strip()
-            if target_lower in c_lower or c_lower in target_lower:
+            if _matches_company_target(company_name, comp):
                 return True, cat
 
     # 3. Check flat list
     for comp in TARGET_COMPANIES:
-        target_lower = comp.lower().strip()
-        if target_lower in c_lower or c_lower in target_lower:
+        if _matches_company_target(company_name, comp):
             return True, "general_target"
 
     return False, ""
@@ -312,18 +334,25 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
                 print(f"[PRIORITY] Awarded Target Employer bonus (+5) to {company} - {title}: {original_score} -> {data['match_score']}")
 
             # 3. Strict Control Room Guardrail: Disqualify control room roles without SCADA or high salary (>= 18k)
+            # Threshold verification is strictly based on original job ad evidence, NOT on AI summary or salary estimates.
             is_control_room = any(k in title_lower or k in snippet.lower() for k in ["חדר בקרה", "מוקד בקרה", "בקרת חדר", "control room"])
             if is_control_room:
-                full_text_lower = f"{title_lower} {snippet.lower()} {str(data.get('job_summary', '')).lower()}"
-                has_scada = any(k in full_text_lower for k in ["scada", "סקאדה", "plc", "hmi", "bms", "טלמטריה", "תשתיות", "גז", "אנרגיה", "טורבינ", "חשמל", "תחנת כוח"])
-                import re
-                salary_str = str(data.get("salary_range", ""))
-                salary_nums = [int(n) for n in re.findall(r"\b(\d{2}),000\b", salary_str)]
-                has_high_salary = any(n >= 18 for n in salary_nums)
+                ad_evidence_lower = f"{title_lower} {snippet.lower()}"
+                has_scada = any(k in ad_evidence_lower for k in ["scada", "סקאדה", "plc", "hmi", "bms", "טלמטריה", "תשתיות", "גז", "אנרגיה", "טורבינ", "חשמל", "תחנת כוח"])
+                
+                # Check for high salary ONLY if explicitly advertised in the ad
+                has_high_salary = False
+                if sal_intel.get("salary_source_type") == "job_ad":
+                    import re
+                    salary_str = str(sal_intel.get("salary_range", ""))
+                    salary_nums = [int(n) for n in re.findall(r"\b(\d{2}),000\b", salary_str)]
+                    has_high_salary = any(n >= 18 for n in salary_nums)
+
                 if not has_scada and not has_high_salary:
-                    print(f"[FILTER] Disqualifying Control Room job lacking SCADA or high salary: {company} - {title}")
+                    print(f"[FILTER] Disqualifying Control Room job lacking SCADA or advertised high salary in original ad: {company} - {title}")
                     data["status"] = "DISQUALIFIED"
                     data["match_score"] = 0
+                    data["disqualification_reason"] = "control_room_lacks_scada_or_high_salary"
                     return data
 
             data["status"] = "QUALIFIED"
