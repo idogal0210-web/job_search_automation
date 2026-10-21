@@ -104,14 +104,17 @@ def main():
     new_jobs = ledger.select(all_raw_jobs, handled_links)
     health.candidates_found = len(new_jobs)
     print(f"[FETCH] raw={len(all_raw_jobs)} candidates_including_pending={len(new_jobs)}", flush=True)
+    groq_only = os.getenv("GROQ_ONLY", "").lower() in ("true", "1", "yes")
     client = None
-    if os.getenv("GEMINI_API_KEY"):
+    if not groq_only and os.getenv("GEMINI_API_KEY"):
         try:
             client = genai.Client(api_key=os.environ["GEMINI_API_KEY"],
                 http_options=types.HttpOptions(timeout=20000,
                     retry_options=types.HttpRetryOptions(attempts=1)))
         except Exception as error:
             print(f"[AI_CONFIG] Could not initialize Gemini client: {type(error).__name__}", flush=True)
+    elif groq_only:
+        print("[AI_CONFIG] One-time mode active: running with Groq ONLY", flush=True)
 
     groq_pool = None
     if os.getenv("GROQ_API_KEY"):

@@ -13,7 +13,7 @@ from src.gemini_runtime import Evaluation, EvaluationUnavailable, classify_error
 class GroqPool:
     """Evaluates jobs using Groq's high-speed API with Llama 3.3 70B."""
     def __init__(self, api_key=None, models=None, *, clock=time.monotonic, sleep=time.sleep,
-                 jitter=lambda: random.uniform(0, 0.5), max_attempts=2, timeout=20):
+                 jitter=lambda: random.uniform(0, 0.5), max_attempts=3, timeout=20, min_interval=2.0):
         self.api_key = api_key if api_key is not None else os.getenv("GROQ_API_KEY")
         configured = os.getenv("GROQ_MODELS") or "openai/gpt-oss-120b,openai/gpt-oss-20b,qwen/qwen3.8-27b"
         self.models = tuple(dict.fromkeys(models if models is not None else
@@ -23,6 +23,8 @@ class GroqPool:
         self.clock, self.sleep, self.jitter = clock, sleep, jitter
         self.max_attempts = max(1, min(3, max_attempts))
         self.timeout = timeout
+        self.min_interval = min_interval
+        self.last_request = None
         self.states = {name: {"failures": 0, "open_until": 0, "reason": ""} for name in self.models}
 
     def evaluate(self, prompt, health):
@@ -38,6 +40,9 @@ class GroqPool:
                 continue
 
             for attempt in range(self.max_attempts):
+                if self.last_request is not None:
+                    self.sleep(max(0, self.min_interval - (self.clock() - self.last_request)))
+                self.last_request = self.clock()
                 health.gemini_attempts += 1
                 try:
                     url = "https://api.groq.com/openai/v1/chat/completions"
@@ -80,7 +85,7 @@ class GroqPool:
                     print(f"[GROQ_ERROR] model={name} kind={kind} attempt={attempt+1} error={error}", flush=True)
                     delay = max(2 ** (attempt + 1) + self.jitter(), retry_after(error))
                     if (kind in {"invalid_response", "timeout", "unavailable", "rate_limit"}
-                            and attempt + 1 < self.max_attempts and delay <= 8):
+                            and attempt + 1 < self.max_attempts and delay <= 25):
                         self.sleep(delay)
                         continue
                     state["failures"] += 1
@@ -88,8 +93,8 @@ class GroqPool:
                     if kind in {"daily_quota", "authentication", "configuration"}:
                         state["open_until"] = float("inf")
                     else:
-                        base = 60 if kind == "rate_limit" else 15
-                        state["open_until"] = self.clock() + max(delay, min(300, base * 2 ** min(state["failures"] - 1, 4)))
+                        base = 15
+                        state["open_until"] = self.clock() + max(delay, min(120, base * 2 ** min(state["failures"] - 1, 3)))
                     break
                 else:
                     state["failures"], state["open_until"], state["reason"] = 0, 0, ""
