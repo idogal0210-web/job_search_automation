@@ -141,16 +141,28 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     title_lower = title.lower()
     company_lower = company.lower()
 
-    # Deterministic Pre-Filters
+    # Deterministic Pre-Filters: Business Disqualification
     for bl in ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון"]:
         if bl in company_lower:
             print(f"[FILTER] Disqualifying Blacklist: {company} - {title}")
-            return None
+            return {
+                "status": "DISQUALIFIED",
+                "match_score": 0,
+                "concrete_matches_count": 0,
+                "reasoning": f"חברה ברשימה השחורה ({company})",
+                "disqualification_reason": "blacklist"
+            }
 
     for non_tech in NON_TECHNICAL_TITLES:
         if non_tech in title_lower:
             print(f"[FILTER] Disqualifying non-technical role: {company} - {title} ('{non_tech}')")
-            return None
+            return {
+                "status": "DISQUALIFIED",
+                "match_score": 0,
+                "concrete_matches_count": 0,
+                "reasoning": f"תפקיד לא טכני / אדמיניסטרטיבי שנפסל ({non_tech})",
+                "disqualification_reason": "non_technical_role"
+            }
 
     # Check if employer is a user-approved target company
     is_target, target_category = is_target_company(company)
@@ -285,6 +297,7 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
             # 1. Minimum matches and score
             if data["concrete_matches_count"] < 2 or data.get("match_score", 0) < 50:
                 print(f"[VALIDATION] Job disqualified (insufficient matches or low score): {company} - {title}")
+                data["status"] = "DISQUALIFIED"
                 data["match_score"] = 0
                 return data
 
@@ -309,9 +322,11 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
                 has_high_salary = any(n >= 18 for n in salary_nums)
                 if not has_scada and not has_high_salary:
                     print(f"[FILTER] Disqualifying Control Room job lacking SCADA or high salary: {company} - {title}")
+                    data["status"] = "DISQUALIFIED"
                     data["match_score"] = 0
                     return data
 
+            data["status"] = "QUALIFIED"
             return data
 
         except Exception as e:

@@ -13,7 +13,7 @@ from src.fetchers import (
     fetch_drushim_jobs,
     fetch_drushim_full_job_description
 )
-from src.evaluators import evaluate_and_enrich_job_with_gemini, QuotaExhaustedError
+from src.evaluators import evaluate_and_enrich_job_with_gemini, QuotaExhaustedError, NON_TECHNICAL_TITLES
 from src.salary_engine import evaluate_job_salary
 from src.publishers import send_email_report
 from src.ui_builder import build_and_save_docs_app, update_weekly_archive
@@ -21,23 +21,48 @@ from src.state_manager import load_state, save_state_atomic
 
 STATE_FILE = os.path.join(os.path.dirname(__file__), "data", "jobs_state.json")
 
-# FIX #5 (DRY): Single authoritative keyword-fallback function.
-# Previously this block was copy-pasted twice inside the evaluation loop
-# (once in the `except` branch, once in the `if result is None` branch),
-# creating a risk of the two copies diverging silently.
+# Authoritative keyword-fallback function for technical failures only.
 FALLBACK_KEYWORDS = [
     "gas", "energy", "mechanical", "control",
     "infrastructure", "cleantech", "drone", "uav", "scada",
-    "solar", "energy tech"
+    "solar", "energy tech", "גז", "אנרגיה", "מכונות", "בקרה", "סולארי", "רחפנים", "תחנת כוח"
 ]
 
 def apply_keyword_fallback(job: dict) -> dict:
-    """Score a job deterministically using keyword matching when Gemini is unavailable."""
+    """Score a job deterministically using keyword matching when Gemini is unavailable.
+    Strictly enforces non-technical and blacklist filters before awarding scores.
+    """
+    title_lower = job.get("title", "").lower()
+    company_lower = job.get("company", "").lower()
+
+    # Pre-check blacklist
+    for bl in ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון"]:
+        if bl in company_lower:
+            return {
+                "status": "DISQUALIFIED",
+                "match_score": 0,
+                "concrete_matches_count": 0,
+                "reasoning": f"חברה ברשימה השחורה ({job.get('company')})",
+                "disqualification_reason": "blacklist"
+            }
+
+    # Pre-check non-technical roles
+    for non_tech in NON_TECHNICAL_TITLES:
+        if non_tech in title_lower:
+            return {
+                "status": "DISQUALIFIED",
+                "match_score": 0,
+                "concrete_matches_count": 0,
+                "reasoning": f"תפקיד לא טכני שנפסל בגיבוי ({non_tech})",
+                "disqualification_reason": "non_technical_role"
+            }
+
     text = f"{job.get('title', '')} {job.get('snippet', '')}".lower()
     match_count = sum(1 for word in FALLBACK_KEYWORDS if word in text)
     score = min(100, match_count * 15)
     sal_intel = evaluate_job_salary(job)
     return {
+        "status": "QUALIFIED" if score >= 50 else "DISQUALIFIED",
         "match_score": score,
         "concrete_matches_count": match_count,
         "reasoning": "הערכה באמצעות מילות מפתח עקב חסימת Rate Limit מה-API של גוגל.",
@@ -173,6 +198,8 @@ def main():
 
     processed_jobs = []
     gemini_quota_exhausted = False  # Circuit Breaker flag
+    successfully_evaluated_links = set()
+
     if client:
         for job in new_jobs:
             is_drone = (
@@ -180,10 +207,12 @@ def main():
                 or job.get("sector") in ["רחפנים אוטונומיים וביטחון", "רחפנים אוטונומיים"]
             )
             result = None
+            is_technical_error = False
 
             if gemini_quota_exhausted:
                 # Quota already confirmed exhausted — skip Gemini entirely, no sleep needed.
                 print(f"[CIRCUIT BREAKER] Skipping Gemini for: {job.get('title')}")
+                is_technical_error = True
             else:
                 # Two-Stage Enrichment: If snippet is very brief (< 250 chars), fetch full description
                 if "linkedin.com" in job.get("link", "") and len(job.get("snippet", "")) < 250:
@@ -207,8 +236,10 @@ def main():
                 except QuotaExhaustedError:
                     # Hard daily quota hit — activate circuit breaker for this run.
                     gemini_quota_exhausted = True
+                    is_technical_error = True
                     result = None
                 except Exception as e:
+                    is_technical_error = True
                     if "429" in str(e) or "RESOURCE_EXHAUSTED" in str(e):
                         print(f"[API ERROR] Rate limit reached. Using keyword fallback for: {job.get('title')}")
                     else:
@@ -218,56 +249,60 @@ def main():
                     # Adaptive steady gap between Gemini calls
                     time.sleep(2)
 
-            # Single DRY fallback call handles all failure paths.
-            if result is None:
+            # Apply keyword fallback ONLY for technical service failures, NEVER for business disqualifications
+            if result is None and is_technical_error:
                 print(f"[FALLBACK] Applying keyword fallback for: {job.get('title')}")
                 result = apply_keyword_fallback(job)
 
             if result:
                 job.update(result)
-                threshold = 70 if is_drone else 60
-                if job["match_score"] >= threshold:
-                    processed_jobs.append(job)
+                job_link = job.get("link")
+
+                # If job was evaluated (qualified or disqualified), record it as completed
+                if result.get("status") in ["QUALIFIED", "DISQUALIFIED"] or result.get("match_score", 0) > 0:
+                    if job_link:
+                        successfully_evaluated_links.add(job_link)
+
+                # Collect passing jobs
+                if result.get("status") != "DISQUALIFIED":
+                    threshold = 70 if is_drone else 60
+                    if job.get("match_score", 0) >= threshold:
+                        processed_jobs.append(job)
 
     health.jobs_passed = len(processed_jobs)
     print(f"[EVALUATE] {len(processed_jobs)} jobs passed the score threshold.")
 
-    # 5. Curate Top 5
+    # 5. Curate Top Picks & Prepare Dashboard Archive
+    # Keep ALL passing jobs sorted by match_score for the Interactive Dashboard and Archive
     processed_jobs.sort(key=lambda x: x.get("match_score", 0), reverse=True)
     top_5_jobs = processed_jobs[:5]
     top_3 = top_5_jobs[:3]
 
-    # 6. Update Dashboard
-    # FIX #7: Wrap dashboard steps in try/except so a rendering failure does
-    #         not abort the entire pipeline (email and state save can still run).
-    print("[UI] Updating Weekly Archive and Dashboard...")
+    # 6. Update Dashboard (Preserving ALL passing jobs, not only top 5!)
+    print(f"[UI] Updating Weekly Archive and Dashboard with all {len(processed_jobs)} qualified jobs...")
     archive_file_path = os.path.join(os.path.dirname(__file__), "data", "weekly_archive.json")
     rejected_set = set()
-    active_dashboard_jobs = top_5_jobs
+    active_dashboard_jobs = processed_jobs
     try:
-        temp_archive = update_weekly_archive(top_5_jobs, archive_file_path, rejected_set)
-        active_dashboard_jobs = temp_archive if temp_archive else top_5_jobs
+        temp_archive = update_weekly_archive(processed_jobs, archive_file_path, rejected_set)
+        active_dashboard_jobs = temp_archive if temp_archive else processed_jobs
         project_root = os.path.dirname(__file__)
         build_and_save_docs_app(active_dashboard_jobs, list(rejected_set), project_root, is_weekly=False)
-        print("[UI] Dashboard updated successfully.")
+        print(f"[UI] Dashboard updated successfully with {len(active_dashboard_jobs)} active archive jobs.")
     except Exception as e:
         print(f"[UI ERROR] Dashboard/archive update failed: {e}. Continuing to email step.")
 
     dashboard_url = "https://idogal0210-web.github.io/job_search_automation/"
 
-    # 7. Dispatch Email
+    # 7. Dispatch Email (Top curated jobs only)
     print("[EMAIL] Building and dispatching email...")
 
     sender_email = os.getenv("SENDER_EMAIL")
     sender_pwd = os.getenv("SENDER_APP_PASSWORD") or os.getenv("SENDER_PASSWORD")
 
-    # FIX #4: Named boolean — correctly handles the case where SENDER_EMAIL
-    # is set but the password is missing (previously: state silently never saved).
     email_configured = bool(sender_email and sender_pwd)
 
     if email_configured:
-        # Pass all 7 required arguments using named kwargs to prevent future
-        # mis-ordering if the signature ever changes.
         send_email_report(
             sender_email=sender_email,
             sender_pwd=sender_pwd,
@@ -281,38 +316,40 @@ def main():
         print("[WARNING] Missing email credentials (SENDER_EMAIL and/or SENDER_APP_PASSWORD).")
 
     # 8. Save State Atomically
-    # FIX #3 (continued): Only merge seen_this_run into handled_links now,
-    # after all pipeline steps completed. Wrapped in try/except so a
-    # state-save failure is logged but does not crash the process.
+    # Save ONLY successfully evaluated jobs into handled_links!
+    # Any job that hit an unhandled retryable error will NOT be marked as handled and will be retried next run.
     try:
         if health.email_success or not email_configured:
-            handled_links.update(seen_this_run)
+            handled_links.update(successfully_evaluated_links)
             save_state_atomic(STATE_FILE, list(handled_links))
-            print("[STATE] State saved securely.")
+            print(f"[STATE] State saved securely ({len(successfully_evaluated_links)} new links committed).")
         else:
             print("[STATE] Email failed to send; NOT saving state so these jobs are retried next run.")
     except Exception as e:
         print(f"[STATE ERROR] Failed to save state: {e}. Jobs may be re-evaluated next run.")
 
-    # 9. Determine Final Status
-    # FIX #1: If ALL Gemini calls failed but keyword fallback still produced
-    # passing jobs → DEGRADED_FALLBACK (not FAILED_AI + exit(1)).
-    # Only exit(1) when zero jobs passed AND evaluations ran (genuine failure).
-    if (
-        health.gemini_failures > 0
-        and health.gemini_successes == 0
-        and health.jobs_evaluated > 0
-    ):
+    # 9. Determine Final Status with High Integrity
+    # Distinguish genuine technical service failure from a healthy empty run
+    total_network_failures = health.linkedin_failures + health.drushim_failures
+    total_network_attempts = health.linkedin_requests + health.drushim_requests
+
+    if health.gemini_attempts > 0 and health.gemini_successes == 0:
         if health.jobs_passed == 0:
             health.final_status = "FAILED_AI"
-            print(f"[DONE] Final Status: {health.final_status}")
+            print(f"[DONE] Final Status: {health.final_status} (AI service exhausted/failed)")
             sys.exit(1)
         else:
             health.final_status = "DEGRADED_FALLBACK"
+    elif total_network_attempts > 0 and total_network_failures >= total_network_attempts:
+        health.final_status = "FAILED_SCRAPERS"
+        print(f"[DONE] Final Status: {health.final_status} (Scraper network failure)")
+        sys.exit(1)
     elif health.linkedin_failures > 0 or health.drushim_failures > 0:
-        health.final_status = "DEGRADED"
+        health.final_status = "DEGRADED_NETWORK"
     elif email_configured and not health.email_success:
         health.final_status = "FAILED_EMAIL"
+    elif len(new_jobs) == 0:
+        health.final_status = "SUCCESS_EMPTY_RUN"
     else:
         health.final_status = "SUCCESS"
 

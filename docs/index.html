@@ -3841,6 +3841,15 @@
       .replace(/'/g, '&#39;');
   }
 
+  function sanitizeUrl(rawUrl) {
+    if (!rawUrl) return '#';
+    const trimmed = String(rawUrl).trim();
+    if (/^(?:https?:\/\/|mailto:)/i.test(trimmed)) {
+      return trimmed;
+    }
+    return '#';
+  }
+
   function classifyJobRegion(locStr) {
     if (!locStr) return 'center';
     const loc = locStr.toLowerCase();
@@ -4136,19 +4145,22 @@
       if (score < 80) scoreClass = 'badge-score-fair';
       else if (score < 90) scoreClass = 'badge-score-med';
 
-      const domain = stripEmojis(job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה');
-      const loc = stripEmojis(job.location || 'ישראל / היברידי');
-      const jobSum = stripEmojis(job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.');
-      const strengths = stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.');
-      const companyReqs = stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).');
+      const domain = escapeHtml(stripEmojis(job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה'));
+      const loc = escapeHtml(stripEmojis(job.location || 'ישראל / היברידי'));
+      const jobSum = escapeHtml(stripEmojis(job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.'));
+      const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
+      const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).'));
+      const safeCompany = escapeHtml(company);
+      const safeTitle = escapeHtml(title);
+      const safeLink = sanitizeUrl(link);
       const logoHtml = getCompanyLogoHtml(company, job.logo);
 
-      let salaryRange = stripEmojis(job.salary_range || '');
+      let salaryRange = escapeHtml(stripEmojis(job.salary_range || ''));
       let salaryType = job.salary_source_type || '';
-      const companyBdi = `<bdi dir="auto">${company}</bdi>`;
-      let salaryLabel = stripEmojis(job.salary_source_label || '');
-      const salaryEvidence = stripEmojis(job.salary_evidence || '');
-      const salaryUrl = job.salary_source_url || '';
+      const companyBdi = `<bdi dir="auto">${safeCompany}</bdi>`;
+      let salaryLabel = escapeHtml(stripEmojis(job.salary_source_label || ''));
+      const salaryEvidence = escapeHtml(stripEmojis(job.salary_evidence || ''));
+      const salaryUrl = sanitizeUrl(job.salary_source_url || '');
 
       if (!salaryRange || salaryRange === 'לא צוין' || salaryType === 'none') {
         salaryRange = 'לא צוין במודעה';
@@ -4221,7 +4233,7 @@
               <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\'")}', event)" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
                 <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
               </button>
-              <button type="button" class="btn-copy-link" onclick="copyJobLink('${link.replace(/'/g, "\'")}', event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
+              <button type="button" class="btn-copy-link" onclick="copyJobLink('${safeLink.replace(/'/g, "\'")}', event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
                 <i class="ph-bold ph-share-network"></i>
               </button>
               <span class="dashboard-chip sector-tag-chip" style="${sectorChipStyle}; font-size: 11px; padding: 2.5px 8px;" title="${escapeHtml(sectorBadge.replace(/<[^>]+>/g, '').trim())}">${sectorBadge}</span>
@@ -4232,10 +4244,10 @@
           </div>
           <div class="job-card-topbar-meta">
             <span class="dashboard-chip" style="color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.2); font-size: 11px; padding: 2.5px 8px;">
-              <i class="ph-duotone ph-calendar-blank"></i> ${jobDate}
+              <i class="ph-duotone ph-calendar-blank"></i> ${escapeHtml(jobDate)}
             </span>
             <span class="dashboard-chip" style="${sourceChipStyle}; font-size: 11px; padding: 2.5px 8px;">
-              <i class="ph-duotone ${sourceIcon}"></i> ${sourceName}
+              <i class="ph-duotone ${sourceIcon}"></i> ${escapeHtml(sourceName)}
             </span>
           </div>
         </div>
@@ -4244,8 +4256,8 @@
         <div class="job-card-main-header">
           ${logoHtml}
           <div class="job-header-text">
-            <div class="job-company-name" dir="auto">${company}</div>
-            <h2 class="job-title-text" dir="auto">${title}</h2>
+            <div class="job-company-name" dir="auto">${safeCompany}</div>
+            <h2 class="job-title-text" dir="auto">${safeTitle}</h2>
             <div class="job-header-chips">
               <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px;">
                 <i class="ph-duotone ph-map-pin"></i> ${loc}
@@ -4307,7 +4319,7 @@
               <i class="ph-duotone ph-x"></i> <span>הסר משרה</span>
             </button>
           </div>
-          <a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-apply">
+          <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply">
             <span>הגש מועמדות</span> <i class="ph-duotone ph-arrow-up-right"></i>
           </a>
         </div>
@@ -4343,21 +4355,24 @@
     const company = stripEmojis(job.company || 'חברה');
     const title = stripEmojis(job.title || 'משרה ללא כותרת');
     const link = job.link || '#';
-    const loc = stripEmojis(job.location || 'ישראל / היברידי');
-    const jobDate = job.date || 'היום';
+    const safeCompany = escapeHtml(company);
+    const safeTitle = escapeHtml(title);
+    const safeLink = sanitizeUrl(link);
+    const loc = escapeHtml(stripEmojis(job.location || 'ישראל / היברידי'));
+    const jobDate = escapeHtml(job.date || 'היום');
     const classifiedSector = classifyJobSector(job);
-    const domain = stripEmojis(job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה');
-    const jobSum = stripEmojis(job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.');
-    const strengths = stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.');
-    const companyReqs = stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה.');
-    const quickInsight = stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.');
+    const domain = escapeHtml(stripEmojis(job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה'));
+    const jobSum = escapeHtml(stripEmojis(job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.'));
+    const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
+    const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה.'));
+    const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
     const logoHtml = getCompanyLogoHtml(company, job.logo);
-    let salaryRange = stripEmojis(job.salary_range || '');
+    let salaryRange = escapeHtml(stripEmojis(job.salary_range || ''));
     let salaryType = job.salary_source_type || '';
-    const companyBdi = `<bdi dir="auto">${company}</bdi>`;
-    let salaryLabel = stripEmojis(job.salary_source_label || '');
-    const salaryEvidence = stripEmojis(job.salary_evidence || '');
-    const salaryUrl = job.salary_source_url || '';
+    const companyBdi = `<bdi dir="auto">${safeCompany}</bdi>`;
+    let salaryLabel = escapeHtml(stripEmojis(job.salary_source_label || ''));
+    const salaryEvidence = escapeHtml(stripEmojis(job.salary_evidence || ''));
+    const salaryUrl = sanitizeUrl(job.salary_source_url || '');
 
     if (!salaryRange || salaryRange === 'לא צוין' || salaryType === 'none') {
       salaryRange = 'לא צוין במודעה';
@@ -4385,7 +4400,7 @@
       <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\'")}', event); updateModalStar('${id.replace(/'/g, "\'")}');" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
         <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
       </button>
-      <button type="button" class="btn-copy-link" onclick="copyJobLink('${link.replace(/'/g, "\'")}', event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
+      <button type="button" class="btn-copy-link" onclick="copyJobLink('${safeLink.replace(/'/g, "\'")}', event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
         <i class="ph-bold ph-share-network"></i>
       </button>
       <div class="badge-score ${scoreClass}" title="ציון התאמה ${score}%">
@@ -4411,8 +4426,8 @@
       <div style="display: flex; align-items: flex-start; gap: 14px;">
         ${logoHtml}
         <div style="flex: 1; min-width: 0;">
-          <div style="font-size: 13.5px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 2px;" dir="auto">${company}</div>
-          <h2 style="font-size: 17.5px; font-weight: 700; color: #fff; margin: 0 0 6px; line-height: 1.3;" dir="auto">${title}</h2>
+          <div style="font-size: 13.5px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 2px;" dir="auto">${safeCompany}</div>
+          <h2 style="font-size: 17.5px; font-weight: 700; color: #fff; margin: 0 0 6px; line-height: 1.3;" dir="auto">${safeTitle}</h2>
           <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
             <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px;">
               <i class="ph-duotone ph-map-pin"></i> ${loc}
@@ -4457,7 +4472,7 @@
             בסיס נתונים: שכר חודשי ברוטו למשרה מלאה (100% משרה)
           </div>
           ${salaryEvidence ? `<div style="font-size: 12.5px; color: #cbd5e1; line-height: 1.45; margin-bottom: 6px;">${salaryEvidence}</div>` : ''}
-          ${salaryUrl ? `<a href="${salaryUrl}" target="_blank" rel="noopener noreferrer" style="font-size: 11.5px; color: var(--dashboard-cyan); text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;"><span>עיון בטבלת שכר ענפית מוסמכת</span> <i class="ph-duotone ph-arrow-square-out"></i></a>` : ''}
+          ${salaryUrl !== '#' ? `<a href="${salaryUrl}" target="_blank" rel="noopener noreferrer" style="font-size: 11.5px; color: var(--dashboard-cyan); text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;"><span>עיון בטבלת שכר ענפית מוסמכת</span> <i class="ph-duotone ph-arrow-square-out"></i></a>` : ''}
         </div>
         <div class="job-box">
           <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
@@ -4471,7 +4486,7 @@
     `;
 
     bottomBar.innerHTML = `
-      <a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-apply">
+      <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply">
         <span>הגש מועמדות באתר המשרה</span> <i class="ph-duotone ph-arrow-up-right"></i>
       </a>
       <div class="job-modal-triage-group">
@@ -5284,13 +5299,15 @@
 
       dupGroups.forEach(([key, group], gi) => {
         const rep = group[0];
+        const safeComp = escapeHtml(rep.company || '—');
+        const safeTitle = escapeHtml(rep.title || '—');
         const encKey = encodeURIComponent(key);
         html += `
           <div style="background: rgba(0, 0, 0, 0.28); border: 1px solid var(--dashboard-edge); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
             <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
               <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px;">
                 <span class="dashboard-chip" style="font-size: 11px; padding: 2px 8px;">#${gi + 1}</span>
-                <span style="color: #fff;">${rep.company || '—'} — ${rep.title || '—'}</span>
+                <span style="color: #fff;">${safeComp} — ${safeTitle}</span>
                 <span class="dashboard-chip" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4); font-size: 11px; padding: 2px 8px;">${group.length} מופעים</span>
               </div>
               <button onclick="purgeDuplicateGroup('${encKey}')" class="tool-btn" style="min-height: 36px; padding: 6px 14px; font-size: 12px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="שמור מופע אחד ומחק את שאר הכפילויות">
@@ -5301,8 +5318,9 @@
 
         group.forEach((job, ji) => {
           const score = job.match_score || '—';
-          const date = job.date || '—';
+          const date = escapeHtml(job.date || '—');
           const link = job.link || '#';
+          const safeLink = sanitizeUrl(link);
           const encLink = encodeURIComponent(link);
           const state = jobStates[job.link] || 'pending';
           const isSaved = state === 'saved';
@@ -5319,7 +5337,7 @@
                 <span style="color: var(--dashboard-muted); font-size: 12px;">${date}</span>
               </div>
               <div style="display: flex; align-items: center; gap: 8px;">
-                <a href="${link}" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); font-weight: 600; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 4px;">
+                <a href="${safeLink}" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); font-weight: 600; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 4px;">
                   פתח <i class="ph-duotone ph-arrow-up-right"></i>
                 </a>
                 <button onclick="purgeSingleJob('${encLink}')" class="btn-triage" style="min-height: 32px; padding: 4px 10px; font-size: 14px; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4);" title="מחק כפילות זו">
