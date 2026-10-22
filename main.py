@@ -12,7 +12,6 @@ from src.pipeline import evaluate_candidates, final_status, run_report
 from src.publishers import send_email_report
 from src.ui_builder import build_and_save_docs_app, update_weekly_archive
 from src.state_manager import load_state, save_state_atomic, EvaluationLedger
-from src.groq_runtime import GroqPool
 
 load_dotenv()
 STATE_FILE = os.path.join(os.path.dirname(__file__), "data", "jobs_state.json")
@@ -115,31 +114,20 @@ def main():
     new_jobs = ledger.select(all_raw_jobs, handled_links)
     health.candidates_found = len(new_jobs)
     print(f"[FETCH] raw={len(all_raw_jobs)} candidates_including_pending={len(new_jobs)}", flush=True)
-    groq_only = os.getenv("GROQ_ONLY", "").lower() in ("true", "1", "yes")
     client = None
-    if not groq_only and os.getenv("GEMINI_API_KEY"):
+    if os.getenv("GEMINI_API_KEY"):
         try:
             client = genai.Client(api_key=os.environ["GEMINI_API_KEY"],
                 http_options=types.HttpOptions(timeout=20000,
                     retry_options=types.HttpRetryOptions(attempts=1)))
         except Exception as error:
             print(f"[AI_CONFIG] Could not initialize Gemini client: {type(error).__name__}", flush=True)
-    elif groq_only:
-        print("[AI_CONFIG] One-time mode active: running with Groq ONLY", flush=True)
 
-    groq_pool = None
-    if os.getenv("GROQ_API_KEY"):
-        try:
-            groq_pool = GroqPool()
-            print("[AI_CONFIG] Groq (Llama 3.3 70B) configured as AI provider", flush=True)
-        except Exception as error:
-            print(f"[AI_CONFIG] Could not initialize Groq pool: {type(error).__name__}", flush=True)
-
-    if client is None and groq_pool is None:
-        print("[AI_CONFIG] No GEMINI_API_KEY or GROQ_API_KEY; unresolved jobs will remain pending", flush=True)
+    if client is None:
+        print("[AI_CONFIG] No GEMINI_API_KEY; unresolved jobs will remain pending", flush=True)
 
     try:
-        processed_jobs, audit = evaluate_candidates(new_jobs, client, health, ledger, groq_pool=groq_pool)
+        processed_jobs, audit = evaluate_candidates(new_jobs, client, health, ledger)
     finally:
         if client is not None:
             client.close()

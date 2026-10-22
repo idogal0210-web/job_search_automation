@@ -3,7 +3,6 @@ import os
 import re
 import time
 from src.gemini_runtime import GeminiPool, EvaluationUnavailable
-from src.groq_runtime import GroqPool
 from src.job_policy import NON_TECHNICAL_TITLES, deterministic_filter
 from src.salary_engine import evaluate_job_salary
 
@@ -140,7 +139,7 @@ Key Competencies:
 QuotaExhaustedError = EvaluationUnavailable
 
 
-def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_drone, health_metrics, *, pool=None, groq_pool=None):
+def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_drone, health_metrics, *, pool=None):
     job = {"title": title, "company": company, "snippet": snippet}
     rejected = deterministic_filter(job)
     if rejected:
@@ -177,38 +176,11 @@ Drone domain hint: {is_drone}
 Job JSON:
 {json.dumps(job, ensure_ascii=False)}
 """
-    data = None
-    errors = {}
+    if client is None:
+        raise EvaluationUnavailable({"client": "missing_or_invalid_configuration"})
 
-    # Prefer Groq if PREFER_GROQ is explicitly true (default is false: Gemini first, Groq fallback)
-    prefer_groq = os.getenv("PREFER_GROQ", "false").lower() in ("true", "1", "yes")
-    providers = []
-    if prefer_groq and groq_pool is not None and getattr(groq_pool, "api_key", None):
-        providers.append(("groq", groq_pool))
-        if client is not None:
-            providers.append(("gemini", pool or GeminiPool()))
-    else:
-        if client is not None:
-            providers.append(("gemini", pool or GeminiPool()))
-        if groq_pool is not None and getattr(groq_pool, "api_key", None):
-            providers.append(("groq", groq_pool))
-
-    if not providers:
-        if client is None and (groq_pool is None or not getattr(groq_pool, "api_key", None)):
-            raise EvaluationUnavailable({"client": "missing_or_invalid_configuration"})
-
-    for provider_name, provider_inst in providers:
-        try:
-            if provider_name == "gemini":
-                data = provider_inst.evaluate(client, prompt, health_metrics)
-            else:
-                data = provider_inst.evaluate(prompt, health_metrics)
-            break
-        except EvaluationUnavailable as err:
-            errors.update(err.reasons)
-
-    if data is None:
-        raise EvaluationUnavailable(errors if errors else {"ai": "unavailable"})
+    gemini_pool = pool or GeminiPool()
+    data = gemini_pool.evaluate(client, prompt, health_metrics)
 
     base = data["match_score"]
     data.update(base_match_score=base, priority_bonus=0, is_target_company=False,
