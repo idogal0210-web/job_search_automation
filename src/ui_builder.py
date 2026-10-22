@@ -2345,7 +2345,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <div class="stat-cube-icon lime">
             <i class="ph-duotone ph-sparkle"></i>
           </div>
-          <div class="stat-cube-count" id="statNewCount">__TOTAL_JOBS__</div>
+          <div class="stat-cube-count" id="statNewCount">__TOTAL_NEW_JOBS__</div>
           <div class="stat-cube-label">משרות חדשות</div>
         </button>
 
@@ -2353,7 +2353,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <div class="stat-cube-icon gold">
             <i class="ph-fill ph-star"></i>
           </div>
-          <div class="stat-cube-count" id="statStarredCount">0</div>
+          <div class="stat-cube-count" id="statStarredCount">__TOTAL_STARRED_JOBS__</div>
           <div class="stat-cube-label">מסומנות בכוכב</div>
         </button>
 
@@ -2361,7 +2361,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <div class="stat-cube-icon cyan">
             <i class="ph-duotone ph-bookmark-simple"></i>
           </div>
-          <div class="stat-cube-count" id="statSavedCount">0</div>
+          <div class="stat-cube-count" id="statSavedCount">__TOTAL_SAVED_JOBS__</div>
           <div class="stat-cube-label">שמורות להגשה</div>
         </button>
 
@@ -2369,7 +2369,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <div class="stat-cube-icon rose">
             <i class="ph-duotone ph-trash"></i>
           </div>
-          <div class="stat-cube-count" id="statRejectedCount">0</div>
+          <div class="stat-cube-count" id="statRejectedCount">__TOTAL_REJECTED_JOBS__</div>
           <div class="stat-cube-label">הוסרו מהסבב</div>
         </button>
       </div>
@@ -3830,7 +3830,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const all = [...(rawJobsData || [])];
     if (typeof historicalCatalog !== 'undefined' && historicalCatalog) {
       Object.keys(jobStates).forEach(link => {
-        if (jobStates[link] === 'saved' && !seenLinks.has(link) && historicalCatalog[link]) {
+        if ((jobStates[link] === 'saved' || jobStates[link] === 'rejected') && !seenLinks.has(link) && historicalCatalog[link]) {
           all.push(historicalCatalog[link]);
           seenLinks.add(link);
         }
@@ -4018,26 +4018,33 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
   function selectQuickChip(chipKey) {
     if (chipKey === 'starred') {
-      activeQuickChip = 'starred';
       setFilter('starred');
       return;
     }
-    if (chipKey === 'all' && currentFilter === 'starred') {
-      setFilter('all');
+    
+    // If viewing saved or rejected, clicking any quick chip returns smoothly to the active new jobs list
+    if (currentFilter !== 'all') {
+      currentFilter = 'all';
+      document.querySelectorAll('.stat-cube-btn').forEach(b => {
+        b.classList.remove('active');
+        b.removeAttribute('aria-current');
+      });
+      const allCube = document.getElementById('cube_all');
+      if (allCube) {
+        allCube.classList.add('active');
+        allCube.setAttribute('aria-current', 'page');
+      }
     }
+
     activeQuickChip = chipKey;
     document.querySelectorAll('.quick-chip').forEach(btn => {
-      if (btn.getAttribute('data-chip') === chipKey) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
+      btn.classList.toggle('active', btn.getAttribute('data-chip') === chipKey);
     });
 
     const sectorSelect = document.getElementById('sectorFilter');
-    if (['all', 'scada', 'solar', 'natural_gas', 'drones', 'operations'].includes(chipKey)) {
+    if (['scada', 'solar', 'natural_gas', 'drones', 'operations'].includes(chipKey)) {
       if (sectorSelect) sectorSelect.value = chipKey;
-    } else {
+    } else if (chipKey === 'all') {
       if (sectorSelect) sectorSelect.value = 'all';
     }
 
@@ -4684,11 +4691,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
   function setFilter(filter, el) {
     currentFilter = filter;
+    
+    // Reset quick chip and dropdown filters to prevent unintended vanishing of jobs in destination tab
     if (filter === 'starred') {
       activeQuickChip = 'starred';
-    } else if (activeQuickChip === 'starred') {
+    } else {
       activeQuickChip = 'all';
     }
+
+    const sectorSelect = document.getElementById('sectorFilter');
+    if (sectorSelect) sectorSelect.value = 'all';
+    const regionSelect = document.getElementById('regionFilter');
+    if (regionSelect) regionSelect.value = 'all';
+
     document.querySelectorAll('.stat-cube-btn').forEach(b => {
       b.classList.remove('active');
       b.removeAttribute('aria-current');
@@ -4699,13 +4714,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       targetEl.setAttribute('aria-current', 'page');
     }
 
+    document.querySelectorAll('.quick-chip').forEach(btn => {
+      const c = btn.getAttribute('data-chip');
+      btn.classList.toggle('active', c === activeQuickChip);
+    });
+
     const currentCardCount = document.querySelectorAll('.job-card').length;
     const availableCount = getAllAvailableJobs().length;
     if (currentCardCount !== availableCount) {
       renderCards();
+    } else {
+      updateUI();
     }
-
-    updateUI();
   }
 
   function onSearchInput(val) {
@@ -4828,6 +4848,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
     
     const cards = document.querySelectorAll('.job-card');
+    const rawJobLinks = new Set((rawJobsData || []).map(j => j.link));
     let visibleCount = 0;
     let saved = 0, rejected = 0, purged = 0;
     const total = cards.length;
@@ -4843,31 +4864,34 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
       const saveBtn = card.querySelector('.action-save-btn');
       const rejectBtn = card.querySelector('.action-reject-btn');
-      const saveText = saveBtn.querySelector('.btn-text');
+      const saveText = saveBtn ? saveBtn.querySelector('.btn-text') : null;
 
-      if (state === 'saved') {
-        saveBtn.className = "btn-triage action-save-btn saved-active";
-        saveText.textContent = "נשמר להגשה";
-        rejectBtn.className = "btn-triage action-reject-btn";
-      } else if (state === 'rejected') {
-        rejectBtn.className = "btn-triage action-reject-btn rejected-active";
-        saveBtn.className = "btn-triage action-save-btn";
-        saveText.textContent = "שמור להגשה";
-      } else {
-        saveBtn.className = "btn-triage action-save-btn";
-        rejectBtn.className = "btn-triage action-reject-btn";
-        saveText.textContent = "שמור להגשה";
+      if (saveBtn && saveText) {
+        if (state === 'saved') {
+          saveBtn.className = "btn-triage action-save-btn saved-active";
+          saveText.textContent = "נשמר להגשה";
+          if (rejectBtn) rejectBtn.className = "btn-triage action-reject-btn";
+        } else if (state === 'rejected') {
+          if (rejectBtn) rejectBtn.className = "btn-triage action-reject-btn rejected-active";
+          saveBtn.className = "btn-triage action-save-btn";
+          saveText.textContent = "שמור להגשה";
+        } else {
+          saveBtn.className = "btn-triage action-save-btn";
+          if (rejectBtn) rejectBtn.className = "btn-triage action-reject-btn";
+          saveText.textContent = "שמור להגשה";
+        }
       }
 
       const isStarred = Boolean(starredJobs[id]);
+      const isCurrentBatchJob = rawJobLinks.has(id);
 
       let matchesTab = false;
       if (currentFilter === 'all') {
-        matchesTab = (!isStarred && state !== 'saved' && state !== 'rejected' && state !== 'purged');
+        matchesTab = isCurrentBatchJob && (state !== 'rejected' && state !== 'purged');
       } else if (currentFilter === 'starred') {
         matchesTab = (isStarred && state !== 'rejected' && state !== 'purged');
       } else if (currentFilter === 'saved') {
-        matchesTab = (state === 'saved' && !isStarred);
+        matchesTab = (state === 'saved' && state !== 'rejected' && state !== 'purged');
       } else if (currentFilter === 'rejected') {
         matchesTab = (state === 'rejected');
       }
@@ -4964,14 +4988,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       if (st === 'purged') {
         return;
       }
+      if (rawJobLinks.has(j.link) && st !== 'rejected') {
+        totalNewInStore++;
+      }
+      if (isSt && st !== 'rejected') {
+        totalStarredInStore++;
+      }
+      if (st === 'saved' && st !== 'rejected') {
+        totalSavedInStore++;
+      }
       if (st === 'rejected') {
         totalRejectedInStore++;
-      } else if (isSt) {
-        totalStarredInStore++;
-      } else if (st === 'saved') {
-        totalSavedInStore++;
-      } else {
-        totalNewInStore++;
       }
     });
 
@@ -5130,143 +5157,147 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
   let sectorChartInstance = null;
   function renderSectorChart() {
-    const canvas = document.getElementById('sectorChart');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    try {
+      const canvas = document.getElementById('sectorChart');
+      if (!canvas || typeof Chart === 'undefined') return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
 
-    const allAvailableJobs = getAllAvailableJobs();
+      const allAvailableJobs = getAllAvailableJobs();
+      const rawJobLinks = new Set((rawJobsData || []).map(j => j.link));
 
-    let sourceJobs = [];
-    const chartTitleEl = document.getElementById('chartTitle');
-    const chartChipEl = document.getElementById('chartChip');
+      let sourceJobs = [];
+      const chartTitleEl = document.getElementById('chartTitle');
+      const chartChipEl = document.getElementById('chartChip');
 
-    if (currentFilter === 'saved') {
-      sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'saved' && !starredJobs[j.link]);
-      if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שמורות';
-      if (chartChipEl) {
-        chartChipEl.innerHTML = `<i class="ph-duotone ph-bookmark-simple"></i> ${sourceJobs.length} שמורות`;
-        chartChipEl.style.color = 'var(--dashboard-lime)';
-        chartChipEl.style.borderColor = 'rgba(220, 255, 114, 0.4)';
-      }
-    } else if (currentFilter === 'starred') {
-      sourceJobs = allAvailableJobs.filter(j => Boolean(starredJobs[j.link]) && jobStates[j.link] !== 'rejected' && jobStates[j.link] !== 'purged');
-      if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות בכוכב';
-      if (chartChipEl) {
-        chartChipEl.innerHTML = `<i class="ph-fill ph-star"></i> ${sourceJobs.length} בכוכב`;
-        chartChipEl.style.color = 'var(--dashboard-gold)';
-        chartChipEl.style.borderColor = 'rgba(255, 211, 104, 0.4)';
-      }
-    } else if (currentFilter === 'rejected') {
-      sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'rejected');
-      if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שהוסרו';
-      if (chartChipEl) {
-        chartChipEl.innerHTML = `<i class="ph-duotone ph-trash"></i> ${sourceJobs.length} הוסרו`;
-        chartChipEl.style.color = '#fca5a5';
-        chartChipEl.style.borderColor = 'rgba(252, 165, 165, 0.4)';
-      }
-    } else {
-      // Default / All: pending, unstarred jobs in current batch
-      sourceJobs = (allAvailableJobs || []).filter(j => {
-        const st = jobStates[j.link] || 'pending';
-        const isSt = Boolean(starredJobs[j.link]);
-        return !isSt && st !== 'saved' && st !== 'rejected' && st !== 'purged';
-      });
-      if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות חדשות';
-      if (chartChipEl) {
-        if (sourceJobs.length === 0) {
-          chartChipEl.innerHTML = '<i class="ph-duotone ph-chart-bar"></i> 0 משרות';
-        } else {
-          chartChipEl.innerHTML = `<i class="ph-duotone ph-chart-bar"></i> חדשות (${sourceJobs.length})`;
+      if (currentFilter === 'saved') {
+        sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'saved' && jobStates[j.link] !== 'rejected' && jobStates[j.link] !== 'purged');
+        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שמורות';
+        if (chartChipEl) {
+          chartChipEl.innerHTML = `<i class="ph-duotone ph-bookmark-simple"></i> ${sourceJobs.length} שמורות`;
+          chartChipEl.style.color = 'var(--dashboard-lime)';
+          chartChipEl.style.borderColor = 'rgba(220, 255, 114, 0.4)';
         }
-        chartChipEl.style.color = 'var(--dashboard-cyan)';
-        chartChipEl.style.borderColor = 'rgba(137, 244, 231, 0.35)';
+      } else if (currentFilter === 'starred') {
+        sourceJobs = allAvailableJobs.filter(j => Boolean(starredJobs[j.link]) && jobStates[j.link] !== 'rejected' && jobStates[j.link] !== 'purged');
+        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות בכוכב';
+        if (chartChipEl) {
+          chartChipEl.innerHTML = `<i class="ph-fill ph-star"></i> ${sourceJobs.length} בכוכב`;
+          chartChipEl.style.color = 'var(--dashboard-gold)';
+          chartChipEl.style.borderColor = 'rgba(255, 211, 104, 0.4)';
+        }
+      } else if (currentFilter === 'rejected') {
+        sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'rejected');
+        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שהוסרו';
+        if (chartChipEl) {
+          chartChipEl.innerHTML = `<i class="ph-duotone ph-trash"></i> ${sourceJobs.length} הוסרו`;
+          chartChipEl.style.color = '#fca5a5';
+          chartChipEl.style.borderColor = 'rgba(252, 165, 165, 0.4)';
+        }
+      } else {
+        // Default / All: active jobs from current scan
+        sourceJobs = (allAvailableJobs || []).filter(j => {
+          const st = jobStates[j.link] || 'pending';
+          return rawJobLinks.has(j.link) && st !== 'rejected' && st !== 'purged';
+        });
+        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות חדשות';
+        if (chartChipEl) {
+          if (sourceJobs.length === 0) {
+            chartChipEl.innerHTML = '<i class="ph-duotone ph-chart-bar"></i> 0 משרות';
+          } else {
+            chartChipEl.innerHTML = `<i class="ph-duotone ph-chart-bar"></i> חדשות (${sourceJobs.length})`;
+          }
+          chartChipEl.style.color = 'var(--dashboard-cyan)';
+          chartChipEl.style.borderColor = 'rgba(137, 244, 231, 0.35)';
+        }
       }
-    }
 
-    const counts = {};
-    sourceJobs.forEach(job => {
-      const label = classifyJobSector(job);
-      counts[label] = (counts[label] || 0) + 1;
-    });
-
-    if (Object.keys(counts).length === 0) {
-      ['סולאר', 'רחפנים', 'תפעול ואחזקה', 'בקרה ו-SCADA', 'גז טבעי', 'אגירה'].forEach(s => {
-        counts[s] = 0;
+      const counts = {};
+      sourceJobs.forEach(job => {
+        const label = classifyJobSector(job);
+        counts[label] = (counts[label] || 0) + 1;
       });
-    }
 
-    if (sectorChartInstance) {
-      sectorChartInstance.destroy();
-      sectorChartInstance = null;
-    }
+      if (Object.keys(counts).length === 0) {
+        ['סולאר', 'רחפנים', 'תפעול ואחזקה', 'בקרה ו-SCADA', 'גז טבעי', 'אגירה'].forEach(s => {
+          counts[s] = 0;
+        });
+      }
 
-    const labels = Object.keys(counts);
-    const data = Object.values(counts);
+      if (sectorChartInstance) {
+        sectorChartInstance.destroy();
+        sectorChartInstance = null;
+      }
 
-    const colorMap = {
-      'סולאר': '#ffd368',
-      'בקרה ו-SCADA': '#89f4e7',
-      'רחפנים': '#dcff72',
-      'תפעול ואחזקה': '#b4fcf1',
-      'אגירה': '#a0c03e',
-      'גז טבעי': '#fca5a5',
-      'אנרגיה': '#38bdf8',
-      'אין משרות להצגה': '#c0c5be'
-    };
+      const labels = Object.keys(counts);
+      const data = Object.values(counts);
 
-    const barColors = labels.map(l => colorMap[l] || '#89f4e7');
+      const colorMap = {
+        'סולאר': '#ffd368',
+        'בקרה ו-SCADA': '#89f4e7',
+        'רחפנים': '#dcff72',
+        'תפעול ואחזקה': '#b4fcf1',
+        'אגירה': '#a0c03e',
+        'גז טבעי': '#fca5a5',
+        'אנרגיה': '#38bdf8',
+        'אין משרות להצגה': '#c0c5be'
+      };
 
-    sectorChartInstance = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          data: data,
-          backgroundColor: barColors,
-          borderRadius: 8,
-          borderSkipped: false,
-          maxBarThickness: 32
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: {
-          duration: 350
+      const barColors = labels.map(l => colorMap[l] || '#89f4e7');
+
+      sectorChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: barColors,
+            borderRadius: 8,
+            borderSkipped: false,
+            maxBarThickness: 32
+          }]
         },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: '#191d1b',
-            titleColor: '#f5f6f0',
-            bodyColor: '#c0c5be',
-            borderColor: 'rgba(255, 255, 255, 0.16)',
-            borderWidth: 1,
-            cornerRadius: 12,
-            rtl: true,
-            textDirection: 'rtl',
-            callbacks: {
-              label: function(ctx) {
-                return ` ${ctx.raw} משרות`;
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: {
+            duration: 350
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#191d1b',
+              titleColor: '#f5f6f0',
+              bodyColor: '#c0c5be',
+              borderColor: 'rgba(255, 255, 255, 0.16)',
+              borderWidth: 1,
+              cornerRadius: 12,
+              rtl: true,
+              textDirection: 'rtl',
+              callbacks: {
+                label: function(ctx) {
+                  return ` ${ctx.raw} משרות`;
+                }
               }
             }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            suggestedMax: 5,
-            ticks: { stepSize: 1, color: '#c0c5be', font: { family: 'Google Sans', size: 11 } },
-            grid: { color: 'rgba(255, 255, 255, 0.08)' }
           },
-          x: {
-            ticks: { color: '#c0c5be', font: { family: 'Google Sans', size: 10 } },
-            grid: { display: false }
+          scales: {
+            y: {
+              beginAtZero: true,
+              suggestedMax: 5,
+              ticks: { stepSize: 1, color: '#c0c5be', font: { family: 'Google Sans', size: 11 } },
+              grid: { color: 'rgba(255, 255, 255, 0.08)' }
+            },
+            x: {
+              ticks: { color: '#c0c5be', font: { family: 'Google Sans', size: 10 } },
+              grid: { display: false }
+            }
           }
         }
-      }
-    });
+      });
+    } catch(e) {
+      console.warn('renderSectorChart error:', e);
+    }
   }
 
   function showToast(icon, msg) {
@@ -5698,11 +5729,20 @@ def generate_interactive_html(jobs, rejected_links, title="דוח משרות א�
     saved_json = _safe_json_embed(list(saved_links) if isinstance(saved_links, (set, list)) else [])
     rejected_json = _safe_json_embed(list(rejected_links) if isinstance(rejected_links, (set, list)) else [])
 
+    total_new = len(jobs)
+    total_saved = len(saved_links) if isinstance(saved_links, (list, set)) else 0
+    total_rejected = len(rejected_links) if isinstance(rejected_links, (list, set)) else 0
+    total_starred = 0
+
     html = HTML_TEMPLATE
     html = html.replace("__TITLE__", title)
     html = html.replace("__REPORT_TYPE_LABEL__", report_type_label)
     html = html.replace("__NOW_STR__", now_str)
-    html = html.replace("__TOTAL_JOBS__", str(total_jobs))
+    html = html.replace("__TOTAL_JOBS__", str(total_new))
+    html = html.replace("__TOTAL_NEW_JOBS__", str(total_new))
+    html = html.replace("__TOTAL_SAVED_JOBS__", str(total_saved))
+    html = html.replace("__TOTAL_STARRED_JOBS__", str(total_starred))
+    html = html.replace("__TOTAL_REJECTED_JOBS__", str(total_rejected))
     html = html.replace("__JOBS_JSON__", jobs_json)
     html = html.replace("__CATALOG_JSON__", catalog_json)
     html = html.replace("__INITIAL_SAVED_JSON__", saved_json)
