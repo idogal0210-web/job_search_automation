@@ -164,8 +164,9 @@ def main():
     if not dashboard_ok:
         health.final_status = "FAILED_DASHBOARD"
     if email_configured:
-        send_email_report(sender_email, sender_pwd, processed_jobs, processed_jobs[:5],
-                          processed_jobs[:3],
+        daily_top_picks = processed_jobs[:5]
+        send_email_report(sender_email, sender_pwd, daily_top_picks, daily_top_picks,
+                          daily_top_picks[:3],
                           "https://idogal0210-web.github.io/job_search_automation/", health)
     else:
         print("[EMAIL] Not configured; qualified jobs remain READY for future delivery", flush=True)

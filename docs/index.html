@@ -1223,7 +1223,8 @@
         line-height: 1.15 !important;
         white-space: normal !important;
         letter-spacing: -0.2px !important;
-        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
       }
 
       .header-actions-group {
@@ -1299,7 +1300,8 @@
         margin-bottom: 22px !important;
       }
       #cardsContainer:not(.view-list) .job-card {
-        height: 198px !important;
+        min-height: 206px !important;
+        height: auto !important;
         box-sizing: border-box !important;
         padding: 12px 10px !important;
         border-radius: 20px !important;
@@ -1429,12 +1431,13 @@
         line-height: 1.2 !important;
       }
       #cardsContainer:not(.view-list) .job-title-text {
-        font-size: 12.5px !important;
+        font-size: 12px !important;
         font-weight: 700 !important;
         color: #ffffff !important;
-        line-height: 1.3 !important;
-        height: 33px !important;
-        max-height: 33px !important;
+        line-height: 1.35 !important;
+        height: auto !important;
+        min-height: 32px !important;
+        max-height: 35px !important;
         display: -webkit-box !important;
         -webkit-line-clamp: 2 !important;
         -webkit-box-orient: vertical !important;
@@ -1443,6 +1446,8 @@
         text-align: center !important;
         margin: 0 !important;
         letter-spacing: -0.2px !important;
+        overflow-wrap: break-word !important;
+        word-break: normal !important;
       }
       #cardsContainer:not(.view-list) .job-header-chips {
         display: flex !important;
@@ -2525,6 +2530,10 @@
         <button type="button" class="quick-chip" data-chip="salary_verified" onclick="selectQuickChip('salary_verified')">
           <i class="ph-duotone ph-currency-circle-dollar"></i>
           <span>שכר מאומת</span>
+        </button>
+        <button type="button" class="quick-chip" data-chip="junior_friendly" onclick="selectQuickChip('junior_friendly')">
+          <i class="ph-duotone ph-user-check" style="color: var(--dashboard-lime);"></i>
+          <span>מתאים לג'וניור</span>
         </button>
       </div>
     </div>
@@ -3874,6 +3883,16 @@
     return 'center';
   }
 
+  function isJuniorFriendly(job) {
+    if (!job) return false;
+    const openness = (job.junior_openness || '').toLowerCase();
+    const title = (job.title || '').toLowerCase();
+    const reqs = (job.company_requirements || '').toLowerCase();
+    const full = `${openness} ${reqs}`;
+    const keywords = ['גבוהה', 'פתוח', "ג'וניור", 'junior', 'מתאים', 'הסמכה טרייה', '1-2', 'שנה ניסיון', 'כן', 'ללא ניסיון', 'בוגר טרי', 'הנדסאי בתחילת'];
+    return keywords.some(k => full.includes(k)) || title.includes('junior') || title.includes('בוגר');
+  }
+
   function getExperienceChip(job) {
     const openness = (job.junior_openness || '').toLowerCase();
     const title = (job.title || '').toLowerCase();
@@ -4209,10 +4228,45 @@
         `;
       }
 
-      const quickInsight = stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.');
+      const isJunior = isJuniorFriendly(job);
       const isStarred = Boolean(starredJobs[id]);
       const classifiedRegion = classifyJobRegion(loc);
       const expChipHtml = getExperienceChip(job);
+
+      let juniorBadgeChip = '';
+      if (isJunior) {
+        juniorBadgeChip = `
+          <span class="dashboard-chip junior-friendly-chip" style="color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.45); background: rgba(220, 255, 114, 0.12); font-weight: 700; font-size: 11px; padding: 2.5px 8px;" title="משרה זו זוהתה כמתאימה לג'וניור או בעלת דרישות ניסיון מקלות">
+            <i class="ph-duotone ph-user-check"></i> מתאים לג'וניור
+          </span>
+        `;
+      }
+
+      // Format clean, explicit salary display
+      let formattedSalaryDisplay = 'לא צוין שכר - הערכה בלבד';
+      let formattedSalaryTitle = 'לא צוין שכר במודעת המשרה';
+      if (salaryType === 'job_ad' && salaryRange && salaryRange !== 'לא צוין במודעה') {
+        formattedSalaryDisplay = `${salaryRange} - צוין במשרה`;
+        formattedSalaryTitle = 'שכר זה נלקח ישירות מפרסום המשרה';
+      } else if (salaryRange && salaryRange !== 'לא צוין במודעה' && salaryType !== 'none') {
+        formattedSalaryDisplay = `${salaryRange} - לא צוין שכר - הערכה בלבד`;
+        formattedSalaryTitle = escapeHtml(salaryEvidence || salaryLabel || 'הערכת שכר ענפית סטטיסטית');
+      }
+
+      // Relevant condition chips (car, shifts, work model)
+      let conditionChips = '';
+      if (job.has_company_car || (job.salary_range && job.salary_range.includes('רכב צמוד'))) {
+        conditionChips += `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-car"></i> רכב חברה</span>`;
+      }
+      if (job.has_shifts || (job.salary_range && (job.salary_range.includes('משמרות') || job.salary_range.includes('24/7')))) {
+        conditionChips += `<span class="dashboard-chip" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-clock"></i> משמרות 24/7</span>`;
+      }
+      const wm = (job.work_model || '').toLowerCase();
+      if (wm.includes('שטח')) {
+        conditionChips += `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-navigation-arrow"></i> עבודת שטח</span>`;
+      } else if (wm.includes('היברידי') || wm.includes('hybrid')) {
+        conditionChips += `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-laptop"></i> היברידי</span>`;
+      }
 
       const card = document.createElement('article');
       card.setAttribute('data-id', id);
@@ -4223,6 +4277,7 @@
       card.setAttribute('data-starred', isStarred ? 'true' : 'false');
       card.setAttribute('data-score', score);
       card.setAttribute('data-salary-verified', (salaryType === 'company_verified' || salaryType === 'job_ad') ? 'true' : 'false');
+      card.setAttribute('data-junior-friendly', isJunior ? 'true' : 'false');
       card.className = `dashboard-card job-card ${isStarred ? 'is-starred-card' : ''}`;
 
       card.innerHTML = `
@@ -4262,16 +4317,12 @@
               <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px;">
                 <i class="ph-duotone ph-map-pin"></i> ${loc}
               </span>
-              ${salaryType === 'none' ? `
-                <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 11px; padding: 2.5px 8px;" title="לא צוין שכר במודעת המשרה">
-                  <i class="ph-duotone ph-currency-circle-dollar"></i> לא צוין במודעה
-                </span>
-              ` : `
-                <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 11px; padding: 2.5px 8px;" title="${escapeHtml(salaryEvidence || salaryLabel)}">
-                  <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange}
-                </span>
-              `}
+              <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 11px; padding: 2.5px 8px;" title="${formattedSalaryTitle}">
+                <i class="ph-duotone ph-currency-circle-dollar"></i> ${formattedSalaryDisplay}
+              </span>
+              ${juniorBadgeChip}
               ${expChipHtml}
+              ${conditionChips}
             </div>
             ${driversHtml}
           </div>
@@ -4422,6 +4473,40 @@
 
     const expChipHtml = getExperienceChip(job);
 
+    const isJunior = isJuniorFriendly(job);
+    let juniorBadgeChip = '';
+    if (isJunior) {
+      juniorBadgeChip = `
+        <span class="dashboard-chip junior-friendly-chip" style="color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.45); background: rgba(220, 255, 114, 0.12); font-weight: 700; font-size: 11px; padding: 2.5px 8px;" title="משרה זו זוהתה כמתאימה לג'וניור או בעלת דרישות ניסיון מקלות">
+          <i class="ph-duotone ph-user-check"></i> מתאים לג'וניור
+        </span>
+      `;
+    }
+
+    let formattedSalaryDisplay = 'לא צוין שכר - הערכה בלבד';
+    let formattedSalaryTitle = 'לא צוין שכר במודעת המשרה';
+    if (salaryType === 'job_ad' && salaryRange && salaryRange !== 'לא צוין במודעה') {
+      formattedSalaryDisplay = `${salaryRange} - צוין במשרה`;
+      formattedSalaryTitle = 'שכר זה נלקח ישירות מפרסום המשרה';
+    } else if (salaryRange && salaryRange !== 'לא צוין במודעה' && salaryType !== 'none') {
+      formattedSalaryDisplay = `${salaryRange} - לא צוין שכר - הערכה בלבד`;
+      formattedSalaryTitle = escapeHtml(salaryEvidence || salaryLabel || 'הערכת שכר ענפית סטטיסטית');
+    }
+
+    let conditionChips = '';
+    if (job.has_company_car || (job.salary_range && job.salary_range.includes('רכב צמוד'))) {
+      conditionChips += `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-car"></i> רכב חברה</span>`;
+    }
+    if (job.has_shifts || (job.salary_range && (job.salary_range.includes('משמרות') || job.salary_range.includes('24/7')))) {
+      conditionChips += `<span class="dashboard-chip" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-clock"></i> משמרות 24/7</span>`;
+    }
+    const wm = (job.work_model || '').toLowerCase();
+    if (wm.includes('שטח')) {
+      conditionChips += `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-navigation-arrow"></i> עבודת שטח</span>`;
+    } else if (wm.includes('היברידי') || wm.includes('hybrid')) {
+      conditionChips += `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-laptop"></i> היברידי</span>`;
+    }
+
     body.innerHTML = `
       <div style="display: flex; align-items: flex-start; gap: 14px;">
         ${logoHtml}
@@ -4432,16 +4517,12 @@
             <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px;">
               <i class="ph-duotone ph-map-pin"></i> ${loc}
             </span>
-            ${salaryType === 'none' ? `
-              <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px; ${salaryChipStyle}">
-                <i class="ph-duotone ph-currency-circle-dollar"></i> לא צוין במודעה
-              </span>
-            ` : `
-              <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px; ${salaryChipStyle}">
-                <i class="ph-duotone ph-currency-circle-dollar"></i> ${salaryRange}
-              </span>
-            `}
+            <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px; ${salaryChipStyle}" title="${formattedSalaryTitle}">
+              <i class="ph-duotone ph-currency-circle-dollar"></i> ${formattedSalaryDisplay}
+            </span>
+            ${juniorBadgeChip}
             ${expChipHtml}
+            ${conditionChips}
           </div>
           ${driversHtml}
         </div>
@@ -4823,6 +4904,8 @@
         matchesQuick = (cScore >= 85);
       } else if (activeQuickChip === 'salary_verified') {
         matchesQuick = (card.getAttribute('data-salary-verified') === 'true');
+      } else if (activeQuickChip === 'junior_friendly') {
+        matchesQuick = (card.getAttribute('data-junior-friendly') === 'true');
       }
 
       let matchesSearch = true;
@@ -4857,7 +4940,7 @@
       const c = btn.getAttribute('data-chip');
       if (currentFilter === 'starred') {
         btn.classList.toggle('active', c === 'starred');
-      } else if (['top_match', 'salary_verified'].includes(activeQuickChip)) {
+      } else if (['top_match', 'salary_verified', 'junior_friendly'].includes(activeQuickChip)) {
         btn.classList.toggle('active', c === activeQuickChip);
       } else {
         btn.classList.toggle('active', c === selectedSector);

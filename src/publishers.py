@@ -6,7 +6,31 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header
 from datetime import datetime
 
+def is_junior_friendly_job(job):
+    """Check if job is open/friendly to juniors, newly certified, or practical engineers."""
+    openness = str(job.get("junior_openness") or "").lower()
+    title = str(job.get("title") or "").lower()
+    keywords = ["גבוהה", "פתוח", "ג'וניור", "junior", "מתאים", "הסמכה טרייה", "1-2", "שנה ניסיון", "כן"]
+    return any(k in openness for k in keywords) or "junior" in title or "הנדסאי בתחילת" in openness
+
+
+def format_salary_badge(job):
+    """Format salary with explicit attribution: specified in job vs estimate only."""
+    sal_range = (job.get("salary_range") or "").strip()
+    sal_type = job.get("salary_source_type", "")
+    
+    if sal_type == "job_ad":
+        return f"{sal_range} - צוין במשרה", True
+    elif sal_range and sal_range != "לא צוין" and sal_range != "לא צוין במודעה":
+        return f"{sal_range} - לא צוין שכר - הערכה בלבד", False
+    else:
+        return "לא צוין שכר - הערכה בלבד", False
+
+
 def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
+    # Enforce strictly up to 5 jobs in daily email
+    jobs = (jobs or [])[:5]
+    top_3 = (top_3 or [])[:min(3, len(jobs))]
     now_str = datetime.now().strftime("%d.%m.%Y")
     
     pending = getattr(health, 'pending_evaluations', 0) if health else 0
@@ -81,10 +105,17 @@ def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
             strengths = j.get('experience_strengths', j.get('reasoning', ''))
             highlights = j.get('key_highlights', '')
             
+            is_junior = is_junior_friendly_job(j)
+            junior_badge_html = ''
+            if is_junior:
+                junior_badge_html = '<span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; display: inline-block; margin-left: 6px; margin-bottom: 6px;">מתאים לג\'וניור</span>'
+
             if sec_key in ['drones', 'cuas', 'avionics']:
                 badge_html = '<span style="background-color: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 6px;">🚁 רחפנים וכטב"ם אוטונומי</span>'
             else:
                 badge_html = '<span style="background-color: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 6px;">⚡ תשתיות אנרגיה וגז טבעי</span>'
+
+            badge_html = f"{badge_html} {junior_badge_html}".strip()
 
             boxes_html = ""
             if comp_domain and comp_domain.strip():
@@ -97,13 +128,17 @@ def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
             if comp_reqs and comp_reqs.strip():
                 boxes_html += f'<div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(14, 165, 233, 0.4); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #38bdf8; font-weight: bold;">דרישות החברה עבור המשרה:</span> {comp_reqs}</div>'
 
-            sal_range = j.get('salary_range')
-            if sal_range:
-                sal_label = j.get('salary_source_label', '')
-                sal_evidence = j.get('salary_evidence', '')
-                sal_url = j.get('salary_source_url', '')
-                sal_link_html = f' <a href="{sal_url}" target="_blank" style="color: #38bdf8; text-decoration: underline; font-size: 11px; margin-right: 8px;">[אימות מקור ↗]</a>' if sal_url else ''
-                boxes_html += f'<div style="background-color: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;"><span style="color: #34d399; font-weight: bold;">הערכת שכר ומקור הנתון:</span> <strong style="color: #ffffff;">{sal_range}</strong> <span style="font-size: 11.5px; color: #94a3b8;">({sal_label})</span>{sal_link_html}<br><span style="font-size: 11px; color: #cbd5e1;">{sal_evidence}</span></div>'
+            sal_text, is_ad = format_salary_badge(j)
+            sal_color = "#34d399" if is_ad else "#38bdf8"
+            sal_bg = "rgba(16, 185, 129, 0.1)" if is_ad else "rgba(56, 189, 248, 0.08)"
+            sal_border = "rgba(16, 185, 129, 0.3)" if is_ad else "rgba(56, 189, 248, 0.25)"
+            sal_label = j.get('salary_source_label', '')
+            sal_evidence = j.get('salary_evidence', '')
+            sal_url = j.get('salary_source_url', '')
+            sal_link_html = f' <a href="{sal_url}" target="_blank" style="color: #38bdf8; text-decoration: underline; font-size: 11px; margin-right: 8px;">[אימות מקור ↗]</a>' if sal_url else ''
+            evidence_html = f'<br><span style="font-size: 11px; color: #cbd5e1;">{sal_evidence}</span>' if sal_evidence else ''
+            label_html = f' <span style="font-size: 11.5px; color: #94a3b8;">({sal_label})</span>' if sal_label else ''
+            boxes_html += f'<div style="background-color: {sal_bg}; border: 1px solid {sal_border}; border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;"><span style="color: {sal_color}; font-weight: bold;">שכר:</span> <strong style="color: #ffffff;">{sal_text}</strong>{label_html}{sal_link_html}{evidence_html}</div>'
 
             cards_html += f"""
             <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 20px; margin-bottom: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.35);">
