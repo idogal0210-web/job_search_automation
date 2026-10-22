@@ -4180,6 +4180,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       const loc = escapeHtml(stripEmojis(job.location || 'ישראל / היברידי'));
       const jobSum = escapeHtml(stripEmojis(job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.'));
       const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
+      const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
       const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).'));
       const safeCompany = escapeHtml(company);
       const safeTitle = escapeHtml(title);
