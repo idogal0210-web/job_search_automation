@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from datetime import datetime, timedelta
 from src.state_manager import save_state_atomic
 
@@ -20,6 +21,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <style>
     /* Custom helper components aligned with So-Me design tokens */
     :root {
@@ -138,13 +142,76 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     .brand-titles {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
+    }
+    .brand-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .brand-title {
       font-size: 17px;
       font-weight: 700;
       color: var(--dashboard-text);
       line-height: 1.2;
+    }
+    .header-sync-btn, .header-about-btn {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--dashboard-text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      font-size: 18px;
+      padding: 0;
+    }
+    .header-sync-btn:hover, .header-about-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-1px);
+    }
+    .header-sync-btn:focus-visible, .header-about-btn:focus-visible {
+      outline: 3px solid var(--dashboard-lime);
+      outline-offset: 2px;
+    }
+    .sync-status-dot {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--dashboard-cyan);
+      box-shadow: 0 0 6px var(--dashboard-cyan);
+      transition: background-color 0.3s ease;
+    }
+    .sync-status-dot.syncing {
+      background: var(--dashboard-gold);
+      box-shadow: 0 0 8px var(--dashboard-gold);
+    }
+    .sync-status-dot.offline {
+      background: #f87171;
+      box-shadow: 0 0 8px #f87171;
+    }
+    .sync-time-chip {
+      font-size: 11px;
+      color: var(--dashboard-muted);
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+    .brand-subtitle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
     .brand-subtitle {
       font-size: 11px;
@@ -166,6 +233,65 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       flex: 1;
       justify-content: center;
       max-width: 840px;
+    }
+    .metrics-summary-toggle {
+      display: none; /* Desktop hidden */
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: var(--dashboard-text);
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    .metrics-summary-toggle:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .metrics-summary-toggle:focus-visible {
+      outline: 3px solid var(--dashboard-lime);
+      outline-offset: 2px;
+    }
+    .metrics-summary-inline {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .metric-summary-pill {
+      padding: 2.5px 8px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .metric-summary-pill.lime { background: rgba(220, 255, 114, 0.16); color: var(--dashboard-lime); }
+    .metric-summary-pill.gold { background: rgba(255, 211, 104, 0.16); color: var(--dashboard-gold); }
+    .metric-summary-pill.cyan { background: rgba(137, 244, 231, 0.16); color: var(--dashboard-cyan); }
+    .metric-summary-pill.rose { background: rgba(248, 113, 113, 0.16); color: #fca5a5; }
+    .metrics-toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--dashboard-muted);
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+    .metrics-collapsible-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+      justify-content: center;
+      width: 100%;
     }
     .header-progress-info {
       display: flex;
@@ -303,6 +429,57 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       flex-direction: column;
       gap: 9px;
     }
+    .filters-two-col-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+    }
+    .filter-select-field {
+      width: 100%;
+    }
+    .search-sort-compact-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+    .search-sort-compact-bar .search-input-wrapper {
+      flex: 1.4;
+      min-width: 0;
+    }
+    .search-sort-compact-bar .sort-select-wrapper {
+      flex: 1;
+      min-width: 0;
+    }
+    .tool-btn-compact {
+      min-height: 38px;
+      min-width: 44px;
+      height: 38px;
+      padding: 0 12px;
+      border-radius: 12px;
+      background: rgba(255, 211, 104, 0.1);
+      border: 1px solid rgba(255, 211, 104, 0.35);
+      color: var(--dashboard-gold);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .tool-btn-compact:hover {
+      background: rgba(255, 211, 104, 0.2);
+      border-color: var(--dashboard-gold);
+    }
+    .tool-btn-compact:focus-visible {
+      outline: 2px solid var(--dashboard-gold);
+      outline-offset: 2px;
+    }
     .search-input-wrapper {
       position: relative;
       width: 100%;
@@ -311,15 +488,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
     .dashboard-app .search-input-wrapper input {
       padding-inline-start: 12px !important;
-      padding-inline-end: 36px !important;
+      padding-inline-end: 42px !important;
     }
     .btn-clear-search {
       position: absolute;
-      left: 10px;
+      left: 6px;
       top: 50%;
       transform: translateY(-50%);
-      width: 24px;
-      height: 24px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.12);
       border: none;
@@ -328,17 +505,27 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 14px;
       padding: 0 !important;
-      min-height: 24px !important;
+      min-height: 32px !important;
+      min-width: 32px !important;
       line-height: 1 !important;
       transition: all 0.18s ease;
       z-index: 2;
+    }
+    .btn-clear-search::after {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
     }
     .btn-clear-search:hover {
       background: rgba(255, 255, 255, 0.22);
       color: #ffffff;
       transform: translateY(-50%) scale(1.08);
+    }
+    .btn-clear-search:focus-visible {
+      outline: 2px solid var(--dashboard-lime);
     }
     .search-input-wrapper.has-value .btn-clear-search {
       display: flex;
@@ -365,7 +552,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       box-shadow: 0 0 10px rgba(137, 244, 231, 0.2) !important;
     }
     .dashboard-app .controls-inputs-stack input::placeholder {
-      color: rgba(255, 255, 255, 0.42) !important;
+      color: rgba(255, 255, 255, 0.65) !important;
       font-size: 13px !important;
     }
     .controls-buttons-row {
@@ -641,6 +828,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       letter-spacing: 0.2px;
       overflow-wrap: break-word;
       word-break: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: start;
     }
     .job-title-text {
       font-size: 17.5px;
@@ -650,6 +843,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       line-height: 1.35;
       overflow-wrap: break-word;
       word-break: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: start;
     }
     .job-header-chips {
       display: flex;
@@ -658,49 +857,96 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       align-items: center;
     }
 
-    /* One-Tap Quick Filter Chips */
+    /* One-Tap Quick Filter Chips (Horizontal Single-Row Scroll with RTL Touch Support & Fade Cues) */
     .quick-filter-strip-wrapper {
-      margin-bottom: 20px;
-      overflow-x: visible;
-      padding-bottom: 0;
+      position: relative;
+      margin-bottom: 18px;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+    .quick-filter-strip-wrapper::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 32px;
+      background: linear-gradient(to left, rgba(11, 13, 12, 0.95), transparent);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .quick-filter-strip-wrapper::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 32px;
+      background: linear-gradient(to right, rgba(11, 13, 12, 0.95), transparent);
+      pointer-events: none;
+      z-index: 2;
     }
     .quick-filter-strip {
       display: flex;
-      gap: 5px;
-      align-items: center;
-      flex-wrap: wrap;
+      flex-wrap: nowrap !important;
+      white-space: nowrap;
+      overflow-x: auto;
+      direction: rtl;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      gap: 8px;
+      padding: 6px 12px 10px;
       width: 100%;
+      box-sizing: border-box;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    }
+    .quick-filter-strip::-webkit-scrollbar {
+      height: 4px;
+    }
+    .quick-filter-strip::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 999px;
     }
     .quick-chip {
-      min-height: 30px !important;
-      padding: 5px 12px !important;
+      min-height: 44px !important;
+      padding: 8px 16px !important;
       border-radius: 999px !important;
-      font-size: 12px !important;
+      font-size: 13px !important;
       font-weight: 600 !important;
       line-height: 1.2 !important;
       cursor: pointer;
-      border: 1px solid var(--dashboard-edge) !important;
-      background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
-      color: var(--dashboard-text) !important;
+      border: 1px solid rgba(255, 255, 255, 0.24) !important;
+      background: rgba(255, 255, 255, 0.06);
+      color: #f5f6f0 !important;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 7px;
       white-space: nowrap;
-      transition: all 0.2s ease;
+      flex-shrink: 0 !important;
+      scroll-snap-align: start;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box;
     }
     .quick-chip:hover {
-      background: rgba(255, 255, 255, 0.18);
-      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.42) !important;
+    }
+    .quick-chip:focus-visible {
+      outline: 3px solid var(--dashboard-lime);
+      outline-offset: 2px;
     }
     .quick-chip.active {
-      background: linear-gradient(135deg, rgba(137, 244, 231, 0.22), rgba(45, 212, 191, 0.28)) !important;
+      background: linear-gradient(135deg, rgba(220, 255, 114, 0.25), rgba(137, 244, 231, 0.3)) !important;
       color: #ffffff !important;
-      border-color: var(--dashboard-cyan) !important;
-      box-shadow: 0 4px 14px rgba(137, 244, 231, 0.2);
-      font-weight: 700;
+      border-color: var(--dashboard-lime) !important;
+      box-shadow: 0 4px 16px rgba(220, 255, 114, 0.25);
+      font-weight: 700 !important;
     }
     .quick-chip.active i {
-      color: var(--dashboard-cyan) !important;
+      color: var(--dashboard-lime) !important;
     }
 
     /* Explainable AI & Score Drivers */
@@ -973,10 +1219,42 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     .dashboard-app a.btn-apply:hover span,
     .btn-apply:hover,
     .btn-apply:hover span {
-      background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+      background: linear-gradient(135deg, #0f766e 0%, #115e59 100%) !important;
       color: #ffffff !important;
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 6px 18px rgba(20, 184, 166, 0.4);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 6px 18px rgba(15, 118, 110, 0.4);
       transform: translateY(-1px);
+    }
+
+    /* Leaflet Marker Cluster Styles */
+    .marker-cluster-custom {
+      background: none !important;
+      border: none !important;
+    }
+    .custom-cluster-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13.5px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+      border: 2px solid #ffffff;
+      color: #0f172a;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .custom-cluster-badge:hover {
+      transform: scale(1.1);
+    }
+    .custom-cluster-badge.small {
+      background: var(--dashboard-lime);
+    }
+    .custom-cluster-badge.medium {
+      background: var(--dashboard-cyan);
+    }
+    .custom-cluster-badge.large {
+      background: var(--dashboard-gold);
     }
 
     /* Modals and Overlays */
@@ -1041,6 +1319,31 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
     .job-modal-close-btn:hover {
       background: rgba(255, 255, 255, 0.16);
+    }
+    .modal-close-btn {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s ease;
+      padding: 0;
+    }
+    .modal-close-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+    .modal-close-btn:focus-visible {
+      outline: 3px solid var(--dashboard-lime);
+      outline-offset: 2px;
     }
     .job-modal-body {
       padding: 18px 20px 24px;
@@ -1190,6 +1493,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         flex-direction: column;
         width: 100%;
         gap: 10px;
+      }
+      .metrics-summary-toggle {
+        display: flex !important;
+      }
+      .metrics-collapsible-content {
+        display: none !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 10px !important;
+      }
+      .metrics-collapsible-content.is-expanded {
+        display: flex !important;
       }
       .header-progress-info {
         width: 100%;
@@ -1376,9 +1691,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         letter-spacing: -0.2px !important;
       }
       #cardsContainer:not(.view-list) .btn-star {
-        width: 24px !important;
-        height: 24px !important;
-        font-size: 13px !important;
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        font-size: 14px !important;
         border-radius: 999px !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -1387,6 +1704,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
         color: var(--dashboard-muted) !important;
         transition: all 0.15s ease !important;
+        position: relative !important;
+      }
+      #cardsContainer:not(.view-list) .btn-star::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        pointer-events: auto !important;
       }
       #cardsContainer:not(.view-list) .btn-star.is-starred {
         background: rgba(255, 211, 104, 0.2) !important;
@@ -1431,12 +1761,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         color: var(--dashboard-cyan) !important;
         font-weight: 500 !important;
         max-width: 145px !important;
-        white-space: nowrap !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        white-space: normal !important;
+        word-break: normal !important;
+        overflow-wrap: break-word !important;
         text-align: center !important;
         margin: 0 !important;
-        line-height: 1.2 !important;
+        line-height: 1.25 !important;
       }
       #cardsContainer:not(.view-list) .job-title-text {
         font-size: 12px !important;
@@ -1445,7 +1780,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         line-height: 1.35 !important;
         height: auto !important;
         min-height: 32px !important;
-        max-height: 35px !important;
         display: -webkit-box !important;
         -webkit-line-clamp: 2 !important;
         -webkit-box-orient: vertical !important;
@@ -1456,6 +1790,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         letter-spacing: -0.2px !important;
         overflow-wrap: break-word !important;
         word-break: normal !important;
+        white-space: normal !important;
       }
       #cardsContainer:not(.view-list) .job-header-chips {
         display: flex !important;
@@ -1499,9 +1834,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         flex-direction: row !important;
         align-items: center !important;
         justify-content: space-between !important;
-        height: 72px !important;
+        min-height: 72px !important;
+        height: auto !important;
         box-sizing: border-box !important;
-        padding: 10px 12px !important;
+        padding: 10px 14px !important;
         border-radius: 16px !important;
         background: rgba(18, 24, 38, 0.85) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -1559,20 +1895,32 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         font-size: 13.5px !important;
         font-weight: 700 !important;
         color: #ffffff !important;
-        line-height: 1.25 !important;
+        line-height: 1.3 !important;
         margin: 0 !important;
-        white-space: nowrap !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        white-space: normal !important;
+        word-break: normal !important;
+        overflow-wrap: break-word !important;
+        text-align: start !important;
         letter-spacing: -0.2px !important;
       }
       #cardsContainer.view-list .job-company-name {
         font-size: 11.5px !important;
         color: var(--dashboard-cyan) !important;
         margin: 0 !important;
-        white-space: nowrap !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        white-space: normal !important;
+        word-break: normal !important;
+        overflow-wrap: break-word !important;
+        text-align: start !important;
         font-weight: 500 !important;
       }
       #cardsContainer.view-list .job-card-topbar {
@@ -1603,7 +1951,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         padding: 0 8px !important;
         border-radius: 999px !important;
         line-height: 1 !important;
-        height: 24px !important;
+        height: 28px !important;
         box-sizing: border-box !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -1619,9 +1967,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         letter-spacing: -0.2px !important;
       }
       #cardsContainer.view-list .btn-star {
-        width: 26px !important;
-        height: 26px !important;
-        font-size: 13px !important;
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        min-height: 44px !important;
+        font-size: 18px !important;
         border-radius: 999px !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -1629,6 +1979,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         background: rgba(255, 255, 255, 0.06) !important;
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
         color: var(--dashboard-muted) !important;
+        flex-shrink: 0 !important;
       }
       #cardsContainer.view-list .btn-star.is-starred {
         background: rgba(255, 211, 104, 0.2) !important;
@@ -2204,7 +2555,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
     #cardsContainer.view-list .btn-apply {
       width: 100%;
-      min-height: 42px;
+      min-height: 44px;
       padding: 9px 14px;
       font-size: 13.5px;
       font-weight: 700;
@@ -2303,91 +2654,107 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <i class="ph-duotone ph-rocket-launch" style="font-size: 22px; color: #000;"></i>
       </div>
       <div class="brand-titles">
-        <span class="brand-title">עידו גל | בקרת משרות</span>
-        <span class="brand-subtitle">אנרגיה, גז טבעי ורחפנים</span>
+        <div class="brand-title-row">
+          <span class="brand-title">עידו גל | בקרת משרות</span>
+          <button type="button" id="headerSyncBtn" class="header-sync-btn" onclick="triggerSyncModal()" title="סנכרון נתונים עם הענן" aria-label="סנכרון נתונים עם הענן">
+            <i class="ph-duotone ph-cloud-arrow-up" id="headerSyncIcon"></i>
+            <span class="sync-status-dot" id="headerSyncDot" role="status" aria-live="polite"></span>
+          </button>
+          <button type="button" class="header-about-btn" onclick="openAboutModal()" title="אודות המערכת" aria-label="אודות המערכת">
+            <i class="ph-duotone ph-info"></i>
+          </button>
+        </div>
+        <div class="brand-subtitle-row">
+          <span class="brand-subtitle">אנרגיה, גז טבעי ורחפנים</span>
+          <span class="sync-time-chip" id="lastSyncTimeChip" title="מועד סנכרון אחרון">עודכן: __NOW_STR__</span>
+        </div>
       </div>
     </div>
 
-    <!-- Progress & Category Navigation Hub (Replaces old tabs & includes starred cube) -->
+    <!-- Progress & Category Navigation Hub (Compact single-row summary, expandable on mobile) -->
     <div class="header-progress-hub">
-      
-      <!-- Progress Summary Info -->
-      <div class="header-progress-info">
-        <div class="header-progress-title-row">
-          <div style="display: flex; align-items: center; gap: 7px;">
-            <span class="header-progress-title">
-              <i class="ph-duotone ph-chart-pie-slice" style="color: var(--dashboard-cyan); font-size: 16px;"></i>
-              התקדמות סקירה
-            </span>
-            <span class="dashboard-chip" id="progressSummaryChip" style="font-size: 11px; padding: 2px 8px;">0% נסקרו</span>
-          </div>
-          <div style="font-size: 12px; color: var(--dashboard-muted);">
-            <strong id="progressPctText" style="color: #fff; font-size: 14px;">0%</strong> מוינו
-          </div>
+
+      <!-- Mobile Collapsible Summary Toggle Button -->
+      <button type="button" class="metrics-summary-toggle" id="metricsToggleBtn" onclick="toggleMetricsExpand()" aria-expanded="false" aria-controls="collapsibleMetricsContent" aria-label="הרחב או צמצם פירוט מטריקות">
+        <div class="metrics-summary-inline">
+          <span class="metric-summary-pill lime"><span id="summaryNewCount">__TOTAL_NEW_JOBS__</span> חדשות</span>
+          <span class="metric-summary-pill gold"><span id="summaryStarredCount">__TOTAL_STARRED_JOBS__</span> בכוכב</span>
+          <span class="metric-summary-pill cyan"><span id="summarySavedCount">__TOTAL_SAVED_JOBS__</span> שמורות</span>
+          <span class="metric-summary-pill rose"><span id="summaryRejectedCount">__TOTAL_REJECTED_JOBS__</span> הוסרו</span>
         </div>
-
-        <!-- Segmented Progress Bar -->
-        <div class="segmented-progress">
-          <div id="progressSegNew" class="segmented-progress-bar" style="background: var(--dashboard-lime); width: 100%;"></div>
-          <div id="progressSegStarred" class="segmented-progress-bar" style="background: var(--dashboard-gold); width: 0%;"></div>
-          <div id="progressSegSaved" class="segmented-progress-bar" style="background: var(--dashboard-cyan); width: 0%;"></div>
-          <div id="progressSegRejected" class="segmented-progress-bar" style="background: #fca5a5; width: 0%;"></div>
+        <div class="metrics-toggle-label">
+          <span id="metricsToggleText">פירוט</span>
+          <i class="ph-bold ph-caret-down" id="metricsToggleIcon"></i>
         </div>
-
-        <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--dashboard-muted);">
-          <span id="pctLabelNew">100% חדשות</span>
-          <span id="pctLabelStarred">0% כוכב</span>
-          <span id="pctLabelSaved">0% שמורות</span>
-          <span id="pctLabelRejected">0% הוסרו</span>
-        </div>
-      </div>
-
-      <!-- 4 Interactive Category Cubes -->
-      <div class="header-stat-cubes">
-        <button type="button" id="cube_all" class="stat-cube-btn active" onclick="setFilter('all', this)" title="משרות חדשות שטרם נסקרו">
-          <div class="stat-cube-icon lime">
-            <i class="ph-duotone ph-sparkle"></i>
-          </div>
-          <div class="stat-cube-count" id="statNewCount">__TOTAL_NEW_JOBS__</div>
-          <div class="stat-cube-label">משרות חדשות</div>
-        </button>
-
-        <button type="button" id="cube_starred" class="stat-cube-btn cube-starred" onclick="setFilter('starred', this)" title="משרות שסומנו בכוכב">
-          <div class="stat-cube-icon gold">
-            <i class="ph-fill ph-star"></i>
-          </div>
-          <div class="stat-cube-count" id="statStarredCount">__TOTAL_STARRED_JOBS__</div>
-          <div class="stat-cube-label">מסומנות בכוכב</div>
-        </button>
-
-        <button type="button" id="cube_saved" class="stat-cube-btn cube-saved" onclick="setFilter('saved', this)" title="משרות שנשמרו להגשה">
-          <div class="stat-cube-icon cyan">
-            <i class="ph-duotone ph-bookmark-simple"></i>
-          </div>
-          <div class="stat-cube-count" id="statSavedCount">__TOTAL_SAVED_JOBS__</div>
-          <div class="stat-cube-label">שמורות להגשה</div>
-        </button>
-
-        <button type="button" id="cube_rejected" class="stat-cube-btn cube-rejected" onclick="setFilter('rejected', this)" title="משרות שהוסרו מהסבב">
-          <div class="stat-cube-icon rose">
-            <i class="ph-duotone ph-trash"></i>
-          </div>
-          <div class="stat-cube-count" id="statRejectedCount">__TOTAL_REJECTED_JOBS__</div>
-          <div class="stat-cube-label">הוסרו מהסבב</div>
-        </button>
-      </div>
-
-    </div>
-
-    <div class="header-actions-group">
-      <div id="cloudSyncStatus" class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); display: flex; align-items: center; gap: 6px;">
-        <span class="dashboard-dot"></span>
-        <i class="ph-duotone ph-cloud-check"></i>
-        <span>ענן מסונכרן</span>
-      </div>
-      <button onclick="triggerSyncModal()" class="dashboard-settings-link" style="cursor: pointer;" title="פתח הגדרות וסנכרון ענן">
-        <i class="ph-duotone ph-cloud-arrow-up"></i> סנכרן
       </button>
+
+      <div id="collapsibleMetricsContent" class="metrics-collapsible-content">
+        <!-- Progress Summary Info -->
+        <div class="header-progress-info">
+          <div class="header-progress-title-row">
+            <div style="display: flex; align-items: center; gap: 7px;">
+              <span class="header-progress-title">
+                <i class="ph-duotone ph-chart-pie-slice" style="color: var(--dashboard-cyan); font-size: 16px;"></i>
+                התקדמות סקירה
+              </span>
+              <span class="dashboard-chip" id="progressSummaryChip" style="font-size: 11px; padding: 2px 8px;">0% נסקרו</span>
+            </div>
+            <div style="font-size: 12px; color: var(--dashboard-muted);">
+              <strong id="progressPctText" style="color: #fff; font-size: 14px;">0%</strong> מוינו
+            </div>
+          </div>
+
+          <!-- Segmented Progress Bar -->
+          <div class="segmented-progress">
+            <div id="progressSegNew" class="segmented-progress-bar" style="background: var(--dashboard-lime); width: 100%;"></div>
+            <div id="progressSegStarred" class="segmented-progress-bar" style="background: var(--dashboard-gold); width: 0%;"></div>
+            <div id="progressSegSaved" class="segmented-progress-bar" style="background: var(--dashboard-cyan); width: 0%;"></div>
+            <div id="progressSegRejected" class="segmented-progress-bar" style="background: #fca5a5; width: 0%;"></div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--dashboard-muted);">
+            <span id="pctLabelNew">100% חדשות</span>
+            <span id="pctLabelStarred">0% כוכב</span>
+            <span id="pctLabelSaved">0% שמורות</span>
+            <span id="pctLabelRejected">0% הוסרו</span>
+          </div>
+        </div>
+
+        <!-- 4 Interactive Category Cubes -->
+        <div class="header-stat-cubes">
+          <button type="button" id="cube_all" class="stat-cube-btn active" onclick="setFilter('all', this)" title="משרות חדשות שטרם נסקרו">
+            <div class="stat-cube-icon lime">
+              <i class="ph-duotone ph-sparkle"></i>
+            </div>
+            <div class="stat-cube-count" id="statNewCount">__TOTAL_NEW_JOBS__</div>
+            <div class="stat-cube-label">משרות חדשות</div>
+          </button>
+
+          <button type="button" id="cube_starred" class="stat-cube-btn cube-starred" onclick="setFilter('starred', this)" title="משרות שסומנו בכוכב">
+            <div class="stat-cube-icon gold">
+              <i class="ph-fill ph-star"></i>
+            </div>
+            <div class="stat-cube-count" id="statStarredCount">__TOTAL_STARRED_JOBS__</div>
+            <div class="stat-cube-label">מסומנות בכוכב</div>
+          </button>
+
+          <button type="button" id="cube_saved" class="stat-cube-btn cube-saved" onclick="setFilter('saved', this)" title="משרות שנשמרו להגשה">
+            <div class="stat-cube-icon cyan">
+              <i class="ph-duotone ph-bookmark-simple"></i>
+            </div>
+            <div class="stat-cube-count" id="statSavedCount">__TOTAL_SAVED_JOBS__</div>
+            <div class="stat-cube-label">שמורות להגשה</div>
+          </button>
+
+          <button type="button" id="cube_rejected" class="stat-cube-btn cube-rejected" onclick="setFilter('rejected', this)" title="משרות שהוסרו מהסבב">
+            <div class="stat-cube-icon rose">
+              <i class="ph-duotone ph-trash"></i>
+            </div>
+            <div class="stat-cube-count" id="statRejectedCount">__TOTAL_REJECTED_JOBS__</div>
+            <div class="stat-cube-label">הוסרו מהסבב</div>
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -2424,46 +2791,60 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </p>
 
         <div class="controls-inputs-stack">
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <select id="sectorFilter" onchange="filterCards()" style="flex: 1; min-width: 140px;">
-              <option value="all">כל התחומים</option>
-              <option value="scada">בקרה ו-SCADA</option>
-              <option value="solar">מערכות סולאריות</option>
-              <option value="natural_gas">גז טבעי</option>
-              <option value="drones">רחפנים וכטב"ם</option>
-              <option value="energy_tech">אגירה ו-Energy Tech</option>
-              <option value="operations">תפעול ואחזקה</option>
-              <option value="energy">אנרגיה כללית</option>
-            </select>
-            <select id="regionFilter" onchange="filterCards()" style="flex: 1; min-width: 140px;">
-              <option value="all">כל האזורים בארץ</option>
-              <option value="center">מרכז וירושלים</option>
-              <option value="sharon">אזור השרון</option>
-              <option value="north">חיפה והצפון</option>
-              <option value="south">שפלה ודרום</option>
-              <option value="nationwide">פריסה ארצית / שטח</option>
-            </select>
-          </div>
-          <div class="search-input-wrapper" id="searchInputWrapper">
-            <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה טכנית..." oninput="onSearchInput(this.value)" />
-            <button type="button" class="btn-clear-search" onclick="clearSearchInput()" title="נקה חיפוש" aria-label="נקה חיפוש">
-              <i class="ph-bold ph-x"></i>
-            </button>
-          </div>
-          
-          <div class="controls-buttons-row">
-            <div class="sort-select-container">
-              <i id="sortIcon" class="ph-duotone ph-calendar-blank"></i>
-              <select id="sortSelect" onchange="changeSort(this.value)" title="בחר אפשרות מיון משרות">
-                <option value="date_desc" style="background: #171c12; color: #fff;">מיון: התאריך החדש קודם</option>
-                <option value="score_desc" style="background: #171c12; color: #fff;">מיון: ציון התאמה (מגבוה לנמוך)</option>
-                <option value="salary_desc" style="background: #171c12; color: #fff;">מיון: רמת שכר (מהגבוה לנמוך)</option>
-                <option value="company_asc" style="background: #171c12; color: #fff;">מיון: שם חברה (א׳ עד ת׳)</option>
+          <!-- Row 1: Two Column Layout for Sectors and Regions -->
+          <div class="filters-two-col-row">
+            <div class="filter-select-field">
+              <label for="sectorFilter" class="sr-only" style="display:none;">תחום משרה</label>
+              <select id="sectorFilter" onchange="filterCards()" aria-label="כל התחומים" title="סינון לפי תחום">
+                <option value="all">כל התחומים</option>
+                <option value="scada">בקרה ו-SCADA</option>
+                <option value="solar">מערכות סולאריות</option>
+                <option value="natural_gas">גז טבעי</option>
+                <option value="drones">רחפנים וכטב"ם</option>
+                <option value="energy_tech">אגירה ו-Energy Tech</option>
+                <option value="operations">תפעול ואחזקה</option>
+                <option value="energy">אנרגיה כללית</option>
               </select>
             </div>
-            <button onclick="openDuplicatesModal()" class="tool-btn" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="סרוק כפילויות משרות">
-              <span><i class="ph-duotone ph-magnifying-glass"></i></span>
-              <span>בדיקת כפילויות</span>
+            <div class="filter-select-field">
+              <label for="regionFilter" class="sr-only" style="display:none;">אזור בארץ</label>
+              <select id="regionFilter" onchange="filterCards()" aria-label="כל האזורים בארץ" title="סינון לפי אזור בארץ">
+                <option value="all">כל האזורים בארץ</option>
+                <option value="center">מרכז וירושלים</option>
+                <option value="sharon">אזור השרון</option>
+                <option value="north">חיפה והצפון</option>
+                <option value="south">שפלה ודרום</option>
+                <option value="nationwide">פריסה ארצית / שטח</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 2: Search field and Sorting control within one compact bar -->
+          <div class="search-sort-compact-bar">
+            <div class="search-input-wrapper" id="searchInputWrapper">
+              <label for="searchInput" class="sr-only" style="display:none;">חיפוש משרה</label>
+              <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה..." oninput="onSearchInput(this.value)" aria-label="חיפוש משרה, חברה או דרישה טכנית" />
+              <button type="button" class="btn-clear-search" onclick="clearSearchInput()" title="נקה חיפוש" aria-label="נקה חיפוש">
+                <i class="ph-bold ph-x"></i>
+              </button>
+            </div>
+            
+            <div class="sort-select-wrapper">
+              <label for="sortSelect" class="sr-only" style="display:none;">אפשרות מיון</label>
+              <div class="sort-select-container">
+                <i id="sortIcon" class="ph-duotone ph-calendar-blank"></i>
+                <select id="sortSelect" onchange="changeSort(this.value)" title="בחר אפשרות מיון משרות" aria-label="בחר אפשרות מיון משרות">
+                  <option value="date_desc" style="background: #171c12; color: #fff;">חדש קודם</option>
+                  <option value="score_desc" style="background: #171c12; color: #fff;">ציון התאמה</option>
+                  <option value="salary_desc" style="background: #171c12; color: #fff;">רמת שכר</option>
+                  <option value="company_asc" style="background: #171c12; color: #fff;">שם חברה (א-ת)</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="button" onclick="openDuplicatesModal()" class="tool-btn-compact" title="סרוק כפילויות משרות" aria-label="בדיקת כפילויות משרות">
+              <i class="ph-duotone ph-copy"></i>
+              <span>כפילויות</span>
             </button>
           </div>
 
@@ -2503,43 +2884,43 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     <!-- Quick Filter Chips Strip (One-Tap Filtering) -->
     <div class="quick-filter-strip-wrapper">
       <div class="quick-filter-strip" id="quickFilterStrip">
-        <button type="button" class="quick-chip active" data-chip="all" onclick="selectQuickChip('all')">
+        <button type="button" class="quick-chip active" data-chip="all" onclick="selectQuickChip('all')" aria-pressed="true">
           <i class="ph-duotone ph-squares-four"></i>
           <span>כל המשרות</span>
         </button>
-        <button type="button" class="quick-chip" data-chip="starred" onclick="selectQuickChip('starred')">
+        <button type="button" class="quick-chip" data-chip="starred" onclick="selectQuickChip('starred')" aria-pressed="false">
           <i class="ph-fill ph-star" style="color: var(--dashboard-gold);"></i>
           <span>בכוכב (<span id="countStarred">0</span>)</span>
         </button>
-        <button type="button" class="quick-chip" data-chip="top_match" onclick="selectQuickChip('top_match')">
+        <button type="button" class="quick-chip" data-chip="top_match" onclick="selectQuickChip('top_match')" aria-pressed="false">
           <i class="ph-duotone ph-star"></i>
           <span>טופ 85%+</span>
         </button>
-        <button type="button" class="quick-chip" data-chip="scada" onclick="selectQuickChip('scada')">
+        <button type="button" class="quick-chip" data-chip="scada" onclick="selectQuickChip('scada')" aria-pressed="false">
           <i class="ph-duotone ph-cpu"></i>
           <span>בקרה ו-SCADA</span>
         </button>
-        <button type="button" class="quick-chip" data-chip="solar" onclick="selectQuickChip('solar')">
+        <button type="button" class="quick-chip" data-chip="solar" onclick="selectQuickChip('solar')" aria-pressed="false">
           <i class="ph-duotone ph-sun"></i>
           <span>סולאר ו-PV</span>
         </button>
-        <button type="button" class="quick-chip" data-chip="natural_gas" onclick="selectQuickChip('natural_gas')">
+        <button type="button" class="quick-chip" data-chip="natural_gas" onclick="selectQuickChip('natural_gas')" aria-pressed="false">
           <i class="ph-duotone ph-flame"></i>
           <span>גז טבעי</span>
         </button>
-        <button type="button" class="quick-chip" data-chip="drones" onclick="selectQuickChip('drones')">
+        <button type="button" class="quick-chip" data-chip="drones" onclick="selectQuickChip('drones')" aria-pressed="false">
           <i class="ph-duotone ph-crosshair"></i>
           <span>רחפנים וכטב"ם</span>
         </button>
-        <button type="button" class="quick-chip" data-chip="operations" onclick="selectQuickChip('operations')">
+        <button type="button" class="quick-chip" data-chip="operations" onclick="selectQuickChip('operations')" aria-pressed="false">
           <i class="ph-duotone ph-wrench"></i>
           <span>תפעול ואחזקה</span>
         </button>
-        <button type="button" class="quick-chip" data-chip="salary_verified" onclick="selectQuickChip('salary_verified')">
+        <button type="button" class="quick-chip" data-chip="salary_verified" onclick="selectQuickChip('salary_verified')" aria-pressed="false">
           <i class="ph-duotone ph-currency-circle-dollar"></i>
           <span>שכר מאומת</span>
         </button>
-        <button type="button" class="quick-chip" data-chip="junior_friendly" onclick="selectQuickChip('junior_friendly')">
+        <button type="button" class="quick-chip" data-chip="junior_friendly" onclick="selectQuickChip('junior_friendly')" aria-pressed="false">
           <i class="ph-duotone ph-user-check" style="color: var(--dashboard-lime);"></i>
           <span>מתאים לג'וניור</span>
         </button>
@@ -2608,8 +2989,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <span id="mapMarkersCountText">מציג משרות על המפה</span>
         </div>
         <div style="font-size: 12px; color: var(--dashboard-muted); display: flex; align-items: center; gap: 6px;">
-          <i class="ph-duotone ph-info"></i>
-          <span>מפת Google Maps באנגלית • לחץ על סמן לצפייה בפרטי המשרה</span>
+          <i class="ph-duotone ph-hand-pointing"></i>
+          <span>בחרו סמן לצפייה בפרטי המשרה</span>
         </div>
       </div>
       <div id="liveJobsMap"></div>
@@ -2624,12 +3005,33 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <p id="emptyStateDesc" style="color: var(--dashboard-muted); font-size: 15px; margin: 0;">נסה לבחור לשונית או תחום אחר.</p>
     </div>
 
-    <!-- Footer -->
-    <footer class="dashboard-footer">
-      <div>דשבורד משרות אוטומטי • מותאם עבור עידו גל</div>
-      <div>מעוצב בהשראת ערכת So-Me Design System • Google Sans & Glass Materials</div>
-    </footer>
+  </div>
 
+  <!-- About System Modal -->
+  <div id="aboutModal" class="dashboard-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="aboutModalTitle" onclick="if(event.target===this)closeAboutModal()">
+    <div class="dashboard-card dashboard-modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
+        <h3 id="aboutModalTitle" style="margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+          <i class="ph-duotone ph-info" style="color: var(--dashboard-cyan); font-size: 22px;"></i>
+          <span>אודות מערכת בקרת המשרות</span>
+        </h3>
+        <button type="button" onclick="closeAboutModal()" class="modal-close-btn" aria-label="סגור חלון אודות">
+          <i class="ph-bold ph-x"></i>
+        </button>
+      </div>
+      <div style="font-size: 14px; line-height: 1.6; color: var(--dashboard-text);">
+        <p style="margin-bottom: 12px;">דשבורד משרות אינטראקטיבי אוטומטי מותאם אישית עבור <strong>עידו גל</strong>, במיקוד על הנדסת מכונות, אנרגיה, גז טבעי ומערכות רחפנים וכטב"ם.</p>
+        <p style="margin-bottom: 12px; color: var(--dashboard-muted);">שפת עיצוב ורכיבים: בהשראת <strong>So-Me Design System</strong>, חומרים שקופים (Glassmorphism) וטיפוגרפיית Google Sans.</p>
+        <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; font-size: 12.5px;">
+          <div style="margin-bottom: 6px;"><strong>מקורות מידע:</strong> LinkedIn Jobs, דרושים (Drushim), ומערכות Comeet</div>
+          <div style="margin-bottom: 6px;"><strong>מנוע הערכה:</strong> מודלי Google Gemini עם ניתוח התאמה מדויק</div>
+          <div><strong>סנכרון ענן:</strong> Firebase Realtime Database לשימור משרות שמורות והסרת מנוטרלות</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="button" onclick="closeAboutModal()" class="tool-btn" style="padding: 9px 22px; border-radius: 999px; min-height: 44px; min-width: 80px;">סגור</button>
+      </div>
+    </div>
   </div>
 
   <!-- Sync Modal -->
@@ -2762,8 +3164,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   let currentViewMode = 'grid';
   let allJobsMap = {};
   try {
-    currentViewMode = localStorage.getItem(VIEW_MODE_KEY) || 'grid';
-  } catch(e) {}
+    const savedView = localStorage.getItem(VIEW_MODE_KEY);
+    if (savedView) {
+      currentViewMode = savedView;
+    } else if (typeof window !== 'undefined' && window.innerWidth < 600) {
+      currentViewMode = 'list';
+    } else {
+      currentViewMode = 'grid';
+    }
+  } catch(e) {
+    currentViewMode = (typeof window !== 'undefined' && window.innerWidth < 600) ? 'list' : 'grid';
+  }
   try {
     currentSort = localStorage.getItem(SORT_STORAGE_KEY) || 'date_desc';
   } catch(e) {}
@@ -2804,6 +3215,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         if (starBtn) {
           starBtn.className = isStarred ? 'btn-star is-starred' : 'btn-star';
           starBtn.setAttribute('title', isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב');
+          starBtn.setAttribute('aria-label', isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב');
           starBtn.innerHTML = isStarred ? '<i class="ph-fill ph-star" style="color: var(--dashboard-gold);"></i>' : '<i class="ph-bold ph-star"></i>';
         }
         card.classList.toggle('is-starred-card', isStarred);
@@ -2901,34 +3313,77 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   const CLOUD_SYNC_URL = 'https://job-finder-auto-default-rtdb.firebaseio.com/triage.json';
   let cloudSyncTimeout = null;
   let cloudLastUpdated = 0;
+  let isSyncInProgress = false;
 
-  function setCloudSyncStatus(status) {
+  function formatSyncTime(ts) {
+    if (!ts) return '';
+    try {
+      const d = new Date(ts);
+      return d.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+    } catch(e) {
+      return '';
+    }
+  }
+
+  function setCloudSyncStatus(status, timestamp) {
     const cloudBadge = document.getElementById('cloudSyncStatus');
-    if (!cloudBadge) return;
+    const headerDot = document.getElementById('headerSyncDot');
+    const headerIcon = document.getElementById('headerSyncIcon');
+    const lastSyncEl = document.getElementById('lastSyncTimeChip');
+
+    if (timestamp && lastSyncEl) {
+      const timeStr = formatSyncTime(timestamp);
+      if (timeStr) lastSyncEl.textContent = `סונכרן: ${timeStr}`;
+    }
+
     if (status === 'synced') {
-      cloudBadge.className = 'dashboard-chip cloud-synced';
-      cloudBadge.style.color = 'var(--dashboard-cyan)';
-      cloudBadge.style.borderColor = 'rgba(137, 244, 231, 0.4)';
-      cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: var(--dashboard-cyan); box-shadow: 0 0 8px var(--dashboard-cyan);"></span> <i class="ph-duotone ph-cloud-check"></i> <span>ענן מסונכרן</span>';
+      if (headerDot) {
+        headerDot.className = 'sync-status-dot synced';
+        headerDot.title = 'ענן מסונכרן';
+      }
+      if (headerIcon) headerIcon.classList.remove('ph-spin');
+      if (cloudBadge) {
+        cloudBadge.className = 'dashboard-chip cloud-synced';
+        cloudBadge.style.color = 'var(--dashboard-cyan)';
+        cloudBadge.style.borderColor = 'rgba(137, 244, 231, 0.4)';
+        cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: var(--dashboard-cyan); box-shadow: 0 0 8px var(--dashboard-cyan);"></span> <i class="ph-duotone ph-cloud-check"></i> <span>ענן מסונכרן</span>';
+      }
     } else if (status === 'syncing') {
-      cloudBadge.className = 'dashboard-chip cloud-syncing';
-      cloudBadge.style.color = 'var(--dashboard-gold)';
-      cloudBadge.style.borderColor = 'rgba(255, 211, 104, 0.4)';
-      cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: var(--dashboard-gold); box-shadow: 0 0 8px var(--dashboard-gold);"></span> <i class="ph-duotone ph-cloud-arrow-up"></i> <span>מעדכן ענן...</span>';
+      if (headerDot) {
+        headerDot.className = 'sync-status-dot syncing';
+        headerDot.title = 'מעדכן ענן...';
+      }
+      if (headerIcon) headerIcon.classList.add('ph-spin');
+      if (cloudBadge) {
+        cloudBadge.className = 'dashboard-chip cloud-syncing';
+        cloudBadge.style.color = 'var(--dashboard-gold)';
+        cloudBadge.style.borderColor = 'rgba(255, 211, 104, 0.4)';
+        cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: var(--dashboard-gold); box-shadow: 0 0 8px var(--dashboard-gold);"></span> <i class="ph-duotone ph-cloud-arrow-up"></i> <span>מעדכן ענן...</span>';
+      }
     } else if (status === 'offline' || status === 'error') {
-      cloudBadge.className = 'dashboard-chip cloud-offline';
-      cloudBadge.style.color = '#f87171';
-      cloudBadge.style.borderColor = 'rgba(248, 113, 113, 0.4)';
-      cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: #f87171; box-shadow: 0 0 8px rgba(248, 113, 113, 0.6);"></span> <i class="ph-duotone ph-cloud-slash"></i> <span>לא מקוון</span>';
+      if (headerDot) {
+        headerDot.className = 'sync-status-dot offline';
+        headerDot.title = 'לא מקוון / שגיאת סנכרון';
+      }
+      if (headerIcon) headerIcon.classList.remove('ph-spin');
+      if (cloudBadge) {
+        cloudBadge.className = 'dashboard-chip cloud-offline';
+        cloudBadge.style.color = '#f87171';
+        cloudBadge.style.borderColor = 'rgba(248, 113, 113, 0.4)';
+        cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: #f87171; box-shadow: 0 0 8px rgba(248, 113, 113, 0.6);"></span> <i class="ph-duotone ph-cloud-slash"></i> <span>לא מקוון</span>';
+      }
     }
   }
 
   async function fetchCloudSync() {
+    if (isSyncInProgress) return;
     if (typeof navigator !== 'undefined' && navigator.onLine === false) {
       setCloudSyncStatus('offline');
       return;
     }
+    isSyncInProgress = true;
     try {
+      setCloudSyncStatus('syncing');
       const resp = await fetch(CLOUD_SYNC_URL, { cache: 'no-cache' });
       if (!resp.ok) {
         throw new Error('Sync status: ' + resp.status);
@@ -2982,10 +3437,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           renderCards();
           updateUI();
         }
-        setCloudSyncStatus('synced');
+        setCloudSyncStatus('synced', cloudLastUpdated || Date.now());
+      } else {
+        setCloudSyncStatus('synced', Date.now());
       }
     } catch (e) {
       setCloudSyncStatus('offline');
+    } finally {
+      isSyncInProgress = false;
     }
   }
 
@@ -2995,10 +3454,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   }
 
   async function pushCloudSync() {
+    if (isSyncInProgress) return;
     if (typeof navigator !== 'undefined' && navigator.onLine === false) {
       setCloudSyncStatus('offline');
       return;
     }
+    isSyncInProgress = true;
     setCloudSyncStatus('syncing');
 
     try {
@@ -3020,12 +3481,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         body: JSON.stringify(payload)
       });
       if (resp.ok) {
-        setCloudSyncStatus('synced');
+        cloudLastUpdated = Date.now();
+        setCloudSyncStatus('synced', cloudLastUpdated);
       } else {
         setCloudSyncStatus('offline');
       }
     } catch (e) {
       setCloudSyncStatus('offline');
+    } finally {
+      isSyncInProgress = false;
     }
   }
 
@@ -3647,7 +4111,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   }
 
   let liveJobsMapInstance = null;
-  let markersLayerGroup = null;
+  let markersClusterGroup = null;
 
   function initLiveJobsMap() {
     const mapEl = document.getElementById('liveJobsMap');
@@ -3676,24 +4140,42 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         attribution: '&copy; Google Maps'
       }).addTo(liveJobsMapInstance);
 
-      markersLayerGroup = L.layerGroup().addTo(liveJobsMapInstance);
+      if (typeof L.markerClusterGroup === 'function') {
+        markersClusterGroup = L.markerClusterGroup({
+          spiderfyOnMaxZoom: true,
+          showCoverageOnHover: false,
+          zoomToBoundsOnClick: true,
+          maxClusterRadius: 40,
+          spiderfyDistanceMultiplier: 1.4,
+          iconCreateFunction: function(cluster) {
+            const count = cluster.getChildCount();
+            let sizeClass = 'small';
+            if (count > 25) sizeClass = 'large';
+            else if (count > 8) sizeClass = 'medium';
+            return L.divIcon({
+              html: `<div class="custom-cluster-badge ${sizeClass}"><span>${count}</span></div>`,
+              className: 'marker-cluster-custom',
+              iconSize: L.point(40, 40)
+            });
+          }
+        });
+        liveJobsMapInstance.addLayer(markersClusterGroup);
+      } else {
+        markersClusterGroup = L.layerGroup().addTo(liveJobsMapInstance);
+      }
     } catch(e) {
       console.error('Error initializing Live Jobs Map:', e);
     }
   }
 
   function updateMapMarkers() {
-    if (!liveJobsMapInstance || !markersLayerGroup) return;
+    if (!liveJobsMapInstance || !markersClusterGroup) return;
 
-    markersLayerGroup.clearLayers();
+    markersClusterGroup.clearLayers();
 
     const visibleCards = document.querySelectorAll('.job-card:not(.is-hidden)');
-    const markerCountEl = document.getElementById('mapMarkersCountText');
-    if (markerCountEl) {
-      markerCountEl.textContent = `מציג ${visibleCards.length} משרות על המפה`;
-    }
-
-    if (visibleCards.length === 0) return;
+    const totalVisible = visibleCards.length;
+    let mappedCount = 0;
 
     const latLngBounds = [];
 
@@ -3703,7 +4185,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       if (!job) return;
 
       const [lat, lng] = getJobLatLng(job);
-      latLngBounds.push([lat, lng]);
+      if (lat && lng) {
+        mappedCount++;
+        latLngBounds.push([lat, lng]);
+      }
 
       const score = Number(job.match_score) || 85;
       const scoreColor = score >= 85 ? 'var(--dashboard-cyan)' : (score >= 70 ? 'var(--dashboard-lime)' : 'var(--dashboard-gold)');
@@ -3754,8 +4239,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
             <div style="flex-shrink: 0;">${logoHtml}</div>
             <div style="flex: 1; min-width: 0;">
-              <div style="font-size: 11px; color: var(--dashboard-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${safeComp}</div>
-              <div style="font-size: 13px; font-weight: 700; color: #fff; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${safeTitle}</div>
+              <div style="font-size: 11px; color: var(--dashboard-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" dir="auto"><bdi>${safeComp}</bdi></div>
+              <div style="font-size: 13px; font-weight: 700; color: #fff; line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;" dir="auto"><bdi>${safeTitle}</bdi></div>
             </div>
           </div>
           <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px;">
@@ -3779,8 +4264,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         className: 'glass-leaflet-popup'
       });
 
-      marker.addTo(markersLayerGroup);
+      marker.addTo(markersClusterGroup);
     });
+
+    const markerCountEl = document.getElementById('mapMarkersCountText');
+    if (markerCountEl) {
+      if (mappedCount === 0) {
+        markerCountEl.textContent = 'אין משרות להצגה על המפה';
+      } else if (mappedCount === 1) {
+        markerCountEl.textContent = (totalVisible > 1) ? `מוצגת משרה אחת מתוך ${totalVisible} משרות על המפה` : 'מוצגת משרה אחת על המפה';
+      } else {
+        markerCountEl.textContent = (mappedCount < totalVisible) ? `מוצגות ${mappedCount} מתוך ${totalVisible} משרות על המפה` : `מוצגות ${mappedCount} משרות על המפה`;
+      }
+    }
 
     if (latLngBounds.length > 0) {
       try {
@@ -4041,7 +4537,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     activeQuickChip = chipKey;
     document.querySelectorAll('.quick-chip').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-chip') === chipKey);
+      const isMatch = btn.getAttribute('data-chip') === chipKey;
+      btn.classList.toggle('active', isMatch);
+      btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+      if (isMatch) {
+        try {
+          btn.scrollIntoView({ inline: 'nearest', behavior: 'smooth', block: 'nearest' });
+        } catch(e) {}
+      }
     });
 
     const sectorSelect = document.getElementById('sectorFilter');
@@ -4301,7 +4804,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <div class="job-card-topbar">
           <div class="job-card-topbar-primary">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\\'")}', event)" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
+              <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\\'")}', event)" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}" aria-label="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
                 <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
               </button>
               <button type="button" class="btn-copy-link" onclick="copyJobLink('${safeLink.replace(/'/g, "\\'")}', event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
@@ -4327,8 +4830,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <div class="job-card-main-header">
           ${logoHtml}
           <div class="job-header-text">
-            <div class="job-company-name" dir="auto">${safeCompany}</div>
-            <h2 class="job-title-text" dir="auto">${safeTitle}</h2>
+            <div class="job-company-name" dir="auto" title="${safeCompany}"><bdi>${safeCompany}</bdi></div>
+            <h2 class="job-title-text" dir="auto" title="${safeTitle}"><bdi>${safeTitle}</bdi></h2>
             <div class="job-header-chips">
               <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px;">
                 <i class="ph-duotone ph-map-pin"></i> ${loc}
@@ -4464,7 +4967,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const state = jobStates[id] || 'pending';
 
     headerActions.innerHTML = `
-      <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\\'")}', event); updateModalStar('${id.replace(/'/g, "\\'")}');" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
+      <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\\'")}', event); updateModalStar('${id.replace(/'/g, "\\'")}');" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}" aria-label="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
         <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
       </button>
       <button type="button" class="btn-copy-link" onclick="copyJobLink('${safeLink.replace(/'/g, "\\'")}', event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
@@ -4527,8 +5030,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <div style="display: flex; align-items: flex-start; gap: 14px;">
         ${logoHtml}
         <div style="flex: 1; min-width: 0;">
-          <div style="font-size: 13.5px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 2px;" dir="auto">${safeCompany}</div>
-          <h2 style="font-size: 17.5px; font-weight: 700; color: #fff; margin: 0 0 6px; line-height: 1.3;" dir="auto">${safeTitle}</h2>
+          <div style="font-size: 13.5px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 2px;" dir="auto" title="${safeCompany}"><bdi>${safeCompany}</bdi></div>
+          <h2 style="font-size: 17.5px; font-weight: 700; color: #fff; margin: 0 0 6px; line-height: 1.3;" dir="auto" title="${safeTitle}"><bdi>${safeTitle}</bdi></h2>
           <div style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center;">
             <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px;">
               <i class="ph-duotone ph-map-pin"></i> ${loc}
@@ -4605,6 +5108,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const starBtn = document.querySelector('#jobModalTopActions .btn-star');
     if (starBtn) {
       starBtn.className = `btn-star ${isStarred ? 'is-starred' : ''}`;
+      starBtn.setAttribute('title', isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב');
+      starBtn.setAttribute('aria-label', isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב');
       starBtn.innerHTML = `<i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>`;
     }
   }
@@ -4732,15 +5237,24 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
   }
 
+  let searchDebounceTimer = null;
   function onSearchInput(val) {
     const wrapper = document.getElementById('searchInputWrapper');
     if (wrapper) {
       wrapper.classList.toggle('has-value', Boolean(val && val.trim().length > 0));
     }
-    filterCards();
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
+    }
+    searchDebounceTimer = setTimeout(() => {
+      filterCards();
+    }, 250);
   }
 
   function clearSearchInput() {
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
+    }
     const input = document.getElementById('searchInput');
     const wrapper = document.getElementById('searchInputWrapper');
     if (input) {
@@ -5037,9 +5551,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     // Update Filter Card Footer Result Summary
+    const isFiltered = (selectedSector !== 'all' || (document.getElementById('regionFilter') && document.getElementById('regionFilter').value !== 'all') || searchRaw.length > 0 || (activeQuickChip !== 'all' && activeQuickChip !== currentFilter));
     const filterStatusTextEl = document.getElementById('filterStatusText');
     if (filterStatusTextEl) {
-      const isFiltered = (selectedSector !== 'all' || (document.getElementById('regionFilter') && document.getElementById('regionFilter').value !== 'all') || searchRaw.length > 0 || (activeQuickChip !== 'all' && activeQuickChip !== currentFilter));
       if (isFiltered) {
         filterStatusTextEl.textContent = `נמצאו ${visibleCount} משרות תואמות`;
       } else {
@@ -5067,6 +5581,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     if (statStarredEl) statStarredEl.textContent = totalStarredInStore;
     if (statSavedEl) statSavedEl.textContent = totalSavedInStore;
     if (statRejectedEl) statRejectedEl.textContent = totalRejectedInStore;
+
+    const summaryNew = document.getElementById('summaryNewCount');
+    const summaryStarred = document.getElementById('summaryStarredCount');
+    const summarySaved = document.getElementById('summarySavedCount');
+    const summaryRejected = document.getElementById('summaryRejectedCount');
+    if (summaryNew) summaryNew.textContent = totalNewInStore;
+    if (summaryStarred) summaryStarred.textContent = totalStarredInStore;
+    if (summarySaved) summarySaved.textContent = totalSavedInStore;
+    if (summaryRejected) summaryRejected.textContent = totalRejectedInStore;
 
     // Ensure Active Cube Highlights Match currentFilter
     const activeCube = document.getElementById('cube_' + currentFilter);
@@ -5129,7 +5652,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         const iconEl = document.getElementById('emptyStateIcon');
         const titleEl = document.getElementById('emptyStateTitle');
         const descEl = document.getElementById('emptyStateDesc');
-        if (currentFilter === 'rejected') {
+        if (isFiltered) {
+          if (iconEl) iconEl.innerHTML = '<i class="ph-duotone ph-magnifying-glass"></i>';
+          if (titleEl) titleEl.textContent = 'לא נמצאו משרות בהתאם לסינון';
+          if (descEl) descEl.innerHTML = 'נסה לבחור אזור אחר, לשנות את מילת החיפוש או <button type="button" onclick="resetAllFilters()" style="background:none;border:none;color:var(--dashboard-cyan);cursor:pointer;text-decoration:underline;font:inherit;padding:0;">לאפס את כל המסננים</button>.';
+        } else if (currentFilter === 'rejected') {
           if (iconEl) iconEl.innerHTML = '<i class="ph-duotone ph-trash"></i>';
           if (titleEl) titleEl.textContent = totalRejectedInStore > 0 ? `כל ${totalRejectedInStore} המשרות שהוסרו מנוטרלות לצמיתות` : 'אין כרגע משרות שהוסרו מהסבב';
           if (descEl) descEl.textContent = totalRejectedInStore > 0 ? 'משרות אלו סוננו מחלון ההזדמנויות השבועי ולא ישובו להופיע בדוחות הבאים.' : 'כאשר תסיר משרה מהסבב, היא תופיע כאן.';
@@ -5332,6 +5859,50 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
   function closeSyncModal() {
     document.getElementById('syncModal').classList.add('hidden');
+  }
+
+  let aboutModalPrevFocus = null;
+  function openAboutModal() {
+    aboutModalPrevFocus = document.activeElement;
+    const modal = document.getElementById('aboutModal');
+    if (!modal) return;
+    modal.classList.remove('hidden');
+    const closeBtn = modal.querySelector('.modal-close-btn');
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function closeAboutModal() {
+    const modal = document.getElementById('aboutModal');
+    if (!modal) return;
+    modal.classList.add('hidden');
+    if (aboutModalPrevFocus && typeof aboutModalPrevFocus.focus === 'function') {
+      aboutModalPrevFocus.focus();
+    }
+  }
+
+  function toggleMetricsExpand() {
+    const content = document.getElementById('collapsibleMetricsContent');
+    const btn = document.getElementById('metricsToggleBtn');
+    const label = document.getElementById('metricsToggleText');
+    const icon = document.getElementById('metricsToggleIcon');
+    if (!content) return;
+    const isExpanded = content.classList.toggle('is-expanded');
+    if (btn) btn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+    if (label) label.textContent = isExpanded ? 'צמצם' : 'פירוט';
+    if (icon) {
+      icon.className = isExpanded ? 'ph-bold ph-caret-up' : 'ph-bold ph-caret-down';
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAboutModal();
+        closeSyncModal();
+        closeDuplicatesModal();
+        if (typeof closeJobModal === 'function') closeJobModal();
+      }
+    });
   }
 
   async function confirmSync() {
@@ -5725,8 +6296,18 @@ def generate_interactive_html(jobs, rejected_links, title="דוח משרות א�
         return (d, s)
 
     sorted_jobs = sorted(jobs, key=_sort_key, reverse=True)
+    def _strip_emojis_recursive(obj):
+        if isinstance(obj, dict):
+            return {k: _strip_emojis_recursive(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [_strip_emojis_recursive(x) for x in obj]
+        elif isinstance(obj, str):
+            return re.sub(r'[\U00010000-\U0010ffff\u2600-\u27bf]', '', obj)
+        return obj
+
     def _safe_json_embed(obj):
-        return json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
+        clean_obj = _strip_emojis_recursive(obj)
+        return json.dumps(clean_obj, ensure_ascii=False).replace("</", "<\\/")
 
     jobs_json = _safe_json_embed(sorted_jobs)
     catalog_json = _safe_json_embed(catalog_data)
