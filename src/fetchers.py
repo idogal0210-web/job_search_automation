@@ -71,12 +71,24 @@ def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=1
                                 title = title_tag.get_text(strip=True)
                                 company = comp_tag.get_text(strip=True) if comp_tag else "חברה"
                                 snippet = snippet_tag.get_text(strip=True) if snippet_tag else title
-                                
+
+                                img_tag = card.find("img")
+                                logo = ""
+                                if img_tag:
+                                    delayed = img_tag.get("data-delayed-url") or ""
+                                    src = img_tag.get("src") or ""
+                                    ghost = img_tag.get("data-ghost-url") or ""
+                                    if delayed and delayed != ghost and not delayed.startswith("data:"):
+                                        logo = delayed
+                                    elif src and src != ghost and not src.startswith("data:"):
+                                        logo = src
+
                                 jobs.append({
                                     "title": title,
                                     "company": company,
                                     "link": link,
                                     "snippet": snippet,
+                                    "logo": logo,
                                     "query": kw,
                                     "source": "LinkedIn"
                                 })
@@ -186,6 +198,14 @@ def fetch_drushim_jobs(keywords, health_metrics, max_pages=1):
                             if not company or company == "- חסוי -":
                                 company = "חברה מובילה (דיסקרטי)"
 
+                            # Logo extraction
+                            logo_tag = art.find("img", attrs={"data-nagish": "job-card-company-logo-image"}) or art.find("img")
+                            logo = ""
+                            if logo_tag:
+                                l_src = logo_tag.get("src") or logo_tag.get("data-src") or ""
+                                if l_src and not l_src.startswith("data:"):
+                                    logo = l_src
+
                             # Snippet / Description: extract full context without UI buttons
                             clean_parts = [p for p in art.stripped_strings if p not in ["שיתוף", "פרטי המשרה", "שלח/י באתר החברה", "שלח קורות חיים", "הגש מועמדות"]]
                             snippet = " | ".join(clean_parts)[:1000]
@@ -195,6 +215,7 @@ def fetch_drushim_jobs(keywords, health_metrics, max_pages=1):
                                 "company": company,
                                 "link": link,
                                 "snippet": snippet,
+                                "logo": logo,
                                 "query": kw,
                                 "source": "Drushim"
                             })

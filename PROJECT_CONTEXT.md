@@ -131,7 +131,15 @@ job_search_automation/
   - Mobile optimization: Tested on iPhone 14 (390px) and iPhone SE (375px) featuring a symmetrical 4-pill metric toggle, non-overlapping 2-tier filter grid, zero text truncation in chips, and strictly centered sort icon.
   - Accessibility: WCAG AA compliant 44x44px touch targets on all interactive controls.
 - **Automated test suite:** 49 comprehensive unit and integration tests passing in under 0.1 seconds.
-- **GitOps Save & Sync protocol:** Unified zero-waste cleanup (purged obsolete `integration/` templates and caches), syntax validation, pre-commit secret scanning, and two-way GitHub push.
+- **High-resolution company logo pipeline:**
+  - Scraper extraction: Direct capture of high-res CDN logo URLs in `fetch_linkedin_jobs` (`artdeco-entity-image`) and `fetch_drushim_jobs` (`webapi.drushim.co.il/logos`).
+  - Curated dictionary & word-boundary matching: Curated dictionary of 60+ Israeli and international companies with regex word boundary matching preventing substring collisions (`ratio` inside `corporation`).
+  - 4-Tier client-side logo fallback chain: Direct CDN logo -> Google Favicon S2 (sz=128) -> Unavatar API -> DuckDuckGo Icons API -> Branded monogram avatar.
+  - Complete data backfill: 100% of jobs in `data/weekly_archive.json` (80/80) and 200+ historical catalog records enriched with authentic logos.
+- **Streamlined card tag architecture:**
+  - Reduced tags on job cards from 10-14 to 3-4 clean, high-signal chips (Region, Compact salary format `16k - 20k ₪ (הערכה)`, and Unified experience chip).
+  - Clean topbar without redundant date/source clutter; AI score drivers housed in collapsible deep analysis.
+- **GitOps Save & Sync protocol:** Unified zero-waste cleanup (purged obsolete `integration/` templates and caches), syntax validation, pre-commit secret scanning, zero-emoji verification, and two-way GitHub push.
 
 ### 5.2 In Progress (WIP)
 - **Salary engine market calibration:** Fine-tuning compensation bands based on user feedback and emerging Israeli industrial salary data.

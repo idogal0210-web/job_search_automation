@@ -802,10 +802,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     .job-company-logo {
       width: 50px;
       height: 50px;
-      border-radius: 16px;
-      background: #191d1b;
+      border-radius: 14px;
+      background: #ffffff;
       border: 1px solid var(--dashboard-edge);
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.15);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -817,7 +817,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       width: 100%;
       height: 100%;
       object-fit: contain;
-      padding: 6px;
+      padding: 4px;
     }
     .job-company-avatar {
       width: 100%;
@@ -1866,7 +1866,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         border-radius: 12px !important;
         margin: 0 !important;
         flex-shrink: 0 !important;
-        background: #191e28 !important;
+        background: #ffffff !important;
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
       }
@@ -2100,7 +2100,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         border-radius: 12px !important;
         flex-shrink: 0 !important;
         margin: 0 !important;
-        background: #191e28 !important;
+        background: #ffffff !important;
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
       }
       #cardsContainer.view-list .job-company-avatar {
@@ -3857,11 +3857,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     [['energix', "אנרג'יקס", "אנרג׳יקס"], 'energix-group.com'],
     [['doral', 'דוראל'], 'doral-energy.com'],
     [['nofar', 'נופר אנרגיה', 'נופר'], 'nofar-energy.com'],
+    [['al-mor', 'אל-מור', 'אל מור', 'אלמור'], 'almor.co.il'],
     [['shikun & binui', 'שיכון ובינוי'], 'shikunbinui.com'],
     [['econergy', 'אקונרגיה', 'אקונרג׳י', "אקונרג'י"], 'econergy-international.com'],
     [['teralight', 'טראלייט'], 'teralight-energy.com'],
     [['meshek energy', 'משק אנרגיה', 'סולגרין'], 'meshek-energy.co.il'],
     [['prime energy', 'פריים אנרגיה', "פריים אנרג'י"], 'prime-energy.co.il'],
+    [['nextpower', 'נקסטפאוור'], 'nextpower.com'],
+    [['nextcom', 'נקסטקום'], 'nextcom.co.il'],
     [['h2pro'], 'h2pro.co'],
     [['storedot'], 'store-dot.com'],
     [['electreon', 'אלקטריאון'], 'electreon.com'],
@@ -3899,33 +3902,23 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     [['concentric power', 'concentric'], 'concentricpower.com'],
     [['plant supervision'], 'plantsupervision.com'],
     [['solar solutions', 'פתרונות סולאריים'], 'solarsolutions.co.il'],
-    [['nextcom', 'נקסטקום'], 'nextcom.co.il'],
+    [['saltworks', 'סולטוורקס'], 'saltworkstech.com'],
+    [['x-cooling', 'x cooling', 'אקס קולינג'], 'x-cooling.com'],
     [['allpha innovation', 'allpha'], 'allpha.com'],
-    [['edwards vacuum', 'edwards'], 'edwardsvacuum.com'],
-    [['ultra clean technology', 'uct'], 'uct.com'],
-    [['assatec robotics', 'assatec'], 'assatec.com'],
-    [['e2e solutions', 'e2e'], 'e2e-il.com'],
-    [['michlol solutions', 'מיכלול'], 'michlol-sol.co.il'],
-    [['swissport', 'סוויספורט', 'סוויספורט שרותי מטען'], 'swissport.com'],
-    [['sheba', 'שיבא', 'מרכז רפואי שיבא', 'תל השומר'], 'sheba.co.il'],
-    [['jll', "ג'ונס לאנג"], 'jll.com'],
-    [['merck', 'מרק'], 'merckgroup.com'],
-    [['cross river', 'קרוס ריבר'], 'crossriver.com'],
-    [['elad software', 'אלעד מערכות'], 'elad.co.il'],
-    [['linked magic'], 'linkedmagic.com'],
-    [['or holdings', 'אור אחזקות', 'ר.א אור'], 'or-holdings.co.il'],
 
     // Defense / Aerospace / UAV / Drones
     [['elbit', 'אלביט'], 'elbitsystems.com'],
     [['rafael', 'רפאל'], 'rafael.co.il'],
     [['iai', 'התעשייה האווירית', 'התעשיה האווירית', 'israel aerospace'], 'iai.co.il'],
+    [['tomer', 'תומר', 'תומר חברה ממשלתית'], 'tomer-israel.co.il'],
+    [['amarel', 'אמארל', 'אמרל'], 'amarel.net'],
     [['controp', 'קונטרופ'], 'controp.com'],
     [['xtend'], 'xtend.me'],
     [['percepto', 'פרספטו'], 'percepto.com'],
     [['airobotics', 'איירובוטיקס'], 'airoboticsdrones.com'],
     [['bluebird', 'בלובירד'], 'bluebird-uav.com'],
     [['spearuav', 'ספיר'], 'spearuav.com'],
-    [['parazero'], 'parazero.com'],
+    [['parazero', 'manta air', 'פארזרו'], 'parazero.com'],
     [['flytrex'], 'flytrex.com'],
     [['d-fend', 'די פנד', 'די-פנד'], 'd-fendsolutions.com'],
     [['robotican', 'רובוטיקאן'], 'robotican.co'],
@@ -3941,13 +3934,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     [['roboteam'], 'robo-team.com'],
     [['sightec'], 'sightec.com'],
     [['regulus'], 'regulus.com'],
-    [['rada', 'דראס'], 'drs.com'],
+    [['rada', 'דראס', 'drs rada', 'drs'], 'drs.com'],
     [['bagira', 'בגירה'], 'bagirasys.com'],
     [['aitech'], 'aitechsystems.com'],
     [['airwayz'], 'airwayz.co'],
     [['bet shemesh', 'מנועי בית שמש'], 'bseltd.com'],
+    [['uvision', 'יוויז׳ן', "יוויז'ן"], 'uvisionuav.com'],
+    [['imco', 'אימקו'], 'imco-ind.com'],
 
     // Industry / Engineering / Infrastructure
+    [['electra', 'אלקטרה'], 'electra.co.il'],
     [['netafim', 'נטפים'], 'netafim.com'],
     [['iscar', 'ישקר'], 'iscar.com'],
     [['tower', 'טאוור'], 'towersemi.com'],
@@ -3962,15 +3958,44 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     [['ashtrom', 'אשטרום'], 'ashtrom.co.il'],
     [['shapir', 'שפיר'], 'shapir.co.il'],
     [['shikun', 'שיכון ובינוי'], 'shikunbinui.com'],
-    [['electra', 'אלקטרה'], 'electra.co.il'],
     [['danya cebus', 'דניה סיבוס', 'דניה'], 'danya-cebus.co.il'],
     [['baran', 'ברן'], 'baran-group.com'],
     [['alstom', 'אלסטום'], 'alstom.com'],
     [['teva', 'טבע'], 'teva.co.il'],
     [['bruker'], 'bruker.com'],
     [['philips', 'פיליפס'], 'philips.com'],
+    [['edwards vacuum', 'edwards'], 'edwardsvacuum.com'],
+    [['ultra clean technology', 'uct'], 'uct.com'],
+    [['assatec robotics', 'assatec', 'אסאטק'], 'assatec.com'],
+    [['e2e solutions', 'e2e'], 'e2e-il.com'],
+    [['michlol solutions', 'מיכלול'], 'michlol-sol.co.il'],
+    [['advance eng', 'אדוונס הנדסה', 'אדוונס'], 'advance-eng.co.il'],
+    [['orion', 'ב.מ. אוריון', 'אוריון ושות', 'אוריון'], 'bmorion.com'],
+    [['scheidt & bachmann', 'שיידט את בכמן', 'scheidt'], 'scheidt-bachmann.com'],
+    [['snorkel', 'שנייר ליפט', 'שנייר'], 'snorkellifts.com'],
+    [['niga', 'ניגא שף', 'ניגא'], 'niga.co.il'],
+    [['vpg', 'וי פי ג׳י'], 'vpgsensors.com'],
+    [['zoll', 'זול מדיקל'], 'zoll.com'],
+    [['robokit', 'רובוקיט'], 'robokit.co.il'],
+    [['colmobil', 'כלמוביל'], 'colmobil.co.il'],
+    [['pb israel', 'wsp'], 'wsp.com'],
+    [['swissport', 'סוויספורט', 'סוויספורט שרותי מטען'], 'swissport.com'],
+    [['sheba', 'שיבא', 'מרכז רפואי שיבא', 'תל השומר'], 'sheba.co.il'],
+    [['jll', "ג'ונס לאנג"], 'jll.com'],
+    [['merck', 'מרק'], 'merckgroup.com'],
+    [['flex', 'פלקס'], 'flex.com'],
+    [['jacobs', "ג'ייקובס"], 'jacobs.com'],
 
     // Tech / Software / Staffing
+    [['jobsseek', "ג'ובסיק"], 'jobsseek.co.il'],
+    [['job space', "ג'וב ספייס"], 'jobspace.co.il'],
+    [['shidrug', 'שדרוג מיון והשמה', 'שדרוג'], 'shidrug.co.il'],
+    [['dataway', 'דאטה וויי', 'דאטהווי'], 'dataway.co.il'],
+    [['entrypoint', 'אנטריפוינט'], 'entrypoint.co.il'],
+    [['mertens', 'מרטנס', 'מלם תים', 'malam'], 'malamteam.com'],
+    [['zofen', 'צופן'], 'zofen.com'],
+    [['cross river', 'קרוס ריבר', 'confidential careers'], 'crossriver.com'],
+    [['partner', 'פרטנר'], 'partner.co.il'],
     [['intel', 'realsense', 'אינטל'], 'intel.com'],
     [['apple', 'אפל'], 'apple.com'],
     [['amazon', 'aws', 'אמזון'], 'amazon.com'],
@@ -3994,6 +4019,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     [['manpower', 'מנפאואר'], 'manpower.co.il'],
     [['experis'], 'experis.co.il'],
     [['sqlink'], 'sqlink.com'],
+    [['elad software', 'אלעד מערכות'], 'elad.co.il'],
+    [['linked magic'], 'linkedmagic.com'],
+    [['or holdings', 'אור אחזקות', 'ר.א אור'], 'or-holdings.co.il'],
     [['nestle', 'אסם'], 'nestle.com'],
     [['pepsico', 'קוקה קולה', 'החברה המרכזית'], 'pepsico.com'],
     [['strauss', 'שטראוס'], 'strauss-group.com'],
@@ -4001,34 +4029,58 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     [["l'oréal", 'loreal', 'לוריאל'], 'loreal.com']
   ];
 
+  function matchCompanyWord(text, keyword) {
+    if (!text || !keyword) return false;
+    const t = text.toLowerCase().trim();
+    const k = keyword.toLowerCase().trim();
+    if (t === k) return true;
+    const escaped = k.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');
+    const regex = new RegExp('(?:^|[^a-zA-Z0-9א-ת])' + escaped + '(?:$|[^a-zA-Z0-9א-ת])', 'i');
+    return regex.test(t);
+  }
+
+  function cleanCompanyName(name) {
+    if (!name) return 'חברה';
+    let s = name.trim();
+    s = s.replace(/^[+\\-~|•\\s]+|[+\\-~|•\\s]+$/g, '');
+    return s.trim() || 'חברה';
+  }
+
+  function getCompanyBrandColor(str) {
+    const palette = [
+      ['rgba(0, 229, 255, 0.15)', '#00e5ff'],
+      ['rgba(16, 185, 129, 0.15)', '#10b981'],
+      ['rgba(99, 102, 241, 0.15)', '#818cf8'],
+      ['rgba(245, 158, 11, 0.15)', '#f59e0b'],
+      ['rgba(236, 72, 153, 0.15)', '#ec4899'],
+      ['rgba(139, 92, 246, 0.15)', '#a78bfa']
+    ];
+    let hash = 0;
+    const s = str || 'חברה';
+    for (let i = 0; i < s.length; i++) {
+      hash = (hash << 5) - hash + s.charCodeAt(i);
+      hash |= 0;
+    }
+    const idx = Math.abs(hash) % palette.length;
+    return palette[idx];
+  }
+
   function getCompanyLogoInfo(companyName, customLogo) {
-    const rawName = (companyName || 'חברה').trim();
+    const rawName = cleanCompanyName(companyName);
     const norm = rawName.toLowerCase();
     
     let domain = null;
     for (const [keys, dom] of KNOWN_COMPANY_DOMAINS) {
-      if (keys.some(k => {
-        if (k.length <= 4) {
-          return (' ' + norm + ' ').includes(' ' + k + ' ') || norm === k;
-        }
-        return norm.includes(k);
-      })) {
+      if (keys.some(k => matchCompanyWord(norm, k))) {
         domain = dom;
         break;
       }
     }
 
-    if (!domain) {
-      const cleanLatin = rawName.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-      if (cleanLatin.length >= 3 && !['חברה', 'israel', 'group', 'ltd'].includes(cleanLatin)) {
-        domain = cleanLatin + '.com';
-      }
-    }
-
     let cleanWords = rawName
-      .replace(/[()\\[\\]\\-–•,]/g, ' ')
+      .replace(/[()[\\]\\-–•,|~+]/g, ' ')
       .split(/\\s+/)
-      .filter(w => w && !['בע"מ', 'בע״מ', 'ltd', 'ltd.', 'inc', 'inc.', 'group', 'corp', 'israel', 'ישראל'].includes(w.toLowerCase()));
+      .filter(w => w && !['בע"מ', 'בע״מ', 'בעמ', 'ltd', 'ltd.', 'inc', 'inc.', 'group', 'corp', 'israel', 'ישראל', 'בעל'].includes(w.toLowerCase()));
     if (cleanWords.length === 0) cleanWords = [rawName];
     
     let initials = '';
@@ -4045,27 +4097,74 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
     if (!isIcon) initials = initials.toUpperCase();
 
-    const logoUrl = customLogo || (domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=128` : null);
-    const fallbackUrl = domain ? `https://unavatar.io/${domain}?fallback=false` : '';
+    let primaryUrl = customLogo || null;
+    let initialStep = 0;
+    if (!primaryUrl && domain) {
+      primaryUrl = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(domain) + '&sz=128';
+      initialStep = 1;
+    }
 
-    return { rawName, domain, initials, isIcon, logoUrl, fallbackUrl };
+    return { rawName, domain, initials, isIcon, primaryUrl, initialStep };
+  }
+
+  function handleCompanyLogoError(img, domain) {
+    if (!domain) {
+      showCompanyLogoAvatar(img);
+      return;
+    }
+    const step = parseInt(img.dataset.step || '0', 10);
+    if (step === 0) {
+      img.dataset.step = '1';
+      img.src = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(domain) + '&sz=128';
+    } else if (step === 1) {
+      img.dataset.step = '2';
+      img.src = 'https://unavatar.io/' + encodeURIComponent(domain) + '?fallback=false';
+    } else if (step === 2) {
+      img.dataset.step = '3';
+      img.src = 'https://icons.duckduckgo.com/ip3/' + encodeURIComponent(domain) + '.ico';
+    } else {
+      showCompanyLogoAvatar(img);
+    }
+  }
+
+  function handleCompanyLogoLoad(img, domain) {
+    const step = parseInt(img.dataset.step || '0', 10);
+    if (img.naturalWidth <= 16 && img.naturalHeight <= 16 && step === 1 && domain) {
+      handleCompanyLogoError(img, domain);
+    }
+  }
+
+  function showCompanyLogoAvatar(img) {
+    img.style.display = 'none';
+    const parent = img.parentElement;
+    if (parent) {
+      const avatar = parent.querySelector('.job-company-avatar');
+      if (avatar) avatar.style.display = 'flex';
+    }
   }
 
   function getCompanyLogoHtml(companyName, customLogo) {
     const info = getCompanyLogoInfo(companyName, customLogo);
     const safeComp = info.rawName.replace(/"/g, '&quot;');
+    const safeDom = (info.domain || '').replace(/"/g, '&quot;');
+    const brandColor = getCompanyBrandColor(info.rawName);
 
-    if (info.logoUrl) {
+    if (info.primaryUrl) {
       return `
         <div class="job-company-logo" title="${safeComp}">
-          <img src="${info.logoUrl}" alt="${safeComp}" loading="lazy" onload="if(this.naturalWidth <= 16 && this.naturalHeight <= 16){ this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }" onerror="if(this.dataset.fallbackTried !== '1' && '${info.fallbackUrl}'){ this.dataset.fallbackTried = '1'; this.src = '${info.fallbackUrl}'; } else { this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }" />
-          <div class="job-company-avatar" style="display: none;">${info.initials}</div>
+          <img src="${info.primaryUrl}" 
+               alt="${safeComp}" 
+               loading="lazy" 
+               data-step="${info.initialStep}"
+               onload="handleCompanyLogoLoad(this, '${safeDom}')" 
+               onerror="handleCompanyLogoError(this, '${safeDom}')" />
+          <div class="job-company-avatar" style="display: none; background: ${brandColor[0]}; color: ${brandColor[1]};">${info.initials}</div>
         </div>
       `;
     } else {
       return `
         <div class="job-company-logo" title="${safeComp}">
-          <div class="job-company-avatar">${info.initials}</div>
+          <div class="job-company-avatar" style="background: ${brandColor[0]}; color: ${brandColor[1]};">${info.initials}</div>
         </div>
       `;
     }
@@ -4646,19 +4745,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     let icon = 'ph-briefcase';
 
     if (openness.includes('גבוהה מאוד') || openness.includes('ללא ניסיון') || fullText.includes('ללא ניסיון') || fullText.includes('בוגר טרי') || fullText.includes('הכשרה על חשבון')) {
-      label = 'ללא ניסיון / בוגר טרי';
-      style = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.45); background: rgba(220, 255, 114, 0.12); font-weight: 600;';
+      label = "מתאים לג'וניור / ללא ניסיון";
+      style = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.45); background: rgba(220, 255, 114, 0.12); font-weight: 700;';
       icon = 'ph-sparkle';
     } else if (openness.includes('גבוהה') || openness.includes("ג'וניור") || openness.includes('מתאים להנדסאי בתחילת') || openness.includes('הסמכה טרייה') || openness.includes('1-2') || openness.includes('שנה ניסיון') || title.includes('junior')) {
-      label = "פתוח לג'וניור / 1-2 שנות ניסיון";
-      style = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.45); background: rgba(137, 244, 231, 0.12); font-weight: 600;';
+      label = "מתאים לג'וניור (1-2 שנים)";
+      style = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.45); background: rgba(220, 255, 114, 0.12); font-weight: 700;';
       icon = 'ph-user-check';
     } else if (openness.includes('בינוני') || openness.includes('בינונית') || fullText.includes('2-3') || fullText.includes('3 שנים')) {
-      label = 'ניסיון בינוני (2-3 שנים)';
+      label = '2-3 שנות ניסיון';
       style = 'color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4); background: rgba(255, 211, 104, 0.1);';
       icon = 'ph-clock';
     } else if (openness.includes('נמוכה') || fullText.includes('בכיר') || fullText.includes('5+ שנים') || fullText.includes('5 שנים') || title.includes('senior') || title.includes('lead')) {
-      label = 'דרוש ניסיון משמעותי (3+ שנים)';
+      label = '3+ שנות ניסיון';
       style = 'color: #fca5a5; border-color: rgba(252, 165, 165, 0.4); background: rgba(239, 68, 68, 0.1);';
       icon = 'ph-medal';
     } else if (job.junior_openness && job.junior_openness.trim().length > 0 && job.junior_openness !== 'N/A') {
@@ -4672,6 +4771,40 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <i class="ph-duotone ${icon}"></i> ${label}
       </span>
     `;
+  }
+
+  function formatCompactSalary(salaryRange, salaryType, salaryEvidence, salaryLabel) {
+    if (!salaryRange || salaryRange === 'לא צוין' || salaryRange === 'לא צוין במודעה' || salaryType === 'none') {
+      return {
+        display: 'הערכת שכר חסרה',
+        title: 'לא צוין שכר במודעת המשרה'
+      };
+    }
+
+    let clean = salaryRange.replace(/\\+.*|\\(.*/g, '').trim();
+    clean = clean.replace(/₪|ש"?ח|ILS/gi, '').trim();
+
+    clean = clean.replace(/\\b\\d{1,2}(?:,\\d{3})+\\b|\\b\\d{4,6}\\b/g, (m) => {
+      const raw = m.replace(/,/g, '');
+      const val = parseInt(raw, 10);
+      if (isNaN(val)) return m;
+      if (val % 1000 === 0) return (val / 1000) + 'k';
+      if (val % 100 === 0) return (val / 1000).toFixed(1).replace(/\\.0$/, '') + 'k';
+      return val.toLocaleString('he-IL');
+    });
+
+    if (salaryType === 'job_ad') {
+      return {
+        display: `${clean} ₪ (במודעה)`,
+        title: 'שכר זה נלקח ישירות מפרסום המשרה'
+      };
+    }
+
+    const titleText = escapeHtml(salaryEvidence || salaryLabel || salaryRange || 'הערכת שכר ענפית סטטיסטית');
+    return {
+      display: `${clean} ₪ (הערכה)`,
+      title: titleText
+    };
   }
 
   function stripEmojis(str) {
@@ -4990,39 +5123,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       const classifiedRegion = classifyJobRegion(loc);
       const expChipHtml = getExperienceChip(job);
 
-      let juniorBadgeChip = '';
-      if (isJunior) {
-        juniorBadgeChip = `
-          <span class="dashboard-chip junior-friendly-chip" style="color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.45); background: rgba(220, 255, 114, 0.12); font-weight: 700; font-size: 11px; padding: 2.5px 8px;" title="משרה זו זוהתה כמתאימה לג'וניור או בעלת דרישות ניסיון מקלות">
-            <i class="ph-duotone ph-user-check"></i> מתאים לג'וניור
-          </span>
-        `;
-      }
+      // Format compact high-signal salary display
+      const compactSalary = formatCompactSalary(salaryRange, salaryType, salaryEvidence, salaryLabel);
 
-      // Format clean, explicit salary display
-      let formattedSalaryDisplay = 'לא צוין שכר - הערכה בלבד';
-      let formattedSalaryTitle = 'לא צוין שכר במודעת המשרה';
-      if (salaryType === 'job_ad' && salaryRange && salaryRange !== 'לא צוין במודעה') {
-        formattedSalaryDisplay = `${salaryRange} - צוין במשרה`;
-        formattedSalaryTitle = 'שכר זה נלקח ישירות מפרסום המשרה';
-      } else if (salaryRange && salaryRange !== 'לא צוין במודעה' && salaryType !== 'none') {
-        formattedSalaryDisplay = `${salaryRange} - לא צוין שכר - הערכה בלבד`;
-        formattedSalaryTitle = escapeHtml(salaryEvidence || salaryLabel || 'הערכת שכר ענפית סטטיסטית');
-      }
-
-      // Relevant condition chips (car, shifts, work model)
+      // Relevant condition chip (at most 1 prominent condition)
       let conditionChips = '';
       if (job.has_company_car || (job.salary_range && job.salary_range.includes('רכב צמוד'))) {
-        conditionChips += `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-car"></i> רכב חברה</span>`;
-      }
-      if (job.has_shifts || (job.salary_range && (job.salary_range.includes('משמרות') || job.salary_range.includes('24/7')))) {
-        conditionChips += `<span class="dashboard-chip" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-clock"></i> משמרות 24/7</span>`;
-      }
-      const wm = (job.work_model || '').toLowerCase();
-      if (wm.includes('שטח')) {
-        conditionChips += `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-navigation-arrow"></i> עבודת שטח</span>`;
-      } else if (wm.includes('היברידי') || wm.includes('hybrid')) {
-        conditionChips += `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-laptop"></i> היברידי</span>`;
+        conditionChips = `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-car"></i> רכב חברה</span>`;
+      } else if (job.has_shifts || (job.salary_range && (job.salary_range.includes('משמרות') || job.salary_range.includes('24/7')))) {
+        conditionChips = `<span class="dashboard-chip" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-clock"></i> משמרות 24/7</span>`;
+      } else {
+        const wm = (job.work_model || '').toLowerCase();
+        if (wm.includes('שטח')) {
+          conditionChips = `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-navigation-arrow"></i> עבודת שטח</span>`;
+        } else if (wm.includes('היברידי') || wm.includes('hybrid')) {
+          conditionChips = `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-laptop"></i> היברידי</span>`;
+        }
       }
 
       const card = document.createElement('article');
@@ -5054,14 +5170,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
             </div>
           </div>
-          <div class="job-card-topbar-meta">
-            <span class="dashboard-chip" style="color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); background: rgba(0, 0, 0, 0.2); font-size: 11px; padding: 2.5px 8px;">
-              <i class="ph-duotone ph-calendar-blank"></i> ${escapeHtml(jobDate)}
-            </span>
-            <span class="dashboard-chip" style="${sourceChipStyle}; font-size: 11px; padding: 2.5px 8px;">
-              <i class="ph-duotone ${sourceIcon}"></i> ${escapeHtml(sourceName)}
-            </span>
-          </div>
         </div>
 
         <!-- Title & Company Header -->
@@ -5074,14 +5182,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
               <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px;">
                 <i class="ph-duotone ph-map-pin"></i> ${loc}
               </span>
-              <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 11px; padding: 2.5px 8px;" title="${formattedSalaryTitle}">
-                <i class="ph-duotone ph-currency-circle-dollar"></i> ${formattedSalaryDisplay}
+              <span class="dashboard-chip" style="${salaryChipStyle}; font-size: 11px; padding: 2.5px 8px;" title="${compactSalary.title}">
+                <i class="ph-duotone ph-currency-circle-dollar"></i> ${compactSalary.display}
               </span>
-              ${juniorBadgeChip}
               ${expChipHtml}
               ${conditionChips}
             </div>
-            ${driversHtml}
           </div>
         </div>
 
@@ -5117,6 +5223,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
         <!-- Collapsible Full Information Panels -->
         <div class="job-details-collapsible">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; font-size: 11.5px; color: var(--dashboard-muted); border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 8px;">
+            <span><i class="ph-duotone ph-calendar-blank"></i> פורסם: ${escapeHtml(jobDate)}</span>
+            <span><i class="ph-duotone ${sourceIcon}"></i> מקור: ${escapeHtml(sourceName)}</span>
+          </div>
+          ${driversHtml}
           <div class="job-boxes-grid">
             <div class="job-box">
               <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
@@ -5244,26 +5355,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     const expChipHtml = getExperienceChip(job);
-
-    const isJunior = isJuniorFriendly(job);
-    let juniorBadgeChip = '';
-    if (isJunior) {
-      juniorBadgeChip = `
-        <span class="dashboard-chip junior-friendly-chip" style="color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.45); background: rgba(220, 255, 114, 0.12); font-weight: 700; font-size: 11px; padding: 2.5px 8px;" title="משרה זו זוהתה כמתאימה לג'וניור או בעלת דרישות ניסיון מקלות">
-          <i class="ph-duotone ph-user-check"></i> מתאים לג'וניור
-        </span>
-      `;
-    }
-
-    let formattedSalaryDisplay = 'לא צוין שכר - הערכה בלבד';
-    let formattedSalaryTitle = 'לא צוין שכר במודעת המשרה';
-    if (salaryType === 'job_ad' && salaryRange && salaryRange !== 'לא צוין במודעה') {
-      formattedSalaryDisplay = `${salaryRange} - צוין במשרה`;
-      formattedSalaryTitle = 'שכר זה נלקח ישירות מפרסום המשרה';
-    } else if (salaryRange && salaryRange !== 'לא צוין במודעה' && salaryType !== 'none') {
-      formattedSalaryDisplay = `${salaryRange} - לא צוין שכר - הערכה בלבד`;
-      formattedSalaryTitle = escapeHtml(salaryEvidence || salaryLabel || 'הערכת שכר ענפית סטטיסטית');
-    }
+    const compactSalary = formatCompactSalary(salaryRange, salaryType, salaryEvidence, salaryLabel);
 
     let conditionChips = '';
     if (job.has_company_car || (job.salary_range && job.salary_range.includes('רכב צמוד'))) {
@@ -5289,10 +5381,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px;">
               <i class="ph-duotone ph-map-pin"></i> ${loc}
             </span>
-            <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px; ${salaryChipStyle}" title="${formattedSalaryTitle}">
-              <i class="ph-duotone ph-currency-circle-dollar"></i> ${formattedSalaryDisplay}
+            <span class="dashboard-chip" style="font-size: 11px; padding: 2.5px 8px; ${salaryChipStyle}" title="${compactSalary.title}">
+              <i class="ph-duotone ph-currency-circle-dollar"></i> ${compactSalary.display}
             </span>
-            ${juniorBadgeChip}
             ${expChipHtml}
             ${conditionChips}
           </div>

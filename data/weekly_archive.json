@@ -3,14 +3,14 @@
     "title": "Experimental Systems Engineer",
     "company": "nT-Tao Compact Fusion Power",
     "link": "https://il.linkedin.com/jobs/view/experimental-systems-engineer-at-nt-tao-compact-fusion-power-4479794955",
-    "snippet": "At nT-Tao, we are building a compact magnetic confinement fusion power system: a modular, repeatable unit designed to deliver clean electricity on-site, on- or off-grid. Getting there means solving hard, open problems in plasma physics, and that is the work our physicist's lead.\nFounded in 2019, nT-Tao raised $34 million to date from Honda, East X Ventures, Delek US, NextGear Ventures, and others. The Israel Innovation Authority has awarded us repeated grants, most recently to build our next compact fusion demonstrator.\nPosition Overview\nWe are looking for a hands-on Experimental Systems Engineer to take ownership of our experimental fusion prototypes, laboratory infrastructure, and supporting systems.\nThe role combines experimental operations, multidisciplinary system integration, troubleshooting, maintenance, and continuous improvement.\nYou will be responsible for ensuring that the experimental platform is operational, reliable, and ready to support the company's R&D activities.\nKey Responsibilities\nTake ownership of the day-to-day operation, readiness, maintenance, and reliability of experimental fusion prototypes and supporting laboratory infrastructure.\nPlan, prepare, and conduct experimental campaigns in close collaboration with the physics and engineering teams.\nOperate and monitor multidisciplinary systems, including pulsed-power generators, magnetic systems, vacuum systems, cooling systems, RF/microwave equipment, diagnostics, and control systems.\nConfigure experimental setups, integrate new hardware, and support prototype upgrades and commissioning.\nOperate data acquisition and control systems, collect experimental measurements, and ensure data quality, traceability, and proper documentation.\nDiagnose and troubleshoot mechanical, electrical, electronic, and control-system malfunctions, identify root causes, and implement corrective actions.\nDevelop and maintain experimental procedures, operating protocols, maintenance plans, and safety procedures.\nImprove ",
+    "snippet": "At nT-Tao, we are building a compact magnetic confinement fusion power system: a modular, repeatable unit designed to deliver clean electricity on-site, on- or off-grid. Getting there means solving hard, open problems in plasma physics, and that is the work our physicist's lead.\nFounded in 2019, nT-Tao raised $34 million to date from Honda, East X Ventures, Delek US, NextGear Ventures, and others. The Israel Innovation Authority has awarded us repeated grants, most recently to build our next compact fusion demonstrator.\nPosition Overview\nWe are looking for a hands-on Experimental Systems Engineer to take ownership of our experimental fusion prototypes, laboratory infrastructure, and supporting systems.\nThe role combines experimental operations, multidisciplinary system integration, troubleshooting, maintenance, and continuous improvement.\nYou will be responsible for ensuring that the experimental platform is operational, reliable, and ready to support the company's R&D activities.\nKey Responsibilities\nTake ownership of the day-to-day operation, readiness, maintenance, and reliability of experimental fusion prototypes and supporting laboratory infrastructure.\nPlan, prepare, and conduct experimental campaigns in close collaboration with the physics and engineering teams.\nOperate and monitor multidisciplinary systems, including pulsed-power generators, magnetic systems, vacuum systems, cooling systems, RF/microwave equipment, diagnostics, and control systems.\nConfigure experimental setups, integrate new hardware, and support prototype upgrades and commissioning.\nOperate data acquisition and control systems, collect experimental measurements, and ensure data quality, traceability, and proper documentation.\nDiagnose and troubleshoot mechanical, electrical, electronic, and control-system malfunctions, identify root causes, and implement corrective actions.\nDevelop and maintain experimental procedures, operating protocols, maintenance plans, and safety procedures.\nImprove",
     "query": "Energy Storage Technician",
     "source": "LinkedIn",
     "match_score": 88,
     "concrete_matches_count": 5,
     "reasoning": "המשרה דורשת מהנדס מערכות ניסוי בעל אוריינטציה מעשית חזקה לתפעול מערכות מורכבות, אב-טיפוס, ותשתיות מעבדה. הרקע של עידו כמהנדס מכונות מעשי, ניסיונו הרב במערכות אלקטרו-מכניות ותשתיות אנרגיה מתאימים בול לאופי ההנדסי-תפעולי של תפקיד זה.",
     "sector_key": "energy_tech",
-    "sector": "🔋 אגירת אנרגיה",
+    "sector": "אגירת אנרגיה",
     "location": "ישראל (מרכז / שרון)",
     "company_domain_product": "חברת טכנולוגיית אנרגיה עמוקה המפתחת מערכת היתוך גרעיני ממוגנט קומפקטית לייצור חשמל נקי.",
     "job_summary": "אחריות על תפעול שוטף, תחזוקה ומוכנות של אבות-טיפוס להיתוך גרעיני ותשתיות מעבדה, ביצוע ניסויים בשיתוף מהנדסים ופיזיקאים, ופתרון תקלות מורכבות במערכות ואקום, קירור ובקרה.",
@@ -40,7 +40,8 @@
     "pay_period": "month",
     "p25": null,
     "p50": null,
-    "p75": null
+    "p75": null,
+    "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQFFEZhE4MiLqA/company-logo_100_100/company-logo_100_100/0/1672842875832?e=2147483647&v=beta&t=5WkI2HS2MzwMudQ9ZtB7GyMQaZNO7LAKSENIgbSI5uQ"
   },
   {
     "title": "תהליכי בקרה ו-AI",
@@ -53,7 +54,7 @@
     "concrete_matches_count": 6,
     "reasoning": "עידו מביא עמו שליטה חזקה בכלי AI (Gemini, Copilot), ניתוח נתונים ב-Excel ורקע נרחב בתהליכי בקרה ותפעול, המתאימים היטב לדרישות התפקיד באלתא.",
     "sector_key": "operations",
-    "sector": "⚙️ תהליכים, בקרה ו-AI",
+    "sector": "תהליכים, בקרה ו-AI",
     "location": "אשדוד והסביבה",
     "company_domain_product": "חטיבת אלתא בתעשייה האווירית מתמחה במערכות מכ\"ם, מודיעין אותות, לוחמה אלקטרונית ומערכות משולבות.",
     "job_summary": "הובלת מידע ניהולי ובקרה במפעל הנדסה ומערכות באמצעות ניתוח נתונים, דשבורדים ושילוב כלי AI. התפקיד כולל מעקב אחר KPIs, הפקת דוחות ניהוליים ובניית מצגות הנהלה תוך הטמעת כלי AI חדשניים.",
@@ -83,7 +84,8 @@
     "pay_period": "month",
     "p25": null,
     "p50": null,
-    "p75": null
+    "p75": null,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s"
   },
   {
     "title": "Maintenance Engineer",
@@ -96,7 +98,7 @@
     "concrete_matches_count": 6,
     "reasoning": "התפקיד עוסק באחזקה אלקטרו-מכנית במפעל בקריית גת ומבוסס על עבודה במשמרות ופרוצדורות בטיחות, תחום המתאים להשכלתו כהנדסאי מכונות ולניסיונו במשמרות מבצעיות.",
     "sector_key": "operations",
-    "sector": "🔧 תפעול ואחזקה",
+    "sector": "תפעול ואחזקה",
     "location": "קריית גת",
     "company_domain_product": "מערכות ואקום ובקרת פליטות מתקדמות עבור תעשיית השבבים והמוליכים למחצה.",
     "job_summary": "ביצוע עבודות אחזקה שוטפות ותיקון תקלות בציוד ייצור מורכב בסביבת משמרות מתחלפות. הקפדה על נהלי עבודה ובטיחות מחמירים ותיעוד פעילות האחזקה.",
@@ -126,7 +128,8 @@
     "pay_period": "month",
     "p25": null,
     "p50": null,
-    "p75": null
+    "p75": null,
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQE9BDqdjpwRvg/company-logo_100_100/B4EZ0Z_nVeG8AQ-/0/1774257600258/edwards_logo?e=2147483647&v=beta&t=S_F6oMCEHgS4y3HO4eStkG-hAmSaNHFm9YKrMCTOY6A"
   },
   {
     "title": "Satellite Operator (1007916)",
@@ -139,7 +142,7 @@
     "concrete_matches_count": 2,
     "reasoning": "המשרה דורשת הפעלת מערכות שליטה ובקרה מתקדמות עם דגש על אחריות גבוהה, תנאים המשיקים לניסיון של עידו בחדרי בקרה קריטיים, הגם שמדובר בתחום לוויני שאינו אנרגיה טהורה.",
     "sector_key": "operations",
-    "sector": "⚙️ בקרה ו-SCADA",
+    "sector": "בקרה ו-SCADA",
     "location": "ישראל (מרכז / ארצי)",
     "company_domain_product": "חברת אלעד מערכות מספקת פתרונות טכנולוגיים עסקיים מקצה לקצה בתחומי ה-Data, CRM ודיגיטל.",
     "job_summary": "הפעלת מערכות לוויניות מתקדמות עבור ארגון מוביל, דורש אחריות גבוהה, קבלת החלטות תחת לחץ ועבודה בצוות לטווח ארוך.",
@@ -170,7 +173,8 @@
     "pay_period": "month",
     "p25": null,
     "p50": null,
-    "p75": null
+    "p75": null,
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFSTb09MPJG8A/company-logo_100_100/B4EZtEyL1jHoAU-/0/1766385565507/elad_systems_logo?e=2147483647&v=beta&t=9bCfq2VX0w9TR0EuYBuq2ADG0LkcwR2LSeQ3GDuaukY"
   },
   {
     "title": "NOC Engineer",
@@ -183,7 +187,7 @@
     "concrete_matches_count": 2,
     "reasoning": "למרות שמדובר בחברת פינטק ותוכנה, תפקיד ה-NOC Engineer דורש ניטור מערכות קריטיות 24/7, ניהול אירועים ותקשורת עם צוותי SRE - יכולות שמתאימות לניסיון של עידו בניהול חדר בקרה ותפעול מבצעי.",
     "sector_key": "operations",
-    "sector": "⚙️ בקרה ו-SCADA",
+    "sector": "בקרה ו-SCADA",
     "location": "ירושלים",
     "company_domain_product": "Cross River בונה תשתיות פיננסיות גלובליות הכוללות תשלומים משובצים, כרטיסי אשראי ופתרונות הלוואות.",
     "job_summary": "ניטור סביבות הייצור של החברה מסביב שעון, זיהוי ותעדוף תקלות, טיפול באירועים מקצה לקצה והסלמה לצוותי פיתוח ו-SRE בעת הצורך.",
@@ -213,7 +217,8 @@
     "pay_period": "month",
     "p25": 16000,
     "p50": 18500,
-    "p75": 21000
+    "p75": 21000,
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFjMIFw1Kha1g/company-logo_100_100/company-logo_100_100/0/1642011082695/cross_river_bank_logo?e=2147483647&v=beta&t=F8NaYISULS1SGbIj0QDbmr6FOw7YILH9z17eVZiMvzs"
   },
   {
     "title": "System Engineer - Renewable Energy & Energy Storage Projects",
@@ -226,7 +231,7 @@
     "concrete_matches_count": 3,
     "reasoning": "המשרה מתאימה במדויק לפרופיל של עידו כהנדסאי מכונות עם התמחות באנרגיה סולארית ואגירת אנרגיה (BESS). הרקע המעשי שלו בהקמה, פיקוח ושילוב מערכות חשמל ואנרגיה יאפשר לו להשתלב בהצלחה רבה בפרויקטים של נקסטקום.",
     "sector_key": "energy",
-    "sector": "🔋 אגירת אנרגיה",
+    "sector": "אגירת אנרגיה",
     "location": "ישראל / מרכז",
     "company_domain_product": "נקסטקום היא חברה מובילה בתחום תשתיות תקשורת, אנרגיה מתחדשת, פרויקטים סולאריים ומערכות אגירת אנרגיה.",
     "job_summary": "ניהול, תכנון הנדסי והובלת פרויקטים בתחום האנרגיה המתחדשת ומערכות אגירת אנרגיה (BESS), כולל תיאום טכני, פיקוח בשטח ועבודה ממשקת מול קבלנים וספקים.",
@@ -256,7 +261,8 @@
     "pay_period": "month",
     "p25": null,
     "p50": null,
-    "p75": null
+    "p75": null,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFcEtKaxjSiqg/company-logo_100_100/B4DZv6og5pHEAQ-/0/1769436483754/nextcom_group_2_logo?e=2147483647&v=beta&t=Qt5HlSc3Y6EhUCBKGMGClFsUDVG77SKZYPfOOaiy8pA"
   },
   {
     "title": "Field Service Engineer (Ashdod)",
@@ -269,7 +275,7 @@
     "concrete_matches_count": 8,
     "reasoning": "התאמה גבוהה במיוחד הודות להתמחותו של עידו בגז טבעי והנדסת מכונות, לימודי החשמל והיכרות מעמיקה עם מערכות אנרגיה ובקרה התואמות ישירות לתחזוקת טורבינות גז בתחנת הכוח.",
     "sector_key": "natural_gas",
-    "sector": "🏭 גז טבעי ותשתיות",
+    "sector": "גז טבעי ותשתיות",
     "location": "אשדוד",
     "company_domain_product": "סימנס אנרגיה מפתחת ומספקת פתרונות, טורבינות גז וטכנולוגיות מתקדמות למשק האנרגיה ותחנות כוח.",
     "job_summary": "מתן שירות שדה, פתרון תקלות חומרה ותוכנה והפעלה (Commissioning) למערכות בקרה של טורבינת הגז SGT-A65 בתחנת פז אשדוד. ביצוע כיול לולאות בקרה, עדכוני לוגיקה ובדיקות פונקציונליות להבטחת זמינות ורציפות תפעולית.",
@@ -299,7 +305,8 @@
     "pay_period": "month",
     "p25": null,
     "p50": null,
-    "p75": null
+    "p75": null,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFEP39qSjZBGQ/company-logo_100_100/B4DZ82RPxaHgAQ-/0/1783321919016/siemens_energy_logo?e=2147483647&v=beta&t=W1HK8e0tEvjVap-QjwNYMknz-0FLftC-B2cl7RmR7G0"
   },
   {
     "title": "OCS Technician",
@@ -312,7 +319,7 @@
     "concrete_matches_count": 6,
     "reasoning": "התפקיד מתמקד באחזקת מערכות חשמול עילי (OCS) ותחנות השנאה בתשתית מסילתית, תחום המתאים ישירות לשילוב של הנדסאי מכונות ולימודי חשמל מוסמך.",
     "sector_key": "operations",
-    "sector": "🔧 תפעול ואחזקה",
+    "sector": "תפעול ואחזקה",
     "location": "מרכז / ירושלים",
     "company_domain_product": "תאגיד בינלאומי מוביל לפיתוח רכבות, מערכות תשתית מסילתיות ואלקטריפיקציה של תחבורה ציבורית.",
     "job_summary": "ביצוע תחזוקה מונעת ושוטפת לרשת החשמל העילית (OCS), תחנות השנאה וציוד תשתית מסילתי. איתור תקלות אלקטרו-מכניות, עבודה לפי נהלי בטיחות מחמירים ודיווח במערכות MMIS.",
@@ -342,7 +349,8 @@
     "pay_period": "month",
     "p25": null,
     "p50": null,
-    "p75": null
+    "p75": null,
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI"
   },
   {
     "title": "CAD Operator - Haifa Nazareth LRT Project",
@@ -355,7 +363,7 @@
     "concrete_matches_count": 5,
     "reasoning": "התפקיד תואם את הכשרתו כהנדסאי מכונות ושליטתו בעקרונות שרטוט טכני והרכבות מכניות, אך שם דגש עיקרי על שרטוט CAD רציף במקום על תפעול מערכות אנרגיה וניהול שטח.",
     "sector_key": "operations",
-    "sector": "🏗️ תכנון ותשתיות תחבורה",
+    "sector": "תכנון ותשתיות תחבורה",
     "location": "חיפה והצפון",
     "company_domain_product": "תאגיד בינלאומי מוביל לתשתיות תחבורה מסילתית, רכבות קלות, מערכות איתות ותחבורה ירוקה.",
     "job_summary": "עריכה והפקת שרטוטי מסילה והרכבות מכניות בתוכנת AutoCAD עבור פרויקט הרכבת הקלה חיפה-נצרת. התפקיד כולל הכנת תוכניות לביצוע (For Construction), ממשקי תכנון ומעקב שטח לעדכון שרטוטי As-Built.",
@@ -385,20 +393,21 @@
     "pay_period": "month",
     "p25": null,
     "p50": null,
-    "p75": null
+    "p75": null,
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI"
   },
   {
     "title": "Automation Field Service Technician - Remote",
     "company": "Concentric Power Services",
     "link": "https://il.linkedin.com/jobs/view/automation-field-service-technician-remote-at-concentric-power-services-4477748427",
-    "snippet": "Job Type\nFull-time\nDescription\nConcentric, LLC\nis the nation’s largest independent industrial power provider, delivering forklift power, critical infrastructure, mechanical/HVAC, and dedicated material handling and automation maintenance solutions. Through a nationwide network of technicians, engineers, and support teams, Concentric understands and prioritizes the unique needs of each customer to maximize uptime, improve operational efficiency, and maintain infrastructure. We provide reliable, scalable solutions that support data centers, telecommunications providers, utilities, manufacturing, distribution, commercial facilities, and other mission-critical environments across America.\nJob Summary\nThe\nField\nAutomation Technician\nis responsible for maintaining, troubleshooting, repairing, and optimizing automated systems and industrial equipment to ensure safe, reliable, and efficient operations. This role supports facility productivity by performing preventive and corrective maintenance on a variety of material handling, automation, and building support equipment, including electric forklifts, conveyors, robotic systems, case sealers and erectors, dock equipment, scissor lifts, tuggers, floor scrubbers, and racking systems. The Automation Technician works closely with operations and engineering teams to minimize downtime, improve equipment performance, and support continuous improvement initiatives while adhering to all safety, quality, and maintenance standards. This position reports to a Service Manager or designee and does not have any direct reports.\nKey Job Responsibilities\nReliable attendance and punctuality.\nTimely and accurate completion of all work orders and service records per the company time standard.\nResponsible for being the point of contact for customers.\nPerform and complete preventive maintenance (PM) and repairs.\nFacilitate work and repair requests.\nProvide shift coverage.\nCoordinate and facilitate warranty requests.\nFacilitate outside vendor work ",
+    "snippet": "Job Type\nFull-time\nDescription\nConcentric, LLC\nis the nation’s largest independent industrial power provider, delivering forklift power, critical infrastructure, mechanical/HVAC, and dedicated material handling and automation maintenance solutions. Through a nationwide network of technicians, engineers, and support teams, Concentric understands and prioritizes the unique needs of each customer to maximize uptime, improve operational efficiency, and maintain infrastructure. We provide reliable, scalable solutions that support data centers, telecommunications providers, utilities, manufacturing, distribution, commercial facilities, and other mission-critical environments across America.\nJob Summary\nThe\nField\nAutomation Technician\nis responsible for maintaining, troubleshooting, repairing, and optimizing automated systems and industrial equipment to ensure safe, reliable, and efficient operations. This role supports facility productivity by performing preventive and corrective maintenance on a variety of material handling, automation, and building support equipment, including electric forklifts, conveyors, robotic systems, case sealers and erectors, dock equipment, scissor lifts, tuggers, floor scrubbers, and racking systems. The Automation Technician works closely with operations and engineering teams to minimize downtime, improve equipment performance, and support continuous improvement initiatives while adhering to all safety, quality, and maintenance standards. This position reports to a Service Manager or designee and does not have any direct reports.\nKey Job Responsibilities\nReliable attendance and punctuality.\nTimely and accurate completion of all work orders and service records per the company time standard.\nResponsible for being the point of contact for customers.\nPerform and complete preventive maintenance (PM) and repairs.\nFacilitate work and repair requests.\nProvide shift coverage.\nCoordinate and facilitate warranty requests.\nFacilitate outside vendor work",
     "query": "Rotating Equipment Mechanic",
     "source": "LinkedIn",
     "match_score": 65,
     "concrete_matches_count": 3,
     "reasoning": "המשרה דורשת תחזוקה, פתרון תקלות ואופטימיזציה של מערכות אוטומטיות ותעשייתיות (כולל ציוד חומרה ואלקטרומכանի). הרקע של עידו כהנדסאי מכונות והתנסותו במערכות אלקטרומכניות שטח מתאימים לכך היטב, אם כי מדובר בעבודה פיזית בעיקרה ולא אנרגיה קלאסית.",
     "sector_key": "energy_tech",
-    "sector": "🔧 תפעול ואחזקה",
+    "sector": "תפעול ואחזקה",
     "location": "מרוחק / ארה\"ב (משרה מרחוק)",
     "company_domain_product": "חברת ספקיות חשמל ותשתיות קריטיות בארה\"ב המספקת פתרונות כוח תעשייתיים, מערכות אוטומציה ואחזקה למרכזי נתונים.",
     "job_summary": "אחריות על תחזוקה, אבחון ותיקון של מערכות אוטומטיות וציוד תעשייתי, ביצוע פעולות תחזוקה מונעת ומתקנת, ועבודה מול צוותי הנדסה ותפעול להבטחת זמינות הציוד.",
@@ -428,7 +437,8 @@
     "pay_period": "month",
     "p25": null,
     "p50": null,
-    "p75": null
+    "p75": null,
+    "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQH5lEXI21btYA/company-logo_100_100/company-logo_100_100/0/1630567845124/advanced_battery_technologies_inc__logo?e=2147483647&v=beta&t=wgtCFD9Bzt3NSUk4LHcweNsoJSIePdINLvz_7qjertw"
   },
   {
     "title": "טכנאי/ת שטח – מערכות גז טבעי דחוס  CNG",
@@ -441,7 +451,7 @@
     "concrete_matches_count": 5,
     "reasoning": "המשרה מתאימה בדיוק רקע של עידו כהנדסאי מכונות עם התמחות בגז טבעי ומערכות לחץ גבוה, המשלב יכולות שטח מכניות והיכרות מעמיקה עם תשתיות אנרגיה.",
     "sector_key": "natural_gas",
-    "sector": "🏭 גז טבעי ותשתיות",
+    "sector": "גז טבעי ותשתיות",
     "location": "אלון תבור ואתרים בארץ",
     "company_domain_product": "חברה העוסקת בתחום הגז הטבעי הדחוס (CNG), הפעלת תחנת דחיסה ואספקת אנרגיה לתעשייה.",
     "job_summary": "ביצוע אחזקה שוטפת ומונעת למתקני גז טבעי דחוס, טיפול בתקלות שטח ומערכות לחץ גבוה, ועבודה לצד צוות טכנאים ותיקים.",
@@ -471,7 +481,8 @@
     "pay_period": "month",
     "p25": 17000,
     "p50": 19500,
-    "p75": 22000
+    "p75": 22000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFAwEbgPEIRRw/company-logo_100_100/B4DZ9gfaPiK8AI-/0/1784030274815?e=2147483647&v=beta&t=cSOJdHzJ_nUMyrOF9qs9xGDUB6BWhR7zz_WLr93TGdY"
   },
   {
     "title": "UAV Integrator",
@@ -484,7 +495,7 @@
     "concrete_matches_count": 5,
     "reasoning": "המשרה דורשת רקע רב-תחומי, בניית אב-טיפוס, עבודה אלקטרו-מכנית והרכבות - תחומים בהם עידו שולט היטב בזכות השכלתו כהנדסאי מכונות, הכשרתו כחשמלאי וניסיונו המבצעי.",
     "sector_key": "drones",
-    "sector": "🚁 רחפנים",
+    "sector": "רחפנים",
     "location": "ישראל",
     "company_domain_product": "חברת E2E Solutions IL מפתחת ומתכננת מערכות טכנולוגיות ומוצרים מתקדמים לתחום הביטחוני והרחפנים.",
     "job_summary": "השתלבות בצוות הפיתוח וההנדסה של החברה, בניית אב-טיפוס, הרכבות אלקטרו-מכאניות, חיווט, הלחמה, תמיכה בניסויי מעבדה ושטח ופתרון תקלות רוחביות.",
@@ -514,7 +525,8 @@
     "pay_period": "month",
     "p25": 14000,
     "p50": 16500,
-    "p75": 19000
+    "p75": 19000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGpkjJBR3Uq9Q/company-logo_100_100/B4DZjsIJR4G8AQ-/0/1756308215369/e2eil_logo?e=2147483647&v=beta&t=pPt2A7u8rXMe5xeI0JS9zZjxQO5HevJ86U_wsMBojwQ"
   },
   {
     "title": "חשמלאי/ת מוסמך/ת - מערכות אוטומציה ורובוטיקה",
@@ -527,7 +539,7 @@
     "concrete_matches_count": 4,
     "reasoning": "המשרה מתאימה היטב לפרופיל המעשי של עידו כהנדסאי מכונות וחשמלאי בתהליכי הסמכה, ומשלבת תכנון, חיווט ושילוב מערכות אלקטרו-מכניות ואוטומציה הדורשות הבנה טכנית רחבה.",
     "sector_key": "energy_tech",
-    "sector": "⚙️ בקרה ו-SCADA",
+    "sector": "בקרה ו-SCADA",
     "location": "נהריה, ישראל",
     "company_domain_product": "חברה מובילה בתחום הרובוטיקה והאוטומציה, המפתחת, מתכננת ומתקינה מערכות תעשייתיות ואוטומטיות מתקדמות.",
     "job_summary": "התפקיד כולל אפיון, תכנון, בנייה וחיווט של ארונות חשמל ובקרה למערכות רובוטיות, לצד התקנה, הרצה ומתן שירות באתרים ברחבי הארץ.",
@@ -557,7 +569,8 @@
     "pay_period": "month",
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHhd4Ukqt23Rw/company-logo_100_100/company-logo_100_100/0/1630576647370/assatec_logo?e=2147483647&v=beta&t=1JWmMCggypsVMX2v5NIbKj6W81mmYxv1PqW4CK4fSV8"
   },
   {
     "title": "Facilities Coordinator",
@@ -570,7 +583,7 @@
     "concrete_matches_count": 2,
     "reasoning": "המשרה דורשת ניהול מתקנים וחוויית עבודה באתרי הייטק ופארמה, תחום שבו עידו יכול להשתלב בזכות הרקע הטכני הרב-תחומי שלו, הגם שמדובר בתפקיד תפעולי-משרדי בעיקרו ולא הנדסי-אנרגטי טהור.",
     "sector_key": "operations",
-    "sector": "🔧 תפעול ואחזקה",
+    "sector": "תפעול ואחזקה",
     "location": "ישראל (מרכז)",
     "company_domain_product": "חברת מיכלול סולושנס בע״מ מספקת שירותי ניהול ואחזקת אתרים לתעשיות ההייטק, הפארמה וההשקעות בישראל.",
     "job_summary": "התפקיד כולל אחריות כוללת על חוויית הלקוח והעובד במשרדי החברה, ניהול תפעול ואחזקת המתקנים, ניהול מעברים, הפעלת תוכניות עובדים ושמירה על סביבת עבודה בטוחה ומתקדמת.",
@@ -600,7 +613,8 @@
     "pay_period": "month",
     "p25": null,
     "p50": null,
-    "p75": null
+    "p75": null,
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGUru-IFSujAA/company-logo_100_100/company-logo_100_100/0/1672821595213?e=2147483647&v=beta&t=o9D1l9X_badYYJVIoi1c7icwyEA5tgJ9UckVYgPq8nk"
   },
   {
     "title": "Practical Engineer",
@@ -613,7 +627,7 @@
     "concrete_matches_count": 8,
     "reasoning": "סולאראדג' היא מעסיק יעד מרכזי בתחום האנרגיה הירוקה; המשרה הולמת במדויק את הרקע האלקטרו-מכאני של עידו ולימודי החשמל, תוך שילוב עבודה מעשית במעבדות R&D ותשתיות סולאריות.",
     "sector_key": "solar",
-    "sector": "☀️ PV ומערכות סולאריות",
+    "sector": "PV ומערכות סולאריות",
     "location": "הרצליה",
     "company_domain_product": "פיתוח וייצור ממירי מתח סולאריים, מערכות אגירת אנרגיה (BESS) ופתרונות ניהול אנרגיה חכמים.",
     "job_summary": "הקמה ותחזוקה של מערכי בדיקות חשמליים מורכבים במעבדות הפיתוח של החברה. התפקיד כולל חיווט, הרכבה ואיתור תקלות חשמליות, לצד בניית תשתיות ומתקני בדיקה בשיתוף צוותי הנדסה ו-R&D.",
@@ -647,7 +661,8 @@
     "is_target_company": true,
     "target_category": "energy_tech",
     "status": "QUALIFIED",
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGbyZbX7V9zzg/company-logo_100_100/company-logo_100_100/0/1689147743960/solaredge_logo?e=2147483647&v=beta&t=6svQGAyGX4rPqxAtJex_eCP1aRxvyeSTLH7Bmx9sSjA"
   },
   {
     "link": "https://www.drushim.co.il/job/38658961/55651ee9/",
@@ -701,7 +716,8 @@
     "p25": 13500,
     "p50": 15500,
     "p75": 17500,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://webapi.drushim.co.il/logos/3542059/page/638562001179508427.png"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%90%D7%97%D7%A8%D7%90%D7%99-%D7%AA-%D7%91%D7%A7%D7%A8%D7%94-at-elbit-systems-israel-4479435071",
@@ -755,7 +771,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q"
   },
   {
     "link": "https://www.drushim.co.il/job/38492901/9dfd82bb/",
@@ -809,7 +826,8 @@
     "p25": 16000,
     "p50": 18500,
     "p75": 21000,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://www.google.com/s2/favicons?domain=colmobil.co.il&sz=128"
   },
   {
     "link": "https://www.drushim.co.il/job/38771061/8c05671d/",
@@ -862,7 +880,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://www.google.com/s2/favicons?domain=electra.co.il&sz=128"
   },
   {
     "link": "https://www.drushim.co.il/job/38566659/0e94973f/",
@@ -915,7 +934,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico"
   },
   {
     "link": "https://www.drushim.co.il/job/38696562/dd16c04d/",
@@ -969,7 +989,8 @@
     "p25": 13500,
     "p50": 15500,
     "p75": 17500,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico"
   },
   {
     "link": "https://www.drushim.co.il/job/38696429/93928ab3/",
@@ -1022,7 +1043,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico"
   },
   {
     "link": "https://www.drushim.co.il/job/38803361/bf7793f3/",
@@ -1076,13 +1098,14 @@
     "p25": 16000,
     "p50": 18500,
     "p75": 21000,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://icons.duckduckgo.com/ip3/shidrug.co.il.ico"
   },
   {
     "link": "https://www.drushim.co.il/job/38803342/8a0adc3d/",
     "title": "מנהל/ת משמרת NOC תשתיות לחברה מובילה בשוהם",
     "company": "שדרוג מיון והשמה",
-    "snippet": "מנהל/ת משמרת NOC תשתיות לחברה מובילה בשוהם | שדרוג מיון והשמה | מספר מקומות | שוהם | פתח תקווה | ראשון לציון | חולון | רמלה | תל אביב | 3-4 שנים | משרה מלאה | 20/10/2026 | \"לחוות שרתים בשוהם דרוש/ה מנהל/ת משמרת NOC תשתיות המשרה כוללת: ניהול מוקד הניטור התפעולי לתשתיות הקריטיות, לרבות BMS, EPMS, DCIM, מערכות סביבתיות ומערכת הקריאות. אחראי/ת לאיכות triage, ניהול האירוע, הקפצות, תקשורת, SLA, העברת משמרת ומשמעת תיעוד. • ניהול צוות טכנאי NOC במשמרת, חלוקת משימות, בקרת איכות והעברת מקל. • פיקוח רציף על alarms במערכות BMS/EPMS/DCIM וגיבוש תמונת מצב תפעולית אחודה. • סיווג אירועים לפי חומרה והשפעה, הפעלת מטריצת escalation והקפצת אנשי חשמל/מכונות/ניהול. • ניהול תקשורת אירוע: timeline, updates, tickets, bridge call ודיווח ללקוחות ולמנהלים בהתאם לנוהל. • מעקב אחר SLA, alarm hygiene, קריאות פתוחות, עבודות מתוכננות, disabled alarms וביקורי ספקים. • תחזוקת runbooks, SOP/EOP, רשימות קשר, דוחות משמרת ותרגילי חירום. • תיאום הדוק עם צוותי Facilities ו-IT NOC, תוך שמירה על גבולות אחריות מקצועית. \" | הגשת ",
+    "snippet": "מנהל/ת משמרת NOC תשתיות לחברה מובילה בשוהם | שדרוג מיון והשמה | מספר מקומות | שוהם | פתח תקווה | ראשון לציון | חולון | רמלה | תל אביב | 3-4 שנים | משרה מלאה | 20/10/2026 | \"לחוות שרתים בשוהם דרוש/ה מנהל/ת משמרת NOC תשתיות המשרה כוללת: ניהול מוקד הניטור התפעולי לתשתיות הקריטיות, לרבות BMS, EPMS, DCIM, מערכות סביבתיות ומערכת הקריאות. אחראי/ת לאיכות triage, ניהול האירוע, הקפצות, תקשורת, SLA, העברת משמרת ומשמעת תיעוד. • ניהול צוות טכנאי NOC במשמרת, חלוקת משימות, בקרת איכות והעברת מקל. • פיקוח רציף על alarms במערכות BMS/EPMS/DCIM וגיבוש תמונת מצב תפעולית אחודה. • סיווג אירועים לפי חומרה והשפעה, הפעלת מטריצת escalation והקפצת אנשי חשמל/מכונות/ניהול. • ניהול תקשורת אירוע: timeline, updates, tickets, bridge call ודיווח ללקוחות ולמנהלים בהתאם לנוהל. • מעקב אחר SLA, alarm hygiene, קריאות פתוחות, עבודות מתוכננות, disabled alarms וביקורי ספקים. • תחזוקת runbooks, SOP/EOP, רשימות קשר, דוחות משמרת ותרגילי חירום. • תיאום הדוק עם צוותי Facilities ו-IT NOC, תוך שמירה על גבולות אחריות מקצועית. \" | הגשת",
     "query": "טכנאי מערכות BMS",
     "source": "Drushim",
     "status": "QUALIFIED",
@@ -1130,7 +1153,8 @@
     "p25": 13000,
     "p50": 14500,
     "p75": 16000,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://icons.duckduckgo.com/ip3/shidrug.co.il.ico"
   },
   {
     "link": "https://www.drushim.co.il/job/38650088/dee0cc7c/",
@@ -1183,7 +1207,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://webapi.drushim.co.il/logos/3048743/page/639056431574835927.png"
   },
   {
     "link": "https://www.drushim.co.il/job/38578439/a40dcc99/",
@@ -1237,7 +1262,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://icons.duckduckgo.com/ip3/vpgsensors.com.ico"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/prototyping-engineer-at-nextpower-4472832577",
@@ -1290,7 +1316,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQF2APFUYamUMQ/company-logo_100_100/B4EZs37njPHoAQ-/0/1766169934337?e=2147483647&v=beta&t=I83YB8OHO9y4YXoh1gFgGOK_x_bCfxsDe4CUZr3HKPs"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/ohle-pos-quality-inspector-at-alstom-4478237391",
@@ -1343,7 +1370,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI"
   },
   {
     "link": "https://www.drushim.co.il/job/31937863/7172a3ef/",
@@ -1397,7 +1425,8 @@
     "p25": 13500,
     "p50": 15500,
     "p75": 17500,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png"
   },
   {
     "link": "https://www.drushim.co.il/job/38616154/01c97010/",
@@ -1450,7 +1479,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://icons.duckduckgo.com/ip3/scheidt-bachmann.com.ico"
   },
   {
     "link": "https://www.drushim.co.il/job/38572454/1465b9d1/",
@@ -1504,7 +1534,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png"
   },
   {
     "link": "https://www.drushim.co.il/job/38574088/a3c8b9cb/",
@@ -1558,7 +1589,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://webapi.drushim.co.il/logos/21069/page/637695482451810079.png"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/electrical-engineer-at-enlight-renewable-energy-ltd-enlt-4482072993",
@@ -1612,7 +1644,8 @@
     "p25": 12500,
     "p50": 14500,
     "p75": 16500,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY"
   },
   {
     "link": "https://www.drushim.co.il/job/38596280/6d3e2e48/",
@@ -1666,7 +1699,8 @@
     "p25": 16000,
     "p50": 18500,
     "p75": 21000,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://www.google.com/s2/favicons?domain=partner.co.il&sz=128"
   },
   {
     "link": "https://www.drushim.co.il/job/38803627/53af43d4/",
@@ -1720,7 +1754,8 @@
     "p25": 16000,
     "p50": 18500,
     "p75": 21000,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://www.google.com/s2/favicons?domain=partner.co.il&sz=128"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/electrical-supervisor-at-zofen-advanced-managing-systems-ltd-4479435020",
@@ -1773,7 +1808,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQFxs7dmleI8-w/company-logo_100_100/company-logo_100_100/0/1630597156083?e=2147483647&v=beta&t=_GU95MonzSeuUYn58Z2Lx9VJvP6RvmLLKoDmYDo1HMs"
   },
   {
     "link": "https://www.drushim.co.il/job/38501147/e6250655/",
@@ -1827,7 +1863,8 @@
     "p25": 16000,
     "p50": 18500,
     "p75": 21000,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png"
   },
   {
     "link": "https://www.drushim.co.il/job/38822380/1484f6a7/",
@@ -1880,7 +1917,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-21"
+    "date": "2026-10-21",
+    "logo": "https://webapi.drushim.co.il/logos/1283833/page/637591767225899673.jpg"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%91%D7%95%D7%97%D7%A0-%D7%AA-%D7%90%D7%99%D7%9B%D7%95%D7%AA-at-elbit-systems-israel-4376644845",
@@ -1934,7 +1972,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%AA-%D7%90%D7%99%D7%9B%D7%95%D7%AA-%D7%94%D7%A8%D7%9B%D7%91%D7%95%D7%AA-at-elbit-systems-israel-4430225732",
@@ -1988,7 +2027,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%AA-%D7%94%D7%A8%D7%9B%D7%91%D7%95%D7%AA-%D7%97%D7%A9%D7%9E%D7%9C-%D7%9E%D7%9B%D7%A0%D7%99%D7%A7%D7%94-%D7%95%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%94-at-iai-israel-aerospace-industries-4425833966",
@@ -2042,7 +2082,8 @@
     "p25": 14000,
     "p50": 16500,
     "p75": 19000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A9%D7%A4%D7%A5-%D7%AA-%D7%90%D7%91%D7%99%D7%96%D7%A8%D7%99-%D7%91%D7%A7%D7%A8%D7%AA-%D7%9E%D7%A0%D7%95%D7%A2-76046623-at-iai-israel-aerospace-industries-4369118209",
@@ -2096,7 +2137,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%A9%D7%99%D7%A4%D7%95%D7%A5-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%AA%D7%9E%D7%A1%D7%95%D7%A8%D7%AA-at-iai-israel-aerospace-industries-4324591055",
@@ -2150,7 +2192,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A8%D7%9B%D7%99%D7%91-%D7%94-%D7%95%D7%9E%D7%A4%D7%A2%D7%99%D7%9C-%D7%94-%D7%9E%D7%9B%D7%95%D7%A0%D7%AA-cnc-at-iai-israel-aerospace-industries-4479142195",
@@ -2204,7 +2247,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/pmo-construction-at-enlight-renewable-energy-ltd-enlt-4481575351",
@@ -2258,7 +2302,8 @@
     "p25": 12500,
     "p50": 14500,
     "p75": 16500,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/water-technology-field-technician-at-saltworks-technologies-industrial-water-%2B-lithium-4479429643",
@@ -2311,7 +2356,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQH6B2WuvHeHOg/company-logo_100_100/company-logo_100_100/0/1687378473425/saltworkstech_logo?e=2147483647&v=beta&t=FGjCfxmdBp5kTZMNxPlk98-jlK_UOnyNOY1gv9_v1mE"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/junior-mechanical-engineer-at-m-d-mechanical-devices-ltd-4480014458",
@@ -2364,7 +2410,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQEZYSQA3RBv-A/company-logo_100_100/company-logo_100_100/0/1630587737051/m__d__mechanical_devices_logo?e=2147483647&v=beta&t=UoOCKUQntA3B65wOmnOI3LU7f3PVmFAOoPqJGjrv5Mw"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/electronics-technician-at-confidential-careers-4480000353",
@@ -2417,7 +2464,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHAlnvLlr8B8A/company-logo_100_100/company-logo_100_100/0/1734179952791/goconfidentia_logo?e=2147483647&v=beta&t=4ZKgldVRReqICLn5TO9uD36mT1cF2vh9vePaqIEjJJc"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%09%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%D7%99%D7%9D-%E2%80%93-%D7%A2%D7%91%D7%95%D7%93%D7%95%D7%AA-%D7%9E%D7%95%D7%9C-%D7%A0%D7%AA%D7%B4%D7%A2-at-pb-israel-4475373317",
@@ -2471,7 +2519,8 @@
     "p25": 15000,
     "p50": 17250,
     "p75": 19500,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHbnAX_gKc0DA/company-logo_100_100/B4DZt34qZZIAAQ-/0/1767242901726/wspisrael_logo?e=2147483647&v=beta&t=5dQSJk-qhYLQNm_PNFfJ-1zve1TfzmXUUW8fLcXWHl8"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/datacenter-site-operations-manager-at-microsoft-4480825963",
@@ -2524,13 +2573,14 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=2147483647&v=beta&t=rr_7_bFRKp6umQxIHErPOZHtR8dMPIYeTjlKFdotJBY"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/construction-project-manager-at-bagira-4476737854",
     "title": "Construction Project Manager",
     "company": "Bagira",
-    "snippet": "Bagira is a leader in the field of training and simulation systems worldwide, is seeking an experienced Construction Project Manager to lead the end-to-end design and construction of simulation sites in Israel and abroad.\nThis hands-on role combines architectural and infrastructure planning, drafting, project management, contractor coordination, and on-site supervision-from initial requirements through site handover and readiness for system installation.\nManage simulation-site construction projects from requirements definition and planning through execution, commissioning, and handover.\nTranslate technical and operational system requirements into construction, layout, and infrastructure plans.\nPrepare site layouts, construction drawings, and detailed plans using AutoCAD.\nPlan and coordinate site requirements, including electrical systems, communications, HVAC, lighting, acoustics, safety, accessibility, and related infrastructure.\nPrepare and manage contractor tender documents, evaluate bids, and support the contractor selection process.\nCoordinate and manage architects, structural engineers, professional consultants, contractors, and suppliers.\nDevelop and monitor project schedules, budgets, work plans, and milestones.\nSupervise on-site construction activities and ensure compliance with approved plans, technical requirements, quality standards, schedules, and budgets.\nIdentify design and execution gaps and provide practical solutions during construction.\nConduct inspections, manage punch lists, and follow up on corrective work.\nEnsure site readiness for the installation, integration, and commissioning of simulation systems. Collaborate with internal engineering, technical, operational, and project teams, as well as customers and local partners in Israel and abroad.\nTake full responsibility for obtaining all required occupancy permits, approvals, certificates, “as made” drawing package, and sign-offs from professional engineers and the relevant authorities prior to ",
+    "snippet": "Bagira is a leader in the field of training and simulation systems worldwide, is seeking an experienced Construction Project Manager to lead the end-to-end design and construction of simulation sites in Israel and abroad.\nThis hands-on role combines architectural and infrastructure planning, drafting, project management, contractor coordination, and on-site supervision-from initial requirements through site handover and readiness for system installation.\nManage simulation-site construction projects from requirements definition and planning through execution, commissioning, and handover.\nTranslate technical and operational system requirements into construction, layout, and infrastructure plans.\nPrepare site layouts, construction drawings, and detailed plans using AutoCAD.\nPlan and coordinate site requirements, including electrical systems, communications, HVAC, lighting, acoustics, safety, accessibility, and related infrastructure.\nPrepare and manage contractor tender documents, evaluate bids, and support the contractor selection process.\nCoordinate and manage architects, structural engineers, professional consultants, contractors, and suppliers.\nDevelop and monitor project schedules, budgets, work plans, and milestones.\nSupervise on-site construction activities and ensure compliance with approved plans, technical requirements, quality standards, schedules, and budgets.\nIdentify design and execution gaps and provide practical solutions during construction.\nConduct inspections, manage punch lists, and follow up on corrective work.\nEnsure site readiness for the installation, integration, and commissioning of simulation systems. Collaborate with internal engineering, technical, operational, and project teams, as well as customers and local partners in Israel and abroad.\nTake full responsibility for obtaining all required occupancy permits, approvals, certificates, “as made” drawing package, and sign-offs from professional engineers and the relevant authorities prior to",
     "query": "Solar Project Coordinator",
     "source": "LinkedIn",
     "status": "QUALIFIED",
@@ -2577,7 +2627,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEmtumUUXtYRA/company-logo_100_100/company-logo_100_100/0/1630497988446/bagira_systems_logo?e=2147483647&v=beta&t=WvUWAV2PLgFJq8hfyU_VOw0wCTvTUacUnRwg0fKKB8s"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/electronics-quality-inspector-%E2%80%93-incoming-inspection-at-airobotics-4463511409",
@@ -2631,7 +2682,8 @@
     "p25": 14000,
     "p50": 16500,
     "p75": 19000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQGrCGy2mpCcZA/company-logo_100_100/B56Z9BsGDSLAAI-/0/1783513506270/airobotics_logo?e=2147483647&v=beta&t=B3eKgH3D6XWlQw69n9ahWoGIEe_fWobE1A3QOAl0l9M"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/mechanical-engineer-at-jacobs-4481743660",
@@ -2684,7 +2736,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQEqi0xvuMeuew/company-logo_100_100/B4EZfF35ikHYAQ-/0/1751371454940/jacobs_logo?e=2147483647&v=beta&t=UKW8ggrtSMTSOWMS5cGkK1CV1VF4AhGsIFEwlJkbfSQ"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%0A-jobtitle-drone-instructor-%0A-locationname-netanya-israel-%0A-jobtype-part-time-%0A-workplacetype-onsite-%0A-companyname-%21none%21-%0A-at-robokit-4479498877",
@@ -2738,7 +2791,8 @@
     "p25": 14000,
     "p50": 16500,
     "p75": 19000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHz902JyP7Qkw/company-logo_100_100/B4DaDFS642JgAI-/0/1790016466889/robokit_logo?e=2147483647&v=beta&t=nwjZv8df-PVwFTDXCMPwTOTw_iV_iio43Lm1uKe1VKc"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/test-driver-for-autonomous-vehicles-at-mobileye-4477981204",
@@ -2791,7 +2845,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGMqdNe9MW06Q/company-logo_100_100/company-logo_100_100/0/1658223890583/mobileye_logo?e=2147483647&v=beta&t=Qx5AuX9E7Zbr1GScuv5IGaUrVLVypF7VEOhVaw2Zu88"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/aircraft-mechanic-at-jobsseek-4445199018",
@@ -2845,7 +2900,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFc4u1wp4facA/company-logo_100_100/company-logo_100_100/0/1704712762989/jobsseek_logo?e=2147483647&v=beta&t=Ldqf7J6mMvUr6WGU4z-wifS9Y7rH-2vqgqAy-3p-cgA"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/mechanical-design-engineer-at-manta-air-parachute-recovery-systems-4478975631",
@@ -2899,7 +2955,8 @@
     "p25": 14000,
     "p50": 16500,
     "p75": 19000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQG_nJef_bRj9Q/company-logo_100_100/B4DZgnBQrHHYAU-/0/1753001299176/mantaair_logo?e=2147483647&v=beta&t=Q-KkAlEdyYAJ4rDMc3hOTpN8RmVD9S49Awht8tgaTS8"
   },
   {
     "link": "https://www.drushim.co.il/job/38830987/ab1a8226/",
@@ -2953,7 +3010,8 @@
     "p25": 16000,
     "p50": 18500,
     "p75": 21000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://www.google.com/s2/favicons?domain=colmobil.co.il&sz=128"
   },
   {
     "link": "https://www.drushim.co.il/job/38559534/39430537/",
@@ -3004,7 +3062,8 @@
     "p25": 12740,
     "p50": 12740,
     "p75": 12740,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://webapi.drushim.co.il/logos/3912084/page/638574070215162792.png"
   },
   {
     "link": "https://www.drushim.co.il/job/38824755/882c1eaf/",
@@ -3058,7 +3117,8 @@
     "p25": 12500,
     "p50": 14500,
     "p75": 16500,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://sfilev2.f-static.com/image/users/423667/ftp/my_files/template/AlmorLogoNew.png?id=31965020&sopC=1770839499029"
   },
   {
     "link": "https://www.drushim.co.il/job/38745848/e6a2c10b/",
@@ -3112,7 +3172,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://icons.duckduckgo.com/ip3/bmorion.com.ico"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/project-manager-5698-at-entrypoint-4480790535",
@@ -3165,7 +3226,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFv2iBlVYg6Ng/company-logo_100_100/B4EZYQV.t7G0AQ-/0/1744030920305/entrypoint_logo?e=2147483647&v=beta&t=gdhUP8ssjZKNm1yp2x9FxAbnkfS9IaVwldwE031pOHU"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%90%D7%99%D7%9B%D7%95%D7%AA-qc-at-bet-shemesh-engines-ltd-4469438455",
@@ -3218,7 +3280,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQE_whFuzl4lXw/company-logo_100_100/company-logo_100_100/0/1630485663822/bet_shemesh_engines_ltd_logo?e=2147483647&v=beta&t=_5Iw_T-c3jG2DdAVo4DD-ORc5lqfr7fTtAeLFmjyQ_Y"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/new-product-introduction-engineer-at-imco-industries-ltd-4475438217",
@@ -3272,7 +3335,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHPotyjos8wlw/company-logo_100_100/company-logo_100_100/0/1652685612268/imco_industried_ltd_logo?e=2147483647&v=beta&t=vBP8cwvidx48CY49AEPTv_HcwwjFcjUBuXS4PPBFaS4"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A0%D7%90%D7%99-%D7%AA-%D7%9E%D7%98%D7%95%D7%A1%D7%99%D7%9D-at-elbit-systems-israel-4399768317",
@@ -3326,7 +3390,8 @@
     "p25": 16000,
     "p50": 18500,
     "p75": 21000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/montageleiter-m-w-d-at-x-cooling-4439530497",
@@ -3379,7 +3444,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFIji-f8IFQFw/company-logo_100_100/company-logo_100_100/0/1724703616126?e=2147483647&v=beta&t=2j2UOlhbSR3FfEZtoTtm15g0Ued5m_euh7Wn2GgtCMo"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/quality-engineer-at-flex-4443860816",
@@ -3432,7 +3498,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQFwOFir_jDfeQ/company-logo_100_100/company-logo_100_100/0/1688251504137/flexintl_logo?e=2147483647&v=beta&t=wKwdZMq6WeSA6b0z2q_8bSVTptcveH_rDT59idOR8Mc"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/production-operator-at-drs-rada-technologies-4449922931",
@@ -3485,7 +3552,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGN2IltyLnSog/company-logo_100_100/company-logo_100_100/0/1669672953633/drsradatechnologies_logo?e=2147483647&v=beta&t=VzQZZC7GeBS8KlYWd-vRWnxpmj1qsvfXfaWyvjURLGQ"
   },
   {
     "link": "https://www.drushim.co.il/job/38712047/f4c2f2fd/",
@@ -3539,7 +3607,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://www.google.com/s2/favicons?domain=electra.co.il&sz=128"
   },
   {
     "link": "https://www.drushim.co.il/job/38807351/a43be228/",
@@ -3592,13 +3661,14 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://www.google.com/s2/favicons?domain=snorkellifts.com&sz=128"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/manufacturing-equipment-maintenance-control-at-zoll-medical-corporation-4477130301",
     "title": "Manufacturing Equipment Maintenance & Control",
     "company": "ZOLL Medical Corporation",
-    "snippet": "ZOLL Itamar is an innovative medical device technology company that focuses on the development and manufacturing of Home Sleep Apnea Tests to aid in the diagnosis of respiratory sleep disorders. Our core product is the WatchPAT®️ family, a revolutionary FDA-cleared portable home sleep apnea test device, that is based on propriety signal and analysis. 80% of patients who have sleep apnea are undiagnosed.We are committed to reach those undiagnosed patients and provide testing to promote wellness and enhance overall quality of life. WatchPAT®️ is commercially available within major markets including the U.S., Japan, and Europe, and is the leading home sleep apnea test in the US. ZOLL Itamar’s corporate headquarters, research and development and manufacturing are in Israel with U.S. headquarters based in Atlanta, GA.\nResponsible for preventive and corrective maintenance of production equipment, tools, fixtures, and infrastructure.\nResponsible for troubleshooting and resolving mechanical, electrical, pneumatic, and operational issues affecting production activities.\nResponsible for record maintenance and repair activities. Manage calibration activities and maintain calibration records\nResponsible for Fixtures and testers assembly\nEducation and Certifications:\nElectrical Practical Engineeror or B.Sc. in Electrical / Electronics Engineeringr (graduates)\nAt least 3 years of experience in a similar role.\nPosition Requirements :\nAbility to read technical drawings and specifications.\nKnowledge and experience in working with technical tools.\nKnowledge of computer hardware and software.\nKnowledge and experience in working with multidisciplinary machines.\nExperience working with control and automated systems – advantage.\nKnowledge of working with maintenance management systems – advantage.\nLanguage:\nHebrew (Reading & writing), English\nLocation:\nCaesarea - Israel\nJob type :\nOn-site 5 days in week",
+    "snippet": "ZOLL Itamar is an innovative medical device technology company that focuses on the development and manufacturing of Home Sleep Apnea Tests to aid in the diagnosis of respiratory sleep disorders. Our core product is the WatchPAT® family, a revolutionary FDA-cleared portable home sleep apnea test device, that is based on propriety signal and analysis. 80% of patients who have sleep apnea are undiagnosed.We are committed to reach those undiagnosed patients and provide testing to promote wellness and enhance overall quality of life. WatchPAT® is commercially available within major markets including the U.S., Japan, and Europe, and is the leading home sleep apnea test in the US. ZOLL Itamar’s corporate headquarters, research and development and manufacturing are in Israel with U.S. headquarters based in Atlanta, GA.\nResponsible for preventive and corrective maintenance of production equipment, tools, fixtures, and infrastructure.\nResponsible for troubleshooting and resolving mechanical, electrical, pneumatic, and operational issues affecting production activities.\nResponsible for record maintenance and repair activities. Manage calibration activities and maintain calibration records\nResponsible for Fixtures and testers assembly\nEducation and Certifications:\nElectrical Practical Engineeror or B.Sc. in Electrical / Electronics Engineeringr (graduates)\nAt least 3 years of experience in a similar role.\nPosition Requirements :\nAbility to read technical drawings and specifications.\nKnowledge and experience in working with technical tools.\nKnowledge of computer hardware and software.\nKnowledge and experience in working with multidisciplinary machines.\nExperience working with control and automated systems – advantage.\nKnowledge of working with maintenance management systems – advantage.\nLanguage:\nHebrew (Reading & writing), English\nLocation:\nCaesarea - Israel\nJob type :\nOn-site 5 days in week",
     "query": "I&C Technician",
     "source": "LinkedIn",
     "status": "QUALIFIED",
@@ -3645,7 +3715,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-22"
+    "date": "2026-10-22",
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQHurQGRLq_5lw/company-logo_100_100/company-logo_100_100/0/1734368085773/zoll_medical_corporation_logo?e=2147483647&v=beta&t=RBpJFr6IUfBWfom8OcM0OhwudxwFMBb1P99m00mAvgo"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4481350574",
@@ -3699,7 +3770,8 @@
     "p25": 12500,
     "p50": 14500,
     "p75": 16500,
-    "date": "2026-10-23"
+    "date": "2026-10-23",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGQr2Z6Sml-yg/company-logo_100_100/B4DZbDOQ79HQAU-/0/1747032019101/amarel_logo?e=2147483647&v=beta&t=NHrBXVeTTiaxH93t_pT_VLLsjUBWZi7RbLEnS6qINbM"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/water-technology-field-technicians-at-saltworks-technologies-industrial-water-%2B-lithium-4479429643",
@@ -3752,7 +3824,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-23"
+    "date": "2026-10-23",
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQH6B2WuvHeHOg/company-logo_100_100/company-logo_100_100/0/1687378473425/saltworkstech_logo?e=2147483647&v=beta&t=FGjCfxmdBp5kTZMNxPlk98-jlK_UOnyNOY1gv9_v1mE"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%90%D7%97%D7%A8%D7%90%D7%99-%D7%AA-%D7%91%D7%A7-%D7%90%D7%95%D7%A4%D7%99%D7%A1-%D7%9C%D7%AA%D7%97%D7%95%D7%9D-%D7%94%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99-at-amarel-ltd-4481360255",
@@ -3806,7 +3879,8 @@
     "p25": 13000,
     "p50": 14500,
     "p75": 16000,
-    "date": "2026-10-23"
+    "date": "2026-10-23",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGQr2Z6Sml-yg/company-logo_100_100/B4DZbDOQ79HQAU-/0/1747032019101/amarel_logo?e=2147483647&v=beta&t=NHrBXVeTTiaxH93t_pT_VLLsjUBWZi7RbLEnS6qINbM"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/israel-opex-leader-at-netafim-4475751841",
@@ -3860,7 +3934,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-23"
+    "date": "2026-10-23",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFtDN6UBUBKSA/company-logo_100_100/B4DZxxEecNKYAQ-/0/1771423525029/netafim_logo?e=2147483647&v=beta&t=7o-XZCC-_T33w7n36T7a2xgEiT1CtR7d_6JMZzHkG7A"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/autonomous-vehicle-system-integrator-at-mobileye-4481352802",
@@ -3913,7 +3988,8 @@
     "p25": null,
     "p50": null,
     "p75": null,
-    "date": "2026-10-23"
+    "date": "2026-10-23",
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGMqdNe9MW06Q/company-logo_100_100/company-logo_100_100/0/1658223890583/mobileye_logo?e=2147483647&v=beta&t=Qx5AuX9E7Zbr1GScuv5IGaUrVLVypF7VEOhVaw2Zu88"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/integration-flight-operations-team-lead-at-airobotics-4481338594",
@@ -3967,7 +4043,8 @@
     "p25": 14000,
     "p50": 16500,
     "p75": 19000,
-    "date": "2026-10-23"
+    "date": "2026-10-23",
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQGrCGy2mpCcZA/company-logo_100_100/B56Z9BsGDSLAAI-/0/1783513506270/airobotics_logo?e=2147483647&v=beta&t=B3eKgH3D6XWlQw69n9ahWoGIEe_fWobE1A3QOAl0l9M"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/noc-operator-37577-at-%D7%9E%D7%A8%D7%98%D7%A0%D7%A1-mertens-%E2%80%93-%D7%9E%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%9E%D7%9C%D7%9D-%D7%AA%D7%99%D7%9D-4482471524",
@@ -4021,7 +4098,8 @@
     "p25": 16000,
     "p50": 18500,
     "p75": 21000,
-    "date": "2026-10-23"
+    "date": "2026-10-23",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHTo6Nsm5tThA/company-logo_100_100/B4DZca4c4jGkAQ-/0/1748502696133/mertens_malam_team_logo?e=2147483647&v=beta&t=TrxW5cSOBkoz4X2VxmgudphCYbagU2tXFEDZ7aeRXLw"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/aircraft-mechanic-at-jobsseek-4482461472",
@@ -4075,7 +4153,8 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000,
-    "date": "2026-10-23"
+    "date": "2026-10-23",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFc4u1wp4facA/company-logo_100_100/company-logo_100_100/0/1704712762989/jobsseek_logo?e=2147483647&v=beta&t=Ldqf7J6mMvUr6WGU4z-wifS9Y7rH-2vqgqAy-3p-cgA"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/integration-engineer-at-uvision-group-4482468438",
@@ -4129,6 +4208,7 @@
     "p25": 14000,
     "p50": 16500,
     "p75": 19000,
-    "date": "2026-10-23"
+    "date": "2026-10-23",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQG6OA3Xnw9kmw/company-logo_100_100/B4DZk5uTq5H4AQ-/0/1757610064897/uvisionuav_logo?e=2147483647&v=beta&t=q0mP1XGai-SYdgcKgNa1UFBbiIruSQprKjqvH-T0flA"
   }
 ]
