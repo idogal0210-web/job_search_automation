@@ -2988,6 +2988,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   const historicalCatalog = __CATALOG_JSON__;
   const initialSavedLinks = __INITIAL_SAVED_JSON__;
   const initialRejectedLinks = __INITIAL_REJECTED_JSON__;
+  const initialStarredLinks = __INITIAL_STARRED_JSON__;
   let currentFilter = 'all';
   let currentSort = 'date_desc';
   const STORAGE_KEY = 'ido_job_triage_store';
@@ -3012,11 +3013,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   let starredJobs = loadStarredJobs();
 
   function loadStarredJobs() {
-    try {
-      return JSON.parse(localStorage.getItem(STARRED_STORAGE_KEY) || '{}');
-    } catch(e) {
-      return {};
+    let stars = {};
+    if (typeof initialStarredLinks !== 'undefined' && Array.isArray(initialStarredLinks)) {
+      initialStarredLinks.forEach(link => {
+        if (link) stars[link] = true;
+      });
     }
+    try {
+      const stored = JSON.parse(localStorage.getItem(STARRED_STORAGE_KEY) || '{}');
+      if (stored && typeof stored === 'object') {
+        Object.assign(stars, stored);
+      }
+    } catch(e) {}
+    return stars;
   }
 
   function saveStarredJobs(stars) {
@@ -3035,6 +3044,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       showToast('ph-star', 'הוסר מהמשרות המסומנות בכוכב');
     } else {
       starredJobs[id] = true;
+      if (typeof jobStates !== 'undefined' && jobStates) {
+        if (jobStates[id] === 'purged' || jobStates[id] === 'rejected') {
+          delete jobStates[id];
+          saveTriageState(jobStates);
+        }
+      }
       showToast('ph-fill ph-star', 'המשרה סומנה בכוכב בהצלחה');
     }
     saveStarredJobs(starredJobs);
@@ -3058,10 +3073,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const availableCount = getAllAvailableJobs().length;
     if (currentCardCount !== availableCount) {
       renderCards();
-      return;
+    } else {
+      updateUI();
     }
-
-    updateUI();
+    scheduleCloudPush();
   }
 
   function setViewMode(mode) {
@@ -3124,6 +3139,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           if (state[key] === 'saved' && state[matchingLink] !== 'saved') {
             state[matchingLink] = 'saved';
           }
+          delete state[key];
+        }
+      }
+    });
+
+    // Immunity defense: active batch jobs and starred jobs must never be purged
+    const rawLinksSet = new Set((rawJobsData || []).map(j => j.link));
+    Object.keys(state).forEach(key => {
+      if (state[key] === 'purged') {
+        if (rawLinksSet.has(key) || (typeof starredJobs !== 'undefined' && starredJobs && Boolean(starredJobs[key]))) {
           delete state[key];
         }
       }
@@ -3216,8 +3241,29 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           cloudLastUpdated = new Date(data.updated_at).getTime();
         }
         let changed = false;
+        const rawLinksSet = new Set((rawJobsData || []).map(j => j.link));
+        if (Array.isArray(data.starred)) {
+          let starChanged = false;
+          data.starred.forEach(link => {
+            if (link && !starredJobs[link]) {
+              starredJobs[link] = true;
+              starChanged = true;
+            }
+          });
+          if (starChanged) {
+            saveStarredJobs(starredJobs);
+            changed = true;
+          }
+        }
         if (Array.isArray(data.purged)) {
           data.purged.forEach(link => {
+            if (rawLinksSet.has(link) || Boolean(starredJobs[link])) {
+              if (jobStates[link] === 'purged') {
+                delete jobStates[link];
+                changed = true;
+              }
+              return;
+            }
             if (jobStates[link] !== 'purged') {
               jobStates[link] = 'purged';
               changed = true;
@@ -3288,12 +3334,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
       const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
       const purgedList = Object.keys(jobStates).filter(id => jobStates[id] === 'purged');
+      const starredList = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id]));
       
       const timestamp = new Date().toISOString();
       const payload = {
         saved: savedList,
         rejected: rejectedList,
         purged: purgedList,
+        starred: starredList,
         updated_at: timestamp
       };
 
@@ -5354,14 +5402,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
       const isStarred = Boolean(starredJobs[id]);
       const isCurrentBatchJob = rawJobLinks.has(id);
+      const isPurged = (state === 'purged') && !isCurrentBatchJob && !isStarred;
 
       let matchesTab = false;
       if (currentFilter === 'all') {
-        matchesTab = isCurrentBatchJob && (state !== 'rejected' && state !== 'purged');
+        matchesTab = isCurrentBatchJob && (state !== 'rejected' && !isPurged);
       } else if (currentFilter === 'starred') {
-        matchesTab = (isStarred && state !== 'rejected' && state !== 'purged');
+        matchesTab = (isStarred && state !== 'rejected' && !isPurged);
       } else if (currentFilter === 'saved') {
-        matchesTab = (state === 'saved' && state !== 'rejected' && state !== 'purged');
+        matchesTab = (state === 'saved' && state !== 'rejected' && !isPurged);
       } else if (currentFilter === 'rejected') {
         matchesTab = (state === 'rejected');
       }
@@ -5413,7 +5462,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         matchesSearch = cardText.includes(searchInput);
       }
 
-      if (matchesTab && matchesSector && matchesRegion && matchesQuick && matchesSearch && state !== 'purged') {
+      if (matchesTab && matchesSector && matchesRegion && matchesQuick && matchesSearch && !isPurged) {
         card.style.display = '';
         card.classList.remove('is-hidden');
         visibleCount++;
@@ -5455,10 +5504,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     allAvailable.forEach(j => {
       const st = jobStates[j.link] || 'pending';
       const isSt = Boolean(starredJobs[j.link]);
-      if (st === 'purged') {
+      const isBatch = rawJobLinks.has(j.link);
+      const isPurgedJob = (st === 'purged') && !isBatch && !isSt;
+      if (isPurgedJob) {
         return;
       }
-      if (rawJobLinks.has(j.link) && st !== 'rejected') {
+      if (isBatch && st !== 'rejected') {
         totalNewInStore++;
       }
       if (isSt && st !== 'rejected') {
@@ -5654,7 +5705,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       const chartChipEl = document.getElementById('chartChip');
 
       if (currentFilter === 'saved') {
-        sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'saved' && jobStates[j.link] !== 'rejected' && jobStates[j.link] !== 'purged');
+        sourceJobs = allAvailableJobs.filter(j => {
+          const st = jobStates[j.link] || 'pending';
+          const isSt = Boolean(starredJobs[j.link]);
+          const isPurgedJob = (st === 'purged') && !rawJobLinks.has(j.link) && !isSt;
+          return st === 'saved' && st !== 'rejected' && !isPurgedJob;
+        });
         if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שמורות';
         if (chartChipEl) {
           chartChipEl.innerHTML = `<i class="ph-duotone ph-bookmark-simple"></i> ${sourceJobs.length} שמורות`;
@@ -5662,7 +5718,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           chartChipEl.style.borderColor = 'rgba(220, 255, 114, 0.4)';
         }
       } else if (currentFilter === 'starred') {
-        sourceJobs = allAvailableJobs.filter(j => Boolean(starredJobs[j.link]) && jobStates[j.link] !== 'rejected' && jobStates[j.link] !== 'purged');
+        sourceJobs = allAvailableJobs.filter(j => {
+          const st = jobStates[j.link] || 'pending';
+          const isSt = Boolean(starredJobs[j.link]);
+          const isPurgedJob = (st === 'purged') && !rawJobLinks.has(j.link) && !isSt;
+          return isSt && st !== 'rejected' && !isPurgedJob;
+        });
         if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות בכוכב';
         if (chartChipEl) {
           chartChipEl.innerHTML = `<i class="ph-fill ph-star"></i> ${sourceJobs.length} בכוכב`;
@@ -5681,7 +5742,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         // Default / All: active jobs from current scan
         sourceJobs = (allAvailableJobs || []).filter(j => {
           const st = jobStates[j.link] || 'pending';
-          return rawJobLinks.has(j.link) && st !== 'rejected' && st !== 'purged';
+          const isSt = Boolean(starredJobs[j.link]);
+          const isPurgedJob = (st === 'purged') && !rawJobLinks.has(j.link) && !isSt;
+          return rawJobLinks.has(j.link) && st !== 'rejected' && !isPurgedJob;
         });
         if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות חדשות';
         if (chartChipEl) {
@@ -6004,6 +6067,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   function purgeSingleJob(encLink) {
     const link = decodeURIComponent(encLink);
     if (!link) return;
+    if (Boolean(starredJobs[link])) {
+      showToast('ph-warning', 'לא ניתן למחוק משרה שסומנה בכוכב');
+      return;
+    }
     jobStates[link] = 'purged';
     saveTriageState(jobStates);
     updateUI();
@@ -6051,13 +6118,16 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     if (activeJobs.length <= 1) return;
 
     activeJobs.sort((a, b) => {
+      const aStarred = Boolean(starredJobs[a.link]) ? 1 : 0;
+      const bStarred = Boolean(starredJobs[b.link]) ? 1 : 0;
+      if (aStarred !== bStarred) return bStarred - aStarred;
       const aSaved = jobStates[a.link] === 'saved' ? 1 : 0;
       const bSaved = jobStates[b.link] === 'saved' ? 1 : 0;
       if (aSaved !== bSaved) return bSaved - aSaved;
       return (Number(b.match_score) || 0) - (Number(a.match_score) || 0);
     });
 
-    const toPurge = activeJobs.slice(1);
+    const toPurge = activeJobs.slice(1).filter(j => !Boolean(starredJobs[j.link]));
     toPurge.forEach(j => {
       jobStates[j.link] = 'purged';
     });
@@ -6085,7 +6155,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     rejectedKeys.forEach(id => {
-      jobStates[id] = 'purged';
+      if (!Boolean(starredJobs[id])) {
+        jobStates[id] = 'purged';
+      }
     });
 
     saveTriageState(jobStates);
@@ -6212,16 +6284,35 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
 def generate_interactive_html(jobs, rejected_links, title="דוח משרות אינטראקטיבי | עידו גל", is_weekly=False):
     saved_links = []
+    starred_links = []
     try:
         import requests
-        r = requests.get("https://job-finder-auto-default-rtdb.firebaseio.com/triage.json", timeout=3)
+        r = requests.get("https://job-finder-auto-default-rtdb.firebaseio.com/triage.json", timeout=4)
         if r.status_code == 200:
             cdata = r.json()
-            if cdata and isinstance(cdata.get("saved"), list):
-                raw_s = cdata["saved"]
-                saved_links = [s for s in raw_s if not (s.isdigit() and any(x != s and s in x for x in raw_s))]
+            if cdata:
+                if isinstance(cdata.get("saved"), list):
+                    raw_s = cdata["saved"]
+                    saved_links = [s for s in raw_s if not (s.isdigit() and any(x != s and s in x for x in raw_s))]
+                if isinstance(cdata.get("starred"), list):
+                    starred_links = [s for s in cdata["starred"] if s]
+                elif saved_links:
+                    starred_links = list(saved_links)
     except Exception:
-        pass
+        try:
+            import subprocess
+            out = subprocess.check_output(["curl", "-s", "--max-time", "4", "https://job-finder-auto-default-rtdb.firebaseio.com/triage.json"], text=True)
+            cdata = json.loads(out)
+            if cdata:
+                if isinstance(cdata.get("saved"), list):
+                    raw_s = cdata["saved"]
+                    saved_links = [s for s in raw_s if not (s.isdigit() and any(x != s and s in x for x in raw_s))]
+                if isinstance(cdata.get("starred"), list):
+                    starred_links = [s for s in cdata["starred"] if s]
+                elif saved_links:
+                    starred_links = list(saved_links)
+        except Exception as e:
+            print(f"[WARN] Failed to fetch Firebase triage data: {e}")
     
     # Load historical catalog to support rendering of all saved jobs
     project_root = os.path.dirname(os.path.dirname(__file__))
@@ -6265,11 +6356,12 @@ def generate_interactive_html(jobs, rejected_links, title="דוח משרות א�
     catalog_json = _safe_json_embed(catalog_data)
     saved_json = _safe_json_embed(list(saved_links) if isinstance(saved_links, (set, list)) else [])
     rejected_json = _safe_json_embed(list(rejected_links) if isinstance(rejected_links, (set, list)) else [])
+    starred_json = _safe_json_embed(list(starred_links) if isinstance(starred_links, (set, list)) else [])
 
     total_new = len(jobs)
     total_saved = len(saved_links) if isinstance(saved_links, (list, set)) else 0
     total_rejected = len(rejected_links) if isinstance(rejected_links, (list, set)) else 0
-    total_starred = 0
+    total_starred = len(starred_links) if isinstance(starred_links, (list, set)) else 0
 
     html = HTML_TEMPLATE
     html = html.replace("__TITLE__", title)
@@ -6284,6 +6376,7 @@ def generate_interactive_html(jobs, rejected_links, title="דוח משרות א�
     html = html.replace("__CATALOG_JSON__", catalog_json)
     html = html.replace("__INITIAL_SAVED_JSON__", saved_json)
     html = html.replace("__INITIAL_REJECTED_JSON__", rejected_json)
+    html = html.replace("__INITIAL_STARRED_JSON__", starred_json)
     return html
 
 def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False):
