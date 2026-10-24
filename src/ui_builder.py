@@ -1026,9 +1026,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       box-shadow: 0 0 14px rgba(239, 68, 68, 0.25);
     }
     .action-btn-main-group {
-      display: grid;
-      grid-template-columns: 1fr 1.25fr;
-      gap: 8px;
+      display: flex;
       width: 100%;
     }
     .btn-card-details {
@@ -1622,7 +1620,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         background: rgba(18, 24, 38, 0.90) !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
-        cursor: pointer !important;
+        cursor: default !important;
         position: relative !important;
         overflow: hidden !important;
         transition: transform 0.15s ease, border-color 0.15s ease !important;
@@ -1799,9 +1797,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         width: 100% !important;
       }
       #cardsContainer .action-btn-main-group {
-        display: grid !important;
-        grid-template-columns: 1fr 1.25fr !important;
-        gap: 8px !important;
+        display: flex !important;
         width: 100% !important;
       }
       #cardsContainer .btn-triage {
@@ -4100,7 +4096,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     return str.replace(/\\p{Extended_Pictographic}/gu, '').replace(/[\\u2600-\\u27BF]/g, '').trim();
   }
 
-  function toggleCardDetails(btn) {
+  function toggleCardDetails(btn, evt) {
+    if (evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
     const card = btn.closest('.job-card');
     if (!card) return;
     const details = card.querySelector('.job-details-collapsible');
@@ -4213,6 +4213,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       const safeLink = sanitizeUrl(link);
       const logoHtml = getCompanyLogoHtml(company, job.logo);
 
+      let salaryRange = escapeHtml(stripEmojis(job.salary_range || ''));
+      let salaryType = job.salary_source_type || '';
+      let salaryLabel = escapeHtml(stripEmojis(job.salary_source_label || ''));
+      const salaryEvidence = escapeHtml(stripEmojis(job.salary_evidence || ''));
+      const salaryUrl = sanitizeUrl(job.salary_source_url || '');
+
+      if (!salaryRange || salaryRange === 'לא צוין' || salaryType === 'none') {
+        salaryRange = 'לא צוין במודעה';
+        salaryLabel = 'לא צוין שכר';
+        salaryType = 'none';
+      }
+
       // Source detection & styling
       let sourceName = job.source;
       if (!sourceName) {
@@ -4285,7 +4297,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </div>
 
         <!-- Progressive Disclosure Toggle Button -->
-        <button type="button" class="btn-toggle-details" onclick="toggleCardDetails(this)" aria-expanded="false">
+        <button type="button" class="btn-toggle-details" onclick="toggleCardDetails(this, event)" aria-expanded="false">
           <span>הרחב ניתוח מלא</span>
           <i class="ph-bold ph-caret-down"></i>
         </button>
@@ -4298,6 +4310,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <span><i class="ph-duotone ${sourceIcon}"></i> מקור: ${escapeHtml(sourceName)}</span>
           </div>
           <div class="job-boxes-grid">
+            ${salaryType !== 'none' && salaryRange !== 'לא צוין במודעה' ? `
+            <div class="job-box highlight" style="border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.05);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <strong style="color: var(--dashboard-cyan);"><i class="ph-duotone ph-currency-circle-dollar"></i> הערכת שכר ואמינות מקור:</strong>
+                <span style="font-size: 11.5px; font-weight: 600; color: var(--dashboard-cyan);">${salaryLabel}</span>
+              </div>
+              <div style="font-size: 14.5px; font-weight: 700; color: #ffffff; margin-bottom: 2px;">
+                ${salaryRange}
+              </div>
+              <div style="font-size: 11px; color: var(--dashboard-muted); margin-bottom: 4px;">
+                בסיס נתונים: שכר חודשי ברוטו למשרה מלאה (100% משרה)
+              </div>
+              ${salaryEvidence ? `<div style="font-size: 12px; color: #cbd5e1; line-height: 1.4; margin-bottom: 4px;">${salaryEvidence}</div>` : ''}
+              ${salaryUrl && salaryUrl !== '#' ? `<a href="${salaryUrl}" target="_blank" rel="noopener noreferrer" style="font-size: 11.5px; color: var(--dashboard-cyan); text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;"><span>עיון בטבלת שכר ענפית מוסמכת</span> <i class="ph-duotone ph-arrow-square-out"></i></a>` : ''}
+            </div>
+            ` : ''}
             <div class="job-box">
               <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
               <span>${jobSum}</span>
@@ -4312,18 +4340,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         <!-- Action Bar -->
         <div class="job-actions-bar">
           <div class="action-btn-group">
-            <button onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'saved')" class="btn-triage action-save-btn">
+            <button type="button" onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'saved', event)" class="btn-triage action-save-btn">
               <i class="ph-duotone ph-bookmark-simple"></i> <span class="btn-text">שמור להגשה</span>
             </button>
-            <button onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'rejected')" class="btn-triage action-reject-btn">
+            <button type="button" onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'rejected', event)" class="btn-triage action-reject-btn">
               <i class="ph-duotone ph-x"></i> <span>הסר משרה</span>
             </button>
           </div>
           <div class="action-btn-main-group">
-            <button type="button" onclick="openJobModal('${id.replace(/'/g, "\\'")}')" class="btn-card-details">
-              <i class="ph-duotone ph-arrows-out-simple"></i> <span>פרטים מלאים</span>
-            </button>
-            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply">
+            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply" onclick="event.stopPropagation()">
               <span>הגש מועמדות</span> <i class="ph-duotone ph-arrow-up-right"></i>
             </a>
           </div>
@@ -4331,13 +4356,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       `;
 
       allJobsMap[id] = job;
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('.btn-star') || e.target.closest('.btn-copy-link') || e.target.closest('.btn-triage') || e.target.closest('.btn-apply') || e.target.closest('.btn-toggle-details') || e.target.closest('.btn-card-details')) {
-          return;
-        }
-        openJobModal(id);
-      });
-
       container.appendChild(card);
     });
 
@@ -4548,7 +4566,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     changeSort(nextSort);
   }
 
-  function toggleAction(id, action) {
+  function toggleAction(id, action, evt) {
+    if (evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
     const current = jobStates[id];
     if (current === action) {
       delete jobStates[id];
