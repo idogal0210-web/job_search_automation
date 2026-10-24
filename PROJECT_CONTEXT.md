@@ -174,6 +174,15 @@ job_search_automation/
 - **No Hardcoded Credentials:** Never place API keys, passwords, or tokens in source code, commit history, or logs.
 - **Pre-commit Scan:** All staged files must pass regex scanning for credentials before committing.
 
+### 6.6 Curated Job Tags & Triage State Parity
+- **5 Curated Tags:** The dashboard strictly displays up to 5 verified operational tags positioned directly beneath `.job-card-main-header` and above `.job-bubbles-wrapper`:
+  1. `שכר` (Stated Salary): Only when explicitly stated in the job ad (`salary_source_type === 'job_ad'`); displays the exact figures.
+  2. `עבודת שטח` (Field Work): Triggered only when field work/technician/maintenance is explicitly stated.
+  3. `רכב חברה` (Company Car): Triggered only when company vehicle/attached car is explicitly stated (not driver license alone).
+  4. `משמרות 24/7` (24/7 Shifts / NOC): Triggered only on explicit 24/7 rotation, night shifts, or 24/7 control room/NOC.
+  5. `Junior` (Entry-Level / Beginners): Triggered on 0-2 years experience, "Junior", or entry-level beginner wording.
+- **Triage Tabs Parity:** Starred jobs automatically transfer from "חדשות" to "בכוכב", and saved jobs transfer to "נשמרו". Default sort is `date_desc`, ensuring newest jobs are prominently displayed first.
+
 ---
 
 ## 7. MCP Servers Usage Policy & Operational Protocol

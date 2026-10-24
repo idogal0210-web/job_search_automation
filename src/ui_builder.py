@@ -864,6 +864,55 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       text-overflow: ellipsis;
       text-align: start;
     }
+    /* Curated Operational Tags */
+    .job-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin: 2px 0 8px 0;
+    }
+    .job-tag-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      line-height: 1.3;
+      white-space: nowrap;
+      letter-spacing: 0.1px;
+    }
+    .job-tag-pill i {
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .job-tag-pill.tag-salary {
+      background: rgba(52, 211, 153, 0.12);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      color: #6ee7b7;
+    }
+    .job-tag-pill.tag-field {
+      background: rgba(251, 146, 60, 0.12);
+      border: 1px solid rgba(251, 146, 60, 0.35);
+      color: #fdba74;
+    }
+    .job-tag-pill.tag-car {
+      background: rgba(96, 165, 250, 0.12);
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      color: #93c5fd;
+    }
+    .job-tag-pill.tag-shifts {
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      color: #c084fc;
+    }
+    .job-tag-pill.tag-junior {
+      background: rgba(45, 212, 191, 0.12);
+      border: 1px solid rgba(45, 212, 191, 0.35);
+      color: #5eead4;
+    }
     /* 2 Distinct Bubbles: Domain & Requirements */
     .job-bubbles-wrapper {
       display: flex;
@@ -1767,6 +1816,22 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         margin: 0 0 5px 0 !important;
         letter-spacing: -0.1px !important;
         overflow-wrap: break-word !important;
+      }
+      #cardsContainer .job-card-tags {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 5px !important;
+        margin: 2px 0 8px 0 !important;
+        width: 100% !important;
+      }
+      #cardsContainer .job-tag-pill {
+        font-size: 10.5px !important;
+        padding: 2.5px 7px !important;
+        gap: 4px !important;
+      }
+      #cardsContainer .job-tag-pill i {
+        font-size: 11px !important;
       }
       #cardsContainer .job-bubbles-wrapper {
         display: flex !important;
@@ -4026,6 +4091,75 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     return 'אנרגיה';
   }
 
+  function getJobCuratedTags(job) {
+    const tags = [];
+    if (!job) return tags;
+
+    // 1. Stated Salary: ONLY if stated in original ad
+    const salarySource = (job.salary_source_type || '').toLowerCase();
+    const salaryVal = (job.salary_range || '').trim();
+    if ((salarySource === 'job_ad' || salarySource === 'ad' || salarySource === 'employer') && salaryVal && salaryVal !== 'לא צוין במודעה') {
+      tags.push({
+        type: 'tag-salary',
+        icon: 'ph-bold ph-currency-circle-dollar',
+        label: salaryVal
+      });
+    }
+
+    // Text corpus for keywords
+    const texts = [
+      job.title || '',
+      job.snippet || '',
+      job.company_requirements || '',
+      job.job_summary || '',
+      job.experience_strengths || '',
+      job.reasoning || ''
+    ];
+    const fullText = texts.join(' ').toLowerCase();
+
+    // 2. Field Work
+    const fieldRegex = /(?:עבודת שטח|טכנאי שטח|מהנדס שטח|אתרי לקוח|התקנות שטח|שירות שטח|פעילות שטח|אנשי שטח|field technician|field engineer|field service|field operations)/i;
+    if (fieldRegex.test(fullText)) {
+      tags.push({
+        type: 'tag-field',
+        icon: 'ph-bold ph-wrench',
+        label: 'עבודת שטח'
+      });
+    }
+
+    // 3. Company Car
+    const carRegex = /(?:רכב חברה|רכב צמוד|רכב שירות|כולל רכב|company car)/i;
+    if (carRegex.test(fullText)) {
+      tags.push({
+        type: 'tag-car',
+        icon: 'ph-bold ph-car',
+        label: 'רכב חברה'
+      });
+    }
+
+    // 4. 24/7 Shifts / NOC
+    const shiftsRegex = /(?:24[/]7|משמרות 24[/]7|סבב 24[/]7|משמרות לילה|לילות וסופ["״]?ש|לילות וסופי שבוע|noc 24[/]7|חדר בקרה 24[/]7|24[/]7 shifts|משמרות כולל לילות|סבב משמרות מלא)/i;
+    if (shiftsRegex.test(fullText)) {
+      tags.push({
+        type: 'tag-shifts',
+        icon: 'ph-bold ph-clock-countdown',
+        label: 'משמרות 24/7'
+      });
+    }
+
+    // 5. Junior / Entry-Level
+    const juniorRegex = /(?:junior|ג['"״]?וניור|entry[ -]?level|ללא ניסיון|ללא נסיון|0-2 שנות ניסיון|עד שנתיים ניסיון|מתאים למתחילים|פתיחות לבוגרים ללא ניסיון|הכשרה מלאה על חשבון החברה|דריסת רגל|תפקיד כניסה)/i;
+    if (juniorRegex.test(fullText)) {
+      tags.push({
+        type: 'tag-junior',
+        icon: 'ph-bold ph-graduation-cap',
+        label: 'Junior'
+      });
+    }
+
+    return tags;
+  }
+
   let jobStates = loadTriageState();
 
   function getAllAvailableJobs() {
@@ -4235,6 +4369,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       const isStarred = Boolean(starredJobs[id]);
       const classifiedRegion = classifyJobRegion(loc);
 
+      const curatedTags = getJobCuratedTags(job);
+      let tagsHtml = '';
+      if (curatedTags && curatedTags.length > 0) {
+        const pills = curatedTags.map(t => `<span class="job-tag-pill ${t.type}"><i class="${t.icon}"></i><span>${escapeHtml(t.label)}</span></span>`).join('');
+        tagsHtml = `<div class="job-card-tags">${pills}</div>`;
+      }
+
       const card = document.createElement('article');
       card.setAttribute('data-id', id);
       card.setAttribute('data-sector', secKey);
@@ -4271,6 +4412,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
             <h2 class="job-title-text" dir="auto" title="${safeTitle}"><bdi>${safeTitle}</bdi></h2>
           </div>
         </div>
+
+        <!-- Curated Tags (0 to 5 tags, flexible) -->
+        ${tagsHtml}
 
         <!-- 2 Distinct Bubbles: Domain & Requirements -->
         <div class="job-bubbles-wrapper">
@@ -4360,18 +4504,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה.'));
     const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
     const logoHtml = getCompanyLogoHtml(company, job.logo);
-    let salaryRange = escapeHtml(stripEmojis(job.salary_range || ''));
-    let salaryType = job.salary_source_type || '';
     const companyBdi = `<bdi dir="auto">${safeCompany}</bdi>`;
-    let salaryLabel = escapeHtml(stripEmojis(job.salary_source_label || ''));
-    const salaryEvidence = escapeHtml(stripEmojis(job.salary_evidence || ''));
-    const salaryUrl = sanitizeUrl(job.salary_source_url || '');
-
-    if (!salaryRange || salaryRange === 'לא צוין' || salaryType === 'none') {
-      salaryRange = 'לא צוין במודעה';
-      salaryLabel = 'לא צוין שכר';
-      salaryType = 'none';
-    }
 
     let scoreClass = 'badge-score-high';
     if (score < 80) scoreClass = 'badge-score-fair';
@@ -4379,6 +4512,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     const isStarred = Boolean(starredJobs[id]);
     const state = jobStates[id] || 'pending';
+
+    const curatedTags = getJobCuratedTags(job);
+    let tagsHtml = '';
+    if (curatedTags && curatedTags.length > 0) {
+      const pills = curatedTags.map(t => `<span class="job-tag-pill ${t.type}"><i class="${t.icon}"></i><span>${escapeHtml(t.label)}</span></span>`).join('');
+      tagsHtml = `<div class="job-card-tags" style="margin: 6px 0 10px;">${pills}</div>`;
+    }
 
     headerActions.innerHTML = `
       <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\\'")}', event); updateModalStar('${id.replace(/'/g, "\\'")}');" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}" aria-label="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
@@ -4405,6 +4545,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         </div>
       </div>
 
+      ${tagsHtml}
+
       <!-- 2 Distinct Bubbles: Domain & Requirements -->
       <div class="job-bubbles-wrapper" style="margin: 4px 0 6px;">
         <div class="job-bubble job-bubble-domain" style="padding: 10px 14px; font-size: 13.5px;">
@@ -4418,20 +4560,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       </div>
 
       <div class="job-boxes-grid" style="grid-template-columns: 1fr; gap: 10px;">
-        <div class="job-box highlight" style="border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.05);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-            <strong style="color: var(--dashboard-cyan);"><i class="ph-duotone ph-currency-circle-dollar"></i> הערכת שכר ואמינות מקור:</strong>
-            <span style="font-size: 11.5px; font-weight: 600; color: var(--dashboard-cyan);">${salaryLabel}</span>
-          </div>
-          <div style="font-size: 15px; font-weight: 700; color: #ffffff; margin-bottom: 2px;">
-            ${salaryRange}
-          </div>
-          <div style="font-size: 11px; color: var(--dashboard-muted); margin-bottom: 6px;">
-            בסיס נתונים: שכר חודשי ברוטו למשרה מלאה (100% משרה)
-          </div>
-          ${salaryEvidence ? `<div style="font-size: 12.5px; color: #cbd5e1; line-height: 1.45; margin-bottom: 6px;">${salaryEvidence}</div>` : ''}
-          ${salaryUrl !== '#' ? `<a href="${salaryUrl}" target="_blank" rel="noopener noreferrer" style="font-size: 11.5px; color: var(--dashboard-cyan); text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;"><span>עיון בטבלת שכר ענפית מוסמכת</span> <i class="ph-duotone ph-arrow-square-out"></i></a>` : ''}
-        </div>
         <div class="job-box">
           <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
           <span>${jobSum}</span>
