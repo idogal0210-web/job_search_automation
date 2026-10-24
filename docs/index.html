@@ -3858,7 +3858,7 @@
     [['meshek energy', 'משק אנרגיה', 'סולגרין'], 'meshek-energy.co.il'],
     [['prime energy', 'פריים אנרגיה', "פריים אנרג'י"], 'prime-energy.co.il'],
     [['nextpower', 'נקסטפאוור'], 'nextpower.com'],
-    [['nextcom', 'נקסטקום'], 'nextcom.co.il'],
+    [['nextcom', 'נקסטקום'], 'nextcomgroup.com'],
     [['h2pro'], 'h2pro.co'],
     [['storedot'], 'store-dot.com'],
     [['electreon', 'אלקטריאון'], 'electreon.com'],
@@ -4013,7 +4013,14 @@
     [['manpower', 'מנפאואר'], 'manpower.co.il'],
     [['experis'], 'experis.co.il'],
     [['sqlink'], 'sqlink.com'],
-    [['elad software', 'אלעד מערכות'], 'elad.co.il'],
+    [['elad software', 'אלעד מערכות', 'אלעד'], 'eladsoft.com'],
+    [['michlol', 'מכלול'], 'michlolltd.co.il'],
+    [['e2e solutions', 'e2e'], 'e2eil.co.il'],
+    [['assatec', 'אסאטק'], 'assatec.co.il'],
+    [['nyga', 'ניגא שף', 'ניגא'], 'nyga-chef.co.il'],
+    [['mechanical devices', 'm.d. mechanical'], 'mechanical-devices.com'],
+    [['microsoft', 'מיקרוסופט'], 'microsoft.com'],
+    [['zoll'], 'zoll.com'],
     [['linked magic'], 'linkedmagic.com'],
     [['or holdings', 'אור אחזקות', 'ר.א אור'], 'or-holdings.co.il'],
     [['nestle', 'אסם'], 'nestle.com'],
@@ -4738,26 +4745,26 @@
     let style = 'color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.05);';
     let icon = 'ph-briefcase';
 
-    if (openness.includes('גבוהה מאוד') || openness.includes('ללא ניסיון') || fullText.includes('ללא ניסיון') || fullText.includes('בוגר טרי') || fullText.includes('הכשרה על חשבון')) {
+    if (openness.includes('ללא ניסיון') || openness.includes('בוגר') || openness.includes('טרי') || openness.includes('התחלתי') || openness.includes('entry') || openness.includes('הכשרה על חשבון') || fullText.includes('ללא ניסיון') || fullText.includes('בוגרים טריים') || fullText.includes('0-2') || fullText.includes('0 עד שנתיים') || fullText.includes('אין צורך בניסיון')) {
       label = "מתאים לג'וניור / ללא ניסיון";
       style = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.45); background: rgba(220, 255, 114, 0.12); font-weight: 700;';
       icon = 'ph-sparkle';
-    } else if (openness.includes('גבוהה') || openness.includes("ג'וניור") || openness.includes('מתאים להנדסאי בתחילת') || openness.includes('הסמכה טרייה') || openness.includes('1-2') || openness.includes('שנה ניסיון') || title.includes('junior')) {
+    } else if (openness.includes('1-2') || openness.includes('שנה') || openness.includes('אחת') || openness.includes('גבוהה') || openness.includes("ג'וניור") || openness.includes('junior') || openness.includes('מתחילים') || openness.includes('התחלת') || title.includes('junior') || title.includes('בוגר') || fullText.includes('1-2') || fullText.includes('שנת ניסיון אחת')) {
       label = "מתאים לג'וניור (1-2 שנים)";
       style = 'color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.45); background: rgba(220, 255, 114, 0.12); font-weight: 700;';
       icon = 'ph-user-check';
-    } else if (openness.includes('בינוני') || openness.includes('בינונית') || fullText.includes('2-3') || fullText.includes('3 שנים')) {
+    } else if (openness.includes('2-3') || openness.includes('שנתיים') || openness.includes('בינוני') || openness.includes('בינונית') || openness.includes('הנדסאי') || fullText.includes('2-3') || fullText.includes('שנתיים')) {
       label = '2-3 שנות ניסיון';
       style = 'color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4); background: rgba(255, 211, 104, 0.1);';
       icon = 'ph-clock';
-    } else if (openness.includes('נמוכה') || fullText.includes('בכיר') || fullText.includes('5+ שנים') || fullText.includes('5 שנים') || title.includes('senior') || title.includes('lead')) {
-      label = '3+ שנות ניסיון';
+    } else if (openness.includes('3+') || openness.includes('3-4') || openness.includes('3-5') || openness.includes('3 שנים') || openness.includes('4 שנים') || openness.includes('5 שנים') || openness.includes('+3') || openness.includes('בכיר') || openness.includes('נמוכה') || openness.includes('לא פתוח') || fullText.includes('3+ שנים') || fullText.includes('3-5 שנים') || fullText.includes('5+ שנים') || fullText.includes('לפחות 3') || title.includes('senior') || title.includes('lead')) {
+      label = '+3 שנות ניסיון';
       style = 'color: #fca5a5; border-color: rgba(252, 165, 165, 0.4); background: rgba(239, 68, 68, 0.1);';
       icon = 'ph-medal';
-    } else if (job.junior_openness && job.junior_openness.trim().length > 0 && job.junior_openness !== 'N/A') {
-      label = stripEmojis(job.junior_openness.replace(/^[^א-תa-zA-Z0-9]+/, '').split('(')[0].trim());
-      style = 'color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); background: rgba(137, 244, 231, 0.08);';
-      icon = 'ph-identification-badge';
+    } else {
+      label = 'ניסיון נדרש לפי מודעה';
+      style = 'color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.05);';
+      icon = 'ph-briefcase';
     }
 
     return `
