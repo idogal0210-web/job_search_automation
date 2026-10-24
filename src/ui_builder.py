@@ -4373,7 +4373,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     const titleText = escapeHtml(salaryEvidence || salaryLabel || salaryRange || 'הערכת שכר ענפית סטטיסטית');
     return {
-      display: `${clean} ₪ (הערכה)`,
+      display: `${clean} ₪`,
       title: titleText
     };
   }
@@ -4561,7 +4561,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     // 3. Work Model: ONLY if explicitly specified in ad / job data
     const wm = (job.work_model || '').toLowerCase();
     if (wm.includes('שטח') || adText.includes('עבודת שטח') || adText.includes('טכנאי שטח') || adText.includes('יציאה לשטח')) {
-      chips.push(`<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.3); background: rgba(203, 213, 225, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-navigation-arrow"></i> עבודת שטח</span>`);
+      chips.push(`<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.3); background: rgba(203, 213, 225, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-hard-hat"></i> עבודת שטח</span>`);
     } else if (wm.includes('היברידי') || wm.includes('hybrid') || adText.includes('היברידי') || adText.includes('מודל היברידי')) {
       chips.push(`<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.3); background: rgba(203, 213, 225, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-laptop"></i> היברידי</span>`);
     }
