@@ -330,17 +330,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     .stat-cube-btn {
       background: rgba(0, 0, 0, 0.28) !important;
       border: 1px solid var(--dashboard-edge) !important;
-      border-radius: 16px !important;
-      padding: 6px 10px !important;
+      border-radius: 18px !important;
+      padding: 7px 12px !important;
       display: flex !important;
       flex-direction: column !important;
       align-items: center !important;
       justify-content: center !important;
       text-align: center !important;
-      gap: 2px !important;
+      gap: 3px !important;
       cursor: pointer !important;
-      min-width: 74px !important;
-      max-width: 88px !important;
+      min-width: 82px !important;
+      max-width: 98px !important;
       min-height: auto !important;
       height: auto !important;
       box-sizing: border-box !important;
@@ -399,8 +399,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       line-height: 1.1 !important;
     }
     .stat-cube-label {
-      font-size: 10.5px !important;
-      font-weight: 500 !important;
+      font-size: 11px !important;
+      font-weight: 600 !important;
       color: var(--dashboard-muted) !important;
       white-space: nowrap !important;
     }
@@ -544,18 +544,18 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
     .dashboard-app .controls-inputs-stack select,
     .dashboard-app .controls-inputs-stack input {
-      height: 38px !important;
-      min-height: 38px !important;
-      padding: 0 12px !important;
-      font-size: 13px !important;
+      height: 42px !important;
+      min-height: 42px !important;
+      padding: 0 14px !important;
+      font-size: 13.5px !important;
       font-weight: 500 !important;
       color: var(--dashboard-text) !important;
       background: rgba(0, 0, 0, 0.28) !important;
       border: 1px solid var(--dashboard-edge) !important;
-      border-radius: 12px !important;
+      border-radius: 14px !important;
       box-sizing: border-box !important;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      line-height: 36px !important;
+      line-height: 40px !important;
     }
     .dashboard-app .controls-inputs-stack select:focus,
     .dashboard-app .controls-inputs-stack input:focus {
@@ -565,11 +565,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
     .dashboard-app .controls-inputs-stack input::placeholder {
       color: rgba(255, 255, 255, 0.65) !important;
-      font-size: 13px !important;
+      font-size: 13.5px !important;
     }
     .controls-buttons-row {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       align-items: center;
     }
     .sort-select-container {
@@ -578,15 +578,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       display: flex;
       align-items: center;
       min-width: 160px;
-      height: 38px;
+      height: 42px;
     }
     .dashboard-app .sort-select-container select {
       width: 100% !important;
-      height: 38px !important;
-      min-height: 38px !important;
+      height: 42px !important;
+      min-height: 42px !important;
       border-radius: 999px !important;
-      padding: 0 34px 0 12px !important;
-      font-size: 12.5px !important;
+      padding: 0 36px 0 14px !important;
+      font-size: 13px !important;
       font-weight: 600 !important;
       cursor: pointer !important;
       background: linear-gradient(160deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06)) !important;
@@ -595,7 +595,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       text-align: right !important;
       direction: rtl !important;
       box-sizing: border-box !important;
-      line-height: 36px !important;
+      line-height: 40px !important;
     }
     .dashboard-app .sort-select-container select:hover {
       background: rgba(255, 255, 255, 0.16) !important;
@@ -614,10 +614,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       margin: 0 !important;
     }
     .dashboard-app .controls-buttons-row .tool-btn {
-      height: 38px !important;
-      min-height: 38px !important;
+      height: 42px !important;
+      min-height: 42px !important;
       padding: 0 16px !important;
-      font-size: 12.5px !important;
+      font-size: 13px !important;
       font-weight: 600 !important;
       border-radius: 999px !important;
       cursor: pointer !important;
@@ -627,10 +627,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: 6px !important;
+      gap: 7px !important;
       box-sizing: border-box !important;
       white-space: nowrap !important;
-      line-height: 36px !important;
+      line-height: 40px !important;
       transition: background 0.2s ease, border-color 0.2s ease;
     }
     .dashboard-app .controls-buttons-row .tool-btn:hover {
@@ -693,9 +693,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
     #cardsContainer {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
-      gap: 22px;
-      margin-bottom: 28px;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
       align-items: stretch;
     }
     @media (max-width: 820px) {
@@ -711,9 +711,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      gap: 15px;
+      gap: 16px;
       border-radius: 26px;
-      padding: 22px;
+      padding: 24px;
       transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
       position: relative;
       background: var(--dashboard-glass);
@@ -721,6 +721,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
       height: 100%;
       box-sizing: border-box;
+      contain: layout style;
+    }
+    .job-card:nth-child(n+7) {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 340px;
     }
     .job-card:hover {
       border-color: rgba(255, 255, 255, 0.36);
@@ -1043,14 +1048,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     .job-bubbles-wrapper {
       display: flex;
       flex-direction: column;
-      gap: 7px;
-      margin-bottom: 2px;
+      gap: 9px;
+      margin: 4px 0 6px 0;
     }
     .job-bubble {
       border-radius: 14px;
-      padding: 9px 13px;
+      padding: 10px 14px;
       font-size: 13px;
-      line-height: 1.5;
+      line-height: 1.55;
       overflow-wrap: break-word;
       word-break: normal;
     }
@@ -1490,7 +1495,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         overflow-x: hidden;
       }
       .dashboard-app {
-        padding: 14px 12px 24px;
+        padding: 16px clamp(14px, 4vw, 20px) 28px;
         overflow-x: hidden;
       }
       .dashboard-sidebar {
@@ -1581,43 +1586,45 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         display: none !important;
       }
 
-      /* Compact 4 Header Stat Cubes on iPhone & Tablet */
+      /* Airy, Legible Header Stat Cubes on Mobile */
       .header-stat-cubes {
         display: grid !important;
         grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-        gap: 6px !important;
-        padding: 2px 0 !important;
+        gap: 8px !important;
+        padding: 4px 0 !important;
         width: 100% !important;
       }
       .dashboard-app .stat-cube-btn,
       .stat-cube-btn {
         min-width: 0 !important;
         max-width: none !important;
-        padding: 8px 3px !important;
-        border-radius: 14px !important;
+        padding: 9px 5px !important;
+        border-radius: 16px !important;
         height: auto !important;
+        gap: 3px !important;
       }
       .stat-cube-icon {
-        width: 22px !important;
-        height: 22px !important;
+        width: 24px !important;
+        height: 24px !important;
         border-radius: 8px !important;
         margin-bottom: 2px !important;
-        font-size: 12px !important;
+        font-size: 13px !important;
       }
       .stat-cube-icon i {
-        font-size: 12px !important;
+        font-size: 13px !important;
       }
       .stat-cube-count {
-        font-size: 1.1rem !important;
+        font-size: 1.15rem !important;
         line-height: 1.1 !important;
-        margin: 2px 0 !important;
+        margin: 1px 0 !important;
         font-weight: 700 !important;
       }
       .stat-cube-label {
-        font-size: 0.62rem !important;
-        line-height: 1.15 !important;
+        font-size: 11px !important;
+        line-height: 1.25 !important;
         white-space: normal !important;
-        letter-spacing: -0.2px !important;
+        font-weight: 600 !important;
+        letter-spacing: normal !important;
         overflow-wrap: break-word !important;
         word-break: normal !important;
       }
@@ -1651,8 +1658,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         display: none !important; /* Hide sector chart on mobile to save ~250px vertical space */
       }
       .dashboard-stats-grid > .dashboard-card:first-child {
-        padding: 12px 14px 12px !important;
-        border-radius: 18px !important;
+        padding: 16px !important;
+        border-radius: 20px !important;
       }
       .dashboard-stats-grid > .dashboard-card:first-child p {
         display: none !important; /* Hide descriptive paragraph */
@@ -1661,31 +1668,31 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         display: none !important; /* Hide decorative header tags */
       }
       .dashboard-stats-grid > .dashboard-card:first-child h3 {
-        font-size: 14.5px !important;
-        margin: 0 0 8px !important;
+        font-size: 15px !important;
+        margin: 0 0 10px !important;
         color: #ffffff !important;
       }
       .controls-inputs-stack {
-        gap: 8px !important;
+        gap: 10px !important;
       }
       .filters-two-col-row {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important;
-        gap: 8px !important;
+        gap: 9px !important;
         width: 100% !important;
       }
       .filters-two-col-row select {
         width: 100% !important;
-        height: 38px !important;
-        min-height: 38px !important;
-        padding: 0 24px 0 8px !important;
-        font-size: 12px !important;
-        border-radius: 12px !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        padding: 0 24px 0 10px !important;
+        font-size: 13px !important;
+        border-radius: 14px !important;
       }
       .search-sort-compact-bar {
         display: grid !important;
         grid-template-columns: 1fr auto !important;
-        gap: 8px !important;
+        gap: 9px !important;
         width: 100% !important;
       }
       .search-sort-compact-bar .search-input-wrapper {
@@ -1695,11 +1702,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       }
       .search-sort-compact-bar .search-input-wrapper input {
         width: 100% !important;
-        height: 38px !important;
-        min-height: 38px !important;
-        padding: 0 12px 0 38px !important;
-        font-size: 12.5px !important;
-        border-radius: 12px !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        padding: 0 14px 0 42px !important;
+        font-size: 13px !important;
+        border-radius: 14px !important;
       }
       .search-sort-compact-bar .sort-select-wrapper {
         grid-column: 1 !important;
@@ -1709,30 +1716,30 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       .search-sort-compact-bar .sort-select-container {
         min-width: 0 !important;
         width: 100% !important;
-        height: 38px !important;
+        height: 42px !important;
       }
       .search-sort-compact-bar .sort-select-container select {
         width: 100% !important;
-        height: 38px !important;
-        min-height: 38px !important;
-        font-size: 12px !important;
-        padding: 0 32px 0 10px !important;
-        border-radius: 12px !important;
-        line-height: 36px !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        font-size: 12.5px !important;
+        padding: 0 34px 0 12px !important;
+        border-radius: 14px !important;
+        line-height: 40px !important;
       }
       .search-sort-compact-bar .tool-btn-compact {
         grid-column: 2 !important;
-        height: 38px !important;
-        min-height: 38px !important;
+        height: 42px !important;
+        min-height: 42px !important;
         min-width: 44px !important;
         flex-shrink: 0 !important;
         padding: 0 14px !important;
-        border-radius: 12px !important;
+        border-radius: 14px !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         gap: 6px !important;
-        font-size: 12px !important;
+        font-size: 12.5px !important;
       }
       .btn-clear-search {
         width: 36px !important;
@@ -1750,27 +1757,32 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       #cardsContainer {
         display: flex !important;
         flex-direction: column !important;
-        gap: 14px !important;
-        margin-bottom: 24px !important;
+        gap: 16px !important;
+        margin-bottom: 28px !important;
       }
       #cardsContainer .job-card {
         min-height: auto !important;
         height: auto !important;
         width: 100% !important;
         box-sizing: border-box !important;
-        padding: 16px 14px !important;
-        border-radius: 20px !important;
+        padding: 18px 16px !important;
+        border-radius: 22px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
         align-items: stretch !important;
-        background: rgba(18, 24, 38, 0.88) !important;
-        border: 1px solid rgba(255, 255, 255, 0.09) !important;
+        gap: 13px !important;
+        background: rgba(18, 24, 38, 0.90) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
         cursor: pointer !important;
         position: relative !important;
         overflow: hidden !important;
         transition: transform 0.15s ease, border-color 0.15s ease !important;
+      }
+      #cardsContainer .job-card:nth-child(n+5) {
+        content-visibility: auto;
+        contain-intrinsic-size: auto 280px;
       }
       #cardsContainer .job-card:active {
         transform: scale(0.99) !important;
@@ -1784,9 +1796,9 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         display: none !important;
       }
       #cardsContainer .job-card-topbar {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-        padding: 0 0 10px 0 !important;
-        margin: 0 0 12px 0 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        padding: 0 0 11px 0 !important;
+        margin: 0 0 10px 0 !important;
         width: 100% !important;
         display: flex !important;
       }
@@ -1796,12 +1808,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         flex-direction: row-reverse !important;
         justify-content: space-between !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 10px !important;
       }
       #cardsContainer .badge-score {
         font-size: 0 !important;
-        padding: 0 10px !important;
-        height: 26px !important;
+        padding: 0 11px !important;
+        height: 28px !important;
         box-sizing: border-box !important;
         border-radius: 999px !important;
         display: inline-flex !important;
@@ -1811,7 +1823,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         box-shadow: none !important;
       }
       #cardsContainer .badge-score span {
-        font-size: 11.5px !important;
+        font-size: 12px !important;
         font-weight: 700 !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -1819,17 +1831,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         letter-spacing: -0.2px !important;
       }
       #cardsContainer .btn-star {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
-        min-height: 36px !important;
-        font-size: 15px !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        font-size: 16px !important;
         border-radius: 999px !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         background: rgba(255, 255, 255, 0.06) !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
         color: var(--dashboard-muted) !important;
         transition: all 0.15s ease !important;
         position: relative !important;
@@ -1840,42 +1852,50 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         color: var(--dashboard-gold) !important;
       }
       #cardsContainer .btn-copy-link {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
-        min-height: 36px !important;
-        font-size: 14px !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        font-size: 15px !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        border-radius: 999px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        color: var(--dashboard-muted) !important;
       }
       #cardsContainer .sector-tag-chip {
         display: inline-flex !important;
-        max-width: 140px !important;
+        max-width: 150px !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
-        font-size: 11px !important;
-        padding: 2.5px 8px !important;
+        font-size: 11.5px !important;
+        padding: 3px 9px !important;
+        border-radius: 999px !important;
       }
       #cardsContainer .job-card-main-header {
         display: flex !important;
         flex-direction: row !important;
         align-items: flex-start !important;
         text-align: start !important;
-        gap: 12px !important;
+        gap: 14px !important;
         width: 100% !important;
         margin: 0 0 10px 0 !important;
       }
       #cardsContainer .job-company-logo {
-        width: 44px !important;
-        height: 44px !important;
-        border-radius: 12px !important;
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 13px !important;
         margin: 0 !important;
         flex-shrink: 0 !important;
         background: #ffffff !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
       }
       #cardsContainer .job-company-avatar {
-        font-size: 15px !important;
+        font-size: 16px !important;
         font-weight: 700 !important;
       }
       #cardsContainer .job-header-text {
@@ -1885,10 +1905,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         flex-direction: column !important;
         align-items: flex-start !important;
         text-align: start !important;
-        gap: 3px !important;
+        gap: 4px !important;
       }
       #cardsContainer .job-company-name {
-        font-size: 12px !important;
+        font-size: 12.5px !important;
         color: var(--dashboard-cyan) !important;
         font-weight: 600 !important;
         max-width: 100% !important;
@@ -1898,13 +1918,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         text-overflow: ellipsis !important;
         text-align: start !important;
         margin: 0 !important;
-        line-height: 1.3 !important;
+        line-height: 1.35 !important;
       }
       #cardsContainer .job-title-text {
-        font-size: 14.5px !important;
+        font-size: 15.5px !important;
         font-weight: 700 !important;
         color: #ffffff !important;
-        line-height: 1.35 !important;
+        line-height: 1.38 !important;
         height: auto !important;
         min-height: auto !important;
         display: -webkit-box !important;
@@ -1913,8 +1933,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         text-align: start !important;
-        margin: 0 0 4px 0 !important;
-        letter-spacing: -0.2px !important;
+        margin: 0 0 5px 0 !important;
+        letter-spacing: -0.1px !important;
         overflow-wrap: break-word !important;
       }
       #cardsContainer .job-header-chips {
@@ -1923,7 +1943,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         justify-content: flex-start !important;
         align-items: center !important;
         width: 100% !important;
-        margin-top: 4px !important;
+        margin-top: 5px !important;
         margin-bottom: 0 !important;
         gap: 6px !important;
       }
@@ -1931,43 +1951,43 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         display: inline-flex !important;
         align-items: center !important;
         gap: 4px !important;
-        font-size: 11px !important;
-        padding: 3px 9px !important;
+        font-size: 11.5px !important;
+        padding: 3.5px 10px !important;
         border-radius: 999px !important;
         max-width: 100% !important;
         white-space: nowrap !important;
-        line-height: 1.2 !important;
+        line-height: 1.25 !important;
         box-sizing: border-box !important;
       }
       #cardsContainer .job-bubbles-wrapper {
         display: flex !important;
         flex-direction: column !important;
-        gap: 7px !important;
+        gap: 8px !important;
         margin: 8px 0 10px 0 !important;
         width: 100% !important;
       }
       #cardsContainer .job-bubble {
-        border-radius: 12px !important;
-        padding: 8px 12px !important;
-        font-size: 12.5px !important;
-        line-height: 1.45 !important;
+        border-radius: 14px !important;
+        padding: 10px 14px !important;
+        font-size: 13px !important;
+        line-height: 1.5 !important;
       }
       #cardsContainer .job-actions-bar {
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
         justify-content: space-between !important;
-        gap: 8px !important;
+        gap: 10px !important;
         width: 100% !important;
         margin-top: auto !important;
-        padding-top: 10px !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+        padding-top: 12px !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
       }
       #cardsContainer .btn-mobile-details {
         display: inline-flex !important;
         flex: 1 1 0% !important;
-        min-height: 42px !important;
-        height: 42px !important;
+        min-height: 44px !important;
+        height: 44px !important;
         align-items: center !important;
         justify-content: center !important;
         gap: 6px !important;
@@ -1975,7 +1995,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         border: 1px solid rgba(255, 255, 255, 0.16) !important;
         border-radius: 999px !important;
         color: var(--dashboard-text) !important;
-        font-size: 12.5px !important;
+        font-size: 13px !important;
         font-weight: 600 !important;
         cursor: pointer !important;
         transition: background 0.15s ease, border-color 0.15s ease !important;
@@ -1989,8 +2009,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       #cardsContainer .btn-apply {
         display: inline-flex !important;
         flex: 1.2 1 0% !important;
-        min-height: 42px !important;
-        height: 42px !important;
+        min-height: 44px !important;
+        height: 44px !important;
         align-items: center !important;
         justify-content: center !important;
         gap: 6px !important;
@@ -1998,7 +2018,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         border: 1px solid rgba(220, 255, 114, 0.45) !important;
         border-radius: 999px !important;
         color: #ffffff !important;
-        font-size: 13px !important;
+        font-size: 13.5px !important;
         font-weight: 700 !important;
         text-decoration: none !important;
         cursor: pointer !important;
@@ -3726,6 +3746,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <img src="${info.primaryUrl}" 
                alt="${safeComp}" 
                loading="lazy" 
+               decoding="async" 
                data-step="${info.initialStep}"
                onload="handleCompanyLogoLoad(this, '${safeDom}')" 
                onerror="handleCompanyLogoError(this, '${safeDom}')" />
