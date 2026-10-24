@@ -128,7 +128,7 @@ job_search_automation/
   - View modes: Grid (Cubes), List (Compact single-column), and Map (Leaflet MarkerCluster spiderfy).
   - Client-side triage system: Star, Save, Reject with LocalStorage persistence and bulk actions.
   - Search and filter controls: Sector filter, region filter, realtime keyword search with clear button, and dynamic sorting.
-  - Mobile optimization: Tested on iPhone 14 (390px) and iPhone SE (375px) featuring a symmetrical 4-pill metric toggle, non-overlapping 2-tier filter grid, zero text truncation in chips, and strictly centered sort icon.
+  - Mobile optimization: Tested on iPhone 14 (390px) and iPhone SE (375px) featuring a symmetrical 4-pill metric toggle, non-overlapping 2-tier filter grid, zero horizontal overflow, and strictly centered sort icon.
   - Accessibility: WCAG AA compliant 44x44px touch targets on all interactive controls.
 - **Automated test suite:** 49 comprehensive unit and integration tests passing in under 0.1 seconds.
 - **High-resolution company logo pipeline:**
@@ -136,10 +136,11 @@ job_search_automation/
   - Curated dictionary & word-boundary matching: Curated dictionary of 60+ Israeli and international companies with regex word boundary matching preventing substring collisions (`ratio` inside `corporation`). Verified official corporate domains (e.g. `nextcomgroup.com`, `mechanical-devices.com`, `eladsoft.com`, `michlolltd.co.il`, `e2eil.co.il`, `assatec.co.il`, `nyga-chef.co.il`, `zoll.com`, etc.).
   - 4-Tier client-side logo fallback chain: Direct CDN logo -> Google Favicon S2 (sz=128) -> Unavatar API -> DuckDuckGo Icons API -> Branded monogram avatar with deterministic color gradient.
   - Complete data backfill: 100% of jobs in `data/weekly_archive.json` (80/80) and 200+ historical catalog records enriched with authentic logos.
-- **Streamlined card tag architecture:**
-  - Reduced tags on job cards from 10-14 down to 3-4 clean, high-signal chips (Region, Compact salary format `16k - 20k ₪ (הערכה)`, Unified experience chip, and optional key condition like field work or company car).
-  - Standardized experience classification into 4 strict, compact categories ("מתאים לג'וניור / ללא ניסיון", "מתאים לג'וניור (1-2 שנים)", "2-3 שנות ניסיון", "+3 שנות ניסיון") eliminating long, rambling AI prompt sentences and preventing card layout distortion.
-  - Clean topbar without redundant date/source clutter; AI score drivers housed in collapsible deep analysis.
+- **Complete Tag & Chip Elimination & Desktop-Mobile Structural Parity:**
+  - Zero-tag clean architecture: Complete removal of all tags and chips from job cards, modal dialogs, and filters (sector tag chips, header condition chips, salary chips, experience chips, AI score driver chips, and quick filter chips strip).
+  - Dead code cleanup: 1,456 lines of dead chip DOM, helper functions (`getExperienceChip`, `getExplicitConditionChips`, `formatCompactSalary`, `getAiScoreDrivers`, `selectQuickChip`, `isJuniorFriendly`), and unused CSS completely purged.
+  - 100% structural parity between Desktop and Mobile: Identical component hierarchy across viewports: topbar (star, share, match score badge), company logo + cyan company name + white title, 2 distinct content bubbles (Domain & Product, Job Requirements), progressive disclosure toggle ("הרחב ניתוח מלא" / "הסתר ניתוח מלא" enabled on both desktop and mobile), collapsible summary & AI insight, and 2-tier action grid (Row 1: Save + Reject, Row 2: Full details modal + Apply link).
+  - State integrity & self-healing: Automated remediation for browser LocalStorage starred state, preventing bulk injection while strictly safeguarding user-marked favorites (6-7 starred jobs).
 - **GitOps Save & Sync protocol:** Unified zero-waste cleanup (purged obsolete `integration/` templates and caches), syntax validation, pre-commit secret scanning, zero-emoji verification, and two-way GitHub push.
 
 ### 5.2 In Progress (WIP)
