@@ -687,6 +687,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     }
 
     /* Job Cards Grid Container (Cubes Layout) */
+    #cardsContainer.is-hidden-by-map,
+    #cardsContainer[style*="display: none"] {
+      display: none !important;
+    }
     #cardsContainer {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
@@ -1076,10 +1080,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       color: #e2e8df;
     }
 
-    /* Mobile Preview Elements (Hidden on Desktop) */
-    .job-mobile-preview {
-      display: none;
-    }
+    /* Mobile Elements (Hidden on Desktop) */
     .btn-mobile-details {
       display: none;
     }
@@ -1742,13 +1743,17 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       }
 
       /* Upgraded Single Column Feed on Mobile (Balanced Preview, High Contrast Tags, AI Rationale & Quick Actions) */
-      #cardsContainer:not(.view-list) {
+      #cardsContainer.is-hidden-by-map,
+      #cardsContainer[style*="display: none"] {
+        display: none !important;
+      }
+      #cardsContainer {
         display: flex !important;
         flex-direction: column !important;
         gap: 14px !important;
         margin-bottom: 24px !important;
       }
-      #cardsContainer:not(.view-list) .job-card {
+      #cardsContainer .job-card {
         min-height: auto !important;
         height: auto !important;
         width: 100% !important;
@@ -1767,26 +1772,25 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         overflow: hidden !important;
         transition: transform 0.15s ease, border-color 0.15s ease !important;
       }
-      #cardsContainer:not(.view-list) .job-card:active {
+      #cardsContainer .job-card:active {
         transform: scale(0.99) !important;
         border-color: var(--dashboard-cyan) !important;
       }
-      #cardsContainer:not(.view-list) .job-bubbles-wrapper,
-      #cardsContainer:not(.view-list) .btn-toggle-details,
-      #cardsContainer:not(.view-list) .job-details-collapsible,
-      #cardsContainer:not(.view-list) .action-btn-group,
-      #cardsContainer:not(.view-list) .job-card-topbar-meta,
-      #cardsContainer:not(.view-list) .ai-score-drivers {
+      #cardsContainer .btn-toggle-details,
+      #cardsContainer .job-details-collapsible,
+      #cardsContainer .action-btn-group,
+      #cardsContainer .job-card-topbar-meta,
+      #cardsContainer .ai-score-drivers {
         display: none !important;
       }
-      #cardsContainer:not(.view-list) .job-card-topbar {
+      #cardsContainer .job-card-topbar {
         border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
         padding: 0 0 10px 0 !important;
         margin: 0 0 12px 0 !important;
         width: 100% !important;
         display: flex !important;
       }
-      #cardsContainer:not(.view-list) .job-card-topbar-primary {
+      #cardsContainer .job-card-topbar-primary {
         width: 100% !important;
         display: flex !important;
         flex-direction: row-reverse !important;
@@ -1794,7 +1798,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         align-items: center !important;
         gap: 8px !important;
       }
-      #cardsContainer:not(.view-list) .badge-score {
+      #cardsContainer .badge-score {
         font-size: 0 !important;
         padding: 0 10px !important;
         height: 26px !important;
@@ -1806,7 +1810,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         line-height: 1 !important;
         box-shadow: none !important;
       }
-      #cardsContainer:not(.view-list) .badge-score span {
+      #cardsContainer .badge-score span {
         font-size: 11.5px !important;
         font-weight: 700 !important;
         display: inline-flex !important;
@@ -1814,7 +1818,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         gap: 4px !important;
         letter-spacing: -0.2px !important;
       }
-      #cardsContainer:not(.view-list) .btn-star {
+      #cardsContainer .btn-star {
         width: 36px !important;
         height: 36px !important;
         min-width: 36px !important;
@@ -1830,19 +1834,19 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         transition: all 0.15s ease !important;
         position: relative !important;
       }
-      #cardsContainer:not(.view-list) .btn-star.is-starred {
+      #cardsContainer .btn-star.is-starred {
         background: rgba(255, 211, 104, 0.2) !important;
         border-color: rgba(255, 211, 104, 0.5) !important;
         color: var(--dashboard-gold) !important;
       }
-      #cardsContainer:not(.view-list) .btn-copy-link {
+      #cardsContainer .btn-copy-link {
         width: 36px !important;
         height: 36px !important;
         min-width: 36px !important;
         min-height: 36px !important;
         font-size: 14px !important;
       }
-      #cardsContainer:not(.view-list) .sector-tag-chip {
+      #cardsContainer .sector-tag-chip {
         display: inline-flex !important;
         max-width: 140px !important;
         white-space: nowrap !important;
@@ -1851,7 +1855,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         font-size: 11px !important;
         padding: 2.5px 8px !important;
       }
-      #cardsContainer:not(.view-list) .job-card-main-header {
+      #cardsContainer .job-card-main-header {
         display: flex !important;
         flex-direction: row !important;
         align-items: flex-start !important;
@@ -1860,7 +1864,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         width: 100% !important;
         margin: 0 0 10px 0 !important;
       }
-      #cardsContainer:not(.view-list) .job-company-logo {
+      #cardsContainer .job-company-logo {
         width: 44px !important;
         height: 44px !important;
         border-radius: 12px !important;
@@ -1870,11 +1874,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
       }
-      #cardsContainer:not(.view-list) .job-company-avatar {
+      #cardsContainer .job-company-avatar {
         font-size: 15px !important;
         font-weight: 700 !important;
       }
-      #cardsContainer:not(.view-list) .job-header-text {
+      #cardsContainer .job-header-text {
         flex: 1 !important;
         min-width: 0 !important;
         display: flex !important;
@@ -1883,7 +1887,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         text-align: start !important;
         gap: 3px !important;
       }
-      #cardsContainer:not(.view-list) .job-company-name {
+      #cardsContainer .job-company-name {
         font-size: 12px !important;
         color: var(--dashboard-cyan) !important;
         font-weight: 600 !important;
@@ -1896,7 +1900,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         margin: 0 !important;
         line-height: 1.3 !important;
       }
-      #cardsContainer:not(.view-list) .job-title-text {
+      #cardsContainer .job-title-text {
         font-size: 14.5px !important;
         font-weight: 700 !important;
         color: #ffffff !important;
@@ -1913,7 +1917,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         letter-spacing: -0.2px !important;
         overflow-wrap: break-word !important;
       }
-      #cardsContainer:not(.view-list) .job-header-chips {
+      #cardsContainer .job-header-chips {
         display: flex !important;
         flex-wrap: wrap !important;
         justify-content: flex-start !important;
@@ -1923,7 +1927,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         margin-bottom: 0 !important;
         gap: 6px !important;
       }
-      #cardsContainer:not(.view-list) .job-header-chips .dashboard-chip {
+      #cardsContainer .job-header-chips .dashboard-chip {
         display: inline-flex !important;
         align-items: center !important;
         gap: 4px !important;
@@ -1935,58 +1939,20 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         line-height: 1.2 !important;
         box-sizing: border-box !important;
       }
-      #cardsContainer:not(.view-list) .job-mobile-preview {
+      #cardsContainer .job-bubbles-wrapper {
         display: flex !important;
         flex-direction: column !important;
-        gap: 8px !important;
-        margin: 8px 0 12px 0 !important;
+        gap: 7px !important;
+        margin: 8px 0 10px 0 !important;
         width: 100% !important;
       }
-      #cardsContainer:not(.view-list) .job-preview-text {
-        font-size: 13px !important;
-        line-height: 1.5 !important;
-        color: #cbd5e1 !important;
-        margin: 0 !important;
-        display: -webkit-box !important;
-        -webkit-line-clamp: 2 !important;
-        -webkit-box-orient: vertical !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        text-align: start !important;
-      }
-      #cardsContainer:not(.view-list) .job-preview-ai-box {
-        display: flex !important;
-        align-items: flex-start !important;
-        gap: 8px !important;
-        background: rgba(220, 255, 114, 0.05) !important;
-        border: 1px solid rgba(220, 255, 114, 0.22) !important;
+      #cardsContainer .job-bubble {
         border-radius: 12px !important;
         padding: 8px 12px !important;
-        font-size: 12px !important;
-        line-height: 1.4 !important;
-        color: #e2e8df !important;
-        text-align: start !important;
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
       }
-      #cardsContainer:not(.view-list) .job-preview-ai-box i {
-        color: var(--dashboard-lime) !important;
-        font-size: 15px !important;
-        margin-top: 2px !important;
-        flex-shrink: 0 !important;
-      }
-      #cardsContainer:not(.view-list) .preview-ai-label {
-        font-weight: 700 !important;
-        color: var(--dashboard-lime) !important;
-        margin-inline-end: 4px !important;
-      }
-      #cardsContainer:not(.view-list) .preview-ai-text {
-        color: #f1f5f9 !important;
-        display: -webkit-box !important;
-        -webkit-line-clamp: 2 !important;
-        -webkit-box-orient: vertical !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-      }
-      #cardsContainer:not(.view-list) .job-actions-bar {
+      #cardsContainer .job-actions-bar {
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
@@ -1997,7 +1963,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         padding-top: 10px !important;
         border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
       }
-      #cardsContainer:not(.view-list) .btn-mobile-details {
+      #cardsContainer .btn-mobile-details {
         display: inline-flex !important;
         flex: 1 1 0% !important;
         min-height: 42px !important;
@@ -2016,11 +1982,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         white-space: nowrap !important;
         box-sizing: border-box !important;
       }
-      #cardsContainer:not(.view-list) .btn-mobile-details:active {
+      #cardsContainer .btn-mobile-details:active {
         background: rgba(255, 255, 255, 0.12) !important;
         border-color: rgba(255, 255, 255, 0.3) !important;
       }
-      #cardsContainer:not(.view-list) .btn-apply {
+      #cardsContainer .btn-apply {
         display: inline-flex !important;
         flex: 1.2 1 0% !important;
         min-height: 42px !important;
@@ -2041,179 +2007,12 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         white-space: nowrap !important;
         box-sizing: border-box !important;
       }
-      #cardsContainer:not(.view-list) .btn-apply:active {
+      #cardsContainer .btn-apply:active {
         transform: scale(0.98) !important;
         box-shadow: 0 0 14px rgba(220, 255, 114, 0.3) !important;
       }
 
-      /* Proportional & Symmetrical Mobile List View on iPhone */
-      #cardsContainer.view-list {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 8px !important;
-        margin-bottom: 22px !important;
-      }
-      #cardsContainer.view-list .job-card {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        min-height: 72px !important;
-        height: auto !important;
-        box-sizing: border-box !important;
-        padding: 10px 14px !important;
-        border-radius: 16px !important;
-        background: rgba(18, 24, 38, 0.85) !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
-        gap: 10px !important;
-        cursor: pointer !important;
-        transition: background 0.15s ease, transform 0.15s ease !important;
-      }
-      #cardsContainer.view-list .job-card:active {
-        background: rgba(255, 255, 255, 0.06) !important;
-        transform: scale(0.99) !important;
-      }
-      #cardsContainer.view-list .job-quick-summary,
-      #cardsContainer.view-list .job-bubbles-wrapper,
-      #cardsContainer.view-list .btn-toggle-details,
-      #cardsContainer.view-list .job-details-collapsible,
-      #cardsContainer.view-list .job-actions-bar,
-      #cardsContainer.view-list .ai-score-drivers,
-      #cardsContainer.view-list .job-card-topbar-meta,
-      #cardsContainer.view-list .job-header-chips {
-        display: none !important;
-      }
-      #cardsContainer.view-list .job-card-main-header {
-        order: 1 !important;
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 10px !important;
-        flex: 1 !important;
-        min-width: 0 !important;
-        margin: 0 !important;
-      }
-      #cardsContainer.view-list .job-company-logo {
-        width: 42px !important;
-        height: 42px !important;
-        border-radius: 12px !important;
-        flex-shrink: 0 !important;
-        margin: 0 !important;
-        background: #ffffff !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      }
-      #cardsContainer.view-list .job-company-avatar {
-        font-size: 15px !important;
-        font-weight: 700 !important;
-      }
-      #cardsContainer.view-list .job-header-text {
-        flex: 1 !important;
-        min-width: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        gap: 3px !important;
-      }
-      #cardsContainer.view-list .job-title-text {
-        font-size: 13.5px !important;
-        font-weight: 700 !important;
-        color: #ffffff !important;
-        line-height: 1.3 !important;
-        margin: 0 !important;
-        display: -webkit-box !important;
-        -webkit-line-clamp: 2 !important;
-        -webkit-box-orient: vertical !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        white-space: normal !important;
-        word-break: normal !important;
-        overflow-wrap: break-word !important;
-        text-align: start !important;
-        letter-spacing: -0.2px !important;
-      }
-      #cardsContainer.view-list .job-company-name {
-        font-size: 11.5px !important;
-        color: var(--dashboard-cyan) !important;
-        margin: 0 !important;
-        display: -webkit-box !important;
-        -webkit-line-clamp: 2 !important;
-        -webkit-box-orient: vertical !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        white-space: normal !important;
-        word-break: normal !important;
-        overflow-wrap: break-word !important;
-        text-align: start !important;
-        font-weight: 500 !important;
-      }
-      #cardsContainer.view-list .job-card-topbar {
-        order: 2 !important;
-        display: flex !important;
-        flex-direction: row-reverse !important;
-        align-items: center !important;
-        justify-content: flex-end !important;
-        gap: 6px !important;
-        border-bottom: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        width: auto !important;
-        flex-shrink: 0 !important;
-      }
-      #cardsContainer.view-list .job-card-topbar-primary {
-        display: flex !important;
-        flex-direction: row-reverse !important;
-        align-items: center !important;
-        gap: 6px !important;
-        width: auto !important;
-      }
-      #cardsContainer.view-list .job-card-topbar-primary > div:first-child .dashboard-chip {
-        display: none !important;
-      }
-      #cardsContainer.view-list .badge-score {
-        font-size: 0 !important;
-        padding: 0 8px !important;
-        border-radius: 999px !important;
-        line-height: 1 !important;
-        height: 28px !important;
-        box-sizing: border-box !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        box-shadow: none !important;
-      }
-      #cardsContainer.view-list .badge-score span {
-        font-size: 11px !important;
-        font-weight: 700 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 3px !important;
-        letter-spacing: -0.2px !important;
-      }
-      #cardsContainer.view-list .btn-star {
-        width: 44px !important;
-        height: 44px !important;
-        min-width: 44px !important;
-        min-height: 44px !important;
-        font-size: 18px !important;
-        border-radius: 999px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        background: rgba(255, 255, 255, 0.06) !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
-        color: var(--dashboard-muted) !important;
-        flex-shrink: 0 !important;
-      }
-      #cardsContainer.view-list .btn-star.is-starred {
-        background: rgba(255, 211, 104, 0.2) !important;
-        border-color: rgba(255, 211, 104, 0.5) !important;
-        color: var(--dashboard-gold) !important;
-      }
-
-      /* Force hidden state over all grid and list rules on iPhone */
-      #cardsContainer:not(.view-list) .job-card.is-hidden,
-      #cardsContainer.view-list .job-card.is-hidden,
+      /* Force hidden state over all grid rules on iPhone */
       #cardsContainer .job-card.is-hidden,
       #cardsContainer .job-card[style*="display: none"],
       .job-card.is-hidden {
@@ -2341,7 +2140,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         font-size: 9px !important;
         line-height: 1.1 !important;
       }
-      #cardsContainer:not(.view-list) {
+      #cardsContainer {
         display: grid !important;
         grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 12px !important;
@@ -2659,227 +2458,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       will-change: transform, opacity;
     }
 
-    /* Proportional & Professional List View Mode */
-    #cardsContainer.view-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    #cardsContainer.view-list .job-card {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 240px;
-      grid-template-areas:
-        "topbar  actions"
-        "header  actions"
-        "summary actions"
-        "toggle  toggle"
-        "details details";
-      column-gap: 24px;
-      row-gap: 12px;
-      align-items: center;
-      padding: 18px 22px;
-      border-radius: 20px;
-      background: rgba(17, 24, 39, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
-      height: auto;
-      box-sizing: border-box;
-    }
-    #cardsContainer.view-list .job-card:hover {
-      transform: translateX(-4px);
-      border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-    }
-    #cardsContainer.view-list .job-card-topbar {
-      grid-area: topbar;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      width: 100%;
-      flex-wrap: wrap;
-    }
-    #cardsContainer.view-list .job-card-topbar-primary {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      width: auto;
-    }
-    #cardsContainer.view-list .job-card-topbar-meta {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-inline-start: auto;
-    }
-    #cardsContainer.view-list .job-card-main-header {
-      grid-area: header;
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      margin: 2px 0;
-      width: 100%;
-    }
-    #cardsContainer.view-list .job-company-logo {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    #cardsContainer.view-list .job-header-text {
-      flex: 1;
-      min-width: 0;
-    }
-    #cardsContainer.view-list .job-company-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--dashboard-cyan);
-      margin-bottom: 2px;
-    }
-    #cardsContainer.view-list .job-title-text {
-      font-size: 17.5px;
-      font-weight: 700;
-      color: #ffffff;
-      line-height: 1.3;
-      margin: 0 0 6px;
-    }
-    #cardsContainer.view-list .job-header-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-      margin-bottom: 2px;
-    }
-    #cardsContainer.view-list .ai-score-drivers {
-      margin: 4px 0 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      align-items: center;
-    }
-    #cardsContainer.view-list .job-bubbles-wrapper {
-      grid-area: summary;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    #cardsContainer.view-list .job-bubble {
-      padding: 7px 12px;
-      font-size: 12.5px;
-      line-height: 1.45;
-      border-radius: 11px;
-    }
-    #cardsContainer.view-list .job-actions-bar {
-      grid-area: actions;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: stretch;
-      gap: 10px;
-      border-top: none;
-      border-inline-start: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 0;
-      margin-top: 0;
-      padding-inline-start: 22px;
-      height: 100%;
-      box-sizing: border-box;
-      width: 100%;
-    }
-    #cardsContainer.view-list .btn-apply {
-      width: 100%;
-      min-height: 44px;
-      padding: 9px 14px;
-      font-size: 13.5px;
-      font-weight: 700;
-      box-shadow: 0 4px 14px rgba(220, 255, 114, 0.22);
-      order: 1;
-    }
-    #cardsContainer.view-list .action-btn-group {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      width: 100%;
-      order: 2;
-    }
-    #cardsContainer.view-list .btn-triage {
-      min-height: 36px;
-      padding: 6px 8px;
-      font-size: 11.5px;
-      border-radius: 10px;
-    }
-    #cardsContainer.view-list .btn-toggle-details {
-      grid-area: toggle;
-      grid-column: 1 / -1;
-      min-height: 32px;
-      padding: 6px 14px;
-      font-size: 12px;
-      border-radius: 10px;
-      margin-top: 2px;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px dashed rgba(255, 255, 255, 0.12);
-      width: 100%;
-      box-sizing: border-box;
-    }
-    #cardsContainer.view-list .btn-toggle-details:hover {
-      background: rgba(137, 244, 231, 0.06);
-      border-color: rgba(137, 244, 231, 0.3);
-    }
-    #cardsContainer.view-list .job-details-collapsible {
-      grid-area: details;
-      grid-column: 1 / -1;
-      width: 100%;
-    }
-    #cardsContainer.view-list .job-boxes-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    #cardsContainer.view-list .job-box {
-      padding: 12px 16px;
-      font-size: 13.5px;
-      border-radius: 14px;
-    }
-
-    @media (min-width: 769px) and (max-width: 860px) {
-      #cardsContainer.view-list .job-card {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        padding: 16px;
-      }
-      #cardsContainer.view-list .job-card-topbar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      #cardsContainer.view-list .job-card-topbar-primary {
-        justify-content: space-between;
-        width: 100%;
-      }
-      #cardsContainer.view-list .job-card-topbar-meta {
-        margin-inline-start: 0;
-      }
-      #cardsContainer.view-list .job-bubbles-wrapper {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      #cardsContainer.view-list .job-actions-bar {
-        border-inline-start: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        padding-inline-start: 0;
-        padding-top: 12px;
-        height: auto;
-      }
-      #cardsContainer.view-list .job-boxes-grid {
-        grid-template-columns: 1fr;
-      }
-    }
   </style>
 </head>
 <body dir="rtl">
@@ -3197,7 +2775,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       </button>
     </div>
 
-    <!-- Cards View Header (Count & Grid/List Toggle) -->
+    <!-- Cards View Header (Count & Grid/Map Toggle) -->
     <div class="cards-view-header">
       <div class="cards-count-summary">
         <i class="ph-duotone ph-briefcase" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
@@ -3206,9 +2784,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       <div class="view-mode-toggle" role="group" aria-label="מצב תצוגה">
         <button type="button" id="viewGridBtn" class="view-toggle-btn active" onclick="setViewMode('grid')" title="תצוגת קוביות (Grid)">
           <i class="ph-bold ph-squares-four"></i> <span>קוביות</span>
-        </button>
-        <button type="button" id="viewListBtn" class="view-toggle-btn" onclick="setViewMode('list')" title="תצוגת רשימה קומפקטית (List)">
-          <i class="ph-bold ph-list-dashes"></i> <span>רשימה</span>
         </button>
         <button type="button" id="viewMapBtn" class="view-toggle-btn" onclick="setViewMode('map')" title="תצוגת מפה חיה (Map)">
           <i class="ph-bold ph-map-trifold"></i> <span>מפה</span>
@@ -3403,15 +2978,13 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   let allJobsMap = {};
   try {
     const savedView = localStorage.getItem(VIEW_MODE_KEY);
-    if (savedView) {
-      currentViewMode = savedView;
-    } else if (typeof window !== 'undefined' && window.innerWidth < 600) {
-      currentViewMode = 'list';
+    if (savedView === 'map') {
+      currentViewMode = 'map';
     } else {
       currentViewMode = 'grid';
     }
   } catch(e) {
-    currentViewMode = (typeof window !== 'undefined' && window.innerWidth < 600) ? 'list' : 'grid';
+    currentViewMode = 'grid';
   }
   try {
     currentSort = localStorage.getItem(SORT_STORAGE_KEY) || 'date_desc';
@@ -3472,22 +3045,21 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   }
 
   function setViewMode(mode) {
-    currentViewMode = mode;
+    currentViewMode = (mode === 'map') ? 'map' : 'grid';
     try {
-      localStorage.setItem(VIEW_MODE_KEY, mode);
+      localStorage.setItem(VIEW_MODE_KEY, currentViewMode);
     } catch(e) {}
     const container = document.getElementById('cardsContainer');
     const mapContainer = document.getElementById('mapViewContainer');
     const gridBtn = document.getElementById('viewGridBtn');
-    const listBtn = document.getElementById('viewListBtn');
     const mapBtn = document.getElementById('viewMapBtn');
     if (!container || !mapContainer) return;
 
-    if (mode === 'map') {
+    if (currentViewMode === 'map') {
+      container.classList.add('is-hidden-by-map');
       container.style.display = 'none';
       mapContainer.style.display = 'block';
       if (gridBtn) gridBtn.classList.remove('active');
-      if (listBtn) listBtn.classList.remove('active');
       if (mapBtn) mapBtn.classList.add('active');
 
       if (!liveJobsMapInstance) {
@@ -3499,19 +3071,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         }
       }, 150);
       updateMapMarkers();
-    } else if (mode === 'list') {
-      mapContainer.style.display = 'none';
-      container.style.display = '';
-      container.classList.add('view-list');
-      if (gridBtn) gridBtn.classList.remove('active');
-      if (listBtn) listBtn.classList.add('active');
-      if (mapBtn) mapBtn.classList.remove('active');
     } else {
       mapContainer.style.display = 'none';
+      container.classList.remove('is-hidden-by-map');
       container.style.display = '';
-      container.classList.remove('view-list');
       if (gridBtn) gridBtn.classList.add('active');
-      if (listBtn) listBtn.classList.remove('active');
       if (mapBtn) mapBtn.classList.remove('active');
     }
   }
@@ -4854,11 +4418,15 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
     // 3. Compensation / Salary
     const salType = job.salary_source_type;
+    const fullAdText = ((job.title || '') + ' ' + (job.company_requirements || '') + ' ' + (job.snippet || '') + ' ' + (job.job_summary || '')).toLowerCase();
+    const hasExplicitCar = ['רכב חברה', 'רכב צמוד', 'כולל רכב', 'company car'].some(kw => fullAdText.includes(kw));
+    const hasExplicitShifts = (job.has_shifts === true || ['משמרות', '24/7', 'משמרת'].some(kw => fullAdText.includes(kw))) && !fullAdText.includes('ללא משמרות');
+
     if (salType === 'job_ad') {
       drivers.push({ label: 'שכר מאומת במודעה', icon: 'ph-currency-circle-dollar', type: 'lime' });
-    } else if (job.salary_range && (job.salary_range.includes('משמרות') || job.salary_range.includes('24/7'))) {
+    } else if (hasExplicitShifts) {
       drivers.push({ label: 'תגמול משמרות מוגדל', icon: 'ph-trend-up', type: 'lime' });
-    } else if (job.salary_range && job.salary_range.includes('רכב צמוד')) {
+    } else if (hasExplicitCar) {
       drivers.push({ label: 'כולל רכב חברה צמוד', icon: 'ph-car', type: 'cyan' });
     } else if (job.salary_range && (job.salary_range.includes('16') || job.salary_range.includes('17') || job.salary_range.includes('18') || job.salary_range.includes('19') || job.salary_range.includes('20') || job.salary_range.includes('21'))) {
       drivers.push({ label: 'רמת שכר מתגמלת', icon: 'ph-trend-up', type: 'lime' });
@@ -4951,6 +4519,54 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       }
     }
     return 0;
+  }
+
+  function getExplicitConditionChips(job) {
+    const chips = [];
+    const title = (job.title || '').toLowerCase();
+    const reqs = (job.company_requirements || '').toLowerCase();
+    const snip = (job.snippet || '').toLowerCase();
+    const sum = (job.job_summary || '').toLowerCase();
+    const raw = (job.raw_text || '').toLowerCase();
+    const adText = `${title} ${reqs} ${snip} ${sum} ${raw}`;
+
+    // 1. Company Car: ONLY if explicitly stated in the ad text as an offered perk
+    // Must NOT infer from salary benchmarks, forklift licenses or normative assumptions
+    const isNormativeVehicle = (job.is_normative_vehicle === true);
+    const carPerkKeywords = [
+      'רכב צמוד', 'רכב חברה', 'כולל רכב', 'רכב שירות', 'רכב תפעולי',
+      'חברה מעמידה רכב', 'קבלת רכב', 'רכב אישי', 'תנאים מעולים כולל רכב',
+      'company car', 'service vehicle provided'
+    ];
+    const hasExplicitCarPerk = carPerkKeywords.some(kw => adText.includes(kw));
+    const hasCar = !isNormativeVehicle && (hasExplicitCarPerk || (job.has_company_car === true && !adText.includes('מלגזה') && hasExplicitCarPerk));
+    
+    if (hasCar) {
+      chips.push(`<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); background: rgba(137, 244, 231, 0.1); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-car"></i> רכב חברה</span>`);
+    }
+
+    // 2. Shifts: ONLY if explicitly stated in the job ad
+    const isDayJobOnly = adText.includes('ללא משמרות') || adText.includes('משרת יום') || adText.includes('שעות נוחות ללא משמרות');
+    const shiftKeywords = [
+      'משמרות', 'משמרת', '24/7', 'עבודה במשמרות', 'משמרות לילה', 'משמרות סופ"ש',
+      'shift work', 'shifts', 'night shift', 'rotating shifts'
+    ];
+    const hasExplicitShiftText = shiftKeywords.some(kw => adText.includes(kw)) && !isDayJobOnly;
+    const isShiftsJob = (job.has_shifts === true && !isDayJobOnly) || hasExplicitShiftText;
+
+    if (isShiftsJob) {
+      chips.push(`<span class="dashboard-chip" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4); background: rgba(255, 211, 104, 0.1); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-clock"></i> משמרות 24/7</span>`);
+    }
+
+    // 3. Work Model: ONLY if explicitly specified in ad / job data
+    const wm = (job.work_model || '').toLowerCase();
+    if (wm.includes('שטח') || adText.includes('עבודת שטח') || adText.includes('טכנאי שטח') || adText.includes('יציאה לשטח')) {
+      chips.push(`<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.3); background: rgba(203, 213, 225, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-navigation-arrow"></i> עבודת שטח</span>`);
+    } else if (wm.includes('היברידי') || wm.includes('hybrid') || adText.includes('היברידי') || adText.includes('מודל היברידי')) {
+      chips.push(`<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.3); background: rgba(203, 213, 225, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-laptop"></i> היברידי</span>`);
+    }
+
+    return chips.join(' ');
   }
 
   function renderCards() {
@@ -5133,20 +4749,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       // Format compact high-signal salary display
       const compactSalary = formatCompactSalary(salaryRange, salaryType, salaryEvidence, salaryLabel);
 
-      // Relevant condition chip (at most 1 prominent condition)
-      let conditionChips = '';
-      if (job.has_company_car || (job.salary_range && job.salary_range.includes('רכב צמוד'))) {
-        conditionChips = `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-car"></i> רכב חברה</span>`;
-      } else if (job.has_shifts || (job.salary_range && (job.salary_range.includes('משמרות') || job.salary_range.includes('24/7')))) {
-        conditionChips = `<span class="dashboard-chip" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-clock"></i> משמרות 24/7</span>`;
-      } else {
-        const wm = (job.work_model || '').toLowerCase();
-        if (wm.includes('שטח')) {
-          conditionChips = `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-navigation-arrow"></i> עבודת שטח</span>`;
-        } else if (wm.includes('היברידי') || wm.includes('hybrid')) {
-          conditionChips = `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-laptop"></i> היברידי</span>`;
-        }
-      }
+      // Relevant condition chips strictly from explicit ad content
+      const conditionChips = getExplicitConditionChips(job);
 
       const card = document.createElement('article');
       card.setAttribute('data-id', id);
@@ -5207,18 +4811,6 @@ HTML_TEMPLATE = """<!DOCTYPE html>
           <div class="job-bubble job-bubble-reqs">
             <strong class="bubble-title"><i class="ph-duotone ph-check-square"></i> דרישות המשרה:</strong>
             <span class="bubble-content">${companyReqs}</span>
-          </div>
-        </div>
-
-        <!-- Mobile Preview Summary (Balanced Preview: Job Summary & AI Match Rationale) -->
-        <div class="job-mobile-preview">
-          <p class="job-preview-text" dir="auto">${jobSum}</p>
-          <div class="job-preview-ai-box" dir="auto">
-            <i class="ph-duotone ph-sparkle"></i>
-            <div>
-              <span class="preview-ai-label">נימוק התאמת AI:</span>
-              <span class="preview-ai-text">${quickInsight}</span>
-            </div>
           </div>
         </div>
 
@@ -5364,19 +4956,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const expChipHtml = getExperienceChip(job);
     const compactSalary = formatCompactSalary(salaryRange, salaryType, salaryEvidence, salaryLabel);
 
-    let conditionChips = '';
-    if (job.has_company_car || (job.salary_range && job.salary_range.includes('רכב צמוד'))) {
-      conditionChips += `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-car"></i> רכב חברה</span>`;
-    }
-    if (job.has_shifts || (job.salary_range && (job.salary_range.includes('משמרות') || job.salary_range.includes('24/7')))) {
-      conditionChips += `<span class="dashboard-chip" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.35); background: rgba(255, 211, 104, 0.08); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-clock"></i> משמרות 24/7</span>`;
-    }
-    const wm = (job.work_model || '').toLowerCase();
-    if (wm.includes('שטח')) {
-      conditionChips += `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-navigation-arrow"></i> עבודת שטח</span>`;
-    } else if (wm.includes('היברידי') || wm.includes('hybrid')) {
-      conditionChips += `<span class="dashboard-chip" style="color: #cbd5e1; border-color: rgba(203, 213, 225, 0.25); background: rgba(203, 213, 225, 0.06); font-size: 11px; padding: 2.5px 8px;"><i class="ph-duotone ph-laptop"></i> היברידי</span>`;
-    }
+    const conditionChips = getExplicitConditionChips(job);
 
     body.innerHTML = `
       <div style="display: flex; align-items: flex-start; gap: 14px;">
