@@ -2810,7 +2810,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       showToast('ph-star', 'הוסר מהמשרות המסומנות בכוכב');
     } else {
       starredJobs[id] = true;
-      showToast('ph-fill ph-star', 'המשרה סומנה בכוכב בהצלחה');
+      showToast('ph-fill ph-star', 'המשרה סומנה בכוכב והועברה ללשונית בכוכב');
     }
     saveStarredJobs(starredJobs);
     
@@ -4546,11 +4546,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     const current = jobStates[id];
     if (current === action) {
       delete jobStates[id];
-      showToast('ph-arrow-counter-clockwise', 'הסטטוס אופס למצב ממתין');
+      showToast('ph-arrow-counter-clockwise', 'הסטטוס אופס והמשרה הוחזרה לחדשות');
     } else {
       jobStates[id] = action;
       if (action === 'saved') {
-        showToast('ph-bookmark-simple', 'המשרה נשמרה להגשה');
+        showToast('ph-bookmark-simple', 'המשרה נשמרה להגשה והועברה ללשונית נשמרו');
       } else if (action === 'rejected') {
         showToast('ph-trash', 'המשרה הוסרה ולא תוצג שוב');
       }
@@ -4750,7 +4750,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
       let matchesTab = false;
       if (currentFilter === 'all') {
-        matchesTab = isCurrentBatchJob && (state !== 'rejected' && state !== 'purged');
+        matchesTab = isCurrentBatchJob && !isStarred && (state !== 'saved' && state !== 'rejected' && state !== 'purged');
       } else if (currentFilter === 'starred') {
         matchesTab = (isStarred && state !== 'rejected' && state !== 'purged');
       } else if (currentFilter === 'saved') {
@@ -4827,7 +4827,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
       if (st === 'purged') {
         return;
       }
-      if (rawJobLinks.has(j.link) && st !== 'rejected') {
+      if (rawJobLinks.has(j.link) && !isSt && st !== 'saved' && st !== 'rejected') {
         totalNewInStore++;
       }
       if (isSt && st !== 'rejected') {
@@ -5048,7 +5048,8 @@ HTML_TEMPLATE = """<!DOCTYPE html>
         // Default / All: active jobs from current scan
         sourceJobs = (allAvailableJobs || []).filter(j => {
           const st = jobStates[j.link] || 'pending';
-          return rawJobLinks.has(j.link) && st !== 'rejected' && st !== 'purged';
+          const isSt = Boolean(starredJobs[j.link]);
+          return rawJobLinks.has(j.link) && !isSt && st !== 'saved' && st !== 'rejected' && st !== 'purged';
         });
         if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות חדשות';
         if (chartChipEl) {
