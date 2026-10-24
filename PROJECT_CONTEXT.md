@@ -133,11 +133,12 @@ job_search_automation/
 - **Automated test suite:** 49 comprehensive unit and integration tests passing in under 0.1 seconds.
 - **High-resolution company logo pipeline:**
   - Scraper extraction: Direct capture of high-res CDN logo URLs in `fetch_linkedin_jobs` (`artdeco-entity-image`) and `fetch_drushim_jobs` (`webapi.drushim.co.il/logos`).
-  - Curated dictionary & word-boundary matching: Curated dictionary of 60+ Israeli and international companies with regex word boundary matching preventing substring collisions (`ratio` inside `corporation`).
-  - 4-Tier client-side logo fallback chain: Direct CDN logo -> Google Favicon S2 (sz=128) -> Unavatar API -> DuckDuckGo Icons API -> Branded monogram avatar.
+  - Curated dictionary & word-boundary matching: Curated dictionary of 60+ Israeli and international companies with regex word boundary matching preventing substring collisions (`ratio` inside `corporation`). Verified official corporate domains (e.g. `nextcomgroup.com`, `mechanical-devices.com`, `eladsoft.com`, `michlolltd.co.il`, `e2eil.co.il`, `assatec.co.il`, `nyga-chef.co.il`, `zoll.com`, etc.).
+  - 4-Tier client-side logo fallback chain: Direct CDN logo -> Google Favicon S2 (sz=128) -> Unavatar API -> DuckDuckGo Icons API -> Branded monogram avatar with deterministic color gradient.
   - Complete data backfill: 100% of jobs in `data/weekly_archive.json` (80/80) and 200+ historical catalog records enriched with authentic logos.
 - **Streamlined card tag architecture:**
-  - Reduced tags on job cards from 10-14 to 3-4 clean, high-signal chips (Region, Compact salary format `16k - 20k ₪ (הערכה)`, and Unified experience chip).
+  - Reduced tags on job cards from 10-14 down to 3-4 clean, high-signal chips (Region, Compact salary format `16k - 20k ₪ (הערכה)`, Unified experience chip, and optional key condition like field work or company car).
+  - Standardized experience classification into 4 strict, compact categories ("מתאים לג'וניור / ללא ניסיון", "מתאים לג'וניור (1-2 שנים)", "2-3 שנות ניסיון", "+3 שנות ניסיון") eliminating long, rambling AI prompt sentences and preventing card layout distortion.
   - Clean topbar without redundant date/source clutter; AI score drivers housed in collapsible deep analysis.
 - **GitOps Save & Sync protocol:** Unified zero-waste cleanup (purged obsolete `integration/` templates and caches), syntax validation, pre-commit secret scanning, zero-emoji verification, and two-way GitHub push.
 
