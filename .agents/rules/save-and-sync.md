@@ -1,6 +1,6 @@
 ---
 name: save-and-sync
-description: Protocol executed whenever the user says "שמור ועדכן", "שמור וסנכרן", or "Save and update". Validates project integrity, enforces zero-waste lean directory hygiene by purging obsolete legacy files and wrappers, persists files, commits and pushes to Git/GitHub, and provides a structured executive summary in RTL.
+description: Protocol executed whenever the user says "שמור ועדכן", "שמור וסנכרן", or "Save and update". Validates project integrity, enforces zero-waste lean directory hygiene by purging obsolete legacy files and wrappers, runs test suite, checks secret leaks, verifies zero emojis, persists files, commits and pushes to Git/GitHub, and provides a structured executive summary in RTL.
 ---
 
 # Save & Sync Protocol ("שמור ועדכן")
@@ -8,9 +8,10 @@ description: Protocol executed whenever the user says "שמור ועדכן", "ש
 Execute this comprehensive 5-step procedure whenever the user issues the trigger phrase **"שמור ועדכן"**, **"שמור וסנכרן"**, or **"Save and update"**:
 
 ## שלב 1 - בדיקת תקינות ושלמות (Code & Integrity Validation)
-1. **הידור ובדיקת תחביר מלאה:** הרץ בדיקת קומפילציה ותחביר לכל קובצי הקוד הפעילים בפרויקט (למשל `python3 -m py_compile ...`).
+1. **הידור ובדיקת תחביר מלאה:** הרץ בדיקת קומפילציה ותחביר לכל קובצי הקוד הפעילים בפרויקט (`python3 -m py_compile ...`).
 2. **אימות קובצי נתונים ותצורה:** אמת תקינות של כל קובצי ה-JSON, הסכמות והקונפיגורציות בפרויקט (`json.load`).
-3. **בדיקת שלמות:** ודא אפס שגיאות תחביר, אפס ייבואים שבורים (Broken Imports) ואפס תלויות חסרות לפני המעבר לשלבים הבאים.
+3. **בדיקות יחידה אוטומטיות:** הרץ את מערך הטסטים המלא (`python3 -m unittest discover -s tests -p "test_*.py"`).
+4. **בדיקת שלמות:** ודא אפס שגיאות תחביר, אפס כשלים בבדיקות, אפס ייבואים שבורים ואפס תלויות חסרות לפני המעבר לשלבים הבאים.
 
 ## שלב 2 - טיהור מוחלט של קבצים מיותרים (Zero-Waste & Lean Directory Hygiene)
 אכוף את חוק הברזל: **"לא יישאר בפרויקט אפילו קובץ אחד שאין בו שימוש פעיל או צורך ממשי"**.
@@ -27,21 +28,22 @@ Execute this comprehensive 5-step procedure whenever the user issues the trigger
 
 ## שלב 3 - שמירה ובנייה מקומית (Local Persistence & Build)
 1. **שמירה בדיסק:** ודא שכל הקבצים שנערכו או נוצרו נשמרו מקומית בדיסק.
-2. **הרצת סקריפטי בנייה:** הרץ סקריפטי בנייה מקומיים במידה וקיימים בפרויקט (כגון יצירה מחדש של תוצרי HTML/Docs).
-3. **אימות .gitignore:** ודא שקובץ `.gitignore` קיים ומתעלם כראוי מ-`.env`, ספריות וירטואליות (`venv/`), ומטמונים.
+2. **סריקת סודות ואפס אימוג'ים:** בצע סריקת pre-commit למניעת דליפת מפתחות ואמת אפס אימוג'ים בקבצים החדשים.
+3. **עדכון מסמכי הליבה:** בעת שינוי ארכיטקטוני או שינוי תלויות, ודא סנכרון של `PROJECT_CONTEXT.md`, `README.md`, `requirements.txt` ו-`skills-lock.json`.
+4. **אימות .gitignore:** ודא שקובץ `.gitignore` קיים ומתעלם כראוי מ-`.env`, ספריות וירטואליות (`venv/`), ומטמונים.
 
-## 4. GitHub Synchronization (סנכרון ודחיפה ל-GitHub)
+## שלב 4 - סנכרון ודחיפה ל-GitHub (GitHub Synchronization)
 > **כלל מנחה:** כאשר המשתמש אומר "גיט", הכוונה היא תמיד ל-**GitHub**, ויש להתייחס לפלטפורמה ולכתוב תמיד **GitHub**.
-- Check `git status --porcelain`.
-- Stage all intended changes and removals: `git add -A`.
-- Create a descriptive, semantic commit message (e.g., `feat: ...`, `fix: ...`, `chore: ...`).
-- Push changes to GitHub: `git push origin <branch>` (use BypassSandbox if network required).
-- Verify clean working tree (`working tree clean`).
+- בדיקת סטטוס: `git status --porcelain`.
+- צירוף כל השינויים והמחיקות: `git add -A`.
+- יצירת הודעת Commit סמנטית (ללא אימוג'ים): `feat: ...`, `fix: ...`, `chore: ...`.
+- דחיפה ל-GitHub: `git push origin <branch>`.
+- אימות עץ עבודה נקי (`working tree clean`) ותאימות 1:1 מול ה-Remote.
 
 ## שלב 5 - דוח סיכום תמציתי בעברית (RTL Executive Summary)
-הפק דוח סיכום מובנה ומקצועי ביישור מלא לימין (RTL) הכולל:
-- 🧪 **בדיקת תקינות:** תקין (הידור ואימות נתונים)
-- 🧹 **טיהור קבצים מיותרים (Zero Waste):** פירוט קבצי עבר/כפילויות/זבל שנמחקו
-- 📁 **קבצים שנשמרו מקומית:** פירוט הקבצים שעודכנו
-- 🚀 **סנכרון GitHub:** סטטוס דחיפה, Hash והודעת ה-Commit
-- 🎯 **שורה תחתונה:** הפרויקט רזה, נקי, שמור ומסונכרן במלואו.
+הפק דוח סיכום מובנה ומקצועי ביישור מלא לימין (RTL) ללא אימוג'ים כלל:
+- בדיקת תקינות: תקין (הידור קוד, אימות נתונים, כל בדיקות היחידה עברו)
+- טיהור קבצים מיותרים (Zero Waste): פירוט קבצי עבר/כפילויות/זבל שנמחקו
+- קבצים שנשמרו מקומית: פירוט הקבצים שעודכנו
+- סנכרון GitHub: סטטוס דחיפה, Hash והודעת ה-Commit
+- שורה תחתונה: הפרויקט רזה, נקי, מאובטח, שמור ומסונכרן במלואו
