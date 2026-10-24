@@ -16,14 +16,12 @@
 - **Storage & State:** Flat atomic JSON files under `data/` (`jobs_state.json`, `weekly_archive.json`, `historical_catalog.json`, `evaluation_state.json`), Browser LocalStorage for client-side user triage state.
 - **Hosting & Infrastructure:** GitHub Pages (static web app hosting from `docs/`), GitHub Actions (scheduled daily runs and CI/CD), internal `save-and-sync` protocol for atomic GitOps deployments.
 - **Critical Environment Variables:**
-  - `GEMINI_API_KEY`: API authentication key for Google Gemini.
-  - `GEMINI_MODELS`: Comma-separated list of fallback Gemini models.
-  - `RECIPIENT_EMAIL`: Target email for daily job alerts.
-  - `SENDER_EMAIL`: SMTP dispatch sender account.
-  - `SENDER_PASSWORD`: SMTP dispatch authentication token.
-  - `SMTP_SERVER`: Outgoing mail server host.
-  - `SMTP_PORT`: Outgoing mail server port.
-  - `DRY_RUN`: Flag for dry-run simulation mode without external mutation.
+  - `GEMINI_API_KEY`: API authentication key for Google Gemini LLM evaluation.
+  - `GEMINI_MODELS`: Comma-separated fallback model list (defaults to `gemini-3.8-flash,gemini-3.5-flash-lite,gemini-3.5-flash`).
+  - `SENDER_EMAIL`: Gmail account used for dispatching daily email job alerts.
+  - `SENDER_APP_PASSWORD` (or `SENDER_PASSWORD`): Gmail App Password for SMTP dispatch authentication.
+  - `GITHUB_TOKEN`: Automated GitHub Actions token used to commit daily state checkpoints to `main`.
+  - `GITHUB_STEP_SUMMARY`: Workflow step summary path in GitHub Actions for execution metrics.
 
 ---
 
@@ -33,6 +31,13 @@ job_search_automation/
 ├── main.py                         # Application CLI entrypoint; coordinates fetch, evaluation, storage, and build
 ├── PROJECT_CONTEXT.md              # Single source of truth context anchor for AI agents and developers
 ├── requirements.txt                # Python package dependencies
+├── .python-version                 # Target Python runtime anchor (Python 3.14 / 3.9+)
+├── .agents/                        # Operational policies and domain skills
+│   ├── rules/                      # System rules (mcp-policy.md, hebrew-rtl.md, critical-thinking-quality.md)
+│   └── skills/                     # Specialized skills (salary-intelligence, cloud-sync, health-audit, etc.)
+├── .github/
+│   └── workflows/
+│       └── daily_job_search.yml    # Active scheduled daily GitHub Actions cron workflow (07:17 IST / 04:17 UTC)
 ├── src/
 │   ├── pipeline.py                 # Core orchestration pipeline managing run health, stages, and metrics
 │   ├── fetchers.py                 # Multi-source scrapers for LinkedIn, Drushim, and candidate feeds
@@ -126,7 +131,7 @@ job_search_automation/
   - Mobile optimization: Tested on iPhone 14 (390px) and iPhone SE (375px) featuring a symmetrical 4-pill metric toggle, non-overlapping 2-tier filter grid, zero text truncation in chips, and strictly centered sort icon.
   - Accessibility: WCAG AA compliant 44x44px touch targets on all interactive controls.
 - **Automated test suite:** 49 comprehensive unit and integration tests passing in under 0.1 seconds.
-- **GitOps Save & Sync protocol:** Unified zero-waste cleanup, syntax validation, secret scanning, and two-way GitHub push.
+- **GitOps Save & Sync protocol:** Unified zero-waste cleanup (purged obsolete `integration/` templates and caches), syntax validation, pre-commit secret scanning, and two-way GitHub push.
 
 ### 5.2 In Progress (WIP)
 - **Salary engine market calibration:** Fine-tuning compensation bands based on user feedback and emerging Israeli industrial salary data.
