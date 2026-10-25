@@ -1756,6 +1756,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const jobSum = escapeHtml(stripEmojis(job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.'));
       const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
       const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
+      const fitGaps = escapeHtml(stripEmojis(job.fit_gaps || 'אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.'));
       const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).'));
       const safeCompany = escapeHtml(company);
       const safeTitle = escapeHtml(title);
@@ -1869,12 +1870,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             </div>
           </div>
 
-          <!-- U4: Requirement Assessments & Evidence Breakdown -->
-          <div class="job-box highlight" style="margin-top: 10px; border-color: rgba(137, 244, 231, 0.35); background: rgba(137, 244, 231, 0.04);">
-            <strong style="color: var(--dashboard-cyan); display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-              <i class="ph-duotone ph-shield-check"></i> ראיות התאמה ופערים מול דרישות המשרה:
+          <!-- Fit Gaps Section -->
+          <div class="job-box highlight" style="margin-top: 10px; border-color: rgba(251, 191, 36, 0.4); background: rgba(251, 191, 36, 0.04);">
+            <strong style="color: var(--dashboard-gold, #fbbf24); display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+              <i class="ph-duotone ph-warning-circle"></i> פערי התאמה:
             </strong>
-            ${renderRequirementAssessmentsHtml(job.requirement_assessments)}
+            <span style="font-size: 12.5px; line-height: 1.5; color: #e2e8f0;">${fitGaps}</span>
           </div>
         </div>
 
@@ -1928,6 +1929,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
     const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה.'));
     const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
+    const fitGaps = escapeHtml(stripEmojis(job.fit_gaps || 'אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.'));
     const logoHtml = getCompanyLogoHtml(company, job.logo);
     const companyBdi = `<bdi dir="auto">${safeCompany}</bdi>`;
 
@@ -2006,6 +2008,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <div class="job-box highlight">
           <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
           <span>${quickInsight}</span>
+        </div>
+        <div class="job-box highlight" style="border-color: rgba(251, 191, 36, 0.4); background: rgba(251, 191, 36, 0.04);">
+          <strong style="color: var(--dashboard-gold, #fbbf24); display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+            <i class="ph-duotone ph-warning-circle"></i> פערי התאמה:
+          </strong>
+          <span style="font-size: 12.5px; line-height: 1.5; color: #e2e8f0;">${fitGaps}</span>
         </div>
       </div>
     `;

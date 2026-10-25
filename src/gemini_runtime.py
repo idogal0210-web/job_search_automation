@@ -45,6 +45,7 @@ class Evaluation(BaseModel):
     junior_openness: str = "לא צוין"
     work_model: str = "לא צוין"
     company_requirements: str = "לא צוין"
+    fit_gaps: str = "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
     requirement_assessments: list[RequirementAssessment] = Field(default_factory=list)
 
     @field_validator("junior_openness", mode="before")

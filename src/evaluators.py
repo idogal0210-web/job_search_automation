@@ -187,6 +187,8 @@ Rules:
   Never claim a completed electrician license. Distinguish required vs preferred.
 - A B.Sc. title alone is not a rejection when equivalent practical experience is
   explicitly accepted. Do not ignore an explicit mandatory credential.
+- Reasoning (תמצית התאמה ממוקדת): כתוב ניתוח טכני ומקצועי תמציתי וממוקד ביותר (משפט עד שניים קצרים).
+- Fit gaps (פערי התאמה): נתח בצורה תמציתית, ברורה וממוקדת את הפערים בין קורות החיים של עידו לבין דרישות המשרה. אם אין פערי סף מהותיים, כתוב: "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
 - Pure theoretical R&D/algorithms or purely academic design are not appropriate.
 - Drone roles must involve flight/field tests, UAV integration, payloads,
   maintenance, C-UAS or hands-on operations.

@@ -48,6 +48,7 @@ def compact_job_for_ui(j):
         "logo": j.get("logo"),
         "snippet": j.get("snippet", ""),
         "requirement_assessments": j.get("requirement_assessments", []),
+        "fit_gaps": j.get("fit_gaps", ""),
         "is_direct_ats": j.get("is_direct_ats", False),
         "is_field_work": j.get("is_field_work", tags_info["is_field_work"]),
         "provides_company_car": j.get("provides_company_car", tags_info["provides_company_car"]),

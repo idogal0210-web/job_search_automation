@@ -8,7 +8,7 @@
     "source": "LinkedIn",
     "match_score": 88,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה דורשת מהנדס מערכות ניסוי בעל אוריינטציה מעשית חזקה לתפעול מערכות מורכבות, אב-טיפוס, ותשתיות מעבדה. הרקע של עידו כמהנדס מכונות מעשי, ניסיונו הרב במערכות אלקטרו-מכניות ותשתיות אנרגיה מתאימים בול לאופי ההנדסי-תפעולי של תפקיד זה.",
+    "reasoning": "מהנדס מערכות ניסוי בעל אוריינטציה מעשית חזקה לתפעול מערכות מורכבות, אב-טיפוס, ותשתיות מעבדה.",
     "sector_key": "energy_tech",
     "sector": "אגירת אנרגיה",
     "location": "ישראל (מרכז / שרון)",
@@ -43,7 +43,8 @@
     "p75": null,
     "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQFFEZhE4MiLqA/company-logo_100_100/company-logo_100_100/0/1672842875832?e=2147483647&v=beta&t=5WkI2HS2MzwMudQ9ZtB7GyMQaZNO7LAKSENIgbSI5uQ",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "title": "תהליכי בקרה ו-AI",
@@ -89,7 +90,8 @@
     "p75": null,
     "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "title": "Maintenance Engineer",
@@ -135,7 +137,8 @@
     "p75": null,
     "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQE9BDqdjpwRvg/company-logo_100_100/B4EZ0Z_nVeG8AQ-/0/1774257600258/edwards_logo?e=2147483647&v=beta&t=S_F6oMCEHgS4y3HO4eStkG-hAmSaNHFm9YKrMCTOY6A",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "title": "Satellite Operator (1007916)",
@@ -146,7 +149,7 @@
     "source": "LinkedIn",
     "match_score": 65,
     "concrete_matches_count": 2,
-    "reasoning": "המשרה דורשת הפעלת מערכות שליטה ובקרה מתקדמות עם דגש על אחריות גבוהה, תנאים המשיקים לניסיון של עידו בחדרי בקרה קריטיים, הגם שמדובר בתחום לוויני שאינו אנרגיה טהורה.",
+    "reasoning": "הפעלת מערכות שליטה ובקרה מתקדמות עם דגש על אחריות גבוהה, תנאים המשיקים לניסיון של עידו בחדרי בקרה קריטיים, הגם שמדובר בתחום לוויני שאינו אנרגיה טהורה.",
     "sector_key": "operations",
     "sector": "בקרה ו-SCADA",
     "location": "ישראל (מרכז / ארצי)",
@@ -182,7 +185,8 @@
     "p75": null,
     "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFSTb09MPJG8A/company-logo_100_100/B4EZtEyL1jHoAU-/0/1766385565507/elad_systems_logo?e=2147483647&v=beta&t=9bCfq2VX0w9TR0EuYBuq2ADG0LkcwR2LSeQ3GDuaukY",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "title": "NOC Engineer",
@@ -228,7 +232,8 @@
     "p75": 21000,
     "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFjMIFw1Kha1g/company-logo_100_100/company-logo_100_100/0/1642011082695/cross_river_bank_logo?e=2147483647&v=beta&t=F8NaYISULS1SGbIj0QDbmr6FOw7YILH9z17eVZiMvzs",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "דרישה לפיתוח תוכנה או תכנות בקרים מעמיק (למועמד רקע בתפעול ובקרה ואוטומציה בסיסית בפייתון)."
   },
   {
     "title": "System Engineer - Renewable Energy & Energy Storage Projects",
@@ -239,7 +244,7 @@
     "source": "LinkedIn",
     "match_score": 92,
     "concrete_matches_count": 3,
-    "reasoning": "המשרה מתאימה במדויק לפרופיל של עידו כהנדסאי מכונות עם התמחות באנרגיה סולארית ואגירת אנרגיה (BESS). הרקע המעשי שלו בהקמה, פיקוח ושילוב מערכות חשמל ואנרגיה יאפשר לו להשתלב בהצלחה רבה בפרויקטים של נקסטקום.",
+    "reasoning": "המשרה מתאימה במדויק לפרופיל של עידו כהנדסאי מכונות עם התמחות באנרגיה סולארית ואגירת אנרגיה (BESS).",
     "sector_key": "energy",
     "sector": "אגירת אנרגיה",
     "location": "ישראל / מרכז",
@@ -274,7 +279,8 @@
     "p75": null,
     "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFcEtKaxjSiqg/company-logo_100_100/B4DZv6og5pHEAQ-/0/1769436483754/nextcom_group_2_logo?e=2147483647&v=beta&t=Qt5HlSc3Y6EhUCBKGMGClFsUDVG77SKZYPfOOaiy8pA",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "title": "Field Service Engineer (Ashdod)",
@@ -320,7 +326,8 @@
     "p75": null,
     "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFEP39qSjZBGQ/company-logo_100_100/B4DZ82RPxaHgAQ-/0/1783321919016/siemens_energy_logo?e=2147483647&v=beta&t=W1HK8e0tEvjVap-QjwNYMknz-0FLftC-B2cl7RmR7G0",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "title": "OCS Technician",
@@ -366,7 +373,8 @@
     "p75": null,
     "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "title": "CAD Operator - Haifa Nazareth LRT Project",
@@ -412,7 +420,8 @@
     "p75": null,
     "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "דרישת רקע ייעודי בהנדסה אזרחית ותשתיות מסילתיות (למועמד התמחות במערכות אלקטרו-מכניות ואנרגיה)."
   },
   {
     "title": "Automation Field Service Technician - Remote",
@@ -423,7 +432,7 @@
     "source": "LinkedIn",
     "match_score": 65,
     "concrete_matches_count": 3,
-    "reasoning": "המשרה דורשת תחזוקה, פתרון תקלות ואופטימיזציה של מערכות אוטומטיות ותעשייתיות (כולל ציוד חומרה ואלקטרומכանի). הרקע של עידו כהנדסאי מכונות והתנסותו במערכות אלקטרומכניות שטח מתאימים לכך היטב, אם כי מדובר בעבודה פיזית בעיקרה ולא אנרגיה קלאסית.",
+    "reasoning": "תחזוקה, פתרון תקלות ואופטימיזציה של מערכות אוטומטיות ותעשייתיות (כולל ציוד חומרה ואלקטרומכանի).",
     "sector_key": "energy_tech",
     "sector": "תפעול ואחזקה",
     "location": "מרוחק / ארה\"ב (משרה מרחוק)",
@@ -458,7 +467,8 @@
     "p75": null,
     "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQH5lEXI21btYA/company-logo_100_100/company-logo_100_100/0/1630567845124/advanced_battery_technologies_inc__logo?e=2147483647&v=beta&t=wgtCFD9Bzt3NSUk4LHcweNsoJSIePdINLvz_7qjertw",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "title": "טכנאי/ת שטח – מערכות גז טבעי דחוס  CNG",
@@ -504,7 +514,8 @@
     "p75": 22000,
     "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFAwEbgPEIRRw/company-logo_100_100/B4DZ9gfaPiK8AI-/0/1784030274815?e=2147483647&v=beta&t=cSOJdHzJ_nUMyrOF9qs9xGDUB6BWhR7zz_WLr93TGdY",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "נדרש רישיון חשמלאי מוסמך בתוקף (המועמד בלימודים לקראת סיום ההסמכה)."
   },
   {
     "title": "UAV Integrator",
@@ -515,7 +526,7 @@
     "source": "LinkedIn",
     "match_score": 90,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה דורשת רקע רב-תחומי, בניית אב-טיפוס, עבודה אלקטרו-מכנית והרכבות - תחומים בהם עידו שולט היטב בזכות השכלתו כהנדסאי מכונות, הכשרתו כחשמלאי וניסיונו המבצעי.",
+    "reasoning": "רקע רב-תחומי, בניית אב-טיפוס, עבודה אלקטרו-מכנית והרכבות - תחומים בהם עידו שולט היטב בזכות השכלתו כהנדסאי מכונות, הכשרתו כחשמלאי וניסיונו המבצעי.",
     "sector_key": "drones",
     "sector": "רחפנים",
     "location": "ישראל",
@@ -550,7 +561,8 @@
     "p75": 19000,
     "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGpkjJBR3Uq9Q/company-logo_100_100/B4DZjsIJR4G8AQ-/0/1756308215369/e2eil_logo?e=2147483647&v=beta&t=pPt2A7u8rXMe5xeI0JS9zZjxQO5HevJ86U_wsMBojwQ",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "title": "חשמלאי/ת מוסמך/ת - מערכות אוטומציה ורובוטיקה",
@@ -596,7 +608,8 @@
     "p75": 15000,
     "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHhd4Ukqt23Rw/company-logo_100_100/company-logo_100_100/0/1630576647370/assatec_logo?e=2147483647&v=beta&t=1JWmMCggypsVMX2v5NIbKj6W81mmYxv1PqW4CK4fSV8",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "נדרש רישיון חשמלאי מוסמך בתוקף (המועמד בלימודים לקראת סיום ההסמכה)."
   },
   {
     "title": "Facilities Coordinator",
@@ -607,7 +620,7 @@
     "source": "LinkedIn",
     "match_score": 60,
     "concrete_matches_count": 2,
-    "reasoning": "המשרה דורשת ניהול מתקנים וחוויית עבודה באתרי הייטק ופארמה, תחום שבו עידו יכול להשתלב בזכות הרקע הטכני הרב-תחומי שלו, הגם שמדובר בתפקיד תפעולי-משרדי בעיקרו ולא הנדסי-אנרגטי טהור.",
+    "reasoning": "ניהול מתקנים וחוויית עבודה באתרי הייטק ופארמה, תחום שבו עידו יכול להשתלב בזכות הרקע הטכני הרב-תחומי שלו, הגם שמדובר בתפקיד תפעולי-משרדי בעיקרו ולא הנדסי-אנרגטי טהור.",
     "sector_key": "operations",
     "sector": "תפעול ואחזקה",
     "location": "ישראל (מרכז)",
@@ -642,7 +655,8 @@
     "p75": null,
     "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGUru-IFSujAA/company-logo_100_100/company-logo_100_100/0/1672821595213?e=2147483647&v=beta&t=o9D1l9X_badYYJVIoi1c7icwyEA5tgJ9UckVYgPq8nk",
     "status": "QUALIFIED",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "title": "Practical Engineer",
@@ -691,7 +705,8 @@
     "status": "QUALIFIED",
     "date": "2026-10-21",
     "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGbyZbX7V9zzg/company-logo_100_100/company-logo_100_100/0/1689147743960/solaredge_logo?e=2147483647&v=beta&t=6svQGAyGX4rPqxAtJex_eCP1aRxvyeSTLH7Bmx9sSjA",
-    "technical_role": true
+    "technical_role": true,
+    "fit_gaps": "נדרש רישיון חשמלאי מוסמך בתוקף (המועמד בלימודים לקראת סיום ההסמכה)."
   },
   {
     "link": "https://www.drushim.co.il/job/38658961/55651ee9/",
@@ -704,7 +719,7 @@
     "technical_role": true,
     "match_score": 90,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה ברפאל דורשים הפעלה ותפעול של מערכות טכנולוגיות מתקדמות, ביצוע תחזוקה שוטפת וכיולים, עבודה במשמרות ותפעול מכטרוני / טכני. המועמד הינו הנדסאי מכונות עם רקע מעשי מוצק, יכולת עבודה בתפעול ובקרת תהליכים, ומתאים מאוד לדרישות הטכניות של התפקיד.",
+    "reasoning": "המשרה ברפאל דורשים הפעלה ותפעול של מערכות טכנולוגיות מתקדמות, ביצוע תחזוקה שוטפת וכיולים, עבודה במשמרות ותפעול מכטרוני / טכני.",
     "sector_key": "operations",
     "sector": "תעשייה ביטחונית ואלקטרו-אופטיקה",
     "location": "קריית ביאליק",
@@ -746,7 +761,8 @@
     "p50": 15500,
     "p75": 17500,
     "date": "2026-10-21",
-    "logo": "https://webapi.drushim.co.il/logos/3542059/page/638562001179508427.png"
+    "logo": "https://webapi.drushim.co.il/logos/3542059/page/638562001179508427.png",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%90%D7%97%D7%A8%D7%90%D7%99-%D7%AA-%D7%91%D7%A7%D7%A8%D7%94-at-elbit-systems-israel-4479435071",
@@ -759,7 +775,7 @@
     "technical_role": true,
     "match_score": 90,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעולה במערכות בקרה ותפעול טכנולוגי, העונה על דרישת הסף להשכלה כהנדסאי בתחומי מכונות/בקרה. יש לו רקע חזק באוטומציה, מערכות תעשייתיות ובקרה 24/7, והתפקיד דורש טיפול במערכות בקרה ובקרים מתוכנתים בסביבה תעשייתית באלביט מערכות בנוף הגליל.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעולה במערכות בקרה ותפעול טכנולוגי, העונה על דרישת הסף להשכלה כהנדסאי בתחומי מכונות/בקרה.",
     "sector_key": "operations",
     "sector": "בטחון ותעשייה טכנולוגית",
     "location": "נוף הגליל",
@@ -801,7 +817,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-21",
-    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q"
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38492901/9dfd82bb/",
@@ -814,7 +831,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך ובעל רקע בתחומי הבקרה, האוטומציה ומערכות SCADA, וכן לומד לקראת הסמכת חשמלאי מוסמך. משרת אחזקת המכונות, הבקרה והתשתיות בכלמוביל דורשת בדיוק רקע בהנדסאי מכונות/חשמל, קריאת תוכניות, עבודה עם PLC ומערכות SCADA ואחזקת תשתיות - התאמה גבוהה מאוד לכישוריו.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך ובעל רקע בתחומי הבקרה, האוטומציה ומערכות SCADA, וכן לומד לקראת הסמכת חשמלאי מוסמך.",
     "sector_key": "operations",
     "sector": "תעשייה ואחזקה",
     "location": "רמת חובב",
@@ -856,7 +873,8 @@
     "p50": 18500,
     "p75": 21000,
     "date": "2026-10-21",
-    "logo": "https://www.google.com/s2/favicons?domain=colmobil.co.il&sz=128"
+    "logo": "https://www.google.com/s2/favicons?domain=colmobil.co.il&sz=128",
+    "fit_gaps": "נדרש רישיון מתח גבוה (למועמד אין רישיון מתח גבוה)."
   },
   {
     "link": "https://www.drushim.co.il/job/38771061/8c05671d/",
@@ -869,7 +887,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 4,
-    "reasoning": "המשרה דורשת הנדסאי/ת חשמל או קירור ומיזוג אוויר להפעלת מערכות בשטח, קריאת תוכניות חשמל ואיתור תקלות. המועמד הינו הנדסאי מכונות עם רקע במערכות אנרגיה, חשמל ושו\"ת, ומתאים מבחינת הכישורים המעשיים לתפקיד הפעלה בשטח.",
+    "reasoning": "הנדסאי/ת חשמל או קירור ומיזוג אוויר להפעלת מערכות בשטח, קריאת תוכניות חשמל ואיתור תקלות.",
     "sector_key": "operations",
     "sector": "תפעול ואנרגיה",
     "location": "תל אביב, חיפה, פתח תקווה, דרום, מרכז, ירושלים",
@@ -910,7 +928,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-21",
-    "logo": "https://www.google.com/s2/favicons?domain=electra.co.il&sz=128"
+    "logo": "https://www.google.com/s2/favicons?domain=electra.co.il&sz=128",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38566659/0e94973f/",
@@ -923,7 +942,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 4,
-    "reasoning": "המשרה דורשת הנדסאי או טכנאי אינטגרציה ושילובים במוסד ביטחוני, הכולל הפעלת מבדקים, ביצוע בדיקות מערכתיות, RF ובדיקות טלמטריה. המועמד הוא הנדסאי מכונות מוסמך בעל ניסיון מעשי, רקע צבאי קרבי ומיומנויות טכניות מתאימות בתחום השילובים והמערכות.",
+    "reasoning": "הנדסאי או טכנאי אינטגרציה ושילובים במוסד ביטחוני, הכולל הפעלת מבדקים, ביצוע בדיקות מערכתיות, RF ובדיקות טלמטריה.",
     "sector_key": "energy_tech",
     "sector": "טכנולוגיה ואינטגרציה",
     "location": "באר יעקב",
@@ -964,7 +983,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-21",
-    "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico"
+    "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38696562/dd16c04d/",
@@ -977,7 +997,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המומד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוצק במערכות אלקטרו-מכאניות וניסיון רלוונטי שמתאים לדרישות התפקיד של מרכיב אלקטרומכאני במוסד ביטחוני. יש לו הכרות עם SAP וקריאת שרטוטים, הגם שהמשרה דורשת 5 שנות ניסיון והמועמד בעל ניסיון צעיר יותר אך מתאים בהשכלתו המקצועית.",
+    "reasoning": "המומד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוצק במערכות אלקטרו-מכאניות וניסיון רלוונטי שמתאים לדרישות התפקיד של מרכיב אלקטרומכאני במוסד ביטחוני.",
     "sector_key": "operations",
     "sector": "תעשייה וייצור / מערכות אלקטרומכאניות",
     "location": "יהוד",
@@ -1019,7 +1039,8 @@
     "p50": 15500,
     "p75": 17500,
     "date": "2026-10-21",
-    "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico"
+    "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38696429/93928ab3/",
@@ -1032,7 +1053,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע חזק במערכות אלקטרו-מכניות, עבודה עם כלי מדידה ומערכות ממוחשבות. משרת הרכבה אלקטרו-מכנית במוסד ביטחוני תואמת את ניסיונו המעשי ואת הרקע הצבאי שלו.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע חזק במערכות אלקטרו-מכניות, עבודה עם כלי מדידה ומערכות ממוחשבות.",
     "sector_key": "operations",
     "sector": "מערכות אלקטרו-מכניות",
     "location": "יהוד",
@@ -1073,7 +1094,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-21",
-    "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico"
+    "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38803361/bf7793f3/",
@@ -1086,7 +1108,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "למועמד יש ניסיון וידע רב במערכות בקרת תשתיות, אנרגיה וחדרי בקרה 24/7 (SCADA ומערכות פיקוח דומות). תפקיד טכנאי NOC בדאטה סנטר דורש ניטור מערכות חשמל, מיזוג וסביבה וניהול אירועים תפעוליים מסביב שעון, מה שמתאים מאוד לפרופיל התפעולי והטכני של עידו גל כהנדסאי מכונות ולניסיונו בניהול מצבי חירום ותפעול מערכות קריטיות.",
+    "reasoning": "למועמד יש ניסיון וידע רב במערכות בקרת תשתיות, אנרגיה וחדרי בקרה 24/7 (SCADA ומערכות פיקוח דומות).",
     "sector_key": "operations",
     "sector": "תשתיות ודאטה סנטר",
     "location": "שוהם",
@@ -1128,7 +1150,8 @@
     "p50": 18500,
     "p75": 21000,
     "date": "2026-10-21",
-    "logo": "https://icons.duckduckgo.com/ip3/shidrug.co.il.ico"
+    "logo": "https://icons.duckduckgo.com/ip3/shidrug.co.il.ico",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38803342/8a0adc3d/",
@@ -1141,7 +1164,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה דורשת ניהול משמרת NOC לתשתיות קריטיות הכוללות מערכות BMS, EPMS, DCIM וניהול אירועים תפעוליים, והיא מתאימה מאוד לניסיון של המועמד בניהול חדרי בקרה 24/7, מערכות SCADA ואנרגיה, ופיקוח על מערכות אלקטרו-מכניות.",
+    "reasoning": "ניהול משמרת NOC לתשתיות קריטיות הכוללות מערכות BMS, EPMS, DCIM וניהול אירועים תפעוליים, והיא מתאימה מאוד לניסיון של המועמד בניהול חדרי בקרה 24/7, מערכות SCADA ואנרגיה, ופיקוח על מערכות אלקטרו-מכניות.",
     "sector_key": "scada",
     "sector": "תשתיות וחדרי בקרה",
     "location": "שוהם",
@@ -1183,7 +1206,8 @@
     "p50": 14500,
     "p75": 16000,
     "date": "2026-10-21",
-    "logo": "https://icons.duckduckgo.com/ip3/shidrug.co.il.ico"
+    "logo": "https://icons.duckduckgo.com/ip3/shidrug.co.il.ico",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38650088/dee0cc7c/",
@@ -1237,7 +1261,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-21",
-    "logo": "https://webapi.drushim.co.il/logos/3048743/page/639056431574835927.png"
+    "logo": "https://webapi.drushim.co.il/logos/3048743/page/639056431574835927.png",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38578439/a40dcc99/",
@@ -1250,7 +1275,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוכק בתחזוקה, איתור תקלות ומערכות אלקטרו-מכניות. משרת טכנאי/הנדסאי אחזקה בחולון בחברת VPG מתאימה מאוד לפרופיל שלו.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוכק בתחזוקה, איתור תקלות ומערכות אלקטרו-מכניות.",
     "sector_key": "operations",
     "sector": "תעשייה ומערכות ייצור",
     "location": "חולון",
@@ -1292,7 +1317,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-21",
-    "logo": "https://icons.duckduckgo.com/ip3/vpgsensors.com.ico"
+    "logo": "https://icons.duckduckgo.com/ip3/vpgsensors.com.ico",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/prototyping-engineer-at-nextpower-4472832577",
@@ -1305,7 +1331,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "לעידו גל יש רקע מוצק כמהנדס מכונות מעשי המשלב יכולות מעשיות גבוהות בסדנה, ייצור אבות-טיפוס, הרכבות אלקטרו-מכניות וניסיון בשטח ובניסויים. משרת מהנדס אבות-טיפוס בחברת Nextpower דורשת יכולות מעשיות דומות מאוד, לרבות עבודה עם כלי סדנה, הדפסות תלת-ממד, הרכבה ותמיכה בניסויים ובניסויי שדה. התאמתו למשרה גבוהה מאוד מבחינה טכנית ומעשית.",
+    "reasoning": "לעידו גל יש רקע מוצק כמהנדס מכונות מעשי המשלב יכולות מעשיות גבוהות בסדנה, ייצור אבות-טיפוס, הרכבות אלקטרו-מכניות וניסיון בשטח ובניסויים.",
     "sector_key": "energy_tech",
     "sector": "טכנולוגיות אנרגיה ואבות-טיפוס",
     "location": "מרכז (תל אביב / הרצליה)",
@@ -1346,7 +1372,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-21",
-    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQF2APFUYamUMQ/company-logo_100_100/B4EZs37njPHoAQ-/0/1766169934337?e=2147483647&v=beta&t=I83YB8OHO9y4YXoh1gFgGOK_x_bCfxsDe4CUZr3HKPs"
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQF2APFUYamUMQ/company-logo_100_100/B4EZs37njPHoAQ-/0/1766169934337?e=2147483647&v=beta&t=I83YB8OHO9y4YXoh1gFgGOK_x_bCfxsDe4CUZr3HKPs",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/ohle-pos-quality-inspector-at-alstom-4478237391",
@@ -1359,7 +1386,7 @@
     "technical_role": true,
     "match_score": 82,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעולה במערכות אלקטרו-מכניות ובקרת תהליכים, המתאים לתפקיד בקר איכות ובדיקות שטח (OHLE & POS Quality Inspector) באלסטום. המשרה דורשת תואר הנדסאי/מוסמך טכני וקריאת שרטוטים, דרישות שהמועמד עומד בהן בהצלחה.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעולה במערכות אלקטרו-מכניות ובקרת תהליכים, המתאים לתפקיד בקר איכות ובדיקות שטח (OHLE & POS Quality Inspector) באלסטום.",
     "sector_key": "operations",
     "sector": "תחבורה ומסילות רכבת / בקרת איכות",
     "location": "לא צוין במודעה",
@@ -1400,7 +1427,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-21",
-    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI"
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/31937863/7172a3ef/",
@@ -1413,7 +1441,7 @@
     "technical_role": true,
     "match_score": 80,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה דורשת הפעלת מכונות, פתרת תקלות טכניות בקווי הייצור ותפעול שוטף, התואמים את הרקע הטכני המעשי של המועמד כמהנדס מכונות מעשי.",
+    "reasoning": "הפעלת מכונות, פתרת תקלות טכניות בקווי הייצור ותפעול שוטף, התואמים את הרקע הטכני המעשי של המועמד כמהנדס מכונות מעשי.",
     "sector_key": "operations",
     "sector": "תפעול וייצור",
     "location": "בית שמש",
@@ -1455,7 +1483,8 @@
     "p50": 15500,
     "p75": 17500,
     "date": "2026-10-21",
-    "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png"
+    "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38616154/01c97010/",
@@ -1468,7 +1497,7 @@
     "technical_role": true,
     "match_score": 80,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה דורשת טכנאי/ת מערכות בקרה ואלקטרוניקה בשטח, התקנת ואיתור תקלות במערכות מורכבות. המועמד הינו הנדסאי מכונות מוסמך עם רקע רב בתחום המערכות האלקטרו-מכניות והבקרה, ומתאים מאוד לפרופיל הטכני והמעשי הנדרש לתפקיד.",
+    "reasoning": "טכנאי/ת מערכות בקרה ואלקטרוניקה בשטח, התקנת ואיתור תקלות במערכות מורכבות.",
     "sector_key": "operations",
     "sector": "מערכות בקרה ואלקטרוניקה",
     "location": "לוד",
@@ -1509,7 +1538,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-21",
-    "logo": "https://icons.duckduckgo.com/ip3/scheidt-bachmann.com.ico"
+    "logo": "https://icons.duckduckgo.com/ip3/scheidt-bachmann.com.ico",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38572454/1465b9d1/",
@@ -1522,7 +1552,7 @@
     "technical_role": true,
     "match_score": 75,
     "concrete_matches_count": 3,
-    "reasoning": "המשרה דורשת רקע טכני בהנדסאות או טכנאות ורצוי ניסיון בהפעלת מכונות והרכבות. המועמד הוא הנדסאי מכונות מוסמך בעל רקע טכני מעשי, ולכן הוא מתאים לדרישות הבסיסיות של משרת הפעלת המערכת.",
+    "reasoning": "רקע טכני בהנדסאות או טכנאות ורצוי ניסיון בהפעלת מכונות והרכבות. המועמד הוא הנדסאי מכונות מוסמך בעל רקע טכני מעשי, ולכן הוא מתאים לדרישות הבסיסיות של משרת הפעלת המערכת.",
     "sector_key": "operations",
     "sector": "אלקטרו-אופטיקה וייצור",
     "location": "קריית גת",
@@ -1564,7 +1594,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-21",
-    "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png"
+    "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38574088/a3c8b9cb/",
@@ -1577,7 +1608,7 @@
     "technical_role": true,
     "match_score": 75,
     "concrete_matches_count": 4,
-    "reasoning": "המשרה דורשת טכנאי שטח לטיפול במערכות הכוללות חשמל וגז, תחומים בהם יש למועמד רקע מוצק והכשרה כהנדסאי מכונות עם התמחות בגז ואנרגיה ירוקה ולימודי חשמלאי. ישנה התאמה טובה לעבודה טכנית בשטח, הגם שמדובר בציוד מטבחים מוסדיים ולא במערכות אנרגיה כבדות.",
+    "reasoning": "טכנאי שטח לטיפול במערכות הכוללות חשמל וגז, תחומים בהם יש למועמד רקע מוצק והכשרה כהנדסאי מכונות עם התמחות בגז ואנרגיה ירוקה ולימודי חשמלאי.",
     "sector_key": "operations",
     "sector": "שירות טכני ומערכות שטח",
     "location": "תל אביב, באר שבע, רחובות, ירושלים, אריאל, אשדוד, אשקלון, פתח תקווה, נתניה",
@@ -1619,7 +1650,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-21",
-    "logo": "https://webapi.drushim.co.il/logos/21069/page/637695482451810079.png"
+    "logo": "https://webapi.drushim.co.il/logos/21069/page/637695482451810079.png",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/electrical-engineer-at-enlight-renewable-energy-ltd-enlt-4482072993",
@@ -1632,7 +1664,7 @@
     "technical_role": true,
     "match_score": 70,
     "concrete_matches_count": 6,
-    "reasoning": "המתמודד בעל ניסיון משמעותי במערכות אנרגיה (סולאר, BESS), תפעול מרכזי שליטה (SCADA), תחזוקה ופתרון תקלות במערכות אלקטרו‑מכניות, וכן ניסיון ב‑commissioning וב‑testing של ציוד. יש התאמה לתחומי העבודה של המשרה כגון ניתוח תקלות, שיפור תחזוקה, וביצוע בדיקות מצב. עם זאת חסר לו תואר הנדסאי/בוגר בתחום החשמל ורישיון חשמלאי מלא, מה שמייצר פערים מול דרישות אפשריות של המשרה. למרות הפערים, ההתאמה הטכנית נחשבת מספקת ולכן המועמד נחשב מוסמך למשרה.",
+    "reasoning": "המתמודד בעל ניסיון משמעותי במערכות אנרגיה (סולאר, BESS), תפעול מרכזי שליטה (SCADA), תחזוקה ופתרון תקלות במערכות אלקטרו‑מכניות, וכן ניסיון ב‑commissioning וב‑testing של ציוד.",
     "sector_key": "energy",
     "sector": "אנרגיה מתחדשת",
     "location": "ראש העין / אתרי פרויקטים",
@@ -1674,7 +1706,8 @@
     "p50": 14500,
     "p75": 16500,
     "date": "2026-10-21",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY",
+    "fit_gaps": "נדרש רישיון מתח גבוה (למועמד אין רישיון מתח גבוה)."
   },
   {
     "link": "https://www.drushim.co.il/job/38596280/6d3e2e48/",
@@ -1729,7 +1762,8 @@
     "p50": 18500,
     "p75": 21000,
     "date": "2026-10-21",
-    "logo": "https://www.google.com/s2/favicons?domain=partner.co.il&sz=128"
+    "logo": "https://www.google.com/s2/favicons?domain=partner.co.il&sz=128",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38803627/53af43d4/",
@@ -1742,7 +1776,7 @@
     "technical_role": true,
     "match_score": 78,
     "concrete_matches_count": 7,
-    "reasoning": "המתמודד בעל ניסיון מוכח בתפעול מרכזי שליטה (SCADA/NOC) 24/7, כולל ניטור מערכות בזמן אמת, טיפול בתקריות, אוטומציה באמצעות Python, עבודה בצוותים טכניים ותקשורת תפעולית בצ'אט, וכן ניסיון בפתרון תקלות אלקטרו‑מכניות ושילוב מערכות. כל אלו תואמים לדרישות המשרה של מפעיל מחשב ומערכות מידע, למרות שהמשרה ממוקדת ב‑IT ולא דורשת ניסיון קודם. התאמה גבוהה בתפקידים הטכניים והמבצעיים מובילה לציון גבוה.",
+    "reasoning": "המתמודד בעל ניסיון מוכח בתפעול מרכזי שליטה (SCADA/NOC) 24/7, כולל ניטור מערכות בזמן אמת, טיפול בתקריות, אוטומציה באמצעות Python, עבודה בצוותים טכניים ותקשורת תפעולית בצ'אט, וכן ניסיון בפתרון תקלות אלקטרו‑מכניות ושילוב מערכות.",
     "sector_key": "scada",
     "sector": "תשתיות תקשורת ו-IT",
     "location": "ראש העין",
@@ -1784,7 +1818,8 @@
     "p50": 18500,
     "p75": 21000,
     "date": "2026-10-21",
-    "logo": "https://www.google.com/s2/favicons?domain=partner.co.il&sz=128"
+    "logo": "https://www.google.com/s2/favicons?domain=partner.co.il&sz=128",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/electrical-supervisor-at-zofen-advanced-managing-systems-ltd-4479435020",
@@ -1797,7 +1832,7 @@
     "technical_role": true,
     "match_score": 75,
     "concrete_matches_count": 5,
-    "reasoning": "המתמודד בעל ניסיון מעשי במערכות חשמליות כולל לימודי חשמלאות (במהלך), ניסיון בתפעול ופתרון תקלות, וניסיון ניהולי מצוות בחיל (סיירת נח\"ל) המתאים לדרישות פיקוד והכוונה של טכנאים. בנוסף, יש לו ידע בהנדסת חשמל בתעשייה ויכולת תיאום עם מנהלי פרויקטים. חסר רישיון חשמלאי מלא, אך הדרישה היא מומחיות מעשית ולא רישיון מחייב, ולכן ההתאמה נחשבת גבוהה.",
+    "reasoning": "המתמודד בעל ניסיון מעשי במערכות חשמליות כולל לימודי חשמלאות (במהלך), ניסיון בתפעול ופתרון תקלות, וניסיון ניהולי מצוות בחיל (סיירת נח\"ל) המתאים לדרישות פיקוד והכוונה של טכנאים.",
     "sector_key": "operations",
     "sector": "בקרת איכות ותשתיות אזרחיות",
     "location": "ראשון לציון / פרויקטים במרכז",
@@ -1838,7 +1873,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-21",
-    "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQFxs7dmleI8-w/company-logo_100_100/company-logo_100_100/0/1630597156083?e=2147483647&v=beta&t=_GU95MonzSeuUYn58Z2Lx9VJvP6RvmLLKoDmYDo1HMs"
+    "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQFxs7dmleI8-w/company-logo_100_100/company-logo_100_100/0/1630597156083?e=2147483647&v=beta&t=_GU95MonzSeuUYn58Z2Lx9VJvP6RvmLLKoDmYDo1HMs",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38501147/e6250655/",
@@ -1851,7 +1887,7 @@
     "technical_role": true,
     "match_score": 70,
     "concrete_matches_count": 3,
-    "reasoning": "הקנדידט מציג ניסיון משמעותי בSCADA ובתפעול חדרי בקרה 24/7, וכן ביישום מערכות אלקטרומכניות בשטח – תכנים המהווים התאמה ישירה לדרישות \"מערכות הנדסיות\" המופיעות במשרה. אין צורך בידע GIS, מכיוון שהמשרה מאפשרת תפקיד גם ללא כישור זה. לכן מועמד מתאים.",
+    "reasoning": "הקנדידט מציג ניסיון משמעותי בSCADA ובתפעול חדרי בקרה 24/7, וכן ביישום מערכות אלקטרומכניות בשטח – תכנים המהווים התאמה ישירה לדרישות \"מערכות הנדסיות\" המופיעות במשרה.",
     "sector_key": "operations",
     "sector": "מערכות מידע גיאוגרפיות (GIS)",
     "location": "פתח תקווה",
@@ -1893,7 +1929,8 @@
     "p50": 18500,
     "p75": 21000,
     "date": "2026-10-21",
-    "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png"
+    "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38822380/1484f6a7/",
@@ -1906,7 +1943,7 @@
     "technical_role": true,
     "match_score": 65,
     "concrete_matches_count": 7,
-    "reasoning": "הקשר בין דרישות המשרה לפרופיל של עידו גל הוא בעיקר בתחום הפעילות המעשית והטכנית. המשרה דורשת בקרת איכות בשטח, גיבוי הנדסי בזמן אמת, ניהול בדיקות ופתרון אי‑התאמות – תחומים בהם המועמד בעל ניסיון משמעותי בניהול מרכזי פיקוד ובקרת תפעול, ניהול תהליכי ניהול תקלות, ביצוע אינטגרציה אלקטרו‑מכנית ותחזוקה. בנוסף, המועמד מנוסה בעבודה משולבת בין שדה למשרד, בתקשורת עם מנהלי פרויקטים וקבלנים, ובפיתוח פתרונות מתקנים. עם זאת, חסר לו רקע ספציפי בתכנון ובקרת בנייה אזרחית, ולכן ההתאמה אינה מושלמת אך מספיקה כדי להיחשב כמתאימה טכנית. לכן ניתנה דירוג של 65 מתוך 100 ו‑7 התאמות קונקרטיות.",
+    "reasoning": "הקשר בין דרישות המשרה לפרופיל של עידו גל הוא בעיקר בתחום הפעילות המעשית והטכנית.",
     "sector_key": "operations",
     "sector": "בקרת איכות ותשתיות אזרחיות",
     "location": "ראשון לציון / פרויקטים במרכז",
@@ -1947,7 +1984,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-21",
-    "logo": "https://webapi.drushim.co.il/logos/1283833/page/637591767225899673.jpg"
+    "logo": "https://webapi.drushim.co.il/logos/1283833/page/637591767225899673.jpg",
+    "fit_gaps": "דרישת רקע ייעודי בהנדסה אזרחית ותשתיות מסילתיות (למועמד התמחות במערכות אלקטרו-מכניות ואנרגיה)."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%91%D7%95%D7%97%D7%A0-%D7%AA-%D7%90%D7%99%D7%9B%D7%95%D7%AA-at-elbit-systems-israel-4376644845",
@@ -1960,7 +1998,7 @@
     "technical_role": true,
     "match_score": 90,
     "concrete_matches_count": 6,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעולה במערכות אלקטרו-מכניות ובדיקת מערכות משולבות, מה שמתאים לדרישת התפקיד להנדסאי/טכנאי מכונות או מכטרוניקה. הוא בעל ניסיון מעשי בקריאת שרטוטים מכניים ופתרון תקלות. יש פער קל בשנות הניסיון (נדרש לפחות שנתיים ומוזכר רקע מהלימודים ופעילות צבאית/טכנית, אך ההשכלה הרלוונטית מקנה לו התאמה טובה) ובצורך בניסיון ספציפי בתקני IPC610/620 שאינם מצוינים במפורש אצל המועמד.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעולה במערכות אלקטרו-מכניות ובדיקת מערכות משולבות, מה שמתאים לדרישת התפקיד להנדסאי/טכנאי מכונות או מכטרוניקה.",
     "sector_key": "operations",
     "sector": "ביטחוני ותעשייתי",
     "location": "רמת השרון",
@@ -2002,7 +2040,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q"
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%AA-%D7%90%D7%99%D7%9B%D7%95%D7%AA-%D7%94%D7%A8%D7%9B%D7%91%D7%95%D7%AA-at-elbit-systems-israel-4430225732",
@@ -2015,7 +2054,7 @@
     "technical_role": true,
     "match_score": 90,
     "concrete_matches_count": 6,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מוצק בהרכבות מכאניות ואלקטרומכניות, קריאת שרטוטים, ועבודה בסביבה תעשייתית, מה שמתאים לדרישות הליבה של תפקיד מבקר האיכות בהרכבות באלביט מערכות. למרות שאין לו ניסיון רשמי כמבקר איכות, הרקע הטכני שלו והכשרתו כהנדסאי מכונות תואמים ישירות את הדרישה ההשכלתית.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מוצק בהרכבות מכאניות ואלקטרומכניות, קריאת שרטוטים, ועבודה בסביבה תעשייתית, מה שמתאים לדרישות הליבה של תפקיד מבקר האיכות בהרכבות באלביט מערכות.",
     "sector_key": "operations",
     "sector": "תעשייה ובקרת איכות",
     "location": "יקנעם",
@@ -2057,7 +2096,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q"
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%AA-%D7%94%D7%A8%D7%9B%D7%91%D7%95%D7%AA-%D7%97%D7%A9%D7%9E%D7%9C-%D7%9E%D7%9B%D7%A0%D7%99%D7%A7%D7%94-%D7%95%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%94-at-iai-israel-aerospace-industries-4425833966",
@@ -2070,7 +2110,7 @@
     "technical_role": true,
     "match_score": 90,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הינו הנדסאי מכונות מוסמך, העונה לדרישת הסף של התפקיד כמהנדסאי או טכנאי מכונות. בנוסף, יש לו רקע טכני מעשי חזק במערכות אלקטרו-מכניות ובכטב\"מים, ויכולת מוכחת בקריאת שרטוטים. ניסיון בבקרת איכות מהווה יתרון.",
+    "reasoning": "המועמד הינו הנדסאי מכונות מוסמך, העונה לדרישת הסף של התפקיד כמהנדסאי או טכנאי מכונות.",
     "sector_key": "drones",
     "sector": "תעופה וביטחון",
     "location": "לא צויין",
@@ -2112,7 +2152,8 @@
     "p50": 16500,
     "p75": 19000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A9%D7%A4%D7%A5-%D7%AA-%D7%90%D7%91%D7%99%D7%96%D7%A8%D7%99-%D7%91%D7%A7%D7%A8%D7%AA-%D7%9E%D7%A0%D7%95%D7%A2-76046623-at-iai-israel-aerospace-industries-4369118209",
@@ -2125,7 +2166,7 @@
     "technical_role": true,
     "match_score": 90,
     "concrete_matches_count": 6,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוצק במערכות אלקטרו-מכניות, פירוק, הרכבה, איתור תקלות ובדיקות. התפקיד דורש דיפלומה בתחום המכונות וביצוע שיפוץ, בדיקה ותיקון של אביזרי בקרת מנוע, הכולל עבודה עם מערכות טכניות מורכבות ותקנים מחמירים. הרקע המעשי של המועמד במכונות מתאים לדרישות המשרה.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוצק במערכות אלקטרו-מכניות, פירוק, הרכבה, איתור תקלות ובדיקות.",
     "sector_key": "other",
     "sector": "תעופה וביטחון",
     "location": "לוד / נתב\"ג",
@@ -2167,7 +2208,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%A9%D7%99%D7%A4%D7%95%D7%A5-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%AA%D7%9E%D7%A1%D7%95%D7%A8%D7%AA-at-iai-israel-aerospace-industries-4324591055",
@@ -2180,7 +2222,7 @@
     "technical_role": true,
     "match_score": 90,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הינו הנדסאי מכונות מוסמך, מה שמתאים לדרישת ההשכלה המועדפת במודעה. יש לו רקע מעשי בהרכבות מכניות, קריאת שרטוטים טכניים ועבודה בסביבה טכנית, העונים בדיוק על דרישות התפקיד של טכנאי/ת שיפוץ מערכות תמסורת בתעשייה האווירית.",
+    "reasoning": "המועמד הינו הנדסאי מכונות מוסמך, מה שמתאים לדרישת ההשכלה המועדפת במודעה.",
     "sector_key": "operations",
     "sector": "תעופה וחלל ותחזוקה מכנית",
     "location": "לא צוין במפורש",
@@ -2222,7 +2264,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A8%D7%9B%D7%99%D7%91-%D7%94-%D7%95%D7%9E%D7%A4%D7%A2%D7%99%D7%9C-%D7%94-%D7%9E%D7%9B%D7%95%D7%A0%D7%AA-cnc-at-iai-israel-aerospace-industries-4479142195",
@@ -2235,7 +2278,7 @@
     "technical_role": true,
     "match_score": 90,
     "concrete_matches_count": 4,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך, מה שתואם את דרישת הסף של התפקיד להנדסאי או טכנאי מכונות. לתפקיד נדרש רקע טכני ויכולת הרכבות מכניות, עבודה עם כלי עבודה עדינים והבנת שרטוטים מכניים - כלים וכישורים הנגזרים ישירות מהכשרתו ורקעו המעשי של המועמד. ניסיון קודם בהפעלת מכונות CNC מהווה דרישה מרכזית, ועל אף ששנות הניסיון הנדרשות הן 4-6, הרקע המכאני הכללי של המועמד מתאים היטב לתחום העיסוק של התפקיד במרכז ההנדסה והפיתוח של התעשייה האווירית.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך, מה שתואם את דרישת הסף של התפקיד להנדסאי או טכנאי מכונות.",
     "sector_key": "operations",
     "sector": "תעופה וביטחון",
     "location": "לוד / נתב\"ג",
@@ -2277,7 +2320,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/pmo-construction-at-enlight-renewable-energy-ltd-enlt-4481575351",
@@ -2290,7 +2334,7 @@
     "technical_role": true,
     "match_score": 87,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה היא של PMO בניית פרויקטים באנרגיה מתחדשת בחברת Enlight, התואמת את הרקע של המועמד כהנדסאי מכונות עם התמחות באנרגיה סולארית ואגירת אנרגיה BESS, וכן יכולות ניהול נתונים ותפעול. קיימת התאמה טובה בין הדרישות לפרויקטים בקנה מידה גדול של אנרגיה סולארית ואגירת אנרגיה לבין השכלתו והתמחותו של המועמד.",
+    "reasoning": "המשרה היא של PMO בניית פרויקטים באנרגיה מתחדשת בחברת Enlight, התואמת את הרקע של המועמד כהנדסאי מכונות עם התמחות באנרגיה סולארית ואגירת אנרגיה BESS, וכן יכולות ניהול נתונים ותפעול.",
     "sector_key": "solar",
     "sector": "אנרגיה מתחדשת",
     "location": "מרכז (ראש העין)",
@@ -2332,7 +2376,8 @@
     "p50": 14500,
     "p75": 16500,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/water-technology-field-technician-at-saltworks-technologies-industrial-water-%2B-lithium-4479429643",
@@ -2345,7 +2390,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע חזק במערכות אלקטרו-מכניות, הפעלה, תחזוקה, והרצה (commissioning), המשתלבות היטב בדרישות התפקיד כטכנאי שדה למערכות מים מתקדמות. יש לו ניסיון עבודה מעשי בשטח ויכולות פתרון בעיות, והתפקיד דורש עבודה מעשית הולמת.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע חזק במערכות אלקטרו-מכניות, הפעלה, תחזוקה, והרצה (commissioning), המשתלבות היטב בדרישות התפקיד כטכנאי שדה למערכות מים מתקדמות.",
     "sector_key": "operations",
     "sector": "טכנולוגיית מים ותעשייה",
     "location": "קריית גת, ישראל",
@@ -2386,7 +2431,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D560BAQH6B2WuvHeHOg/company-logo_100_100/company-logo_100_100/0/1687378473425/saltworkstech_logo?e=2147483647&v=beta&t=FGjCfxmdBp5kTZMNxPlk98-jlK_UOnyNOY1gv9_v1mE"
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQH6B2WuvHeHOg/company-logo_100_100/company-logo_100_100/0/1687378473425/saltworkstech_logo?e=2147483647&v=beta&t=FGjCfxmdBp5kTZMNxPlk98-jlK_UOnyNOY1gv9_v1mE",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/junior-mechanical-engineer-at-m-d-mechanical-devices-ltd-4480014458",
@@ -2399,7 +2445,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 4,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך, בדיוק הדרישה המרכזית במשרה. המשרה דורשת תואר הנדסאי או בוגר תואר ראשון, ומציינת במפורש שהנדסאי מספיק בהחלט. יש התאמה מלאה לפן המעשי, לאבטיפוס ובדיקות, אף על פי שנדרש ידע ב-SolidWorks שאינו מוזכר במפורש בפרופיל של המועמד.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך, בדיוק הדרישה המרכזית במשרה. המשרה דורשת תואר הנדסאי או בוגר תואר ראשון, ומציינת במפורש שהנדסאי מספיק בהחלט.",
     "sector_key": "operations",
     "sector": "מערכות מכניות ותעשייה",
     "location": "חיפה (חוצות המפרץ)",
@@ -2440,7 +2486,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQEZYSQA3RBv-A/company-logo_100_100/company-logo_100_100/0/1630587737051/m__d__mechanical_devices_logo?e=2147483647&v=beta&t=UoOCKUQntA3B65wOmnOI3LU7f3PVmFAOoPqJGjrv5Mw"
+    "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQEZYSQA3RBv-A/company-logo_100_100/company-logo_100_100/0/1630587737051/m__d__mechanical_devices_logo?e=2147483647&v=beta&t=UoOCKUQntA3B65wOmnOI3LU7f3PVmFAOoPqJGjrv5Mw",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/electronics-technician-at-confidential-careers-4480000353",
@@ -2453,7 +2500,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה דורשת טכנאי אלקטרוניקה ומכניקה עם ניסיון מעשי בתיקון ציוד, הרכבה ופירוק מכני ואלקטרוני, ואבחון תקלות - דרישות התואמות בדיוק את הרקע של המועמד כהנדסאי מכונות עם ניסיון בעבודות אלקטרו-מכניות שטח ותחזוקה.",
+    "reasoning": "טכנאי אלקטרוניקה ומכניקה עם ניסיון מעשי בתיקון ציוד, הרכבה ופירוק מכני ואלקטרוני, ואבחון תקלות - דרישות התואמות בדיוק את הרקע של המועמד כהנדסאי מכונות עם ניסיון בעבודות אלקטרו-מכניות שטח ותחזוקה.",
     "sector_key": "operations",
     "sector": "תפעול ואלקטרו-מכניקה",
     "location": "מרכז הארץ",
@@ -2494,7 +2541,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHAlnvLlr8B8A/company-logo_100_100/company-logo_100_100/0/1734179952791/goconfidentia_logo?e=2147483647&v=beta&t=4ZKgldVRReqICLn5TO9uD36mT1cF2vh9vePaqIEjJJc"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHAlnvLlr8B8A/company-logo_100_100/company-logo_100_100/0/1734179952791/goconfidentia_logo?e=2147483647&v=beta&t=4ZKgldVRReqICLn5TO9uD36mT1cF2vh9vePaqIEjJJc",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%09%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%D7%99%D7%9D-%E2%80%93-%D7%A2%D7%91%D7%95%D7%93%D7%95%D7%AA-%D7%9E%D7%95%D7%9C-%D7%A0%D7%AA%D7%B4%D7%A2-at-pb-israel-4475373317",
@@ -2507,7 +2555,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 7,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעמיק במערכות אנרגיה ותשתיות, ובעל ניסיון בניהול מערכות, תפעול שטח ופיקוח. משרת ניהול הפרויקטים בחברת PB Israel דורשת הנדסאי או מהנדס עם ניסיון בפרויקטי תשתיות ומערכות ועבודה מול חברות תשתית כמו נת\"ע, מה שמתאים מאוד לפרופיל המעשי וההנדסי של המועמד.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעמיק במערכות אנרגיה ותשתיות, ובעל ניסיון בניהול מערכות, תפעול שטח ופיקוח.",
     "sector_key": "operations",
     "sector": "תשתיות ואנרגיה",
     "location": "ישראל",
@@ -2549,7 +2597,8 @@
     "p50": 17250,
     "p75": 19500,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHbnAX_gKc0DA/company-logo_100_100/B4DZt34qZZIAAQ-/0/1767242901726/wspisrael_logo?e=2147483647&v=beta&t=5dQSJk-qhYLQNm_PNFfJ-1zve1TfzmXUUW8fLcXWHl8"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHbnAX_gKc0DA/company-logo_100_100/B4DZt34qZZIAAQ-/0/1767242901726/wspisrael_logo?e=2147483647&v=beta&t=5dQSJk-qhYLQNm_PNFfJ-1zve1TfzmXUUW8fLcXWHl8",
+    "fit_gaps": "דרישת רקע ייעודי בהנדסה אזרחית ותשתיות מסילתיות (למועמד התמחות במערכות אלקטרו-מכניות ואנרגיה); דרישת שנות ניסיון רבות בניהול בכיר בתעשייה (למועמד ניסיון פיקודי קרבי וניהול תפעולי מוקדם)."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/datacenter-site-operations-manager-at-microsoft-4480825963",
@@ -2562,7 +2611,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה דורש ניהול תפעול אתר דאטה סנטר כולל אחריות על מערכות קריטיות חשמליות ומכניות, בטיחות וניהול צוותים רב-תחומיים. עידו גל הוא הנדסאי מכונות מוסמך עם רקע מעמיק במערכות אנרגיה, תפעול מערכות בזמן אמת ובקרה, וכן ניסיון פיקודי ומבצעי. הרקע שלו בתפעול מערכות אלקטרו-מכניות וניהול תהליכים קריטיים מתאים מאוד לדרישות התפקיד.",
+    "reasoning": "המשרה דורש ניהול תפעול אתר דאטה סנטר כולל אחריות על מערכות קריטיות חשמליות ומכניות, בטיחות וניהול צוותים רב-תחומיים.",
     "sector_key": "operations",
     "sector": "תפעול תשתיות וענן",
     "location": "מודיעין / שהם",
@@ -2603,7 +2652,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=2147483647&v=beta&t=rr_7_bFRKp6umQxIHErPOZHtR8dMPIYeTjlKFdotJBY"
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=2147483647&v=beta&t=rr_7_bFRKp6umQxIHErPOZHtR8dMPIYeTjlKFdotJBY",
+    "fit_gaps": "דרישת שנות ניסיון רבות בניהול בכיר בתעשייה (למועמד ניסיון פיקודי קרבי וניהול תפעולי מוקדם)."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/construction-project-manager-at-bagira-4476737854",
@@ -2657,7 +2707,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEmtumUUXtYRA/company-logo_100_100/company-logo_100_100/0/1630497988446/bagira_systems_logo?e=2147483647&v=beta&t=WvUWAV2PLgFJq8hfyU_VOw0wCTvTUacUnRwg0fKKB8s"
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEmtumUUXtYRA/company-logo_100_100/company-logo_100_100/0/1630497988446/bagira_systems_logo?e=2147483647&v=beta&t=WvUWAV2PLgFJq8hfyU_VOw0wCTvTUacUnRwg0fKKB8s",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/electronics-quality-inspector-%E2%80%93-incoming-inspection-at-airobotics-4463511409",
@@ -2670,7 +2721,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה מציעה תפקיד טכנאי בקרת איכות רכיבים אלקטרוניים ומערכות אלקטרו-מכניות בחברת איירובוטיקס המפתחת מערכות רחפנים אוטונומיות. המועמד הינו הנדסאי מכונות עם רקע מעשי רב במערכות אלקטרו-מכאניות, בדיקות שטח, אינטגרציה ופעילות מבצעית עם רחפנים. קיימת התאמה טובה לניסיון המעשי שלו במערכות חומרה, קריאת שרטוטים ובדיקות רכיבים.",
+    "reasoning": "המשרה מציעה תפקיד טכנאי בקרת איכות רכיבים אלקטרוניים ומערכות אלקטרו-מכניות בחברת איירובוטיקס המפתחת מערכות רחפנים אוטונומיות.",
     "sector_key": "drones",
     "sector": "רחפנים ומערכות אוטונומיות",
     "location": "לא צוין במודעה",
@@ -2712,7 +2763,8 @@
     "p50": 16500,
     "p75": 19000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D560BAQGrCGy2mpCcZA/company-logo_100_100/B56Z9BsGDSLAAI-/0/1783513506270/airobotics_logo?e=2147483647&v=beta&t=B3eKgH3D6XWlQw69n9ahWoGIEe_fWobE1A3QOAl0l9M"
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQGrCGy2mpCcZA/company-logo_100_100/B56Z9BsGDSLAAI-/0/1783513506270/airobotics_logo?e=2147483647&v=beta&t=B3eKgH3D6XWlQw69n9ahWoGIEe_fWobE1A3QOAl0l9M",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/mechanical-engineer-at-jacobs-4481743660",
@@ -2766,7 +2818,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQEqi0xvuMeuew/company-logo_100_100/B4EZfF35ikHYAQ-/0/1751371454940/jacobs_logo?e=2147483647&v=beta&t=UKW8ggrtSMTSOWMS5cGkK1CV1VF4AhGsIFEwlJkbfSQ"
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQEqi0xvuMeuew/company-logo_100_100/B4EZfF35ikHYAQ-/0/1751371454940/jacobs_logo?e=2147483647&v=beta&t=UKW8ggrtSMTSOWMS5cGkK1CV1VF4AhGsIFEwlJkbfSQ",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/drone-instructor-at-robokit-4479498877",
@@ -2779,7 +2832,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 3,
-    "reasoning": "למועמד יש ניסיון צבאי קרבי ויחידת סירת נח\"ל יחד עם ניסיון במערכות בלתי מאוישות וכטב\"מ. התפקיד של מדריך רחפנים דורש רקע מעשי בשטח וזה תואם את כישוריו של עידו.",
+    "reasoning": "למועמד יש ניסיון צבאי קרבי ויחידת סירת נח\"ל יחד עם ניסיון במערכות בלתי מאוישות וכטב\"מ.",
     "sector_key": "drones",
     "sector": "רחפנים וכטב\"מ",
     "location": "נתניה",
@@ -2821,7 +2874,8 @@
     "p50": 16500,
     "p75": 19000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHz902JyP7Qkw/company-logo_100_100/B4DaDFS642JgAI-/0/1790016466889/robokit_logo?e=2147483647&v=beta&t=nwjZv8df-PVwFTDXCMPwTOTw_iV_iio43Lm1uKe1VKc"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHz902JyP7Qkw/company-logo_100_100/B4DaDFS642JgAI-/0/1790016466889/robokit_logo?e=2147483647&v=beta&t=nwjZv8df-PVwFTDXCMPwTOTw_iV_iio43Lm1uKe1VKc",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/test-driver-for-autonomous-vehicles-at-mobileye-4477981204",
@@ -2834,7 +2888,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה דורש רקע טכני והתנסות במערכות מתקדמות, בדיקות וניתוח תקלות בשטח, תואמת את ניסיונו של המועמד כמהנדס מכונות מעשי והתנסות בתפעול מערכות ובדיקות שטח. קיימת התאמה טובה לדרישות הסף של המשרה.",
+    "reasoning": "המשרה דורש רקע טכני והתנסות במערכות מתקדמות, בדיקות וניתוח תקלות בשטח, תואמת את ניסיונו של המועמד כמהנדס מכונות מעשי והתנסות בתפעול מערכות ובדיקות שטח.",
     "sector_key": "energy_tech",
     "sector": "רכב אוטונומי וטכנולוגיה",
     "location": "לא צויין",
@@ -2875,7 +2929,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGMqdNe9MW06Q/company-logo_100_100/company-logo_100_100/0/1658223890583/mobileye_logo?e=2147483647&v=beta&t=Qx5AuX9E7Zbr1GScuv5IGaUrVLVypF7VEOhVaw2Zu88"
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGMqdNe9MW06Q/company-logo_100_100/company-logo_100_100/0/1658223890583/mobileye_logo?e=2147483647&v=beta&t=Qx5AuX9E7Zbr1GScuv5IGaUrVLVypF7VEOhVaw2Zu88",
+    "fit_gaps": "דרישת סף לתואר B.Sc בהנדסה (המועמד הינו הנדסאי מכונות מוסמך)."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/aircraft-mechanic-at-jobsseek-4445199018",
@@ -2888,7 +2943,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעולה במערכות אלקטרו-מכניות ותחזוקה. דרישת הסף להנדסאי מכונות מופיעה כיתרון משמעותי במשרה, והניסיון המעשי שלו תואם היטב את תחומי האחריות של פירוק, הרכבה ושיפוץ רכיבים טכניים.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעולה במערכות אלקטרו-מכניות ותחזוקה.",
     "sector_key": "operations",
     "sector": "תעופה וביטחון",
     "location": "לא צויין",
@@ -2930,7 +2985,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFc4u1wp4facA/company-logo_100_100/company-logo_100_100/0/1704712762989/jobsseek_logo?e=2147483647&v=beta&t=Ldqf7J6mMvUr6WGU4z-wifS9Y7rH-2vqgqAy-3p-cgA"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFc4u1wp4facA/company-logo_100_100/company-logo_100_100/0/1704712762989/jobsseek_logo?e=2147483647&v=beta&t=Ldqf7J6mMvUr6WGU4z-wifS9Y7rH-2vqgqAy-3p-cgA",
+    "fit_gaps": "דרישת רישיון טכנאי תעופה מוסמך / מבנאי מורשה (למועמד רקע מכני כללי ללא רישוי תעופתי ייעודי)."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/mechanical-design-engineer-at-manta-air-parachute-recovery-systems-4478975631",
@@ -2943,7 +2999,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 4,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי במערכות אלקטרו-מכניות, התנסות בפיתוח אבטיפוסים, שטח ורחפנים, מה שמתאים לתפקיד של מהנדס תכנון מכאני בתחום מערכות הצלה לכלי טיס בלתי מאוישים. המשרה דורשת השכלה פורמלית בהנדסה או ניסיון מעשי מקביל בתכנון מכאני ותמיכה באבטיפוסים.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי במערכות אלקטרו-מכניות, התנסות בפיתוח אבטיפוסים, שטח ורחפנים, מה שמתאים לתפקיד של מהנדס תכנון מכאני בתחום מערכות הצלה לכלי טיס בלתי מאוישים.",
     "sector_key": "drones",
     "sector": "רחפנים ומערכות בלתי מאוישות",
     "location": "מרכז / כפר סבא",
@@ -2985,7 +3041,8 @@
     "p50": 16500,
     "p75": 19000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQG_nJef_bRj9Q/company-logo_100_100/B4DZgnBQrHHYAU-/0/1753001299176/mantaair_logo?e=2147483647&v=beta&t=Q-KkAlEdyYAJ4rDMc3hOTpN8RmVD9S49Awht8tgaTS8"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQG_nJef_bRj9Q/company-logo_100_100/B4DZgnBQrHHYAU-/0/1753001299176/mantaair_logo?e=2147483647&v=beta&t=Q-KkAlEdyYAJ4rDMc3hOTpN8RmVD9S49Awht8tgaTS8",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38830987/ab1a8226/",
@@ -2998,7 +3055,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 6,
-    "reasoning": "המשרה דורשת חשמלאי.ת מכונות, בקרה ותשתיות הכוללת איתור ופתרון תקלות, מערכות בקרה, אוטומציה, HMI/SCADA, ולוחות חשמל. המועמד הינו הנדסאי מכונות מוסמך עם רקע מעמיק במערכות אלקטרו-מכניות, שליטה במערכות SCADA ובקרה, ולימודי חשמלאי מוסמך לקראת סיום. הדרישה למתח גבוה מופיעה כיתרון בלבד.",
+    "reasoning": "חשמלאי.ת מכונות, בקרה ותשתיות הכוללת איתור ופתרון תקלות, מערכות בקרה, אוטומציה, HMI/SCADA, ולוחות חשמל.",
     "sector_key": "operations",
     "sector": "תעשייה ואחזקה",
     "location": "רמת חובב",
@@ -3040,7 +3097,8 @@
     "p50": 18500,
     "p75": 21000,
     "date": "2026-10-22",
-    "logo": "https://www.google.com/s2/favicons?domain=colmobil.co.il&sz=128"
+    "logo": "https://www.google.com/s2/favicons?domain=colmobil.co.il&sz=128",
+    "fit_gaps": "נדרש רישיון מתח גבוה (למועמד אין רישיון מתח גבוה)."
   },
   {
     "link": "https://www.drushim.co.il/job/38559534/39430537/",
@@ -3092,7 +3150,8 @@
     "p50": 12740,
     "p75": 12740,
     "date": "2026-10-22",
-    "logo": "https://webapi.drushim.co.il/logos/3912084/page/638574070215162792.png"
+    "logo": "https://webapi.drushim.co.il/logos/3912084/page/638574070215162792.png",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38824755/882c1eaf/",
@@ -3105,7 +3164,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 4,
-    "reasoning": "המועמד הוא הנדסאי מכונות וסטודנט לחשמלאי מוסמך עם רקע מוכק באנרגיה סולארית ומערכות חשמל. המשרה דורשת פיקוח חשמל באתר סולארי בדרום, הכולל עבודת שטח מלאה, פיקוח על קבלנים ומתן פתרונות בתחום החשמל, מה שמתאים לניסיון המעשי שלו.",
+    "reasoning": "המועמד הוא הנדסאי מכונות וסטודנט לחשמלאי מוסמך עם רקע מוכק באנרגיה סולארית ומערכות חשמל.",
     "sector_key": "solar",
     "sector": "אנרגיה סולארית",
     "location": "נתיבות / דרום",
@@ -3147,7 +3206,8 @@
     "p50": 14500,
     "p75": 16500,
     "date": "2026-10-22",
-    "logo": "https://sfilev2.f-static.com/image/users/423667/ftp/my_files/template/AlmorLogoNew.png?id=31965020&sopC=1770839499029"
+    "logo": "https://sfilev2.f-static.com/image/users/423667/ftp/my_files/template/AlmorLogoNew.png?id=31965020&sopC=1770839499029",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38745848/e6a2c10b/",
@@ -3202,7 +3262,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-22",
-    "logo": "https://icons.duckduckgo.com/ip3/bmorion.com.ico"
+    "logo": "https://icons.duckduckgo.com/ip3/bmorion.com.ico",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/project-manager-5698-at-entrypoint-4480790535",
@@ -3215,7 +3276,7 @@
     "technical_role": true,
     "match_score": 82,
     "concrete_matches_count": 5,
-    "reasoning": "למועמד יש ניסיון מעשי והנדסי מוצק במערכות בקרה, תשתיות אלקטרו-מכניות וניהול תפעול שטח, המתאימים לדרישות התפקיד של מנהל פרויקטים במערכות מתח נמוך ובקרה. הוא עונה על דרישות הליבה של ניהול פרויקטים טכניים בשטח, למרות שנדרשת בדיקה פרטנית של ניסיון קודם ספציפי בניהול קבלני משנה.",
+    "reasoning": "למועמד יש ניסיון מעשי והנדסי מוצק במערכות בקרה, תשתיות אלקטרו-מכניות וניהול תפעול שטח, המתאימים לדרישות התפקיד של מנהל פרויקטים במערכות מתח נמוך ובקרה.",
     "sector_key": "operations",
     "sector": "תקשורת ובקרה",
     "location": "מרכז הארץ",
@@ -3256,7 +3317,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFv2iBlVYg6Ng/company-logo_100_100/B4EZYQV.t7G0AQ-/0/1744030920305/entrypoint_logo?e=2147483647&v=beta&t=gdhUP8ssjZKNm1yp2x9FxAbnkfS9IaVwldwE031pOHU"
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFv2iBlVYg6Ng/company-logo_100_100/B4EZYQV.t7G0AQ-/0/1744030920305/entrypoint_logo?e=2147483647&v=beta&t=gdhUP8ssjZKNm1yp2x9FxAbnkfS9IaVwldwE031pOHU",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%90%D7%99%D7%9B%D7%95%D7%AA-qc-at-bet-shemesh-engines-ltd-4469438455",
@@ -3269,7 +3331,7 @@
     "technical_role": true,
     "match_score": 82,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה היא של מבקר איכות QC במנועי בית שמש, הדורשת רקע טכנאי/הנדסאי, קריאת שרטוטים, בדיקות תהליכיות ועבודה בסביבה תעשייתית מתקדמת. לעידו גל יש רקע כהנדסאי מכונות מעשי, ניסיון במערכות אלקטרו-מכניות, שליטה בכלים טכנולוגיים ובינה מלאכותית, ויכולת עבודה עם שרטוטים ותהליכים הנדסיים המתאימים לתפקיד פיזי ותעשייתי זה.",
+    "reasoning": "המשרה היא של מבקר איכות QC במנועי בית שמש, הדורשת רקע טכנאי/הנדסאי, קריאת שרטוטים, בדיקות תהליכיות ועבודה בסביבה תעשייתית מתקדמת.",
     "sector_key": "operations",
     "sector": "בקרת איכות ותעשייה",
     "location": "בית שמש",
@@ -3310,7 +3372,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQE_whFuzl4lXw/company-logo_100_100/company-logo_100_100/0/1630485663822/bet_shemesh_engines_ltd_logo?e=2147483647&v=beta&t=_5Iw_T-c3jG2DdAVo4DD-ORc5lqfr7fTtAeLFmjyQ_Y"
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQE_whFuzl4lXw/company-logo_100_100/company-logo_100_100/0/1630485663822/bet_shemesh_engines_ltd_logo?e=2147483647&v=beta&t=_5Iw_T-c3jG2DdAVo4DD-ORc5lqfr7fTtAeLFmjyQ_Y",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/new-product-introduction-engineer-at-imco-industries-ltd-4475438217",
@@ -3323,7 +3386,7 @@
     "technical_role": true,
     "match_score": 82,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם ניסיון במערכות אלקטרומכניות והנדסת ייצור, העומד בדרישת הסף של המשרה המאפשרת הנדסאי מכונות/חשמל בעל ניסיון. יש לו רקע טכני מוצק בהטמעת מערכות, קריאת שרטוטים ותמיכה הנדסית, אך חסר לו ניסיון ספציפי של 3 שנים בתחום רתמות וכבילה.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם ניסיון במערכות אלקטרומכניות והנדסת ייצור, העומד בדרישת הסף של המשרה המאפשרת הנדסאי מכונות/חשמל בעל ניסיון.",
     "sector_key": "operations",
     "sector": "תעשייה ביטחונית ואלקטרומכנית",
     "location": "נשר",
@@ -3365,7 +3428,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHPotyjos8wlw/company-logo_100_100/company-logo_100_100/0/1652685612268/imco_industried_ltd_logo?e=2147483647&v=beta&t=vBP8cwvidx48CY49AEPTv_HcwwjFcjUBuXS4PPBFaS4"
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHPotyjos8wlw/company-logo_100_100/company-logo_100_100/0/1652685612268/imco_industried_ltd_logo?e=2147483647&v=beta&t=vBP8cwvidx48CY49AEPTv_HcwwjFcjUBuXS4PPBFaS4",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A0%D7%90%D7%99-%D7%AA-%D7%9E%D7%98%D7%95%D7%A1%D7%99%D7%9D-at-elbit-systems-israel-4399768317",
@@ -3378,7 +3442,7 @@
     "technical_role": true,
     "match_score": 80,
     "concrete_matches_count": 4,
-    "reasoning": "המועמד הינו הנדסאי מכונות בעל רקע טכני מעשי נרחב, יכולת קריאת שרטוטים, עבודה עם ספרות טכנית וניסיון במערכות אלקטרו-מכאניות. התפקיד כולל עבודות הרכבה, ייצור ותיקונים בתחום התעופה בהתאם להנחיות הנדסיות, אשר תואמות את הרקע הטכני-מכאני של המועמד.",
+    "reasoning": "המועמד הינו הנדסאי מכונות בעל רקע טכני מעשי נרחב, יכולת קריאת שרטוטים, עבודה עם ספרות טכנית וניסיון במערכות אלקטרו-מכאניות.",
     "sector_key": "drones",
     "sector": "תעופה וביטחון",
     "location": "פארק תעשייה בר-לב (כרמיאל)",
@@ -3420,7 +3484,8 @@
     "p50": 18500,
     "p75": 21000,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q"
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q",
+    "fit_gaps": "דרישת רישיון טכנאי תעופה מוסמך / מבנאי מורשה (למועמד רקע מכני כללי ללא רישוי תעופתי ייעודי)."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/montageleiter-m-w-d-at-x-cooling-4439530497",
@@ -3433,7 +3498,7 @@
     "technical_role": true,
     "match_score": 75,
     "concrete_matches_count": 6,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוצק במערכות אלקטרו-מכניות ובניהול שטח, מה שמתאים לתפקיד של ניהול הרכבה ופרויקטים באנרגיה ותעשייה. המשרה דורשת ניסיון בהרכבה, ניהול אתרים ופיקוח, ולו יש ניסיון פיקודי ומעשי המאפשר התאמה טובה למרות שנדרשת הכשרה או ניסיון נוסף בתחום קירור תעשייתי.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוצק במערכות אלקטרו-מכניות ובניהול שטח, מה שמתאים לתפקיד של ניהול הרכבה ופרויקטים באנרגיה ותעשייה.",
     "sector_key": "operations",
     "sector": "תעשייה ומערכות קירור תעשייתיות",
     "location": "בוכום ולייפציג, גרמניה",
@@ -3474,7 +3539,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFIji-f8IFQFw/company-logo_100_100/company-logo_100_100/0/1724703616126?e=2147483647&v=beta&t=2j2UOlhbSR3FfEZtoTtm15g0Ued5m_euh7Wn2GgtCMo"
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFIji-f8IFQFw/company-logo_100_100/company-logo_100_100/0/1724703616126?e=2147483647&v=beta&t=2j2UOlhbSR3FfEZtoTtm15g0Ued5m_euh7Wn2GgtCMo",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/quality-engineer-at-flex-4443860816",
@@ -3487,7 +3553,7 @@
     "technical_role": true,
     "match_score": 75,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוצק במערכות אלקטרו-מכניות ובקרה, מתאים לתפקיד מהנדס איכות המצריך פיתוח שיטות בדיקה, בדיקת מוצרים, בקרת איכות ותהליכי ייצור. למרות שאין לו תואר ראשון הנדסי רשמי, ההכשרה המעשית והניסיון שלו בתחומים טכניים תעשייתיים מעניקים לו התאמה טובה לדרישות התפקיד.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוצק במערכות אלקטרו-מכניות ובקרה, מתאים לתפקיד מהנדס איכות המצריך פיתוח שיטות בדיקה, בדיקת מוצרים, בקרת איכות ותהליכי ייצור.",
     "sector_key": "operations",
     "sector": "ייצור ובקרת איכות",
     "location": "מגדל העמק / חיפה",
@@ -3528,7 +3594,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D560BAQFwOFir_jDfeQ/company-logo_100_100/company-logo_100_100/0/1688251504137/flexintl_logo?e=2147483647&v=beta&t=wKwdZMq6WeSA6b0z2q_8bSVTptcveH_rDT59idOR8Mc"
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQFwOFir_jDfeQ/company-logo_100_100/company-logo_100_100/0/1688251504137/flexintl_logo?e=2147483647&v=beta&t=wKwdZMq6WeSA6b0z2q_8bSVTptcveH_rDT59idOR8Mc",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/production-operator-at-drs-rada-technologies-4449922931",
@@ -3541,7 +3608,7 @@
     "technical_role": true,
     "match_score": 75,
     "concrete_matches_count": 4,
-    "reasoning": "המועמד בעל תואר הנדסאי מכונות וניסיון מעשי במערכות אלקטרו‑מכניות, מה שמאפשר קריאה והבנה של שרטוטי הרכבה. יש לו רקע בעבודה לפי נהלים ותיעוד, וכן יכולת ארגון ודיוק, תכונות נדרשות לתפקיד מפעיל ייצור. התאמה של דרישות המשרה ליכולותיו של המועמד משקפת התאמה טכנית, ולכן המועמד נחשב מוסמך לתפקיד.",
+    "reasoning": "המועמד בעל תואר הנדסאי מכונות וניסיון מעשי במערכות אלקטרו‑מכניות, מה שמאפשר קריאה והבנה של שרטוטי הרכבה.",
     "sector_key": "drones",
     "sector": "תעשייה ביטחונית ומערכות מכ\"ם",
     "location": "בית שאן (מערך הסעות מעפולה, טבריה, נוף הגליל, מגדל העמק)",
@@ -3582,7 +3649,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGN2IltyLnSog/company-logo_100_100/company-logo_100_100/0/1669672953633/drsradatechnologies_logo?e=2147483647&v=beta&t=VzQZZC7GeBS8KlYWd-vRWnxpmj1qsvfXfaWyvjURLGQ"
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGN2IltyLnSog/company-logo_100_100/company-logo_100_100/0/1669672953633/drsradatechnologies_logo?e=2147483647&v=beta&t=VzQZZC7GeBS8KlYWd-vRWnxpmj1qsvfXfaWyvjURLGQ",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38712047/f4c2f2fd/",
@@ -3595,7 +3663,7 @@
     "technical_role": true,
     "match_score": 75,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה דורשת טכנאי/ת מערכות תנועה בגובה ואחזקת מעליות, כולל תקלות חשמל, בקרה ומכאניקה. המועמד הינו הנדסאי מכונות מוסמך עם רקע במערכות אלקטרו-מכאניות, טיפול בתקלות שטח, ורקע בלימודי חשמל. יש התאמה טובה בין דרישות האחזקה המעשית בשטח לבין הרקע הטכנאי של המועמד.",
+    "reasoning": "טכנאי/ת מערכות תנועה בגובה ואחזקת מעליות, כולל תקלות חשמל, בקרה ומכאניקה.",
     "sector_key": "operations",
     "sector": "אחזקה ותפעול מערכות אלקטרו-מכאניות",
     "location": "ראשון לציון, תל אביב, רמת גן, נס ציונה, חולון, בת ים",
@@ -3637,7 +3705,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-22",
-    "logo": "https://www.google.com/s2/favicons?domain=electra.co.il&sz=128"
+    "logo": "https://www.google.com/s2/favicons?domain=electra.co.il&sz=128",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://www.drushim.co.il/job/38807351/a43be228/",
@@ -3691,7 +3760,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://www.google.com/s2/favicons?domain=snorkellifts.com&sz=128"
+    "logo": "https://www.google.com/s2/favicons?domain=snorkellifts.com&sz=128",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/manufacturing-equipment-maintenance-control-at-zoll-medical-corporation-4477130301",
@@ -3704,7 +3774,7 @@
     "technical_role": true,
     "match_score": 65,
     "concrete_matches_count": 4,
-    "reasoning": "התפקיד הינו תפקיד טכני מעשי של תחזוקה, הרכבה ובקרה של ציוד ייצור אלקטרו-מכאני. למועמד יש רקע מתאים כהנדסאי מכונות, ניסיון במערכות אלקטרו-מכאניות ובקרה, ולימודי חשמלאי מוסמך. עם זאת, הדרישה הפורמלית היא להנדסאי חשמל/אלקטרוניקה ונדרש ניסיון של 3 שנים בתחזוקת ציוד ייצור.",
+    "reasoning": "התפקיד הינו תפקיד טכני מעשי של תחזוקה, הרכבה ובקרה של ציוד ייצור אלקטרו-מכאני.",
     "sector_key": "other",
     "sector": "מכשור רפואי וייצור",
     "location": "קיסריה, ישראל",
@@ -3745,7 +3815,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-22",
-    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQHurQGRLq_5lw/company-logo_100_100/company-logo_100_100/0/1734368085773/zoll_medical_corporation_logo?e=2147483647&v=beta&t=RBpJFr6IUfBWfom8OcM0OhwudxwFMBb1P99m00mAvgo"
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQHurQGRLq_5lw/company-logo_100_100/company-logo_100_100/0/1734368085773/zoll_medical_corporation_logo?e=2147483647&v=beta&t=RBpJFr6IUfBWfom8OcM0OhwudxwFMBb1P99m00mAvgo",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4481350574",
@@ -3758,7 +3829,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה הינה מרכז בקרה ותפעול של מערכות אנרגיה סולאריות (Solar Operations Center), תחום המשיק ישירות להשכלה ולרקע של המועמד כהנדסאי מכונות עם התמחות באנרגיות ירוקות ושליטה בבקרה תפעולית. התפקיד מוגדר כ-entry-level ודורש מעקב מערכות, תיאום שירות ועבודה עם Excel ופלטפורמות תפעוליות, נתונים התואמים לפרופיל של עידו.",
+    "reasoning": "מרכז בקרה ותפעול של מערכות אנרגיה סולאריות (Solar Operations Center), תחום המשיק ישירות להשכלה ולרקע של המועמד כהנדסאי מכונות עם התמחות באנרגיות ירוקות ושליטה בבקרה תפעולית.",
     "sector_key": "solar",
     "sector": "אנרגיה סולארית ותפעול מערכות",
     "location": "unknown",
@@ -3800,7 +3871,8 @@
     "p50": 14500,
     "p75": 16500,
     "date": "2026-10-23",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGQr2Z6Sml-yg/company-logo_100_100/B4DZbDOQ79HQAU-/0/1747032019101/amarel_logo?e=2147483647&v=beta&t=NHrBXVeTTiaxH93t_pT_VLLsjUBWZi7RbLEnS6qINbM"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGQr2Z6Sml-yg/company-logo_100_100/B4DZbDOQ79HQAU-/0/1747032019101/amarel_logo?e=2147483647&v=beta&t=NHrBXVeTTiaxH93t_pT_VLLsjUBWZi7RbLEnS6qINbM",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/water-technology-field-technicians-at-saltworks-technologies-industrial-water-%2B-lithium-4479429643",
@@ -3813,7 +3885,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה דורשת טכנאי שטח למערכות מים מתקדמות הכוללות הפעלה, תחזוקה, פתרון תקלות מכניות וחשמליות, והרצה (commissioning). עידו הוא הנדסאי מכונות מעשי עם ניסיון בהפעלת מערכות מורכבות, תחזוקה, עבודה בשטח ופתרון תקלות אלקטרו-מכניות. יש התאמה גבוהה בין כישוריו הטכניים המעשיים לדרישות התפקיד, לרבות נכונות לעבודה שטחית והנדסית.",
+    "reasoning": "טכנאי שטח למערכות מים מתקדמות הכוללות הפעלה, תחזוקה, פתרון תקלות מכניות וחשמליות, והרצה (commissioning).",
     "sector_key": "operations",
     "sector": "טכנולוגיית מים ותעשייה",
     "location": "קריית גת, ישראל",
@@ -3854,7 +3926,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-23",
-    "logo": "https://media.licdn.com/dms/image/v2/D560BAQH6B2WuvHeHOg/company-logo_100_100/company-logo_100_100/0/1687378473425/saltworkstech_logo?e=2147483647&v=beta&t=FGjCfxmdBp5kTZMNxPlk98-jlK_UOnyNOY1gv9_v1mE"
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQH6B2WuvHeHOg/company-logo_100_100/company-logo_100_100/0/1687378473425/saltworkstech_logo?e=2147483647&v=beta&t=FGjCfxmdBp5kTZMNxPlk98-jlK_UOnyNOY1gv9_v1mE",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%90%D7%97%D7%A8%D7%90%D7%99-%D7%AA-%D7%91%D7%A7-%D7%90%D7%95%D7%A4%D7%99%D7%A1-%D7%9C%D7%AA%D7%97%D7%95%D7%9D-%D7%94%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99-at-amarel-ltd-4481360255",
@@ -3867,7 +3940,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 4,
-    "reasoning": "לעידו יש רקע חזק בתחום האנרגיה הסולארית והבקרה התפעולית, הכולל עבודה מול צוותי שטח, מוקדי שירות ובקרה (חדר בקרה). התפקיד אמנם כולל גם היבטי ניהול תפעול ואדמיניסטרציה, אך דורש הבנה טכנית של תקלות, ממשק ישיר מול טכנאים ותיאום מול חדר בקרה, מה שמתאים מאוד לכישוריו כהנדסאי מכונות עם רקע בבקרה וניהול משימות.",
+    "reasoning": "לעידו יש רקע חזק בתחום האנרגיה הסולארית והבקרה התפעולית, הכולל עבודה מול צוותי שטח, מוקדי שירות ובקרה (חדר בקרה).",
     "sector_key": "solar",
     "sector": "אנרגיה סולארית ותפעול שטח",
     "location": "לא צוין",
@@ -3909,7 +3982,8 @@
     "p50": 14500,
     "p75": 16000,
     "date": "2026-10-23",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGQr2Z6Sml-yg/company-logo_100_100/B4DZbDOQ79HQAU-/0/1747032019101/amarel_logo?e=2147483647&v=beta&t=NHrBXVeTTiaxH93t_pT_VLLsjUBWZi7RbLEnS6qINbM"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGQr2Z6Sml-yg/company-logo_100_100/B4DZbDOQ79HQAU-/0/1747032019101/amarel_logo?e=2147483647&v=beta&t=NHrBXVeTTiaxH93t_pT_VLLsjUBWZi7RbLEnS6qINbM",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/israel-opex-leader-at-netafim-4475751841",
@@ -3922,7 +3996,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 6,
-    "reasoning": "המועמד הינו הנדסאי מכונות מוסמך בעל רקע חזק בתפעול מערכות, שיפור מתמיד, ניהול תהליכים הנדסיים ואוטומציה. תפקיד מנהל מצוינות תפעולית בנטפים דורש הובלת פרויקטי שיפור, ניהול תהליכים תפעוליים ועבודה מול מנהלי ייצור והנדסה, התואמים את כישוריו המעשיים והרקע שלו בתפעול מערכות וניהול פרויקטים.",
+    "reasoning": "המועמד הינו הנדסאי מכונות מוסמך בעל רקע חזק בתפעול מערכות, שיפור מתמיד, ניהול תהליכים הנדסיים ואוטומציה.",
     "sector_key": "operations",
     "sector": "תפעול ומצוינות תפעולית",
     "location": "ישראל (מגל, יפתח וחצרים)",
@@ -3964,7 +4038,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-23",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFtDN6UBUBKSA/company-logo_100_100/B4DZxxEecNKYAQ-/0/1771423525029/netafim_logo?e=2147483647&v=beta&t=7o-XZCC-_T33w7n36T7a2xgEiT1CtR7d_6JMZzHkG7A"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFtDN6UBUBKSA/company-logo_100_100/B4DZxxEecNKYAQ-/0/1771423525029/netafim_logo?e=2147483647&v=beta&t=7o-XZCC-_T33w7n36T7a2xgEiT1CtR7d_6JMZzHkG7A",
+    "fit_gaps": "דרישת שנות ניסיון רבות בניהול בכיר בתעשייה (למועמד ניסיון פיקודי קרבי וניהול תפעולי מוקדם)."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/autonomous-vehicle-system-integrator-at-mobileye-4481352802",
@@ -3977,7 +4052,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 6,
-    "reasoning": "המשרה דורשת אינטגרציה מעשית של מערכות מורכבות, עבודה הלכה למעשה ברכבים, יכולות חומרה-תוכנה, פתרון בעיות מורכב וניסיון רב-תחומי. המועמד הינו הנדסאי מכונות בעל רקע חזק בהנדסה מעשית, אינטגרציה של מערכות, עבודה טכנית שטחית, ותפעול מערכות מורכבות, מה שמתאים מאוד לדרישות התפקיד.",
+    "reasoning": "אינטגרציה מעשית של מערכות מורכבות, עבודה הלכה למעשה ברכבים, יכולות חומרה-תוכנה, פתרון בעיות מורכב וניסיון רב-תחומי.",
     "sector_key": "energy_tech",
     "sector": "טכנולוגיות רכב אוטונומי ומערכות משובצות",
     "location": "ירושלים / פתח תקווה (לא צוין במפורש בטקסט המשרה)",
@@ -4018,7 +4093,8 @@
     "p50": null,
     "p75": null,
     "date": "2026-10-23",
-    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGMqdNe9MW06Q/company-logo_100_100/company-logo_100_100/0/1658223890583/mobileye_logo?e=2147483647&v=beta&t=Qx5AuX9E7Zbr1GScuv5IGaUrVLVypF7VEOhVaw2Zu88"
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGMqdNe9MW06Q/company-logo_100_100/company-logo_100_100/0/1658223890583/mobileye_logo?e=2147483647&v=beta&t=Qx5AuX9E7Zbr1GScuv5IGaUrVLVypF7VEOhVaw2Zu88",
+    "fit_gaps": "דרישה לפיתוח תוכנה או תכנות בקרים מעמיק (למועמד רקע בתפעול ובקרה ואוטומציה בסיסית בפייתון)."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/integration-flight-operations-team-lead-at-airobotics-4481338594",
@@ -4031,7 +4107,7 @@
     "technical_role": true,
     "match_score": 85,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד מביא ניסיון מעשי רב בהפעלת רחפנים, שילוב מערכות אלקטרו-מכניות, ניהול שטח ותפעול מבצעי. התפקיד דורש ניהול צוותי איंटीגרציה וטייסי רחפנים, ניסויים וטיסות מבחן, מה שמתאים מאוד לפרופיל הרקע המבצעי והטכני שלו.",
+    "reasoning": "המועמד מביא ניסיון מעשי רב בהפעלת רחפנים, שילוב מערכות אלקטרו-מכניות, ניהול שטח ותפעול מבצעי.",
     "sector_key": "drones",
     "sector": "רחפנים ומערכות אוטונומיות",
     "location": "מרכז / פתח תקווה",
@@ -4073,7 +4149,8 @@
     "p50": 16500,
     "p75": 19000,
     "date": "2026-10-23",
-    "logo": "https://media.licdn.com/dms/image/v2/D560BAQGrCGy2mpCcZA/company-logo_100_100/B56Z9BsGDSLAAI-/0/1783513506270/airobotics_logo?e=2147483647&v=beta&t=B3eKgH3D6XWlQw69n9ahWoGIEe_fWobE1A3QOAl0l9M"
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQGrCGy2mpCcZA/company-logo_100_100/B56Z9BsGDSLAAI-/0/1783513506270/airobotics_logo?e=2147483647&v=beta&t=B3eKgH3D6XWlQw69n9ahWoGIEe_fWobE1A3QOAl0l9M",
+    "fit_gaps": "דרישת שנות ניסיון רבות בניהול בכיר בתעשייה (למועמד ניסיון פיקודי קרבי וניהול תפעולי מוקדם)."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/noc-operator-37577-at-%D7%9E%D7%A8%D7%98%D7%A0%D7%A1-mertens-%E2%80%93-%D7%9E%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%9E%D7%9C%D7%9D-%D7%AA%D7%99%D7%9D-4482471524",
@@ -4086,7 +4163,7 @@
     "technical_role": true,
     "match_score": 82,
     "concrete_matches_count": 5,
-    "reasoning": "המשרה דורשת הפעלת חדר בקרה ומערכות קריטיות סביב השעון, תחום שבו למועמד יש התמחות עמוקה בהפעלת חדרי בקרה, מערכות SCADA ובקרת תשתיות אנרגיה 24/7. בנוסף, קיימת התאמה טובה בניסיון בתפעול מערכות טכנולוגיות מורכבות, אך ישנו פער חלקי בניסיון ספציפי קודם בסביבת IT/NOC מובהקת, שכן ניסיונו מכוון יותר למערכות אנרגיה ותעשייה, אולם הרקע הטכנולוגי מאפשר התאמה גבוהה.",
+    "reasoning": "הפעלת חדר בקרה ומערכות קריטיות סביב השעון, תחום שבו למועמד יש התמחות עמוקה בהפעלת חדרי בקרה, מערכות SCADA ובקרת תשתיות אנרגיה 24/7.",
     "sector_key": "operations",
     "sector": "תפעול מערכות ותשתיות טכנולוגיות",
     "location": "מרכז הארץ",
@@ -4128,7 +4205,8 @@
     "p50": 18500,
     "p75": 21000,
     "date": "2026-10-23",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHTo6Nsm5tThA/company-logo_100_100/B4DZca4c4jGkAQ-/0/1748502696133/mertens_malam_team_logo?e=2147483647&v=beta&t=TrxW5cSOBkoz4X2VxmgudphCYbagU2tXFEDZ7aeRXLw"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHTo6Nsm5tThA/company-logo_100_100/B4DZca4c4jGkAQ-/0/1748502696133/mertens_malam_team_logo?e=2147483647&v=beta&t=TrxW5cSOBkoz4X2VxmgudphCYbagU2tXFEDZ7aeRXLw",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/aircraft-mechanic-at-jobsseek-4482461472",
@@ -4141,7 +4219,7 @@
     "technical_role": true,
     "match_score": 82,
     "concrete_matches_count": 5,
-    "reasoning": "למועמד יש דיפלומה בהנדסאי מכונות, העונה בדיוק על דרישת החובה לדיפלומה במכונות. בנוסף, יש לו רקע איתן במערכות אלקטרו-מכניות, קריאת שרטוטים טכניים ויכולת עבודה מדויקת בסביבה טכנית, מה שמתאים מאוד לתפקיד מכונאי מטוסים ומנועים במפעל MRO.",
+    "reasoning": "למועמד יש דיפלומה בהנדסאי מכונות, העונה בדיוק על דרישת החובה לדיפלומה במכונות.",
     "sector_key": "operations",
     "sector": "תעופה ותחזוקה טכנית",
     "location": "לא צוין",
@@ -4183,7 +4261,8 @@
     "p50": 13250,
     "p75": 15000,
     "date": "2026-10-23",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFc4u1wp4facA/company-logo_100_100/company-logo_100_100/0/1704712762989/jobsseek_logo?e=2147483647&v=beta&t=Ldqf7J6mMvUr6WGU4z-wifS9Y7rH-2vqgqAy-3p-cgA"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFc4u1wp4facA/company-logo_100_100/company-logo_100_100/0/1704712762989/jobsseek_logo?e=2147483647&v=beta&t=Ldqf7J6mMvUr6WGU4z-wifS9Y7rH-2vqgqAy-3p-cgA",
+    "fit_gaps": "דרישת רישיון טכנאי תעופה מוסמך / מבנאי מורשה (למועמד רקע מכני כללי ללא רישוי תעופתי ייעודי)."
   },
   {
     "link": "https://il.linkedin.com/jobs/view/integration-engineer-at-uvision-group-4482468438",
@@ -4196,7 +4275,7 @@
     "technical_role": true,
     "match_score": 75,
     "concrete_matches_count": 5,
-    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי רב בהנדסת מערכות, פיתוח, אינטגרציה ופתרון תקלות אלקטרו-מכניות. תפקיד זה דורש אינטגרציה של מערכות מורכבות, בדיקות חשמליות, קריאת שרטוטים מכניים וחשמליים, ופתרון תקלות ברמת הרכיב, הישגים המשתלבים היטב עם כישוריו של המועמד.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי רב בהנדסת מערכות, פיתוח, אינטגרציה ופתרון תקלות אלקטרו-מכניות.",
     "sector_key": "drones",
     "sector": "מערכות בלתי מאוישות והגנה",
     "location": "צור יגאל / כוכב יאיר",
@@ -4238,6 +4317,7 @@
     "p50": 16500,
     "p75": 19000,
     "date": "2026-10-23",
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQG6OA3Xnw9kmw/company-logo_100_100/B4DZk5uTq5H4AQ-/0/1757610064897/uvisionuav_logo?e=2147483647&v=beta&t=q0mP1XGai-SYdgcKgNa1UFBbiIruSQprKjqvH-T0flA"
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQG6OA3Xnw9kmw/company-logo_100_100/B4DZk5uTq5H4AQ-/0/1757610064897/uvisionuav_logo?e=2147483647&v=beta&t=q0mP1XGai-SYdgcKgNa1UFBbiIruSQprKjqvH-T0flA",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
   }
 ]
