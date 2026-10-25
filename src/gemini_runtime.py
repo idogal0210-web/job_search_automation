@@ -11,6 +11,22 @@ from google.genai import types
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
 
+class EvidenceQuote(BaseModel):
+    model_config = ConfigDict(strict=True)
+    quote: str = ""
+    source_field: str = ""
+
+
+class RequirementAssessment(BaseModel):
+    model_config = ConfigDict(strict=True)
+    requirement: str
+    importance: Literal["required", "preferred", "unknown"] = "unknown"
+    ad_evidence: EvidenceQuote = Field(default_factory=EvidenceQuote)
+    profile_evidence: EvidenceQuote = Field(default_factory=EvidenceQuote)
+    assessment: Literal["match", "gap", "unknown"] = "unknown"
+    explanation: str = ""
+
+
 class Evaluation(BaseModel):
     model_config = ConfigDict(strict=True)
     status: Literal["QUALIFIED", "DISQUALIFIED"]
@@ -29,6 +45,7 @@ class Evaluation(BaseModel):
     junior_openness: str = "לא צוין"
     work_model: str = "לא צוין"
     company_requirements: str = "לא צוין"
+    requirement_assessments: list[RequirementAssessment] = Field(default_factory=list)
 
     @field_validator("junior_openness", mode="before")
     @classmethod

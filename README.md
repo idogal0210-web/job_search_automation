@@ -20,35 +20,51 @@ job_search_automation/
 │   └── skills/                     # מיומנויות עבודה (ai-ux-interaction, salary-intelligence, save-and-sync וכו')
 ├── .github/
 │   └── workflows/
+│       ├── ci.yml                  # בדיקות CI אוטומטיות בכל Pull Request (בדיקות יחידה, בניית ממשק ואפס אימוג'ים)
 │       └── daily_job_search.yml    # ריצת Cron יומית מתוזמנת ב-GitHub Actions (07:17 שעון ישראל)
+├── frontend/                       # קובצי מקור מודולריים של הממשק
+│   ├── templates/index.html        # תבנית HTML של שלד הדשבורד
+│   ├── css/dashboard.css           # סגנונות CSS ייעודיים של הדשבורד
+│   └── js/dashboard.js             # לוגיקת צד-לקוח, מעקב מועמדויות וטעינת נתונים
 ├── src/
 │   ├── pipeline.py                 # תזמור תהליך הריצה, שלבים ומעקב מדדי בריאות
-│   ├── fetchers.py                 # סריקת משרות מפלטפורמות (LinkedIn, Drushim) עם Backoff ו-Jitter
+│   ├── fetchers.py                 # סריקת משרות מפלטפורמות (LinkedIn, Drushim, Comeet ATS ישיר) עם Backoff
 │   ├── job_policy.py               # סינון מקדים דטרמיניסטי: חסימת תפקידים לא-טכניים ורשימת מעסיקים חסומים
-│   ├── gemini_runtime.py           # ניהול בריכת מודלי Gemini (Fallback Pool) עם סכמות Pydantic מובנות
-│   ├── evaluators.py               # הערכת התאמה (ציון 0-100), בונוס חברות יעד וחלופת מילות מפתח
+│   ├── gemini_runtime.py           # ניהול בריכת מודלי Gemini עם סכמת Pydantic מובנית וראיות התאמה
+│   ├── evaluators.py               # הערכת התאמה (ציון 0-100), בונוס חברות יעד ואימות ראיות מודעה
 │   ├── salary_engine.py            # מנוע שכר מבוסס ראיות: חילוץ ממודעה + כיול שכר השוואתי
 │   ├── state_manager.py            # ניהול מצב אטומי, מניעת כפילויות ומעקב סטטוסים
-│   ├── ui_builder.py               # מקור האמת הבלעדי לבניית דשבורד ה-Web (docs/index.html)
+│   ├── ui_builder.py               # מנוע בניית הדשבורד המפיק תוצרים מופרדים לתיקיית docs/
 │   └── publishers.py               # הפקת דוח דוא"ל מעוצב (RTL) ושליחה אוטומטית למשרות נבחרות
 ├── docs/
-│   ├── index.html                  # אפליקציית Web אינטראקטיבית ב-GitHub Pages
+│   ├── index.html                  # אפליקציית Web אינטראקטיבית קלת-משקל (~31KB) ב-GitHub Pages
+│   ├── dashboard.css               # סגנונות הדשבורד (נשמרים במטמון דפדפן)
+│   ├── dashboard.js                # לוגיקת האפליקציה (נשמרת במטמון דפדפן)
 │   ├── theme.css                   # משתני עיצוב CSS, סגנונות גלובליים ורספונסיביות
 │   ├── fonts.css                   # הגדרות פונטים מקומיים
+│   ├── data/
+│   │   ├── jobs.json               # נתוני משרות עדכניות (סכמה 2.0.0, טעינה אסינכרונית)
+│   │   └── historical_catalog.json # קטלוג היסטורי לטעינה לפי דרישה בלבד
+│   ├── UPGRADE_STATUS.md           # מטריצת סטטוס שדרוג המערכת U1–U7
 │   └── assets/                     # פונטים ונכסים גרפיים סטטיים
 ├── data/
 │   ├── jobs_state.json             # מעקב משרות פעילות ומזהי URL
 │   ├── weekly_archive.json         # ארכיון שבועי מלא עם ציוני AI, נתוני שכר ומטא-דאטה
 │   ├── historical_catalog.json     # קטלוג היסטורי למניעת כפילויות בין סבבים
-│   └── evaluation_state.json       # מטמון הערכות ותור משרות הממתינות לבדיקה חוזרת
-├── tests/                          # חבילת בדיקות אוטומטית מלאה (49 בדיקות עוברות)
+│   ├── evaluation_state.json       # מטמון הערכות ותור משרות הממתינות לבדיקה חוזרת
+│   └── evaluation_benchmark_template.json # תבנית ומדגם נתוני כיול למדידת איכות מודלים
+├── tests/                          # חבילת בדיקות אוטומטית מלאה (59 בדיקות עוברות)
 │   ├── test_recovery.py            # בדיקות שחזור והתאוששות מכשלים
 │   ├── test_salary_intelligence.py # בדיקות יחידה למנוע הערכת השכר
 │   ├── test_requeue.py             # בדיקות מנגנון החזרה לתור של משרות
 │   ├── test_main_integration.py    # בדיקות אינטגרציה של התהליך המרכזי
 │   ├── test_phase_b_precision.py   # בדיקות דיוק הערכת AI וסכמת Pydantic
-│   └── test_reliability_phase_a.py # בדיקות אמינות סריקה, סינון מקדים וחלופות
+│   ├── test_reliability_phase_a.py # בדיקות אמינות סריקה, סינון מקדים וחלופות
+│   ├── test_evidence_assessments.py# בדיקות יחידה לסכמת ראיות התאמה ומניעת ציטוטים מומצאים
+│   ├── test_benchmark_metrics.py   # בדיקות יחידה לחישוב מטריצת בלבול ודיוק מודלים
+│   └── test_comeet_connector.py    # בדיקות יחידה למחבר ATS ישיר (Comeet)
 └── scripts/
+    ├── evaluate_dataset.py         # כלי הערכת דיוק, כיסוי, F1 וניתוח False Negatives
     └── requeue_jobs.py             # סקריפט שירות להערכה חוזרת סלקטיבית של משרות מהארכיון
 ```
 

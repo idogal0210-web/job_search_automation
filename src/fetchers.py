@@ -17,6 +17,11 @@ class RunHealth:
     drushim_failures: int = 0
     drushim_jobs_found: int = 0
     
+    comeet_requests: int = 0
+    comeet_successes: int = 0
+    comeet_failures: int = 0
+    comeet_jobs_found: int = 0
+    
     gemini_attempts: int = 0
     gemini_successes: int = 0
     gemini_failures: int = 0
@@ -258,3 +263,83 @@ def fetch_drushim_full_job_description(link: str) -> str:
     except Exception:
         pass
     return ""
+
+
+def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", company_display_name="Enlight Renewable Energy", health_metrics=None, timeout=10, session=None):
+    """
+    Direct ATS connector for Comeet career portals (e.g. Enlight Renewable Energy).
+    Extracts structured position metadata directly from official career portal payload.
+    """
+    import json
+    if health_metrics is not None:
+        health_metrics.comeet_requests += 1
+
+    url = f"https://www.comeet.com/jobs/{company_slug}/{company_uid}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    }
+
+    client = session or requests
+    try:
+        res = client.get(url, headers=headers, timeout=timeout)
+        if res.status_code != 200:
+            if health_metrics is not None:
+                health_metrics.comeet_failures += 1
+            print(f"[COMEET] Failed to fetch {url}: HTTP {res.status_code}", flush=True)
+            return []
+
+        match = re.search(r'COMPANY_POSITIONS_DATA\s*=\s*(\[.*?\]);\s*(?:COMPANY|POSITION|\n|</script>)', res.text, re.DOTALL)
+        if not match:
+            if health_metrics is not None:
+                health_metrics.comeet_failures += 1
+            print(f"[COMEET] Could not parse positions payload from {url}", flush=True)
+            return []
+
+        positions = json.loads(match.group(1))
+        jobs = []
+        for pos in positions:
+            title = (pos.get("name") or "").strip()
+            link = pos.get("url_active_page") or pos.get("url_comeet_hosted_page") or ""
+            if not title or not link:
+                continue
+
+            loc_obj = pos.get("location") or {}
+            loc_parts = [loc_obj.get("city"), loc_obj.get("name") or loc_obj.get("country")]
+            loc_str = ", ".join(p for p in loc_parts if p) or "ישראל"
+
+            # Combine details
+            details_list = (pos.get("custom_fields") or {}).get("details", [])
+            desc_parts = []
+            for d in details_list:
+                raw_val = d.get("value") or ""
+                val = re.sub(r"<[^>]+>", " ", raw_val)
+                val = re.sub(r"\s+", " ", val).strip()
+                if val:
+                    desc_parts.append(f"{d.get('name', 'Details')}: {val}")
+            snippet = " | ".join(desc_parts)[:1200] if desc_parts else title
+
+            jobs.append({
+                "title": title,
+                "company": company_display_name,
+                "link": link,
+                "location": loc_str,
+                "snippet": snippet,
+                "source": "Comeet",
+                "source_id": pos.get("uid", ""),
+                "is_direct_ats": True
+            })
+
+        if health_metrics is not None:
+            health_metrics.comeet_successes += 1
+            health_metrics.comeet_jobs_found += len(jobs)
+
+        print(f"[COMEET] Successfully collected {len(jobs)} positions from {company_display_name}", flush=True)
+        return jobs
+
+    except Exception as e:
+        if health_metrics is not None:
+            health_metrics.comeet_failures += 1
+        print(f"[COMEET_ERROR] Error fetching from {url}: {e}", flush=True)
+        return []
+

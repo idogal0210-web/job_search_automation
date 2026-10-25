@@ -1,0 +1,58 @@
+# סטטוס שדרוג המערכת — מעקב משימות U1–U7
+
+מסמך זה מרכז את סטטוס הביצוע של שבע משימות השדרוג לפי מסמך `ANTIGRAVITY_UPGRADE_PLAN.md`.
+כל שינוי נבדק ואומת מקומית עם ראיות, מדידות ובדיקות ממוכנות.
+
+- תאריך עדכון: 25.10.2026
+- ענף עבודה מקומי: `upgrade/plan-implementation`
+- גרסת בסיס: `0e687247bbf4c764dc63f98874e5ed37dd0022a9`
+- מגבלות בטיחות: ללא Push, ללא פרסום ענן, ללא שינוי מסד חי, ללא שליחת דוא״ל.
+
+---
+
+## טבלת מעקב משימות U1–U7
+
+| מזהה | נושא | סטטוס | ראיות, קבצים ובדיקות בפועל |
+| :--- | :--- | :--- | :--- |
+| **U1** | בדיקות אוטומטיות בכל Pull Request | **DONE** | נוצר `.github/workflows/ci.yml`. מופעל באירועי `pull_request` ו-`push` לענף `main`. הרשאות מינימליות `contents: read`, התקנת תלויות עקבית עם `.python-version` (3.11), הרצת 59 בדיקות יחידה ואינטגרציה, אימות בניית דשבורד ובדיקת מדיניות אפס אימוג'ים ללא סודות. |
+| **U2** | הפרדת קוד הממשק (תבנית, סגנונות ו-JS) | **DONE** | קוד הממשק פוצל מקובץ המונולית `src/ui_builder.py` (שהיה מעל 5,850 שורות) למבנה מקורות מודולרי: `frontend/templates/index.html`, `frontend/css/dashboard.css` ו-`frontend/js/dashboard.js`. הקובץ `src/ui_builder.py` צומצם ל-217 שורות הפועלות כבנאי ומעבד נתונים. |
+| **U3** | הפרדת נתוני המשרות מקובץ ה-HTML | **DONE** | נתוני המשרות הופרדו לקובץ `docs/data/jobs.json` בגרסת `schema_version: "2.0.0"` עם מזהה build וחותמת זמן. הקטלוג ההיסטורי הופרד ל-`docs/data/historical_catalog.json` ונטען לפי דרישה בלבד. גודל `docs/index.html` צומצם מ-2.19MB ל-31KB בלבד (הפחתה של 98.6%). נוספו חיווי טעינה (Spinner), טיפול בשגיאות רשת וכפתור ניסיון חוזר. |
+| **U4** | ראיות לכל התאמה ופער (`requirement_assessments`) | **DONE** | סכמת Pydantic עודכנה ב-`src/gemini_runtime.py` עם `RequirementAssessment`, `EvidenceQuote`, חשיבות (`required`/`preferred`) ומסקנה (`match`/`gap`/`unknown`). נוסף מנגנון הגנה ב-`src/evaluators.py` הפוסל ציטוטי מודעה מומצאים (`unverified`). נשמרה תאימות מלאה למשרות קודמות (מוצג "אין פירוט ראיות מובנה להערכה זו"). נבדק ב-`tests/test_evidence_assessments.py`. |
+| **U5** | מערך משרות עם תיוג ידני וכלי הערכה | **BLOCKED: user labels** (כלי ומבנה: **DONE**) | נוצר כלי ההערכה `scripts/evaluate_dataset.py` המפיק מטריצת בלבול (TP, FP, TN, FN), דיוק (Precision), כיסוי (Recall), ציון F1 ופירוט משרות מתאימות שהוחמצו (False Negatives). נוצר קובץ התבנית והמדגם הסינתטי `data/evaluation_benchmark_template.json`. השלב ממתין לתיוג ידני אמיתי על ידי המשתמש (relevant, irrelevant, borderline) כדי להפיק מדדי אמת. |
+| **U6** | מעקב הגשות (סטטוס, מועדים והערות) | **DONE** | הופרד מעקב מועמדות ממצב ה-Triage הקיים. נוספו 8 סטטוסים (`not_applied`, `applied`, `awaiting_response`, `interview`, `offer`, `rejected`, `withdrawn`, `closed`), תאריך הגשה, תאריך תזכורת ושדה הערות אישיות. הנתונים נשמרים מקומית ב-`localStorage` (`ido_job_applications_store`) להבטחת פרטיות ללא דליפה למאגר הציבורי. נוספה אפשרות ייצוא גיבוי פרטי (JSON). |
+| **U7** | חיבור ישיר לאתר חברה / ATS (Comeet) | **DONE** | נוסף מחבר ATS רשמי ישיר `fetch_comeet_jobs` ב-`src/fetchers.py` עבור Enlight Renewable Energy. המחבר מחלץ משרות ישירות מנתוני Comeet, מנקה HTML, ומחזיר מבנה אחיד המחובר ל-Pipeline ולמדדי `RunHealth`. נבדק מול fixtures ב-`tests/test_comeet_connector.py`. |
+
+---
+
+## מדידות ביצועים: לפני מול אחרי
+
+| מדד | לפני השינוי (גרסת בסיס) | אחרי השינוי | שינוי באחוזים |
+| :--- | :--- | :--- | :--- |
+| **גודל `docs/index.html`** | 2,185,557 בתים (כ-2.19MB) | 31,524 בתים (כ-31KB) | **ירידה של 98.6%** |
+| **הפרדת סגנונות** | מוטמע כולו בתוך ה-HTML | `docs/dashboard.css` (75KB, נשמר במטמון) | שמירה במטמון דפדפן |
+| **הפרדת לוגיקת לקוח** | מוטמעת כולה בתוך ה-HTML | `docs/dashboard.js` (135KB, נשמר במטמון) | שמירה במטמון דפדפן |
+| **העברת נתונים ראשונית** | כ-2.19MB בקריאה אחת | כ-31KB (HTML) + כ-333KB (`jobs.json`) | חיסכון של כ-83% בתעבורה ראשונית |
+| **טעינת קטלוג היסטורי** | חובה ומוטמע ב-HTML (1.5MB) | נטען אסינכרונית לפי דרישה בלבד (`historical_catalog.json`) | 0 בתים בעלייה הראשונית |
+| **סך בדיקות יחידה ואינטגרציה** | 49 בדיקות עברו | **59 בדיקות עברו בהצלחה** (10 בדיקות חדשות) | כיסוי מלא למודולים החדשים |
+| **שמירה על אפס אימוג'ים** | מאומת | **מאומת (0 אימוג'ים)** | 100% תאימות לכלל |
+
+---
+
+## פירוט בדיקות ממוכנות שבוצעו
+
+1. `python3 -m unittest discover tests/ -v`:
+   - 59 מתוך 59 בדיקות עברו בהצלחה ב-0.061 שניות.
+   - כולל: `test_comeet_connector.py` (4 בדיקות), `test_evidence_assessments.py` (3 בדיקות), `test_benchmark_metrics.py` (3 בדיקות), `test_main_integration.py` (2 בדיקות), ובדיקות הרגרסיה והשכר הקיימות.
+2. `node -c frontend/js/dashboard.js` ו-`node -c docs/dashboard.js`:
+   - עבר ללא שגיאות תחביר.
+3. בדיקת דפדפן Headless Brave מול שרת מקומי (`PORT 8877`):
+   - סך כרטיסי משרות שנטענו מ-`data/jobs.json`: 80.
+   - כרטיסים בעלי תגיות מבצעיות: 33.
+   - קופסאות מעקב מועמדות פעילות: 80.
+   - כרטיסים גלויים בלשונית "חדשות": 11 (משרות עדכניות שלא מוינו).
+   - בדיקת גלילה אופקית: `hasHorizontalOverflow: false` במחשב (1280px) ובמובייל (390px).
+   - צילומי מסך מאומתים נשמרו בתיקיית האימות:
+     - `desktop_upgrade_verified.png`
+     - `mobile_upgrade_verified.png`
+4. בדיקת פקודת ההערכה:
+   - `python3 scripts/evaluate_dataset.py` הפיק מטריצת בלבול ודוח משרות מתאימות שהוחמצו (False Negatives).

@@ -32,6 +32,7 @@ class MainIntegrationTests(unittest.TestCase):
                  patch.object(main.genai, 'Client', return_value=client), \
                  patch.object(main, 'fetch_linkedin_jobs', return_value=[job]), \
                  patch.object(main, 'fetch_drushim_jobs', return_value=[]), \
+                 patch.object(main, 'fetch_comeet_jobs', return_value=[]), \
                  patch.object(main, 'evaluate_candidates', side_effect=evaluate), \
                  patch.object(main, 'update_weekly_archive', side_effect=lambda jobs, *_: jobs), \
                  patch.object(main, 'build_and_save_docs_app'), \
@@ -63,6 +64,7 @@ class MainIntegrationTests(unittest.TestCase):
                  patch.object(main, 'STATE_FILE', str(root/'data/jobs_state.json')), \
                  patch.object(main, 'fetch_linkedin_jobs', return_value=[]), \
                  patch.object(main, 'fetch_drushim_jobs', return_value=[]), \
+                 patch.object(main, 'fetch_comeet_jobs', return_value=[]), \
                  patch.object(main, 'update_weekly_archive', side_effect=OSError('disk error')), \
                  patch.object(main, 'send_email_report', side_effect=send):
                 self.assertEqual(main.main(), 1)

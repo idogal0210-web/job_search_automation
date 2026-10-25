@@ -37,32 +37,49 @@ job_search_automation/
 │   └── skills/                     # Specialized skills (salary-intelligence, cloud-sync, health-audit, etc.)
 ├── .github/
 │   └── workflows/
+│       ├── ci.yml                  # Continuous integration: test suite, UI build check, zero emoji guard on PRs
 │       └── daily_job_search.yml    # Active scheduled daily GitHub Actions cron workflow (07:17 IST / 04:17 UTC)
+├── frontend/                       # Source files for the web application (modular separation)
+│   ├── templates/index.html        # HTML layout shell and metadata slots
+│   ├── css/dashboard.css           # Modular dashboard CSS styles
+│   └── js/dashboard.js             # Client-side SPA application logic and data fetcher
 ├── src/
 │   ├── pipeline.py                 # Core orchestration pipeline managing run health, stages, and metrics
-│   ├── fetchers.py                 # Multi-source scrapers for LinkedIn, Drushim, and candidate feeds
+│   ├── fetchers.py                 # Multi-source scrapers for LinkedIn, Drushim, and direct Comeet ATS
 │   ├── job_policy.py               # Deterministic blacklist filters, technical keyword sets, and title rules
 │   ├── gemini_runtime.py           # Multi-model Gemini fallback pool with structured output validation and retry
 │   ├── evaluators.py               # Match score evaluator (0-100), target company bonuses, and keyword fallback
 │   ├── salary_engine.py            # Evidence-based salary prediction, comparable role calibration, confidence scoring
 │   ├── state_manager.py            # Job deduplication, status tracking (QUALIFIED/DISQUALIFIED/RETRY_PENDING), storage
-│   ├── ui_builder.py               # Exclusive source of truth for generating docs/index.html web dashboard
+│   ├── ui_builder.py               # Build orchestrator compiling frontend/ assets and data into docs/
 │   └── publishers.py               # Email dispatch and webhook notification services
 ├── docs/
-│   ├── index.html                  # Compiled production single-page application hosted on GitHub Pages
+│   ├── index.html                  # Lightweight production SPA shell (~31KB) hosted on GitHub Pages
+│   ├── dashboard.css               # Compiled dashboard styles
+│   ├── dashboard.js                # Compiled application script
 │   ├── theme.css                   # Global design tokens, color variables, and base responsive styles
 │   ├── fonts.css                   # Local font declarations
+│   ├── data/
+│   │   ├── jobs.json               # Current jobs payload (schema version 2.0.0, UI-compacted)
+│   │   └── historical_catalog.json # Historical catalog for on-demand lazy lookup
+│   ├── UPGRADE_STATUS.md           # Upgrade implementation tracking matrix for tasks U1-U7
 │   └── assets/                     # Static UI assets and fonts
 ├── data/
 │   ├── jobs_state.json             # Active tracked job identifiers and links
 │   ├── weekly_archive.json         # Complete weekly archive containing full metadata, AI scores, and salary data
 │   ├── historical_catalog.json     # Historical job catalog for cross-cycle deduplication
-│   └── evaluation_state.json       # Evaluation cache and retry pending queues
-├── tests/                          # Automated unit and integration test suite (49 passing tests)
+│   ├── evaluation_state.json       # Evaluation cache and retry pending queues
+│   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
+├── scripts/
+│   └── evaluate_dataset.py         # Confusion matrix, Precision/Recall/F1 and False Negatives evaluator
+├── tests/                          # Automated unit and integration test suite (59 passing tests)
 │   ├── test_recovery.py            # Degradation and error recovery tests
 │   ├── test_salary_intelligence.py # Salary prediction engine tests
 │   ├── test_requeue.py             # Evaluation requeue and retry tests
 │   ├── test_main_integration.py    # Pipeline integration tests
+│   ├── test_evidence_assessments.py# U4: Requirement assessments & evidence validation tests
+│   ├── test_benchmark_metrics.py   # U5: Benchmark dataset evaluation tests
+│   └── test_comeet_connector.py    # U7: Direct Comeet ATS connector tests
 │   ├── test_phase_b_precision.py   # AI evaluation precision and schema tests
 │   └── test_reliability_phase_a.py # Scraper and fallback reliability tests
 └── scripts/
@@ -158,9 +175,10 @@ job_search_automation/
 - **Absolute Rule:** Exactly 0 emojis are permitted across the entire repository. This includes Python source code, HTML templates, CSS styles, JavaScript logic, JSON data files, Git commit messages, documentation, and agent chat messages.
 - **Enforcement:** Use Phosphor Icons (`ph-` classes) or standard vector SVG glyphs for all visual iconography.
 
-### 6.2 UI Source of Truth
-- **Single Source File:** `src/ui_builder.py` is the sole source of truth for the frontend application.
-- **Prohibited Action:** Never directly modify `docs/index.html`. Always apply edits to `src/ui_builder.py` and rebuild `docs/index.html` via `build_and_save_docs_app`.
+### 6.2 Frontend Architecture & Build Orchestration
+- **Source Files:** The frontend source code is cleanly separated in `frontend/` (`frontend/templates/index.html`, `frontend/css/dashboard.css`, `frontend/js/dashboard.js`).
+- **Build Pipeline:** `src/ui_builder.py` orchestrates the build process via `build_and_save_docs_app`, outputting the lightweight HTML shell to `docs/index.html`, bundled CSS/JS assets, and decoupled data feeds (`docs/data/jobs.json` with schema version 2.0.0 and `docs/data/historical_catalog.json`).
+- **Prohibited Action:** Never directly edit compiled production files in `docs/index.html`, `docs/dashboard.css`, `docs/dashboard.js`, or `docs/data/`. Always apply edits to `frontend/` or `src/ui_builder.py` and rebuild.
 
 ### 6.3 Bidirectional Text & RTL Formatting
 - **Hebrew Layout:** The entire user interface and Hebrew conversational outputs must follow strict RTL formatting (`dir="rtl"`).

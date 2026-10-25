@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-from src.fetchers import RunHealth, fetch_linkedin_jobs, fetch_drushim_jobs
+from src.fetchers import RunHealth, fetch_linkedin_jobs, fetch_drushim_jobs, fetch_comeet_jobs
 from src.job_policy import apply_keyword_fallback
 from src.pipeline import evaluate_candidates, final_status, run_report
 from src.publishers import send_email_report
@@ -107,8 +107,11 @@ def main():
     ]
     drushim_jobs = fetch_drushim_jobs(drushim_keywords, health, max_pages=1)
 
-    # Pure broad industry search across LinkedIn and Drushim
-    all_raw_jobs = linkedin_energy + linkedin_drones + drushim_jobs
+    print("[FETCH] Scraping Comeet ATS (Enlight Renewable Energy)...")
+    comeet_jobs = fetch_comeet_jobs("enlightenergy", "99.006", "Enlight Renewable Energy", health)
+
+    # Pure broad industry search across LinkedIn, Drushim and direct Comeet ATS
+    all_raw_jobs = linkedin_energy + linkedin_drones + drushim_jobs + comeet_jobs
 
 
     new_jobs = ledger.select(all_raw_jobs, handled_links)

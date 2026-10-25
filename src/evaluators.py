@@ -139,6 +139,28 @@ Key Competencies:
 QuotaExhaustedError = EvaluationUnavailable
 
 
+def validate_requirement_assessments(assessments, raw_text):
+    """
+    Validates requirement assessments against raw job text to prevent hallucinated quotes.
+    If a quote is provided but not found in the raw text, downgrade quote and set assessment to unknown.
+    """
+    if not assessments or not isinstance(assessments, list):
+        return []
+    validated = []
+    norm_text = (raw_text or "").lower()
+    for item in assessments:
+        entry = dict(item)
+        ad_ev = entry.get("ad_evidence") or {}
+        ad_quote = (ad_ev.get("quote") or "").strip()
+        if ad_quote and ad_quote.lower() not in norm_text:
+            entry["ad_evidence"] = {"quote": "", "source_field": "unverified"}
+            if entry.get("assessment") == "match":
+                entry["assessment"] = "unknown"
+                entry["explanation"] = (entry.get("explanation", "") + " (ציטוט המודעה לא אומת מול הטקסט הגולמי)").strip()
+        validated.append(entry)
+    return validated
+
+
 def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_drone, health_metrics, *, pool=None):
     job = {"title": title, "company": company, "snippet": snippet}
     rejected = deterministic_filter(job)
@@ -170,6 +192,9 @@ Rules:
   maintenance, C-UAS or hands-on operations.
 - Give a base fit score 0..100, without any employer preference bonus.
 - Count 0..10 distinct, concrete matches supported by the ad and profile.
+- Extract 1..5 concrete requirement_assessments with exact verbatim quotes for ad_evidence and profile_evidence.
+  importance: required / preferred / unknown. assessment: match / gap / unknown.
+  Never invent quotes; if absent use empty quote.
 - If technical fit fails, return DISQUALIFIED and technical_role=false.
 - No unsupported facts in company summaries or location.
 Drone domain hint: {is_drone}
@@ -181,6 +206,10 @@ Job JSON:
 
     gemini_pool = pool or GeminiPool()
     data = gemini_pool.evaluate(client, prompt, health_metrics)
+
+    raw_text = f"{title} {company} {snippet}"
+    if "requirement_assessments" in data:
+        data["requirement_assessments"] = validate_requirement_assessments(data.get("requirement_assessments"), raw_text)
 
     base = data["match_score"]
     data.update(base_match_score=base, priority_bonus=0, is_target_company=False,

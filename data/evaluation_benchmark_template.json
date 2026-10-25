@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0.0",
+  "description": "Ground truth evaluation dataset schema and benchmark test set",
+  "updated_at": "2026-10-25T01:50:00Z",
+  "samples": [
+    {
+      "sample_id": "sample-001",
+      "is_synthetic": true,
+      "title": "Solar Field Technician",
+      "company": "SolarEdge Technologies",
+      "location": "Center District",
+      "snippet": "דרוש טכנאי שטח סולארי לאתרי PV, בדיקות ותחזוקת אינוורטרים ומערכות BESS",
+      "source_url": "https://example.com/job/sample-001",
+      "date": "2026-10-20",
+      "expected_label": "relevant",
+      "user_notes": "התאמה מלאה לרקע בהנדסאי מכונות וסולאר",
+      "policy_version": "2026-10"
+    },
+    {
+      "sample_id": "sample-002",
+      "is_synthetic": true,
+      "title": "Senior HR Recruiter",
+      "company": "Nextcom Group",
+      "location": "Netanya",
+      "snippet": "גיוס עובדים טכנולוגיים לחברות אנרגיה ותקשורת",
+      "source_url": "https://example.com/job/sample-002",
+      "date": "2026-10-20",
+      "expected_label": "irrelevant",
+      "user_notes": "תפקיד שאינו טכני בעליל",
+      "policy_version": "2026-10"
+    },
+    {
+      "sample_id": "sample-003",
+      "is_synthetic": true,
+      "title": "Sales Account Manager - PV Panels",
+      "company": "Solar Solutions Ltd",
+      "location": "Herzliya",
+      "snippet": "ניהול תיקי לקוחות ומכירות של פאנלים סולאריים לשוק המוסדי",
+      "source_url": "https://example.com/job/sample-003",
+      "date": "2026-10-21",
+      "expected_label": "irrelevant",
+      "user_notes": "מכירות טהורות נפסל במדיניות",
+      "policy_version": "2026-10"
+    },
+    {
+      "sample_id": "sample-004",
+      "is_synthetic": true,
+      "title": "NOC Operator - 24/7 Control Room",
+      "company": "Amarel",
+      "location": "North",
+      "snippet": "בקרת חדר מבצעים וניטור תשתיות קריטיות במשמרות 24/7",
+      "source_url": "https://example.com/job/sample-004",
+      "date": "2026-10-22",
+      "expected_label": "relevant",
+      "user_notes": "התאמה גבוהה לסבב משמרות ו-SCADA",
+      "policy_version": "2026-10"
+    },
+    {
+      "sample_id": "sample-005",
+      "is_synthetic": true,
+      "title": "Junior Python Data Engineer",
+      "company": "Energy Analytics",
+      "location": "Tel Aviv",
+      "snippet": "פיתוח פייפליינים של נתוני רשתות חשמל בפייתון",
+      "source_url": "https://example.com/job/sample-005",
+      "date": "2026-10-22",
+      "expected_label": "borderline",
+      "user_notes": "גבולי - דורש פיתוח תוכנה טהור יותר מתפעול שטח",
+      "policy_version": "2026-10"
+    }
+  ]
+}
