@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261025144900">
+  <link rel="stylesheet" href="dashboard.css?v=20261025150435">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -272,9 +272,6 @@
         <button onclick="exportSavedToExcel()" class="btn-excel" style="white-space: nowrap;" title="הורד קובץ Excel מסודר עם כל המשרות השמורות">
           <i class="ph-duotone ph-file-xls"></i> <span>ייצוא לאקסל (Excel)</span>
         </button>
-        <button onclick="exportApplicationTrackerBackup()" class="btn-excel" style="white-space: nowrap; background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.4); color: #7dd3fc;" title="ייצוא גיבוי פרטי של מעקב המועמדויות וההערות">
-          <i class="ph-duotone ph-file-arrow-down"></i> <span>גיבוי מעקב מועמדויות (JSON)</span>
-        </button>
       </div>
     </div>
 
@@ -485,14 +482,14 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261025144900",
+      build_id: "20261025150435",
       schema_version: "2.0.0",
       generated_at: "25.10.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261025144900",
-      catalog_data_url: "data/historical_catalog.json?v=20261025144900"
+      jobs_data_url: "data/jobs.json?v=20261025150435",
+      catalog_data_url: "data/historical_catalog.json?v=20261025150435"
     };
   </script>
-  <script src="dashboard.js?v=20261025144900" defer></script>
+  <script src="dashboard.js?v=20261025150435" defer></script>
 </body>
 </html>

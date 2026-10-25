@@ -5,61 +5,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   let jobsLoadError = null;
   const initialSavedLinks = [];
   const initialRejectedLinks = [];
-  const APP_TRACKER_KEY = 'ido_job_applications_store';
-  let applicationStates = loadApplicationStates();
-
-  function loadApplicationStates() {
-    try {
-      const data = JSON.parse(localStorage.getItem(APP_TRACKER_KEY) || '{}');
-      return (typeof data === 'object' && data !== null) ? data : {};
-    } catch(e) {
-      return {};
-    }
-  }
-
-  function saveApplicationStates(states) {
-    try {
-      localStorage.setItem(APP_TRACKER_KEY, JSON.stringify(states));
-    } catch(e) {}
-  }
-
-  function updateJobApplicationStatus(link, newStatus, evt) {
-    if (evt) evt.stopPropagation();
-    if (!applicationStates[link]) applicationStates[link] = {};
-    applicationStates[link].status = newStatus;
-    applicationStates[link].updated_at = new Date().toISOString();
-    if (newStatus === 'applied' && !applicationStates[link].applied_at) {
-      applicationStates[link].applied_at = new Date().toISOString().slice(0, 10);
-    }
-    saveApplicationStates(applicationStates);
-    renderCards();
-    showToast('ph-briefcase', 'סטטוס מועמדות עודכן בהצלחה');
-  }
-
-  function updateJobApplicationNotes(link, notes) {
-    if (!applicationStates[link]) applicationStates[link] = {};
-    applicationStates[link].notes = notes;
-    applicationStates[link].updated_at = new Date().toISOString();
-    saveApplicationStates(applicationStates);
-  }
-
-  function updateJobApplicationDate(link, field, dateVal) {
-    if (!applicationStates[link]) applicationStates[link] = {};
-    applicationStates[link][field] = dateVal;
-    applicationStates[link].updated_at = new Date().toISOString();
-    saveApplicationStates(applicationStates);
-  }
-
-  function exportApplicationTrackerBackup() {
-    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(applicationStates, null, 2));
-    const dlAnchor = document.createElement('a');
-    dlAnchor.setAttribute('href', dataStr);
-    dlAnchor.setAttribute('download', `מעקב_מועמדות_עידו_גל_${new Date().toISOString().slice(0, 10)}.json`);
-    document.body.appendChild(dlAnchor);
-    dlAnchor.click();
-    dlAnchor.remove();
-    showToast('ph-file-arrow-down', 'קובץ מעקב מועמדות יוצא בהצלחה');
-  }
+  try {
+    localStorage.removeItem('ido_job_applications_store');
+  } catch(e) {}
 
   async function fetchJobsData() {
     isJobsLoading = true;
@@ -1836,32 +1784,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const isStarred = Boolean(starredJobs[id]);
       const classifiedRegion = classifyJobRegion(loc);
 
-      const appData = applicationStates[id] || {};
-      const appStatus = appData.status || 'not_applied';
-      const appNotes = appData.notes || '';
-      const appFollowUp = appData.follow_up_date || '';
-
-      const statusLabels = {
-        'applied': 'הוגשה מועמדות',
-        'awaiting_response': 'ממתין לתשובה',
-        'interview': 'ראיון עבודה',
-        'offer': 'הצעת שכר',
-        'rejected': 'דחייה',
-        'withdrawn': 'הוסר על ידי',
-        'closed': 'משרה נסגרה'
-      };
-      const statusIcons = {
-        'applied': 'ph-paper-plane-tilt',
-        'awaiting_response': 'ph-hourglass',
-        'interview': 'ph-users',
-        'offer': 'ph-handshake',
-        'rejected': 'ph-x-circle',
-        'withdrawn': 'ph-arrow-u-up-left',
-        'closed': 'ph-lock'
-      };
-      const appBadgeHtml = (appStatus !== 'not_applied' && statusLabels[appStatus]) ?
-        `<span class="badge-app-status status-${appStatus}"><i class="ph-bold ${statusIcons[appStatus]}"></i> ${statusLabels[appStatus]}</span>` : '';
-
       const curatedTags = getJobCuratedTags(job);
       let tagsHtml = '';
       if (curatedTags && curatedTags.length > 0) {
@@ -1891,7 +1813,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
                 <i class="ph-bold ph-share-network"></i>
               </button>
             </div>
-            ${appBadgeHtml}
             <div class="badge-score ${scoreClass}">
               <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
             </div>
@@ -1905,6 +1826,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             <div class="job-company-name" dir="auto" title="${safeCompany}"><bdi>${safeCompany}</bdi></div>
             <h2 class="job-title-text" dir="auto" title="${safeTitle}"><bdi>${safeTitle}</bdi></h2>
           </div>
+        </div>
+
+        <!-- Job Card Meta Row: Date, Location, Source -->
+        <div class="job-card-meta-row">
+          <span class="meta-item"><i class="ph-duotone ph-calendar-blank"></i> <span class="meta-label">פורסם:</span> ${escapeHtml(jobDate)}</span>
+          <span class="meta-item"><i class="ph-duotone ph-map-pin"></i> ${loc}</span>
+          <span class="meta-item"><i class="ph-duotone ${sourceIcon}"></i> <span class="meta-label">מקור:</span> ${escapeHtml(sourceName)}</span>
         </div>
 
         <!-- Curated Tags (0 to 5 tags, flexible) -->
@@ -1930,11 +1858,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
         <!-- Collapsible Full Information Panels -->
         <div class="job-details-collapsible">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; font-size: 11.5px; color: var(--dashboard-muted); border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 8px;">
-            <span><i class="ph-duotone ph-calendar-blank"></i> פורסם: ${escapeHtml(jobDate)}</span>
-            <span><i class="ph-duotone ph-map-pin"></i> ${loc}</span>
-            <span><i class="ph-duotone ${sourceIcon}"></i> מקור: ${escapeHtml(sourceName)}</span>
-          </div>
           <div class="job-boxes-grid">
             <div class="job-box">
               <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
@@ -1952,37 +1875,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
               <i class="ph-duotone ph-shield-check"></i> ראיות התאמה ופערים מול דרישות המשרה:
             </strong>
             ${renderRequirementAssessmentsHtml(job.requirement_assessments)}
-          </div>
-
-          <!-- U6: Application Status Tracker -->
-          <div class="app-tracker-box">
-            <div class="app-tracker-header">
-              <span class="app-tracker-title"><i class="ph-bold ph-briefcase"></i> מעקב מועמדות אישי</span>
-              <span class="app-tracker-label"><i class="ph-bold ph-lock-key"></i> נשמר מקומית בדפדפן</span>
-            </div>
-            <div class="app-tracker-fields">
-              <div class="app-tracker-field">
-                <label class="app-tracker-label">סטטוס מועמדות:</label>
-                <select class="app-tracker-select" onchange="updateJobApplicationStatus('${safeLink.replace(/'/g, "\\'")}', this.value, event)">
-                  <option value="not_applied" ${appStatus === 'not_applied' ? 'selected' : ''}>טרם הוגש</option>
-                  <option value="applied" ${appStatus === 'applied' ? 'selected' : ''}>הוגשה מועמדות</option>
-                  <option value="awaiting_response" ${appStatus === 'awaiting_response' ? 'selected' : ''}>ממתין לתשובה</option>
-                  <option value="interview" ${appStatus === 'interview' ? 'selected' : ''}>ראיון עבודה</option>
-                  <option value="offer" ${appStatus === 'offer' ? 'selected' : ''}>הצעת שכר</option>
-                  <option value="rejected" ${appStatus === 'rejected' ? 'selected' : ''}>דחייה</option>
-                  <option value="withdrawn" ${appStatus === 'withdrawn' ? 'selected' : ''}>הוסר על ידי</option>
-                  <option value="closed" ${appStatus === 'closed' ? 'selected' : ''}>משרה נסגרה</option>
-                </select>
-              </div>
-              <div class="app-tracker-field">
-                <label class="app-tracker-label">תאריך יעד לתזכורת:</label>
-                <input type="date" class="app-tracker-date" value="${escapeHtml(appFollowUp)}" onchange="updateJobApplicationDate('${safeLink.replace(/'/g, "\\'")}', 'follow_up_date', this.value)">
-              </div>
-              <div class="app-tracker-field" style="grid-column: 1 / -1;">
-                <label class="app-tracker-label">הערות אישיות למעקב:</label>
-                <textarea class="app-tracker-notes" placeholder="הוסף הערות אישיות (איש קשר, שכר מבוקש, שלב בתהליך)..." onchange="updateJobApplicationNotes('${safeLink.replace(/'/g, "\\'")}', this.value)">${escapeHtml(appNotes)}</textarea>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -2039,6 +1931,19 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const logoHtml = getCompanyLogoHtml(company, job.logo);
     const companyBdi = `<bdi dir="auto">${safeCompany}</bdi>`;
 
+    let sourceName = job.source;
+    if (!sourceName) {
+      if (link.includes('drushim.co.il')) sourceName = 'דרושים';
+      else if (link.includes('comeet.com') || link.includes('comeet')) sourceName = 'Comeet';
+      else sourceName = 'LinkedIn';
+    }
+    let sourceIcon = 'ph-linkedin-logo';
+    if (sourceName.toLowerCase().includes('drushim') || sourceName.includes('דרושים')) {
+      sourceIcon = 'ph-briefcase';
+    } else if (sourceName.toLowerCase().includes('comeet')) {
+      sourceIcon = 'ph-buildings';
+    }
+
     let scoreClass = 'badge-score-high';
     if (score < 80) scoreClass = 'badge-score-fair';
     else if (score < 90) scoreClass = 'badge-score-med';
@@ -2071,9 +1976,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <div style="flex: 1; min-width: 0;">
           <div style="font-size: 13.5px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 2px;" dir="auto" title="${safeCompany}"><bdi>${safeCompany}</bdi></div>
           <h2 style="font-size: 17.5px; font-weight: 700; color: #fff; margin: 0 0 6px; line-height: 1.3;" dir="auto" title="${safeTitle}"><bdi>${safeTitle}</bdi></h2>
-          <div style="font-size: 12px; color: var(--dashboard-muted); display: flex; align-items: center; gap: 12px;">
+          <div style="font-size: 12px; color: var(--dashboard-muted); display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <span><i class="ph-duotone ph-calendar-blank"></i> פורסם: ${escapeHtml(jobDate)}</span>
             <span><i class="ph-duotone ph-map-pin"></i> ${loc}</span>
-            <span><i class="ph-duotone ph-calendar-blank"></i> ${escapeHtml(jobDate)}</span>
+            <span><i class="ph-duotone ${sourceIcon}"></i> מקור: ${escapeHtml(sourceName)}</span>
           </div>
         </div>
       </div>
