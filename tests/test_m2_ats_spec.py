@@ -14,13 +14,16 @@ import re
 import subprocess
 import unittest
 from pathlib import Path
+from tests.js_runner import run_js, skip_if_no_js
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-JSC_BIN = "/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers/jsc"
 
 
 class TestMilestone2AtsSpec(unittest.TestCase):
     """Specification tests for Career Studio Milestone 2 (ATS & Hard Gates)."""
+
+    def setUp(self):
+        skip_if_no_js(self)
 
     @classmethod
     def setUpClass(cls):
@@ -32,7 +35,7 @@ class TestMilestone2AtsSpec(unittest.TestCase):
         cls.docs_css = PROJECT_ROOT / "docs" / "dashboard.css"
 
     def run_jsc_script(self, script_code: str) -> str:
-        """Helper to run JavaScript code inside JSC with dashboard.js loaded."""
+        """Helper to run JavaScript code inside JS runtime with dashboard.js loaded."""
         full_script = f"""
         var window = globalThis;
         if (!globalThis.console) {{
@@ -60,14 +63,9 @@ class TestMilestone2AtsSpec(unittest.TestCase):
             js_src = f.read()
 
         runner = full_script + "\n" + js_src + "\n" + script_code
-        proc = subprocess.run(
-            [JSC_BIN, "-e", runner],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
+        proc = run_js(runner)
         if proc.returncode != 0:
-            raise RuntimeError(f"JSC Execution Failed (code {proc.returncode}):\n{proc.stderr}\nOutput:\n{proc.stdout}")
+            raise RuntimeError(f"JS Execution Failed (code {proc.returncode}):\n{proc.stderr}\nOutput:\n{proc.stdout}")
         return proc.stdout.strip()
 
     # --- 1. Statutory Hard Gates Verification ---

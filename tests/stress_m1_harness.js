@@ -16,6 +16,21 @@
 (function () {
   'use strict';
 
+  if (typeof print === 'undefined') {
+    globalThis.print = function() { console.log.apply(console, arguments); };
+  }
+  if (typeof quit === 'undefined') {
+    globalThis.quit = function(code) { if (typeof process !== 'undefined') process.exit(code); };
+  }
+  if (typeof load === 'undefined' && typeof require !== 'undefined') {
+    var fs = require('fs');
+    var vm = require('vm');
+    globalThis.load = function(p) {
+      var code = fs.readFileSync(p, 'utf8');
+      vm.runInThisContext(code);
+    };
+  }
+
   let totalTests = 0;
   let passedTests = 0;
   let failedTests = 0;

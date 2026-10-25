@@ -15,24 +15,25 @@ import re
 import subprocess
 import unittest
 from pathlib import Path
+from tests.js_runner import get_js_engine
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-JSC_BIN = "/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers/jsc"
 
 
 class TestMilestone1ChallengerStress(unittest.TestCase):
     """Adversarial stress and boundary tests for Milestone 1."""
 
     def test_empirical_jsc_stress_harness_execution(self):
-        """TC-CHALLENGER-M1-01: Run 6,600+ JS assertions in JavaScriptCore without exception."""
-        if not os.path.exists(JSC_BIN):
-            self.skipTest(f"JavaScriptCore CLI binary not found at {JSC_BIN}")
+        """TC-CHALLENGER-M1-01: Run 6,600+ JS assertions without exception."""
+        engine, exe = get_js_engine()
+        if not engine:
+            self.skipTest("No JavaScript runtime (jsc or node) available in this environment")
 
         harness_path = PROJECT_ROOT / "tests" / "stress_m1_harness.js"
         self.assertTrue(harness_path.exists(), "tests/stress_m1_harness.js must exist")
 
         proc = subprocess.run(
-            [JSC_BIN, str(harness_path)],
+            [exe, str(harness_path)],
             cwd=str(PROJECT_ROOT),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,

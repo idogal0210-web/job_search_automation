@@ -32,13 +32,16 @@ import re
 import subprocess
 import unittest
 from pathlib import Path
+from tests.js_runner import run_js, skip_if_no_js
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-JSC_BIN = "/System/Library/Frameworks/JavaScriptCore.framework/Versions/Current/Helpers/jsc"
 
 
 class TestMilestone3ChallengerStress(unittest.TestCase):
     """Adversarial stress and boundary tests for Milestone 3 Bullet Transformation Engine."""
+
+    def setUp(self):
+        skip_if_no_js(self)
 
     @classmethod
     def setUpClass(cls):
@@ -74,14 +77,9 @@ class TestMilestone3ChallengerStress(unittest.TestCase):
             js_src = f.read()
 
         runner = dom_setup + "\n" + js_src + "\n" + script_code
-        proc = subprocess.run(
-            [JSC_BIN, "-e", runner],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
+        proc = run_js(runner)
         if proc.returncode != 0:
-            raise RuntimeError(f"JSC Execution Failed (code {proc.returncode}):\n{proc.stderr}\nOutput:\n{proc.stdout}")
+            raise RuntimeError(f"JS Execution Failed (code {proc.returncode}):\n{proc.stderr}\nOutput:\n{proc.stdout}")
         return proc.stdout.strip()
 
     # --- 1. Extreme & Boundary Inputs ---
