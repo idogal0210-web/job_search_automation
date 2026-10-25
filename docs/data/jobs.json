@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0.0",
-  "build_id": "20261025161148",
-  "generated_at": "2026-10-25T16:11:48.714612",
+  "build_id": "20261025193657",
+  "generated_at": "2026-10-25T19:36:57.786676",
   "total_jobs": 80,
   "jobs": [
     {
@@ -1628,15 +1628,9 @@
       "is_direct_ats": false,
       "is_field_work": false,
       "provides_company_car": false,
-      "is_shifts_24_7": true,
+      "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": [
-        {
-          "type": "tag-shifts",
-          "icon": "ph-bold ph-clock-countdown",
-          "label": "משמרות 24/7"
-        }
-      ]
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/38492901/9dfd82bb/",

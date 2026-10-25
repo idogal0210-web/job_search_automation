@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261025161148">
+  <link rel="stylesheet" href="dashboard.css?v=20261025193657">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -46,6 +46,18 @@
         </div>
       </div>
     </div>
+
+    <!-- Top-Level App Mode Switcher (Job Radar vs Career Studio) -->
+    <nav class="dashboard-mode-switcher" role="tablist" aria-label="מצב מערכת ראשי">
+      <button type="button" role="tab" id="modeSwitchRadar" class="mode-switch-btn active" aria-selected="true" aria-controls="radarWorkspace" onclick="switchDashboardAppMode('radar')">
+        <i class="ph-duotone ph-crosshair"></i>
+        <span>לוח משרות</span>
+      </button>
+      <button type="button" role="tab" id="modeSwitchStudio" class="mode-switch-btn" aria-selected="false" aria-controls="careerStudioWorkspace" onclick="switchDashboardAppMode('studio')">
+        <i class="ph-duotone ph-sparkle"></i>
+        <span>סטודיו קריירה וקו״ח מתקדם</span>
+      </button>
+    </nav>
 
     <!-- Progress & Category Navigation Hub (Compact single-row summary, expandable on mobile) -->
     <div class="header-progress-hub">
@@ -135,6 +147,9 @@
   </header>
 
   <div class="dashboard-main">
+
+    <!-- Job Radar Workspace View -->
+    <div id="radarWorkspace" class="dashboard-view-container active">
 
     <!-- Sub-header Information Strip -->
     <div class="dashboard-topbar">
@@ -334,6 +349,1301 @@
       <p id="emptyStateDesc" style="color: var(--dashboard-muted); font-size: 15px; margin: 0;">נסה לבחור לשונית או תחום אחר.</p>
     </div>
 
+    </div><!-- /#radarWorkspace -->
+
+    <!-- Dedicated Full-Width Career Studio Workspace View -->
+    <div id="careerStudioWorkspace" class="dashboard-view-container hidden" style="display: none;">
+      
+      <!-- Studio Header / Meta Strip -->
+      <div class="studio-header-strip">
+        <div class="studio-title-box">
+          <div class="studio-badge-pill">
+            <i class="ph-duotone ph-sparkle"></i>
+            <span>סטודיו קריירה מתקדם</span>
+          </div>
+          <h2 class="studio-main-heading">עידו גל | בקר גז טבעי ותפעול מערכות אנרגיה • הנדסאי מכונות</h2>
+        </div>
+        <div class="studio-header-actions">
+          <div class="studio-status-indicator">
+            <span class="studio-indicator-dot"></span>
+            <span>מצב עבודה פעיל</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Studio Sub-Navigation Pill (6 Modules) -->
+      <nav class="studio-subnav-pill" role="tablist" aria-label="לשוניות סטודיו קריירה">
+        <button type="button" role="tab" id="studioTabAts" class="studio-subnav-btn active" aria-selected="true" aria-controls="studioModuleAts" onclick="switchStudioModule('ats')">
+          <i class="ph-duotone ph-scales"></i>
+          <span>התאמת ATS ושערי סף</span>
+        </button>
+        <button type="button" role="tab" id="studioTabWriter" class="studio-subnav-btn" aria-selected="false" aria-controls="studioModuleWriter" onclick="switchStudioModule('writer')">
+          <i class="ph-duotone ph-pen-nib"></i>
+          <span>עורך תוכן וסגנון AI</span>
+        </button>
+        <button type="button" role="tab" id="studioTabVisual" class="studio-subnav-btn" aria-selected="false" aria-controls="studioModuleVisual" onclick="switchStudioModule('visual')">
+          <i class="ph-duotone ph-eye"></i>
+          <span>סימולטור F-Pattern והתאמה ל-A4</span>
+        </button>
+        <button type="button" role="tab" id="studioTabKanban" class="studio-subnav-btn" aria-selected="false" aria-controls="studioModuleKanban" onclick="switchStudioModule('kanban')">
+          <i class="ph-duotone ph-kanban"></i>
+          <span>גרסאות קו״ח ולוח קנבן</span>
+        </button>
+        <button type="button" role="tab" id="studioTabInterview" class="studio-subnav-btn" aria-selected="false" aria-controls="studioModuleInterview" onclick="switchStudioModule('interview')">
+          <i class="ph-duotone ph-microphone"></i>
+          <span>סימולטור ראיונות ו-LinkedIn</span>
+        </button>
+        <button type="button" role="tab" id="studioTabSkills" class="studio-subnav-btn" aria-selected="false" aria-controls="studioModuleSkills" onclick="switchStudioModule('skills')">
+          <i class="ph-duotone ph-shield-check"></i>
+          <span>פערי מיומנויות ואנונימיזציה</span>
+        </button>
+      </nav>
+
+      <!-- Studio Modules Container -->
+      <div class="studio-modules-container">
+        <!-- Module 1: ATS & Job Matcher with Hard Gates (Milestone 2 mount point) -->
+        <section id="studioModuleAts" class="studio-module-panel active" role="tabpanel" aria-labelledby="studioTabAts">
+          <div class="studio-module-card">
+            <div class="studio-module-header">
+              <div class="studio-module-icon lime">
+                <i class="ph-duotone ph-scales"></i>
+              </div>
+              <div>
+                <h3 class="studio-module-title">מנוע התאמת משרות ושערי סף סטטוטוריים (ATS Matcher & Hard Gates)</h3>
+                <p class="studio-module-desc">הערכת התאמה לפרופיל הנדסאי מכונות, בדיקת רישיונות חובה סטטוטוריים וזיהוי פערי מילות מפתח</p>
+              </div>
+            </div>
+            
+            <div id="atsModuleContent" class="ats-workspace-content">
+              <!-- Top Section: Job Selector & Free Textarea -->
+              <div class="studio-card-glass ats-input-panel">
+                <div class="ats-panel-header">
+                  <div class="ats-panel-title">
+                    <i class="ph-duotone ph-briefcase"></i>
+                    <span>הזנת משרה לניתוח התאמת ATS ושערי סף</span>
+                  </div>
+                  <div class="ats-sample-chips">
+                    <span class="ats-chips-label">בדיקה מהירה:</span>
+                    <button type="button" class="ats-chip-btn" onclick="loadSampleAtsJob('gas')">
+                      <i class="ph-duotone ph-flame"></i>
+                      <span>בקר גז טבעי</span>
+                    </button>
+                    <button type="button" class="ats-chip-btn" onclick="loadSampleAtsJob('solar')">
+                      <i class="ph-duotone ph-sun"></i>
+                      <span>פרויקטים סולאריים</span>
+                    </button>
+                    <button type="button" class="ats-chip-btn" onclick="loadSampleAtsJob('bsc_gap')">
+                      <i class="ph-duotone ph-warning"></i>
+                      <span>בדיקת פער B.Sc</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="ats-controls-row">
+                  <div class="ats-select-wrapper">
+                    <label for="atsJobSelector" class="ats-input-label">
+                      <i class="ph-duotone ph-list-magnifying-glass"></i>
+                      <span>טעינת משרה מלוח המשרות:</span>
+                    </label>
+                    <select id="atsJobSelector" class="ats-select" onchange="onAtsJobSelected(this.value)">
+                      <option value="">-- בחר משרה מתוך מאגר המשרות הפעיל --</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="ats-textarea-wrapper">
+                  <label for="atsJobInput" class="ats-input-label">
+                    <i class="ph-duotone ph-file-text"></i>
+                    <span>טקסט תיאור המשרה ודרישות התפקיד:</span>
+                  </label>
+                  <textarea id="atsJobInput" class="ats-textarea" rows="6" placeholder="הדבק כאן תיאור משרה מלא, דרישות תפקיד והסמכות נדרשות, או בחר משרה מלוח המשרות למעלה..." oninput="onAtsInputChanged()"></textarea>
+                </div>
+
+                <div class="ats-action-toolbar">
+                  <div class="ats-action-btns">
+                    <button type="button" id="btnRunAtsMatch" class="ats-primary-btn" onclick="triggerAtsMatching()">
+                      <i class="ph-duotone ph-scales"></i>
+                      <span>הפעל ניתוח התאמה (ATS Match)</span>
+                    </button>
+                    <button type="button" class="ats-secondary-btn" onclick="clearAtsInput()">
+                      <i class="ph-duotone ph-arrow-counter-clockwise"></i>
+                      <span>נקה טקסט</span>
+                    </button>
+                  </div>
+                  <div id="atsMatchStatusNote" class="ats-status-note">
+                    <i class="ph-duotone ph-info"></i>
+                    <span>מוכן לניתוח מול פרופיל הבסיס של עידו גל</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Middle Section: Score Gauge & Key Indicators -->
+              <div class="ats-kpi-row">
+                <!-- Circular Percentage Match Gauge -->
+                <div class="studio-card-glass ats-gauge-card">
+                  <div class="ats-gauge-wrapper">
+                    <div class="ats-gauge-svg-container">
+                      <svg class="ats-gauge-svg" viewBox="0 0 120 120">
+                        <circle class="ats-gauge-bg" cx="60" cy="60" r="50"></circle>
+                        <circle id="atsGaugeProgress" class="ats-gauge-val" cx="60" cy="60" r="50"></circle>
+                      </svg>
+                      <div class="ats-gauge-center">
+                        <span id="atsScoreValue" class="ats-gauge-num">0%</span>
+                        <span class="ats-gauge-sublabel">ציון ATS</span>
+                      </div>
+                    </div>
+                    <div class="ats-gauge-info">
+                      <div id="atsMatchBadge" class="ats-match-level-badge level-neutral">
+                        <i class="ph-duotone ph-scales"></i>
+                        <span id="atsMatchBadgeText">טרם נותחה משרה</span>
+                      </div>
+                      <p id="atsScoreDescription" class="ats-gauge-explanation">הזן תיאור משרה להפקת ציון התאמה משוקלל המבוסס על שערי סף סטטוטוריים, מילות מפתח ומבנה קו״ח.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Mini KPI Cards -->
+                <div class="ats-kpi-grid">
+                  <div class="studio-card-glass ats-kpi-box">
+                    <div class="ats-kpi-icon lime">
+                      <i class="ph-duotone ph-shield-check"></i>
+                    </div>
+                    <div class="ats-kpi-content">
+                      <div class="ats-kpi-number" id="atsKpiGates">0 / 7</div>
+                      <div class="ats-kpi-label">שערי סף שזוהו</div>
+                    </div>
+                  </div>
+
+                  <div class="studio-card-glass ats-kpi-box">
+                    <div class="ats-kpi-icon cyan">
+                      <i class="ph-duotone ph-tree-structure"></i>
+                    </div>
+                    <div class="ats-kpi-content">
+                      <div class="ats-kpi-number" id="atsKpiKeywords">0</div>
+                      <div class="ats-kpi-label">פערי מילות מפתח</div>
+                    </div>
+                  </div>
+
+                  <div class="studio-card-glass ats-kpi-box">
+                    <div class="ats-kpi-icon gold">
+                      <i class="ph-duotone ph-file-text"></i>
+                    </div>
+                    <div class="ats-kpi-content">
+                      <div class="ats-kpi-number" id="atsKpiStructural">100%</div>
+                      <div class="ats-kpi-label">תאימות מבנה ATS</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom Section: Detailed Cards (Hard Gates, Keywords, Structural) -->
+              <div class="ats-details-grid">
+                
+                <!-- Card 1: Statutory Hard Gates Scanner -->
+                <div class="studio-card-glass ats-subcard">
+                  <div class="ats-card-header">
+                    <div class="ats-card-header-title">
+                      <i class="ph-duotone ph-shield-check" style="color: var(--dashboard-lime);"></i>
+                      <span>שערי סף סטטוטוריים (Statutory Hard Gates)</span>
+                    </div>
+                    <span class="ats-card-badge" id="atsGatesSummaryBadge">7 שערים פעילים</span>
+                  </div>
+                  <p class="ats-card-caption">בדיקת רישיונות חובה סטטוטוריים מול תקנות משרד העבודה והמשק הישראלי:</p>
+                  
+                  <div id="atsHardGatesList" class="ats-gates-list">
+                    <!-- Populated dynamically by renderHardGates() -->
+                  </div>
+                </div>
+
+                <!-- Card 2: Missing Keywords Badges (4 Buckets) -->
+                <div class="studio-card-glass ats-subcard">
+                  <div class="ats-card-header">
+                    <div class="ats-card-header-title">
+                      <i class="ph-duotone ph-tree-structure" style="color: var(--dashboard-cyan);"></i>
+                      <span>פערי מילות מפתח לפי 4 קטגוריות תפעוליות</span>
+                    </div>
+                    <span class="ats-card-badge" id="atsKeywordsCountBadge">0 פערים</span>
+                  </div>
+                  <p class="ats-card-caption">מילות מפתח קריטיות שנדרשות במשרה ומומלץ להדגיש בגרסת קורות החיים:</p>
+
+                  <div class="ats-taxonomy-sections">
+                    <!-- Methodologies -->
+                    <div class="ats-taxonomy-group" id="groupMethodologies">
+                      <div class="ats-taxonomy-header" style="color: var(--dashboard-cyan);">
+                        <i class="ph-duotone ph-tree-structure"></i>
+                        <span>מתודולוגיות תפעוליות (Lean, Six Sigma, 5S, RCA)</span>
+                      </div>
+                      <div class="ats-badges-wrap" id="atsKeywordsMethodologies">
+                        <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
+                      </div>
+                    </div>
+
+                    <!-- Financials -->
+                    <div class="ats-taxonomy-group" id="groupFinancials">
+                      <div class="ats-taxonomy-header" style="color: var(--dashboard-gold);">
+                        <i class="ph-duotone ph-currency-circle-dollar"></i>
+                        <span>ניהול תקציב והנדסה כלכלית (CAPEX, OPEX, ROI)</span>
+                      </div>
+                      <div class="ats-badges-wrap" id="atsKeywordsFinancials">
+                        <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
+                      </div>
+                    </div>
+
+                    <!-- Systems & Automation -->
+                    <div class="ats-taxonomy-group" id="groupSystems">
+                      <div class="ats-taxonomy-header" style="color: var(--dashboard-lime);">
+                        <i class="ph-duotone ph-cpu"></i>
+                        <span>מערכות שליטה ואוטומציה (SCADA, PLC, PRMS, HMI, DCS)</span>
+                      </div>
+                      <div class="ats-badges-wrap" id="atsKeywordsSystems">
+                        <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
+                      </div>
+                    </div>
+
+                    <!-- Energy & Power -->
+                    <div class="ats-taxonomy-group" id="groupEnergy">
+                      <div class="ats-taxonomy-header" style="color: #a78bfa;">
+                        <i class="ph-duotone ph-lightning"></i>
+                        <span>תשתיות אנרגיה וחשמל (BESS, High Voltage, Bifacial PV)</span>
+                      </div>
+                      <div class="ats-badges-wrap" id="atsKeywordsEnergy">
+                        <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 3: ATS Structural Compliance Checklist -->
+                <div class="studio-card-glass ats-subcard ats-fullwidth-subcard">
+                  <div class="ats-card-header">
+                    <div class="ats-card-header-title">
+                      <i class="ph-duotone ph-file-text" style="color: var(--dashboard-gold);"></i>
+                      <span>בדיקת תאימות מבנה לקוראי ATS (ATS-Safe Structural Guard)</span>
+                    </div>
+                    <span class="ats-card-badge status-pass" id="atsStructuralStatusBadge">
+                      <i class="ph-duotone ph-shield-check"></i>
+                      <span>תואם מלא (0 בעיות)</span>
+                    </span>
+                  </div>
+                  <p class="ats-card-caption">אימות עמידה בכללי מבנה נוקשים למניעת קריסה במערכות סינון ישראליות ובינלאומיות:</p>
+
+                  <div class="ats-rules-checklist" id="atsRulesChecklist">
+                    <!-- Populated dynamically by renderAtsStructuralChecklist() -->
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Module 2: AI Writer & 3-Mode Tone Switcher (Milestone 3 mount point) -->
+        <section id="studioModuleWriter" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabWriter" style="display: none;">
+          <div class="studio-module-card">
+            <div class="studio-module-header">
+              <div class="studio-module-icon cyan">
+                <i class="ph-duotone ph-pen-nib"></i>
+              </div>
+              <div>
+                <h3 class="studio-module-title">עורך תוכן, שכתוב הישגים ומתג סגנון (AI Writer & Tone Switcher)</h3>
+                <p class="studio-module-desc">שדרוג משפטים פסיביים להישגים מדידים מבוססי מדדי בטיחות ותפעול (HSE) ב-3 סגנונות</p>
+              </div>
+            </div>
+            <div id="writerModuleContent" class="writer-workspace-content">
+              <!-- Top Section: Tone Selector & Profile Summary -->
+              <div class="writer-topbar">
+                <div class="writer-mode-selector-wrapper">
+                  <span class="writer-selector-label">
+                    <i class="ph-duotone ph-sliders"></i>
+                    <span>סגנון כתיבה (Tone Mode):</span>
+                  </span>
+                  <div class="writer-tone-pill-group" role="tablist">
+                    <button type="button" role="tab" id="btnToneTechnical" class="writer-tone-btn active" aria-selected="true" onclick="setWriterToneMode('technical')">
+                      <i class="ph-duotone ph-gear-six"></i>
+                      <span>הנדסי / טכני</span>
+                    </button>
+                    <button type="button" role="tab" id="btnToneOperational" class="writer-tone-btn" aria-selected="false" onclick="setWriterToneMode('operational')">
+                      <i class="ph-duotone ph-shield-check"></i>
+                      <span>תפעולי / סמכות שטח</span>
+                    </button>
+                    <button type="button" role="tab" id="btnToneStrategic" class="writer-tone-btn" aria-selected="false" onclick="setWriterToneMode('strategic')">
+                      <i class="ph-duotone ph-trend-up"></i>
+                      <span>אסטרטגי / ניהולי</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div id="writerToneDescriptionCard" class="studio-card-glass writer-tone-desc-card">
+                  <div class="writer-tone-desc-header">
+                    <div class="writer-tone-desc-title-group">
+                      <i id="writerToneActiveIcon" class="ph-duotone ph-gear-six" style="color: var(--dashboard-cyan);"></i>
+                      <span id="writerToneActiveTitle" class="writer-tone-active-title">סגנון הנדסי / טכני (Technical &amp; Engineering)</span>
+                    </div>
+                    <span class="writer-tone-badge" id="writerToneActiveBadge">סגנון פעיל</span>
+                  </div>
+                  <p id="writerToneActiveDesc" class="writer-tone-active-desc">מיקוד בפרמטרים הנדסיים, לחצים, ספיקות, חוק החשמל, יעילות תרמודינמית, כיול ומכשור.</p>
+                  <div class="writer-verbs-row">
+                    <span class="writer-verbs-label"><i class="ph-duotone ph-lightning"></i> פעלי מפתח:</span>
+                    <div id="writerActiveVerbsChips" class="writer-verbs-chips">
+                      <span class="writer-verb-chip">ניטרתי</span>
+                      <span class="writer-verb-chip">כיַילתי</span>
+                      <span class="writer-verb-chip">חישבתי</span>
+                      <span class="writer-verb-chip">ניתחתי</span>
+                      <span class="writer-verb-chip">אפיינתי</span>
+                      <span class="writer-verb-chip">התקנתי</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Formula Banner -->
+              <div class="writer-formula-banner">
+                <div class="writer-formula-title">
+                  <i class="ph-duotone ph-function" style="color: var(--dashboard-lime);"></i>
+                  <span>נוסחת ההישג התעשייתי:</span>
+                </div>
+                <div class="writer-formula-chips">
+                  <div class="formula-chip verb">
+                    <i class="ph-duotone ph-lightning"></i>
+                    <span>[פועל פעיל בזמן עבר]</span>
+                  </div>
+                  <span class="formula-op">+</span>
+                  <div class="formula-chip scope">
+                    <i class="ph-duotone ph-cpu"></i>
+                    <span>[מערכת / תשתית ספציפית]</span>
+                  </div>
+                  <span class="formula-op">+</span>
+                  <div class="formula-chip metric">
+                    <i class="ph-duotone ph-gauge"></i>
+                    <span>[מדד כמותי / HSE / רציפות 100%]</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Two-Column Interactive Workbench -->
+              <div class="writer-workbench">
+                <!-- Left Column: Raw Input -->
+                <div class="studio-card-glass writer-card-column">
+                  <div class="writer-column-header">
+                    <div class="writer-column-title">
+                      <i class="ph-duotone ph-pencil-simple-line" style="color: var(--dashboard-cyan);"></i>
+                      <span>ניסוח גולמי / נקודת קו״ח נוכחית</span>
+                    </div>
+                    <span class="writer-char-count" id="writerCharCount">0 תווים</span>
+                  </div>
+
+                  <!-- Presets Quick Bar -->
+                  <div class="writer-presets-wrapper">
+                    <span class="writer-presets-label"><i class="ph-duotone ph-lightning"></i> דוגמאות מוכנות:</span>
+                    <div class="writer-preset-btns">
+                      <button type="button" class="writer-preset-btn" onclick="loadWriterSample('gas_monitor')">
+                        <i class="ph-duotone ph-gauge"></i> <span>ניטור גז (PRMS)</span>
+                      </button>
+                      <button type="button" class="writer-preset-btn" onclick="loadWriterSample('night_shift')">
+                        <i class="ph-duotone ph-moon-stars"></i> <span>משמרת לילה (חירום)</span>
+                      </button>
+                      <button type="button" class="writer-preset-btn" onclick="loadWriterSample('nomination')">
+                        <i class="ph-duotone ph-git-merge"></i> <span>נומינציות (נתג״ז)</span>
+                      </button>
+                      <button type="button" class="writer-preset-btn" onclick="loadWriterSample('solar_pv')">
+                        <i class="ph-duotone ph-sun"></i> <span>סולארי (Bifacial)</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="writer-input-wrapper">
+                    <label for="writerRawInput" class="visually-hidden">ניסוח גולמי</label>
+                    <textarea id="writerRawInput" class="writer-textarea" rows="5" placeholder="הקלד כאן ניסוח נקודת קו״ח (לדוגמה: עבדתי במשמרות בניטור גז ודאגתי שלא יהיו תקלות)..." oninput="onWriterInputChanged()"></textarea>
+                  </div>
+
+                  <div class="writer-actions-bar">
+                    <button type="button" id="btnTransformBullet" class="writer-primary-btn" onclick="triggerBulletTransform()">
+                      <i class="ph-duotone ph-magic-wand"></i>
+                      <span>שדרג לסגנון נבחר</span>
+                    </button>
+                    <button type="button" id="btnValidateGrammar" class="writer-secondary-btn" onclick="triggerGrammarValidation()">
+                      <i class="ph-duotone ph-checks"></i>
+                      <span>נתח תחביר ומדדים</span>
+                    </button>
+                    <button type="button" id="btnClearWriterInput" class="writer-ghost-btn" onclick="clearWriterInput()">
+                      <i class="ph-duotone ph-arrow-counter-clockwise"></i>
+                      <span>נקה</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Right Column: Transformed Output & Analysis -->
+                <div class="studio-card-glass writer-card-column">
+                  <div class="writer-column-header">
+                    <div class="writer-column-title">
+                      <i class="ph-duotone ph-sparkle" style="color: var(--dashboard-lime);"></i>
+                      <span>הניסוח המשודרג (הישג ממוקד תוצאה)</span>
+                    </div>
+                    <div class="writer-output-actions">
+                      <button type="button" id="btnCopyBullet" class="writer-icon-btn" title="העתק ללוח" onclick="copyTransformedBullet()">
+                        <i class="ph-duotone ph-copy"></i>
+                        <span>העתק</span>
+                      </button>
+                      <button type="button" id="btnApplyToCv" class="writer-icon-btn accent" title="החל על קורות החיים הפעילים" onclick="applyBulletToCv()">
+                        <i class="ph-duotone ph-check"></i>
+                        <span>החל על קו״ח</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Transformed Bullet Output Box -->
+                  <div class="writer-output-box" id="writerTransformedOutput" contenteditable="true" spellcheck="false">
+                    <span class="writer-output-placeholder">ההישג המשודרג יוצג כאן לאחר לחיצה על "שדרג לסגנון נבחר"...</span>
+                  </div>
+
+                  <!-- Grammar & Metric Analysis Card -->
+                  <div class="writer-analysis-card">
+                    <div class="writer-analysis-header">
+                      <div class="writer-analysis-title-group">
+                        <i class="ph-duotone ph-chart-bar" style="color: var(--dashboard-lime);"></i>
+                        <span class="writer-analysis-title">ניתוח תחביר, פעלים ומדדי איכות</span>
+                      </div>
+                      <div class="writer-score-badge-wrap">
+                        <span class="writer-score-label">ציון איכות:</span>
+                        <span id="grammarScoreBadge" class="writer-score-badge score-neutral">0 / 100</span>
+                      </div>
+                    </div>
+
+                    <!-- Indicators Grid -->
+                    <div class="writer-indicators-grid">
+                      <div class="writer-indicator-item" id="indActiveVerb">
+                        <i class="ph-duotone ph-circle"></i>
+                        <span>פועל פעיל בזמן עבר</span>
+                      </div>
+                      <div class="writer-indicator-item" id="indMetric">
+                        <i class="ph-duotone ph-circle"></i>
+                        <span>מדד כמותי / בטיחות HSE</span>
+                      </div>
+                      <div class="writer-indicator-item" id="indScope">
+                        <i class="ph-duotone ph-circle"></i>
+                        <span>תשתית / מערכת ספציפית</span>
+                      </div>
+                      <div class="writer-indicator-item" id="indTone">
+                        <i class="ph-duotone ph-tag"></i>
+                        <span id="indToneText">סגנון: טרם נותח</span>
+                      </div>
+                    </div>
+
+                    <!-- Suggestions Feedback -->
+                    <div class="writer-suggestions-wrapper">
+                      <span class="writer-suggestions-title">
+                        <i class="ph-duotone ph-lightbulb"></i>
+                        <span>המלצות ומשוב:</span>
+                      </span>
+                      <ul id="grammarSuggestionsList" class="writer-suggestions-list">
+                        <li class="writer-suggestion-placeholder">הזן ניסוח להצגת המלצות שדרוג ואימות נוסחה.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lower Section: Bilingual Energy Terminology Dictionary Explorer -->
+              <div class="studio-card-glass writer-dictionary-section">
+                <div class="writer-dict-header">
+                  <div class="writer-dict-title-wrap">
+                    <i class="ph-duotone ph-book-bookmark" style="color: var(--dashboard-cyan);"></i>
+                    <div>
+                      <h4 class="writer-dict-title">מילון מונחים תעשייתי דו-לשוני (Bilingual Energy &amp; Industrial Dictionary)</h4>
+                      <p class="writer-dict-desc">מונחי מפתח בגז טבעי, מערכות סולאריות, חשמל, אוטומציה ובטיחות. לחיצה על כרטיס מונח משלבת אותו ישירות בעורך.</p>
+                    </div>
+                  </div>
+                  <span class="writer-dict-counter" id="dictTermsCount">20 מונחים</span>
+                </div>
+
+                <div class="writer-dict-toolbar">
+                  <div class="writer-dict-search-wrap">
+                    <i class="ph-duotone ph-magnifying-glass writer-dict-search-icon"></i>
+                    <input type="text" id="dictSearchInput" class="writer-dict-search-input" placeholder="חפש מונח באנגלית או בעברית (לדוגמה: PRMS, SCADA, Bifacial, נומינציה, LTI)..." oninput="onDictSearchInputChanged()">
+                    <button type="button" class="writer-dict-clear-btn" id="btnDictClearSearch" onclick="clearDictSearch()" style="display: none;">
+                      <i class="ph-duotone ph-x"></i>
+                    </button>
+                  </div>
+
+                  <div class="writer-dict-categories" role="tablist">
+                    <button type="button" class="writer-dict-cat-btn active" data-category="all" onclick="filterDictionaryCategory('all')">
+                      <i class="ph-duotone ph-squares-four"></i> <span>הכל</span>
+                    </button>
+                    <button type="button" class="writer-dict-cat-btn" data-category="gas" onclick="filterDictionaryCategory('gas')">
+                      <i class="ph-duotone ph-flame"></i> <span>גז טבעי</span>
+                    </button>
+                    <button type="button" class="writer-dict-cat-btn" data-category="renewables" onclick="filterDictionaryCategory('renewables')">
+                      <i class="ph-duotone ph-sun"></i> <span>אנרגיה מתחדשת</span>
+                    </button>
+                    <button type="button" class="writer-dict-cat-btn" data-category="electrical" onclick="filterDictionaryCategory('electrical')">
+                      <i class="ph-duotone ph-lightning"></i> <span>חשמל</span>
+                    </button>
+                    <button type="button" class="writer-dict-cat-btn" data-category="automation" onclick="filterDictionaryCategory('automation')">
+                      <i class="ph-duotone ph-cpu"></i> <span>אוטומציה</span>
+                    </button>
+                    <button type="button" class="writer-dict-cat-btn" data-category="safety" onclick="filterDictionaryCategory('safety')">
+                      <i class="ph-duotone ph-shield-check"></i> <span>בטיחות ו-HSE</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Dictionary Terms Grid -->
+                <div id="dictCardsGrid" class="writer-dict-grid">
+                  <!-- Populated dynamically by renderEnergyDictionary() -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Module 3: Visual UX Heatmap & Auto-Fit A4 Engine (Milestone 4) -->
+        <section id="studioModuleVisual" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabVisual" style="display: none;">
+          <div class="studio-module-card">
+            <div class="studio-module-header">
+              <div class="studio-module-icon gold">
+                <i class="ph-duotone ph-eye"></i>
+              </div>
+              <div style="flex: 1;">
+                <h3 class="studio-module-title">סימולטור קריאה F-Pattern, התאמה חכמה ל-A4 ותצוגת מובייל</h3>
+                <p class="studio-module-desc">הקרנת מפת חום של 6 שניות לקריאת מגייס, אלגוריתם התאמה אוטומטי לעמוד A4 יחיד ותצוגת סמארטפון</p>
+              </div>
+            </div>
+
+            <!-- Visual Simulator Controls Toolbar -->
+            <div class="visual-toolbar">
+              <div class="visual-toolbar-group">
+                <label for="visualCvVersionSelect" class="visual-toolbar-label">
+                  <i class="ph-duotone ph-file-text"></i>
+                  <span>גרסת קו״ח:</span>
+                </label>
+                <select id="visualCvVersionSelect" class="visual-select" onchange="changeVisualCvVersion(this.value)">
+                  <option value="cv_gas_he">גז טבעי ותחנות כוח (עברית)</option>
+                  <option value="cv_solar_he">אנרגיה סולארית ואנלייט (עברית)</option>
+                  <option value="cv_drones_he">כטב״ם, רחפנים וביטחון (עברית)</option>
+                  <option value="cv_base_en">International Mechanical & Energy (English)</option>
+                </select>
+              </div>
+
+              <div class="visual-toolbar-actions">
+                <button type="button" id="btnToggleHeatmap" class="visual-action-btn active" onclick="toggleHeatmapOverlay()">
+                  <i class="ph-duotone ph-flame"></i>
+                  <span>מפת חום 6 שניות</span>
+                </button>
+                <button type="button" id="btnAutoFitA4" class="visual-action-btn" onclick="applyA4AutoFit()">
+                  <i class="ph-duotone ph-arrows-in"></i>
+                  <span>התאמה לעמוד A4 (Auto-Fit)</span>
+                </button>
+                <button type="button" id="btnToggleMobilePreview" class="visual-action-btn" onclick="toggleMobilePreview()">
+                  <i class="ph-duotone ph-device-mobile"></i>
+                  <span>תצוגת מובייל</span>
+                </button>
+                <button type="button" id="btnPrintVisualCv" class="visual-action-btn" onclick="printVisualCv()">
+                  <i class="ph-duotone ph-printer"></i>
+                  <span>הדפסה / PDF</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Heatmap Guidance & Status Bar -->
+            <div id="visualStatusBar" class="visual-status-banner">
+              <div class="visual-status-badge">
+                <i class="ph-duotone ph-info"></i>
+                <span id="visualStatusText">מפת חום מופעלת: סימולציית F-Pattern מציגה את מוקדי המבט של מגייס ב-6 השניות הראשונות</span>
+              </div>
+              <div class="heatmap-legend">
+                <span class="legend-item"><span class="legend-dot red"></span>0-2 שניות (פרטי קשר והסמכת הנדסאי)</span>
+                <span class="legend-item"><span class="legend-dot amber"></span>2-4 שניות (תפקיד אחרון ו-PRMS)</span>
+                <span class="legend-item"><span class="legend-dot cyan"></span>4-6 שניות (מיומנויות ו-HSE)</span>
+              </div>
+            </div>
+
+            <!-- Preview Viewport Container -->
+            <div id="visualViewportContainer" class="visual-viewport-container">
+              <!-- Mobile Bezel Mockup Wrapper -->
+              <div id="mobileMockupFrame" class="mobile-mockup-frame">
+                <div class="mobile-speaker-notch"></div>
+                <div class="mobile-screen-area">
+                  <div class="cv-preview-sheet" id="cvPreviewSheet">
+                    <!-- Heatmap Overlay Canvas & Hotspots -->
+                    <div id="heatmapOverlayLayer" class="heatmap-overlay-layer">
+                      <div class="heatmap-hotspot spot-header" title="מוקד 1 (0-1.5 שניות): שם, תואר הנדסאי רשום ופרטי התקשרות">
+                        <span class="hotspot-pulse red"></span>
+                        <span class="hotspot-label">מוקד 1: כותרת והסמכה</span>
+                      </div>
+                      <div class="heatmap-hotspot spot-summary" title="מוקד 2 (1.5-3 שניות): תמצית מנהלים ומומחיות בלחץ גבוה">
+                        <span class="hotspot-pulse red"></span>
+                        <span class="hotspot-label">מוקד 2: תמצית פרופיל</span>
+                      </div>
+                      <div class="heatmap-hotspot spot-experience" title="מוקד 3 (3-4.5 שניות): תפקיד אחרון בסופרגז ותפעול PRMS">
+                        <span class="hotspot-pulse amber"></span>
+                        <span class="hotspot-label">מוקד 3: ניסיון תפעולי אחרון</span>
+                      </div>
+                      <div class="heatmap-hotspot spot-skills" title="מוקד 4 (4.5-6 שניות): תקני בטיחות ASME/ISO, רישיונות ו-SCADA">
+                        <span class="hotspot-pulse cyan"></span>
+                        <span class="hotspot-label">מוקד 4: תקנים ומיומנויות</span>
+                      </div>
+                    </div>
+
+                    <!-- Rendered CV Document Frame -->
+                    <iframe id="cvPreviewIframe" class="cv-preview-iframe" title="תצוגה מקדימה של קורות החיים" src="career/cv/cv_gas_he.html"></iframe>
+                  </div>
+                </div>
+                <div class="mobile-home-indicator"></div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Module 4: Multi-Version CV Hub & Kanban Tracker (Milestone 5) -->
+        <section id="studioModuleKanban" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabKanban" style="display: none;">
+          <div class="studio-module-card">
+            <div class="studio-module-header">
+              <div class="studio-module-icon cyan">
+                <i class="ph-duotone ph-kanban"></i>
+              </div>
+              <div style="flex: 1;">
+                <h3 class="studio-module-title">מרכז גרסאות קו״ח מותאמות ולוח מעקב הגשות (Kanban Tracker)</h3>
+                <p class="studio-module-desc">ניהול 4 גרסאות ייעודיות לתחומי היעד ולוח מעקב אינטראקטיבי אחר סטטוס מועמדויות</p>
+              </div>
+            </div>
+
+            <!-- Sub-Tabs for Kanban Module -->
+            <div class="kanban-subtabs-nav">
+              <button type="button" id="subtabKanbanBoardBtn" class="kanban-subtab-btn active" onclick="switchKanbanSubtab('board')">
+                <i class="ph-duotone ph-kanban"></i>
+                <span>לוח מעקב מועמדויות (Pipeline)</span>
+              </button>
+              <button type="button" id="subtabCvHubBtn" class="kanban-subtab-btn" onclick="switchKanbanSubtab('hub')">
+                <i class="ph-duotone ph-folder-notch-open"></i>
+                <span>מרכז 4 גרסאות קו״ח מותאמות</span>
+              </button>
+            </div>
+
+            <!-- Subtab 1: Interactive Kanban Board -->
+            <div id="kanbanBoardView" class="kanban-subtab-view">
+              <!-- Kanban Action Bar -->
+              <div class="kanban-action-bar">
+                <div class="kanban-metrics-strip">
+                  <div class="kanban-metric-pill">
+                    <span class="metric-num" id="kanbanTotalCount">0</span>
+                    <span class="metric-lbl">סה״כ מועמדויות</span>
+                  </div>
+                  <div class="kanban-metric-pill active-pill">
+                    <span class="metric-num" id="kanbanActiveCount">0</span>
+                    <span class="metric-lbl">בתהליך פעיל</span>
+                  </div>
+                  <div class="kanban-metric-pill interview-pill">
+                    <span class="metric-num" id="kanbanInterviewCount">0</span>
+                    <span class="metric-lbl">ראיונות</span>
+                  </div>
+                  <div class="kanban-metric-pill success-pill">
+                    <span class="metric-num" id="kanbanOfferCount">0</span>
+                    <span class="metric-lbl">הצעות שכר</span>
+                  </div>
+                </div>
+
+                <div class="kanban-controls-group">
+                  <select id="kanbanAddFromJobsDropdown" class="kanban-job-select" onchange="addSelectedJobToKanban(this.value)">
+                    <option value="">+ הוסף ישירות ממשרות הדשבורד...</option>
+                  </select>
+                  <button type="button" class="kanban-btn primary" onclick="openAddApplicationModal()">
+                    <i class="ph-duotone ph-plus-circle"></i>
+                    <span>הוסף מועמדות ידנית</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Kanban Columns Grid -->
+              <div class="kanban-board-grid">
+                <!-- Column 1: Saved -->
+                <div class="kanban-column" id="kanbanCol_saved" data-status="saved">
+                  <div class="kanban-column-header">
+                    <div class="kanban-col-title-wrap">
+                      <span class="kanban-col-indicator grey"></span>
+                      <span class="kanban-col-title">נשמר להגשה</span>
+                    </div>
+                    <span class="kanban-col-count" id="count_saved">0</span>
+                  </div>
+                  <div class="kanban-cards-container" id="cards_saved"></div>
+                </div>
+
+                <!-- Column 2: Applied -->
+                <div class="kanban-column" id="kanbanCol_applied" data-status="applied">
+                  <div class="kanban-column-header">
+                    <div class="kanban-col-title-wrap">
+                      <span class="kanban-col-indicator cyan"></span>
+                      <span class="kanban-col-title">הוגש למעסיק</span>
+                    </div>
+                    <span class="kanban-col-count" id="count_applied">0</span>
+                  </div>
+                  <div class="kanban-cards-container" id="cards_applied"></div>
+                </div>
+
+                <!-- Column 3: Screening -->
+                <div class="kanban-column" id="kanbanCol_screening" data-status="screening">
+                  <div class="kanban-column-header">
+                    <div class="kanban-col-title-wrap">
+                      <span class="kanban-col-indicator gold"></span>
+                      <span class="kanban-col-title">במיון / סינון</span>
+                    </div>
+                    <span class="kanban-col-count" id="count_screening">0</span>
+                  </div>
+                  <div class="kanban-cards-container" id="cards_screening"></div>
+                </div>
+
+                <!-- Column 4: Interview -->
+                <div class="kanban-column" id="kanbanCol_interview" data-status="interview">
+                  <div class="kanban-column-header">
+                    <div class="kanban-col-title-wrap">
+                      <span class="kanban-col-indicator purple"></span>
+                      <span class="kanban-col-title">זימון לראיון</span>
+                    </div>
+                    <span class="kanban-col-count" id="count_interview">0</span>
+                  </div>
+                  <div class="kanban-cards-container" id="cards_interview"></div>
+                </div>
+
+                <!-- Column 5: Offer -->
+                <div class="kanban-column" id="kanbanCol_offer" data-status="offer">
+                  <div class="kanban-column-header">
+                    <div class="kanban-col-title-wrap">
+                      <span class="kanban-col-indicator lime"></span>
+                      <span class="kanban-col-title">הצעת שכר / חוזה</span>
+                    </div>
+                    <span class="kanban-col-count" id="count_offer">0</span>
+                  </div>
+                  <div class="kanban-cards-container" id="cards_offer"></div>
+                </div>
+
+                <!-- Column 6: Rejected -->
+                <div class="kanban-column" id="kanbanCol_rejected" data-status="rejected">
+                  <div class="kanban-column-header">
+                    <div class="kanban-col-title-wrap">
+                      <span class="kanban-col-indicator rose"></span>
+                      <span class="kanban-col-title">הוסר / לא רלוונטי</span>
+                    </div>
+                    <span class="kanban-col-count" id="count_rejected">0</span>
+                  </div>
+                  <div class="kanban-cards-container" id="cards_rejected"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subtab 2: 4 Tailored CV Versions Hub -->
+            <div id="kanbanCvHubView" class="kanban-subtab-view" style="display: none;">
+              <div class="cv-hub-grid">
+                <!-- Version 1: Gas & Energy Plants -->
+                <div class="cv-hub-card">
+                  <div class="cv-hub-card-header">
+                    <div class="cv-hub-tag cyan">גז טבעי ותחנות כוח</div>
+                    <span class="cv-hub-format">עברית • A4 Page</span>
+                  </div>
+                  <h4 class="cv-hub-title">בקר גז טבעי ומערכות אנרגיה</h4>
+                  <p class="cv-hub-desc">גרסה מותאמת ללחץ גבוה, מתקני PRMS, סקרי HAZOP, תקני ASME B31.8, סופרגז ואנרג׳יאן.</p>
+                  <div class="cv-hub-badges">
+                    <span class="hub-badge">PRMS</span>
+                    <span class="hub-badge">ASME B31.8</span>
+                    <span class="hub-badge">Zero LTI</span>
+                    <span class="hub-badge">הנדסאי מכונות</span>
+                  </div>
+                  <div class="cv-hub-actions">
+                    <a href="career/cv/cv_gas_he.html" target="_blank" class="cv-hub-btn secondary">
+                      <i class="ph-duotone ph-arrow-square-out"></i>
+                      <span>צפייה ישירה</span>
+                    </a>
+                    <a href="career/cv/cv_gas_he.html" download="CV_Ido_Gal_Natural_Gas.html" class="cv-hub-btn primary">
+                      <i class="ph-duotone ph-download-simple"></i>
+                      <span>הורדת קובץ</span>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Version 2: Solar PV & Renewables -->
+                <div class="cv-hub-card">
+                  <div class="cv-hub-card-header">
+                    <div class="cv-hub-tag lime">אנרגיה סולארית ומתחדשת</div>
+                    <span class="cv-hub-format">עברית • A4 Page</span>
+                  </div>
+                  <h4 class="cv-hub-title">מנהל תפעול שדות PV ואנרגיה מתחדשת</h4>
+                  <p class="cv-hub-desc">גרסה ממוקדת לחברות אנרגיה מתחדשת (Enlight, נופר), שדות פוטו-וולטאיים, אגירה במתח גבוה ו-SCADA.</p>
+                  <div class="cv-hub-badges">
+                    <span class="hub-badge">Solar PV</span>
+                    <span class="hub-badge">Enlight</span>
+                    <span class="hub-badge">בקרת מתח גבוה</span>
+                    <span class="hub-badge">לימודי חשמלאי</span>
+                  </div>
+                  <div class="cv-hub-actions">
+                    <a href="career/cv/cv_solar_he.html" target="_blank" class="cv-hub-btn secondary">
+                      <i class="ph-duotone ph-arrow-square-out"></i>
+                      <span>צפייה ישירה</span>
+                    </a>
+                    <a href="career/cv/cv_solar_he.html" download="CV_Ido_Gal_Renewable_Energy.html" class="cv-hub-btn primary">
+                      <i class="ph-duotone ph-download-simple"></i>
+                      <span>הורדת קובץ</span>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Version 3: Drones, UAV & Defense -->
+                <div class="cv-hub-card">
+                  <div class="cv-hub-card-header">
+                    <div class="cv-hub-tag gold">רחפנים, כטב״ם וביטחון</div>
+                    <span class="cv-hub-format">עברית • A4 Page</span>
+                  </div>
+                  <h4 class="cv-hub-title">מטיס פנים והנדסאי שילוב מערכות כטב״ם</h4>
+                  <p class="cv-hub-desc">גרסה ייעודית לחברות ביטחוניות (פרסאוס, אלביט, רפאל) עם דגש על שילוב מכני, ניסויי שדה והטסה.</p>
+                  <div class="cv-hub-badges">
+                    <span class="hub-badge">מטיס כטב״ם</span>
+                    <span class="hub-badge">אלביט / פרסאוס</span>
+                    <span class="hub-badge">שילוב מכני</span>
+                    <span class="hub-badge">ניסויי שדה</span>
+                  </div>
+                  <div class="cv-hub-actions">
+                    <a href="career/cv/cv_drones_he.html" target="_blank" class="cv-hub-btn secondary">
+                      <i class="ph-duotone ph-arrow-square-out"></i>
+                      <span>צפייה ישירה</span>
+                    </a>
+                    <a href="career/cv/cv_drones_he.html" download="CV_Ido_Gal_Drones_Defense.html" class="cv-hub-btn primary">
+                      <i class="ph-duotone ph-download-simple"></i>
+                      <span>הורדת קובץ</span>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Version 4: International English -->
+                <div class="cv-hub-card">
+                  <div class="cv-hub-card-header">
+                    <div class="cv-hub-tag purple">International English</div>
+                    <span class="cv-hub-format">English • Single A4</span>
+                  </div>
+                  <h4 class="cv-hub-title">Gas Operations & Mechanical Practical Engineer</h4>
+                  <p class="cv-hub-desc">Executive international resume tailored for global energy corporations, OEM EPCs and multinational operators.</p>
+                  <div class="cv-hub-badges">
+                    <span class="hub-badge">PRMS High-Pressure</span>
+                    <span class="hub-badge">ASME B31.8</span>
+                    <span class="hub-badge">Zero LTI Record</span>
+                    <span class="hub-badge">SCADA / HSE</span>
+                  </div>
+                  <div class="cv-hub-actions">
+                    <a href="career/cv/cv_base_en.html" target="_blank" class="cv-hub-btn secondary">
+                      <i class="ph-duotone ph-arrow-square-out"></i>
+                      <span>צפייה ישירה</span>
+                    </a>
+                    <a href="career/cv/cv_base_en.html" download="CV_Ido_Gal_International_EN.html" class="cv-hub-btn primary">
+                      <i class="ph-duotone ph-download-simple"></i>
+                      <span>הורדת קובץ</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Module 5: Voice Interview Simulator & LinkedIn Alignment (Milestone 6) -->
+        <section id="studioModuleInterview" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabInterview" style="display: none;">
+          <div class="studio-module-card">
+            <div class="studio-module-header">
+              <div class="studio-module-icon rose">
+                <i class="ph-duotone ph-microphone"></i>
+              </div>
+              <div style="flex: 1;">
+                <h3 class="studio-module-title">סימולטור ראיונות תרחישי חירום ובדיקת הלימה ל-LinkedIn</h3>
+                <p class="studio-module-desc">תרגול מענה קולי/טקסטואלי לשאלות משבר בטיחות עם ציון STAR ובדיקת עקביות פרופיל LinkedIn</p>
+              </div>
+            </div>
+
+            <div class="interview-workbench">
+              <!-- Column 1: Questions & STAR Simulator -->
+              <div class="interview-col-main">
+                <!-- Question Generator Card -->
+                <div class="interview-section-box">
+                  <div class="section-box-header">
+                    <div class="section-box-title">
+                      <i class="ph-duotone ph-shield-warning"></i>
+                      <span>מחולל שאלות מקצועיות ובטיחותיות</span>
+                    </div>
+                    <div class="question-cat-chips">
+                      <button type="button" class="q-chip active" onclick="setInterviewCategory('crisis', this)">משברי שטח</button>
+                      <button type="button" class="q-chip" onclick="setInterviewCategory('contractors', this)">קבלנים וספקים</button>
+                      <button type="button" class="q-chip" onclick="setInterviewCategory('hse', this)">תרבות בטיחות</button>
+                      <button type="button" class="q-chip" onclick="setInterviewCategory('mechanical', this)">תקלות PRMS</button>
+                    </div>
+                  </div>
+
+                  <!-- Active Question Box -->
+                  <div class="active-question-card">
+                    <div class="q-meta-line">
+                      <span class="q-badge" id="interviewQuestionCategoryBadge">משבר תפעולי בשטח</span>
+                      <span class="q-diff">רמת מורכבות: שטח בכיר</span>
+                    </div>
+                    <h4 class="q-title" id="interviewQuestionTitle">תרחיש: זיהוי נפילת לחץ פתאומית במתקן הפחתת לחץ (PRMS) ראשי</h4>
+                    <p class="q-desc" id="interviewQuestionDesc">במהלך משמרת לילה מתקבלת התרעת SCADA על צניחת לחץ במעלה הקו וריח גז עז סמוך למגוף הראשי. צוות קבלני עבודות עפר פועל במרחק 50 מטרים. כיצד תפעל בדקות הראשונות?</p>
+                    <div class="q-actions">
+                      <button type="button" class="interview-btn secondary" onclick="generateNextInterviewQuestion()">
+                        <i class="ph-duotone ph-arrows-clockwise"></i>
+                        <span>חולל שאלה אחרת</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Voice Recording & STAR Evaluation Card -->
+                <div class="interview-section-box">
+                  <div class="section-box-header">
+                    <div class="section-box-title">
+                      <i class="ph-duotone ph-microphone"></i>
+                      <span>סימולטור תשובה במודל STAR (הקלטה קולית / ניסוח)</span>
+                    </div>
+                    <div class="rec-timer-badge" id="voiceRecTimer">00:00</div>
+                  </div>
+
+                  <!-- Voice Controls Strip -->
+                  <div class="voice-controls-strip">
+                    <button type="button" id="btnRecordVoice" class="voice-rec-btn" onclick="toggleVoiceRecording()">
+                      <i class="ph-duotone ph-microphone" id="voiceRecIcon"></i>
+                      <span id="voiceRecLabel">התחל הקלטת תשובה</span>
+                    </button>
+                    <canvas id="voiceWaveCanvas" class="voice-wave-canvas" width="280" height="40"></canvas>
+                    <button type="button" class="voice-eval-btn" onclick="evaluateStarAnswer()">
+                      <i class="ph-duotone ph-sparkle"></i>
+                      <span>נתח תשובה ב-STAR</span>
+                    </button>
+                  </div>
+
+                  <!-- Spoken Transcript / Text Area -->
+                  <div class="voice-transcript-wrapper">
+                    <label for="interviewAnswerInput" class="voice-transcript-label">מלל התשובה (מתמלל בזמן אמת או ניתן לכתיבה חופשית):</label>
+                    <textarea id="interviewAnswerInput" class="voice-transcript-textarea" rows="4" placeholder="תאר את תגובתך לפי מודל STAR: רקע (Situation), המשימה הדחופה (Task), הפעולה הבטיחותית שנקטת (Action), והתוצאה המדידה (Result)...">בתור בקר הגז הבכיר במשמרת, הפעלתי מיד נוהל חירום: הוריתי על פינוי מיידי של צוות הקבלנים וסגירת ציר הגישה (Situation & Task). סגרתי את מגוף ה-ESD הראשי מרחוק דרך ה-SCADA ושלחתי צוות חמוש במנ״פ ובגלאי גז לבדיקת מקור הדליפה תוך עדכון מנהל הבטיחות (Action). האירוע נבלם תוך 7 דקות, ללא נפגעים (Zero LTI) וללא פריקת לחץ לאטמוספרה (Result).</textarea>
+                  </div>
+
+                  <!-- STAR Breakdown Feedback Card -->
+                  <div id="starFeedbackBox" class="star-feedback-container">
+                    <div class="star-score-header">
+                      <div class="star-score-pill">
+                        <span class="score-label">ציון STAR כולל:</span>
+                        <span class="score-number" id="starTotalScore">94 / 100</span>
+                      </div>
+                      <span class="star-verdict-badge">מבנה מצוין לתפקיד תפעולי בכיר</span>
+                    </div>
+
+                    <div class="star-factors-grid">
+                      <div class="star-factor-card">
+                        <div class="factor-header">
+                          <span class="factor-letter">S</span>
+                          <span class="factor-name">Situation (רקע)</span>
+                          <span class="factor-status pass">מלא</span>
+                        </div>
+                        <p class="factor-text" id="starSituationText">הגדרת זירה ברורה: משמרת לילה, מתקן PRMS, סיכון קבלנים סמוכים.</p>
+                      </div>
+
+                      <div class="star-factor-card">
+                        <div class="factor-header">
+                          <span class="factor-letter">T</span>
+                          <span class="factor-name">Task (משימה)</span>
+                          <span class="factor-status pass">מלא</span>
+                        </div>
+                        <p class="factor-text" id="starTaskText">הצבת יעד כפול: הצלת חיי אדם ובלימת דליפת הגז.</p>
+                      </div>
+
+                      <div class="star-factor-card">
+                        <div class="factor-header">
+                          <span class="factor-letter">A</span>
+                          <span class="factor-name">Action (פעולה)</span>
+                          <span class="factor-status pass">חזק</span>
+                        </div>
+                        <p class="factor-text" id="starActionText">שימוש נכון בסמכות: הפעלת ESD, שימוש ב-SCADA, נהלי עבודה עם מנ״פ.</p>
+                      </div>
+
+                      <div class="star-factor-card">
+                        <div class="factor-header">
+                          <span class="factor-letter">R</span>
+                          <span class="factor-name">Result (תוצאה)</span>
+                          <span class="factor-status pass">מדיד</span>
+                        </div>
+                        <p class="factor-text" id="starResultText">שילוב מדד Zero LTI ובלימה תוך 7 דקות ללא נזק סביבתי.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Column 2: LinkedIn Profile Alignment -->
+              <div class="interview-col-side">
+                <div class="interview-section-box">
+                  <div class="section-box-header">
+                    <div class="section-box-title">
+                      <i class="ph-duotone ph-share-network"></i>
+                      <span>סנכרון והלימה מול פרופיל LinkedIn</span>
+                    </div>
+                    <span class="linkedin-sync-chip">מול הפרופיל הציבורי</span>
+                  </div>
+
+                  <p class="linkedin-box-desc">השוואה חכמה בין קורות החיים המעודכנים לבין נתוני ה-LinkedIn הציבוריים של עידו למניעת סתירות מול מגייסים:</p>
+
+                  <div class="linkedin-checks-list">
+                    <!-- Check 1: Headline -->
+                    <div class="linkedin-check-row">
+                      <div class="check-status-icon pass">
+                        <i class="ph-duotone ph-check-circle"></i>
+                      </div>
+                      <div class="check-details">
+                        <div class="check-title">כותרת ראשית (Headline)</div>
+                        <div class="check-cv-val">בקו״ח: בקר גז טבעי ותפעול מערכות אנרגיה • הנדסאי מכונות</div>
+                        <div class="check-li-val">ב-LinkedIn: Natural Gas & Energy Systems Operations | Mechanical P.E.</div>
+                      </div>
+                    </div>
+
+                    <!-- Check 2: Licenses -->
+                    <div class="linkedin-check-row">
+                      <div class="check-status-icon warning">
+                        <i class="ph-duotone ph-warning"></i>
+                      </div>
+                      <div class="check-details">
+                        <div class="check-title">רישיונות והסמכות (Licenses)</div>
+                        <div class="check-cv-val">בקו״ח: דיפלומה 115011, ASME B31.8, עבודה בגובה, היתר רעלים</div>
+                        <div class="check-li-val">ב-LinkedIn: מומלץ להוסיף את תעודת ASME B31.8 ורישיון עבודה בגובה</div>
+                      </div>
+                    </div>
+
+                    <!-- Check 3: Current Role -->
+                    <div class="linkedin-check-row">
+                      <div class="check-status-icon pass">
+                        <i class="ph-duotone ph-check-circle"></i>
+                      </div>
+                      <div class="check-details">
+                        <div class="check-title">רצף תעסוקתי ותפקיד אחרון</div>
+                        <div class="check-cv-val">בקו״ח: סופרגז טבעי (בקרת PRMS וחיבור צרכנים)</div>
+                        <div class="check-li-val">ב-LinkedIn: תאריכים תואמים במדויק (100% עקביות)</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Suggested Copy Button -->
+                  <div class="linkedin-copy-action">
+                    <button type="button" class="interview-btn primary w-full" onclick="copyLinkedInOptimizedBio()">
+                      <i class="ph-duotone ph-copy"></i>
+                      <span id="copyLinkedInBioText">העתק נוסח מומלץ ל-About בלינקדאין</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Module 6: Skill Gap Engine & Privacy Anonymizer (Milestone 6) -->
+        <section id="studioModuleSkills" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabSkills" style="display: none;">
+          <div class="studio-module-card">
+            <div class="studio-module-header">
+              <div class="studio-module-icon lime">
+                <i class="ph-duotone ph-shield-check"></i>
+              </div>
+              <div style="flex: 1;">
+                <h3 class="studio-module-title">סורק פערי מיומנויות והסמכות ואנונימיזציה בלחיצה אחת</h3>
+                <p class="studio-module-desc">איתור הסמכות מבוקשות בשוק האנרגיה עם קישורי הכשרה ישירים ומצב אנונימי לשיתוף בטוח</p>
+              </div>
+            </div>
+
+            <div class="skills-workbench">
+              <!-- Column 1: Skill Gap Engine -->
+              <div class="skills-col-gaps">
+                <div class="skills-box-header">
+                  <div class="skills-box-title">
+                    <i class="ph-duotone ph-graduation-cap"></i>
+                    <span>מנוע המלצות ללמידה והסמכות (Skill Gap Engine)</span>
+                  </div>
+                  <span class="skills-box-meta">מבוסס סריקת דרישות שוק האנרגיה 2026</span>
+                </div>
+
+                <div class="skill-cards-grid">
+                  <!-- Skill 1: PMP -->
+                  <div class="skill-rec-card">
+                    <div class="skill-card-top">
+                      <span class="skill-tag purple">הסמכה ניהולית</span>
+                      <span class="skill-roi">השפעת שכר: +18%</span>
+                    </div>
+                    <h4 class="skill-title">PMP - Project Management Professional</h4>
+                    <p class="skill-desc">ניהול פרויקטי אנרגיה ותשתיות מורכבות, ניהול תקציבי CAPEX ולוחות זמנים לפי מתודולוגיית PMI הבינלאומית.</p>
+                    <div class="skill-card-footer">
+                      <span class="skill-time">היקף: 35 שעות לימוד</span>
+                      <a href="https://pmi.org.il/" target="_blank" rel="noopener noreferrer" class="skill-link-btn">
+                        <span>סילבוס ורישום</span>
+                        <i class="ph-duotone ph-arrow-up-left"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Skill 2: PLC / SCADA -->
+                  <div class="skill-rec-card">
+                    <div class="skill-card-top">
+                      <span class="skill-tag cyan">בקרה ואוטומציה</span>
+                      <span class="skill-roi">השפעת שכר: +15%</span>
+                    </div>
+                    <h4 class="skill-title">תכנות בקרים מתוכנתים (PLC / SCADA Siemens)</h4>
+                    <p class="skill-desc">הסמכה מעשית בתכנות בקרים תעשייתיים (TIA Portal, S7-1200/1500), פרוטוקולי Modbus/TCP ומערכות HMI.</p>
+                    <div class="skill-card-footer">
+                      <span class="skill-time">היקף: 80 שעות מעבדה</span>
+                      <a href="https://www.israel-electric.co.il/" target="_blank" rel="noopener noreferrer" class="skill-link-btn">
+                        <span>קורסים מוסמכים</span>
+                        <i class="ph-duotone ph-arrow-up-left"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Skill 3: BMS & Energy Efficiency -->
+                  <div class="skill-rec-card">
+                    <div class="skill-card-top">
+                      <span class="skill-tag lime">התייעלות אנרגטית</span>
+                      <span class="skill-roi">השפעת שכר: +12%</span>
+                    </div>
+                    <h4 class="skill-title">מערכות ניהול מבנה ואנרגיה (BMS & CEM)</h4>
+                    <p class="skill-desc">הסמכת ממונה אנרגיה לפי תקן ISO 50001, אופטימיזציית צריכת חשמל במתקני תשתית ומערכות מיזוג תעשייתיות.</p>
+                    <div class="skill-card-footer">
+                      <span class="skill-time">היקף: 50 שעות</span>
+                      <a href="https://www.energy-eff.org.il/" target="_blank" rel="noopener noreferrer" class="skill-link-btn">
+                        <span>מידע והסמכה</span>
+                        <i class="ph-duotone ph-arrow-up-left"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <!-- Skill 4: Six Sigma Green Belt -->
+                  <div class="skill-rec-card">
+                    <div class="skill-card-top">
+                      <span class="skill-tag gold">מצוינות תפעולית</span>
+                      <span class="skill-roi">השפעת שכר: +10%</span>
+                    </div>
+                    <h4 class="skill-title">Six Sigma Green Belt (CSSGB)</h4>
+                    <p class="skill-desc">מתודולוגיית DMAIC לשיפור תהליכי ייצור, הפחתת פחתים, חקר כשלים (FMEA/RCA) ובקרת איכות סטטיסטית.</p>
+                    <div class="skill-card-footer">
+                      <span class="skill-time">היקף: 40 שעות</span>
+                      <a href="https://asq.org/" target="_blank" rel="noopener noreferrer" class="skill-link-btn">
+                        <span>הסמכה מקוונת</span>
+                        <i class="ph-duotone ph-arrow-up-left"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Column 2: One-Click Privacy Anonymizer -->
+              <div class="skills-col-anon">
+                <div class="skills-box-header">
+                  <div class="skills-box-title">
+                    <i class="ph-duotone ph-user-circle-gear"></i>
+                    <span>מצב אנונימי (One-Click Anonymizer)</span>
+                  </div>
+                  <!-- Anonymizer Switch -->
+                  <label class="anon-switch-wrap">
+                    <input type="checkbox" id="anonToggleCheckbox" onchange="toggleAnonymizerMode(this.checked)">
+                    <span class="anon-slider"></span>
+                  </label>
+                </div>
+
+                <p class="anon-desc">הסרת פרטים מזהים, מספרי טלפון והחלפת שמות מעסיקים רגישים לצורך שיתוף בטוח בקהילות מקצועיות (פייסבוק, ווטסאפ):</p>
+
+                <!-- Anonymizer Rules Mapping -->
+                <div class="anon-rules-card">
+                  <div class="anon-rule-row">
+                    <span class="anon-orig">עידו גל</span>
+                    <i class="ph-duotone ph-arrow-left"></i>
+                    <span class="anon-masked">[מועמד מנוסה - הנדסאי מכונות]</span>
+                  </div>
+                  <div class="anon-rule-row">
+                    <span class="anon-orig">052-632-8886 / idogal94@gmail.com</span>
+                    <i class="ph-duotone ph-arrow-left"></i>
+                    <span class="anon-masked">[05X-XXXXXXX / candidate@confidential.il]</span>
+                  </div>
+                  <div class="anon-rule-row">
+                    <span class="anon-orig">סופרגז טבעי / אנרג'יאן</span>
+                    <i class="ph-duotone ph-arrow-left"></i>
+                    <span class="anon-masked">[חברת תשתיות ואנרגיה מובילה]</span>
+                  </div>
+                </div>
+
+                <!-- Live Anonymized Text Box -->
+                <div class="anon-output-wrapper">
+                  <div class="anon-output-label">תצוגת נוסח אנונימי מוכן לשיתוף:</div>
+                  <textarea id="anonymizedPreviewArea" class="anon-textarea" rows="6" readonly>הנדסאי מכונות רשום (דיפלומה מוסמכת 115011) עם ניסיון עשיר בתפעול מערכי גז טבעי בלחץ גבוה (מתקני PRMS), תחנות כוח ושדות סולאריים.
+מומחיות מוכחת בתקני ASME B31.8 ו-ISO 45001, הובלת משטרי בטיחות מחמירים (0 תאונות עבודה - Zero LTI), פיקוח עבודות קבלנים וסקרי HAZOP.
+בוגר קורס מטיסי פנים ומומחה בשילוב מכני של מערכות כטב״ם ניסוי. כעת בלימודי חשמלאי מוסמך.
+ליצירת קשר דיסקרטי: candidate@confidential.il</textarea>
+                </div>
+
+                <div class="anon-action-btn-row">
+                  <button type="button" class="interview-btn primary w-full" onclick="copyAnonymizedCv()">
+                    <i class="ph-duotone ph-copy"></i>
+                    <span id="copyAnonBtnText">העתק נוסח אנונימי ללוח (Clipboard)</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+    </div><!-- /#careerStudioWorkspace -->
+
+  </div>
+
+  <!-- Add New Application Modal for Kanban -->
+  <div id="addKanbanModal" class="dashboard-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="addKanbanModalTitle" onclick="if(event.target===this)closeAddApplicationModal()">
+    <div class="dashboard-card dashboard-modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
+        <h3 id="addKanbanModalTitle" style="margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+          <i class="ph-duotone ph-plus-circle" style="color: var(--dashboard-cyan); font-size: 22px;"></i>
+          <span>הוספת מועמדות חדשה ללוח המעקב</span>
+        </h3>
+        <button type="button" onclick="closeAddApplicationModal()" style="background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer;">
+          <i class="ph-bold ph-x"></i>
+        </button>
+      </div>
+      <form id="addKanbanForm" onsubmit="handleSaveNewApplication(event)" class="kanban-modal-form">
+        <div class="form-group">
+          <label for="kanbanCompanyInput" class="form-label">שם החברה:</label>
+          <input type="text" id="kanbanCompanyInput" class="form-input" required placeholder="לדוגמה: אנלייט אנרגיה, דור אלון, אלביט">
+        </div>
+        <div class="form-group">
+          <label for="kanbanRoleInput" class="form-label">כותרת התפקיד:</label>
+          <input type="text" id="kanbanRoleInput" class="form-input" required placeholder="לדוגמה: מנהל תפעול מתקני גז / מהנדס שדה">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="kanbanStatusSelect" class="form-label">שלב ב-Pipeline:</label>
+            <select id="kanbanStatusSelect" class="form-select">
+              <option value="saved">נשמר להגשה</option>
+              <option value="applied" selected>הוגש למעסיק</option>
+              <option value="screening">במיון / סינון</option>
+              <option value="interview">זימון לראיון</option>
+              <option value="offer">הצעת שכר / חוזה</option>
+              <option value="rejected">הוסר / לא רלוונטי</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="kanbanVersionSelect" class="form-label">גרסת קו״ח שנשלחה:</label>
+            <select id="kanbanVersionSelect" class="form-select">
+              <option value="גז טבעי">גז טבעי ותחנות כוח</option>
+              <option value="סולארי">סולארי ואנלייט</option>
+              <option value="כטב״ם">כטב״ם ורחפנים</option>
+              <option value="אנגלית">International English</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="kanbanNotesInput" class="form-label">הערות / אנשי קשר:</label>
+          <textarea id="kanbanNotesInput" class="form-textarea" rows="2" placeholder="שם המגייס/ת, תאריך ראיון טלפוני, קישור למשרה..."></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
+          <button type="button" onclick="closeAddApplicationModal()" class="kanban-btn secondary">ביטול</button>
+          <button type="submit" class="kanban-btn primary">שמור מועמדות</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- About System Modal -->
@@ -482,14 +1792,14 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261025161148",
+      build_id: "20261025193657",
       schema_version: "2.0.0",
       generated_at: "25.10.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261025161148",
-      catalog_data_url: "data/historical_catalog.json?v=20261025161148"
+      jobs_data_url: "data/jobs.json?v=20261025193657",
+      catalog_data_url: "data/historical_catalog.json?v=20261025193657"
     };
   </script>
-  <script src="dashboard.js?v=20261025161148" defer></script>
+  <script src="dashboard.js?v=20261025193657" defer></script>
 </body>
 </html>

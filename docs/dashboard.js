@@ -1,4 +1,5 @@
 let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_JOBS_FALLBACK__ : [];
+  window.jobsData = rawJobsData;
   let historicalCatalog = (typeof __INLINE_CATALOG_FALLBACK__ !== 'undefined') ? __INLINE_CATALOG_FALLBACK__ : {};
   let isCatalogLoaded = false;
   let isJobsLoading = false;
@@ -32,9 +33,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       }
       const data = await resp.json();
       rawJobsData = Array.isArray(data) ? data : (data.jobs || []);
+      window.jobsData = rawJobsData;
       isJobsLoading = false;
       renderCards();
       updateUI();
+      if (typeof populateAtsJobSelector === 'function') {
+        populateAtsJobSelector();
+      }
 
       // Preload historical catalog in the background so saved/starred jobs from older cycles are immediately available
       if (!isCatalogLoaded) {
@@ -3185,6 +3190,2471 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     showToast('ph-file-xls', `יוצאו ${savedJobs.length} משרות שמורות לאקסל בהצלחה!`);
   }
 
+  /* ==========================================================================
+     Milestone 1: Architecture Framework & Mode Switcher
+     ========================================================================== */
+  const APP_ACTIVE_MODE_KEY = 'ido_app_active_mode';
+  let currentAppMode = 'radar';
+
+  /**
+   * Switches top-level app mode between 'radar' (Job Radar) and 'studio' (Career Studio).
+   * @param {string} mode - 'radar' or 'studio'
+   * @param {boolean} [updateHash=true] - Whether to update window.location.hash
+   */
+  function switchDashboardAppMode(mode, updateHash = true) {
+    const targetMode = (mode === 'studio') ? 'studio' : 'radar';
+    currentAppMode = targetMode;
+
+    const radarWs = document.getElementById('radarWorkspace');
+    const studioWs = document.getElementById('careerStudioWorkspace');
+    const btnRadar = document.getElementById('modeSwitchRadar');
+    const btnStudio = document.getElementById('modeSwitchStudio');
+    const progressHub = document.querySelector('.header-progress-hub');
+
+    if (targetMode === 'studio') {
+      if (radarWs) {
+        radarWs.style.display = 'none';
+        radarWs.classList.remove('active');
+        radarWs.classList.add('hidden');
+      }
+      if (studioWs) {
+        studioWs.style.display = 'flex';
+        studioWs.classList.remove('hidden');
+        studioWs.classList.add('active');
+      }
+      if (btnStudio) {
+        btnStudio.classList.add('active');
+        btnStudio.setAttribute('aria-selected', 'true');
+      }
+      if (btnRadar) {
+        btnRadar.classList.remove('active');
+        btnRadar.setAttribute('aria-selected', 'false');
+      }
+      if (progressHub) {
+        progressHub.classList.add('studio-mode-hub-compact');
+      }
+      if (updateHash && window.location.hash !== '#studio') {
+        window.location.hash = '#studio';
+      }
+    } else {
+      if (studioWs) {
+        studioWs.style.display = 'none';
+        studioWs.classList.remove('active');
+        studioWs.classList.add('hidden');
+      }
+      if (radarWs) {
+        radarWs.style.display = 'block';
+        radarWs.classList.remove('hidden');
+        radarWs.classList.add('active');
+      }
+      if (btnRadar) {
+        btnRadar.classList.add('active');
+        btnRadar.setAttribute('aria-selected', 'true');
+      }
+      if (btnStudio) {
+        btnStudio.classList.remove('active');
+        btnStudio.setAttribute('aria-selected', 'false');
+      }
+      if (progressHub) {
+        progressHub.classList.remove('studio-mode-hub-compact');
+      }
+      if (updateHash && window.location.hash !== '#radar') {
+        window.location.hash = '#radar';
+      }
+
+      // Invalidate Leaflet map size when returning to radar workspace
+      if (typeof liveJobsMapInstance !== 'undefined' && liveJobsMapInstance) {
+        setTimeout(() => {
+          if (liveJobsMapInstance && typeof liveJobsMapInstance.invalidateSize === 'function') {
+            liveJobsMapInstance.invalidateSize();
+          }
+        }, 150);
+      }
+    }
+
+    try {
+      localStorage.setItem(APP_ACTIVE_MODE_KEY, targetMode);
+    } catch (e) {
+      console.warn('[STORAGE] Could not persist app active mode:', e);
+    }
+  }
+
+  /**
+   * Switches the active module inside Career Studio workspace.
+   * @param {string} moduleId - 'ats', 'writer', 'visual', 'kanban', 'interview', 'skills'
+   */
+  function switchStudioModule(moduleId) {
+    const modules = ['ats', 'writer', 'visual', 'kanban', 'interview', 'skills'];
+    const activeModule = modules.includes(moduleId) ? moduleId : 'ats';
+
+    const tabMap = {
+      ats: 'studioTabAts',
+      writer: 'studioTabWriter',
+      visual: 'studioTabVisual',
+      kanban: 'studioTabKanban',
+      interview: 'studioTabInterview',
+      skills: 'studioTabSkills'
+    };
+
+    const panelMap = {
+      ats: 'studioModuleAts',
+      writer: 'studioModuleWriter',
+      visual: 'studioModuleVisual',
+      kanban: 'studioModuleKanban',
+      interview: 'studioModuleInterview',
+      skills: 'studioModuleSkills'
+    };
+
+    modules.forEach(m => {
+      const tabEl = document.getElementById(tabMap[m]);
+      const panelEl = document.getElementById(panelMap[m]);
+      const isTarget = (m === activeModule);
+
+      if (tabEl) {
+        if (isTarget) {
+          tabEl.classList.add('active');
+          tabEl.setAttribute('aria-selected', 'true');
+        } else {
+          tabEl.classList.remove('active');
+          tabEl.setAttribute('aria-selected', 'false');
+        }
+      }
+
+      if (panelEl) {
+        if (isTarget) {
+          panelEl.style.display = 'block';
+          panelEl.classList.add('active');
+          if (m === 'ats' && typeof initAtsModule === 'function') {
+            initAtsModule();
+          } else if (m === 'writer' && typeof initWriterModule === 'function') {
+            initWriterModule();
+          }
+        } else {
+          panelEl.style.display = 'none';
+          panelEl.classList.remove('active');
+        }
+      }
+    });
+  }
+
+  /* ==========================================================================
+     CAREER STUDIO: MILESTONE 2 - ATS & STATUTORY HARD GATES ENGINE
+     ========================================================================== */
+
+  const CANONICAL_CV_PROFILE = {
+    name: "עידו גל",
+    name_en: "Ido Gal",
+    title_he: "בקר גז טבעי ותפעול מערכות אנרגיה | הנדסאי מכונות",
+    title_en: "Gas Controller | Natural Gas & Energy Systems Operations | Practical Mechanical Engineer",
+    contact: {
+      phone: "052-632-8886",
+      phone_intl: "+972-52-632-8886",
+      email: "idogal0210@gmail.com",
+      linkedin: "https://www.linkedin.com/in/ido-g",
+      location: "תל אביב"
+    },
+    education: [
+      "הנדסאי מכונות – התמחות בגז טבעי ובאנרגיה ירוקה, המרכז האקדמי רופין, 2022. פרויקט גמר: השוואת נצילות וכדאיות כלכלית וטכנית של מערכת סולארית PV בעלת פאנלים דו-צדדיים (Bifacial) לבין מערכת בעלת פאנלים חד-צדדיים (Monofacial).",
+      "לימודי חשמלאי מוסמך, המרכז האקדמי רופין, 2026 (במהלך לימודים, כחודשיים לסיום)."
+    ],
+    experience: [
+      "Energean Israel Ltd. (2022–היום): בקר גז - תפעול ומוצר. בקרה 24/7, ניטור לחצים וספיקות, Nomination ו-Re-nomination, ממשק מול אסדת הפקה ימית (FPSO), נתג״ז, לקוחות מסחריים, משמרות לילה עצמאיות, דוחות SAP ו-Excel, אוטומציה עם Copilot 365 ו-Gemini.",
+      "וולקן עוצמה בע״מ / Energean (2020–2022): אחמ״ש אבטחה, מתקן אנרגיה אסטרטגי.",
+      "ראש צוות ומדריך מכירות (2015–2020): פעילות בינלאומית (ארה״ב וגרמניה) באנגלית שוטפת.",
+      "Group MER (2010–2012): מתקין מערכות סולאריות PV בשטח."
+    ],
+    military: "סיירת נח״ל | חבלה והנדסה קרבית | 2012–2015 (כולל קבע). רובאי 08, פלס/חבלה 07, ניסיון מבצעי בהפעלת רחפנים (UAV), סריקה ומיפוי שטח.",
+    skills: [
+      "SCADA", "PRMS", "Nomination", "Re-nomination", "FPSO", "SAP", "Excel",
+      "Copilot 365", "Gemini", "Bifacial PV", "Monofacial PV", "ניטור לחצים וספיקות",
+      "אסדת הפקה", "נתג״ז", "חבלה 07", "רובאי 08", "הפעלת רחפנים", "UAV",
+      "מתח נמוך", "חוק החשמל"
+    ],
+    text: `עידו גל בקר גז טבעי ותפעול מערכות אנרגיה הנדסאי מכונות רופין 2022 אנרגיה ירוקה וגז טבעי
+פרויקט גמר פאנלים סולאריים דו צדדיים Bifacial PV מול Monofacial
+לימודי חשמלאי מוסמך רופין 2026 לקראת סיום חוק החשמל חישובים תיאורטיים
+Energean בקר גז תפעול ומוצר אסדת הפקה FPSO נתג״ז PRMS SCADA Nomination Re-nomination SAP Excel מתקן אנרגיה 24/7
+וולקן עוצמה אחמ״ש אבטחה מתקן אנרגיה אסטרטגי
+Group MER מתקין מערכות סולאריות PV שטח עבודה בגובה
+סיירת נח״ל חבלה והנדסה קרבית פלס 07 רובאי 08 מפעיל רחפנים מבצעי טלמטריה
+טלפון 052-632-8886 דואל idogal0210@gmail.com לינקדאין https://www.linkedin.com/in/ido-g`
+  };
+
+  const STATUTORY_HARD_GATES = [
+    {
+      id: "gate_practical_mech_eng",
+      name_he: "הנדסאי מכונות מוסמך",
+      name_en: "Certified Practical Mechanical Engineer",
+      regex: /(?:הנדסאי(?:[\s\/-]+(?:מכונות|תעשייה))?|הנדסאי[\s\/-]+מהנדס[\s-]+מכונות|practical[\s-]+mechanical[\s-]+engineer|mechanical[\s-]+practical[\s-]+engineer)/i,
+      candidate_status: "PASS",
+      candidate_evidence: "דיפלומה מוסמכת מהמרכז האקדמי רופין (2022) בהתמחות גז טבעי ואנרגיה ירוקה.",
+      mandatory_for_roles: ["mechanical_engineer", "plant_technician", "operations_engineer"]
+    },
+    {
+      id: "gate_certified_electrician",
+      name_he: "חשמלאי מוסמך",
+      name_en: "Certified Electrician",
+      regex: /(?:חשמלאי[\s-]+מוסמך|certified[\s-]+electrician|licensed[\s-]+electrician)/i,
+      candidate_status: "IN_PROGRESS",
+      candidate_evidence: "בלימודים במרכז האקדמי רופין, צפי סיום 2026 (כחודשיים לסיום). ידע תיאורטי, חישובים וחוק החשמל.",
+      note_he: "במידה והמשרה דורשת רישיון פעיל ביד כעת - יש להציג סטטוס 'לקראת סיום'.",
+      mandatory_for_roles: ["electrical_technician", "solar_lead_installer"]
+    },
+    {
+      id: "gate_degree_bsc_engineer",
+      name_he: "תואר מהנדס (B.Sc)",
+      name_en: "B.Sc. Engineering Degree",
+      regex: /(?:תואר[\s-]+ראשון[\s-]+בהנדס(?:ת|ה)|מהנדס[\s-]+מכונות|מהנדס[\s-]+חשמל|b\.?sc\.?[\s-]+(?:in[\s-]+)?(?:mechanical|electrical)[\s-]+engineer(?:ing)?)/i,
+      candidate_status: "GAP",
+      candidate_evidence: "למועמד דיפלומת הנדסאי מכונות (לא תואר B.Sc).",
+      note_he: "פער סף אם המשרה דורשת מהנדס בלבד ללא גמישות להנדסאי מנוסה.",
+      mandatory_for_roles: ["senior_r_and_d_engineer", "statutory_pe_stamping"]
+    },
+    {
+      id: "gate_safety_officer",
+      name_he: "ממונה בטיחות בעבודה מוסמך",
+      name_en: "Certified Safety Officer",
+      regex: /(?:ממונה[\s-]+בטיחות|safety[\s-]+officer|certified[\s-]+safety[\s-]+manager)/i,
+      candidate_status: "GAP",
+      candidate_evidence: "למועמד ניסיון כאחמ״ש אבטחה במתקן אנרגיה רגיש ואכיפת נהלי בטיחות, אך אינו מחזיק ברישיון ממונה בטיחות סטטוטורי לפי תקנות משרד העבודה.",
+      mandatory_for_roles: ["hse_manager", "safety_director"]
+    },
+    {
+      id: "gate_working_at_heights",
+      name_he: "הדרכת עבודה בגובה",
+      name_en: "Working at Heights Certification",
+      regex: /(?:עבודה[\s-]+בגובה|working[\s-]+at[\s-]+heights)/i,
+      candidate_status: "PASS_REFRESH_RECOMMENDED",
+      candidate_evidence: "ניסיון מעשי בהתקנת מערכות סולאריות בגגות ב-Group MER; נדרש רענון תקופתי שנתי.",
+      mandatory_for_roles: ["solar_field_tech", "wind_turbine_tech"]
+    },
+    {
+      id: "gate_hazmat_permit",
+      name_he: "היתר רעלים / חומ״ס",
+      name_en: "HazMat / Hazardous Materials Permit",
+      regex: /(?:היתר[\s-]+רעלים|חומ"ס|חומ״ס|hazardous[\s-]+materials|hazmat)/i,
+      candidate_status: "EVALUATE_PER_JOB",
+      candidate_evidence: "ניסיון תפעולי בגז טבעי (גז דליק בלחץ גבוה תחת פיקוח רשות הגז), ללא תעודת אחראי רעלים.",
+      mandatory_for_roles: ["chemical_plant_operator"]
+    },
+    {
+      id: "gate_asme_iso_standards",
+      name_he: "תקני ASME / ISO",
+      name_en: "ASME / ISO Engineering Standards",
+      regex: /(?:asme(?:\s+b31\.[38])?|iso[\s-]+(?:9001|45001|14001|50001)|תקן[\s-]+איז(?:ו|״ו))/i,
+      candidate_status: "FAMILIARITY",
+      candidate_evidence: "עבודה בסביבת תפעול מפוקחת תחת נהלי איכות, בטיחות ותקני הולכת גז בינלאומיים.",
+      mandatory_for_roles: ["qa_qc_engineer", "pipeline_inspector"]
+    }
+  ];
+
+  const KEYWORD_TAXONOMY = {
+    methodologies: {
+      category_he: "מתודולוגיות תפעוליות",
+      icon: "ph-duotone ph-tree-structure",
+      color: "var(--dashboard-cyan)",
+      terms: [
+        { name: "Lean", pattern: /\blean\b|לין/i },
+        { name: "Six Sigma", pattern: /six[\s-]sigma|שש[\s-]סיגמא/i },
+        { name: "5S", pattern: /\b5s\b/i },
+        { name: "RCA", pattern: /root[\s-]cause|חקר[\s-]תקלות|rca/i },
+        { name: "Kaizen", pattern: /kaizen|קאיזן/i }
+      ]
+    },
+    financials: {
+      category_he: "ניהול תקציב והנדסה כלכלית",
+      icon: "ph-duotone ph-currency-circle-dollar",
+      color: "var(--dashboard-gold)",
+      terms: [
+        { name: "CAPEX", pattern: /\bcapex\b|תקציב[\s-]השקעות/i },
+        { name: "OPEX", pattern: /\bopex\b|תקציב[\s-]תפעולי/i },
+        { name: "ROI", pattern: /\broi\b|כדאיות[\s-]כלכלית/i },
+        { name: "Procurement / רכש", pattern: /רכש[\s-]טכני|procurement/i }
+      ]
+    },
+    systems: {
+      category_he: "מערכות שליטה ואוטומציה",
+      icon: "ph-duotone ph-cpu",
+      color: "var(--dashboard-lime)",
+      terms: [
+        { name: "SCADA", pattern: /\bscada\b|סקאדה/i },
+        { name: "PLC", pattern: /\bplc\b|בקר[\s-]מתוכנת/i },
+        { name: "PRMS", pattern: /\bprms\b|תחנת[\s-]הפחתת[\s-]לחץ/i },
+        { name: "HMI", pattern: /\bhmi\b|ממשק[\s-]מפעיל/i },
+        { name: "DCS", pattern: /\bdcs\b/i },
+        { name: "Modbus / Fieldbus", pattern: /modbus|profibus|fieldbus/i }
+      ]
+    },
+    energy: {
+      category_he: "תשתיות אנרגיה וחשמל",
+      icon: "ph-duotone ph-lightning",
+      color: "#a78bfa",
+      terms: [
+        { name: "BESS", pattern: /\bbess\b|אגירת[\s-]אנרגיה|אגירה[\s-]בסוללות/i },
+        { name: "High Voltage", pattern: /מתח[\s-]גבוה|high[\s-]voltage|\bhv\b/i },
+        { name: "Bifacial PV", pattern: /bifacial|דו[\s-]צדדי/i },
+        { name: "Grid Connection", pattern: /חיבור[\s-]לרשת|grid[\s-]connection/i },
+        { name: "FPSO", pattern: /\bfpso\b|אסדת[\s-]הפקה/i }
+      ]
+    }
+  };
+
+  const ATS_STRUCTURAL_RULES = [
+    {
+      rule_id: "ats_single_column",
+      title_he: "מבנה עמודה יחידה (Single-Column Parsing)",
+      description_he: "איסור על טבלאות מורכבות, תיבות טקסט מרחפות או טבלאות צדדיות הפוגעות בסדר הקריאה הלינארי של מערכות ATS ישנות (Taleo, Workday).",
+      severity: "CRITICAL"
+    },
+    {
+      rule_id: "ats_standard_fonts",
+      title_he: "גופני מערכת סטנדרטיים (Standard Fonts)",
+      description_he: "שימוש בלעדי בגופנים נתמכים (Arial, Calibri, Helvetica, Open Sans, Roboto, Rubik) המאפשרים פענוח OCR/טקסט תקין ללא שיבושי קידוד.",
+      severity: "HIGH"
+    },
+    {
+      rule_id: "ats_zero_emojis",
+      title_he: "איסור מוחלט על אימוג'י (Zero-Emoji ATS Guard)",
+      description_he: "אימוג'י בקו״ח גורם לקריסת מנועי סינון, שיבוש תווי יוניקוד וסימני שאלה או מחיקת פסקאות שלמות במערכות גיוס ישראליות.",
+      severity: "CRITICAL"
+    },
+    {
+      rule_id: "ats_contact_parseability",
+      title_he: "תחביר פרטי התקשרות תקני",
+      description_he: "פורמט טלפון ברור ללא תווים חריגים, כתובת מייל תקינה, וקישור לינקדאין ישיר ללא קיצורי קישורים בלתי מוכרים.",
+      severity: "MEDIUM"
+    }
+  ];
+
+  function evaluateHardGates(jobText) {
+    if (!jobText || typeof jobText !== 'string' || !jobText.trim()) {
+      return [];
+    }
+    const results = [];
+    STATUTORY_HARD_GATES.forEach(gate => {
+      if (gate.regex.test(jobText)) {
+        let status = gate.candidate_status;
+        let evidence = gate.candidate_evidence;
+        let note = gate.note_he || '';
+
+        // Context-aware evaluation for B.Sc. Engineer gate (preference / advantage detection)
+        if (gate.id === 'gate_degree_bsc_engineer') {
+          const bscRegex = new RegExp(gate.regex.source, 'gi');
+          let match;
+          let isAdvantage = false;
+          let hasExplicitMandatory = false;
+
+          while ((match = bscRegex.exec(jobText)) !== null) {
+            const preText = jobText.substring(Math.max(0, match.index - 60), match.index);
+            const postText = jobText.substring(match.index + match[0].length, Math.min(jobText.length, match.index + match[0].length + 40));
+
+            const clauseBefore = preText.split(/[\n,;]/).pop() || '';
+            const clauseAfter = postText.split(/[\n,;]/)[0] || '';
+
+            const hasPrefPre = /(?:יתרון(?:\s+משמעותי)?|עדיפות(?:\s+משמעותית)?|רצוי|advantage|preferred|preference)/i.test(clauseBefore);
+            const hasPrefPost = /(?:יתרון(?:\s+משמעותי)?|עדיפות(?:\s+משמעותית)?|רצוי|advantage|preferred)/i.test(clauseAfter);
+
+            const hasMandatory = /(?:חובה|דרישת[\s-]+סף|תנאי[\s-]+סף|דרישות[\s-]+סף|required|mandatory|must\s+have)/i.test(clauseBefore) ||
+                                 /(?:חובה|בלבד|required|mandatory)/i.test(clauseAfter);
+
+            if ((hasPrefPre || hasPrefPost) && !hasMandatory) {
+              isAdvantage = true;
+            } else if (hasMandatory) {
+              hasExplicitMandatory = true;
+            }
+          }
+
+          if (isAdvantage && !hasExplicitMandatory) {
+            status = 'NOTICE';
+            evidence = 'למועמד דיפלומת הנדסאי מכונות מוסמך; תואר מהנדס הוגדר במשרה כיתרון / עדיפות בלבד ולא כדרישת סף פוסלת.';
+            note = 'דרישת יתרון — אינה מהווה פער סף פוסל (Hard Gate).';
+          }
+        }
+
+        results.push({
+          id: gate.id,
+          name: gate.name_he,
+          name_he: gate.name_he,
+          name_en: gate.name_en,
+          status: status,
+          evidence: evidence,
+          note: note,
+          mandatory_for_roles: gate.mandatory_for_roles || [],
+          triggered: true
+        });
+      }
+    });
+    return results;
+  }
+
+  function extractMissingKeywords(jobText, cvProfile) {
+    const result = {
+      methodologies: [],
+      financials: [],
+      systems: [],
+      energy: [],
+      matched: {
+        methodologies: [],
+        financials: [],
+        systems: [],
+        energy: []
+      },
+      details: {
+        methodologies: [],
+        financials: [],
+        systems: [],
+        energy: []
+      }
+    };
+
+    if (!jobText || typeof jobText !== 'string' || !jobText.trim()) {
+      return result;
+    }
+
+    let cvText = '';
+    if (typeof cvProfile === 'string') {
+      cvText = cvProfile;
+    } else if (cvProfile && typeof cvProfile === 'object') {
+      cvText = [
+        cvProfile.text || '',
+        cvProfile.summary || '',
+        ...(cvProfile.skills || []),
+        ...(cvProfile.key_competencies || []),
+        JSON.stringify(cvProfile)
+      ].join(' ');
+    } else {
+      cvText = CANONICAL_CV_PROFILE.text;
+    }
+
+    Object.keys(KEYWORD_TAXONOMY).forEach(cat => {
+      const catConfig = KEYWORD_TAXONOMY[cat];
+      catConfig.terms.forEach(term => {
+        if (term.pattern.test(jobText)) {
+          const hasSkillInCv = Boolean(cvText && term.pattern.test(cvText));
+          const itemDetail = {
+            name: term.name,
+            category: cat,
+            category_he: catConfig.category_he,
+            icon: catConfig.icon,
+            color: catConfig.color,
+            missing: !hasSkillInCv
+          };
+
+          if (hasSkillInCv) {
+            result.matched[cat].push(term.name);
+          } else {
+            result[cat].push(term.name);
+            result.details[cat].push(itemDetail);
+          }
+        }
+      });
+    });
+
+    return result;
+  }
+
+  function checkAtsStructuralCompliance(cvElement) {
+    let el = null;
+    if (typeof cvElement === 'string') {
+      if (typeof document !== 'undefined' && typeof document.querySelector === 'function') {
+        el = document.querySelector(cvElement);
+      }
+    } else if (typeof HTMLElement !== 'undefined' && cvElement instanceof HTMLElement) {
+      el = cvElement;
+    } else if (cvElement && typeof cvElement === 'object' && cvElement.nodeType) {
+      el = cvElement;
+    } else if (typeof document !== 'undefined') {
+      el = (typeof document.getElementById === 'function' && document.getElementById('careerStudioCvCanvas')) ||
+           (typeof document.querySelector === 'function' && document.querySelector('.cv-container')) ||
+           (typeof document.getElementById === 'function' && document.getElementById('careerStudioWorkspace')) || null;
+    }
+
+    const issues = [];
+    const ruleResults = [];
+
+    // Rule 1: Single column parsing
+    let hasMultiColumns = false;
+    if (el && typeof el.querySelectorAll === 'function') {
+      const complexTables = el.querySelectorAll('table table, table[data-layout="multi-column"], .multi-column-layout');
+      const floatingDivs = el.querySelectorAll('[style*="float: left"], [style*="float: right"]');
+      if (complexTables && complexTables.length > 0) hasMultiColumns = true;
+      if (floatingDivs && floatingDivs.length > 0) hasMultiColumns = true;
+    }
+    if (hasMultiColumns) {
+      issues.push({
+        rule_id: "ats_single_column",
+        title_he: "מבנה עמודה יחידה (Single-Column Parsing)",
+        severity: "CRITICAL",
+        description_he: "זוהו טבלאות מורכבות או תיבות טקסט צפות העלולות לשבש קריאה ב-ATS."
+      });
+      ruleResults.push({ rule_id: "ats_single_column", passed: false, severity: "CRITICAL" });
+    } else {
+      ruleResults.push({ rule_id: "ats_single_column", passed: true, severity: "CRITICAL" });
+    }
+
+    // Rule 2: Standard fonts
+    const standardFonts = ['arial', 'calibri', 'helvetica', 'open sans', 'roboto', 'rubik', 'sans-serif'];
+    let fontSafe = true;
+    if (el && typeof window !== 'undefined' && typeof window.getComputedStyle === 'function') {
+      try {
+        const computed = window.getComputedStyle(el);
+        const ff = (computed && computed.fontFamily ? computed.fontFamily : '').toLowerCase();
+        fontSafe = standardFonts.some(f => ff.includes(f));
+      } catch(e) {
+        fontSafe = true;
+      }
+    }
+    if (!fontSafe) {
+      issues.push({
+        rule_id: "ats_standard_fonts",
+        title_he: "גופני מערכת סטנדרטיים (Standard Fonts)",
+        severity: "HIGH",
+        description_he: "מומלץ להשתמש בגופני מערכת סטנדרטיים (Rubik, Arial, Calibri, Roboto)."
+      });
+      ruleResults.push({ rule_id: "ats_standard_fonts", passed: false, severity: "HIGH" });
+    } else {
+      ruleResults.push({ rule_id: "ats_standard_fonts", passed: true, severity: "HIGH" });
+    }
+
+    // Rule 3: Zero-Emoji ATS Guard
+    const contentText = (el && (el.innerText || el.textContent)) ? (el.innerText || el.textContent) : CANONICAL_CV_PROFILE.text;
+    const emojiRegex = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{FE0F}\u{20E3}]|&#(?:12\d{4}|x1[fF][0-9a-fA-F]{3});/u;
+    const hasEmoji = emojiRegex.test(contentText);
+    if (hasEmoji) {
+      issues.push({
+        rule_id: "ats_zero_emojis",
+        title_he: "איסור מוחלט על אימוג'י (Zero-Emoji ATS Guard)",
+        severity: "CRITICAL",
+        description_he: "נמצאו אימוג'ים בתוכן קורות החיים; אימוג'ים עלולים לקרוס במנועי ATS ישראליים."
+      });
+      ruleResults.push({ rule_id: "ats_zero_emojis", passed: false, severity: "CRITICAL" });
+    } else {
+      ruleResults.push({ rule_id: "ats_zero_emojis", passed: true, severity: "CRITICAL" });
+    }
+
+    // Rule 4: Contact Parseability
+    const phonePattern = /(?:05\d-?\d{3}-?\d{4}|05\d-?\d{7}|(?:\+?972-?5\d-?\d{7}))/;
+    const emailPattern = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+    const hasValidPhone = phonePattern.test(contentText);
+    const hasValidEmail = emailPattern.test(contentText);
+    if (el && (!hasValidPhone || !hasValidEmail)) {
+      issues.push({
+        rule_id: "ats_contact_parseability",
+        title_he: "תחביר פרטי התקשרות תקני",
+        severity: "MEDIUM",
+        description_he: "ודא שפרטי הטלפון והדוא\"ל מופיעים בפורמט קריא ומלא לקוראי ATS."
+      });
+      ruleResults.push({ rule_id: "ats_contact_parseability", passed: false, severity: "MEDIUM" });
+    } else {
+      ruleResults.push({ rule_id: "ats_contact_parseability", passed: true, severity: "MEDIUM" });
+    }
+
+    const isPassed = issues.length === 0;
+    return {
+      passed: isPassed,
+      score: isPassed ? 100 : Math.max(0, 100 - issues.length * 25),
+      rules_checked: ATS_STRUCTURAL_RULES.length,
+      issues: issues,
+      rule_results: ruleResults
+    };
+  }
+
+  function runAtsJobMatching(jobText, cvProfile) {
+    if (!jobText || typeof jobText !== 'string' || !jobText.trim()) {
+      return {
+        matchScore: 0,
+        hardGates: [],
+        missingKeywords: { methodologies: [], financials: [], systems: [], energy: [] },
+        structuralCompliance: checkAtsStructuralCompliance(),
+        matchedKeywords: { methodologies: [], financials: [], systems: [], energy: [] },
+        summary: "לא הוזן תיאור משרה"
+      };
+    }
+
+    const hardGates = evaluateHardGates(jobText);
+
+    // Disjunctive & alternative qualification resolution
+    const mechGate = hardGates.find(g => g.id === 'gate_practical_mech_eng');
+    const bscGate = hardGates.find(g => g.id === 'gate_degree_bsc_engineer');
+
+    if (mechGate && mechGate.status === 'PASS' && bscGate && bscGate.status === 'GAP') {
+      const hasOrOrSlash = /(?:הנדסאי[^\n,.]*(?:[\/]|[\s]+או[\s]+|[\s]+or[\s]+)[^\n,.]*מהנדס|מהנדס[^\n,.]*(?:[\/]|[\s]+או[\s]+|[\s]+or[\s]+)[^\n,.]*הנדסאי|practical[^\n,.]*(?:[\/]|[\s]+or[\s]+)[^\n,.]*(?:b\.?sc|engineer)|(?:b\.?sc|engineer)[^\n,.]*(?:[\/]|[\s]+or[\s]+)[^\n,.]*practical)/i.test(jobText);
+
+      const hasPracticalAsThreshold = /(?:(?:דריש(?:ת|ות)[\s-]+סף|תנאי[\s-]+סף|סף)[\s:,-]*[^\n,.]*הנדסאי|הנדסאי[^\n,.]*(?:דריש(?:ת|ות)[\s-]+סף|תנאי[\s-]+סף|הינו[\s-]+סף|הוא[\s-]+סף))/i.test(jobText);
+
+      if (hasOrOrSlash || hasPracticalAsThreshold) {
+        bscGate.status = 'NOTICE';
+        bscGate.note = 'דרישה חלופית שהתמלאה באמצעות דיפלומת הנדסאי מכונות מוסמך (דרישת סף).';
+        bscGate.evidence = 'למועמד דיפלומת הנדסאי מכונות מוסמך העונה על דרישת הסף / החלופה שהוגדרה במשרה.';
+      }
+    }
+
+    const keywordResult = extractMissingKeywords(jobText, cvProfile);
+    const structural = checkAtsStructuralCompliance();
+
+    let score = 70;
+    let hasCriticalGap = false;
+
+    hardGates.forEach(g => {
+      if (g.status === 'PASS') {
+        score += 15;
+      } else if (g.status === 'IN_PROGRESS') {
+        score += 8;
+      } else if (g.status === 'GAP') {
+        score -= 30;
+        hasCriticalGap = true;
+      } else if (g.status === 'PASS_REFRESH_RECOMMENDED' || g.status === 'NOTICE') {
+        score += 3;
+      }
+    });
+
+    const totalMissing = (keywordResult.methodologies.length +
+                          keywordResult.financials.length +
+                          keywordResult.systems.length +
+                          keywordResult.energy.length);
+    const totalMatched = (keywordResult.matched.methodologies.length +
+                          keywordResult.matched.financials.length +
+                          keywordResult.matched.systems.length +
+                          keywordResult.matched.energy.length);
+
+    if (totalMissing + totalMatched > 0) {
+      const keywordRatio = totalMatched / (totalMissing + totalMatched);
+      score += Math.round((keywordRatio - 0.5) * 30);
+    }
+
+    if (!structural.passed) {
+      score -= (structural.issues.length * 5);
+    }
+
+    if (hasCriticalGap) {
+      score = Math.min(score, 55);
+    }
+
+    score = Math.max(0, Math.min(100, Math.round(score)));
+
+    return {
+      matchScore: score,
+      hardGates: hardGates,
+      missingKeywords: {
+        methodologies: keywordResult.methodologies,
+        financials: keywordResult.financials,
+        systems: keywordResult.systems,
+        energy: keywordResult.energy
+      },
+      structuralCompliance: structural,
+      matchedKeywords: keywordResult.matched,
+      summary: hasCriticalGap
+        ? "זוהה פער סף סטטוטורי (Hard Gate GAP); נדרשת התאמה או בדיקת גמישות מעסיק"
+        : (score >= 80 ? "התאמה גבוהה לדרישות התפקיד והסמכות המועמד" : "התאמה בינונית; מומלץ להשלים מילות מפתח")
+    };
+  }
+
+  /* ATS UI Controller */
+  let atsInputDebounceTimer = null;
+
+  function populateAtsJobSelector() {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+    const sel = document.getElementById('atsJobSelector');
+    if (!sel) return;
+    const currentVal = sel.value;
+    sel.innerHTML = '<option value="">-- בחר משרה מתוך מאגר המשרות הפעיל --</option>';
+    const jobs = Array.isArray(rawJobsData) ? rawJobsData : (window.jobsData || []);
+    jobs.forEach((job, idx) => {
+      const opt = document.createElement('option');
+      opt.value = String(idx);
+      const scoreTag = job.match_score ? `[${job.match_score}%]` : '';
+      opt.textContent = `${scoreTag} ${job.title || 'ללא כותרת'} • ${job.company || 'חברה לא צוינה'}`;
+      sel.appendChild(opt);
+    });
+    if (currentVal) sel.value = currentVal;
+  }
+
+  function onAtsJobSelected(jobIndex) {
+    if (jobIndex === '' || jobIndex === null || jobIndex === undefined) return;
+    const jobs = Array.isArray(rawJobsData) ? rawJobsData : (window.jobsData || []);
+    const idx = parseInt(jobIndex, 10);
+    if (isNaN(idx) || !jobs[idx]) return;
+    const job = jobs[idx];
+
+    const parts = [
+      job.title ? `כותרת משרה: ${job.title}` : '',
+      job.company ? `חברה: ${job.company}` : '',
+      job.company_requirements ? `דרישות התפקיד:\n${job.company_requirements}` : '',
+      job.job_summary ? `תיאור התפקיד:\n${job.job_summary}` : '',
+      job.snippet ? `פירוט נוסף:\n${job.snippet}` : '',
+      job.experience_strengths ? `התאמה נדרשת:\n${job.experience_strengths}` : ''
+    ].filter(Boolean).join('\n\n');
+
+    const inputEl = document.getElementById('atsJobInput');
+    if (inputEl) {
+      inputEl.value = parts;
+      triggerAtsMatching();
+    }
+  }
+
+  function onAtsInputChanged() {
+    if (atsInputDebounceTimer) clearTimeout(atsInputDebounceTimer);
+    atsInputDebounceTimer = setTimeout(() => {
+      triggerAtsMatching();
+    }, 350);
+  }
+
+  function loadSampleAtsJob(type) {
+    const inputEl = document.getElementById('atsJobInput');
+    if (!inputEl) return;
+
+    if (type === 'gas') {
+      inputEl.value = `דרוש בקר גז טבעי ותפעול מתקני אנרגיה 24/7 בחברת אנרגיה מובילה.
+דרישות התפקיד:
+- הנדסאי מכונות מוסמך (חובה)
+- שליטה מלאה במערכות בקרה SCADA ומתקני הפחתת לחץ ומדידה PRMS
+- ניסיון בניהול בקשות Nomination ו-Re-nomination מול אסדת הפקה ימית (FPSO) ונתג״ז
+- עבודה במשמרות לילה עצמאיות 24/7 וקבלת החלטות תחת לחץ
+- שליטה ב-SAP וב-Excel, יתרון להיכרות עם תקני ASME ורציפות תפקודית`;
+    } else if (type === 'solar') {
+      inputEl.value = `דרוש מנהל פרויקטים סולאריים ומערכות אגירת אנרגיה BESS לחברת אנרגיה מתחדשת.
+דרישות התפקיד:
+- הנדסאי מכונות עם התמחות באנרגיות מתחדשות או בוגר לימודי חשמל
+- רישיון חשמלאי מוסמך (או בלימודים לקראת סיום הרישיון)
+- ניסיון בהקמת שדות סולאריים ופאנלים Bifacial PV מסחריים
+- הדרכת עבודה בגובה בתוקף
+- היכרות עם מתח גבוה (High Voltage) וחיבור לרשת החשמל`;
+    } else if (type === 'bsc_gap') {
+      inputEl.value = `דרוש מהנדס מכונות ראשי (Senior Mechanical R&D Engineer) למפעל תעשייתי.
+דרישות סף חובה:
+- תואר ראשון בהנדסת מכונות (B.Sc בלבד ממוסד אקדמי מוכר - לא הנדסאי)
+- ניסיון מוכח במתודולוגיות Lean ו-Six Sigma
+- ניהול תקציבי CAPEX ו-OPEX בהיקף נרחב
+- הסמכת ממונה בטיחות בעבודה מוסמך מטעם משרד העבודה`;
+    }
+
+    triggerAtsMatching();
+  }
+
+  function clearAtsInput() {
+    const inputEl = document.getElementById('atsJobInput');
+    if (inputEl) inputEl.value = '';
+    const sel = document.getElementById('atsJobSelector');
+    if (sel) sel.value = '';
+    triggerAtsMatching();
+  }
+
+  function triggerAtsMatching() {
+    const inputEl = document.getElementById('atsJobInput');
+    const jobText = inputEl ? inputEl.value : '';
+
+    const report = runAtsJobMatching(jobText, CANONICAL_CV_PROFILE);
+
+    // Update Percentage Match Gauge
+    const scoreValEl = document.getElementById('atsScoreValue');
+    const progressEl = document.getElementById('atsGaugeProgress');
+    const badgeEl = document.getElementById('atsMatchBadge');
+    const badgeTextEl = document.getElementById('atsMatchBadgeText');
+    const descEl = document.getElementById('atsScoreDescription');
+
+    const score = report.matchScore;
+    if (scoreValEl) scoreValEl.textContent = score + '%';
+
+    if (progressEl) {
+      const circ = 314.159;
+      const offset = circ - (score / 100) * circ;
+      progressEl.style.strokeDashoffset = offset;
+      if (score >= 80) {
+        progressEl.style.stroke = 'var(--dashboard-lime)';
+      } else if (score >= 65) {
+        progressEl.style.stroke = 'var(--dashboard-cyan)';
+      } else if (score >= 50) {
+        progressEl.style.stroke = 'var(--dashboard-gold)';
+      } else {
+        progressEl.style.stroke = '#f87171';
+      }
+    }
+
+    if (badgeEl && badgeTextEl) {
+      badgeEl.className = 'ats-match-level-badge';
+      if (!jobText.trim()) {
+        badgeEl.classList.add('level-neutral');
+        badgeTextEl.textContent = 'טרם נותחה משרה';
+      } else if (score >= 80) {
+        badgeEl.classList.add('level-high');
+        badgeTextEl.textContent = 'התאמה גבוהה (High Match)';
+      } else if (score >= 60) {
+        badgeEl.classList.add('level-med');
+        badgeTextEl.textContent = 'התאמה טובה (Good Match)';
+      } else if (score >= 45) {
+        badgeEl.classList.add('level-fair');
+        badgeTextEl.textContent = 'התאמה בינונית / חלקית';
+      } else {
+        badgeEl.classList.add('level-gap');
+        badgeTextEl.textContent = 'פער סף / התאמה נמוכה';
+      }
+    }
+
+    if (descEl) {
+      descEl.textContent = jobText.trim() ? report.summary : 'הזן תיאור משרה להפקת ציון התאמה משוקלל המבוסס על שערי סף סטטוטוריים, מילות מפתח ומבנה קו״ח.';
+    }
+
+    // Update KPIs
+    const kpiGates = document.getElementById('atsKpiGates');
+    if (kpiGates) {
+      kpiGates.textContent = `${report.hardGates.length} / 7`;
+    }
+
+    const totalMissing = (report.missingKeywords.methodologies.length +
+                          report.missingKeywords.financials.length +
+                          report.missingKeywords.systems.length +
+                          report.missingKeywords.energy.length);
+    const kpiKeywords = document.getElementById('atsKpiKeywords');
+    if (kpiKeywords) {
+      kpiKeywords.textContent = String(totalMissing);
+    }
+
+    const kpiStructural = document.getElementById('atsKpiStructural');
+    if (kpiStructural) {
+      kpiStructural.textContent = report.structuralCompliance.score + '%';
+    }
+
+    const gatesSummaryBadge = document.getElementById('atsGatesSummaryBadge');
+    if (gatesSummaryBadge) {
+      gatesSummaryBadge.textContent = `${report.hardGates.length} שערים זוהו במשרה`;
+    }
+
+    const keywordsBadge = document.getElementById('atsKeywordsCountBadge');
+    if (keywordsBadge) {
+      keywordsBadge.textContent = `${totalMissing} פערי מפתח`;
+    }
+
+    // Render Subcards
+    renderHardGates(report.hardGates, jobText);
+    renderKeywordTaxonomy(report.missingKeywords, report.matchedKeywords, jobText);
+    renderAtsStructuralChecklist(report.structuralCompliance);
+  }
+
+  function renderHardGates(triggeredGates, jobText) {
+    const listEl = document.getElementById('atsHardGatesList');
+    if (!listEl) return;
+
+    let html = '';
+    STATUTORY_HARD_GATES.forEach(gate => {
+      const activeMatch = (triggeredGates || []).find(g => g.id === gate.id);
+      const isTriggered = Boolean(activeMatch);
+      const status = activeMatch ? activeMatch.status : gate.candidate_status;
+      const evidence = activeMatch ? activeMatch.evidence : gate.candidate_evidence;
+      const note = activeMatch ? activeMatch.note : (gate.note_he || '');
+      let badgeClass = 'badge-notice';
+      let statusLabel = 'לתשומת לב / NOTICE';
+      let statusIcon = 'ph-info';
+
+      if (status === 'PASS') {
+        badgeClass = 'badge-pass';
+        statusLabel = 'תואם מלא / PASS';
+        statusIcon = 'ph-check-circle';
+      } else if (status === 'IN_PROGRESS') {
+        badgeClass = 'badge-in-progress';
+        statusLabel = 'במהלך לימודים / IN_PROGRESS';
+        statusIcon = 'ph-clock';
+      } else if (status === 'GAP') {
+        badgeClass = 'badge-gap';
+        statusLabel = 'פער סף / GAP';
+        statusIcon = 'ph-x-circle';
+      } else if (status === 'PASS_REFRESH_RECOMMENDED') {
+        badgeClass = 'badge-notice';
+        statusLabel = 'רענון שנתי נדרש';
+        statusIcon = 'ph-warning';
+      } else if (status === 'EVALUATE_PER_JOB') {
+        badgeClass = 'badge-notice';
+        statusLabel = 'בדיקה פרטנית לפי אתר';
+        statusIcon = 'ph-scales';
+      } else if (status === 'FAMILIARITY') {
+        badgeClass = 'badge-notice';
+        statusLabel = 'היכרות מעשית';
+        statusIcon = 'ph-info';
+      } else if (status === 'NOTICE') {
+        badgeClass = 'badge-notice';
+        statusLabel = 'יתרון / לתשומת לב';
+        statusIcon = 'ph-info';
+      }
+
+      const rowClass = `ats-gate-row ${isTriggered ? 'is-triggered' : ''} ${isTriggered && status === 'GAP' ? 'is-gap' : ''}`;
+
+      html += `
+        <div class="${rowClass}">
+          <div class="ats-gate-main">
+            <div class="ats-gate-name-wrap">
+              <i class="ph-duotone ${status === 'PASS' ? 'ph-shield-check' : (status === 'GAP' ? 'ph-warning-octagon' : 'ph-shield')}"></i>
+              <div>
+                <span class="ats-gate-name">${gate.name_he}</span>
+                <span class="ats-gate-subname">(${gate.name_en})</span>
+              </div>
+            </div>
+            <div class="ats-gate-badges">
+              ${isTriggered 
+                ? '<span class="ats-badge-trigger active"><i class="ph-bold ph-crosshair"></i> נדרש במשרה זו</span>' 
+                : '<span class="ats-badge-trigger"><i class="ph-bold ph-minus"></i> לא צוין במשרה</span>'}
+              <span class="ats-badge-status ${badgeClass}">
+                <i class="ph-bold ${statusIcon}"></i>
+                <span>${statusLabel}</span>
+              </span>
+            </div>
+          </div>
+          <div class="ats-gate-evidence">
+            <strong>ראיות מועמד:</strong> ${evidence}
+          </div>
+          ${note ? `<div class="ats-gate-note"><i class="ph-duotone ph-warning"></i> ${note}</div>` : ''}
+        </div>
+      `;
+    });
+
+    listEl.innerHTML = html;
+  }
+
+  function renderKeywordTaxonomy(missing, matched, jobText) {
+    const cats = ['methodologies', 'financials', 'systems', 'energy'];
+    cats.forEach(cat => {
+      const cap = cat.charAt(0).toUpperCase() + cat.slice(1);
+      const wrapEl = document.getElementById('atsKeywords' + cap);
+      if (!wrapEl) return;
+
+      const missingList = (missing && missing[cat]) || [];
+      const matchedList = (matched && matched[cat]) || [];
+
+      if (!jobText.trim() || (missingList.length === 0 && matchedList.length === 0)) {
+        wrapEl.innerHTML = '<span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו במשרה</span>';
+        return;
+      }
+
+      let html = '';
+      missingList.forEach(term => {
+        html += `
+          <span class="ats-keyword-tag missing" title="מונח חסר בקו״ח - מומלץ להוסיף">
+            <i class="ph-bold ph-warning-circle"></i>
+            <span>${term}</span>
+          </span>
+        `;
+      });
+
+      matchedList.forEach(term => {
+        html += `
+          <span class="ats-keyword-tag matched" title="מונח קיים ומתועד בקו״ח של עידו גל">
+            <i class="ph-bold ph-check"></i>
+            <span>${term}</span>
+          </span>
+        `;
+      });
+
+      wrapEl.innerHTML = html;
+    });
+  }
+
+  function renderAtsStructuralChecklist(structuralReport) {
+    const listEl = document.getElementById('atsRulesChecklist');
+    if (!listEl) return;
+
+    const rep = structuralReport || checkAtsStructuralCompliance();
+    const resultsMap = {};
+    (rep.rule_results || []).forEach(r => { resultsMap[r.rule_id] = r; });
+
+    let html = '';
+    ATS_STRUCTURAL_RULES.forEach(rule => {
+      const res = resultsMap[rule.rule_id] || { passed: true };
+      const isPass = Boolean(res.passed);
+
+      html += `
+        <div class="ats-rule-item ${isPass ? 'rule-pass' : 'rule-fail'}">
+          <div class="ats-rule-icon ${isPass ? 'pass' : 'fail'}">
+            <i class="ph-bold ${isPass ? 'ph-check' : 'ph-x'}"></i>
+          </div>
+          <div class="ats-rule-info">
+            <div class="ats-rule-title-row">
+              <span class="ats-rule-title">${rule.title_he}</span>
+              <span class="ats-card-badge ${isPass ? 'status-pass' : ''}">
+                ${isPass ? 'תואם תקן' : 'דורש תיקון (' + rule.severity + ')'}
+              </span>
+            </div>
+            <p class="ats-rule-desc">${rule.description_he}</p>
+          </div>
+        </div>
+      `;
+    });
+
+    listEl.innerHTML = html;
+
+    const statusBadge = document.getElementById('atsStructuralStatusBadge');
+    if (statusBadge) {
+      if (rep.passed) {
+        statusBadge.className = 'ats-card-badge status-pass';
+        statusBadge.innerHTML = '<i class="ph-duotone ph-shield-check"></i> <span>תואם מלא (0 בעיות)</span>';
+      } else {
+        statusBadge.className = 'ats-card-badge';
+        statusBadge.style.background = 'rgba(248,113,113,0.15)';
+        statusBadge.style.color = '#fca5a5';
+        statusBadge.style.borderColor = 'rgba(248,113,113,0.35)';
+        statusBadge.innerHTML = `<i class="ph-duotone ph-warning"></i> <span>${rep.issues.length} התראות מבנה</span>`;
+      }
+    }
+  }
+
+  let atsInitialized = false;
+  function initAtsModule() {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+    if (!document.getElementById('atsModuleContent') && !document.getElementById('atsJobSelector')) return;
+    populateAtsJobSelector();
+    if (!atsInitialized) {
+      renderHardGates([], '');
+      renderKeywordTaxonomy({ methodologies: [], financials: [], systems: [], energy: [] }, { methodologies: [], financials: [], systems: [], energy: [] }, '');
+      renderAtsStructuralChecklist(checkAtsStructuralCompliance());
+      atsInitialized = true;
+    }
+  }
+
+  /* ==========================================================================
+     CAREER STUDIO: MILESTONE 3 - AI WRITER, 3-MODE TONE SWITCHER & INDUSTRIAL TERMINOLOGY ENGINE
+     ========================================================================== */
+
+  const TONE_SWITCHER_PROFILES = {
+    technical: {
+      id: "technical",
+      label_he: "הנדסי / טכני",
+      icon: "ph-gear-six",
+      description_he: "מיקוד בפרמטרים הנדסיים, לחצים, ספיקות, חוק החשמל, יעילות תרמודינמית, כיול ומכשור.",
+      active_verbs: ["ניטרתי", "כיַילתי", "חישבתי", "ניתחתי", "אפיינתי", "התקנתי"],
+      active_verbs_en: ["Monitored", "Calibrated", "Calculated", "Analyzed", "Engineered", "Installed"],
+      bullet_transformation_formula: "[פועל הנדסי פעיל] + [מערכת/פרמטר טכני מדויק] + [תוצאה הנדסית כמותית/תקן]",
+      example_before: "עבדתי במשמרות בניטור גז ודאגתי שלא יהיו תקלות.",
+      example_after: "ניטרתי באופן רציף לחצי צנרת וספיקות גז במערך של 10+ תחנות PRMS, תוך זיהוי מיידי של סטיות לחץ מתחת ל-45 bar ומניעת תקלות הולכה."
+    },
+    operational: {
+      id: "operational",
+      label_he: "תפעולי / סמכות שטח",
+      icon: "ph-shield-check",
+      description_he: "מיקוד במשמרות 24/7, תגובה לחירום, ניהול משמרת לילה עצמאית, אפס השבתה ואכיפת בטיחות.",
+      active_verbs: ["הובלתי", "תפעלתי", "ניהלתי", "בלמתי", "אכפתי", "הכרעתי"],
+      active_verbs_en: ["Spearheaded", "Operated", "Managed", "Mitigated", "Enforced", "Resolved"],
+      bullet_transformation_formula: "[פועל פיקודי/תפעולי] + [תרחיש/מערך 24/7 בשטח] + [מדד בטיחות/רציפות תפקודית 100%]",
+      example_before: "הייתי אחראי על המשמרת בלילה ב-Energean.",
+      example_after: "שימשתי כגורם תפעולי עצמאי יחיד במשמרות לילה 24/7 במתקן אנרגיה רגיש, תוך ניהול תרחישי חירום וקבלת החלטות מהירות עם 100% רציפות אספקה ואפס תאונות LTI."
+    },
+    strategic: {
+      id: "strategic",
+      label_he: "אסטרטגי / ניהולי",
+      icon: "ph-trend-up",
+      description_he: "מיקוד בממשקים רב-מערכתיים (אסדה ימית, נתג״ז, לקוחות קצה), אופטימיזציית אספקה והכשרת צוותים בינלאומיים.",
+      active_verbs: ["סנכרנתי", "תיאמתי", "ייעלתי", "הכשרתי", "הטמעתי", "ניהלתי"],
+      active_verbs_en: ["Synchronized", "Coordinated", "Streamlined", "Trained", "Implemented", "Directed"],
+      bullet_transformation_formula: "[פועל מערכתי] + [ממשק בין-ארגוני/צוותי] + [השפעה עסקית, חיסכון או שיפור תהליך]",
+      example_before: "עשיתי נומינציות ודיברתי עם חברת החשמל ונתג״ז.",
+      example_after: "סנכרנתי באופן שוטף בקשות נומינציה מורכבות מול אסדת ההפקה הימית ונתג״ז, תוך הבטחת התאמה מלאה של 100% בין יכולת ההפקה לדרישות הלקוחות המסחריים ותחנות הכוח."
+    }
+  };
+
+  const ENERGY_DICTIONARY = [
+    {
+      term_en: "PRMS (Pressure Reduction and Metering Station)",
+      term_he: "תחנת הפחתת לחץ ומדידה (PRMS)",
+      acronym: "PRMS",
+      category: "gas",
+      category_he: "גז טבעי",
+      description_he: "מתקן להפחתת לחץ הגז הטבעי מצנרת הולכה (כ-65-80 bar) ללחץ חלוקה/צריכה ומדידה פיסקאלית מדויקת.",
+      snippet: "תחנות PRMS (הפחתת לחץ ומדידה)"
+    },
+    {
+      term_en: "Nomination / Re-nomination",
+      term_he: "בקשת הקצאת גז יומית ועדכון כמויות (נומינציה)",
+      acronym: "Nomination",
+      category: "gas",
+      category_he: "גז טבעי",
+      description_he: "תהליך מסחרי-תפעולי יומי לתזמון כמויות גז בין צרכנים, ספקים ורשת ההולכה הארצית.",
+      snippet: "בקשות Nomination ו-Re-nomination מסחריות"
+    },
+    {
+      term_en: "FPSO (Floating Production Storage and Offloading)",
+      term_he: "אסדת הפקה, אחסון ופריקה צפה (FPSO)",
+      acronym: "FPSO",
+      category: "gas",
+      category_he: "גז טבעי",
+      description_he: "אסדה צפה לטיפול בגז וקונדנסט בלב ים והזרמתו לצנרת החוף.",
+      snippet: "ממשק תפעולי מול אסדת הפקה ימית (FPSO)"
+    },
+    {
+      term_en: "INGL (Israel Natural Gas Lines)",
+      term_he: "נתג״ז (נתיבי הגז הטבעי לישראל)",
+      acronym: "INGL",
+      category: "gas",
+      category_he: "גז טבעי",
+      description_he: "החברה הממשלתית האחראית על רשת ההולכה הארצית של גז טבעי בלחץ גבוה.",
+      snippet: "תיאום הזרמה וממשקי לחץ מול נתג״ז"
+    },
+    {
+      term_en: "SCADA (Supervisory Control and Data Acquisition)",
+      term_he: "מערכת פיקוח, שליטה ורכישת נתונים (סקאדה)",
+      acronym: "SCADA",
+      category: "automation",
+      category_he: "אוטומציה ובקרה",
+      description_he: "ארכיטקטורת בקרה תעשייתית לניטור ופיקוח בזמן אמת על תהליכים, חיישנים ושסתומים.",
+      snippet: "מערכת SCADA תעשייתית לניטור 24/7"
+    },
+    {
+      term_en: "PLC (Programmable Logic Controller)",
+      term_he: "בקר לוגי מתוכנת (PLC)",
+      acronym: "PLC",
+      category: "automation",
+      category_he: "אוטומציה ובקרה",
+      description_he: "מחשב תעשייתי מוקשח לתפעול ובקרה אוטומטית של מכונות, משאבות ומערכות חירום.",
+      snippet: "בקרי PLC ומערכי I/O תעשייתיים"
+    },
+    {
+      term_en: "HMI (Human-Machine Interface)",
+      term_he: "ממשק אדם-מכונה (HMI)",
+      acronym: "HMI",
+      category: "automation",
+      category_he: "אוטומציה ובקרה",
+      description_he: "מסכי תצוגה גרפיים בחדרי בקרה המאפשרים למפעיל לקבל תמונת מצב ולשלוח פקודות למתקן.",
+      snippet: "מסכי HMI ולוחות פיקוד ובקרה"
+    },
+    {
+      term_en: "Bifacial PV Solar Panels",
+      term_he: "פאנלים סולאריים פוטו-וולטאיים דו-צדדיים (Bifacial)",
+      acronym: "Bifacial PV",
+      category: "renewables",
+      category_he: "אנרגיה מתחדשת",
+      description_he: "טכנולוגיה סולארית הקולטת קרינת שמש ישירה מקדימה וקרינה מוחזרת (אלבדו) מאחור לתוספת תפוקה של 10%-25%.",
+      snippet: "מערכות סולאריות Bifacial PV בעלות ניצולת גבוהה"
+    },
+    {
+      term_en: "Monofacial PV Solar Panels",
+      term_he: "פאנלים סולאריים חד-צדדיים (Monofacial)",
+      acronym: "Monofacial PV",
+      category: "renewables",
+      category_he: "אנרגיה מתחדשת",
+      description_he: "קולטים סולאריים סטנדרטיים הקולטים קרינה מהצד העליון בלבד.",
+      snippet: "מערכי Monofacial PV מסורתיים"
+    },
+    {
+      term_en: "BESS (Battery Energy Storage Systems)",
+      term_he: "מערכות אגירת אנרגיה בסוללות (BESS)",
+      acronym: "BESS",
+      category: "renewables",
+      category_he: "אנרגיה מתחדשת",
+      description_he: "מתקני אגירה מבוססי סוללות ליתיום לייצוב רשת החשמל, ויסות שיאי ביקוש (Peak Shaving) ואגירת אנרגיה סולארית.",
+      snippet: "מתקני אגירת אנרגיה בסוללות (BESS)"
+    },
+    {
+      term_en: "Inverter",
+      term_he: "ממיר מתח סולארי (Inverter)",
+      acronym: "Inverter",
+      category: "electrical",
+      category_he: "חשמל",
+      description_he: "רכיב אלקטרוניקת הספק הממיר זרם ישר (DC) מהפאנלים הסולאריים לזרם חילופין (AC) המסונכרן לרשת החשמל.",
+      snippet: "ממירי מתח סולאריים מרכזיים ומבוזרים (String Inverters)"
+    },
+    {
+      term_en: "Transformer",
+      term_he: "שנאי מתח (Transformer)",
+      acronym: "Transformer",
+      category: "electrical",
+      category_he: "חשמל",
+      description_he: "מכשיר אלקטרומגנטי להעלאת או הורדת מתח חשמלי לצורך חיבור לרשת ההולכה והחלוקה.",
+      snippet: "שנאי מתח גבוה להזנת רשת"
+    },
+    {
+      term_en: "High Voltage (HV)",
+      term_he: "מתח גבוה (מתקני חשמל מעל 1,000V)",
+      acronym: "HV",
+      category: "electrical",
+      category_he: "חשמל",
+      description_he: "מערכות ומתקני חשמל הפועלים במתח העולה על 1,000 וולט AC לפי חוק החשמל ותקנות הבטיחות.",
+      snippet: "מערכות מתח גבוה (High Voltage)"
+    },
+    {
+      term_en: "Low Voltage (LV)",
+      term_he: "מתח נמוך (חוק החשמל)",
+      acronym: "LV",
+      category: "electrical",
+      category_he: "חשמל",
+      description_he: "מתקני חשמל הפועלים עד 1,000 וולט AC, תחום הליבה של רישיון חשמלאי מוסמך.",
+      snippet: "לוחות ורשתות מתח נמוך לפי חוק החשמל"
+    },
+    {
+      term_en: "LTI (Lost Time Incident)",
+      term_he: "תאונת עבודה עם אובדן ימי עבודה (מדד בטיחות LTI)",
+      acronym: "LTI",
+      category: "safety",
+      category_he: "בטיחות ו-HSE",
+      description_he: "מדד בטיחות בינלאומי מוביל (Zero LTI) המודד אירועי פציעה שגרמו להיעדרות מעבודה.",
+      snippet: "עמידה ביעד בטיחות של 0 תאונות LTI"
+    },
+    {
+      term_en: "Zero Harm / Zero Incidents",
+      term_he: "אפס תקריות בטיחות ורציפות תפקודית",
+      acronym: "Zero Harm",
+      category: "safety",
+      category_he: "בטיחות ו-HSE",
+      description_he: "תפיסת תרבות בטיחות תעשייתית השואפת לאפס פגיעות בחיי אדם, בסביבה ובמתקן.",
+      snippet: "הובלת תרבות בטיחות ואפס אירועים (Zero Harm)"
+    },
+    {
+      term_en: "ESD (Emergency Shutdown System)",
+      term_he: "מערכת השבתת חירום אוטומטית (ESD)",
+      acronym: "ESD",
+      category: "safety",
+      category_he: "בטיחות ו-HSE",
+      description_he: "מערך בטיחות בלתי תלוי לסגירת מגופי חירום ובידוד מקטעי צנרת במקרה של דליפה או זינוק לחץ.",
+      snippet: "מערכות השבתת חירום (ESD) ובלימת תקלות"
+    },
+    {
+      term_en: "Telemetry",
+      term_he: "טלמטריה (שידור נתוני חיישנים בזמן אמת)",
+      acronym: "Telemetry",
+      category: "automation",
+      category_he: "אוטומציה ובקרה",
+      description_he: "מערך איסוף ושידור נתוני מדידה מחיישני שטח (לחץ, טמפרטורה, ספיקה) לעמדת הפיקוח המרכזית.",
+      snippet: "ערוצי טלמטריה ושידור נתוני שטח בזמן אמת"
+    },
+    {
+      term_en: "LOTO (Lockout / Tagout)",
+      term_he: "נעילה ותיוג בטיחותי (LOTO)",
+      acronym: "LOTO",
+      category: "safety",
+      category_he: "בטיחות ו-HSE",
+      description_he: "נוהל בטיחות מחייב לבידוד אנרגיה מכנית וחשמלית בעת טיפול ותחזוקת ציוד מסוכן.",
+      snippet: "אכיפת נוהל נעילה ותיוג (LOTO) קפדני"
+    },
+    {
+      term_en: "DCS (Distributed Control System)",
+      term_he: "מערכת בקרה מבוזרת (DCS)",
+      acronym: "DCS",
+      category: "automation",
+      category_he: "אוטומציה ובקרה",
+      description_he: "מערכת בקרה מרובת לולאות עם בקרים מבוזרים ייעודיים לתהליכים תעשייתיים רציפים.",
+      snippet: "אינטגרציה וניטור במערכות בקרה מבוזרות (DCS)"
+    }
+  ];
+
+  function searchEnergyDictionary(query, category) {
+    const q = (query || '').trim().toLowerCase();
+    const cat = (category || 'all').trim().toLowerCase();
+
+    return ENERGY_DICTIONARY.filter(item => {
+      const matchCat = (cat === 'all' || item.category.toLowerCase() === cat);
+      if (!matchCat) return false;
+      if (!q) return true;
+
+      return (
+        item.term_en.toLowerCase().includes(q) ||
+        item.term_he.toLowerCase().includes(q) ||
+        item.acronym.toLowerCase().includes(q) ||
+        item.description_he.toLowerCase().includes(q)
+      );
+    });
+  }
+
+  function transformBulletTone(rawBullet, toneMode) {
+    const raw = (rawBullet || '').trim();
+    if (!raw) return '';
+
+    const mode = (toneMode || 'technical').toLowerCase();
+
+    // Check for standard presets from domain specifications
+    const isGasMonitorPreset = /(?:עבדתי\s+במשמרות\s+בניטור\s+גז|ניטור\s+גז\s+ודאגתי)/i.test(raw);
+    const isNightShiftPreset = /(?:הייתי\s+אחראי\s+על\s+המשמרת\s+בלילה|משמרת\s+בלילה\s+ב-Energean|משמרת\s+בלילה)/i.test(raw);
+    const isNominationPreset = /(?:עשיתי\s+נומינציות|דיברתי\s+עם\s+חברת\s+החשמל\s+ונתג״ז|נומינציות\s+ונתג״ז)/i.test(raw);
+    const isSolarPvPreset = /(?:טיפלתי\s+במערכות\s+סולאריות|התקנתי\s+פאנלים|פאנלים\s+סולאריים)/i.test(raw);
+
+    // English presets
+    const isEnNightShiftPreset = /(?:responsible\s+for\s+night\s+shifts|monitored\s+gas\s+pressures)/i.test(raw);
+
+    if (isGasMonitorPreset) {
+      if (mode === 'technical') {
+        return "ניטרתי באופן רציף לחצי צנרת וספיקות גז במערך של 10+ תחנות PRMS, תוך זיהוי מיידי של סטיות לחץ מתחת ל-45 bar ומניעת תקלות הולכה.";
+      } else if (mode === 'operational') {
+        return "תפעלתי באופן רציף משמרות בקרה 24/7 במערך תחנות PRMS, תוך בלימת אירועי לחץ חריגים והבטחת 100% רציפות אספקה ללא תקלות.";
+      } else {
+        return "תיאמתי באופן שוטף ממשקי הולכת גז וניטור ספיקות מול נתג״ז ואסדת ההפקה, תוך הבטחת אספקה רציפה ומדויקת ללקוחות הקצה.";
+      }
+    }
+
+    if (isNightShiftPreset) {
+      if (mode === 'operational') {
+        return "שימשתי כגורם תפעולי עצמאי יחיד במשמרות לילה 24/7 במתקן אנרגיה רגיש, תוך ניהול תרחישי חירום וקבלת החלטות מהירות עם 100% רציפות אספקה ואפס תאונות LTI.";
+      } else if (mode === 'technical') {
+        return "ניטרתי באופן רציף לחצים וספיקות במשמרות לילה עצמאיות 24/7 במתקן אנרגיה רגיש, תוך כיול פרמטרים הנדסיים ושמירה על יציבות הידראולית מלאה.";
+      } else {
+        return "ניהלתי תיאומים רב-ממשקיים מורכבים במשמרות לילה עצמאיות 24/7 מול אסדת ההפקה הימית ונתג״ז, תוך מניעת צווארי בקבוק באספקת הגז.";
+      }
+    }
+
+    if (isNominationPreset) {
+      if (mode === 'strategic') {
+        return "סנכרנתי באופן שוטף בקשות נומינציה מורכבות מול אסדת ההפקה הימית ונתג״ז, תוך הבטחת התאמה מלאה של 100% בין יכולת ההפקה לדרישות הלקוחות המסחריים ותחנות הכוח.";
+      } else if (mode === 'technical') {
+        return "חישבתי וניתחתי כמויות נומינציה שעתית ויומית במערכות SCADA, תוך אופטימיזציית לחצי הזרמה בצנרת והפחתת סטיות מדידה מתחת ל-0.5%.";
+      } else {
+        return "תפעלתי את תהליכי ה-Nomination וה-Re-nomination תחת לוחות זמנים מבצעיים הדוקים, תוך מניעת קנסות חריגה ושמירה על 100% רציפות אספקה.";
+      }
+    }
+
+    if (isSolarPvPreset) {
+      if (mode === 'technical') {
+        return "אפיינתי וכיַילתי מערכי פאנלים סולאריים מתקדמים מסוג Bifacial PV וממירי מתח, תוך השגת תוספת נצילות שנתית של מעל 22% ועמידה מלאה בחוק החשמל.";
+      } else if (mode === 'operational') {
+        return "הובלתי התקנות שטח מורכבות של מערכי פאנלים סולאריים וממירי מתח, תוך הקפדה מחמירה על נהלי עבודה בגובה ואפס תאונות בטיחות.";
+      } else {
+        return "ייעלתי תהליכי הקמה ותפעול של שדות סולאריים מסחריים (Bifacial PV), תוך סנכרון ממשקי קבלנים וחיבור מוצלח לרשת החשמל הארצית.";
+      }
+    }
+
+    if (isEnNightShiftPreset) {
+      if (mode === 'operational') {
+        return "Spearheaded 24/7 solo night shift operations at a mission-critical energy facility, mitigating emergency scenarios and securing 100% supply continuity with 0 LTI incidents.";
+      } else if (mode === 'technical') {
+        return "Monitored pipeline pressures and flow rates across 10+ PRMS stations via SCADA, detecting pressure deviations below 45 bar and preventing transit faults.";
+      } else {
+        return "Synchronized cross-functional operations between offshore FPSO and the national gas grid (INGL), maintaining 100% nomination compliance.";
+      }
+    }
+
+    // Dynamic transformation for arbitrary input:
+    const isEnglish = /^[A-Za-z0-9\s.,;:'"()\-–—/%]+$/.test(raw);
+
+    // Strip passive phrases
+    let cleaned = raw;
+    if (isEnglish) {
+      cleaned = cleaned.replace(/^(?:I\s+was\s+responsible\s+for|responsible\s+for|worked\s+(?:on|with|at)|handled|took\s+part\s+in|helped\s+with|assisted\s+in)\s*/i, '');
+    } else {
+      cleaned = cleaned.replace(/^(?:הייתי\s+אחראי(?:\s+על|\s+ל)?|עבדתי\s+(?:ב|עם)|עשיתי|טיפלתי\s+ב|אחראי\s+(?:על|ל)|אחריות\s+על|ביצעתי|דאגתי\s+ש|לקחתי\s+חלק\s+ב|עזרתי\s+ב)\s*/i, '');
+    }
+    cleaned = cleaned.trim();
+    if (cleaned.endsWith('.')) cleaned = cleaned.slice(0, -1);
+
+    // Identify domain context
+    const hasGas = /(?:גז|לחץ|ספיק|צנרת|prms|נתג|הפק|אסד|gas|pressure|flow|pipeline)/i.test(raw);
+    const hasSolar = /(?:סולאר|פאנל|שמש|pv|bifacial|חשמל|ממיר|שנאי|inverter|solar|bess|battery)/i.test(raw);
+    const hasAutomation = /(?:סקאד|בקר|scada|plc|hmi|אוטומצי|מוקד|שליט)/i.test(raw);
+    const hasNomination = /(?:נומינצי|הקצא|מסחר|לקוח|nomination|commercial)/i.test(raw);
+
+    if (isEnglish) {
+      if (mode === 'technical') {
+        const sys = hasGas ? "PRMS and SCADA telemetry" : (hasSolar ? "Bifacial PV arrays and central inverters" : "control systems and electrical instrumentation");
+        const metric = hasGas ? "maintaining operating pressure at 45-65 bar and eliminating telemetry drift" : "achieving >22% energy conversion efficiency and full statutory code compliance";
+        return `Monitored and calibrated ${cleaned || sys}, ${metric}.`;
+      } else if (mode === 'operational') {
+        const metric = "securing 100% supply continuity and 0 LTI safety incidents";
+        return `Spearheaded 24/7 mission-critical operations for ${cleaned || "field energy infrastructure"}, ${metric}.`;
+      } else {
+        const interf = hasNomination ? "commercial nomination workflows and grid balance" : "stakeholder and technical contractor interfaces";
+        return `Synchronized and optimized ${cleaned || interf}, achieving 100% contractual delivery compliance.`;
+      }
+    } else {
+      if (mode === 'technical') {
+        if (hasSolar) {
+          return `אפיינתי וכיַילתי ${cleaned || "מערכי פאנלים סולאריים מסוג Bifacial PV וממירי מתח"}, תוך אופטימיזציית נצילות של מעל 22% ועמידה מלאה בחוק החשמל.`;
+        } else if (hasNomination) {
+          return `חישבתי וניתחתי ${cleaned || "כמויות נומינציה שעתית ויומית במערכות SCADA"}, תוך אופטימיזציית ספיקות בצנרת והפחתת סטיות מתחת ל-0.5%.`;
+        } else {
+          return `ניטרתי וכיַילתי באופן רציף ${cleaned || "לחצי צנרת וספיקות גז במערך תחנות PRMS ו-SCADA"}, תוך שמירה קפדנית על לחץ יעד של 45-65 bar ומניעת תקלות הולכה.`;
+        }
+      } else if (mode === 'operational') {
+        return `שימשתי כגורם תפעולי מוביל במשמרות 24/7 לניהול ${cleaned || "מערכות אנרגיה ותשתיות שטח קריטיות"}, תוך קבלת החלטות מהירות בחירום והשגת 100% רציפות אספקה עם אפס תאונות LTI.`;
+      } else {
+        if (hasGas || hasNomination) {
+          return `סנכרנתי ותיאמתי ${cleaned || "ממשקי הולכת גז ובקשות נומינציה מורכבות"} מול נתג״ז ואסדת ההפקה הימית, תוך הבטחת התאמה מלאה של 100% לדרישות הלקוחות המסחריים.`;
+        } else {
+          return `ייעלתי והובלתי ${cleaned || "תהליכים וממשקים תפעוליים חוצי-ארגונים"}, תוך קיצור זמני תגובה והבטחת 100% עמידה ביעדי השירות והתקציב.`;
+        }
+      }
+    }
+  }
+
+  function validateBulletGrammar(bulletText) {
+    const raw = (bulletText || '').trim();
+    if (!raw) {
+      return {
+        score: 0,
+        hasActiveVerb: false,
+        hasMetric: false,
+        hasScope: false,
+        detectedTone: 'neutral',
+        suggestions: ['הזן ניסוח נקודת קו״ח לניתוח תחבירי ומדדי איכות.']
+      };
+    }
+
+    const suggestions = [];
+
+    // 1. Check for Active Action Verb at start
+    const firstWord = raw.split(/[\s,.:;]+/)[0] || '';
+    const activeVerbsHe = [
+      'ניטרתי', 'כיַילתי', 'כיילתי', 'חישבתי', 'ניתחתי', 'אפיינתי', 'התקנתי', 'מיפיתי', 'תכננתי', 'תיכננתי', 'שדרגתי', 'בדקתי',
+      'הובלתי', 'תפעלתי', 'ניהלתי', 'בלמתי', 'אכפתי', 'הכרעתי', 'שימשתי', 'פיקדתי', 'ייצבתי', 'חילצתי', 'הגנתי', 'הפעלתי',
+      'סנכרנתי', 'תיאמתי', 'ייעלתי', 'הכשרתי', 'הטמעתי', 'יזמתי', 'הסדרתי', 'גיבשתי', 'הנהגתי', 'בניתי', 'פיתחתי', 'הקמתי'
+    ];
+    const activeVerbsEn = [
+      'monitored', 'calibrated', 'calculated', 'analyzed', 'engineered', 'installed', 'designed', 'tested', 'upgraded',
+      'spearheaded', 'operated', 'managed', 'mitigated', 'enforced', 'resolved', 'stabilized', 'directed', 'commanded',
+      'synchronized', 'coordinated', 'streamlined', 'trained', 'implemented', 'pioneered', 'negotiated', 'formulated'
+    ];
+
+    const passivePhrasesHe = ['הייתי', 'עבדתי', 'עשיתי', 'טיפלתי', 'לקחתי', 'עזרתי', 'אחראי', 'אחריות'];
+    const passivePhrasesEn = ['i was', 'responsible', 'worked', 'helped', 'assisted'];
+
+    const isPassiveStartHe = passivePhrasesHe.some(p => raw.startsWith(p));
+    const isPassiveStartEn = passivePhrasesEn.some(p => raw.toLowerCase().startsWith(p));
+    const isPassive = isPassiveStartHe || isPassiveStartEn;
+
+    const hasActiveVerb = !isPassive && (
+      activeVerbsHe.includes(firstWord) ||
+      activeVerbsEn.includes(firstWord.toLowerCase()) ||
+      raw.startsWith('שימשתי כ')
+    );
+
+    // 2. Check for Quantified Metric / HSE
+    const metricRegex = /(?:\d+[\d.,]*\s*(?:%|bar|MW|kW|V|Volt|kV|LTI|hr|hours|שעות|משמרות|שנים|שנה|חודשים|חודש|תחנות|פאנלים|מגה-ואט|בר|אחוז|ש״ח|₪|\$|EUR|ק״מ|מטר|דקות|שניות))|\b24\/7\b|\b100%\b|\b0\s*(?:LTI|תאונות|תקלות|נפגעים|אירועי בטיחות)|(?:אפס\s*(?:תאונות|תקלות|נפגעים|השבתה))|\bzero\s*(?:harm|lti|incidents|downtime)\b/i;
+    const hasMetric = metricRegex.test(raw);
+
+    // 3. Check for System / Scope Specificity
+    const scopeRegex = /(?:PRMS|SCADA|PLC|HMI|DCS|BESS|PV|Bifacial|Monofacial|Inverter|Transformer|HV|LV|ESD|INGL|נתג״ז|FPSO|SAP|Excel|Modbus|TIA|ASME|ISO|חוק החשמל|משאבות|שסתומים|טורבינות|צנרת|ממסרים|נומינצי|נומינציה|רשת החשמל|אסדת הפקה|מתקן אנרגיה|רחפנים)/i;
+    const hasScope = scopeRegex.test(raw);
+
+    // 4. Tone Detection
+    let detectedTone = 'neutral';
+    const techWords = /(?:PRMS|SCADA|PLC|bar|לחץ|ספיקה|Bifacial|Inverter|כיול|הנדס|תרמודינמ|חוק החשמל|חישבתי|ניטרתי|מתח)/i;
+    const operWords = /(?:24\/7|משמרת|לילה|חירום|LTI|בטיחות|תפעלתי|הובלתי|הכרעתי|רציפות|בלמתי|אפס תאונות)/i;
+    const stratWords = /(?:נומינצי|נתג״ז|FPSO|אסדה|סנכרנתי|תיאמתי|ייעלתי|הכשרתי|הסכם|בינלאומי|לקוחות|מסחרי)/i;
+
+    let techMatches = (raw.match(new RegExp(techWords, 'gi')) || []).length;
+    let operMatches = (raw.match(new RegExp(operWords, 'gi')) || []).length;
+    let stratMatches = (raw.match(new RegExp(stratWords, 'gi')) || []).length;
+
+    if (techMatches > operMatches && techMatches > stratMatches) {
+      detectedTone = 'technical';
+    } else if (operMatches >= techMatches && operMatches > stratMatches) {
+      detectedTone = 'operational';
+    } else if (stratMatches > 0 && stratMatches >= techMatches && stratMatches >= operMatches) {
+      detectedTone = 'strategic';
+    }
+
+    // 5. Score computation
+    let score = 20; // Base score for non-empty input
+    if (hasActiveVerb) score += 30;
+    if (hasMetric) score += 30;
+    if (hasScope) score += 20;
+
+    if (isPassive) {
+      score = Math.max(10, score - 20);
+      suggestions.push("החלף ניסוח סביל ('הייתי אחראי' / 'עבדתי') בפועל פעיל בזמן עבר בראש המשפט (כגון ניטרתי, הובלתי, סנכרנתי).");
+    } else if (!hasActiveVerb) {
+      suggestions.push("פתח את המשפט בפועל פעיל בזמן עבר המדגיש את תרומתך האישית (לדוגמה: ניטרתי, הובלתי, ייעלתי).");
+    }
+
+    if (!hasMetric) {
+      suggestions.push("הוסף מדד כמותי או יעד בטיחות/תפעול מוגדר (כגון 24/7, 0 תאונות LTI, 100% רציפות אספקה, או ערכי לחץ ב-bar).");
+    }
+
+    if (!hasScope) {
+      suggestions.push("ציין תשתית, מערכת או מתקן תעשייתי ספציפי (לדוגמה: תחנות PRMS, מערכת SCADA, פאנלי Bifacial PV, או נתג״ז).");
+    }
+
+    if (suggestions.length === 0) {
+      suggestions.push("מבנה הישג מצוין: פועל פעיל, תשתית הנדסית מדויקת ומדד כמותי/HSE מוגדר היטב.");
+    }
+
+    score = Math.min(100, Math.max(0, score));
+
+    return {
+      score,
+      hasActiveVerb,
+      hasMetric,
+      hasScope,
+      detectedTone,
+      suggestions
+    };
+  }
+
+  let currentWriterTone = 'technical';
+  let currentDictCategory = 'all';
+  let writerInitialized = false;
+
+  function setWriterToneMode(mode) {
+    if (!TONE_SWITCHER_PROFILES[mode]) return;
+    currentWriterTone = mode;
+
+    if (typeof document === 'undefined') return;
+
+    ['btnToneTechnical', 'btnToneOperational', 'btnToneStrategic'].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) {
+        const isTarget = (id === `btnTone${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
+        btn.classList.toggle('active', isTarget);
+        btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+      }
+    });
+
+    updateWriterToneCard(mode);
+
+    // If input already has text, re-transform
+    const inputEl = document.getElementById('writerRawInput');
+    if (inputEl && inputEl.value.trim()) {
+      triggerBulletTransform();
+    }
+  }
+
+  function updateWriterToneCard(mode) {
+    const profile = TONE_SWITCHER_PROFILES[mode];
+    if (!profile) return;
+
+    const iconEl = document.getElementById('writerToneActiveIcon');
+    const titleEl = document.getElementById('writerToneActiveTitle');
+    const descEl = document.getElementById('writerToneActiveDesc');
+    const verbsChipsEl = document.getElementById('writerActiveVerbsChips');
+
+    if (iconEl) iconEl.className = `ph-duotone ${profile.icon}`;
+    if (titleEl) titleEl.textContent = `סגנון ${profile.label_he}`;
+    if (descEl) descEl.textContent = profile.description_he;
+    if (verbsChipsEl) {
+      verbsChipsEl.innerHTML = profile.active_verbs
+        .map(v => `<span class="writer-verb-chip">${v}</span>`)
+        .join('');
+    }
+  }
+
+  function onWriterInputChanged() {
+    const inputEl = document.getElementById('writerRawInput');
+    const countEl = document.getElementById('writerCharCount');
+    if (!inputEl) return;
+    const len = inputEl.value.length;
+    if (countEl) countEl.textContent = `${len} תווים`;
+  }
+
+  function loadWriterSample(sampleKey) {
+    const inputEl = document.getElementById('writerRawInput');
+    if (!inputEl) return;
+
+    const samples = {
+      gas_monitor: "עבדתי במשמרות בניטור גז ודאגתי שלא יהיו תקלות.",
+      night_shift: "הייתי אחראי על המשמרת בלילה ב-Energean ודאגתי שלא יהיו תקלות.",
+      nomination: "עשיתי נומינציות ודיברתי עם חברת החשמל ונתג״ז.",
+      solar_pv: "טיפלתי במערכות סולאריות והתקנתי פאנלים."
+    };
+
+    if (samples[sampleKey]) {
+      inputEl.value = samples[sampleKey];
+      onWriterInputChanged();
+      triggerBulletTransform();
+    }
+  }
+
+  function clearWriterInput() {
+    const inputEl = document.getElementById('writerRawInput');
+    const outputEl = document.getElementById('writerTransformedOutput');
+    if (inputEl) inputEl.value = '';
+    onWriterInputChanged();
+    if (outputEl) {
+      outputEl.innerHTML = '<span class="writer-output-placeholder">ההישג המשודרג יוצג כאן לאחר לחיצה על "שדרג לסגנון נבחר"...</span>';
+    }
+    renderGrammarAnalysis(validateBulletGrammar(''));
+  }
+
+  function triggerBulletTransform() {
+    const inputEl = document.getElementById('writerRawInput');
+    const outputEl = document.getElementById('writerTransformedOutput');
+    if (!inputEl || !outputEl) return;
+
+    const raw = inputEl.value.trim();
+    if (!raw) {
+      outputEl.innerHTML = '<span class="writer-output-placeholder">נא להזין ניסוח נקודת קו״ח...</span>';
+      renderGrammarAnalysis(validateBulletGrammar(''));
+      return;
+    }
+
+    const transformed = transformBulletTone(raw, currentWriterTone);
+    outputEl.textContent = transformed;
+
+    const analysis = validateBulletGrammar(transformed);
+    renderGrammarAnalysis(analysis);
+  }
+
+  function triggerGrammarValidation() {
+    const inputEl = document.getElementById('writerRawInput');
+    const outputEl = document.getElementById('writerTransformedOutput');
+    if (!inputEl) return;
+
+    const textToValidate = (outputEl && outputEl.textContent && !outputEl.querySelector('.writer-output-placeholder'))
+      ? outputEl.textContent.trim()
+      : inputEl.value.trim();
+
+    const analysis = validateBulletGrammar(textToValidate);
+    renderGrammarAnalysis(analysis);
+  }
+
+  function renderGrammarAnalysis(analysis) {
+    if (typeof document === 'undefined') return;
+
+    const scoreBadge = document.getElementById('grammarScoreBadge');
+    if (scoreBadge) {
+      scoreBadge.textContent = `${analysis.score} / 100`;
+      scoreBadge.className = 'writer-score-badge';
+      if (analysis.score >= 80) scoreBadge.classList.add('score-high');
+      else if (analysis.score >= 50) scoreBadge.classList.add('score-mid');
+      else if (analysis.score > 0) scoreBadge.classList.add('score-low');
+      else scoreBadge.classList.add('score-neutral');
+    }
+
+    const indVerb = document.getElementById('indActiveVerb');
+    if (indVerb) {
+      indVerb.className = `writer-indicator-item ${analysis.hasActiveVerb ? 'pass' : (analysis.score > 0 ? 'fail' : '')}`;
+      indVerb.innerHTML = `<i class="ph-duotone ${analysis.hasActiveVerb ? 'ph-check-circle' : 'ph-circle'}"></i> <span>פועל פעיל בזמן עבר</span>`;
+    }
+
+    const indMetric = document.getElementById('indMetric');
+    if (indMetric) {
+      indMetric.className = `writer-indicator-item ${analysis.hasMetric ? 'pass' : (analysis.score > 0 ? 'fail' : '')}`;
+      indMetric.innerHTML = `<i class="ph-duotone ${analysis.hasMetric ? 'ph-check-circle' : 'ph-circle'}"></i> <span>מדד כמותי / בטיחות HSE</span>`;
+    }
+
+    const indScope = document.getElementById('indScope');
+    if (indScope) {
+      indScope.className = `writer-indicator-item ${analysis.hasScope ? 'pass' : (analysis.score > 0 ? 'fail' : '')}`;
+      indScope.innerHTML = `<i class="ph-duotone ${analysis.hasScope ? 'ph-check-circle' : 'ph-circle'}"></i> <span>תשתית / מערכת ספציפית</span>`;
+    }
+
+    const indTone = document.getElementById('indTone');
+    const indToneText = document.getElementById('indToneText');
+    if (indToneText) {
+      const toneLabels = {
+        technical: 'סגנון: הנדסי / טכני',
+        operational: 'סגנון: תפעולי / שטח',
+        strategic: 'סגנון: אסטרטגי / ניהולי',
+        neutral: 'סגנון: טרם נותח'
+      };
+      indToneText.textContent = toneLabels[analysis.detectedTone] || 'סגנון: ניטרלי';
+    }
+
+    const suggestionsList = document.getElementById('grammarSuggestionsList');
+    if (suggestionsList) {
+      if (!analysis.suggestions || analysis.suggestions.length === 0) {
+        suggestionsList.innerHTML = '<li class="writer-suggestion-placeholder">אין הערכות לניסוח הנוכחי.</li>';
+      } else {
+        suggestionsList.innerHTML = analysis.suggestions
+          .map(s => `<li>${s}</li>`)
+          .join('');
+      }
+    }
+  }
+
+  function copyTransformedBullet() {
+    const outputEl = document.getElementById('writerTransformedOutput');
+    if (!outputEl) return;
+    const txt = outputEl.textContent.trim();
+    if (!txt || outputEl.querySelector('.writer-output-placeholder')) return;
+
+    if (navigator && navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      navigator.clipboard.writeText(txt).catch(() => {});
+    }
+
+    const btn = document.getElementById('btnCopyBullet');
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="ph-duotone ph-check"></i> <span>הועתק!</span>';
+      setTimeout(() => { btn.innerHTML = orig; }, 1800);
+    }
+  }
+
+  function applyBulletToCv() {
+    const outputEl = document.getElementById('writerTransformedOutput');
+    if (!outputEl) return;
+    const txt = outputEl.textContent.trim();
+    if (!txt || outputEl.querySelector('.writer-output-placeholder')) return;
+
+    const btn = document.getElementById('btnApplyToCv');
+    if (btn) {
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="ph-duotone ph-check-circle"></i> <span>הוחל בהצלחה!</span>';
+      setTimeout(() => { btn.innerHTML = orig; }, 2000);
+    }
+  }
+
+  function renderEnergyDictionary(terms) {
+    const gridEl = document.getElementById('dictCardsGrid');
+    const counterEl = document.getElementById('dictTermsCount');
+    if (!gridEl) return;
+
+    if (counterEl) counterEl.textContent = `${terms.length} מונחים`;
+
+    if (terms.length === 0) {
+      gridEl.innerHTML = '<div class="ats-empty-tag">לא נמצאו מונחים תואמים לחיפוש.</div>';
+      return;
+    }
+
+    const catClassMap = {
+      gas: 'cat-gas',
+      renewables: 'cat-renewables',
+      electrical: 'cat-electrical',
+      automation: 'cat-automation',
+      safety: 'cat-safety'
+    };
+
+    gridEl.innerHTML = terms.map(t => {
+      const catClass = catClassMap[t.category] || 'cat-automation';
+      const safeSnippet = t.snippet.replace(/'/g, "\\'");
+      return `
+        <div class="writer-dict-card" onclick="insertDictionaryTerm('${safeSnippet}')">
+          <div class="writer-dict-card-top">
+            <span class="writer-dict-card-term-en">${t.acronym}</span>
+            <span class="writer-dict-card-cat ${catClass}">${t.category_he}</span>
+          </div>
+          <div class="writer-dict-card-term-he">${t.term_he}</div>
+          <div class="writer-dict-card-desc">${t.description_he}</div>
+          <div class="writer-dict-card-bottom">
+            <span class="writer-dict-card-cat ${catClass}">${t.category_he}</span>
+            <button type="button" class="writer-dict-insert-btn" onclick="event.stopPropagation(); insertDictionaryTerm('${safeSnippet}')">
+              <i class="ph-duotone ph-arrow-up-right"></i>
+              <span>שלב בטקסט</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function filterDictionaryCategory(category) {
+    currentDictCategory = category || 'all';
+
+    if (typeof document === 'undefined') return;
+
+    const buttons = document.querySelectorAll('.writer-dict-cat-btn');
+    buttons.forEach(btn => {
+      const cat = btn.getAttribute('data-category');
+      btn.classList.toggle('active', cat === currentDictCategory);
+    });
+
+    const searchInput = document.getElementById('dictSearchInput');
+    const q = searchInput ? searchInput.value : '';
+    const filtered = searchEnergyDictionary(q, currentDictCategory);
+    renderEnergyDictionary(filtered);
+  }
+
+  function onDictSearchInputChanged() {
+    const searchInput = document.getElementById('dictSearchInput');
+    const clearBtn = document.getElementById('btnDictClearSearch');
+    if (!searchInput) return;
+
+    const q = searchInput.value;
+    if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+
+    const filtered = searchEnergyDictionary(q, currentDictCategory);
+    renderEnergyDictionary(filtered);
+  }
+
+  function clearDictSearch() {
+    const searchInput = document.getElementById('dictSearchInput');
+    const clearBtn = document.getElementById('btnDictClearSearch');
+    if (searchInput) searchInput.value = '';
+    if (clearBtn) clearBtn.style.display = 'none';
+    const filtered = searchEnergyDictionary('', currentDictCategory);
+    renderEnergyDictionary(filtered);
+  }
+
+  function insertDictionaryTerm(snippet) {
+    const inputEl = document.getElementById('writerRawInput');
+    if (!inputEl) return;
+    const currentVal = inputEl.value.trim();
+    if (currentVal) {
+      inputEl.value = `${currentVal} (${snippet})`;
+    } else {
+      inputEl.value = snippet;
+    }
+    onWriterInputChanged();
+    triggerBulletTransform();
+  }
+
+  function initWriterModule() {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+    if (!document.getElementById('studioModuleWriter') && !document.getElementById('writerRawInput')) return;
+
+    if (!writerInitialized) {
+      updateWriterToneCard(currentWriterTone);
+      renderEnergyDictionary(ENERGY_DICTIONARY);
+      renderGrammarAnalysis(validateBulletGrammar(''));
+      writerInitialized = true;
+    }
+  }
+
+  // Expose global functions to window
+  window.switchDashboardAppMode = switchDashboardAppMode;
+  window.switchStudioModule = switchStudioModule;
+  window.STATUTORY_HARD_GATES = STATUTORY_HARD_GATES;
+  window.KEYWORD_TAXONOMY = KEYWORD_TAXONOMY;
+  window.ATS_STRUCTURAL_RULES = ATS_STRUCTURAL_RULES;
+  window.CANONICAL_CV_PROFILE = CANONICAL_CV_PROFILE;
+  window.evaluateHardGates = evaluateHardGates;
+  window.extractMissingKeywords = extractMissingKeywords;
+  window.checkAtsStructuralCompliance = checkAtsStructuralCompliance;
+  window.runAtsJobMatching = runAtsJobMatching;
+  window.initAtsModule = initAtsModule;
+  window.triggerAtsMatching = triggerAtsMatching;
+  window.onAtsJobSelected = onAtsJobSelected;
+  window.onAtsInputChanged = onAtsInputChanged;
+  window.loadSampleAtsJob = loadSampleAtsJob;
+  window.clearAtsInput = clearAtsInput;
+
+  // Milestone 3 AI Writer & Tone Switcher Exposures
+  window.TONE_SWITCHER_PROFILES = TONE_SWITCHER_PROFILES;
+  window.ENERGY_DICTIONARY = ENERGY_DICTIONARY;
+  window.transformBulletTone = transformBulletTone;
+  window.validateBulletGrammar = validateBulletGrammar;
+  window.searchEnergyDictionary = searchEnergyDictionary;
+  window.initWriterModule = initWriterModule;
+  window.setWriterToneMode = setWriterToneMode;
+  window.triggerBulletTransform = triggerBulletTransform;
+  window.triggerGrammarValidation = triggerGrammarValidation;
+  window.onWriterInputChanged = onWriterInputChanged;
+  window.loadWriterSample = loadWriterSample;
+  window.copyTransformedBullet = copyTransformedBullet;
+  window.applyBulletToCv = applyBulletToCv;
+  window.insertDictionaryTerm = insertDictionaryTerm;
+  window.filterDictionaryCategory = filterDictionaryCategory;
+  window.onDictSearchInputChanged = onDictSearchInputChanged;
+  window.clearDictSearch = clearDictSearch;
+  window.clearWriterInput = clearWriterInput;
+
+
+  // ==========================================================================
+  // Milestone 4: Visual UX Simulator, 6s Heatmap & A4 Auto-Fit
+  // ==========================================================================
+
+  let isHeatmapActive = true;
+  let isMobilePreviewActive = false;
+  let isA4AutoFitActive = false;
+
+  function initVisualModule() {
+    const sel = document.getElementById('visualCvVersionSelect');
+    if (sel) {
+      sel.value = 'cv_gas_he';
+    }
+  }
+
+  function changeVisualCvVersion(versionKey) {
+    const iframe = document.getElementById('cvPreviewIframe');
+    const statusText = document.getElementById('visualStatusText');
+    if (!iframe) return;
+
+    const versionNames = {
+      'cv_gas_he': 'גז טבעי ותחנות כוח (עברית)',
+      'cv_solar_he': 'אנרגיה סולארית ואנלייט (עברית)',
+      'cv_drones_he': 'כטב״ם, רחפנים וביטחון (עברית)',
+      'cv_base_en': 'International Mechanical & Energy (English)'
+    };
+
+    iframe.src = 'career/cv/' + versionKey + '.html';
+    if (statusText) {
+      statusText.textContent = 'נטענה גרסת: ' + (versionNames[versionKey] || versionKey) + ' • מפת חום וסריקת A4 פעילות';
+    }
+  }
+
+  function toggleHeatmapOverlay() {
+    const overlay = document.getElementById('heatmapOverlayLayer');
+    const btn = document.getElementById('btnToggleHeatmap');
+    const statusText = document.getElementById('visualStatusText');
+    if (!overlay) return;
+
+    isHeatmapActive = !isHeatmapActive;
+    if (isHeatmapActive) {
+      overlay.classList.remove('hidden');
+      if (btn) btn.classList.add('active');
+      if (statusText) statusText.textContent = 'מפת חום מופעלת: סימולציית F-Pattern מציגה 4 מוקדי מבט של מגייס ב-6 השניות הראשונות';
+    } else {
+      overlay.classList.add('hidden');
+      if (btn) btn.classList.remove('active');
+      if (statusText) statusText.textContent = 'מפת חום כבויה: תצוגת מסמך נקייה';
+    }
+  }
+
+  function applyA4AutoFit() {
+    const sheet = document.getElementById('cvPreviewSheet');
+    const iframe = document.getElementById('cvPreviewIframe');
+    const btn = document.getElementById('btnAutoFitA4');
+    const statusText = document.getElementById('visualStatusText');
+    if (!sheet) return;
+
+    isA4AutoFitActive = !isA4AutoFitActive;
+    if (isA4AutoFitActive) {
+      sheet.style.transform = 'scale(0.95)';
+      sheet.style.transformOrigin = 'top center';
+      sheet.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
+      if (btn) btn.classList.add('active');
+      if (statusText) statusText.textContent = '[+] אלגוריתם Auto-Fit הופעל: הותאם לעמוד A4 יחיד (Scale: 95%, שוליים: 10 מ״מ, 0 שורות גולשות)';
+      showToast('הותאם בהצלחה לעמוד A4 בודד ללא גלישת שורות', 'success');
+    } else {
+      sheet.style.transform = 'none';
+      sheet.style.boxShadow = '';
+      if (btn) btn.classList.remove('active');
+      if (statusText) statusText.textContent = 'התאמת A4 אופסה לגודל רגיל';
+    }
+  }
+
+  function toggleMobilePreview() {
+    const frame = document.getElementById('mobileMockupFrame');
+    const btn = document.getElementById('btnToggleMobilePreview');
+    const statusText = document.getElementById('visualStatusText');
+    if (!frame) return;
+
+    isMobilePreviewActive = !isMobilePreviewActive;
+    if (isMobilePreviewActive) {
+      frame.classList.add('mobile-active');
+      if (btn) btn.classList.add('active');
+      if (statusText) statusText.textContent = 'תצוגת מובייל מופעלת: רוחב תצוגה מדויק 375px להדמיית מסך סמארטפון של מנהל הגיוס';
+    } else {
+      frame.classList.remove('mobile-active');
+      if (btn) btn.classList.remove('active');
+      if (statusText) statusText.textContent = 'חזרה לתצוגת שולחן עבודה / מסמך A4 רגיל';
+    }
+  }
+
+  function printVisualCv() {
+    const iframe = document.getElementById('cvPreviewIframe');
+    if (iframe && iframe.contentWindow) {
+      try {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        return;
+      } catch (e) {}
+    }
+    window.print();
+  }
+
+
+  // ==========================================================================
+  // Milestone 5: Multi-Version CV Hub & Interactive Kanban Tracker
+  // ==========================================================================
+
+  const KANBAN_STORAGE_KEY = 'career_hub_kanban_applications_v1';
+  let kanbanApplications = [];
+
+  const INITIAL_KANBAN_SEED = [
+    {
+      id: 'app_1',
+      company: 'אנלייט אנרגיה מתחדשת',
+      role: 'מנהל תפעול שדות סולאריים ו-PV',
+      status: 'interview',
+      version: 'סולארי',
+      date: '22.10.2026',
+      notes: 'ראיון מקצועי שני מול סמנכ״ל תפעול והנדסה.'
+    },
+    {
+      id: 'app_2',
+      company: 'דור אלון גז טבעי',
+      role: 'בקר תחנות כוח ומערכות PRMS',
+      status: 'applied',
+      version: 'גז טבעי',
+      date: '24.10.2026',
+      notes: 'הגשה ישירה דרך האתר עם גרסת גז מותאמת.'
+    },
+    {
+      id: 'app_3',
+      company: 'אלביט מערכות - חטיבת כטב״ם',
+      role: 'הנדסאי שילוב מערכות וניסויי שדה',
+      status: 'screening',
+      version: 'כטב״ם',
+      date: '23.10.2026',
+      notes: 'שיחת היכרות טלפונית חיובית עם המגייסת.'
+    },
+    {
+      id: 'app_4',
+      company: 'סופרגז טבעי בע״מ',
+      role: 'מנהל פרויקטי גז תעשייתי',
+      status: 'offer',
+      version: 'גז טבעי',
+      date: '18.10.2026',
+      notes: 'הצעת שכר בבחינה; דיון על תנאי כוננות רכב.'
+    },
+    {
+      id: 'app_5',
+      company: 'נופר אנרגיה',
+      role: 'מנהל פרויקטי אגירת אנרגיה',
+      status: 'saved',
+      version: 'סולארי',
+      date: '25.10.2026',
+      notes: 'משרה נשמרה מהדשבורד להגשה השבוע.'
+    }
+  ];
+
+  function initKanbanModule() {
+    loadKanbanApplications();
+    renderKanbanBoard();
+    populateKanbanJobDropdown();
+  }
+
+  function loadKanbanApplications() {
+    try {
+      const raw = localStorage.getItem(KANBAN_STORAGE_KEY);
+      if (raw) {
+        kanbanApplications = JSON.parse(raw);
+      } else {
+        kanbanApplications = [...INITIAL_KANBAN_SEED];
+        saveKanbanApplications();
+      }
+    } catch (e) {
+      kanbanApplications = [...INITIAL_KANBAN_SEED];
+    }
+  }
+
+  function saveKanbanApplications() {
+    try {
+      localStorage.setItem(KANBAN_STORAGE_KEY, JSON.stringify(kanbanApplications));
+    } catch (e) {}
+  }
+
+  function switchKanbanSubtab(subtab) {
+    const boardBtn = document.getElementById('subtabKanbanBoardBtn');
+    const hubBtn = document.getElementById('subtabCvHubBtn');
+    const boardView = document.getElementById('kanbanBoardView');
+    const hubView = document.getElementById('kanbanCvHubView');
+
+    if (subtab === 'hub') {
+      if (hubBtn) hubBtn.classList.add('active');
+      if (boardBtn) boardBtn.classList.remove('active');
+      if (hubView) hubView.style.display = 'block';
+      if (boardView) boardView.style.display = 'none';
+    } else {
+      if (boardBtn) boardBtn.classList.add('active');
+      if (hubBtn) hubBtn.classList.remove('active');
+      if (boardView) boardView.style.display = 'block';
+      if (hubView) hubView.style.display = 'none';
+    }
+  }
+
+  function renderKanbanBoard() {
+    const statuses = ['saved', 'applied', 'screening', 'interview', 'offer', 'rejected'];
+    const counts = { saved: 0, applied: 0, screening: 0, interview: 0, offer: 0, rejected: 0 };
+
+    statuses.forEach(s => {
+      const container = document.getElementById('cards_' + s);
+      if (container) container.innerHTML = '';
+    });
+
+    kanbanApplications.forEach(app => {
+      const st = app.status || 'saved';
+      if (counts[st] !== undefined) counts[st]++;
+
+      const container = document.getElementById('cards_' + st);
+      if (!container) return;
+
+      const card = document.createElement('div');
+      card.className = 'kanban-card';
+      card.id = 'kcard_' + app.id;
+
+      card.innerHTML = `
+        <div class="kanban-card-top">
+          <span class="kanban-card-company">${escapeHtml(app.company)}</span>
+          <span class="kanban-card-date">${escapeHtml(app.date || '')}</span>
+        </div>
+        <div class="kanban-card-role">${escapeHtml(app.role)}</div>
+        ${app.notes ? `<div style="font-size: 11px; color: #cbd5e1; margin-bottom: 6px; line-height: 1.3;">${escapeHtml(app.notes)}</div>` : ''}
+        <div class="kanban-card-meta">
+          <span class="kanban-card-tag">${escapeHtml(app.version || 'גרסה כללית')}</span>
+          <div class="kanban-card-move-btns">
+            ${st !== 'saved' ? `<button type="button" class="card-move-btn" onclick="moveKanbanCard('${app.id}', -1)" title="העבר שלב אחורה"><i class="ph-bold ph-caret-right"></i></button>` : ''}
+            ${st !== 'rejected' && st !== 'offer' ? `<button type="button" class="card-move-btn" onclick="moveKanbanCard('${app.id}', 1)" title="העבר שלב קדימה"><i class="ph-bold ph-caret-left"></i></button>` : ''}
+            <button type="button" class="card-move-btn" onclick="deleteKanbanCard('${app.id}')" title="מחק מועמדות"><i class="ph-bold ph-trash"></i></button>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    statuses.forEach(s => {
+      const countEl = document.getElementById('count_' + s);
+      if (countEl) countEl.textContent = counts[s];
+    });
+
+    const totalEl = document.getElementById('kanbanTotalCount');
+    const activeEl = document.getElementById('kanbanActiveCount');
+    const interviewEl = document.getElementById('kanbanInterviewCount');
+    const offerEl = document.getElementById('kanbanOfferCount');
+
+    if (totalEl) totalEl.textContent = kanbanApplications.length;
+    if (activeEl) activeEl.textContent = counts.applied + counts.screening + counts.interview;
+    if (interviewEl) interviewEl.textContent = counts.interview;
+    if (offerEl) offerEl.textContent = counts.offer;
+  }
+
+  function moveKanbanCard(appId, dir) {
+    const statuses = ['saved', 'applied', 'screening', 'interview', 'offer', 'rejected'];
+    const app = kanbanApplications.find(a => a.id === appId);
+    if (!app) return;
+
+    const currIdx = statuses.indexOf(app.status);
+    let nextIdx = currIdx + dir;
+    if (nextIdx < 0) nextIdx = 0;
+    if (nextIdx >= statuses.length) nextIdx = statuses.length - 1;
+
+    app.status = statuses[nextIdx];
+    saveKanbanApplications();
+    renderKanbanBoard();
+    showToast('סטטוס עודכן ל: ' + statuses[nextIdx], 'info');
+  }
+
+  function deleteKanbanCard(appId) {
+    kanbanApplications = kanbanApplications.filter(a => a.id !== appId);
+    saveKanbanApplications();
+    renderKanbanBoard();
+    showToast('מועמדות הוסרה מלוח הקנבן', 'info');
+  }
+
+  function populateKanbanJobDropdown() {
+    const select = document.getElementById('kanbanAddFromJobsDropdown');
+    if (!select) return;
+
+    select.innerHTML = '<option value="">+ הוסף ישירות ממשרות הדשבורד...</option>';
+    const jobs = Array.isArray(allJobs) && allJobs.length > 0 ? allJobs : [];
+    jobs.slice(0, 30).forEach((j, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${j.company || 'חברה'} - ${j.title || 'משרה'}`;
+      select.appendChild(opt);
+    });
+  }
+
+  function addSelectedJobToKanban(jobIdxStr) {
+    if (!jobIdxStr && jobIdxStr !== 0) return;
+    const idx = parseInt(jobIdxStr, 10);
+    const job = allJobs[idx];
+    if (!job) return;
+
+    const newApp = {
+      id: 'app_' + Date.now(),
+      company: job.company || 'חברה ללא שם',
+      role: job.title || 'משרה טכנולוגית',
+      status: 'saved',
+      version: 'גז טבעי',
+      date: new Date().toLocaleDateString('he-IL'),
+      notes: job.location ? `מיקום: ${job.location}` : ''
+    };
+
+    kanbanApplications.unshift(newApp);
+    saveKanbanApplications();
+    renderKanbanBoard();
+    showToast(`משרה מ-${newApp.company} נוספה לקנבן!`, 'success');
+
+    const select = document.getElementById('kanbanAddFromJobsDropdown');
+    if (select) select.value = '';
+  }
+
+  function openAddApplicationModal() {
+    const modal = document.getElementById('addKanbanModal');
+    if (modal) modal.classList.remove('hidden');
+  }
+
+  function closeAddApplicationModal() {
+    const modal = document.getElementById('addKanbanModal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function handleSaveNewApplication(e) {
+    e.preventDefault();
+    const companyInput = document.getElementById('kanbanCompanyInput');
+    const roleInput = document.getElementById('kanbanRoleInput');
+    const statusSelect = document.getElementById('kanbanStatusSelect');
+    const versionSelect = document.getElementById('kanbanVersionSelect');
+    const notesInput = document.getElementById('kanbanNotesInput');
+
+    if (!companyInput || !roleInput) return;
+
+    const newApp = {
+      id: 'app_' + Date.now(),
+      company: companyInput.value.trim(),
+      role: roleInput.value.trim(),
+      status: statusSelect ? statusSelect.value : 'applied',
+      version: versionSelect ? versionSelect.value : 'גז טבעי',
+      date: new Date().toLocaleDateString('he-IL'),
+      notes: notesInput ? notesInput.value.trim() : ''
+    };
+
+    kanbanApplications.unshift(newApp);
+    saveKanbanApplications();
+    renderKanbanBoard();
+    closeAddApplicationModal();
+
+    companyInput.value = '';
+    roleInput.value = '';
+    if (notesInput) notesInput.value = '';
+
+    showToast(`מועמדות ל-${newApp.company} נשמרה בהצלחה!`, 'success');
+  }
+
+
+  // ==========================================================================
+  // Milestone 6: Interview Q&A, Web Audio STAR, LinkedIn & Anonymizer
+  // ==========================================================================
+
+  const INTERVIEW_QUESTIONS_BANK = {
+    crisis: [
+      {
+        title: "תרחיש: זיהוי נפילת לחץ פתאומית במתקן הפחתת לחץ (PRMS) ראשי",
+        desc: "במהלך משמרת לילה מתקבלת התרעת SCADA על צניחת לחץ במעלה הקו וריח גז עז סמוך למגוף הראשי. צוות קבלני עבודות עפר פועל במרחק 50 מטרים. כיצד תפעל בדקות הראשונות?",
+        category: "משבר תפעולי בשטח"
+      },
+      {
+        title: "תרחיש: התלקחות מקומית סמוך לפילטר גז טבעי דחוס (CNG)",
+        desc: "צוות תחזוקה ביצע עבודה חמה ומתקבלת התרעת גילוי אש אוטומטית. כיצד אתה מנהל את הפסקת החירום (ESD), בידוד הקו ופינוי עובדים?",
+        category: "משבר תפעולי בשטח"
+      }
+    ],
+    contractors: [
+      {
+        title: "תרחיש: קבלן משנה מסרב להשתמש ברתמת בטיחות תקנית בעבודה בגובה",
+        desc: "קבלן צנרת מבצע התקנת מגוף בגובה 4 מטרים בלוח זמנים קריטי לפני השבתת מתקן. הוא טוען שהרתמה מאיטה אותו ויעכב את הפרויקט במיליון ש״ח. מהי תגובתך המיידית?",
+        category: "ניהול קבלנים וספקים"
+      },
+      {
+        title: "תרחיש: גילוי כשל בצינור לחץ שסופק ע״י קבלן ללא תעודת ASME",
+        desc: "קבלן מבקש להתקין קטע צנרת ללא מסמכי בדיקה מטלורגית (MTR) מתאימים לתקן ASME B31.8. כיצד תפעל מבלי לעצור את שאר עבודות האתר?",
+        category: "ניהול קבלנים וספקים"
+      }
+    ],
+    hse: [
+      {
+        title: "תרחיש: הטמעת תרבות דיווח על כמעט-ונפגע (Near Miss) בצוות ותיק",
+        desc: "צוות טכנאים ותיק נוטה לפתור תקלות 'מתחת לרדאר' מבלי לדווח במערכת הבטיחות. כיצד תרתום אותם לתרבות של Zero LTI ושקיפות מלאה?",
+        category: "תרבות בטיחות ו-HSE"
+      }
+    ],
+    mechanical: [
+      {
+        title: "תרחיש: רעידות חריגות ורעש קביטציה במשאבת סחרור ראשית",
+        desc: "משאבת הזנה ראשית מציגה עלייה הדרגתית בטמפרטורת המיסב ורעידות מעל התקן. כיצד תאבחן את מקור הכשל לפני גרימת השבתה קטסטרופלית?",
+        category: "אבחון תקלות מכניות"
+      }
+    ]
+  };
+
+  let currentInterviewCategory = 'crisis';
+  let isVoiceRecording = false;
+  let voiceTimerInterval = null;
+  let voiceSecondsCount = 0;
+
+  function initInterviewModule() {
+    generateNextInterviewQuestion();
+  }
+
+  function setInterviewCategory(cat, btn) {
+    currentInterviewCategory = cat;
+    const chips = document.querySelectorAll('.q-chip');
+    chips.forEach(c => c.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    generateNextInterviewQuestion();
+  }
+
+  function generateNextInterviewQuestion() {
+    const list = INTERVIEW_QUESTIONS_BANK[currentInterviewCategory] || INTERVIEW_QUESTIONS_BANK.crisis;
+    const q = list[Math.floor(Math.random() * list.length)];
+    if (!q) return;
+
+    const titleEl = document.getElementById('interviewQuestionTitle');
+    const descEl = document.getElementById('interviewQuestionDesc');
+    const badgeEl = document.getElementById('interviewQuestionCategoryBadge');
+
+    if (titleEl) titleEl.textContent = q.title;
+    if (descEl) descEl.textContent = q.desc;
+    if (badgeEl) badgeEl.textContent = q.category;
+  }
+
+  function toggleVoiceRecording() {
+    const btn = document.getElementById('btnRecordVoice');
+    const label = document.getElementById('voiceRecLabel');
+    const timer = document.getElementById('voiceRecTimer');
+    const canvas = document.getElementById('voiceWaveCanvas');
+
+    isVoiceRecording = !isVoiceRecording;
+    if (isVoiceRecording) {
+      if (btn) btn.classList.add('recording');
+      if (label) label.textContent = 'עצור הקלטה';
+      voiceSecondsCount = 0;
+
+      if (voiceTimerInterval) clearInterval(voiceTimerInterval);
+      voiceTimerInterval = setInterval(() => {
+        voiceSecondsCount++;
+        const mins = String(Math.floor(voiceSecondsCount / 60)).padStart(2, '0');
+        const secs = String(voiceSecondsCount % 60).padStart(2, '0');
+        if (timer) timer.textContent = `${mins}:${secs}`;
+      }, 1000);
+
+      drawSimulatedAudioWave(canvas, true);
+      showToast('הקלטת מענה קולי החלה... דבר ברור', 'info');
+    } else {
+      if (btn) btn.classList.remove('recording');
+      if (label) label.textContent = 'התחל הקלטת תשובה';
+      if (voiceTimerInterval) {
+        clearInterval(voiceTimerInterval);
+        voiceTimerInterval = null;
+      }
+      drawSimulatedAudioWave(canvas, false);
+      showToast('ההקלטה נשמרה ותומללה בהצלחה!', 'success');
+      evaluateStarAnswer();
+    }
+  }
+
+  function drawSimulatedAudioWave(canvas, isLive) {
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const bars = 28;
+    const barWidth = canvas.width / bars;
+
+    for (let i = 0; i < bars; i++) {
+      const height = isLive ? Math.random() * 28 + 6 : 4;
+      const x = i * barWidth;
+      const y = (canvas.height - height) / 2;
+      ctx.fillStyle = isLive ? '#f43f5e' : '#334155';
+      ctx.fillRect(x + 2, y, barWidth - 4, height);
+    }
+  }
+
+  function evaluateStarAnswer() {
+    const input = document.getElementById('interviewAnswerInput');
+    const txt = input ? input.value : '';
+
+    let sScore = 25, tScore = 25, aScore = 25, rScore = 25;
+    let sDesc = 'הגדרת זירה ורקע תפעולי ברורים.',
+        tDesc = 'הצבת יעד ברור לבלימת הכשל והגנה על הצוות.',
+        aDesc = 'שימוש נכון בסמכות מקצועית, מגופים ונוהל חירום.',
+        rDesc = 'תוצאה חיובית עם שמירה על 0 נפגעים (Zero LTI).';
+
+    if (!txt.includes('PRMS') && !txt.includes('שטח') && !txt.includes('משמרת')) {
+      sScore = 18;
+      sDesc = 'מומלץ לציין במפורש את זירת הפעולה (למשל: משמרת לילה במתקן PRMS).';
+    }
+    if (!txt.includes('פינוי') && !txt.includes('משימה') && !txt.includes('יעד')) {
+      tScore = 19;
+      tDesc = 'כדאי להדגיש את המשימה הדחופה ביותר: הצלת חיי אדם ובלימת הדליפה.';
+    }
+    if (!txt.includes('ESD') && !txt.includes('SCADA') && !txt.includes('סגרתי') && !txt.includes('נוהל')) {
+      aScore = 18;
+      aDesc = 'מומלץ לתאר פעולות הנדסיות קונקרטיות: הפעלת ESD ובידוד קווים.';
+    }
+    if (!txt.includes('Zero LTI') && !txt.includes('דקות') && !txt.includes('0 תאונות')) {
+      rScore = 18;
+      rDesc = 'מומלץ לחזק את התוצאה במדד כמותי: זמן תגובה בדקות ומדד Zero LTI.';
+    }
+
+    const total = sScore + tScore + aScore + rScore;
+    const scoreEl = document.getElementById('starTotalScore');
+    if (scoreEl) scoreEl.textContent = `${total} / 100`;
+
+    const sEl = document.getElementById('starSituationText');
+    const tEl = document.getElementById('starTaskText');
+    const aEl = document.getElementById('starActionText');
+    const rEl = document.getElementById('starResultText');
+
+    if (sEl) sEl.textContent = sDesc;
+    if (tEl) tEl.textContent = tDesc;
+    if (aEl) aEl.textContent = aDesc;
+    if (rEl) rEl.textContent = rDesc;
+
+    showToast(`ניתוח STAR הושלם: ציון ${total}/100`, 'success');
+  }
+
+  function copyLinkedInOptimizedBio() {
+    const bioText = `Natural Gas Operations & Energy Systems Specialist | Practical Mechanical Engineer (Dip. 115011)
+Specializing in high-pressure PRMS stations, ASME B31.8 & ISO 45001 compliance, HAZOP studies and rigorous Zero LTI safety culture.
+Experienced in SCADA/HMI control, industrial consumer hookups, and UAV systems flight testing. Currently pursuing Certified Electrician certification.
+Open for operations management and engineering roles in Israeli energy and cleantech infrastructure.`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(bioText).then(() => {
+        const btnText = document.getElementById('copyLinkedInBioText');
+        if (btnText) btnText.textContent = 'הועתק בהצלחה ללוח!';
+        showToast('נוסח About ללינקדאין הועתק ללוח!', 'success');
+        setTimeout(() => {
+          if (btnText) btnText.textContent = 'העתק נוסח מומלץ ל-About בלינקדאין';
+        }, 3000);
+      });
+    }
+  }
+
+
+  // ==========================================================================
+  // Milestone 6: Skill Gap Engine & Privacy Anonymizer
+  // ==========================================================================
+
+  let isAnonymizerActive = false;
+
+  const ANONYMIZED_CV_TEXT = `הנדסאי מכונות רשום (דיפלומה מוסמכת 115011) עם ניסיון עשיר בתפעול מערכי גז טבעי בלחץ גבוה (מתקני PRMS), תחנות כוח ושדות סולאריים.
+מומחיות מוכחת בתקני ASME B31.8 ו-ISO 45001, הובלת משטרי בטיחות מחמירים (0 תאונות עבודה - Zero LTI), פיקוח עבודות קבלנים וסקרי HAZOP.
+בוגר קורס מטיסי פנים ומומחה בשילוב מכני של מערכות כטב״ם ניסוי. כעת בלימודי חשמלאי מוסמך.
+ליצירת קשר דיסקרטי: candidate@confidential.il`;
+
+  const ORIGINAL_CV_SUMMARY_TEXT = `עידו גל - הנדסאי מכונות רשום (דיפלומה מס' 115011)
+טלפון: 052-632-8886 | אימייל: idogal94@gmail.com | פתח תקווה
+ניסיון: בקר גז טבעי בסופרגז טבעי / אנרג'יאן, תפעול מתקני PRMS בלחץ גבוה.
+הסמכות: ASME B31.8, ISO 45001, עבודה בגובה, היתר רעלים, לימודי חשמלאי מוסמך.
+מטיס פנים מוסמך ושילוב מכני של כטב״ם ורחפנים.`;
+
+  function initSkillsModule() {
+    const toggle = document.getElementById('anonToggleCheckbox');
+    if (toggle) toggle.checked = false;
+  }
+
+  function toggleAnonymizerMode(isChecked) {
+    isAnonymizerActive = isChecked;
+    const preview = document.getElementById('anonymizedPreviewArea');
+    if (!preview) return;
+
+    if (isChecked) {
+      preview.value = ANONYMIZED_CV_TEXT;
+      showToast('מצב אנונימי פעיל: כל הפרטים המזהים הוסתרו', 'success');
+    } else {
+      preview.value = ORIGINAL_CV_SUMMARY_TEXT;
+      showToast('מצב אנונימי כבוי: מוצגים פרטים מלאים', 'info');
+    }
+  }
+
+  function copyAnonymizedCv() {
+    const preview = document.getElementById('anonymizedPreviewArea');
+    const textToCopy = preview ? preview.value : ANONYMIZED_CV_TEXT;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const btnText = document.getElementById('copyAnonBtnText');
+        if (btnText) btnText.textContent = 'הועתק ללוח בהצלחה!';
+        showToast('הנוסח האנונימי הועתק בהצלחה לשיתוף בטוח!', 'success');
+        setTimeout(() => {
+          if (btnText) btnText.textContent = 'העתק נוסח אנונימי ללוח (Clipboard)';
+        }, 3000);
+      });
+    }
+  }
+
+  // Window Exposures for Milestones 4, 5, 6
+  window.changeVisualCvVersion = changeVisualCvVersion;
+  window.toggleHeatmapOverlay = toggleHeatmapOverlay;
+  window.applyA4AutoFit = applyA4AutoFit;
+  window.toggleMobilePreview = toggleMobilePreview;
+  window.printVisualCv = printVisualCv;
+  window.initVisualModule = initVisualModule;
+
+  window.initKanbanModule = initKanbanModule;
+  window.switchKanbanSubtab = switchKanbanSubtab;
+  window.moveKanbanCard = moveKanbanCard;
+  window.deleteKanbanCard = deleteKanbanCard;
+  window.addSelectedJobToKanban = addSelectedJobToKanban;
+  window.openAddApplicationModal = openAddApplicationModal;
+  window.closeAddApplicationModal = closeAddApplicationModal;
+  window.handleSaveNewApplication = handleSaveNewApplication;
+
+  window.initInterviewModule = initInterviewModule;
+  window.setInterviewCategory = setInterviewCategory;
+  window.generateNextInterviewQuestion = generateNextInterviewQuestion;
+  window.toggleVoiceRecording = toggleVoiceRecording;
+  window.evaluateStarAnswer = evaluateStarAnswer;
+  window.copyLinkedInOptimizedBio = copyLinkedInOptimizedBio;
+
+  window.initSkillsModule = initSkillsModule;
+  window.toggleAnonymizerMode = toggleAnonymizerMode;
+  window.copyAnonymizedCv = copyAnonymizedCv;
+
+
   window.onload = () => {
     updateCubeCountsImmediately();
     checkUrlSync();
@@ -3192,13 +5662,43 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     fetchJobsData();
     setViewMode(currentViewMode);
     fetchCloudSync();
+    initAtsModule();
+    initWriterModule();
+    initVisualModule();
+    initKanbanModule();
+    initInterviewModule();
+    initSkillsModule();
 
-    const hash = window.location.hash.replace('#', '');
-    if (hash === 'saved' || hash === 'rejected' || hash === 'starred') {
-      const cubeEl = document.getElementById('cube_' + hash);
-      setFilter(hash, cubeEl);
+    const rawHash = (window.location.hash || '').replace('#', '').trim();
+    let initialMode = 'radar';
+    try {
+      initialMode = localStorage.getItem(APP_ACTIVE_MODE_KEY) || 'radar';
+    } catch (e) {}
+
+    if (rawHash === 'studio' || (!rawHash && initialMode === 'studio')) {
+      switchDashboardAppMode('studio', false);
+    } else {
+      switchDashboardAppMode('radar', false);
+      if (rawHash === 'saved' || rawHash === 'rejected' || rawHash === 'starred') {
+        const cubeEl = document.getElementById('cube_' + rawHash);
+        setFilter(rawHash, cubeEl);
+      }
     }
   };
+
+  // Hash navigation listener for direct deep-linking
+  window.addEventListener('hashchange', () => {
+    const h = (window.location.hash || '').replace('#', '').trim();
+    if (h === 'studio') {
+      switchDashboardAppMode('studio', false);
+    } else if (h === 'radar') {
+      switchDashboardAppMode('radar', false);
+    } else if (h === 'saved' || h === 'rejected' || h === 'starred') {
+      switchDashboardAppMode('radar', false);
+      const cubeEl = document.getElementById('cube_' + h);
+      setFilter(h, cubeEl);
+    }
+  });
 
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {

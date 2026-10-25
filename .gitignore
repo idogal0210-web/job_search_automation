@@ -20,3 +20,4 @@ reports/
 .env.*
 *.pem
 *.key
+.agents/
