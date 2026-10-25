@@ -87,6 +87,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       isJobsLoading = false;
       renderCards();
       updateUI();
+
+      // Preload historical catalog in the background so saved/starred jobs from older cycles are immediately available
+      if (!isCatalogLoaded) {
+        if (typeof window.requestIdleCallback === 'function') {
+          window.requestIdleCallback(() => { loadHistoricalCatalogOnDemand(); }, { timeout: 2000 });
+        } else {
+          setTimeout(() => { loadHistoricalCatalogOnDemand(); }, 300);
+        }
+      }
     } catch (err) {
       console.warn('[JOBS_FETCH] Notice on fetching external jobs.json:', err);
       isJobsLoading = false;
@@ -123,6 +132,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         historicalCatalog = cat || {};
         isCatalogLoaded = true;
         renderCards();
+        updateUI();
       }
     } catch (e) {
       console.warn('[CATALOG_FETCH] Notice on historical catalog fetch:', e);
@@ -236,6 +246,28 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   function saveStarredJobs(stars) {
     try {
       localStorage.setItem(STARRED_STORAGE_KEY, JSON.stringify(stars));
+    } catch(e) {}
+  }
+
+  function updateCubeCountsImmediately() {
+    try {
+      const savedCount = Object.keys(jobStates).filter(link => jobStates[link] === 'saved').length;
+      const starredCount = Object.keys(starredJobs).filter(link => Boolean(starredJobs[link]) && (jobStates[link] || 'pending') !== 'rejected' && (jobStates[link] || 'pending') !== 'purged').length;
+      const rejectedCount = Object.keys(jobStates).filter(link => jobStates[link] === 'rejected').length;
+
+      const statSavedEl = document.getElementById('statSavedCount');
+      const statStarredEl = document.getElementById('statStarredCount');
+      const statRejectedEl = document.getElementById('statRejectedCount');
+      if (statSavedEl) statSavedEl.textContent = savedCount;
+      if (statStarredEl) statStarredEl.textContent = starredCount;
+      if (statRejectedEl) statRejectedEl.textContent = rejectedCount;
+
+      const countSavedEl = document.getElementById('countSaved');
+      const countStarredNavEl = document.getElementById('countStarredNav');
+      const countRejectedEl = document.getElementById('countRejected');
+      if (countSavedEl) countSavedEl.textContent = savedCount;
+      if (countStarredNavEl) countStarredNavEl.textContent = starredCount;
+      if (countRejectedEl) countRejectedEl.textContent = rejectedCount;
     } catch(e) {}
   }
 
@@ -2160,7 +2192,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       targetEl.setAttribute('aria-current', 'page');
     }
 
-    if (filter === 'saved' || filter === 'rejected') {
+    if (filter === 'saved' || filter === 'rejected' || filter === 'starred') {
       loadHistoricalCatalogOnDemand();
     }
 
@@ -2402,30 +2434,25 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     });
 
     const allAvailable = getAllAvailableJobs();
-    let totalNewInStore = 0;
-    let totalStarredInStore = 0;
-    let totalSavedInStore = 0;
-    let totalRejectedInStore = 0;
 
-    allAvailable.forEach(j => {
+    // Calculate exact totals using truth state
+    let totalNewInStore = (rawJobsData || []).filter(j => {
       const st = jobStates[j.link] || 'pending';
       const isSt = Boolean(starredJobs[j.link]);
-      if (st === 'purged') {
-        return;
-      }
-      if (rawJobLinks.has(j.link) && !isSt && st !== 'saved' && st !== 'rejected') {
-        totalNewInStore++;
-      }
-      if (isSt && st !== 'rejected') {
-        totalStarredInStore++;
-      }
-      if (st === 'saved' && st !== 'rejected') {
-        totalSavedInStore++;
-      }
-      if (st === 'rejected') {
-        totalRejectedInStore++;
-      }
-    });
+      return !isSt && st !== 'saved' && st !== 'rejected' && st !== 'purged';
+    }).length;
+
+    let totalSavedInStore = Object.keys(jobStates).filter(link => {
+      return jobStates[link] === 'saved';
+    }).length;
+
+    let totalStarredInStore = Object.keys(starredJobs).filter(link => {
+      return Boolean(starredJobs[link]) && (jobStates[link] || 'pending') !== 'rejected' && (jobStates[link] || 'pending') !== 'purged';
+    }).length;
+
+    let totalRejectedInStore = Object.keys(jobStates).filter(link => {
+      return jobStates[link] === 'rejected';
+    }).length;
 
     let tabTotal = 0;
     let tabLabel = '';
@@ -3128,6 +3155,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   window.onload = () => {
+    updateCubeCountsImmediately();
     checkUrlSync();
     updateSortIconAndToast(currentSort, false);
     fetchJobsData();
