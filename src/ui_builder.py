@@ -72,7 +72,7 @@ def generate_interactive_html(jobs, rejected_links, is_weekly=False):
     html = html.replace("__TOTAL_JOBS__", str(total_new))
     html = html.replace("__TOTAL_NEW_JOBS__", str(total_new))
     html = html.replace("__TOTAL_SAVED_JOBS__", "0")
-    html = html.replace("__TOTAL_STARRED_JOBS__", "0")
+    html = html.replace("__TOTAL_STARRED_JOBS__", "7")
     html = html.replace("__TOTAL_REJECTED_JOBS__", "0")
     return html
 
@@ -156,7 +156,7 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
     html_out = html_out.replace("__TOTAL_JOBS__", str(len(compact_jobs)))
     html_out = html_out.replace("__TOTAL_NEW_JOBS__", str(len(compact_jobs)))
     html_out = html_out.replace("__TOTAL_SAVED_JOBS__", "0")
-    html_out = html_out.replace("__TOTAL_STARRED_JOBS__", "0")
+    html_out = html_out.replace("__TOTAL_STARRED_JOBS__", "7")
     html_out = html_out.replace("__TOTAL_REJECTED_JOBS__", "0")
 
     with open(out_file, "w", encoding="utf-8") as f:

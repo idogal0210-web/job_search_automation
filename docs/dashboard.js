@@ -212,32 +212,50 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   try {
     currentSort = localStorage.getItem(SORT_STORAGE_KEY) || 'date_desc';
   } catch(e) {}
+  const DEFAULT_STARRED_JOBS = [
+    "https://il.linkedin.com/jobs/view/%D7%AA%D7%94%D7%9C%D7%99%D7%9B%D7%99-%D7%91%D7%A7%D7%A8%D7%94-%D7%95-ai-at-iai-israel-aerospace-industries-4478429532",
+    "https://il.linkedin.com/jobs/view/high-pressure-natural-gas-project-israel-at-rina-4469463836",
+    "https://www.comeet.com/jobs/enlightenergy/99.006/project-manager---construction---enlight-local/92.F66",
+    "https://il.linkedin.com/jobs/view/junior-business-development-manager-at-ormash-group-%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%90%D7%95%D7%A8%D7%9E%D7%A9-4468984224",
+    "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4481350574",
+    "https://il.linkedin.com/jobs/view/practical-engineer-at-solaredge-technologies-4481748648",
+    "https://il.linkedin.com/jobs/view/system-engineer-renewable-energy-energy-storage-projects-at-nextcom-group-4478214360"
+  ];
+
+  let jobStates = loadTriageState();
   let starredJobs = loadStarredJobs();
 
   function loadStarredJobs() {
     let stars = {};
     try {
-      stars = JSON.parse(localStorage.getItem(STARRED_STORAGE_KEY) || '{}');
-      if (typeof stars !== 'object' || stars === null) stars = {};
+      const stored = localStorage.getItem(STARRED_STORAGE_KEY);
+      if (stored) {
+        stars = JSON.parse(stored);
+      }
     } catch(e) {
       stars = {};
     }
 
-    // Auto-remediation: strip out any saved jobs that were accidentally injected into stars
-    if (typeof initialSavedLinks !== 'undefined' && Array.isArray(initialSavedLinks) && initialSavedLinks.length > 0) {
-      const savedSet = new Set(initialSavedLinks);
-      let matchCount = 0;
-      Object.keys(stars).forEach(k => {
-        if (savedSet.has(k)) matchCount++;
+    if (!stars || typeof stars !== 'object') {
+      stars = {};
+    }
+
+    // Default restore 7 verified starred jobs if empty
+    if (Object.keys(stars).length === 0 && Array.isArray(DEFAULT_STARRED_JOBS)) {
+      DEFAULT_STARRED_JOBS.forEach(link => {
+        stars[link] = true;
       });
-      if (matchCount >= 20) {
-        savedSet.forEach(k => {
-          delete stars[k];
-        });
-        try {
-          localStorage.setItem(STARRED_STORAGE_KEY, JSON.stringify(stars));
-        } catch(e) {}
-      }
+      try {
+        localStorage.setItem(STARRED_STORAGE_KEY, JSON.stringify(stars));
+      } catch(e) {}
+    }
+
+    if (typeof jobStates === 'object' && jobStates !== null) {
+      Object.keys(stars).forEach(link => {
+        if (stars[link] && (jobStates[link] === 'purged' || jobStates[link] === 'rejected')) {
+          delete jobStates[link];
+        }
+      });
     }
 
     return stars;
@@ -251,7 +269,14 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function updateCubeCountsImmediately() {
     try {
-      const savedCount = Object.keys(jobStates).filter(link => jobStates[link] === 'saved').length;
+      if (typeof jobStates === 'object' && jobStates !== null && typeof starredJobs === 'object' && starredJobs !== null) {
+        Object.keys(starredJobs).forEach(link => {
+          if (starredJobs[link] && (jobStates[link] === 'purged' || jobStates[link] === 'rejected')) {
+            delete jobStates[link];
+          }
+        });
+      }
+      const savedCount = Object.keys(jobStates).filter(link => jobStates[link] === 'saved' && !Boolean(starredJobs[link])).length;
       const starredCount = Object.keys(starredJobs).filter(link => Boolean(starredJobs[link]) && (jobStates[link] || 'pending') !== 'rejected' && (jobStates[link] || 'pending') !== 'purged').length;
       const rejectedCount = Object.keys(jobStates).filter(link => jobStates[link] === 'rejected').length;
 
@@ -281,9 +306,14 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       showToast('ph-star', 'הוסר מהמשרות המסומנות בכוכב');
     } else {
       starredJobs[id] = true;
+      if (jobStates && (jobStates[id] === 'purged' || jobStates[id] === 'rejected')) {
+        delete jobStates[id];
+        saveTriageState(jobStates);
+      }
       showToast('ph-fill ph-star', 'המשרה סומנה בכוכב והועברה ללשונית בכוכב');
     }
     saveStarredJobs(starredJobs);
+    scheduleCloudPush();
     
     document.querySelectorAll('.job-card').forEach(card => {
       if (card.getAttribute('data-id') === id) {
@@ -464,7 +494,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         let changed = false;
         if (Array.isArray(data.purged)) {
           data.purged.forEach(link => {
-            if (jobStates[link] !== 'purged') {
+            if (!starredJobs[link] && jobStates[link] !== 'purged') {
               jobStates[link] = 'purged';
               changed = true;
             }
@@ -500,6 +530,21 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             }
           });
         }
+        if (Array.isArray(data.starred) && data.starred.length > 0) {
+          data.starred.forEach(link => {
+            if (!starredJobs[link]) {
+              starredJobs[link] = true;
+              changed = true;
+            }
+            if (jobStates[link] === 'purged' || jobStates[link] === 'rejected') {
+              delete jobStates[link];
+              changed = true;
+            }
+          });
+          if (changed) {
+            saveStarredJobs(starredJobs);
+          }
+        }
         if (changed) {
           saveTriageState(jobStates);
           renderCards();
@@ -531,13 +576,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     setCloudSyncStatus('syncing');
 
     try {
-      const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
-      const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
-      const purgedList = Object.keys(jobStates).filter(id => jobStates[id] === 'purged');
+      const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !Boolean(starredJobs[id]));
+      const starredList = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id]));
+      const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected' && !Boolean(starredJobs[id]));
+      const purgedList = Object.keys(jobStates).filter(id => jobStates[id] === 'purged' && !Boolean(starredJobs[id]));
       
       const timestamp = new Date().toISOString();
       const payload = {
         saved: savedList,
+        starred: starredList,
         rejected: rejectedList,
         purged: purgedList,
         updated_at: timestamp
@@ -1580,7 +1627,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     return tags.slice(0, 5);
   }
 
-  let jobStates = loadTriageState();
+  // jobStates initialized above
 
   function getAllAvailableJobs() {
     const seenLinks = new Set((rawJobsData || []).map(j => j.link));
@@ -2372,7 +2419,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       } else if (currentFilter === 'starred') {
         matchesTab = (isStarred && state !== 'rejected' && state !== 'purged');
       } else if (currentFilter === 'saved') {
-        matchesTab = (state === 'saved' && state !== 'rejected' && state !== 'purged');
+        matchesTab = !isStarred && (state === 'saved' && state !== 'rejected' && state !== 'purged');
       } else if (currentFilter === 'rejected') {
         matchesTab = (state === 'rejected');
       }
@@ -2443,7 +2490,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }).length;
 
     let totalSavedInStore = Object.keys(jobStates).filter(link => {
-      return jobStates[link] === 'saved';
+      return jobStates[link] === 'saved' && !Boolean(starredJobs[link]);
     }).length;
 
     let totalStarredInStore = Object.keys(starredJobs).filter(link => {
