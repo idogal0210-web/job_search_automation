@@ -218,3 +218,15 @@ job_search_automation/
 ### 7.2 Explicit Denylist (Strictly Prohibited)
 - **`apify` (Completely Prohibited):** Heavy, expensive, and redundant. Job discovery and extraction are performed with optimal efficiency via Tavily and Firecrawl.
 - **`colab-mcp` (Completely Prohibited):** Project execution relies solely on local Python virtual environment (`venv`) and GitHub Actions. Remote cloud notebook sessions are forbidden.
+
+---
+
+## 8. Next Session Priorities & Backlog (To Remind on Session Start)
+1. **כיול מודל הערכה (U5 Benchmark Ground-Truth Labeling):**
+   - ביצוע תיוג ידני של משרות מגוונות מתוך `data/historical_catalog.json` או `data/weekly_archive.json` לתוך `data/evaluation_benchmark_template.json` (הגדרת תוויות `relevant`, `irrelevant`, `borderline`).
+   - הרצת סקריפט ההערכה `python3 scripts/evaluate_dataset.py` להפקת דוח דיוק, Recall, ציון F1 וניתוח פספוסים (False Negatives).
+   - עדכון הסטטוס ב-`docs/UPGRADE_STATUS.md` מ-`BLOCKED: user labels` ל-`DONE`.
+2. **הרחבת מקורות גיוס ישירים (ATS Connectors):**
+   - הוספת מחברי ATS ישירים לחברות אנרגיה, גז ותעשייה מובילות בישראל (דוגמת חברות נוספות המשתמשות ב-Comeet, Greenhouse או Workday), בהמשך למחבר המוצלח של Enlight Renewable Energy.
+3. **שיפורי סינון ותצוגה בדשבורד:**
+   - המשך כוונון ודיוק של תגיות המשרות וסינוני חיפוש מתקדמים לפי צרכי המשתמש.
