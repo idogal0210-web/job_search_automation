@@ -103,6 +103,9 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
         shutil.copy2(css_src, os.path.join(docs_dir, "dashboard.css"))
     if os.path.exists(js_src):
         shutil.copy2(js_src, os.path.join(docs_dir, "dashboard.js"))
+    assets_src = os.path.join(frontend_dir, "assets")
+    if os.path.exists(assets_src):
+        shutil.copytree(assets_src, os.path.join(docs_dir, "assets"), dirs_exist_ok=True)
 
     build_id = datetime.now().strftime("%Y%m%d%H%M%S")
     now_str = datetime.now().strftime("%d.%m.%Y")

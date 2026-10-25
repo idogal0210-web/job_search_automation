@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#1e1b4b"/>
+  <rect x="38" y="26" width="52" height="56" rx="8" fill="#312e81" stroke="#818cf8" stroke-width="2.5"/>
+  <!-- Elevator Doors & Arrows -->
+  <line x1="64" y1="26" x2="64" y2="82" stroke="#818cf8" stroke-width="2" stroke-dasharray="2,2"/>
+  <path d="M51 60 L51 44 L45 50 M51 44 L57 50" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M77 48 L77 64 L71 58 M77 64 L83 58" fill="none" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="64" y="101" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="800" fill="#e0e7ff" text-anchor="middle" letter-spacing="1.5">SCHNIER LIFT</text>
+  <text x="64" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" font-weight="600" fill="#a5b4fc" text-anchor="middle">שנייר ליפט</text>
+</svg>

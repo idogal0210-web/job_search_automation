@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#311042"/>
+  <circle cx="64" cy="50" r="26" fill="none" stroke="#c084fc" stroke-width="2.5" stroke-dasharray="4,3"/>
+  <!-- Radar Orbit / Target -->
+  <ellipse cx="64" cy="50" rx="28" ry="12" fill="none" stroke="#a855f7" stroke-width="2" transform="rotate(-25 64 50)"/>
+  <circle cx="64" cy="50" r="10" fill="#ec4899"/>
+  <circle cx="64" cy="50" r="4" fill="#ffffff"/>
+  <text x="64" y="99" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="900" fill="#faf5ff" text-anchor="middle" letter-spacing="1.5">JOB SPACE</text>
+  <text x="64" y="113" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="600" fill="#d8b4fe" text-anchor="middle">TALENT SOURCING</text>
+</svg>

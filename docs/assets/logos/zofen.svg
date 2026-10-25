@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#431407"/>
+  <circle cx="64" cy="50" r="24" fill="#7c2d12" opacity="0.5"/>
+  <!-- Circuit / Management Matrix / Z-line -->
+  <path d="M44 38 H84 L44 64 H84" fill="none" stroke="#ea580c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="44" cy="38" r="4" fill="#fdba74"/>
+  <circle cx="84" cy="38" r="4" fill="#fdba74"/>
+  <circle cx="44" cy="64" r="4" fill="#fdba74"/>
+  <circle cx="84" cy="64" r="4" fill="#fdba74"/>
+  <text x="64" y="99" font-family="system-ui, -apple-system, sans-serif" font-size="12.5" font-weight="800" fill="#ffedd5" text-anchor="middle" letter-spacing="1.5">ZOFEN</text>
+  <text x="64" y="113" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="600" fill="#fed7aa" text-anchor="middle">ADVANCED MANAGING</text>
+</svg>

@@ -897,10 +897,79 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     return palette[idx];
   }
 
+  const LOCAL_COMPANY_LOGOS = [
+    [['electra', 'אלקטרה'], 'assets/logos/electra.png'],
+    [['alumenergy', 'אלומאנרג\'י', 'אלומנרג\'י', 'אלומנרג׳י', 'אלומוט'], 'assets/logos/alumenergy.png'],
+    [['amarel', 'אמראל'], 'assets/logos/amarel.png'],
+    [['airobotics', 'איירובוטיקס'], 'assets/logos/airobotics.png'],
+    [['alstom', 'אלסטום'], 'assets/logos/alstom.png'],
+    [['assatec', 'אסאטק'], 'assets/logos/assatec.png'],
+    [['bagira', 'בגירה'], 'assets/logos/bagira.png'],
+    [['bet shemesh', 'מנועי בית שמש', 'bseltd'], 'assets/logos/bseltd.svg'],
+    [['concentric'], 'assets/logos/concentric.png'],
+    [['confidential', 'דיסקרטי', 'חברה מובילה', 'חסויה'], 'assets/logos/confidential.svg'],
+    [['cross river', 'crossriver'], 'assets/logos/crossriver.png'],
+    [['drs rada', 'rada', 'ראדא'], 'assets/logos/rada.png'],
+    [['e2e', 'e2e solutions'], 'assets/logos/e2e.svg'],
+    [['edwards', 'edwards vacuum'], 'assets/logos/edwards.png'],
+    [['elad', 'אלעד מערכות', 'אלעד'], 'assets/logos/elad.png'],
+    [['elbit', 'אלביט'], 'assets/logos/elbit.png'],
+    [['enlight', 'אנלייט'], 'assets/logos/enlight.png'],
+    [['flex', 'פלקס'], 'assets/logos/flex.png'],
+    [['iai', 'התעשייה האווירית', 'התעשיה האווירית', 'תעשייה אווירית'], 'assets/logos/iai.svg'],
+    [['imco', 'אימקו'], 'assets/logos/imco.png'],
+    [['job space', 'jobspace'], 'assets/logos/jobspace.svg'],
+    [['jacobs', 'ג\'ייקובס'], 'assets/logos/jacobs.png'],
+    [['jobsseek', 'ג\'ובסיק'], 'assets/logos/jobsseek.svg'],
+    [['md-ltd', 'mechanical devices', 'm.d.'], 'assets/logos/md-ltd.svg'],
+    [['manta air', 'manta'], 'assets/logos/manta-air.png'],
+    [['michlol', 'מכלול'], 'assets/logos/michlol.png'],
+    [['microsoft', 'מיקרוסופט'], 'assets/logos/microsoft.png'],
+    [['mobileye', 'מובילאיי', 'מובילאי'], 'assets/logos/mobileye.png'],
+    [['netafim', 'נטפים'], 'assets/logos/netafim.png'],
+    [['nextcom', 'נקסטקום'], 'assets/logos/nextcom.png'],
+    [['nextpower', 'נקסטפאוור'], 'assets/logos/nextpower.svg'],
+    [['pb israel', 'wsp', 'parsons brinckerhoff', 'pb'], 'assets/logos/wsp.png'],
+    [['partner', 'פרטנר'], 'assets/logos/partner.png'],
+    [['saltworks', 'סולטוורקס'], 'assets/logos/saltworks.png'],
+    [['siemens energy', 'סימנס אנרגיה', 'siemens'], 'assets/logos/siemens-energy.png'],
+    [['solaredge', 'סולאראדג\'', 'סולאראדג׳'], 'assets/logos/solaredge.png'],
+    [['uvision', 'יוביז\'ן', 'יוביז׳ן'], 'assets/logos/uvision.png'],
+    [['vpg', 'vishay'], 'assets/logos/vpg.png'],
+    [['x-cooling', 'xcooling'], 'assets/logos/x-cooling.png'],
+    [['zoll', 'זול'], 'assets/logos/zoll.png'],
+    [['zofen', 'צופן'], 'assets/logos/zofen.svg'],
+    [['nt-tao', 'nt tao'], 'assets/logos/nt-tao.png'],
+    [['advance', 'אדוונס הנדסה', 'אדוונס'], 'assets/logos/advance.svg'],
+    [['el-mor', 'אל-מור', 'אלמור'], 'assets/logos/el-mor.png'],
+    [['entrypoint', 'אנטריפוינט'], 'assets/logos/entrypoint.png'],
+    [['bmorion', 'אוריון', 'ב.מ. אוריון'], 'assets/logos/bmorion.svg'],
+    [['dataway', 'דאטה וויי', 'דאטה ווי'], 'assets/logos/dataway.png'],
+    [['colmobil', 'כלמוביל'], 'assets/logos/colmobil.png'],
+    [['malamteam', 'מאלם', 'מלם', 'מרטנס'], 'assets/logos/malamteam.png'],
+    [['niga', 'ניגא', 'ניגא שף'], 'assets/logos/niga.svg'],
+    [['robokit', 'רובוקיט'], 'assets/logos/robokit.png'],
+    [['rafael', 'רפאל'], 'assets/logos/rafael.svg'],
+    [['shidrug', 'שדרוג'], 'assets/logos/shidrug.png'],
+    [['scheidt-bachmann', 'שיידט את בכמן', 'שיידט'], 'assets/logos/scheidt-bachmann.png'],
+    [['schnierlift', 'שנייר', 'שנייר ליפט'], 'assets/logos/schnierlift.svg'],
+    [['tomer', 'תומר'], 'assets/logos/tomer.png'],
+    [['ormash', 'אורמש'], 'assets/logos/ormash.svg']
+  ];
+
   function getCompanyLogoInfo(companyName, customLogo) {
     const rawName = cleanCompanyName(companyName);
     const norm = rawName.toLowerCase();
     
+    // 1. Check local assets repository first (high resolution, zero network latency)
+    let localPath = null;
+    for (const [keys, path] of LOCAL_COMPANY_LOGOS) {
+      if (keys.some(k => matchCompanyWord(norm, k))) {
+        localPath = path;
+        break;
+      }
+    }
+
     let domain = null;
     for (const [keys, dom] of KNOWN_COMPANY_DOMAINS) {
       if (keys.some(k => matchCompanyWord(norm, k))) {
@@ -929,11 +998,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
     if (!isIcon) initials = initials.toUpperCase();
 
-    let primaryUrl = customLogo || null;
+    let primaryUrl = localPath;
     let initialStep = 0;
-    if (!primaryUrl && domain) {
-      primaryUrl = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(domain) + '&sz=128';
-      initialStep = 1;
+    if (!primaryUrl) {
+      if (customLogo && !customLogo.includes('media.licdn.com')) {
+        primaryUrl = customLogo;
+      } else if (domain) {
+        primaryUrl = 'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://' + encodeURIComponent(domain) + '&size=128';
+        initialStep = 1;
+      }
     }
 
     return { rawName, domain, initials, isIcon, primaryUrl, initialStep };
@@ -947,12 +1020,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const step = parseInt(img.dataset.step || '0', 10);
     if (step === 0) {
       img.dataset.step = '1';
-      img.src = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(domain) + '&sz=128';
+      img.src = 'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://' + encodeURIComponent(domain) + '&size=128';
     } else if (step === 1) {
       img.dataset.step = '2';
-      img.src = 'https://unavatar.io/' + encodeURIComponent(domain) + '?fallback=false';
-    } else if (step === 2) {
-      img.dataset.step = '3';
       img.src = 'https://icons.duckduckgo.com/ip3/' + encodeURIComponent(domain) + '.ico';
     } else {
       showCompanyLogoAvatar(img);

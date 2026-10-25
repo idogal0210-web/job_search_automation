@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#27272a"/>
+  <!-- Precision Gear & Micrometer / Mechanical Devices -->
+  <circle cx="64" cy="52" r="26" fill="none" stroke="#a1a1aa" stroke-width="3"/>
+  <circle cx="64" cy="52" r="16" fill="#3f3f46" stroke="#fbbf24" stroke-width="2"/>
+  <circle cx="64" cy="52" r="6" fill="#f59e0b"/>
+  <!-- Gear Teeth -->
+  <path d="M61 22 H67 V28 H61 Z M61 76 H67 V82 H61 Z M34 49 V55 H40 V49 Z M88 49 V55 H94 V49 Z M43 33 L47 37 L43 41 L39 37 Z M85 71 L89 75 L85 79 L81 75 Z M43 71 L39 75 L43 79 L47 75 Z M85 33 L81 37 L85 41 L89 37 Z" fill="#a1a1aa"/>
+  <text x="64" y="100" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="800" fill="#f4f4f5" text-anchor="middle" letter-spacing="1.5">M.D. DEVICES</text>
+  <text x="64" y="113" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" font-weight="600" fill="#fbbf24" text-anchor="middle">MECHANICAL DEVICES</text>
+</svg>

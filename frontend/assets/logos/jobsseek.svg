@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#0c4a6e"/>
+  <!-- Search Glass with Target Pin -->
+  <circle cx="58" cy="48" r="20" fill="#0284c7" opacity="0.4" stroke="#38bdf8" stroke-width="3"/>
+  <line x1="73" y1="63" x2="90" y2="80" stroke="#38bdf8" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- Compass star inside -->
+  <path d="M58 36 L61 45 L70 48 L61 51 L58 60 L55 51 L46 48 L55 45 Z" fill="#f0f9ff"/>
+  <text x="64" y="103" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="900" fill="#f0f9ff" text-anchor="middle" letter-spacing="1.5">JOBSSEEK</text>
+  <text x="64" y="116" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="600" fill="#7dd3fc" text-anchor="middle">RECRUITMENT GROUP</text>
+</svg>

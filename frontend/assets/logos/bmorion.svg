@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#172554"/>
+  <!-- Orion Constellation / Diamond Stars -->
+  <path d="M40 38 L64 30 L88 42 L74 64 L86 86 L64 78 L42 86 L54 64 Z" fill="none" stroke="#60a5fa" stroke-width="2" stroke-dasharray="3,3" opacity="0.5"/>
+  <!-- Three belt stars -->
+  <circle cx="56" cy="64" r="4" fill="#f59e0b"/>
+  <circle cx="64" cy="63" r="5" fill="#fbbf24"/>
+  <circle cx="72" cy="62" r="4" fill="#f59e0b"/>
+  <!-- Corner major stars -->
+  <circle cx="40" cy="38" r="3.5" fill="#93c5fd"/>
+  <circle cx="64" cy="30" r="3.5" fill="#ffffff"/>
+  <circle cx="88" cy="42" r="3.5" fill="#93c5fd"/>
+  <text x="64" y="102" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="2">B.M. ORION</text>
+  <text x="64" y="114" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" font-weight="600" fill="#93c5fd" text-anchor="middle">ב.מ. אוריון ושות</text>
+</svg>

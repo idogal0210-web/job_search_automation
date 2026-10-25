@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#831843"/>
+  <circle cx="64" cy="52" r="26" fill="#be185d" opacity="0.3"/>
+  <!-- Chef / Flame / Culinary Engineering Icon -->
+  <path d="M48 60 C44 54 44 44 52 38 C56 34 62 34 64 30 C66 34 72 34 76 38 C84 44 84 54 80 60 C80 64 78 66 74 66 H54 C50 66 48 64 48 60 Z" fill="#fbcfe8" stroke="#f472b6" stroke-width="2"/>
+  <rect x="52" y="68" width="24" height="5" rx="2.5" fill="#fdf2f8"/>
+  <text x="64" y="98" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="800" fill="#fdf2f8" text-anchor="middle" letter-spacing="1.5">NIGA CHEF</text>
+  <text x="64" y="112" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="600" fill="#fbcfe8" text-anchor="middle">ניגא שף בע&quot;מ</text>
+</svg>

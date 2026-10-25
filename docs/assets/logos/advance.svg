@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#0f172a"/>
+  <polygon points="64,26 94,43 94,77 64,94 34,77 34,43" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Inner geometric triangles / Advance engineering 'A' -->
+  <path d="M64 35 L84 75 H72 L64 57 L56 75 H44 Z" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>
+  <path d="M54 67 H74" stroke="#e0f2fe" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="64" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="10.5" font-weight="800" fill="#e0f2fe" text-anchor="middle" letter-spacing="1.5">ADVANCE ENG</text>
+</svg>
