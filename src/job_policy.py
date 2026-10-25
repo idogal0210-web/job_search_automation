@@ -110,3 +110,134 @@ def apply_keyword_fallback(job, reason="ai_unavailable"):
             "evaluation_source": "keyword_fallback", "retry_reason": reason,
             "reasoning": "הערכה חלקית במילות מפתח; ממתינה לבדיקת התאמה מלאה.",
             "priority_bonus": 0}
+
+
+def extract_curated_tags(job):
+    """
+    Extracts up to 5 curated operational tags with strict positive triggers
+    and negative guards (anti-hallucination / false-positive protection).
+    Returns a dict with:
+      - is_field_work (bool)
+      - provides_company_car (bool)
+      - is_shifts_24_7 (bool)
+      - is_junior_friendly (bool)
+      - stated_ad_salary (str | None)
+      - curated_tags (list of dicts with type, icon, label)
+    """
+    if not isinstance(job, dict):
+        return {
+            "is_field_work": False,
+            "provides_company_car": False,
+            "is_shifts_24_7": False,
+            "is_junior_friendly": False,
+            "stated_ad_salary": None,
+            "curated_tags": [],
+        }
+
+    tags = []
+
+    # 1. Stated Salary: strictly from original job ad (never model predicted)
+    salary_source = (job.get("salary_source_type") or "").strip().lower()
+    salary_val = (job.get("salary_range") or "").strip()
+    is_stated_salary = (
+        salary_source in ("job_ad", "ad", "employer")
+        and bool(salary_val)
+        and salary_val not in ("לא צוין במודעה", "לא צוין")
+    )
+    stated_ad_salary = salary_val if is_stated_salary else None
+    if is_stated_salary:
+        tags.append({
+            "type": "tag-salary",
+            "icon": "ph-bold ph-currency-circle-dollar",
+            "label": salary_val
+        })
+
+    # Aggregate text corpus
+    text_corpus = " ".join(str(job.get(k) or "") for k in (
+        "title", "snippet", "company_requirements", "job_summary",
+        "experience_strengths", "reasoning", "key_highlights"
+    )).lower()
+
+    # 2. Field Work
+    field_pos_regex = re.compile(
+        r"(?:עבודת שטח|טכנאי שטח|מהנדס שטח|הנדסאי שטח|אנשי שטח|שירות שטח|התקנות שטח|פעילות שטח|אתרי לקוח|שירות באתרי לקוח|אתרי לקוחות|שירות באתרים|field technician|field engineer|field service|field operations)",
+        re.I
+    )
+    field_neg_regex = re.compile(
+        r"(?:ללא עבודת שטח|ללא שטח|אינו כולל שטח|אינה כוללת שטח|לא עבודת שטח)",
+        re.I
+    )
+    is_field_work = bool(field_pos_regex.search(text_corpus)) and not bool(field_neg_regex.search(text_corpus))
+    if is_field_work:
+        tags.append({
+            "type": "tag-field",
+            "icon": "ph-bold ph-wrench",
+            "label": "עבודת שטח"
+        })
+
+    # 3. Company Car
+    car_pos_regex = re.compile(
+        r"(?:רכב חברה|רכב צמוד|רכב שירות|כולל רכב|רכב לצרכי עבודה|company car)",
+        re.I
+    )
+    car_neg_regex = re.compile(
+        r"(?:ללא רכב|אינו כולל רכב|אינה כוללת רכב|לא כולל רכב|לא רכב חברה|אין רכב חברה|אין רכב)",
+        re.I
+    )
+    provides_company_car = bool(car_pos_regex.search(text_corpus)) and not bool(car_neg_regex.search(text_corpus))
+    if provides_company_car:
+        tags.append({
+            "type": "tag-car",
+            "icon": "ph-bold ph-car",
+            "label": "רכב חברה"
+        })
+
+    # 4. 24/7 Shifts / NOC
+    shifts_pos_regex = re.compile(
+        r"(?:24[/]7|משמרות 24[/]7|סבב 24[/]7|משמרות לילה|לילות וסופ[\"״]?ש|לילות וסופי שבוע|noc 24[/]7|חדר בקרה 24[/]7|24[/]7 shifts|משמרות כולל לילות|סבב משמרות מלא)",
+        re.I
+    )
+    shifts_neg_regex = re.compile(
+        r"(?:ללא משמרות|ללא 24[/]7|ללא לילות|ללא סופ[\"״]?ש|ללא סופי שבוע)",
+        re.I
+    )
+    is_shifts_24_7 = bool(shifts_pos_regex.search(text_corpus)) and not bool(shifts_neg_regex.search(text_corpus))
+    if is_shifts_24_7:
+        tags.append({
+            "type": "tag-shifts",
+            "icon": "ph-bold ph-clock-countdown",
+            "label": "משמרות 24/7"
+        })
+
+    # 5. Junior / Beginners
+    junior_pos_regex = re.compile(
+        r"(?:junior|ג['\"״]?וניור|entry[ -]?level|ללא ניסיון|ללא נסיון|0-2 שנות ניסיון|0-1 שנות ניסיון|עד שנתיים ניסיון|מתאים למתחילים|פתיחות לבוגרים ללא ניסיון|פתיחות לבוגרים|בוגרים טריים|הכשרה מלאה על חשבון החברה|דריסת רגל|תפקיד כניסה)",
+        re.I
+    )
+    junior_neg_regex = re.compile(
+        r"(?:לא מתאים לג['\"״]?וניור|לא מתאים למתחילים|דורש ניסיון משמעותי|לא ללא ניסיון)",
+        re.I
+    )
+    junior_openness_flag = str(job.get("junior_openness") or "").strip().lower() in ("כן", "true", "yes")
+
+    has_junior_positive = bool(junior_pos_regex.search(text_corpus)) or junior_openness_flag
+    has_junior_negative = bool(junior_neg_regex.search(text_corpus))
+    title_text = str(job.get("title") or "").lower()
+    has_senior_title = bool(re.search(r"\b(?:senior|lead)\b|ראש צוות|מנהל צוות", title_text))
+
+    is_junior_friendly = has_junior_positive and not has_junior_negative and not has_senior_title
+    if is_junior_friendly:
+        tags.append({
+            "type": "tag-junior",
+            "icon": "ph-bold ph-graduation-cap",
+            "label": "Junior"
+        })
+
+    return {
+        "is_field_work": is_field_work,
+        "provides_company_car": provides_company_car,
+        "is_shifts_24_7": is_shifts_24_7,
+        "is_junior_friendly": is_junior_friendly,
+        "stated_ad_salary": stated_ad_salary,
+        "curated_tags": tags[:5],
+    }

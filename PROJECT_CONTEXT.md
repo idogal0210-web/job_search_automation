@@ -72,14 +72,15 @@ job_search_automation/
 │   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
 ├── scripts/
 │   └── evaluate_dataset.py         # Confusion matrix, Precision/Recall/F1 and False Negatives evaluator
-├── tests/                          # Automated unit and integration test suite (59 passing tests)
+├── tests/                          # Automated unit and integration test suite (73 passing tests)
+│   ├── test_curated_tags.py        # Curated operational tags positive triggers & negative guards tests (14 tests)
 │   ├── test_recovery.py            # Degradation and error recovery tests
 │   ├── test_salary_intelligence.py # Salary prediction engine tests
 │   ├── test_requeue.py             # Evaluation requeue and retry tests
 │   ├── test_main_integration.py    # Pipeline integration tests
 │   ├── test_evidence_assessments.py# U4: Requirement assessments & evidence validation tests
 │   ├── test_benchmark_metrics.py   # U5: Benchmark dataset evaluation tests
-│   └── test_comeet_connector.py    # U7: Direct Comeet ATS connector tests
+│   ├── test_comeet_connector.py    # U7: Direct Comeet ATS connector tests
 │   ├── test_phase_b_precision.py   # AI evaluation precision and schema tests
 │   └── test_reliability_phase_a.py # Scraper and fallback reliability tests
 └── scripts/
@@ -193,12 +194,12 @@ job_search_automation/
 - **Pre-commit Scan:** All staged files must pass regex scanning for credentials before committing.
 
 ### 6.6 Curated Job Tags & Triage State Parity
-- **5 Curated Tags:** The dashboard strictly displays up to 5 verified operational tags positioned directly beneath `.job-card-main-header` and above `.job-bubbles-wrapper`:
-  1. `שכר` (Stated Salary): Only when explicitly stated in the job ad (`salary_source_type === 'job_ad'`); displays the exact figures.
-  2. `עבודת שטח` (Field Work): Triggered only when field work/technician/maintenance is explicitly stated.
-  3. `רכב חברה` (Company Car): Triggered only when company vehicle/attached car is explicitly stated (not driver license alone).
-  4. `משמרות 24/7` (24/7 Shifts / NOC): Triggered only on explicit 24/7 rotation, night shifts, or 24/7 control room/NOC.
-  5. `Junior` (Entry-Level / Beginners): Triggered on 0-2 years experience, "Junior", or entry-level beginner wording.
+- **5 Curated Tags (Dual-Layer Architecture with Negative Guards):** The dashboard strictly displays up to 5 verified operational tags positioned directly beneath `.job-card-main-header` and above `.job-bubbles-wrapper`, extracted via Backend data enrichment (`src/job_policy.py`, `src/ui_builder.py`) and validated with client-side regex fallback in `frontend/js/dashboard.js`:
+  1. `שכר` (Stated Salary): Only when explicitly stated in the job ad (`salary_source_type === 'job_ad'`); displays the exact figures. Never model-predicted.
+  2. `עבודת שטח` (Field Work): Triggered on hands-on field technician/engineer/maintenance duties. Protected by negative guard (e.g. excludes office-only / "ללא עבודת שטח").
+  3. `רכב חברה` (Company Car): Triggered only on company vehicle/attached car. Protected by negative guard (driver license alone never triggers car).
+  4. `משמרות 24/7` (24/7 Shifts / NOC): Triggered on explicit 24/7 rotation, night shifts, or 24/7 control room/NOC. Protected by negative guard.
+  5. `Junior` (Entry-Level / Beginners): Triggered on 0-2 years experience, "Junior", or entry-level beginner wording. Excludes Senior/lead titles or explicit non-junior requirements.
 - **Triage Tabs Parity:** Starred jobs automatically transfer from "חדשות" to "בכוכב", and saved jobs transfer to "נשמרו". Default sort is `date_desc`, ensuring newest jobs are prominently displayed first.
 
 ---

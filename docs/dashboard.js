@@ -1466,13 +1466,19 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   function getJobCuratedTags(job) {
-    const tags = [];
-    if (!job) return tags;
+    if (!job) return [];
 
-    // 1. Stated Salary: ONLY if stated in original ad
+    // Pre-computed curated_tags from Backend
+    if (Array.isArray(job.curated_tags) && job.curated_tags.length > 0) {
+      return job.curated_tags;
+    }
+
+    const tags = [];
+
+    // 1. Stated Salary: strictly from original ad (never model predicted)
     const salarySource = (job.salary_source_type || '').toLowerCase();
     const salaryVal = (job.salary_range || '').trim();
-    if ((salarySource === 'job_ad' || salarySource === 'ad' || salarySource === 'employer') && salaryVal && salaryVal !== 'לא צוין במודעה') {
+    if ((salarySource === 'job_ad' || salarySource === 'ad' || salarySource === 'employer') && salaryVal && salaryVal !== 'לא צוין במודעה' && salaryVal !== 'לא צוין') {
       tags.push({
         type: 'tag-salary',
         icon: 'ph-bold ph-currency-circle-dollar',
@@ -1487,13 +1493,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       job.company_requirements || '',
       job.job_summary || '',
       job.experience_strengths || '',
-      job.reasoning || ''
+      job.reasoning || '',
+      job.key_highlights || ''
     ];
     const fullText = texts.join(' ').toLowerCase();
 
-    // 2. Field Work
-    const fieldRegex = /(?:עבודת שטח|טכנאי שטח|מהנדס שטח|אתרי לקוח|התקנות שטח|שירות שטח|פעילות שטח|אנשי שטח|field technician|field engineer|field service|field operations)/i;
-    if (fieldRegex.test(fullText)) {
+    // 2. Field Work (with negative guards)
+    const fieldPosRegex = /(?:עבודת שטח|טכנאי שטח|מהנדס שטח|הנדסאי שטח|אנשי שטח|שירות שטח|התקנות שטח|פעילות שטח|אתרי לקוח|שירות באתרי לקוח|אתרי לקוחות|שירות באתרים|field technician|field engineer|field service|field operations)/i;
+    const fieldNegRegex = /(?:ללא עבודת שטח|ללא שטח|אינו כולל שטח|אינה כוללת שטח|לא עבודת שטח)/i;
+    if (fieldPosRegex.test(fullText) && !fieldNegRegex.test(fullText)) {
       tags.push({
         type: 'tag-field',
         icon: 'ph-bold ph-wrench',
@@ -1501,9 +1509,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       });
     }
 
-    // 3. Company Car
-    const carRegex = /(?:רכב חברה|רכב צמוד|רכב שירות|כולל רכב|company car)/i;
-    if (carRegex.test(fullText)) {
+    // 3. Company Car (with negative guards, driving license alone does not qualify)
+    const carPosRegex = /(?:רכב חברה|רכב צמוד|רכב שירות|כולל רכב|רכב לצרכי עבודה|company car)/i;
+    const carNegRegex = /(?:ללא רכב|אינו כולל רכב|אינה כוללת רכב|לא כולל רכב|לא רכב חברה|אין רכב חברה|אין רכב)/i;
+    if (carPosRegex.test(fullText) && !carNegRegex.test(fullText)) {
       tags.push({
         type: 'tag-car',
         icon: 'ph-bold ph-car',
@@ -1511,9 +1520,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       });
     }
 
-    // 4. 24/7 Shifts / NOC
-    const shiftsRegex = /(?:24[/]7|משמרות 24[/]7|סבב 24[/]7|משמרות לילה|לילות וסופ["״]?ש|לילות וסופי שבוע|noc 24[/]7|חדר בקרה 24[/]7|24[/]7 shifts|משמרות כולל לילות|סבב משמרות מלא)/i;
-    if (shiftsRegex.test(fullText)) {
+    // 4. 24/7 Shifts / NOC (with negative guards)
+    const shiftsPosRegex = /(?:24[/]7|משמרות 24[/]7|סבב 24[/]7|משמרות לילה|לילות וסופ["״]?ש|לילות וסופי שבוע|noc 24[/]7|חדר בקרה 24[/]7|24[/]7 shifts|משמרות כולל לילות|סבב משמרות מלא)/i;
+    const shiftsNegRegex = /(?:ללא משמרות|ללא 24[/]7|ללא לילות|ללא סופ["״]?ש|ללא סופי שבוע)/i;
+    if (shiftsPosRegex.test(fullText) && !shiftsNegRegex.test(fullText)) {
       tags.push({
         type: 'tag-shifts',
         icon: 'ph-bold ph-clock-countdown',
@@ -1521,9 +1531,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       });
     }
 
-    // 5. Junior / Entry-Level
-    const juniorRegex = /(?:junior|ג['"״]?וניור|entry[ -]?level|ללא ניסיון|ללא נסיון|0-2 שנות ניסיון|עד שנתיים ניסיון|מתאים למתחילים|פתיחות לבוגרים ללא ניסיון|הכשרה מלאה על חשבון החברה|דריסת רגל|תפקיד כניסה)/i;
-    if (juniorRegex.test(fullText)) {
+    // 5. Junior / Entry-Level (with negative guards and senior exclusion)
+    const juniorPosRegex = /(?:junior|ג['"״]?וניור|entry[ -]?level|ללא ניסיון|ללא נסיון|0-2 שנות ניסיון|0-1 שנות ניסיון|עד שנתיים ניסיון|מתאים למתחילים|פתיחות לבוגרים ללא ניסיון|פתיחות לבוגרים|בוגרים טריים|הכשרה מלאה על חשבון החברה|דריסת רגל|תפקיד כניסה)/i;
+    const juniorNegRegex = /(?:לא מתאים לג['"״]?וניור|לא מתאים למתחילים|דורש ניסיון משמעותי|לא ללא ניסיון)/i;
+    const isSeniorTitle = /(?:senior|ראש צוות|lead)/i.test(job.title || '');
+    const isJuniorOpen = (job.junior_openness || '').toString().toLowerCase() === 'כן';
+
+    if ((juniorPosRegex.test(fullText) || isJuniorOpen) && !juniorNegRegex.test(fullText) && !isSeniorTitle) {
       tags.push({
         type: 'tag-junior',
         icon: 'ph-bold ph-graduation-cap',
@@ -1531,7 +1545,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       });
     }
 
-    return tags;
+    return tags.slice(0, 5);
   }
 
   let jobStates = loadTriageState();
@@ -1772,7 +1786,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const curatedTags = getJobCuratedTags(job);
       let tagsHtml = '';
       if (curatedTags && curatedTags.length > 0) {
-        const pills = curatedTags.map(t => `<span class="job-tag-pill ${t.type}"><i class="${t.icon}"></i><span>${escapeHtml(t.label)}</span></span>`).join('');
+        const pills = curatedTags.map(t => `<span class="job-tag-pill ${t.type}"><i class="${t.icon}"></i><span dir="auto">${escapeHtml(t.label)}</span></span>`).join('');
         tagsHtml = `<div class="job-card-tags">${pills}</div>`;
       }
 
@@ -1956,7 +1970,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const curatedTags = getJobCuratedTags(job);
     let tagsHtml = '';
     if (curatedTags && curatedTags.length > 0) {
-      const pills = curatedTags.map(t => `<span class="job-tag-pill ${t.type}"><i class="${t.icon}"></i><span>${escapeHtml(t.label)}</span></span>`).join('');
+      const pills = curatedTags.map(t => `<span class="job-tag-pill ${t.type}"><i class="${t.icon}"></i><span dir="auto">${escapeHtml(t.label)}</span></span>`).join('');
       tagsHtml = `<div class="job-card-tags" style="margin: 6px 0 10px;">${pills}</div>`;
     }
 

@@ -4,6 +4,7 @@ import re
 import shutil
 from datetime import datetime, timedelta
 from src.state_manager import save_state_atomic
+from src.job_policy import extract_curated_tags
 
 # Load HTML template from frontend/templates/index.html
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,6 +21,7 @@ def compact_job_for_ui(j):
     """Filter out private/internal fields, keeping strictly UI-required metadata."""
     if not isinstance(j, dict):
         return {}
+    tags_info = extract_curated_tags(j)
     return {
         "link": j.get("link", ""),
         "title": j.get("title", ""),
@@ -46,7 +48,12 @@ def compact_job_for_ui(j):
         "logo": j.get("logo"),
         "snippet": j.get("snippet", ""),
         "requirement_assessments": j.get("requirement_assessments", []),
-        "is_direct_ats": j.get("is_direct_ats", False)
+        "is_direct_ats": j.get("is_direct_ats", False),
+        "is_field_work": j.get("is_field_work", tags_info["is_field_work"]),
+        "provides_company_car": j.get("provides_company_car", tags_info["provides_company_car"]),
+        "is_shifts_24_7": j.get("is_shifts_24_7", tags_info["is_shifts_24_7"]),
+        "is_junior_friendly": j.get("is_junior_friendly", tags_info["is_junior_friendly"]),
+        "curated_tags": j.get("curated_tags") or tags_info["curated_tags"]
     }
 
 

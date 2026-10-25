@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0.0",
-  "build_id": "20261025020719",
-  "generated_at": "2026-10-25T02:07:19.558238",
+  "build_id": "20261025024351",
+  "generated_at": "2026-10-25T02:43:51.457110",
   "total_jobs": 80,
   "jobs": [
     {
@@ -30,7 +30,23 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGQr2Z6Sml-yg/company-logo_100_100/B4DZbDOQ79HQAU-/0/1747032019101/amarel_logo?e=2147483647&v=beta&t=NHrBXVeTTiaxH93t_pT_VLLsjUBWZi7RbLEnS6qINbM",
       "snippet": "Join our Solar Operations Center and become part of a team responsible for keeping commercial solar systems running at peak performance.\nThis is an\nentry-level\n, operations-focused role that combines system monitoring, issue coordination, customer communication, and problem-solving.\nNo prior experience is required we provide complete, in-house training from day one. You'll work with advanced monitoring platforms, coordinate service activities, and act as a key point of contact to ensure customers receive timely updates and high-quality support.\nThis position is ideal for motivated professionals looking to kickstart a long-term career in the renewable energy industry.\nResponsibilities\n1. Monitor the performance of commercial solar systems through dedicated monitoring platforms.\n2.Detect system alerts, equipment faults, and operational issues.\n3.Open, coordinate, and track service requests until resolution.\n4.Work closely with field technicians and internal teams to ensure timely issue resolution.\n5.Communicate with customers regarding system status and maintenance activities.\n6.Review operational dashboards and system information to support daily decision-making.\n7.Maintain accurate documentation and ensure follow-up on ongoing tasks.\n8.Prioritize multiple activities in a fast-paced operational environment.\nRequirements\n1.Strong attention to detail and a structured approach to work.\n2.Excellent organizational and multitasking skills.\n3.Ability to solve problems and make practical decisions independently.\n4.Strong communication and customer service skills.\n5.Comfortable working with computer systems, operational platforms, and Microsoft Excel.\n6.Fast learner with a proactive mindset and a high sense of ownership.\nWhat We Offer\n1.Comprehensive in-house training program.\n2.Company laptop.\n3.Daily meal allowance.\n4.Full social benefits.\n5.Opportunity to build a long-term career in one of the fastest-growing renewable energy industries.\nPosition Details\nLanguage:\nHebrew (",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": true,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        },
+        {
+          "type": "tag-junior",
+          "icon": "ph-bold ph-graduation-cap",
+          "label": "Junior"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/water-technology-field-technicians-at-saltworks-technologies-industrial-water-%2B-lithium-4479429643",
@@ -58,7 +74,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/D560BAQH6B2WuvHeHOg/company-logo_100_100/company-logo_100_100/0/1687378473425/saltworkstech_logo?e=2147483647&v=beta&t=FGjCfxmdBp5kTZMNxPlk98-jlK_UOnyNOY1gv9_v1mE",
       "snippet": "Saltworks Technologies\nis a leading international water technology company. We innovate, deliver, and operate the world’s most advanced industrial water treatment plants for global leaders in semiconductors, mining, automotive, and industrial processing. With water scarcity growing alongside the AI revolution, demand for our solutions is rising fast. Our growth has been recognized by Deloitte (Technology Fast 50) and Ernst & Young (Entrepreneur of the Year). We value teamwork and integrity, and we invest in our people through AI adoption, learning, and professional advancement. Join us and build a future in protecting water, innovation, and the next era of engineering and industrial operations.\nLocation:\nKiryat Gat, Israel\nThe Role\nSaltworks is hiring\nWater Technology Field Technicians\nto put first-of-a-kind water technology to work at a major semiconductor manufacturing facility. You will be hands-on from day one, helping commission the system and then running and maintaining it as part of our growing team in Israel. As our work here expands, this role offers real room to grow, including into senior and lead technician roles. It’s a great fit for a natural problem solver who wants to work with advanced equipment, keep learning, and be part of building something new.\nBefore startup, you will travel to North America for about three months of training with our team, learning our technology and systems before site work begins. Once on site, you’ll have full technical support, tools, and resources from headquarters behind you.\nKey Responsibilities\nRun the system day to day: do equipment rounds, check readings, and make adjustments to keep it running reliably.\nTake part in commissioning, from installation checks through startup and handover.\nCarry out routine and preventive maintenance, including instrument calibration, parts replacement, and equipment repairs.\nTroubleshoot mechanical, electrical, and instrumentation issues on site, escalating to our engineering team whe",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%90%D7%97%D7%A8%D7%90%D7%99-%D7%AA-%D7%91%D7%A7-%D7%90%D7%95%D7%A4%D7%99%D7%A1-%D7%9C%D7%AA%D7%97%D7%95%D7%9D-%D7%94%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99-at-amarel-ltd-4481360255",
@@ -86,7 +113,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGQr2Z6Sml-yg/company-logo_100_100/B4DZbDOQ79HQAU-/0/1747032019101/amarel_logo?e=2147483647&v=beta&t=NHrBXVeTTiaxH93t_pT_VLLsjUBWZi7RbLEnS6qINbM",
       "snippet": "מה כולל התפקיד?\nניהול ותיאום הפעילות השוטפת של צוותי הטכנאים בשטח\nבניית סידורי עבודה יומיים, תעדוף משימות ומעקב אחר ביצוע\nקבלת דיווחים על תקלות מחדר הבקרה והעברת המשימות לטכנאים בשטח\nתיאום ותפעול משימות מול טכנאים, ספקים, מוקד השירות ולקוחות החברה\nניהול המעטפת התפעולית והלוגיסטית של צוותי השטח\nמעקב אחר הטיפול בתקלות ומשימות פתוחות עד להשלמתן\nקבלת דוחות עבודה מהטכנאים, ביצוע בקרות איכות ומעקב אחר ליקויים\nהכנת דוחות פעילות מפורטים ועדכון שוטף של הלקוחות בסטטוס הטיפול\nמתן מענה ללקוחות, הבנת צורכיהם ותיאום ציפיות בהתאם לפעילות המחלקה\nזיהוי פערים תפעוליים, פתרון בעיות וייעול תהליכי עבודה\nעבודה בסביבה דינמית הכוללת ריבוי משימות וממשקים\nדרישות התפקיד\nחובה\nניסיון קודם בתפקידי תפעול ותיאום משימות\nיכולת תכנון, סדר וארגון ברמה גבוהה\nיכולת ניהול ותעדוף מספר משימות במקביל\nיכולת עבודה תחת לחץ והתמודדות עם עומסים\nתודעת שירות גבוהה ויכולת עבודה מול לקוחות\nיחסי אנוש מצוינים ויכולת עבודה מול מגוון ממשקים\nיכולת פתרון בעיות, קבלת החלטות ועבודה עצמאית\nיכולת התנסחות טובה בכתב ובעל פה\nיוזמה, אחריות אישית ויכולת הנעת תהליכים\nיתרון\nניסיון קודם בתיאום וניהול פעילות של טכנאי שטח\nניסיון בעבודה מול ספקים ונותני שירות\nניסיון קודם בחדר בקרה או במערך שירות טכני\nחשוב לדעת\nהתפקיד מהווה גורם מרכזי בתיאום ובניהול הפעילות השוטפת של חדר הבקרה וצוותי השטח\nהעבודה משלבת תפעול, לוגיסטיקה, שירות לקוחות ובקרה על ביצוע משימות\nנדרשת יכולת להעביר מידע בצורה מדויקת וברורה בין חדר הבקרה, הטכנאים והלקוחות\nהתפקיד כולל אחריות על מעקב אחר תקלות, הפקת דוחות ועדכון לקוחות באופן שוטף\nנדרשת יכולת עבודה עצמאית בסביבה דינמית, תוך שמירה על סדר, דיוק ורמת שירות גבוהה\nמה אנחנו מציעים?\nסביבת עבודה מקצועית\nאפשרויות קידום\nהכשרה מקצועית\nתנאים סוציאליים\nאירועי חברה",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/israel-opex-leader-at-netafim-4475751841",
@@ -114,7 +152,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFtDN6UBUBKSA/company-logo_100_100/B4DZxxEecNKYAQ-/0/1771423525029/netafim_logo?e=2147483647&v=beta&t=7o-XZCC-_T33w7n36T7a2xgEiT1CtR7d_6JMZzHkG7A",
       "snippet": "מנהל מצוינות תפעולית - ישראל\nמשרה היברידית - נכונות להתנייד בין שלושת האתרים: מגל, יפתח וחצרים\nעל החברה\nנטפים הינה חברה גלובלית, חלק מקבוצת \"אורביה\", תאגיד בינלאומי המונה כ־23,000 עובדים ברחבי העולם. החברה עוסקת בפיתוח וייצור טפטפות ופתרונות השקיה מתקדמים לתעשייה החקלאית, ונחשבת לחברת ההשקיה המובילה בעולם. מעבר לפיתוח ולייצור, נטפים מקימה שדות, מטעים וחממות, מעניקה שירותים לחקלאים, פעילה ומשווקת את מוצריה ליותר מ־100 מדינות ברחבי העולם.\nכיום לנטפים 19 מפעלים ו-2 מפעלי מחזור ברחבי העולם, כולל בישראל, ולמעלה מ־33 חברות בנות. בישראל פועלים שלושה אתרי ייצור: חצרים, מגל ויפתח. בנוסף, מטה החברה ממוקם במרכז הארץ, ואתר הייטק נוסף פועל ביקנעם. נטפים מעסיקה כ־5,000 עובדים ברחבי העולם, מתוכם כ־1,000 עובדים בישראל\nמשימה מרכזית\nאחריות להובלת תחום המצוינות התפעולית בשלושה אתרי ייצור של נטפים בישראל (יפתח, מגל וחצרים), תוך הטמעת תרבות של שיפור מתמיד, הובלת פרויקטים של התייעלות חוצי ארגון ושיפור ביצועי המפעלים בתחומי בטיחות, איכות, אספקה, עלות ופריון\nהתפקיד כולל עבודה שוטפת מול המצוינות התפעולית הגלובאלית, הנהלות המפעלים, מנהלי ייצור, איכות, הנדסה ושרשרת אספקה, לצד הובלת תוכניות לשיפור ביצועים ויצירת סטנדרטיזציה בין האתרים\nתחומי אחריות עיקריים\nהובלת תוכנית המצוינות התפעולית\n· הובלת יישום אסטרטגיית ה־OPEX במפעלי ישראל בהתאם לכיווני הפעולה הגלובליים\n· הובלת והטמעת מתודולוגיות Lean Manufacturing, Six Sigma , Continuous Improvement, 5S -\n· בנייה והובלת תוכניות עבודה שנתיות לקידום יעדי המצוינות התפעולית\n· הבטחת סטנדרטיזציה ושיתוף Best Practices בין המפעלים\nהובלת פרויקטי שיפור\n· זיהוי הזדמנויות לשיפור תהליכים תפעוליים ועסקיים\n· הובלת אירועי Kaizen, Value Stream Mapping (VSM), GEMBA ,A3 Problem Solving\n· ניהול והנחיית צוותי שיפור חוצי פונקציות עד להשגת תוצאות עסקיות מדידות\n· הובלת פרויקטי חיסכון, התייעלות ושיפור מדדים תפעוליים עפ\"י הנדרש\nפיתוח היכולות הארגוניות\n· הכשרה, ליווי וחניכה של מנהלים ועובדים בתחומי המצוינות התפעולית\n· בניית קהילות ידע ורשת מובילי OPEX במפעלים\n· חיזוק מעורבות העובדים והובלת יוזמות תרבות ארגונית התומכות בשיפור מתמיד\n· הובלת פורומים מקצועיים בנושאי מצוינות תפעולית\n·",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/autonomous-vehicle-system-integrator-at-mobileye-4481352802",
@@ -142,7 +185,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGMqdNe9MW06Q/company-logo_100_100/company-logo_100_100/0/1658223890583/mobileye_logo?e=2147483647&v=beta&t=Qx5AuX9E7Zbr1GScuv5IGaUrVLVypF7VEOhVaw2Zu88",
       "snippet": "The ISR Group at Mobileye leads Autonomous Vehicle Experiments and Vehicle Technology Integration. The group is responsible for the bring-up and integration of complex hardware and software systems into autonomous vehicle fleets, the retrofitting of autonomous driving technologies, and supporting both internal and external development projects. We are looking for an integration professional with a strong technical background and excellent hands-on capabilities to lead the setup, maintenance, and complex troubleshooting of these systems throughout their development lifecycle.\nWhat will your job look like:\nLead and execute HW-SW integration (Bring-up), configuration, and validation for complex autonomous systems.\nDemonstrate a deep understanding of system internals: configuration, communication networks, sensors (cameras, radars, LiDARs), computing platforms, and their seamless integration.\nPerform hands-on work and physical installations on vehicles as an integral part of the role. Alongside system-level expertise, the work includes the practical integration of components within the vehicle environment (including wiring, soldering, cable crimping, and the use of tools) to ensure full on-site independence, real-time troubleshooting capabilities, and end-to-end issue resolution.\nInvestigate and troubleshoot complex issues in a multidisciplinary environment (software, hardware, mechanics, networking, and operating systems) and perform Root Cause Analysis.\nProvide ongoing maintenance for various vehicle systems and offer technical support to R&D teams during experiments.\nDevelop, maintain, and utilize scripts and tools to streamline integration, testing, and debugging processes.\nAll you need is:\n3+ years of experience in system engineering processes, integration of complex electronic/embedded systems, and system Bring-up.\nProven and strong hands-on capabilities: practical experience working with tools, performing mechanical assemblies, wiring, soldering, and installing A",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/integration-flight-operations-team-lead-at-airobotics-4481338594",
@@ -170,7 +218,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/D560BAQGrCGy2mpCcZA/company-logo_100_100/B56Z9BsGDSLAAI-/0/1783513506270/airobotics_logo?e=2147483647&v=beta&t=B3eKgH3D6XWlQw69n9ahWoGIEe_fWobE1A3QOAl0l9M",
       "snippet": "Airobotics is a leading company specializing in the development and manufacturing of autonomous drone systems. Its solutions combine hardware, software, and AI-driven technologies to support complex, large-scale operations. Airobotics works primarily with defense industries, such as military and law enforcement agencies worldwide. The company is part of Ondas Holdings and operates as a wholly owned subsidiary.\nWe are looking for an experienced, hands-on Team Leader with a strong managerial orientation to lead the Integration and Drone Pilots teams.\nThe role includes overall responsibility for the professional and operational management of the field teams, establishing work infrastructures, developing procedures, implementing work processes, professional documentation, managing team qualifications, and ensuring full readiness of the systems and teams for experiments, development flights, system testing, and field activities.\nThis is a role that connects the worlds of development, integration, operational activities, and testing, and requires the ability to lead people, manage multiple tasks, work with diverse engineering interfaces, and remain hands-on in the laboratory and in the field.\nResponsibilities:\nProfessional management and leadership of the Integration Team and Drone Pilots Team.\nPlanning, prioritizing, and assigning tasks according to development, testing, demonstration, and ongoing operational needs.\nResponsibility for system readiness for laboratory tests, ground tests, flight tests, and field activities.\nLeading integration, assembly, configuration, maintenance, and troubleshooting activities.\nManaging pilot qualifications, training, performance levels, and compliance with professional standards.\nPlanning and coordinating flight activities, including preparations, briefings, Go / No-Go decisions, and post-activity debriefings.\nDeveloping and implementing work procedures, checklists, management routines, and documentation processes.\nResponsibility for pr",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/noc-operator-37577-at-%D7%9E%D7%A8%D7%98%D7%A0%D7%A1-mertens-%E2%80%93-%D7%9E%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%9E%D7%9C%D7%9D-%D7%AA%D7%99%D7%9D-4482471524",
@@ -198,7 +257,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHTo6Nsm5tThA/company-logo_100_100/B4DZca4c4jGkAQ-/0/1748502696133/mertens_malam_team_logo?e=2147483647&v=beta&t=TrxW5cSOBkoz4X2VxmgudphCYbagU2tXFEDZ7aeRXLw",
       "snippet": "NOC Operator | Central Israel | 24/7 Shifts\nMertens - MalamTeam is hiring a NOC Operator for a leading organization in Central Israel.\nKey Responsibilities:\nMonitor and maintain critical systems\nIdentify, analyze, and provide initial response to incidents in real time\nDocument incidents and escalate relevant information to the appropriate teams\nWork with VM servers, IT infrastructure, networks, enterprise applications, and advanced monitoring tools\nCollaborate with support teams, development teams, and external vendors\nExecute emergency procedures during critical incidents\nWork in a 24/7 shift-based environment\nRequirements:\nAt least 1 year of experience in technical support or a NOC environment – Significant Advantage\nFamiliarity with Windows and Linux operating systems\nExperience with VMware or Hyper-V – Advantage\nKnowledge of TCP/IP, DNS, and VPN networking technologies\nFamiliarity with monitoring tools such as Zabbix, SolarWinds, Grafana, Kibana, or Prometheus",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/aircraft-mechanic-at-jobsseek-4482461472",
@@ -226,7 +296,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFc4u1wp4facA/company-logo_100_100/company-logo_100_100/0/1704712762989/jobsseek_logo?e=2147483647&v=beta&t=Ldqf7J6mMvUr6WGU4z-wifS9Y7rH-2vqgqAy-3p-cgA",
       "snippet": "הצטרפו למפעל\nMRO\nמוביל בחטיבת התעופה שלנו, בתפקיד קריטי כ\nמשפצ/ת מיסבים ואטמי פחם\n. תפקיד זה מהווה נדבך חיוני בתחזוקת מנועי תעופה מתקדמים, ומציע סביבת עבודה מאתגרת, טכנית ומדויקת.\nכחלק מצוות מקצועי ומסור, תיקחו חלק פעיל בתהליכי שיפוץ קריטיים המבטיחים את בטיחותם וביצועיהם של מנועי סילון, תוך עמידה בלתי מתפשרת בתקני איכות ובטיחות בינלאומיים מחמירים. התפקיד דורש הבנה טכנית מעמיקה, יכולת קריאת שרטוטים ואנגלית ברמה גבוהה.\nתחומי האחריות:\nביצוע שיפוץ, בדיקה והחלפה של מיסבים ואטמי פחם במנועי תעופה שונים.\nעבודה קפדנית בהתאם לנהלי היצרן הספציפיים ותקני איכות ובטיחות מחמירים.\nקריאה והבנת שרטוטים טכניים מורכבים לצורך ביצוע עבודה מדויקת.\nהבנת אנגלית מקצועית ברמה גבוהה לצורך עבודה עם מפרטים טכניים והוראות.\nשיתוף פעולה הדוק ועבודת צוות שוטפת להשגת יעדי המפעל.\nזוהי הזדמנות מצוינת לצמוח מקצועית, לרכוש הסמכות ורישיונות ייחודיים בתחום התעופה, ולהיות חלק מצוות המקבל החלטות חשובות במפעל MRO פורץ דרך.\nRequirements:\nחובה:\nסיום\nבית ספר מקצועי\nאו בעל/ת\nדיפלומה במכונות\n.\nחובה:\nיכולת מוכחת ב\nקריאה והבנת שרטוטים טכניים\n.\nחובה:\nהבנת אנגלית\nברמה גבוהה לקריאת מפרטים והוראות יצרן.\nחובה:\nיכולת עבודה מדויקת וקפדנית, תוך הקפדה על\nתקני איכות ובטיחות\nמחמירים.\nיתרון משמעותי:\nניסיון קודם כ\nמכונאי/ת מטוסים\n,\nמנוען/ית\n, או טכנאי/ת דרג א' /ב' /ד' מ\nחיל האוויר\nאו מ\nיאא\n(יחידת אחזקה אווירית).\nfor more jobs visit our jobs pages https://www.jobsseek.info/jobs למשרות נוספות בקרו בעמוד המשרות באתר שלנו",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/integration-engineer-at-uvision-group-4482468438",
@@ -254,7 +329,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQG6OA3Xnw9kmw/company-logo_100_100/B4DZk5uTq5H4AQ-/0/1757610064897/uvisionuav_logo?e=2147483647&v=beta&t=q0mP1XGai-SYdgcKgNa1UFBbiIruSQprKjqvH-T0flA",
       "snippet": "Uvision is looking for an Integration Engineer.\nThis challenging role combines development, integration, troubleshooting, verification and validation, automation, and overseeing the development process from start to finish (A2Z).\nJob Description:\nPerform electrical tests on subsystems and systems during the production and development processes according to test specifications.\nConduct environmental tests (qualification), investigate faults at the component level, and write tests and system specifications (ATP).\nRequirements:\nElectronics engineer or technician with 2-3 years of experience.\nExperience troubleshooting at the component level.\nProficient in reading electrical and mechanical drawings.\nExperience writing tests and system specifications in English.\nExperience integrating complex systems.\nTechnical experience operating laboratory and testing equipment (soldering, wiring, tools, spectrum analyzers, oscilloscopes) – an advantage.\nKnowledge and experience with Arduino – a significant advantage.\nKnowledge and experience with Linux – a significant advantage.\nKnowledge and experience with RF – an advantage.\nExperience working with defense/aerospace systems – an advantage.\nFamiliarity with software: Priority, OrCAD, Office, Visio, SolidWorks – an advantage.\nWillingness to travel abroad (25%).\nInstructional experience in English – an advantage.\nProficiency in English – mandatory.",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%91%D7%95%D7%97%D7%A0-%D7%AA-%D7%90%D7%99%D7%9B%D7%95%D7%AA-at-elbit-systems-israel-4376644845",
@@ -282,7 +362,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q",
       "snippet": "לאתר החברה ברמת השרון דרוש.ה בוחנ.ת איכות\nתיאור התפקיד:\nביקורת איכות בקווי הייצור: בחינה תוך כדי תהליך בחינה סופית למוצרים משולבים אלקטרוניקה מכניקה תוכנה\nבחינה ויזואלית, ביצוע מדידות מכניות למוצרים סופיים ותוך כדי תהליך ייצור\nבחינת תגי תהליך, דוחות עד למתן תג שמיש למוצר\nדיווח וניתוח כשלים ומתן פתרונות\nעבודה צמודה מול גורמי שונים במפעל: ייצור, הנדסת ייצור, תפ''י, איכות מטה\nליווי בחינה וביקורת על מול לקוחות: צה''ל, לקוחות חו''ל\nדרישות התפקיד:\nהנדסאי טכנאי אלקטרוניקה מכונות מכוטרוניקה\nניסיון רלוונטי מתחום לפחות שנתיים\nניסיון עבודה עם תקני IPC610/620\nניסיון בקריאת שרטוטים הכוללים: מכניקה, אלקטרוניקה, כבילה\nידע והכרת תקני ISO AS9100 – יתרון משמעותי\nניסיון בביצוע סיקורי קו ו- FAI – יתרון\n#Ramat HaSharon\n*הפניה מיועדת לנשים וגברים כאחד\n**רק פניות מתאימות יענו",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%AA-%D7%90%D7%99%D7%9B%D7%95%D7%AA-%D7%94%D7%A8%D7%9B%D7%91%D7%95%D7%AA-at-elbit-systems-israel-4430225732",
@@ -310,7 +395,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q",
       "snippet": "לאתר החברה ביקנעם דרוש.ה מבקר.ת איכות להרכבות\nתיאור התפקיד\nביצוע ביקורות איכות בתהליכי הרכבה מכאנית, אלקטרומכנית ואלקטרונית, להבטחת עמידה בדרישות שרטוט, מפרטים ודרישות לקוח\nביצוע ביקורות בתהליך (In Process) וביקורת סופית (Final).\nאימות התאמה לשרטוטים, הוראות עבודה ודרישות איכות\nבדיקת רכיבים, סימונים ושלמות המוצר\nפתיחה וטיפול בדיווחי אי-התאמה (NCR) ומעקב אחר פעולות מתקנות\nתיעוד תוצאות במערכות איכות והפקת דוחות\nהשתתפות בחקר תקלות ושיפור תהליכים\nדרישות התפקיד:\nטכנאי/הנדסאי מכונות, אלקטרוניקה או תעשייה וניהול\nהכשרות בתחום האיכות\nניסיון של שנתיים לפחות בביקורת איכות בתעשייה יצרנית\nניסיון בהרכבות מכאניות/ אלקטרומכניות\nיכולת קריאת שרטוטים טכניים\nהיכרות עם כלי מדידה ותקני איכות ISO 9001; AS9100\nניסיון בעבודה עם מערכות ERP\nאנגלית טכנית ברמה טובה\nדיוק וירידה לפרטים\nאסרטיביות מקצועית\nאחריות גבוהה\nיכולת עבודה בסביבה מרובת משימות\n*הפניה מיועדת לנשים וגברים כאחד\n**רק פניות מתאימות יענו\n#Yokneam Illit",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%AA-%D7%94%D7%A8%D7%9B%D7%91%D7%95%D7%AA-%D7%97%D7%A9%D7%9E%D7%9C-%D7%9E%D7%9B%D7%A0%D7%99%D7%A7%D7%94-%D7%95%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%94-at-iai-israel-aerospace-industries-4425833966",
@@ -338,7 +428,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s",
       "snippet": "קצת על התפקיד למפעל מל\"ט בחטיבת כלי טיס צבאיים דרוש/ה מבקר/ת הרכבות חשמל/מכניקה ואינטגרציה. התפקיד כולל:\nביצוע בדיקות ויזואליות להרכבות עפ\"י שרטוטים, מערכי עבודה, זיהוי תקלות וליקויים\nתיעוד תקלות וסקרים, בדיקות, החלפת רכיבים, הכנת דוחות מפורטים על מצב הכטב\"מ והמכלולים ופעולות שבוצעו\nעבודה בשיתוף פעולה עם טכנאים ומהנדסים\nיישום תקנים ורגולציות של רשויות תעופה מה אנחנו מחפשים\nהנדסאי/טכנאי אלקטרוניקה/ מכונות- חובה\nניסיון של 2-3 שנים בבקרת איכות של הרכבות חשמל/ מכניקה- יתרון\nידע בקריאת שרטוטים מכניים וחשמליים – חובה\nשליטה בתוכנות Office – חובה\nניסיון בתחום כטב\"ם או התעשייה ביטחונית – יתרון\nהיכרות עם תקני IPC (IPC-A-610 / IPA-A-620) – יתרון משמעותי\nאולי יעניין אותך לדעת חטיבת כלי טיס צבאיים רכשה את המוניטין המצוינת שלה בקרב קהילת הביטחון העולמית בזכות עשורים של ניסיון ויכולות טכנולוגיות נרחבות. השילוב בן ידע טכנולוגי עילאי וניסיון מעשי רב- שנים מאפשר לחטיבה להציע מערך מרשים של מוצרים ושירותים לצרכי תחזוקה, השדרוג והייצור של מגוון מערכות כטמ\"ם.",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A9%D7%A4%D7%A5-%D7%AA-%D7%90%D7%91%D7%99%D7%96%D7%A8%D7%99-%D7%91%D7%A7%D7%A8%D7%AA-%D7%9E%D7%A0%D7%95%D7%A2-76046623-at-iai-israel-aerospace-industries-4369118209",
@@ -366,7 +461,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s",
       "snippet": "קצת על התפקיד\nביצוע שיפוץ, בדיקה ותיקון של אביזרי בקרת מנוע במנועים תעופתיים אזרחיים וצבאיים\nפירוק, ביקורת חלקים, הרכבה ,בדיקה, ניסוי ופתרון תקלות\nעבודה לפי ספרון יצרן ותקנים מחמירים בתעופה\nביצוע העבודה ברמה הגבוהה ביותר ועמידה בזמני הסבב מה אנחנו מחפשים\nבית ספר מקצועי ודיפלומה בתחום המכונות\nיוצא/ת ח\"א, מנוען/ית , מכונאי/ת מטוסים , משפצ/ת אביזרים , יא\"א\nאולי יעניין אותך לדעת עבודה טכנית, מאתגרת ומדויקת עם עומק מקצועי וסביבת עבודה מתקדמת בתחום שיפוץ אביזרי בקרת מנוע. לקיחת חלק ממערכת קריטית במנועים תעופתיים. עבודה עם צוות מקצועי, בעל ניסיון רב וסטנדרטיים תעופתיים.",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%A9%D7%99%D7%A4%D7%95%D7%A5-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%AA%D7%9E%D7%A1%D7%95%D7%A8%D7%AA-at-iai-israel-aerospace-industries-4324591055",
@@ -394,7 +494,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s",
       "snippet": "קצת על התפקיד לחטיבת תעופה, למפעל MRO דרוש/ה טכנאי/ת שיפוץ מערכות תמסורת. העבודה כוללת: פירוק האביזר, ניקוי ,ביקורת חלקים ,תיקונים ,הרכבה ובדיקת תפעול בהרצה במתקני הרצה יעודים. העבודה במחלקה ממוזגת על שולחן עבודה, השתלבות בעבודת צוות. מה אנחנו מחפשים השכלה -טכנאי/הנדסאי מכונות - יתרון שליטה באנגלית טכנית - חובה ידע בסיסי בהרכבות מכאניות - חובה קריאת ספרות/שרטוטי הרכבה טכנית באנגלית - חובה יוצא ח\"א, חיל הים -יתרון נכונות לעבודה בשעות נוספות.\nאולי יעניין אותך לדעת כחברה מובילה בעולם בתחום תעופה וחלל, קבוצת התעופה של התעשייה האווירית מעורבת בכל ההיבטים של תעשיית התעופה, החל בתכנון ובפיתוח, דרך הנדסה וייצור של מבנים תעופתיים ומטוסים שלמים, וכלה בבדיקות ובאישורים. בנוסף, קבוצת התעופה מעניקה שירותי תחזוקה מקיפים ואיכותיים לכלי טיס, מנועים ורכיבים, תחת קורת גג אחת. שירותים אלה כוללים תחזוקה כבדה, שינויים ושיפורים, שדרוגי מטוסים אזרחיים וצבאיים, וכן את השירות המוביל בעולם, עם למעלה מ-45 שנות ניסיון, להסבת מטוסי נוסעים למטוסי מטען.",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A8%D7%9B%D7%99%D7%91-%D7%94-%D7%95%D7%9E%D7%A4%D7%A2%D7%99%D7%9C-%D7%94-%D7%9E%D7%9B%D7%95%D7%A0%D7%AA-cnc-at-iai-israel-aerospace-industries-4479142195",
@@ -422,7 +527,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s",
       "snippet": "קצת על התפקיד למרכז הנדסה ופיתוח בחטיבת התעופה דרוש/ה מרכיב/ה ומפעיל/ה מכונת CNC התפקיד כולל:\nהרכבות מכאניות של מודלי מנהרות רוח.\nביצוע התאמות ידניות, עבודות גמר והלחמות כסף.\nהפעלת מכונת כרסום CNC 4 צירים. מה אנחנו מחפשים\nהנדסאי/ טכנאי מכונות בעל רקע טכני - חובה.\nניסיון בכרסום וחריטה במכונות קונבנציונליות - חובה.\n4-6 שנות ניסיון.\nיכולת עבודות הרכבה, התאמות ידניות, עבודות גמר ועבודה עם כלי עבודה עדינים - חובה.\nיכולת הבנה וקריאת שרטוטים מכניים - חובה.\nניסיון בהפעלת מכונת CNC 3-4 צירים - יתרון.\nניסיון בהלחמות כסף - יתרון.\nהכרות עם תכנת תיב\"ם NX - יתרון.\nאולי יעניין אותך לדעת מנהל מנהרות רוח של מרכז הנדסה היינו תשתית לאומית בו מבצעים מגוון רחב של ניסויים אווירודינמיים הנדרשים להוכחה ופיתוח של כלי טיס מאוישים ולא מאוישים, חימושים וכדומה.",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/pmo-construction-at-enlight-renewable-energy-ltd-enlt-4481575351",
@@ -450,7 +560,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY",
       "snippet": "Join Enlight and help shape the future of clean energy.\nEnlight is a leading global renewable energy company, developing, building, owning and operating large-scale solar, wind and energy storage projects across the U.S., Europe and MENA. As one of the fastest-growing renewable platforms, we combine entrepreneurial spirit with the scale, expertise and ambition to deliver projects that make a real impact on the global energy transition.\nWe’re growing — and looking for talented people to join us on the journey.\nAbout The Role\nWe are seeking a PMO to join our Renewable Energy Construction Department. The PMO will serve as a central function within the Construction management team, acting as a key integrator across projects and stakeholders.\nIn this role, the PMO will support and oversee project scheduling for large-scale renewable energy project, including Solar PV, storage, and related infrastructure during the construction phase along with responsiblity for driving reporting, data management, and performance visibility across the portfolio.\nThe PMO will work closely with project managers, engineering teams, contractors, suppliers, and senior management to ensure alignment, transparency, and informed decision-making, supporting the successful delivery of projects in accordance with contractual milestones and strategic objectives.\nResponsibilities:\nDevelop, maintain, and oversee detailed project schedules from early planning through construction, commissioning, and handover\nMonitor overall project and portfolio progress, identifying risks, delays, and mitigation strategies\nPerform schedule analysis, critical path analysis, and progress tracking across projects\nLead the preparation of management reports, dashboards, and performance insights\nMaintain and enhance BI tools, ensuring data accuracy, consistency, and timely updates\nProvide structured updates and key insights to management to support decision-making\nordinate inputs across engineering, procurement, construction",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/water-technology-field-technician-at-saltworks-technologies-industrial-water-%2B-lithium-4479429643",
@@ -478,7 +593,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/D560BAQH6B2WuvHeHOg/company-logo_100_100/company-logo_100_100/0/1687378473425/saltworkstech_logo?e=2147483647&v=beta&t=FGjCfxmdBp5kTZMNxPlk98-jlK_UOnyNOY1gv9_v1mE",
       "snippet": "Saltworks Technologies\nis a leading international water technology company. We innovate, deliver, and operate the world’s most advanced industrial water treatment plants for global leaders in semiconductors, mining, automotive, and industrial processing. With water scarcity growing alongside the AI revolution, demand for our solutions is rising fast. Our growth has been recognized by Deloitte (Technology Fast 50) and Ernst & Young (Entrepreneur of the Year). We value teamwork and integrity, and we invest in our people through AI adoption, learning, and professional advancement. Join us and build a future in protecting water, innovation, and the next era of engineering and industrial operations.\nLocation:\nKiryat Gat, Israel\nThe Role\nSaltworks is hiring a\nWater Technology Field Technician\nto put first-of-a-kind water technology to work at a major semiconductor manufacturing facility. You will be hands-on from day one, helping commission the system and then running and maintaining it as part of our growing team in Israel. As our work here expands, this role offers real room to grow, including into senior and lead technician roles. It’s a great fit for a natural problem solver who wants to work with advanced equipment, keep learning, and be part of building something new.\nBefore startup, you will travel to North America for about three months of training with our team, learning our technology and systems before site work begins. Once on site, you’ll have full technical support, tools, and resources from headquarters behind you.\nKey Responsibilities\nRun the system day to day: do equipment rounds, check readings, and make adjustments to keep it running reliably.\nTake part in commissioning, from installation checks through startup and handover.\nCarry out routine and preventive maintenance, including instrument calibration, parts replacement, and equipment repairs.\nTroubleshoot mechanical, electrical, and instrumentation issues on site, escalating to our engineering team wh",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/junior-mechanical-engineer-at-m-d-mechanical-devices-ltd-4480014458",
@@ -506,7 +632,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQEZYSQA3RBv-A/company-logo_100_100/company-logo_100_100/0/1630587737051/m__d__mechanical_devices_logo?e=2147483647&v=beta&t=UoOCKUQntA3B65wOmnOI3LU7f3PVmFAOoPqJGjrv5Mw",
       "snippet": "At\nMechanical Devices\n, we design and build advanced thermal systems for the semiconductor industry. Our engineering team works on exciting, hands-on projects that push the limits of technology\nWe are looking for a motivated\nJunior Mechanical Engineer / Practical Engineer (Handasai)\nto join our team in Haifa. If you love solving hardware challenges, designing components, and want to learn directly from senior engineers, this is a great opportunity to start your career\nLocation: Haifa (Hutzot HaMifratz) | 100% On-site\nEmployment Type: Full-time\nExperience:\nEntry-level / 0–2 years\n(Recent graduates are welcome)\nKey Responsibilities\n:\nDesign mechanical components and sub-systems with guidance from senior engineers\nCreate 3D models and technical drawings in SolidWorks\nSupport hands-on prototyping, assembly, and testing in our facility\nCollaborate across engineering and production teams to build and optimize products\nQualifications\n:\nPractical Engineer (Handasai) degree or B.Sc. in Mechanical Engineering (Practical Engineer / Handasai is fully sufficient)\nPractical knowledge or academic experience in SolidWorks or AutoCAD\nStrong passion for hands-on engineering, testing, and prototyping\nWorking proficiency in English\nStrong teamwork and communication skills\nWhat We Offer: Structured hands-on mentorship, direct exposure to advanced hardware design, and clear room for technical growth\n#MechanicalEngineering #JuniorEngineer #Hiring #HaifaJobs #HardwareEngineering #SolidWorks #Semiconductor #EngineeringJobs #CareerOpportunity #IsraelTech",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": true,
+      "curated_tags": [
+        {
+          "type": "tag-junior",
+          "icon": "ph-bold ph-graduation-cap",
+          "label": "Junior"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/electronics-technician-at-confidential-careers-4480000353",
@@ -534,7 +671,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHAlnvLlr8B8A/company-logo_100_100/company-logo_100_100/0/1734179952791/goconfidentia_logo?e=2147483647&v=beta&t=4ZKgldVRReqICLn5TO9uD36mT1cF2vh9vePaqIEjJJc",
       "snippet": "Electronics & Mechanical Lab Technician | Hands-On Equipment Repair\nA leading organization in Central Israel is looking for an experienced\nElectronics & Mechanical Lab Technician\nto maintain, troubleshoot, and repair electronic and mechanical equipment in a technical laboratory environment.\nThis hands-on role is ideal for technicians with practical experience in electronic equipment repair, mechanical assembly and disassembly, and technical troubleshooting.\nYou will work with electronic and mechanical components, support field technicians, and help ensure equipment is properly maintained, repaired, and documented.\nWhat You'll Do\nMaintain, troubleshoot, and repair electronic and mechanical equipment\nWork with wiring harnesses, electronic circuits, sensors, gears, and other technical components\nDisassemble, replace, and reassemble mechanical and electronic components\nProvide technical assistance to field technicians\nReceive and release equipment arriving from or returning to the field\nDocument equipment status, maintenance activities, and repairs in an ERP system\nDiagnose technical faults and implement practical repair solutions\nSupport day-to-day laboratory operations\nPerform hands-on technical work using tools and equipment\nWhat We're Looking For\nAt least 2 years of professional experience as a Technician or Technical Support Specialist\nHands-on experience repairing electronic equipment\nPractical mechanical experience\n, including disassembly, component replacement, and reassembly\nStrong technical aptitude and confidence working with tools and equipment\nAbility to diagnose and resolve technical faults\nHigh level of responsibility, attention to detail, and problem-solving ability\nAbility to work independently and collaboratively\nAdvantages\nExperience working with ERP systems such as Priority\nProficiency in Microsoft Office applications\nCentral Israel | Full-time",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%09%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%D7%99%D7%9D-%E2%80%93-%D7%A2%D7%91%D7%95%D7%93%D7%95%D7%AA-%D7%9E%D7%95%D7%9C-%D7%A0%D7%AA%D7%B4%D7%A2-at-pb-israel-4475373317",
@@ -562,7 +710,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHbnAX_gKc0DA/company-logo_100_100/B4DZt34qZZIAAQ-/0/1767242901726/wspisrael_logo?e=2147483647&v=beta&t=5dQSJk-qhYLQNm_PNFfJ-1zve1TfzmXUUW8fLcXWHl8",
       "snippet": "PB ישראל היא אחת מחברות ההנדסה המובילות בארץ, המנהלת ומעצבת את תשתיות העתיד של מדינת ישראל.כחלק מקבוצת WSP בעבר, החברה עוסקת בפרויקטים לאומיים רחבי היקף עם למעלה מ-30 שנות ותק ומספקת פתרונות חדשניים, יחד עם מצוינות טכנולוגית וראייה גלובלית. כל זאת לצד היכרות עמוקה עם הצרכים המקומיים.החברה משלבת מומחיות בינלאומית עם ניסיון וידע מקומי ומקדמת את הפרויקטים המשמעותיים ביותר בישראל – החל מהקו האדום של הרכבת הקלה, המטרו ועד לפיתוח תשתיות מתקדמות, תחנות כוח ומערכות אנרגיה.צוות החברה מונה מעל 170 אנשי מקצוע מהמובילים במשק, הפועלים לקידום פתרונות חכמים במגוון תחומים, עם טכנולוגיה מתקדמת וחזון של קיימות המעצבים את פני הארץ לדורות הבאים.\nתיאור:\nניהול מספר פרויקטים במקביל, כולל תכנית עבודה, סדרי עדיפויות, אבני דרך ומעקב ביצוע.\n·ניהול ותיאום תכנון רב-תחומי, בקרה על תוצרי יועצים ומתכננים, ריכוז הערות וקידום אישורים.\n·ניהול ביצוע וקבלנים, כולל ישיבות סטטוס, סיורי שטח, מעקב איכות, בטיחות, לוחות זמנים ותפוקות.\n·ניהול ממשקים מול נת״ע, גופי תפעול ותחזוקה, יזמים, רשויות, חברות תשתית, תאגידי מים וגורמי רישוי.\n·הכנת מסמכים לאישור ולוועדות: תכולות עבודה, אומדנים, חלופות, מצגות, סיכומי ישיבה ומכתבים\nמקצועיים.\n·ניהול התקשרויות ושינויים, בדיקת הצעות מחיר, ניהול משא ומתן, מעקב הזמנות, חשבונות וסגירה\nמסחרית.\n·ניהול סיכונים וחסמים בסביבה פעילה, לרבות עבודות לילה, הסדרי תנועה, ממשקי מסילה ורציפות\nתפעולית.\n·תחזוקת כלי מעקב ותיעוד: משימות, לו״ז, תקציב, סיכונים, החלטות ותיקי מסירה.\n·הצגת סטטוס, חריגות, חלופות והמלצות למנהל הישיר, למזמין ולגורמי הנהלה.\nסל פרויקטים אופייני\n·קישוריות בין תחנות רכבת קלה למיזמים סמוכים, כולל תיאום הנדסי, הסכמי הפעלה ותחזוקה ומערכות.\n·סריקה, צילום ותיקון ליקויי צנרת ביוב וניקוז לאורך תוואי פעיל.\n·עבודות השלמה ושיקום לאורך הקו האדום בתחומי תשתיות, ניקוז, תאורה, גמרים וממשקי רשויות.\nדרישות:\nשליטה מלאה באנגלית בכתב ובעל פה.\n·מהנדס/ת אזרחי/ת או הנדסאי/ת בעל/ת ניסיון משמעותי ומתאים ייבחן/תיבחן בהתאם למדיניות החברה והלקוח.\n·ניסיון מוכח בניהול פרויקטי תשתיות, בינוי או מערכות, משלב התכנון ועד הביצוע והמסירה\n·ניסיון בעבודה מול מזמין ציבורי או חברת תשתית ובתיאום בין יועצים, קבלנים,",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/datacenter-site-operations-manager-at-microsoft-4480825963",
@@ -590,7 +743,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D560BAQH32RJQCl3dDQ/company-logo_100_100/B56ZYQ0mrGGoAU-/0/1744038948046/microsoft_logo?e=2147483647&v=beta&t=rr_7_bFRKp6umQxIHErPOZHtR8dMPIYeTjlKFdotJBY",
       "snippet": "Overview\nIn alignment with our Microsoft values, we are committed to cultivating an inclusive work environment for all employees to positively impact our culture every day and we need you as a Datacenter Site Operations Manager (SOM).\nMicrosoft’s Cloud Operations & Innovation (CO+I) is the engine that powers our cloud services. As a CO+I DC Site Operations Manager, you will perform a key role in delivering the core infrastructure and foundational technologies for Microsoft's online services including Bing, Office 365, Xbox, OneDrive, and the Microsoft Azure platform. As a group, CO+I is focused on the personal and professional development for all employees and offers trainings and growth opportunities including Career Rotation Programs, Diversity & Inclusion trainings and events, and professional certifications.\nOur infrastructure is comprised of a large global portfolio of more than 100 datacenters and 1 million servers. Our foundation is built upon and managed by a team of subject matter experts working to support services for more than 1 billion customers and 20 million businesses in over 90 countries worldwide.\nWith environmental sustainability and optimization at the forefront of our datacenter design and operations, we continue to grow and evolve as we meet the ever-changing business demands that hold Microsoft as a world-class cloud provider.\nDo you want to empower billions across the world? Come and join us in CO+I and be at the forefront of the action!\nResponsibilities\nChampion a strong culture of safety, security, compliance, and service availability across data centre operations.\nLead and develop multidisciplinary team across IT Operations and Critical Environment (Electrical & Mechanical) ensuring reliable and efficient day-to-day operations.\nDeliver success through empowerment, talent development, succession planning and a culture of accountability and inclusion\nDrive Critical Environment availability, operational performance, and service delivery, redu",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/construction-project-manager-at-bagira-4476737854",
@@ -618,7 +776,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEmtumUUXtYRA/company-logo_100_100/company-logo_100_100/0/1630497988446/bagira_systems_logo?e=2147483647&v=beta&t=WvUWAV2PLgFJq8hfyU_VOw0wCTvTUacUnRwg0fKKB8s",
       "snippet": "Bagira is a leader in the field of training and simulation systems worldwide, is seeking an experienced Construction Project Manager to lead the end-to-end design and construction of simulation sites in Israel and abroad.\nThis hands-on role combines architectural and infrastructure planning, drafting, project management, contractor coordination, and on-site supervision-from initial requirements through site handover and readiness for system installation.\nManage simulation-site construction projects from requirements definition and planning through execution, commissioning, and handover.\nTranslate technical and operational system requirements into construction, layout, and infrastructure plans.\nPrepare site layouts, construction drawings, and detailed plans using AutoCAD.\nPlan and coordinate site requirements, including electrical systems, communications, HVAC, lighting, acoustics, safety, accessibility, and related infrastructure.\nPrepare and manage contractor tender documents, evaluate bids, and support the contractor selection process.\nCoordinate and manage architects, structural engineers, professional consultants, contractors, and suppliers.\nDevelop and monitor project schedules, budgets, work plans, and milestones.\nSupervise on-site construction activities and ensure compliance with approved plans, technical requirements, quality standards, schedules, and budgets.\nIdentify design and execution gaps and provide practical solutions during construction.\nConduct inspections, manage punch lists, and follow up on corrective work.\nEnsure site readiness for the installation, integration, and commissioning of simulation systems. Collaborate with internal engineering, technical, operational, and project teams, as well as customers and local partners in Israel and abroad.\nTake full responsibility for obtaining all required occupancy permits, approvals, certificates, “as made” drawing package, and sign-offs from professional engineers and the relevant authorities prior to",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/electronics-quality-inspector-%E2%80%93-incoming-inspection-at-airobotics-4463511409",
@@ -646,7 +809,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D560BAQGrCGy2mpCcZA/company-logo_100_100/B56Z9BsGDSLAAI-/0/1783513506270/airobotics_logo?e=2147483647&v=beta&t=B3eKgH3D6XWlQw69n9ahWoGIEe_fWobE1A3QOAl0l9M",
       "snippet": "Airobotics is a leading company specializing in the development and manufacturing of autonomous drone systems. Its solutions combine hardware, software, and AI-driven technologies to support complex, large-scale operations. Airobotics works primarily with defense industries, such as military and law enforcement agencies worldwide. The company is part of Ondas Holdings and operates as a wholly owned subsidiary.\nWe are looking for an Electronics Quality Inspector to perform incoming inspection of components, electronic boards, assemblies, and harnesses received from suppliers and subcontractors, in accordance with drawings, specifications, standards, and the company’s quality requirements. The role includes identifying deviations, documenting findings, opening non-conformities, and working closely with Engineering, Procurement, Warehouse, and Production departments.\nResponsibilities:\nPerform incoming inspection of electronic components, PCB/PCBA boards, harnesses, electro-mechanical assemblies, and raw materials.\nVerify compliance with purchase orders, part numbers, delivery notes, CoC, test reports, and manufacturer documentation.\nConduct visual inspections of electronic boards according to IPC requirements, including soldering quality, missing or reversed components, mechanical damage, component markings, and cleanliness.\nVerify the compliance of boards and assemblies with drawings, BOMs, manufacturing specifications, and product files.\nUse basic measuring tools such as calipers, micrometers, multimeters, continuity testers, and other tools as needed.\nDocument inspection results in quality/ERP systems and prepare incoming inspection reports.\nOpen and document non-conformities, including NCR/MRB processes, with suppliers and internal stakeholders.\nWork with Engineering, Production, Procurement, and Warehouse teams to handle deviations and release items to production.\nMaintain traceability of components and products, including batch numbers, serial numbers, and relate",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/mechanical-engineer-at-jacobs-4481743660",
@@ -674,7 +842,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQEqi0xvuMeuew/company-logo_100_100/B4EZfF35ikHYAQ-/0/1751371454940/jacobs_logo?e=2147483647&v=beta&t=UKW8ggrtSMTSOWMS5cGkK1CV1VF4AhGsIFEwlJkbfSQ",
       "snippet": "At Jacobs, we're challenging today to reinvent tomorrow by solving the world's most critical problems for thriving cities, resilient environments, mission-critical outcomes, operational advancement, scientific discovery and cutting-edge manufacturing, turning abstract ideas into realities that transform the world for good.\nYour impact\nJacobs’ office in Israel is seeking a Mechanical Engineer to join our growing team. This is an opportunity to be part of a collaborative, innovative environment, delivering world-class design solutions for leading global clients.\nAt Jacobs, we design some of the most complex and specialized facilities in the world—including semiconductor manufacturing plants, data centres, and other advanced technology environments. If you’re motivated by technically challenging projects and enjoy working in a dynamic, multi-disciplinary setting, we’d love to hear from you.\nCome be a part of a vibrant, dynamic team that delivers world class designs for industry leading clients around the world. We design of some of the most complex and specialized facilities being constructed today.\nThis challenging position involves working as part of a multi-discipline, highly interactive and coordinated team focused on projects including semiconductor manufacturing, data center facilities, and other state of the art manufacturing facilities.\nThe ideal candidate will be a self-motivated individual with excellent communication skills. They will exhibit a passion and desire to apply their professional experience and knowledge in a team environment on technically challenging and professionally rewarding projects.\nOur Mechanical Engineers\nOrganize, assign, and delegate necessary engineering and design tasks to produce construction documents in conjunction with a team of engineers and designers.\nCoordinate and collaborate real time with other disciplines to develop designs.\nIndependently lead plant design activities as an area/system leader and coordinate with multi-disci",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/drone-instructor-at-robokit-4479498877",
@@ -702,7 +875,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHz902JyP7Qkw/company-logo_100_100/B4DaDFS642JgAI-/0/1790016466889/robokit_logo?e=2147483647&v=beta&t=nwjZv8df-PVwFTDXCMPwTOTw_iV_iio43Lm1uKe1VKc",
       "snippet": "{\n  \"jobTitle\": \"Drone Instructor\",\n  \"locationName\": \"Netanya, Israel\",\n  \"jobType\": \"PART_TIME\",\n  \"workplaceType\": \"ONSITE\",\n  \"companyName\": \"!None!\"\n}",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/test-driver-for-autonomous-vehicles-at-mobileye-4477981204",
@@ -730,7 +908,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGMqdNe9MW06Q/company-logo_100_100/company-logo_100_100/0/1658223890583/mobileye_logo?e=2147483647&v=beta&t=Qx5AuX9E7Zbr1GScuv5IGaUrVLVypF7VEOhVaw2Zu88",
       "snippet": "The AV (Autonomous Vehicles) Operation and validation group leads entire AV experiments at Mobileye. Our role is to achieve online performance testing as well as offline validation analysis, to provide accurate and persistent feedback on the technologies that enable Fully Autonomous Driving Capabilities - sensing, maps, control etc.\nWe provide AV development groups a clear view of the AV functionalities performance. We have full responsibility to develop our tools and infrastructures to enable our daily operation.\nWhat will your job look like?\nTest and experiment our Autonomous Vehicles development and production platforms.\nInspect any malfunctions and abnormalities in the vehicle.\nDrive in complicated scenarios and various use cases, challenging the products without endangering other road users.\nValidate and investigate any performance issues during the experiment.\nReviewing and analyzing test results and generating summary reports.\nTravelling and supporting abroad Mobileye sites.\nAcquire the technical skill to operate and debug independently the vehicle's complicated systems in real-time.\nExecute a day-long test drive end to end: Vehicle preparation, route planning, event tagging, system failure debug, data upload and analysis.\nGather information and upload it to the database.\nSupport new systems installments in the vehicle, in depth understanding and work with Mobileye systems in Autonomous Vehicle.\nAll you need is:\nB.A. \\ B.sc \\ Professional Course.\nDriving license with Clean driving record.\n4+ years of driving experience.\nProficient written and spoken English.\nWillingness to occasionally work on evenings and Fridays.\nWillingness to occasionally fly abroad.\nNice to have:\nAdvanced driving courses.\nTechnical background.\nExperience working with Linux, Jira.\nMobileye changes the way we drive, from preventing accidents to semi and fully autonomous vehicles. If you are an excellent, bright, hands-on person with a passion to make a difference come to lead the revolutio",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/aircraft-mechanic-at-jobsseek-4445199018",
@@ -758,7 +941,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFc4u1wp4facA/company-logo_100_100/company-logo_100_100/0/1704712762989/jobsseek_logo?e=2147483647&v=beta&t=Ldqf7J6mMvUr6WGU4z-wifS9Y7rH-2vqgqAy-3p-cgA",
       "snippet": "‫\nהצטרפו לחטיבת התעופה של התעשייה האווירית, חברה מובילה עולמית בתחום התעופה והחלל, ותהיו חלק ממפעל MRO חדשני. אנו מחפשים\nמשפצ/ת תיבות אביזרים GEAR BOX\nמקצועי/ת ומסור/ה שיצטרף/תצטרף לצוות המומחים שלנו.\nבתפקיד זה תעסקו בשיפוץ ותחזוקת תיבות אביזרי מנוע, אזרחיים וצבאיים כאחד, תוך עמידה בסטנדרטים מחמירים ודרישות רגולטוריות של רשויות התעופה. זו הזדמנות לעבוד בסביבה טכנולוגית מתקדמת, המשלבת דיוק, איכות ובטיחות ברמה הגבוהה ביותר.\nתחומי האחריות:\nביצוע עבודות שיפוץ מקיפות על תיבות אביזרי מנוע (GEARBOX) אזרחיים וצבאיים.\nביצוע עבודות פירוק, ביקורת חלקים, הרכבה, וביצוע שינויים ותיקונים.\nביצוע בדיקות מקיפות לתיבות אביזרים לאחר השיפוץ.\nעבודה קפדנית על פי ספרויות יצרן והוראות עבודה מפורטות.\nהקפדה על עמידה בסטנדרטים מחמירים הכפופים לדרישות רשויות התעופה והרגולציה.\nשמירה על איכות עבודה ברמה גבוהה ועמידה בתוכניות העבודה וזמני הסבב.\nאנו מציעים סביבת עבודה מאתגרת ומעשירה, עם אפשרויות רבות לפיתוח מקצועי והוצאת הסמכות, והזדמנות להשתלב בארגון מוביל לטווח ארוך.\nRequirements\nשליטה טובה בשפה האנגלית ברמת הקריאה וההבנה - חובה.\nנכונות לשעות נוספות וימי שישי במידת הצורך - חובה.\nטכנאי/ת או הנדסאי/ת מכונות - יתרון משמעותי.\nיוצא/ת חיל האוויר בתחום מנועים, מכונאי/ת מטוסים או מנוען/ית - יתרון.\nהכרת כלי מדידה וכלי עבודה - יתרון.\nהכרת שרטוטים טכניים - יתרון.\nfor more jobs visit out jobs pages https://www.jobsseek.info/jobs למשרות נוספות בקרו בעמוד המשרות באתר שלנו‬",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/mechanical-design-engineer-at-manta-air-parachute-recovery-systems-4478975631",
@@ -786,7 +974,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQG_nJef_bRj9Q/company-logo_100_100/B4DZgnBQrHHYAU-/0/1753001299176/mantaair_logo?e=2147483647&v=beta&t=Q-KkAlEdyYAJ4rDMc3hOTpN8RmVD9S49Awht8tgaTS8",
       "snippet": "Company Overview:\nManta Air is a leading developer of parachute recovery systems for military and civil UAVs. With over 20 years of expertise, we deliver innovative, reliable solutions from design and prototyping to production and field testing.\nRole Description:\nWe are seeking a skilled Mechanical Design Engineer to join our innovative R&D team. In this role, you will be responsible for creating detailed mechanical designs and drawings for our recovery systems, ensuring precision, functionality, and manufacturability. You will collaborate closely with testing teams, production teams, and other stakeholders to turn concepts into high-quality products, supporting the full product development cycle from concept to production release.\nKey Responsibilities:\nDevelop detailed mechanical designs, CAD models, and engineering drawings.\nTranslate engineering concepts and requirements into manufacturable designs.\nSupport prototyping, testing, and validation activities.\nCollaborate with production to ensure smooth transition from design to manufacturing.\nMaintain accurate documentation and version control of design files.\nQualifications:\nFormal engineering education or equivalent practical experience in mechanical design.\n2+ years of experience in mechanical design and drafting.\nProficiency in SolidWorks and CAD tools.\nKnowledge of manufacturing processes, materials, and tolerances.\nStrong attention to detail and problem-solving skills.\nSkills and Attributes:\nAbility to manage multiple design tasks simultaneously.\nHands-on experience in prototyping and assembly.\nCreative approach to solving technical challenges.\nBackground in RC modeling is a plus.\nFamiliarity with 3D-printed prototyping.\nWhy Join Manta Air?\nMake an impact in aerospace innovation.\nWork on mission-critical UAV systems.\nBe part of a small, agile, and supportive team.\nManta Air is an equal opportunity employer. We celebrate diversity and are committed to creating an inclusive environment for all employees.\nLocatio",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/38830987/ab1a8226/",
@@ -814,7 +1007,12 @@
       "logo": "https://www.google.com/s2/favicons?domain=colmobil.co.il&sz=128",
       "snippet": "חשמלאי.ת מכונות, בקרה ותשתיות - מיל\"י | כלמוביל | רמת חובב | 3-4 שנים | משרה מלאה | לפני 1 שעות | איך יראה היום שלך? אחזקת מכונות וקווי ייצור: איתור ופתרון תקלות (Troubleshooting) מורכבות במכונות תעשייתיות, מערכות הנעה, מנועים, ווסתי מהירות וחיישנים. אחזקת מערכות בקרה ואוטומציה: טיפול במערכות פיקוד ובקרה, קריאת תוכניות חשמל ודיאגרמות, עבודה מול בקרים מתוכנתים (PLC) ומערכות HMI/SCADA (איתור תקלה ברמת תוכנה/חומרה). אחזקת תשתיות חשמל: אחריות על לוחות החשמל המפעליים (לוחות חלוקה, תאורה, כוח), מערכות אל-פסק (UPS), ומערכת גיבוי (גנרטור). אחזקה מונעת ומתוכננת: ביצוע סבבים שוטפים, בדיקות תקופתיות (כגון סריקות תרמו גרפיות ללוחות) וטיפולים מונעים בהתאם לתוכנית האחזקה השנתית שמתווה מנהל האחזקה, תוך שימוש והטמעה במערכת ה-Datwise תמיכה בפרויקטים ושיפורים: השתתפות בהקמה, חיווט, שדרוג והרצה של מכונות חדשות ושיפור קווים קיימים בהתאם לצרכי המפעל. בטיחות בחשמל: שמירה קפדנית על חוק החשמל, נהלי הבטיחות בעבודה ופקודות הבטיחות במפעל . מתח גבוה (יתרון): תפעול, אחזקה וטיפול בציוד מתח גבוה במפעל (שנאים, מסדרים",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/38559534/39430537/",
@@ -842,7 +1040,18 @@
       "logo": "https://webapi.drushim.co.il/logos/3912084/page/638574070215162792.png",
       "snippet": "מפעיל/ת - כוון/ת מחרטות CNC בראשל\"צ - שכר גבוה!! | JOB SPACE | מספר מקומות | ראשון לציון | באר יעקב | חולון | בת ים | תל אביב | אור יהודה | נס ציונה | 1-2 שנים | משרה מלאה | לפני 59 דקות | מפעל עיבוד שבבי ותיק, יציב ומוביל בראשון לציון מגייס מפעיל/ת - כוון/ת מחרטות CNC. עבודה מקצועית ומגוונת מול הלקוחות המובילים במשק (כולל רפאל!), בשכר שעתי מהגבוהים בענף ומדרג ברור לפי רמה! תיאור התפקיד: - תפעול וביצוע כוונות (סטאפ) למחרטות CNC - בעיקר מערכות בקרת FANUC. - ייצור סדרתי לצד חלקים בודדים ומורכבים. - קריאת שרטוטים הנדסיים וביצוע בקרת איכות לחלקים. - עבודה ייחודית: עיקר העבודה בעיבוד יבש של חומרים מרוכבים (לצד מתכות). - אופציה לנגיעה/ביצוע תכנות - לבעלי/ות הרקע המתאים! שכר ותנאים: - מפעיל/ת: 60-70 ₪ לשעה | כוון/ת (סטאפיסט/ית): 70-80 ₪ לשעה! - ביטחון תעסוקתי: מפעל ותיק מול לקוחות ביטחוניים גדולים (כגון רפאל)! - מעטפת מורחבת: ביגוד הנהלה, מטבחון מאובזר ואווירה משפחתית. - משרה מלאה ויציבה. - מיקום: השר שפירא משה 4, ראשון לציון | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-salary",
+          "icon": "ph-bold ph-currency-circle-dollar",
+          "label": "12,740 ₪ (לפי 70 ₪/שעה)"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38824755/882c1eaf/",
@@ -870,7 +1079,23 @@
       "logo": "https://sfilev2.f-static.com/image/users/423667/ftp/my_files/template/AlmorLogoNew.png?id=31965020&sopC=1770839499029",
       "snippet": "א | מפקח/ת חשמל לאתר סולארי בדרום | אל-מור אנרגיות מתחדשות | נתיבות | 3-4 שנים | משרה מלאה | לפני 4 שעות | אלמור אנרגיות מתחדשות, חברת ביצוע בתחום האנרגיה המתחדשות, מגייסת מפקח/ת חשמל לאתר סולארי באזור הדרום. המשרה כוללת: * ניהול ומעקב אחרי התקדמות קבלנים בשטח? * ניהול ומעקב על איכות ביצוע העבודות? * ניהול ורישום דוחות ביצוע * מתן פתרונות בתחום החשמל באתר עבודת שטח מלאה המשרה כוללת רכב צמוד. | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": true,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        },
+        {
+          "type": "tag-car",
+          "icon": "ph-bold ph-car",
+          "label": "רכב חברה"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38745848/e6a2c10b/",
@@ -898,7 +1123,28 @@
       "logo": "https://icons.duckduckgo.com/ip3/bmorion.com.ico",
       "snippet": "ב | טכנאי/ת מערכות | ב.מ. אוריון ושות | יבנה | ללא נסיון | משרה מלאה | לפני 3 שעות | מחפשים את האתגר המקצועי הבא שלכם? אנחנו מגייסים טכנאים בעלי רקע טכני לעבודה מגוונת ומאתגרת עם מכונות ומערכות מתקדמות במפעלי תעשייה ברחבי הארץ. מה כולל התפקיד? • איתור תקלות, תיקון ותחזוקה של מערכות תעשייתיות. • עבודה עם מערכות מכניות, חשמליות ופניאומטיות. • התקנות, טיפולים מונעים ושירות טכני באתרי לקוחות. • עבודה עצמאית בשטח לצד צוות טכני מקצועי. • הכשרה ועבודה עם טכנולוגיות של יצרנים בינלאומיים. את מי אנחנו מחפשים? • ניסיון טכני מעשי – יתרון משמעותי. • רקע באחזקת מכונות, מכניקה, חשמל או שירות שטח. • יכולת פתרון תקלות, עצמאות ואחריות. • רישיון נהיגה בתוקף – חובה. • גם מועמדים בעלי רקע טכני חזק ורצון ללמוד מוזמנים לפנות. מה אנחנו מציעים? • רכב חברה לאחר תקופת הכשרה. • קרן השתלמות לאחר שנת עבודה. • הכשרות מקצועיות והתפתחות בתחום התעשייה. • סביבת עבודה מקצועית, יציבה ומגוונת. • מיקום: יבנה | עבודת שטח ברחבי הארץ. | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": true,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": true,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        },
+        {
+          "type": "tag-car",
+          "icon": "ph-bold ph-car",
+          "label": "רכב חברה"
+        },
+        {
+          "type": "tag-junior",
+          "icon": "ph-bold ph-graduation-cap",
+          "label": "Junior"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/project-manager-5698-at-entrypoint-4480790535",
@@ -926,7 +1172,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFv2iBlVYg6Ng/company-logo_100_100/B4EZYQV.t7G0AQ-/0/1744030920305/entrypoint_logo?e=2147483647&v=beta&t=gdhUP8ssjZKNm1yp2x9FxAbnkfS9IaVwldwE031pOHU",
       "snippet": "About the Role\nA leading and well-established communications company is looking for an experienced\nProject Manager\nto lead complex projects involving security systems, low-voltage infrastructure, communication networks, and control systems.\nThis is a dynamic, hands-on field position that offers the opportunity to manage advanced technical projects from initial planning through successful delivery.\nKey Responsibilities\nLead and manage end-to-end projects involving low-voltage systems, communication networks, security, and control solutions.\nManage and supervise subcontractors, ensuring high-quality execution of on-site activities.\nDevelop and monitor project schedules, milestones, budgets, and operational targets.\nCoordinate with key stakeholders, including clients, procurement, sales, and management teams.\nAssess customer requirements, define technical solutions, and oversee implementation through final handover.\nIdentify and resolve technical and operational challenges in real time.\nRequirements\nAt least 3 years of experience\nmanaging projects in low-voltage and communication systems - Mandatory.\nHands-on knowledge\nof communication infrastructure, CCTV, control systems, and security solutions - Mandatory.\nProven experience managing subcontractors and supervising on-site installations - Mandatory.\nStrong problem-solving skills, independent decision-making abilities, and the ability to perform effectively under pressure.\nExperience preparing and managing\nGantt charts, Statements of Work (SOW), and technical documentation\n- Mandatory.\nProficiency in Microsoft Office, including\nExcel and Microsoft Project\n- Mandatory.\nExperience working with CRM systems - Advantage.\nFluent English\n, both written and spoken - Mandatory.\nValid driver's license - Mandatory.",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%90%D7%99%D7%9B%D7%95%D7%AA-qc-at-bet-shemesh-engines-ltd-4469438455",
@@ -954,7 +1205,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQE_whFuzl4lXw/company-logo_100_100/company-logo_100_100/0/1630485663822/bet_shemesh_engines_ltd_logo?e=2147483647&v=beta&t=_5Iw_T-c3jG2DdAVo4DD-ORc5lqfr7fTtAeLFmjyQ_Y",
       "snippet": "מנועי בית שמש מגייסת מבקר איכות מקצועי, בעל חשיבה תהליכית ויכולת עבודה בסביבה טכנולוגית מתקדמת, לתפקיד מרכזי הכולל אחריות על ביקורת קבלה, ביקורת בתהליך, בחינה במקור אצל ספקים ובקרת איכות של מוצרים ותהליכי ייצור.\nתחומי אחריות\nבדיקת מסמכי איכות, תעודות חומר, דוחות מידות ותיעוד ייצור\nביצוע ביקורת קבלה וביקורות איכות לאורך תהליך הייצור\nבחינה במקור במפעל ובאתרי ספקים\nליווי ותיעוד בדיקות פונקציונליות, בדיקות מעבדה ופעילויות FAI\nשחרור פריטים בהתאם לדרישות האיכות וההנדסה\nעבודה מול ממשקים מגוונים: הנדסה, ייצור, רכש וספקים\nשימוש במערכות מידע ובכלי AI לצורך ניתוח נתונים, חיפוש מידע, הפקת דוחות ושיפור תהליכי עבודה\nRequirements:\nניסיון בתחום האיכות או ביקורת קבלה בסביבת ייצור\nיכולת קריאת שרטוטים ומסמכים טכניים\nהבנה בתהליכי ייצור, הרכבות ותהליכים מיוחדים\nהיכרות עם דרישות איכות, עקיבות ותהליכי FAI\nשליטה ביישומי מחשב ומערכות מידע\nאוריינטציה טכנולוגית ויכולת שימוש בכלי AI לתמיכה בתהליכי איכות וייצור\nאחריות אישית גבוהה, דיוק ויכולת עבודה עצמאית",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/new-product-introduction-engineer-at-imco-industries-ltd-4475438217",
@@ -982,7 +1238,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHPotyjos8wlw/company-logo_100_100/company-logo_100_100/0/1652685612268/imco_industried_ltd_logo?e=2147483647&v=beta&t=vBP8cwvidx48CY49AEPTv_HcwwjFcjUBuXS4PPBFaS4",
       "snippet": "לחטיבה הביטחונית של קבוצת אימקו\nNPI דרוש/ה מהנדס/ת\nמיקום: נשר\nתיאור המשרה:\n• הובלת תהליכי NPI והעברת מוצרים מפיתוח לייצור.\n• ליווי ותמיכה הנדסית שוטפת בקווי הייצור.\n• ניהול והטמעת שינויים הנדסיים במוצרים קיימים.\n• עבודה שוטפת מול פיתוח, ייצור, רכש, איכות וספקים.\n• הכנת הצעות מחיר ותמחור רתמות ומכלולי כבלים.\nדרישות התפקיד:\n• תואר בהנדסה (אלקטרוניקה, מכונות או תחום רלוונטי) או הנדסאי/ת חשמל/אלקטרוניקה בעל/ת\nניסיון משמעותי בתחום.\n• ניסיון של 3 שנים לפחות בתחום הרתמות, הכבילה או המכלולים האלקטרומכניים.\n• ניסיון ב-NPI, הנדסת ייצור או הנדסת מוצר.\n• יכולת קריאת שרטוטים ותיעוד הנדסי.\n• אנגלית טכנית ברמה טובה.",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A0%D7%90%D7%99-%D7%AA-%D7%9E%D7%98%D7%95%D7%A1%D7%99%D7%9D-at-elbit-systems-israel-4399768317",
@@ -1010,7 +1271,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q",
       "snippet": "לאתר החברה בפארק תעשייה בר-לב דרוש.ה מבנאי.ת מטוסים לעבודת ייצור / הרכבה בתחום התעופה\nבמסגרת התפקיד:\nביצוע פעולות בהתאם להנחיות הנדסיות בייצור סדרתי, תיקונים, ואבי-טיפוס\nעמידה בסטנדרטים תעופתיים שבסביבה יצרנית\nתיעוד תהליכי עבודה לפי נוהלי החברה, דרישות לקוח ורגולציה\nעבודה בשתי משמרות\nדרישות:\nהכרת כלי מדידה / מדידים\nהבנה טכנית\nהכרת קשיחים, שיטות, סימרור וקידוח\nיכולת קריאת שירטוט\nעבודה לפי ספרות טכנית\nיכולת שיתוף פעולה בצוות\nנכונות לעבודה מאומצת במשמרות\nהכרת השפה האנגלית - יתרון\nיוצאי חיל האוויר מתחום המבנאות - יתרון\n*הפניה מיועדת לנשים וגברים כאחד\n**רק פניות מתאימות יענו\n#Karmiel\nדרישות המשרה",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": true,
+      "curated_tags": [
+        {
+          "type": "tag-junior",
+          "icon": "ph-bold ph-graduation-cap",
+          "label": "Junior"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/montageleiter-m-w-d-at-x-cooling-4439530497",
@@ -1038,7 +1310,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFIji-f8IFQFw/company-logo_100_100/company-logo_100_100/0/1724703616126?e=2147483647&v=beta&t=2j2UOlhbSR3FfEZtoTtm15g0Ued5m_euh7Wn2GgtCMo",
       "snippet": "WERDE EIN TEIL UNSERES TEAMS!\nDie X-COOLING GmbH ist als eigenständiges Unternehmen im Anlagenbau und Anlagenservice aktiv. Sie bietet von der Inspektion bis zur Neubauanlage ein breites Produktportfolio rund um die industrielle Kühltechnik an. Der Schwerpunkt liegt dabei auf Nasskühltürmen sämtlicher Bauart.\nDie Nationalen und Internationalen Aufträge werden von den zwei Standorten Bochum und Leipzig durch ein erfahrenes Team bearbeitet. Von Machbarkeitsstudien über das Engineering bis hin zur Montage kann dabei ein umfassendes Leistungsspektrum angeboten werden.\nAls deutscher Marktführer in einem wettbewerbsgeprägten Umfeld erweitern wir unser Team und sind offen für Veränderungen. Wir bieten erfahrenen Mitarbeitern sowie Berufseinsteigern gleichermaßen die Perspektive sich in unserem Team zu entwickeln. Für den Bereich Montage der X-COOLING GmbH suchen wir ab sofort einen\nMONTAGELEITER (M/W/D)\nIhre Aufgaben\nGesamtverantwortliche Leitung und Koordination von Montageprojekten im Kühlturmbau inkl. Durchführung von Inspektionen\nFührung und Einsatzplanung von Montagepersonal sowie Nachunternehmern\nSicherstellung der termin-, qualitäts- und kostengerechten Projektabwicklung\nÜberwachung der Einhaltung von Arbeitssicherheits- und SCC-Vorgaben\nDurchführung von Baustellenbesprechungen\nAbstimmung mit Projektleitung, Kunden und Lieferanten\nKontrolle der Materialdisposition und Baustellenlogistik\nDokumentation des Baufortschritts\nDurchführung von Abnahmen gemeinsam mit dem Kunden\nUnterstützung bei Inbetriebnahmen\nIhr Profil\nAbgeschlossene technische Ausbildung (z. B. Anlagenmechaniker, Industriemechaniker, Metallbauer, Schlosser, Elektriker) mit Weiterbildung zum Meister/Techniker oder vergleichbare Qualifikation (von Vorteil oder Bereitschaft sich dies anzueignen)\nMehrjährige Erfahrung im Anlagenbau oder in der Montageleitung\nFührungserfahrung auf Baustellen\nGute Kenntnisse im Bereich Arbeitssicherheit (SCC von Vorteil)\nOrganisationsstärke und Durchsetzungsvermögen\nReisebere",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/quality-engineer-at-flex-4443860816",
@@ -1066,7 +1343,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D560BAQFwOFir_jDfeQ/company-logo_100_100/company-logo_100_100/0/1688251504137/flexintl_logo?e=2147483647&v=beta&t=wKwdZMq6WeSA6b0z2q_8bSVTptcveH_rDT59idOR8Mc",
       "snippet": "Flex is the diversified manufacturing partner of choice that helps market-leading brands design, build and deliver innovative products that improve the world. A career at Flex offers the opportunity to make a difference and invest in your growth in a respectful, inclusive, and collaborative environment. If you are excited about a role but don't meet every bullet point, we encourage you to apply and join us to create the extraordinary.\nclick here to apply : https://minisite.niloos.ai/vacancy/69bfcd9ea608921276dde424\nIn this role, you will be maintaining quality engineering programs, standards and improvements within the organization.\nResponsibilities:\nDevelops and initiates standards and methods for inspection, testing and evaluation.\nDevises sampling procedures and designs and develops forms and instructions for recording, evaluating and reporting quality and reliability data.\nDevelops and implements methods and procedures for disposition of discrepant material and devises methods to assess cost.\nDirects workers engaged in measuring and testing product and tabulating data concerning materials, product or process quality and reliability.\nCompiles and writes training material and conducts training sessions on quality control activities.\nHolds up Product Engineers and Quality Program Managers with customer interfaces as necessary on quality related issues.\nAssures data availability and integrity for all quality related data. Consolidates and reports quality results.\nInitiates corrective action requests as needed and tracks to satisfactory completion.\nAssists with development and implementation of quality audits.\nIn charge of developing, applying, revising and maintaining quality standards for processing materials into partially finished or finished products.\nDesigns and implements methods and procedures for inspecting, testing and evaluating the precision and accuracy of products and/or production equipment.\nExplores reports and returned products and recommends correct",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/production-operator-at-drs-rada-technologies-4449922931",
@@ -1094,7 +1376,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGN2IltyLnSog/company-logo_100_100/company-logo_100_100/0/1669672953633/drsradatechnologies_logo?e=2147483647&v=beta&t=VzQZZC7GeBS8KlYWd-vRWnxpmj1qsvfXfaWyvjURLGQ",
       "snippet": "DRS RADA Technologies, a leading defense company that develops and manufactures life-saving radar systems is seeking an experienced Production Operators to join the assembly department at our plant in Beit She'an.\nExcellent conditions for suitable candidates and opportunities for promotions into a wide range of roles.\nA shuttle service is available from Afula, Beit She'an, Tiberias, Nof HaGalil, and Migdal HaEmek.\nRequirements:\nBasic ability to read and understand assembly drawings - required.\nMechanical engineering technician diploma - significant advantage.\nGood interpersonal communication skills.\nStrong organizational skills and attention to detail.\nAbility to work according to procedures and product documentation.\nWillingness to work overtime.",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/38712047/f4c2f2fd/",
@@ -1122,7 +1409,18 @@
       "logo": "https://www.google.com/s2/favicons?domain=electra.co.il&sz=128",
       "snippet": "טכנאי/ת מערכות תנועה בגובה -אלקטרה | - אלקטרה בע\"מ - | מספר מקומות | ראשון לציון | תל אביב | רמת גן | נס ציונה | חולון | בת ים | 1-2 שנים | משרה מלאה | לפני 2 שעות | קח את הקריירה שלך לשיאים חדשים – ניהול וטיפול במעליות עם הזדמנויות להשפעה אמיתית על הקריירה שלך! קבוצת אלקטרה מגייסת טכנאי/ת מערכות תנועה בגובה באלקטרה מעליות תיאור התפקיד: העבודה הינה עבודה של אחזקה מונעת, טיפולים שוטפים, אחזקת שבר (טיפול בתקלות) במעליות משא פעילות באתרי בניה ובמפעלי תעשייה (תקלות בתחומי החשמל, הבקרה והמכאניקה). העבודה עצמאית בשטח, עבודה בגובה נדרשת אינטראקציה יום- יומית עם לקוחות (לעדכן על הגעה, למלא דוחות שירות וכו.. ) • ביצוע אחזקה שוטפת וטיפול מונע למערכות מעלית בהתאם לתוכנית עבודה. • טיפול בתקלות מכאניות וחשמליות במעליות באתרי לקוחות. • איתור תקלות ואבחון בעיות במערכות פיקוד ובקרה. • עבודה בשטח לפי קריאות שירות והגעה לאתרים שונים. • מתן שירות מקצועי ואדיב ללקוחות החברה. • עבודה בהתאם לנהלי בטיחות ותקנים בתחום המעליות. • דיווח ותיעוד פעולות השירות במערכות החברה. שעות וימי העבודה: א'-ה' 7:30-16:45 , ימ",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38807351/a43be228/",
@@ -1150,7 +1448,12 @@
       "logo": "https://www.google.com/s2/favicons?domain=snorkellifts.com&sz=128",
       "snippet": "ש | טכנאי/ת שירות ואחזקת למעליות במרכז הארץ | שנייר ליפט | ראשון לציון | 3-4 שנים | משרה מלאה | לפני 1 שעות | חברת שנייר ליפט, חברה מקצועית, מובילה וצומחת בענף שירות ותחזוקת המעליות באזור המרכז, מתרחבת ומחפשת את ה\"אס\" הבא שלנו בשטח! אנחנו משלבים סטנדרטים מקצועיים בלתי מתפשרים עם גב ניהולי חזק, ויחס אישי. מה כולל התפקיד? ביצוע טיפולים תקופתיים ומונעים לשמירה על בטיחות ותקינות המעליות. איתור ופתרון תקלות בשטח ומתן מענה לקריאות שירות. מתן שירות מקצועי, אדיב ובגובה העיניים ללקוחות החברה. מה אנחנו מציעים? הכשרה מקצועית מלאה ומעמיקה מהבסיס ועד לרמות הגבוהות ביותר. בית מקצועי יציב עם אופק אמיתי להתפתחות וקידום. | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/manufacturing-equipment-maintenance-control-at-zoll-medical-corporation-4477130301",
@@ -1178,7 +1481,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQHurQGRLq_5lw/company-logo_100_100/company-logo_100_100/0/1734368085773/zoll_medical_corporation_logo?e=2147483647&v=beta&t=RBpJFr6IUfBWfom8OcM0OhwudxwFMBb1P99m00mAvgo",
       "snippet": "ZOLL Itamar is an innovative medical device technology company that focuses on the development and manufacturing of Home Sleep Apnea Tests to aid in the diagnosis of respiratory sleep disorders. Our core product is the WatchPAT® family, a revolutionary FDA-cleared portable home sleep apnea test device, that is based on propriety signal and analysis. 80% of patients who have sleep apnea are undiagnosed.We are committed to reach those undiagnosed patients and provide testing to promote wellness and enhance overall quality of life. WatchPAT® is commercially available within major markets including the U.S., Japan, and Europe, and is the leading home sleep apnea test in the US. ZOLL Itamar’s corporate headquarters, research and development and manufacturing are in Israel with U.S. headquarters based in Atlanta, GA.\nResponsible for preventive and corrective maintenance of production equipment, tools, fixtures, and infrastructure.\nResponsible for troubleshooting and resolving mechanical, electrical, pneumatic, and operational issues affecting production activities.\nResponsible for record maintenance and repair activities. Manage calibration activities and maintain calibration records\nResponsible for Fixtures and testers assembly\nEducation and Certifications:\nElectrical Practical Engineeror or B.Sc. in Electrical / Electronics Engineeringr (graduates)\nAt least 3 years of experience in a similar role.\nPosition Requirements :\nAbility to read technical drawings and specifications.\nKnowledge and experience in working with technical tools.\nKnowledge of computer hardware and software.\nKnowledge and experience in working with multidisciplinary machines.\nExperience working with control and automated systems – advantage.\nKnowledge of working with maintenance management systems – advantage.\nLanguage:\nHebrew (Reading & writing), English\nLocation:\nCaesarea - Israel\nJob type :\nOn-site 5 days in week",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/practical-engineer-at-solaredge-technologies-4481748648",
@@ -1206,7 +1514,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGbyZbX7V9zzg/company-logo_100_100/company-logo_100_100/0/1689147743960/solaredge_logo?e=2147483647&v=beta&t=6svQGAyGX4rPqxAtJex_eCP1aRxvyeSTLH7Bmx9sSjA",
       "snippet": "Power the Future with Us!\nAt SolarEdge (NASDAQ: SEDG), we're a global leader in smart energy technology, with over 3,000 employees, offices in 34 countries, and millions of installations worldwide.\nOur innovative solutions include solar inverters, battery storage, backup systems, EV charging, and AI-based energy management. We're committed to making clean, green energy the primary power source for homes, businesses, and beyond.\nAs global electricity demand grows, so does the need for smart, clean energy solutions. SolarEdge offers exciting opportunities to develop your skills in a multidisciplinary environment spanning research and development, production, and customer delivery. Work alongside talented colleagues, tackle meaningful challenges, and help shape a sustainable future in an industry that continually evolves. Join a company that values creativity, agility, and impactful work.\nWhat Will You Be Doing?\nWork at the company’s main site in Herzliya, with travel to additional sites as needed.\nBuild and support complex electrical test setups.\nInstall, wire, and assemble components and systems.\nIdentify, analyze, and resolve electrical faults.\nSet up new laboratories and electrical infrastructure.\nBuild, maintain, and test dedicated test equipment and fixtures.\nCollaborate closely with R&D teams, engineers, and technicians.\nRequirements:\nA valid Israeli Certified Electrician license (חשמלאי מוסמך) or higher — mandatory.\nA Practical Electrical Engineering diploma — a significant advantage.\nHands-on experience installing and maintaining electrical systems.\nAbility to read and interpret electrical schematics.\nExperience working in R&D laboratories — an advantage.\nExperience with solar systems and power equipment — an advantage.\nStrong technical aptitude and excellent hands-on skills.\nAbility to work independently and as part of a team.\nA strong sense of responsibility, initiative, creativity, and problem-solving skills.",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/38658961/55651ee9/",
@@ -1234,7 +1547,12 @@
       "logo": "https://webapi.drushim.co.il/logos/3542059/page/638562001179508427.png",
       "snippet": "מפעיל.ת מערכות CVD | רפאל | קריית ביאליק | 1-2 שנים | משרה מלאה | ועוד | משרה מלאה | משמרות | לפני 4 שעות | הכנת מתקנים וציוד לתהליכי ייצור שונים תוך הקפדה על נהלים, איכות ובטיחות הפעלה ותפעול של מערכות CVD לגידול חומר גלם אסטרטגי לתחום האופטי ביצוע תחזוקה שוטפת וכיולים מדויקים של ציוד ומתקנים להבטחת ביצועים אופטימליים וזמינות גבוהה ביצוע פעולות הכנה לתהליכים, הכוללות ניקיון מתקנים, פירוק חומרי גלם, צביעת רכיבים ועבודות טכניות נלוות אריזת חומרי הגלם והתוצרים באופן בטוח ויעיל בהתאם לדרישות איכות ונהלים שליחת התוצרים לקבלני משנה וניהול ממשק מול גורמים חיצוניים",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%90%D7%97%D7%A8%D7%90%D7%99-%D7%AA-%D7%91%D7%A7%D7%A8%D7%94-at-elbit-systems-israel-4479435071",
@@ -1262,7 +1580,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q",
       "snippet": "לאתר אלביט מערכות בנוף הגליל דרוש.ה אחראי.ת בקרה להצטרפות לצוות מקצועי העוסק במערכות בקרה מתקדמות בסביבה טכנולוגית ותעשייתית\nבמסגרת התפקיד תהיה לך הזדמנות לקחת חלק בפיתוח, שדרוג ותחזוקת מערכות בקרה קריטיות ולתרום לרציפות התפעולית של מערכי הייצור בארגון מוביל\nבמסגרת התפקיד :\nכתיבת תוכנה למגוון בקרים מתוכנתים PLC\nשדרוג מערכות קיימות והטמעת מערכות חדשות\nביצוע תיקוני תוכנה ושיפורי מערכת\nביצוע מיפוי וגיבוי ספריות תוכנות בקרה\nעבודה מול ממשקים טכנולוגיים ותפעוליים במפעל\nדרישות :\nתואר ראשון במדעי המחשב או הנדסאי.ת / מהנדס.ת בתחומי חשמל, אלקטרוניקה, בקרה, מכטרוניקה או מכשור ובקרה\nהיכרות עם בקרים מתוצרת Siemens ו-Allen Bradley\nהיכרות וידע בשפות תוכנה בסביבות DOS ו-Windows\nיכולת עבודה בצוות\nיכולת הובלת משימות ומתן שירות ברמה גבוהה\nיכולת למידה עצמאית של נושאים חדשים במהלך העבודה\nמוטיבציה גבוהה ויכולת עבודה בסביבה דינמית\n*הפניה מיודעת לנשים וגברים כאחד\n**רק פניות מתאימות יענו\n#Nof HaGalil",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38492901/9dfd82bb/",
@@ -1290,7 +1619,12 @@
       "logo": "https://www.google.com/s2/favicons?domain=colmobil.co.il&sz=128",
       "snippet": "חשמלאי.ת מכונות, בקרה ותשתיות - מיל\"י | כלמוביל | רמת חובב | 3-4 שנים | משרה מלאה | לפני 5 שעות | איך יראה היום שלך? אחזקת מכונות וקווי ייצור: איתור ופתרון תקלות (Troubleshooting) מורכבות במכונות תעשייתיות, מערכות הנעה, מנועים, ווסתי מהירות וחיישנים. אחזקת מערכות בקרה ואוטומציה: טיפול במערכות פיקוד ובקרה, קריאת תוכניות חשמל ודיאגרמות, עבודה מול בקרים מתוכנתים (PLC) ומערכות HMI/SCADA (איתור תקלה ברמת תוכנה/חומרה). אחזקת תשתיות חשמל: אחריות על לוחות החשמל המפעליים (לוחות חלוקה, תאורה, כוח), מערכות אל-פסק (UPS), ומערכת גיבוי (גנרטור). אחזקה מונעת ומתוכננת: ביצוע סבבים שוטפים, בדיקות תקופתיות (כגון סריקות תרמו גרפיות ללוחות) וטיפולים מונעים בהתאם לתוכנית האחזקה השנתית שמתווה מנהל האחזקה, תוך שימוש והטמעה במערכת ה-Datwise תמיכה בפרויקטים ושיפורים: השתתפות בהקמה, חיווט, שדרוג והרצה של מכונות חדשות ושיפור קווים קיימים בהתאם לצרכי המפעל. בטיחות בחשמל: שמירה קפדנית על חוק החשמל, נהלי הבטיחות בעבודה ופקודות הבטיחות במפעל . מתח גבוה (יתרון): תפעול, אחזקה וטיפול בציוד מתח גבוה במפעל (שנאים, מסדרים",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/38771061/8c05671d/",
@@ -1318,7 +1652,18 @@
       "logo": "https://www.google.com/s2/favicons?domain=electra.co.il&sz=128",
       "snippet": "+ | מפעיל/ה מערכות מיזוג אוויר להכשרה | + אלקטרה בע\"מ + | מספר מקומות | תל אביב | חיפה | פתח תקווה | ללא נסיון | משרה מלאה | לפני 16 שעות | אם את/ה הנדסאי/ת חשמל או הנדסאית קירור ומיזוג אוויר ומחפש/ת עבודה מאתגרת עם פוטנציאל צמיחה, אנחנו רוצים אותך! קבוצת אלקטרה מגייסת מפעיל/ת מערכות מז\"א (להכשרה!) באלקטרה E&M תיאור התפקיד : הפעלת מערכות מיזוג אוויר מרכזיות (צי'לרים) בשטח קריאת תוכניות חשמל, איתור תקלות, בדיקות מערכות בקרה עבודה בשטח לצד מפעילים בכירים סיוע למנהלי פרויקטים, מהנדסים ולקוחות מיקום המשרה: דרום/מרכז/ירושלים/חיפה | היקף המשרה - 07:30-16:30 + ש.נ עפ\"י צורך מה אנחנו מציעים : עובד/ת חברה מהיום הראשון! הזדמנות להתשלב בחברה גדולה עם אפיקי קידום רבים! תנאים סוציאליים מלאים כולל קרן השתלמות יינתן רכב לאחר הכשרה לידיעתך, בהגשת המועמדות למשרה, קו\"ח והמידע האישי אודותייך יועברו לחברת אלקטרה בע\"מ, אשר תנהל אותם בהתאם ובכפוף למדיניות הפרטיות שלה הזמינה באתר הקריירה של קבוצת אלקטרה | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": true,
+      "curated_tags": [
+        {
+          "type": "tag-junior",
+          "icon": "ph-bold ph-graduation-cap",
+          "label": "Junior"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38566659/0e94973f/",
@@ -1346,7 +1691,12 @@
       "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico",
       "snippet": "ד | הנדסאי\\ת \\ טכנאי\\ת אינטגרציה ושילובים | דאטה וויי - Dataway | באר יעקב | 1-2 שנים | משרה מלאה | לפני 5 שעות | למוסד ביטחוני דרוש/ה הנדסאי/ת / טכנאי/ת אינטגרציה ושילובים הפעלות צבדים אוטמטים וידנים ופענוח התוצאות חיבור שלב / מקטע למבדק, הפעלת המבדק והכנתו לביצוע הבדיקה, ביצוע בדיקה לשלב בעזרת מבדק/בדיקות ידניות ע\"פ ATP ישים, ביצוע בדיקת טלמטריה, תקשורת, בטיחות מוטס, RF, בדיקות מערכתיות וכו'... | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/38696562/dd16c04d/",
@@ -1374,7 +1724,12 @@
       "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico",
       "snippet": "ד\nלמוסד בטחוני דרוש/ה מרכיב/ה אלקטרומכאני\nדאטה וויי - Dataway\nיהוד\n3-4 שנים\nמשרה מלאה\nלפני 6 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברה מובילה דרוש/ה מרכיב/ה אלקטרומכאני\nמיקום - יהוד\nדרישות התפקיד\nטכנאי / הנדסאי מכונות / מכטרוניקה.\n5 שנות ניסיון בהרכבות ושילובי מערכות.\nידע בקריאת שרטוטים מכאניים וחשמליים.\nהכרות וניסיון בעבודה עם כלים ומתקנים חשמליים/פנאומטיים.\nיכולת אישית וטכנית גבוהה המשלבת עבודה עדינה ורגישה, אך גם מאסיבית.\nמוכנות לעבודה בשעות נוספות / משמרות / סופ\"ש בהתאם לצורך.\nהכרות עם מערכת ה – SAP (יתרון).\nידע וניסיון בתחום החיווט וההלחמה (יתרון).\nמס' משרה 1239\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתעשיה / ייצור\nתחומים\nמרכיב/ה מכאני/ת\nטכנאי/ת - תעשייה וייצור\nהנדסאי/ת מכונות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/38696429/93928ab3/",
@@ -1402,7 +1757,12 @@
       "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico",
       "snippet": "ד | מרכיבים/ות אלקטרו מכניים | דאטה וויי - Dataway | יהוד | 1-2 שנים | משרה מלאה | לפני 6 שעות | למוסד ביטחוני דרושים /ות מרכיבים/ות אלקטרו מכניים. במסגרת התפקיד: - הרכבת מערכות תעופתיות ותתי הרכבות שונות. - שימוש במהלך העבודה במיגוון רחב של כלים, טורקים, כלי מדידה, מתקנים ואמצעי בדיקה. - עבודה בצוות ויכולת מעבר בין תפקידים. - יכולת עבודה במערכות ממוחשבות. | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/38803361/bf7793f3/",
@@ -1430,7 +1790,18 @@
       "logo": "https://icons.duckduckgo.com/ip3/shidrug.co.il.ico",
       "snippet": "טכנאי/ת NOC תשתיות לחברה  בשוהם (משמרות 24/7) | שדרוג מיון והשמה | מספר מקומות | שוהם | רמלה | חולון | בת ים | רחובות | לוד | פתח תקווה | 1-2 שנים | משרה מלאה | 20/10/2026 | \"לחוות שרתים בשוהם דרוש/ה טכנאי/ת NOC תשתיות קו ראשון לניטור תשתיות החשמל, הקירור והסביבה בדאטה סנטר. התפקיד מתמקד בזיהוי alarms, triage ראשוני, תיעוד מדויק, הפעלת נוהלי אסקלציה והקפצת צוותי השטח, ואינו מחליף את הסמכות המקצועית של טכנאי חשמל או מכונות • ניטור רציף של BMS, EPMS, DCIM, leak detection ומסכי מערכת הקריאות. • סינון alerts והבחנה בין הודעת תחזוקה, warning ו-critical alarm לפי מטריצת חומרה מאושרת. • פתיחת ticket ותיעוד קוד התרעה, מערכת, מיקום, timestamp, פעולה שננקטה וגורם שהוקפץ. • מעקב אחר טמפרטורה, לחות, airflow, chilled-water loops, CRAC/CRAH, CDU ונתוני חשמל מרכזיים. • הפעלת EOP/SOP ראשוני, תקשורת בקשר/טלפון והקפצת טכנאי השטח המתאים. • הפקת עדכוני סטטוס, מעקב עד סגירת האירוע והעברת משמרת מלאה. • ביצוע צ’ק-ליסטים ורישום telemetry כגון fuel level, UPS battery status וצריכת חשמל. משרה מלאה 24/7 במשמרות\"",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38803342/8a0adc3d/",
@@ -1458,7 +1829,18 @@
       "logo": "https://icons.duckduckgo.com/ip3/shidrug.co.il.ico",
       "snippet": "מנהל/ת משמרת NOC תשתיות לחברה מובילה בשוהם | שדרוג מיון והשמה | מספר מקומות | שוהם | פתח תקווה | ראשון לציון | חולון | רמלה | תל אביב | 3-4 שנים | משרה מלאה | 20/10/2026 | \"לחוות שרתים בשוהם דרוש/ה מנהל/ת משמרת NOC תשתיות המשרה כוללת: ניהול מוקד הניטור התפעולי לתשתיות הקריטיות, לרבות BMS, EPMS, DCIM, מערכות סביבתיות ומערכת הקריאות. אחראי/ת לאיכות triage, ניהול האירוע, הקפצות, תקשורת, SLA, העברת משמרת ומשמעת תיעוד. • ניהול צוות טכנאי NOC במשמרת, חלוקת משימות, בקרת איכות והעברת מקל. • פיקוח רציף על alarms במערכות BMS/EPMS/DCIM וגיבוש תמונת מצב תפעולית אחודה. • סיווג אירועים לפי חומרה והשפעה, הפעלת מטריצת escalation והקפצת אנשי חשמל/מכונות/ניהול. • ניהול תקשורת אירוע: timeline, updates, tickets, bridge call ודיווח ללקוחות ולמנהלים בהתאם לנוהל. • מעקב אחר SLA, alarm hygiene, קריאות פתוחות, עבודות מתוכננות, disabled alarms וביקורי ספקים. • תחזוקת runbooks, SOP/EOP, רשימות קשר, דוחות משמרת ותרגילי חירום. • תיאום הדוק עם צוותי Facilities ו-IT NOC, תוך שמירה על גבולות אחריות מקצועית. \" | הגשת",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38650088/dee0cc7c/",
@@ -1486,7 +1868,18 @@
       "logo": "https://webapi.drushim.co.il/logos/3048743/page/639056431574835927.png",
       "snippet": "לחברה ממשלתית דרוש/ה בוחן/ת איכות | תומר חברה ממשלתית | רמלה | ללא נסיון | משרה מלאה | 06/10/2026 | * עבודה בצוות גדול במגוון תחומים טכנולוגיים עם ממשקים להנדסה וגופים נוספים. * ביצוע בחינה לביקורת סופית לחלקים ומוצרים במפעל ובקב\"מ. * ניתוח ממצאי ביקורת, הפקת חריגות, ויישום היתרים הנדסיים/ שינויים. * הבנה בקריאת שרטוטים. * הבנה טכנולוגית בפרוק והרכבת מוצרים לבדיקות הידראוליות ומכניות. * ריכוז וסיכום ממצאי ביקורת, עבודה רבה במערכות מידע ועבודת ניירת של תיעוד הממצאים. נדרש דיוק והקפדה בתיעוד ובהפקת אישורים. | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": true,
+      "curated_tags": [
+        {
+          "type": "tag-junior",
+          "icon": "ph-bold ph-graduation-cap",
+          "label": "Junior"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38578439/a40dcc99/",
@@ -1514,7 +1907,12 @@
       "logo": "https://icons.duckduckgo.com/ip3/vpgsensors.com.ico",
       "snippet": "טכנאי/הנדסאי אחזקה למערכות ייצור מתקדמות | VPG | חולון | 3-4 שנים | משרה מלאה | לפני 2 שעות | VPG היא חברה גלובלית מובילה בעלת מוניטין של יותר מ-60 שנה בפיתוח וייצור פתרונות מדידה מדויקים במיוחד, המספקת טכנולוגיות חדשניות ללקוחות מהמובילים בעולם בתחומי החיישנים, מערכות השקילה ומערכות המדידה. אנחנו מחפשים טכנאי/הנדסאי אחזקה מקצועי/ת ומנוסה להצטרף לצוות ההנדסה והייצור שלנו, ולשחק תפקיד מרכזי בתחזוקה, שיפור ותפעול של מערכות וציוד מתקדם בסביבת ייצור טכנולוגית. מה התפקיד כולל? תחזוקת מכונות: ביצוע תחזוקה שוטפת ומונעת, ומתן מענה לתקלות שבר במגוון המכונות ברצפת הייצור. איתור ופתרון תקלות במכונות ובמערכות ייצור, תוך שמירה על זמינות ויעילות מקסימלית תמיכה בתהליכי ייצור: הפעלה ותחזוקה של ציוד ייצור ראשי ומשני, כולל מערכות לייזר, Prober, Mask Aligner ומערכות נוספות. שיפור וייעול: תכנון, פיתוח וביצוע של ג'יגים מכניים, מתקנים ואביזרים ייעודיים לשיפור תהליכי העבודה בייצור. שיתוף פעולה עם צוותי הייצור וההנדסה בפרויקטים טכניים מגוונים ובמשימות מורכבות. | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/prototyping-engineer-at-nextpower-4472832577",
@@ -1542,7 +1940,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQF2APFUYamUMQ/company-logo_100_100/B4EZs37njPHoAQ-/0/1766169934337?e=2147483647&v=beta&t=I83YB8OHO9y4YXoh1gFgGOK_x_bCfxsDe4CUZr3HKPs",
       "snippet": "Job Description\nThe role involves operating workshop equipment, manufacturing and assembling prototype parts, 3D printing, machining, supporting mechanical experiments and field trials, and working closely with our Mechanical and Electronics R&D teams.\nThe ideal candidate is organized, practical, technically capable, and eager to learn and develop in a multidisciplinary R&D environment.\nKey Responsibilities\nOperate workshop machines, tools, and equipment.\nBuild, assemble, modify, and repair R&D prototypes.\nOperate and maintain 3D printers and produce prototype parts.\nPerform machining and fabrication of mechanical parts.\nBuild mechanical models, fixtures, and test setups.\nPrepare and execute mechanical experiments and tests.\nSupport the Workshop Manager in the day-to-day operation and organization of the workshop.\nSupport Mechanical and Electronics Engineering teams with prototype builds, test setups, and testing activities.\nPrepare equipment, prototypes, tools, and materials for field trials.\nParticipate in field experiments and testing activities as required.\nManage workshop inventory, materials, tools, and spare parts.\nMaintain an organized, safe, and efficient workshop environment.\nQualifications\nStrong technical aptitude and hands-on mechanical skills.\nExperience working with workshop tools and machinery.\nExperience with prototype fabrication and assembly.\nBasic machining and mechanical fabrication capabilities.\nAbility to understand technical drawings and mechanical assemblies.\nHighly organized and methodical, with strong attention to detail.\nPractical problem-solving skills and ability to work independently.\nStrong willingness to learn, develop new technical skills, and take on new responsibilities.\nAbility to work effectively with multidisciplinary engineering teams.\nPreferred Qualifications\nExperience in an R&D workshop or prototype development environment – an advantage.\nExperience supporting mechanical testing and field trials – an advantage.\nAt Nextpower",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/38596280/6d3e2e48/",
@@ -1570,7 +1973,23 @@
       "logo": "https://www.google.com/s2/favicons?domain=partner.co.il&sz=128",
       "snippet": "מפעיל חדר מחשב ותפעול מערכות מידע | Partner | ראש העין | ללא נסיון | משרה מלאה | לפני 12 דקות | התפקיד הינו תפקיד כניסה לעולם ה IT הכולל עבודה בחדר מחשב (NOC) ותפעול מערכות מידע ארגוניות. התפקיד מתמקד בניטור מערכות, טיפול בתקריות בזמן אמת, עבודה בצ’אט תפעולי ותמיכה בתקלות ותהליכים שוטפים בארגון. ניטור מערכות ותשתיות IT וזיהוי תקלות טיפול בתקריות בזמן אמת (Tier1) תנאים מעולים של עובד חברה מהיום הראשון! מענה שוטף בצ’אט תפעולי ועבודה מול צוותים פנימיים הרצת תהליכים אוטומטיים וביצוע בקרות שוטפות תפעול מערכות CRM ומערכות ליבה בארגון עבודה מול צוותי פיתוח, תשתיות ואפליקציה | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": true,
+      "curated_tags": [
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        },
+        {
+          "type": "tag-junior",
+          "icon": "ph-bold ph-graduation-cap",
+          "label": "Junior"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/ohle-pos-quality-inspector-at-alstom-4478237391",
@@ -1598,7 +2017,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI",
       "snippet": "At Alstom, we understand transport networks and what moves people. From high-speed trains, metros, monorails, and trams, to turnkey systems, services, infrastructure, signalling and digital mobility, we offer our diverse customers the broadest portfolio in the industry. Every day, more than 80 000 colleagues lead the way to greener and smarter mobility worldwide, connecting cities as we reduce carbon and replace cars.\nPURPOSE OF THE JOB\nEnsure Construction Quality compliance according to Customer & Internal specifications.\nInspection of part / product / installation\nReporting of defects & ensure product compliance (check after rework), especially for Special Processes\nMain Responsabilities\nAccountabilities & Authorities:\nSupport POS&OHLE Quality Manager in her / his scope\nPerform inspections and ensure product compliance (check after rework) according to ITP.\nRecords inspection results in the digital tools as required\nManage NCR: Support Quality team to complete characterization until closure using Problem Solving methodology Qualify construction teams regarding the Self-Inspection\nManage Construction Inspection Checklists\nPerform destructive & non-destructive examination.\nEnsure collection of samples for laboratory tests and comparative measurements to achieve correct and reliable measurements.\nPerformance measurements:\nPunch List Item Reduction\nInspection method time adherence\nSelf-Inspection effectiveness\nProper defect characterization (e.g. Defect catalogue, 5W2H, Acceptance criteria’s, …)\nManagement of rework (Validation included)\nMain Required Competences\nEducational Requirements\nMandatory:\nAssociates degree, technical major preferred\nMust be able to read drawings / specifications and familiar with a variety of test equipment\nQuality Processes knowledge for civil/railway construction\nDesirable:\nRailway experience is a \"plus\"\nExperience\n2+ years quality inspection experience within manufacturing industry including using of digital tools\nDesirable:\nInternational",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/31937863/7172a3ef/",
@@ -1626,7 +2050,12 @@
       "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png",
       "snippet": "חסוי | דרוש/ה מפעיל מכונה עם יכולות ניהוליות | - חסוי - | בית שמש | 1-2 שנים | משרה מלאה | ועוד | משרה מלאה | משמרות | לפני 1 שעות | דרוש/ה מפעיל/ת מכונה עם יכולות ניהוליות ניסיון בהפעלת מכונות תפעול והפעלת מכונות הייצור על פי תוכנית הייצור, בקרה על איכות המוצרים בתחנת העבודה ושמירה על מדדי איכות פתרון בעיות ותקלות למכונות בקווי הייצור. הצפת בעיות העלולות לפגוע באיכות המוצר, בטיחותו או בטיחות העובדים ועבודה משוטפת במציאת פתרונות תפעוליים. התנהלות שוטפת אל מול מנהלי המשמרת והאחזקה במהלך המשמרת בהיבטי תקלות טכניות ותפעולן. | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://www.drushim.co.il/job/38616154/01c97010/",
@@ -1654,7 +2083,18 @@
       "logo": "https://icons.duckduckgo.com/ip3/scheidt-bachmann.com.ico",
       "snippet": "ש | טכנאי/ת מערכות חניונים ואלקטרוניקה | שיידט את בכמן ישראל | לוד | 1-2 שנים | משרה מלאה | לפני 1 שעות | חברה בינלאומית מובילה ויציבה הממוקמת בלוד, העוסקת במערכות חניונים ובקרה, דרוש/ה טכנאי/ת לתפקיד טכני, דינאמי ומגוון הכולל עבודה בשטח ובאתרי לקוחות. שירות של מערכות חניונים, מחסומים, מצלמות, מערכות בקרה וציוד אלקטרוני. איתור תקלות, טיפול במערכות ומתן שירות טכני ללקוחות החברה. נסיעות לאתרי לקוחות ברחבי הארץ. | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38803627/53af43d4/",
@@ -1682,7 +2122,23 @@
       "logo": "https://www.google.com/s2/favicons?domain=partner.co.il&sz=128",
       "snippet": "מפעיל.ת מחשב ומערכות מידע|  ללא ניסיון ! | Partner | ראש העין | ללא נסיון | משרה מלאה | לפני 13 שעות | תפקיד כניסה לעולם ה?IT הכולל עבודה בחדר מחשב (NOC) ותפעול מערכות מידע ארגוניות. התפקיד מתמקד בניטור מערכות, טיפול בתקריות בזמן אמת, עבודה בצ’אט תפעולי ותמיכה בתקלות ותהליכים שוטפים בארגון. ניטור מערכות ותשתיות IT וזיהוי תקלות טיפול בתקריות בזמן אמת (Tier1) מענה שוטף בצ’אט תפעולי ועבודה מול צוותים פנימיים הרצת תהליכים אוטומטיים וביצוע בקרות שוטפות תפעול מערכות CRM ומערכות ליבה בארגון עבודה מול צוותי פיתוח, תשתיות ואפליקציה | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": true,
+      "curated_tags": [
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        },
+        {
+          "type": "tag-junior",
+          "icon": "ph-bold ph-graduation-cap",
+          "label": "Junior"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38572454/1465b9d1/",
@@ -1710,7 +2166,18 @@
       "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png",
       "snippet": "חסוי\nמפעיל/ה מערכת ייצור\n- חסוי -\nקריית גת\nללא נסיון\nמשרה מלאה\nועוד\nמשרה מלאה\nמשרה חלקית\nלפני 5 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלמפעל העוסק בציפויים בתחום האלקטרו אופטיקה דרושים/ות מפעילי/ות מערכת משוכללת.\nלימוד הפעלת המערכת יבוצע בחברה.\nדרישות התפקיד\nרקע טכני בתחום טכנאות / הנדסאות / מחשבים.\nאזרחות אמריקאית - יתרון.\nרצוי ניסיון קודם בהפעלת מכונות, הרכבות.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nכללי\nתחומים\nחייל/ת משוחרר/ת\nעבודה מועדפת\nמשרות כלליות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": true,
+      "curated_tags": [
+        {
+          "type": "tag-junior",
+          "icon": "ph-bold ph-graduation-cap",
+          "label": "Junior"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38574088/a3c8b9cb/",
@@ -1738,7 +2205,28 @@
       "logo": "https://webapi.drushim.co.il/logos/21069/page/637695482451810079.png",
       "snippet": "נ | דרושים טכנאי שטח - ציוד מקצועי למטבחים - רכב צמוד | ניגא שף בע\"מ | מספר מקומות | תל אביב | באר שבע | רחובות | ירושלים | אריאל | אשדוד | אשקלון | פתח תקווה | נתניה | 1-2 שנים | משרה מלאה | לפני 10 שעות | חברת ניגא שף העוסקת בייבוא, שיווק ושירות טכני של ציוד למטבחים מקצועיים מוסדיים - מגייסת טכנאי שירות שטח. החברה מובילה בתחומה ובין לקוחותיה בתי מלון, חברות הייטק, מוסדות ציבור, מסעדות, אולמות אירועים, לקוחות פרטיים ועוד. לחברה צוות טכנאים הנותן שירות טכני לציוד בכל התחומים- חשמל, גז, קירור, התקנות ועוד. היקף משרה- משרה מלאה, בימים א'-ה' 08:00-17:00. רכב צמוד כולל גילום מס עובד חברה מהיום הראשון הכשרה מלאה על חשבון החברה קרן השתלמות שי בחגים אירועי חברה | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": true,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": true,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        },
+        {
+          "type": "tag-car",
+          "icon": "ph-bold ph-car",
+          "label": "רכב חברה"
+        },
+        {
+          "type": "tag-junior",
+          "icon": "ph-bold ph-graduation-cap",
+          "label": "Junior"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/electrical-supervisor-at-zofen-advanced-managing-systems-ltd-4479435020",
@@ -1766,7 +2254,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQFxs7dmleI8-w/company-logo_100_100/company-logo_100_100/0/1630597156083?e=2147483647&v=beta&t=_GU95MonzSeuUYn58Z2Lx9VJvP6RvmLLKoDmYDo1HMs",
       "snippet": "Company Description\nZofen Advanced Managing Systems LTD. specializes in project management solutions designed to support complex, technical initiatives. The company focuses on delivering structured, efficient management practices that help clients complete projects on time and within scope. Zofen operates in dynamic environments where coordination between engineering, operations, and management is essential. Team members collaborate closely with stakeholders to ensure project requirements are clearly defined and executed. The organization values professionalism, technical expertise, and reliable service delivery.\nRole Description\nThe Electrical Supervisor is a full-time, on-site role based in Haifa. This position is responsible for overseeing electrical maintenance activities, ensuring safe and reliable operation of electrical systems and equipment. Day-to-day tasks include planning and assigning work to electrical technicians, monitoring performance, and providing technical guidance on electrical engineering issues. The Electrical Supervisor will inspect installations and repairs, troubleshoot electrical faults, and verify compliance with safety standards and applicable regulations. The role also involves coordinating with project managers and other departments, maintaining documentation of maintenance and inspection activities, and supporting continuous improvement in electrical reliability and efficiency.\nQualifications\nCandidates should possess strong Supervisory Skills, including team leadership, task planning, and performance monitoring.\nCandidates should possess practical expertise in Electrical Maintenance and Electricity, with experience in troubleshooting and repairing electrical systems.\nCandidates should possess solid knowledge of Electrical Engineering principles relevant to industrial or commercial environments.\nCandidates should possess hands-on experience working with Electrical Equipment, including installation, inspection, and safe operation.\nRelev",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/electrical-engineer-at-enlight-renewable-energy-ltd-enlt-4482072993",
@@ -1794,7 +2293,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY",
       "snippet": "Enlight is a leading global renewable energy company, developing, building, owning and operating large-scale solar, wind and energy storage projects across the U.S., Europe and MENA.\nWe're growing, and looking for talented people to join us on the journey.\nServes as the technical specialist for electrical systems across the operating portfolio, focusing on HV/MV infrastructure, substations, transformers, switchgear, protection systems, and electrical balance-of-plant equipment.\nProvides engineering support for complex electrical failures, maintenance activities, inspections, technical modifications, and reliability-improvement initiatives.\nEnsures electrical systems are maintained and operated in accordance with company standards, regulatory requirements, safety requirements, and industry best practices.\nResponsibilities:\nEngineering Support:\nSupport asset management and field operations in diagnosing and resolving faults involving substations, transformers, switchgear, collector networks, and protection systems, based on data, test results, drawings, and equipment documentation.\nDevelop recommendations and corrective actions, oversee their implementation through closure, and escalate significant risks and recurring failures to the team leader.\nMaintenance and Reliability\nReview and improve preventive, predictive, and corrective maintenance for critical equipment, including condition monitoring, testing, and inspections, based on recurring failures, deterioration trends, and reliability risks across all assets.\nSupport the planning of major maintenance activities and component replacements in coordination with field operations to minimize downtime and improve equipment reliability.\nTesting and Condition Assessment\nDefine, perform, or supervise testing and condition assessments, including protection system testing, transformer diagnostics, and switchgear testing; coordinate external service providers as required.\nAnalyze results, determine corrective actions or follo",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38501147/e6250655/",
@@ -1822,7 +2332,18 @@
       "logo": "https://webapi.drushim.co.il/logos/27809/page/637093311781195899.png",
       "snippet": "חסוי | מפעיל/ת מערכות הנדסיות ו\\או GIS | - חסוי - | פתח תקווה | 1-2 שנים | משרה מלאה | לפני 3 שעות | לחברה בתחום הקמת מערכות המידע הגיאוגרפיות במרכז הארץ, דרוש/ה מפעיל/ת מערכות הנדסיות ו\\או GIS לעבודה מעניינת ומאתגרת, שאפשר ללמוד ולהתמקצע הכי גבוה שיש! | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        }
+      ]
     },
     {
       "link": "https://www.drushim.co.il/job/38822380/1484f6a7/",
@@ -1850,7 +2371,18 @@
       "logo": "https://webapi.drushim.co.il/logos/1283833/page/637591767225899673.jpg",
       "snippet": "מהנדס \\ הנדסאי בניין לבקרת איכות בפרויקטים במרכז | אדוונס הנדסה בע\"מ | ראשון לציון | 1-2 שנים | משרה מלאה | לפני 52 דקות | לחברת הנדסה מובילה דרוש/ה מהנדס/ת או הנדסאי/ת אזרחי לבקרת איכות בפרויקטי הקמה מולטי-דיסציפלינריים, ותשתיות באזור המרכז. תחומי הפרויקטים: הקמת מפעלי תעשייה כבדה, דאטה סנטרים, תשתיות מים, רכבות קלות, מטרו, תחנות כח, מבני ציבור ועוד. תחומי אחריות: תפקיד שטח דינמי בשילוב עבודת שטח עם עבודה משרדית, גיבוי הנדסי לצוות הביצוע בזמן אמת, בדיקת ביצוע מול התכנון, ניהול בדיקות, ניהול אי-התאמות, גיבוש פתרונות והטמעת פעולות מתקנות. עבודה שוטפת ושיתוף פעולה אקטיבי עם מנהלי פרויקטים, מנהלי עבודה, קבלני משנה, מתכננים, מעבדות, ספקים. השתתפות בישיבות ביצוע, תכנון קדימה, וקידום פרויקטים. תינתן הדרכה מלאה וליווי מקצועי ע\"י צוות החברה. משרה מלאה ויציבה לטווח ארוך, ואפשרות להתמקצעות והתפתחות בתחום התשתיות. | הגשת מועמדות",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%A9%D7%98%D7%97-%E2%80%93-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%92%D7%96-%D7%98%D7%91%D7%A2%D7%99-%D7%93%D7%97%D7%95%D7%A1-cng-at-alumenergy-4478217200",
@@ -1878,7 +2410,28 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFAwEbgPEIRRw/company-logo_100_100/B4DZ9gfaPiK8AI-/0/1784030274815?e=2147483647&v=beta&t=cSOJdHzJ_nUMyrOF9qs9xGDUB6BWhR7zz_WLr93TGdY",
       "snippet": "על התפקיד\nחברה בתחום הגז הטבעי מחפשת טכנאי/ת שטח לצוות האחזקה. לחברה תחנת דחיסה של גז טבעי באזור התעשייה אלון תבור ועוד 21 אתרים ברחבי הארץ: תחנות תדלוק ותחנות פריקה אצל לקוחות תעשייתיים. זו עבודה טכנית ומעשית עם מדחסים, מתדלקות, מערכות שמן ולחץ גבוה ומערכות חשמל. מתאימה למי שאוהב/ת לעבוד עם הידיים ורוצה ללמוד מקצוע ייחודי בתחום האנרגיה.\nהעבודה כוללת\nאחזקה מונעת ושוטפת במתקנים לפי נהלים ותוכנית עבודה\nיציאה לאתרים ולמתקני לקוחות לטיפול בתקלות\nטיפול בדליפות גז, בנזילות שמן ומים ובהחלפת רכיבים (אטמים, ברזים, מסננים)\nעבודה לצד טכנאים ותיקים וספקי ציוד, עם התקדמות הדרגתית לעבודה עצמאית\nתיעוד ודיווח על העבודות שבוצעו\nדרישות חובה\nחוש טכני ואהבה לעבודה מעשית\nנכונות לעבודת שטח ולנסיעות בין אתרים\nרישיון נהיגה B\nיכולת קריאת שרטוטים ותוכניות טכניות\nנכונות להשתתף בסבב משמרות לילה (שבוע אחד בחודש)\nרצון ללמוד ולהתמקצע, ומחויבות לטווח ארוך\nיתרון\nשליטה טובה באנגלית, בעיקר בקריאת תיעוד טכני וספרי יצרן (יתרון משמעותי)\nניסיון באחזקה מכנית או חשמלית (מפעל, מוסך, תחנות דלק, קירור וכדומה)\nלימודי טכנאי/הנדסאי מכונות, חשמל או מכשור\nרקע צבאי טכני\nרישיון חשמלאי\nהיכרות עם מערכות גז / גפ\"מ / לחץ גבוה\nכישורים אישיים\nאחריות ואמינות. חלק מהעבודה מתבצע לבד בשטח\nיכולת עבודה עצמאית וגם כחלק מצוות\nסדר, דיוק והקפדה על נהלי בטיחות\nיכולת לאבחן תקלה ולפתור בעיות בשטח\nיחסי אנוש טובים ותקשורת טובה מול לקוחות וצוות\nגמישות ויכולת להתמודד עם עומסים ושינויים\nמה אנחנו מציעים\nהכשרה מקצועית מלאה בתחום הגז הטבעי הדחוס\nמסלול התפתחות והתמקצעות לצד צוות מנוסה\nעבודה יציבה ומגוונת בחברה בתחום האנרגיה\nרכב צמוד, טלפון נייד, תוספת עבור משמרות לילה, קרן השתלמות אחרי שנה, ביגוד וציוד מגן\nשעות עבודה\n08:00–17:00 ושבוע אחד בחודש במשמרות לילה בסבב.\nלהגשת מועמדות ומשלוח קורות חיים: alumenergy@alumenergy.co.il",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": true,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        },
+        {
+          "type": "tag-car",
+          "icon": "ph-bold ph-car",
+          "label": "רכב חברה"
+        },
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/uav-integrator-at-e2e-solutions-il-4479911890",
@@ -1906,7 +2459,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGpkjJBR3Uq9Q/company-logo_100_100/B4DZjsIJR4G8AQ-/0/1756308215369/e2eil_logo?e=2147483647&v=beta&t=pPt2A7u8rXMe5xeI0JS9zZjxQO5HevJ86U_wsMBojwQ",
       "snippet": "Job Description:\nWe are looking for a UAV Integrator with a multi-disciplinary background and a can-do approach to Join our R&D and Engineering team where you will be engaged in various aspects of development, design and maintenance of prototypes.\nIf you are a soul player, creative, open minded and enthusiastic person, that want to work in a young and dynamic group, which impacting and changing the rules of the future battlefield, this job suites you and we would like to meet you!\nResponsibilities:\nCollaborating in developing, designing and building prototypes.\nBuilding electro-mechanical assemblies\nSupporting bring-up and evaluation of electronic boards and mechanical assemblies\nElectrical and software Integration of Prototypes\nElectrical assembly Including wiring and soldering\nSetting-up laboratory setups\nSupporting laboratory tests as well as field tests\nTaking major part in conducting failure analysis\nTrouble shooting mechanical, electronic and software problems.\nRequirements:\nTechnician diploma in Mechanical Engineering / Electronics / Mechatronic or any other relevant field.\nExperience in building prototypes\nKnowledge and experience in mechanical and electronic work\nAbility to assemble electrical systems, including wiring\nExperience in setting up testing setups and conducting experiments\nStrong problem-solving skills with a deep understanding of mechanical and electronic failures\nAbility to trouble shoot software problems during bring-up process (advantage)\nAbility to work in a dynamic environment, with challenging constraints\nExperience with multidisciplinary product development in the field of drones and/or robotics (advantage)\nCan do and hands-on approach, Solution finder, self-motivated, and a strong teamwork quality.\nCreativity, out of the box thinking and organized\nExperience in the defense industry – advantage",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%97%D7%A9%D7%9E%D7%9C%D7%90%D7%99-%D7%AA-%D7%9E%D7%95%D7%A1%D7%9E%D7%9A-%D7%AA-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%90%D7%95%D7%98%D7%95%D7%9E%D7%A6%D7%99%D7%94-%D7%95%D7%A8%D7%95%D7%91%D7%95%D7%98%D7%99%D7%A7%D7%94-at-assatec-robotics-4477392575",
@@ -1934,7 +2492,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHhd4Ukqt23Rw/company-logo_100_100/company-logo_100_100/0/1630576647370/assatec_logo?e=2147483647&v=beta&t=1JWmMCggypsVMX2v5NIbKj6W81mmYxv1PqW4CK4fSV8",
       "snippet": "חשמלאי/ת מוסמך/ת למערכות אוטומציה ורובוטיקה\nאסאטק רובוטיקה | נהריה | משרה מלאה כשכיר/ה\nעל התפקיד\nאסאטק היא חברה מובילה בתחום הרובוטיקה והאוטומציה. אנחנו מחפשים חשמלאי/ת מוסמך/ת לתפקיד מרכזי, שמטרתו אפיון ותכנון ארונות חשמל ובקרה למערכות רובוטיות, לצד אחריות על בנייתם, חיווטם ושילובם במערכת.\nהתפקיד כולל ליווי של הפרויקט לאורך כל שלביו — מהאפיון והתכנון, דרך הבנייה בבית המלאכה בנהריה, ועד ההתקנה, ההרצה והתמיכה באתר הלקוח.\nתחומי האחריות\nאפיון ותכנון ארונות חשמל ובקרה — הגדרת צורכי המערכת, בחירת רכיבים ותכנון סידורם בארון, בשיתוף מהנדסי המערכת.\nבניית ארונות חשמל ובקרה וחיווטם לפי שרטוטים — התקנת רכיבים, חיווט, סימון ובדיקות.\nחיווט מערכות ותאים רובוטיים — חיבור רובוטים, חיישנים, שסתומים, מפסקים ורכיבי בטיחות.\nהתקנה והרצה באתרי לקוח בארץ — חיבור לתשתיות, ביצוע בדיקות וליווי ההרצה עד למסירת המערכת.\nשירות ופתרון תקלות — אבחון תקלות חשמל ובקרה, תחזוקה ותמיכה במערכות שהותקנו.\nעבודה משותפת עם צוות ההרכבה המכנית ומהנדסי המערכת — תיאום הביצוע, מתן משוב על שרטוטים והצעת שיפורים.\nדרישות חובה\nרישיון חשמלאי מוסמך בתוקף.\nניסיון מעשי בבנייה ובחיווט של ארונות חשמל ובקרה.\nיכולת קריאת שרטוטי חשמל ועבודה עצמאית לפיהם.\nנכונות לנסיעות לאתרי לקוח ברחבי הארץ.\nסדר, דיוק ואחריות אישית לאיכות העבודה.\nיתרונות\nניסיון באפיון ובתכנון ארונות חשמל ובקרה.\nניסיון במערכות אוטומציה, מכונות תעשייתיות או קווי ייצור.\nשליטה גבוהה בקריאת שרטוטי חשמל ותרשימי P&ID.\nרקע במכניקה ובפנאומטיקה והבנת הממשקים בין מערכות חשמל, אוויר ומכלולים מכניים.\nאנגלית טכנית לקריאת מסמכי יצרן.\nרישיון נהיגה.\nלמה לעבוד איתנו?\nבאסאטק לוקחים חלק בפרויקט שלם ורואים את התוצאה בשטח. העבודה משלבת אפיון ותכנון, בנייה בבית המלאכה והתקנות והרצות אצל לקוחות, ומאפשרת היכרות מעמיקה עם מערכות רובוטיות ועם החיבור בין חשמל, בקרה ומכניקה.\nהעבודה בחברה מובילה בתחום הרובוטיקה והאוטומציה בנהריה כוללת שיתוף פעולה ישיר עם צוותי ההנדסה וההרכבה, מעורבות בכל שלבי הפרויקט והשפעה על איכות המערכות שאנחנו מתכננים ובונים.\nהגשת מועמדות\nלשליחת קורות חיים: Eli@Assatec.co.il\nלפרטים נוספים: 050-477-7811\nהמשרה מיועדת לנשים ולגברים כאחד.",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/facilities-coordinator-at-michlol-solutions-ltd-4477072364",
@@ -1962,7 +2531,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQGUru-IFSujAA/company-logo_100_100/company-logo_100_100/0/1672821595213?e=2147483647&v=beta&t=o9D1l9X_badYYJVIoi1c7icwyEA5tgJ9UckVYgPq8nk",
       "snippet": "Company Description\nMichlol Solutions Ltd., established in 1999 by Michal and Boaz Keidar, is a leading provider of on-site management and maintenance services for Israel’s hi-tech, pharmaceutical, and investment companies. With a client-centric approach, Michlol customizes its services to optimize companies’ operational efficiency, facilities management, and daily maintenance. Known for its commitment to service excellence, technological expertise, and state-of-the-art solutions, Michlol partners with its clients to implement advanced maintenance and management strategies. By acting as an in-house operational department, the company enables clients to focus on their core activities, optimize resource usage, and ensure a healthy and effective work environment. Its dedicated and highly trained staff is a key contributor to delivering reliable and long-term results.\nJob Description\nWe are looking for a highly skilled\nand experienced Site Lead to oversee the overall customer experience for our\noffice. This office is a key location for meeting with our\ncustomers, partners and other organizations that we support and requires the\nhighest level of customer service.  In addition to customer service\nresponsibilities, you will need to ensure that our workplace environments are\nsafe, functional, and optimized to support the overall user\nexperience.\nThe ideal candidate will have strong\nleadership and executive engagement abilities, a comprehensive understanding of\nfacilities management, and a proven track record of collaborating effectively\nwith cross-functional teams to achieve organizational objectives and shape the workplace experience for our employees, ensuring that the work\nenvironment is dynamic and engaging. This role demands a\nproactive approach to problem-solving and excellent communication skills.\nYou will have direct responsibility\nfor all workplace experience functions, including the operations and\nmaintenance of facilities, move management, employee programs, even",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/system-engineer-renewable-energy-energy-storage-projects-at-nextcom-group-4478214360",
@@ -1990,7 +2564,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFcEtKaxjSiqg/company-logo_100_100/B4DZv6og5pHEAQ-/0/1769436483754/nextcom_group_2_logo?e=2147483647&v=beta&t=Qt5HlSc3Y6EhUCBKGMGClFsUDVG77SKZYPfOOaiy8pA",
       "snippet": "System Engineer - Renewable Energy & Energy Storage Projects",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/field-service-engineer-ashdod-at-siemens-energy-4478867677",
@@ -2018,7 +2597,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFEP39qSjZBGQ/company-logo_100_100/B4DZ82RPxaHgAQ-/0/1783321919016/siemens_energy_logo?e=2147483647&v=beta&t=W1HK8e0tEvjVap-QjwNYMknz-0FLftC-B2cl7RmR7G0",
       "snippet": "How to contribute to our vision as FS Engineer?\nTo ensure business continuity and operational excellence at the Paz Ashdod power station in Israel, Siemens Energy is seeking a Senior Field Service Engineer to support the critical SGT-A65 gas turbine operations. This role is essential for maintaining high equipment availability, delivering specialized technical support, and representing the Service Operations division directly on-site. To address these business aims, the role focuses on three core areas: advanced technical maintenance and commissioning of aeroderivative gas turbines, proactive troubleshooting and diagnostics, and close customer coordination to ensure seamless service delivery. These focus areas directly support the plant's operational uptime. Given the specialized nature of the SGT-A65 technology, the ideal candidate will possess a strong background in mechanical or electrical engineering, extensive experience in field service operations for gas turbines, and exceptional customer-facing communication skills.\nWhat You Need To Make a Difference\n50% Field Service troubleshooting & technical support\n1. Diagnose, troubleshoot, and resolve complex hardware and software faults on gas turbine control systems under tight schedules.\n2. Provide high-level technical support and expert consulting to customers and internal stakeholders regarding control system performance and upgrades.\n3. Lead site surveys, system assessments, and technical audits to identify potential system vulnerabilities and recommend preventive actions.\n30% Commissiong and control system engineering\n1. Execute complex commissioning, start-up, and optimization of Gas Turbine control systems at onshore customer sites.\n2. Perform software modifications, logic updates, and system parameter tuning in alignment with engineering standards and safety protocols.\n3. Conduct thorough functional testing of control loops, protection systems, and auxiliary interfaces during outages and commissioning phases",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/ocs-technician-at-alstom-4476451048",
@@ -2046,7 +2636,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI",
       "snippet": "At Alstom, we understand transport networks and what moves people. From high-speed trains, metros, monorails, and trams, to turnkey systems, services, infrastructure, signalling and digital mobility, we offer our diverse customers the broadest portfolio in the industry. Every day, more than 80 000 colleagues lead the way to greener and smarter mobility worldwide, connecting cities as we reduce carbon and replace cars.\nMaintenance Operator\nPurpose of the job\n- The Maintenance Operator is responsible to service, maintain, perform maintenace repairs of the overhead contcat system (OCS) , Transformers stations (TS) and Infrastructure equipment. As part of the maintenance team, they will ensure the equipment is serviced and maintained in a safe, efficient and cost effective manner whilst constantly seeking to improve quality.\nResponsibilities\nMaintenance\n- Work as directed by and in co-operation with the Team Leaders and Production Management Team in order to:-- Adhere to and work within Quality Systems to the current applicable standards.- Work as part of a team, complete or assist in any of the team's activities to ensure work is completed on time to specification.- Understand and follow work instructions, Standard Operating Sheets and Task Sequencing.- Apply Special Processes.- Support secondary level fault finding as and when required.- Use work related IT Systems as required including MMIS/SES to record progress of operations and status of issues.\nReporting\n- Accurately report status of operations, complete Work Checklists and Work Orders with the required level of detail including completion time.\nContinuous Improvement\n- Make suggestions and recommendations for productivity improvements working with the team leaders and Industrial Team.- Maintain 5S good housekeeping of all related work areas in accordance with set standards.\nTraining/Agility\n- Be capable of accepting training in other skills and carry out duties, e.g. forklift, road vehicle driving (if certified)",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/cad-operator-haifa-nazareth-lrt-project-at-alstom-4462520336",
@@ -2074,7 +2675,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI",
       "snippet": "At Alstom, we understand transport networks and what moves people. From high-speed trains, metros, monorails, and trams, to turnkey systems, services, infrastructure, signalling and digital mobility, we offer our diverse customers the broadest portfolio in the industry. Every day, more than 80 000 colleagues lead the way to greener and smarter mobility worldwide, connecting cities as we reduce carbon and replace cars.\nResponsibilities\nTechical Missions:\nAccountable for:\nUnderstand and analyse requirements in contractual technical documents\nUnderstand a horizontal and vertical railway alignment\nUnder supervision prepare track alignment and track design documents\nUnder supervision prepare the required track documents for construction team (drawings, listings…)\nAssimilation and Deployment of track installation principles so as to carry out proper design\nResponsible for:\nRespect of drawing codification and submission process\nPrepare the track material quantities\nPosition Track components in the alignment and design all track interfaces\nDesign mechanical assemblies for trackwork\nProvision of the track services for the CSDs,\nDesign typical and “for construction” track sections and plan views\nIssuing construction drawings (reinforcement, interface installation, track installation layouts and plans, turnouts and special trackworks installation, road crossing phasing …)\nDuring track installation:\nAccountable for:\nFollow up track installation on site and traceability of installation in order to update construction drawings into “as-built” drawings\nRevision of design or construction drawings in case of modifications\nProviding Return of experience to be implemented in Reference Solutions. Contribute to the RoE committee and documentation update.\nQCD and reporting:\nAccountable for:\nSupports to Project Track Engineering Manager in improvement proposals in term of QCD and during the change order process.\nPerform reporting at project level\nKnowledge & Experience\n:\nMastery of AUTOCA",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/automation-field-service-technician-remote-at-concentric-power-services-4477748427",
@@ -2102,7 +2708,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQH5lEXI21btYA/company-logo_100_100/company-logo_100_100/0/1630567845124/advanced_battery_technologies_inc__logo?e=2147483647&v=beta&t=wgtCFD9Bzt3NSUk4LHcweNsoJSIePdINLvz_7qjertw",
       "snippet": "Job Type\nFull-time\nDescription\nConcentric, LLC\nis the nation’s largest independent industrial power provider, delivering forklift power, critical infrastructure, mechanical/HVAC, and dedicated material handling and automation maintenance solutions. Through a nationwide network of technicians, engineers, and support teams, Concentric understands and prioritizes the unique needs of each customer to maximize uptime, improve operational efficiency, and maintain infrastructure. We provide reliable, scalable solutions that support data centers, telecommunications providers, utilities, manufacturing, distribution, commercial facilities, and other mission-critical environments across America.\nJob Summary\nThe\nField\nAutomation Technician\nis responsible for maintaining, troubleshooting, repairing, and optimizing automated systems and industrial equipment to ensure safe, reliable, and efficient operations. This role supports facility productivity by performing preventive and corrective maintenance on a variety of material handling, automation, and building support equipment, including electric forklifts, conveyors, robotic systems, case sealers and erectors, dock equipment, scissor lifts, tuggers, floor scrubbers, and racking systems. The Automation Technician works closely with operations and engineering teams to minimize downtime, improve equipment performance, and support continuous improvement initiatives while adhering to all safety, quality, and maintenance standards. This position reports to a Service Manager or designee and does not have any direct reports.\nKey Job Responsibilities\nReliable attendance and punctuality.\nTimely and accurate completion of all work orders and service records per the company time standard.\nResponsible for being the point of contact for customers.\nPerform and complete preventive maintenance (PM) and repairs.\nFacilitate work and repair requests.\nProvide shift coverage.\nCoordinate and facilitate warranty requests.\nFacilitate outside vendor work",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/experimental-systems-engineer-at-nt-tao-compact-fusion-power-4479794955",
@@ -2130,7 +2747,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQFFEZhE4MiLqA/company-logo_100_100/company-logo_100_100/0/1672842875832?e=2147483647&v=beta&t=5WkI2HS2MzwMudQ9ZtB7GyMQaZNO7LAKSENIgbSI5uQ",
       "snippet": "At nT-Tao, we are building a compact magnetic confinement fusion power system: a modular, repeatable unit designed to deliver clean electricity on-site, on- or off-grid. Getting there means solving hard, open problems in plasma physics, and that is the work our physicist's lead.\nFounded in 2019, nT-Tao raised $34 million to date from Honda, East X Ventures, Delek US, NextGear Ventures, and others. The Israel Innovation Authority has awarded us repeated grants, most recently to build our next compact fusion demonstrator.\nPosition Overview\nWe are looking for a hands-on Experimental Systems Engineer to take ownership of our experimental fusion prototypes, laboratory infrastructure, and supporting systems.\nThe role combines experimental operations, multidisciplinary system integration, troubleshooting, maintenance, and continuous improvement.\nYou will be responsible for ensuring that the experimental platform is operational, reliable, and ready to support the company's R&D activities.\nKey Responsibilities\nTake ownership of the day-to-day operation, readiness, maintenance, and reliability of experimental fusion prototypes and supporting laboratory infrastructure.\nPlan, prepare, and conduct experimental campaigns in close collaboration with the physics and engineering teams.\nOperate and monitor multidisciplinary systems, including pulsed-power generators, magnetic systems, vacuum systems, cooling systems, RF/microwave equipment, diagnostics, and control systems.\nConfigure experimental setups, integrate new hardware, and support prototype upgrades and commissioning.\nOperate data acquisition and control systems, collect experimental measurements, and ensure data quality, traceability, and proper documentation.\nDiagnose and troubleshoot mechanical, electrical, electronic, and control-system malfunctions, identify root causes, and implement corrective actions.\nDevelop and maintain experimental procedures, operating protocols, maintenance plans, and safety procedures.\nImprove",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%AA%D7%94%D7%9C%D7%99%D7%9B%D7%99-%D7%91%D7%A7%D7%A8%D7%94-%D7%95-ai-at-iai-israel-aerospace-industries-4478429532",
@@ -2158,7 +2780,12 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEqphKdN-tQ2Q/company-logo_100_100/B4DZX6fKsUHAAQ-/0/1743664230552/iai_logo?e=2147483647&v=beta&t=k_dD34xngJAIu4hzFjsTCyyjjiwByChrI5Igv9uoR4s",
       "snippet": "קצת על התפקיד למפעל הנדסה ומערכות בחטיבת אלתא, דרוש/ה תהליכי בקרה ו-AI. התפקיד כולל:\nהובלת מידע ניהולי ובקרה במפעל באמצעות ניתוח נתונים, דשבורדים, שילוב כלי בינה מלאכותית (AI) והנגשת מידע איכותי להנהלת המפעל\nניתוח נתונים ממערכות המידע הארגוניות והפקת תובנות ניהוליות\nבקרה שוטפת על מדדי ביצוע מרכזיים (KPIs) והצגת מגמות, פערים והמלצות.\nפיתוח תחזוקה ושיפור של דוחות ודשבורדיים ניהוליים\nאחריות על הפקת דוחות תקופתיים ודוחות ייעודים להנהלת המפעל\nבניית מצגות ברמה גבוהה תוך שילוב כלים חדשניים ובינה מלאכותית\nאיתור והטמעת כלי AI התומכים בניתוח מידע, הפקת תובנות ובניית תוצרים ניהוליים\nליווי פרויקטים רוחביים בנושאי מידע, בקרה ושיפור ביצועים מה אנחנו מחפשים\nהשכלה רלוונטית בתחום - חובה\nניסיון של לפחות שנתיים בניתוח נתונים ובקרה – יתרון משמעותי\nנכונות לשעות נוספות במידת הצורך\nשליטה גבוהה מאוד ב-Excel\nניסיון בבניית מצגות ברמה גבוהה\nהיכרות עם מערכות BI - יתרון\nהיכרות מעמיקה עם כלי AI\nשליטה בכלי AI כגון: Copilot, Chat GPT , Notebooklm, Gamma, Gemini, Beautiful.ai או כלים דומים\nאולי יעניין אותך לדעת אלתא, מובילה טכנולוגית עולמית במגוון מוצרים בתחומי המכ\"ם, מודיעין אותות, לוחמה אלקטרונית, תקשורת ומערכות משולבות. נחשבת לבית המודיעין והמכ\"מ של מדינת ישראל. הצטרפו אלינו לתפקיד דינאמי ומעניין, המשלב התעסקות במגוון פרוייקטים ייחודיים.",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
     },
     {
       "link": "https://il.linkedin.com/jobs/view/maintenance-engineer-at-edwards-vacuum-4478874172",
@@ -2186,7 +2813,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQE9BDqdjpwRvg/company-logo_100_100/B4EZ0Z_nVeG8AQ-/0/1774257600258/edwards_logo?e=2147483647&v=beta&t=S_F6oMCEHgS4y3HO4eStkG-hAmSaNHFm9YKrMCTOY6A",
       "snippet": "Your role\nYou will be part of our\nMaintenance Engineer\nteam reporting to [Hiring manager title]. Your mission is to [briefly describe the main mission in one clear sentence]. You will contribute directly to how we create high‑quality products and solutions for our customers.\nYour day-to-day\nClear, short bullet points\nmax 6 core tasks\nThis role involves standing for extended periods, working in a temperature-variable environment.\nYour Skills And Experience\nClear, short bullet points\nAbility to follow standardized procedures with attention to detail\nGood communication skills and the ability to work in a team\nReliability and a safety‑focused mindset\nMandatory physical requirements: (add physical requirements here)\nWe encourage you to apply even if you don't meet every single requirement. We value diverse experiences and perspectives and are excited to see what you bring to the role.\nYour Compensation And Benefits\nWe offer a competitive compensation package for each position based on the responsibilities of the role and the skills needed to succeed. Our benefits follow local market practices and provide a generous level of support. During the recruitment process, we share clear information about the pay and benefits for your location so that you know what to expect.\nAdd here local specifics\nYour location and working hours\nThis position is based at our Product Company in Qiryat Gat, Israel (IL). Standard shifts are 8 hours, with rotating day/night schedules. Shift work may include nights or weekends.\nWhy it is great to work with us\nYou are part of a production team that takes pride in doing things right the first time. You work with high‑quality tools and processes and learn from experienced colleagues. We focus on safety, quality, and teamwork, and we recognize and appreciate good work. You receive on‑the‑job training and have clear steps for career growth. There are opportunities to learn new tasks, tools, and technologies, and you are part of a team where your contrib",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/satellite-operator-1007916-at-elad-software-systems-4479817235",
@@ -2214,7 +2852,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFSTb09MPJG8A/company-logo_100_100/B4EZtEyL1jHoAU-/0/1766385565507/elad_systems_logo?e=2147483647&v=beta&t=9bCfq2VX0w9TR0EuYBuq2ADG0LkcwR2LSeQ3GDuaukY",
       "snippet": "Elad Software Systems specialize\nin managing and executing end-to-end projects and offer business solutions in order to help companies strengthen their relationship with end-client and improve the company’s customer experience using impeccable innovative and quality solutions. We work through three different channels:\nData | CRM | Digital\nOur Advantage\n– As a project driven company that had worked in all possible fields in the market, we’re always at the forefront of technology, employ all methods and know all the available tools. In fact, this allows us to create relevant and tailor-made solutions that can answer any need or challenge you might encounter on your way to reach your business goals.\nOur Team\n– We know exactly why we call our experts the Dream Team; each and every personnel in our staff is a professional in their field, who takes you on a joint process and runs your project from end-to-end. It is important to us to keep researching the field, monitor, process and check in order to produce effective results.\nWe are seeking a\nSatellite Operator-\nTo be a part of an exciting and new project with a leading organization.\nRequirements:\nResponsibility and judgment at a high level.\nWillingness to work for the long term.\nAbility to work under pressure.\nGood level of English.\nBackground in the operation of control systems – an advantage.\nValid security classification – an advantage.\nA relevant degree or certification – a significant advantage.\nDon't miss out on this amazing opportunity to grow and succeed with us!\nPlease submit your CV to\ndaniellab@elad.co.il",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        }
+      ]
     },
     {
       "link": "https://il.linkedin.com/jobs/view/noc-engineer-at-cross-river-4478788112",
@@ -2242,7 +2891,18 @@
       "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFjMIFw1Kha1g/company-logo_100_100/company-logo_100_100/0/1642011082695/cross_river_bank_logo?e=2147483647&v=beta&t=F8NaYISULS1SGbIj0QDbmr6FOw7YILH9z17eVZiMvzs",
       "snippet": "Description\nWe are\nAt Cross River, we're building the financial infrastructure that powers global innovation. With our cutting-edge suite of embedded payments, cards, and lending solutions, we enable millions of businesses and consumers to transact seamlessly and securely.\nWith 900+ employees worldwide and an R&D center of over 160 employees in Jerusalem - we’re reshaping how financial technology is developed and delivered. .\nTHE ROLE\nAs a NOC Engineer, you will be the first line of defense for Cross River's production environment — the person who spots incidents and ensures our platforms stay stable. You'll monitor and triage events across our full technology stack, from infrastructure to application level, owning each incident end-to-end: detecting, assessing severity, resolving where possible, and escalating with clear context when needed. You'll work closely with SRE, Infrastructure, and Engineering teams, building real operational knowledge of how payments, lending, and card-processing systems behave in production. This role is designed as a launchpad — for engineers who show initiative and growth, it opens a clear path into Software Engineering, SRE, or Infrastructure.\nWho You Are\nWe are looking for a NOC Engineer at the start of their technical career — a current student, recent graduate, or early-career technologist with genuine curiosity about how large systems work and what happens when they break. You do not need years of NOC experience. You need to be organized, calm under pressure, and genuinely interested in solving problems rather than just routing them.\nYou are a self-learner who picks up new technology quickly and does not stop at the surface of a problem. You are comfortable being hands-on, you ask why something failed rather than only that it failed, and you look for better ways to do things instead of only following the procedure in front of you.\nWhat You’ll Actually Be Doing\nMonitor Cross River's production environments 24/7 and ensure system st",
       "requirement_assessments": [],
-      "is_direct_ats": false
+      "is_direct_ats": false,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        }
+      ]
     }
   ]
 }
