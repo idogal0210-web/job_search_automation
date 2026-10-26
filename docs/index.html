@@ -12,13 +12,13 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/duotone/style.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261026183326">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" media="print" onload="this.media='all'"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" media="print" onload="this.media='all'" />
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" defer></script>
+  <link rel="stylesheet" href="dashboard.css?v=20261026230132">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -1804,14 +1804,15 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261026183326",
+      build_id: "20261026230132",
       schema_version: "2.0.0",
       generated_at: "26.10.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261026183326",
-      catalog_data_url: "data/historical_catalog.json?v=20261026183326"
+      jobs_data_url: "data/jobs.json?v=20261026230132",
+      catalog_data_url: "data/historical_catalog.json?v=20261026230132"
     };
   </script>
-  <script src="dashboard.js?v=20261026183326" defer></script>
+  <script type="module" src="js/app.js"></script>
+  <script nomodule src="dashboard.js?v=20261026230132" defer></script>
 </body>
 </html>

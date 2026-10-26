@@ -107,6 +107,13 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
         shutil.copy2(css_src, os.path.join(docs_dir, "dashboard.css"))
     if os.path.exists(js_src):
         shutil.copy2(js_src, os.path.join(docs_dir, "dashboard.js"))
+    js_modules_src = os.path.join(frontend_dir, "js", "modules")
+    if os.path.exists(js_modules_src):
+        shutil.copytree(js_modules_src, os.path.join(docs_dir, "js", "modules"), dirs_exist_ok=True)
+    app_js_src = os.path.join(frontend_dir, "js", "app.js")
+    if os.path.exists(app_js_src):
+        os.makedirs(os.path.join(docs_dir, "js"), exist_ok=True)
+        shutil.copy2(app_js_src, os.path.join(docs_dir, "js", "app.js"))
     assets_src = os.path.join(frontend_dir, "assets")
     if os.path.exists(assets_src):
         shutil.copytree(assets_src, os.path.join(docs_dir, "assets"), dirs_exist_ok=True)

@@ -3908,6 +3908,91 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
     };
   }
 
+  function generateCvBulletActionItem(keywordOrGate, jobContext = {}) {
+    const term = String(keywordOrGate || '').trim().toLowerCase();
+    const company = (jobContext && jobContext.company) ? jobContext.company : 'חברה תעשייתית';
+
+    const bulletTemplates = {
+      scada: {
+        category: 'systems',
+        label: 'SCADA / ממשקי בקרה',
+        bulletHe: 'ניטור ובקרת תהליכי שרשרת אספקת גז טבעי 24/7 באמצעות מערכות SCADA וממשקי HMI, כולל תחקור תקלות תקשורת Modbus וספיקות בזמן אמת.',
+        bulletEn: '24/7 monitoring and control of continuous natural gas flow operations using industrial SCADA and HMI systems, with real-time Modbus telemetry troubleshooting.'
+      },
+      plc: {
+        category: 'systems',
+        label: 'PLC / בקרים מתוכנתים',
+        bulletHe: 'איתור תקלות וניטור אותות I/O מול בקרי PLC (Siemens/Rockwell) בסביבת מתקן אנרגיה רגיש, תוך סנכרון רציף עם מהנדסי אוטומציה.',
+        bulletEn: 'Fault diagnosis and I/O signal monitoring on industrial PLCs (Siemens/Rockwell) at mission-critical energy facilities in continuous coordination with automation engineers.'
+      },
+      prms: {
+        category: 'systems',
+        label: 'PRMS / תחנות הפחתת לחץ',
+        bulletHe: 'ניהול תפעולי של תחנות הפחתת לחץ ומדידה (PRMS) של גז טבעי בלחץ גבוה, תוך בקרת שסתומים, וויסות לחץ ועמידה קפדנית בתקני בטיחות סטטוטוריים.',
+        bulletEn: 'Operational oversight of high-pressure Natural Gas Pressure Reduction and Metering Stations (PRMS), managing flow control and regulatory compliance.'
+      },
+      bess: {
+        category: 'energy',
+        label: 'BESS / אגירת אנרגיה',
+        bulletHe: 'ניתוח הנדסי ותפעול מערכות אגירת אנרגיה (BESS) וסוללות ליתיום, תוך בקרה על פרופילי טעינה/פריקה, מערכות קירור וייצוב תדר רשת החשמל.',
+        bulletEn: 'Operational analysis and integration of Battery Energy Storage Systems (BESS), overseeing charge/discharge profiles, thermal management, and grid stability.'
+      },
+      lean: {
+        category: 'methodologies',
+        label: 'Lean / מצוינות תפעולית',
+        bulletHe: 'הטמעת עקרונות תפעול רזה (Lean) במשמרות בקרה, זיהוי צווארי בקבוק וקיצור זמני תגובה לתקלות שטח ב-25%.',
+        bulletEn: 'Implemented Lean operational methods across dispatch shifts, eliminating workflow bottlenecks and reducing incident response time by 25%.'
+      },
+      '5s': {
+        category: 'methodologies',
+        label: '5S / ארגון ובטיחות סביבת עבודה',
+        bulletHe: 'הטמעת מתודולוגיית 5S באזורי חדר בקרה ומחסני ציוד טכני, לשיפור הנגישות, מניעת תאונות עבודה וייעול שגרת האחזקה.',
+        bulletEn: 'Rolled out 5S standardization across control centers and technical equipment storage, improving tool retrieval efficiency and workplace safety.'
+      },
+      rca: {
+        category: 'methodologies',
+        label: 'RCA / חקר תקלות שורש',
+        bulletHe: 'הובלת תהליכי חקר סיבות שורש (Root Cause Analysis) בעקבות אירועי חריגת לחץ בגז, והגדרת פעולות מתקנות (CAPA) למניעת הישנות.',
+        bulletEn: 'Conducted Root Cause Analysis (RCA) investigations on pressure surge events, formulating Corrective and Preventive Actions (CAPA).'
+      },
+      gate_certified_electrician: {
+        category: 'statutory',
+        label: 'חשמלאי מוסמך (בלימודים לקראת סיום)',
+        bulletHe: 'לימודי חשמלאי מוסמך במרכז האקדמי רופין (סיום צפוי: 2026, כחודשיים לסיום) — שליטה מעמיקה בחוק החשמל, מעגלי פיקוד ותכנון לוחות מתח נמוך.',
+        bulletEn: 'Certified Electrician coursework near completion at Ruppin Academic Center (expected 2026) — in-depth mastery of the Israeli Electricity Law and LV switchboard design.'
+      }
+    };
+
+    let matched = bulletTemplates[term];
+    if (!matched) {
+      const foundKey = Object.keys(bulletTemplates).find(k => term.includes(k) || k.includes(term));
+      if (foundKey) matched = bulletTemplates[foundKey];
+    }
+
+    if (matched) {
+      return {
+        keyword: keywordOrGate,
+        category: matched.category,
+        label: matched.label,
+        bulletHe: matched.bulletHe,
+        bulletEn: matched.bulletEn,
+        actionLabel: `הוסף לניסיון תעסוקתי: "${matched.label}"`,
+        tailoredContext: `מותאם לדרישות ${company}`
+      };
+    }
+
+    const cleanTerm = keywordOrGate.replace(/gate_/g, '').replace(/_/g, ' ');
+    return {
+      keyword: keywordOrGate,
+      category: 'general',
+      label: cleanTerm,
+      bulletHe: `שילוב והפעלת מערכות ${cleanTerm} במסגרת תפעול מתקני אנרגיה ובקרה רציפה, תוך עמידה בלוחות זמנים ונהלי בטיחות מחמירים.`,
+      bulletEn: `Integrated and operated ${cleanTerm} systems in continuous energy and process control environments, ensuring strict regulatory compliance.`,
+      actionLabel: `הוסף מילת מפתח לקו"ח: "${cleanTerm}"`,
+      tailoredContext: `מותאם לדרישות ${company}`
+    };
+  }
+
   /* ATS UI Controller */
   let atsInputDebounceTimer = null;
 
@@ -5054,6 +5139,7 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
   window.onAtsInputChanged = onAtsInputChanged;
   window.loadSampleAtsJob = loadSampleAtsJob;
   window.clearAtsInput = clearAtsInput;
+  window.generateCvBulletActionItem = generateCvBulletActionItem;
 
   // Milestone 3 AI Writer & Tone Switcher Exposures
   window.TONE_SWITCHER_PROFILES = TONE_SWITCHER_PROFILES;
