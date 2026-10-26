@@ -1,6 +1,8 @@
 import os
 import smtplib
 import time
+from html import escape
+from src.url_utils import safe_http_url
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.header import Header
@@ -31,10 +33,18 @@ def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
     # Enforce strictly up to 5 jobs in daily email
     jobs = (jobs or [])[:5]
     top_3 = (top_3 or [])[:min(3, len(jobs))]
+    # Escape copies at the rendering boundary; leave source records untouched.
+    def safe_job(job):
+        return {key: escape(safe_http_url(value), quote=True) if key in {"link", "salary_source_url"}
+                else escape(value, quote=True) if isinstance(value, str) else value
+                for key, value in job.items()}
+    jobs = [safe_job(job) for job in jobs]
+    top_3 = [safe_job(job) for job in top_3]
+    dashboard_url = escape(safe_http_url(dashboard_url), quote=True)
     now_str = datetime.now().strftime("%d.%m.%Y")
     
     pending = getattr(health, 'pending_evaluations', 0) if health else 0
-    incomplete = bool(health and (pending or health.linkedin_failures or health.drushim_failures or health.final_status.startswith('FAILED_')))
+    incomplete = bool(health and (pending or health.linkedin_failures or health.drushim_failures or getattr(health, "comeet_failures", 0) or health.final_status.startswith('FAILED_')))
     run_notice = (f'הריצה הושלמה חלקית. {pending} משרות ממתינות לבדיקה מלאה; ייתכנו תוצאות חסרות.'
                   if incomplete else 'בדיקת המשרות הושלמה.')
     if not jobs:
@@ -72,7 +82,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
                 <div>
                     <div style="font-weight: 800; color: #f8fafc; font-size: 15.5px;">{idx}. {pick.get('company')} – {pick.get('title')}</div>
                     <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">
-                        <span style="color: #34d399; font-weight: bold;">{pick.get('match_score')}% התאמה</span> • <span style="color: #38bdf8; font-weight: bold;">{pick.get('salary_range', 'לא צוין')}</span> • {comp_domain}
+                        <span style="color: #34d399; font-weight: bold;">{pick.get('base_match_score', pick.get('match_score'))}% התאמה</span> • <span style="color: #38bdf8; font-weight: bold;">{format_salary_badge(pick)[0]}</span> • {comp_domain}
                     </div>
                 </div>
                 <div>
@@ -98,7 +108,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
             comp_name = j.get('company', 'חברה')
             comp_domain = j.get('company_domain_product', j.get('company_summary', j.get('sector', '')))
             loc = j.get('location', 'ישראל')
-            score = j.get('match_score', 0)
+            score = j.get('base_match_score', j.get('match_score', 0))
             
             card_title = f"{comp_name} - {j.get('title', '')}"
             job_sum = j.get('job_summary', j.get('company_summary', ''))
@@ -209,7 +219,7 @@ def send_email_report(sender_email, sender_pwd, processed_jobs, curated_email_jo
     email_html = build_unified_html_email(curated_email_jobs, top_3, dashboard_url, health)
 
     msg = MIMEMultipart()
-    if health.pending_evaluations or health.linkedin_failures or health.drushim_failures or health.final_status.startswith('FAILED_'):
+    if health.pending_evaluations or health.linkedin_failures or health.drushim_failures or getattr(health, "comeet_failures", 0) or health.final_status.startswith('FAILED_'):
         msg['Subject'] = Header('⚠️ דוח משרות חלקי — נותרו בדיקות להשלמה | עידו גל', 'utf-8')
     elif not processed_jobs:
         msg['Subject'] = Header(f"ℹ️ דוח משרות יומי - אין משרות חדשות שעברו סף | עידו גל", 'utf-8')
@@ -220,19 +230,36 @@ def send_email_report(sender_email, sender_pwd, processed_jobs, curated_email_jo
     msg['To'] = Header("idogal0210@gmail.com", 'utf-8')
     msg.attach(MIMEText(email_html, 'html', 'utf-8'))
 
-    for attempt in range(1, 4):
+    for attempt in range(1, 3):
+        delivery_attempted = False
+        server = None
         health.email_attempts += 1
         try:
             server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
             server.starttls()
             server.login(sender_email, sender_pwd)
+            delivery_attempted = True
             server.sendmail(sender_email, "idogal0210@gmail.com", msg.as_string())
-            server.quit()
+            health.email_success = True
+            try:
+                server.quit()
+            except Exception:
+                pass  # DATA was accepted; QUIT failure must not trigger a duplicate send.
             print(f"[EMAIL] Unified daily email successfully dispatched (Attempt {attempt}).")
             health.email_success = True
             break
         except Exception as e:
-            print(f"[ERROR] Email dispatch attempt {attempt} failed: {e}")
-            time.sleep(attempt * 5)
+            print(f"[ERROR] Email dispatch attempt {attempt} failed: {type(e).__name__}")
+            if delivery_attempted:
+                print("[EMAIL] Delivery outcome uncertain; automatic retry stopped")
+                break
+            if attempt < 2:
+                time.sleep(attempt * 5)
+        finally:
+            if server is not None:
+                try:
+                    server.close()
+                except Exception:
+                    pass
             
     return health.email_success

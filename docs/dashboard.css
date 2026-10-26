@@ -520,7 +520,7 @@
     .dashboard-app .controls-inputs-stack select,
     .dashboard-app .controls-inputs-stack input {
       height: 42px !important;
-      min-height: 42px !important;
+      min-height: 44px !important;
       padding: 0 14px !important;
       font-size: 13.5px !important;
       font-weight: 500 !important;
@@ -558,7 +558,7 @@
     .dashboard-app .sort-select-container select {
       width: 100% !important;
       height: 42px !important;
-      min-height: 42px !important;
+      min-height: 44px !important;
       border-radius: 999px !important;
       padding: 0 36px 0 14px !important;
       font-size: 13px !important;
@@ -590,7 +590,7 @@
     }
     .dashboard-app .controls-buttons-row .tool-btn {
       height: 42px !important;
-      min-height: 42px !important;
+      min-height: 44px !important;
       padding: 0 16px !important;
       font-size: 13px !important;
       font-weight: 600 !important;
@@ -668,7 +668,7 @@
     }
     #cardsContainer {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
       gap: 16px;
       margin-bottom: 24px;
       align-items: stretch;
@@ -1555,7 +1555,7 @@
       .filters-two-col-row select {
         width: 100% !important;
         height: 42px !important;
-        min-height: 42px !important;
+        min-height: 44px !important;
         padding: 0 24px 0 10px !important;
         font-size: 13px !important;
         border-radius: 14px !important;
@@ -1574,7 +1574,7 @@
       .search-sort-compact-bar .search-input-wrapper input {
         width: 100% !important;
         height: 42px !important;
-        min-height: 42px !important;
+        min-height: 44px !important;
         padding: 0 14px 0 42px !important;
         font-size: 13px !important;
         border-radius: 14px !important;
@@ -1592,7 +1592,7 @@
       .search-sort-compact-bar .sort-select-container select {
         width: 100% !important;
         height: 42px !important;
-        min-height: 42px !important;
+        min-height: 44px !important;
         font-size: 12.5px !important;
         padding: 0 34px 0 12px !important;
         border-radius: 14px !important;
@@ -1601,7 +1601,7 @@
       .search-sort-compact-bar .tool-btn-compact {
         grid-column: 2 !important;
         height: 42px !important;
-        min-height: 42px !important;
+        min-height: 44px !important;
         min-width: 44px !important;
         flex-shrink: 0 !important;
         padding: 0 14px !important;
@@ -1785,7 +1785,7 @@
         height: auto !important;
         min-height: auto !important;
         display: -webkit-box !important;
-        -webkit-line-clamp: 2 !important;
+        -webkit-line-clamp: 3 !important;
         -webkit-box-orient: vertical !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
@@ -2830,7 +2830,7 @@
 }
 
 /* Responsive Overrides */
-@media (max-width: 1024px) {
+@media (max-width: 880px) {
   .dashboard-sidebar {
     flex-wrap: wrap !important;
   }
@@ -4902,7 +4902,7 @@
 /* Kanban Board Grid & Columns */
 .kanban-board-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
   gap: 14px;
   overflow-x: auto;
   padding-bottom: 12px;
@@ -4914,7 +4914,7 @@
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 14px;
   padding: 12px;
-  min-height: 480px;
+  min-height: 240px;
   display: flex;
   flex-direction: column;
 }
@@ -5676,3 +5676,46 @@
   }
 }
 
+
+/* Optional filters share the existing visual tokens and remain accessible at 320px. */
+.advanced-job-filters { margin-block: 8px; min-width: 0; }
+.advanced-job-filters summary { cursor: pointer; min-height: 44px; padding-block: 12px; }
+.advanced-filter-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.advanced-filter-grid label { display: grid; gap: 6px; min-width: 0; font-size: 13px; }
+.advanced-filter-grid select, .advanced-filter-grid input { width: 100%; min-width: 0; min-height: 44px; font: inherit; color: var(--dashboard-text); background: #171c12; border: 1px solid var(--dashboard-edge); border-radius: 10px; padding: 8px; }
+@media (min-width: 768px) {
+  .advanced-filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .dashboard-mode-switcher { width: 100%; }
+  .dashboard-mode-switcher button { flex: 1; min-width: 0; }
+  .job-card, .dashboard-card { min-width: 0; overflow-wrap: anywhere; }
+  .dashboard-topbar > div { flex-wrap: wrap; }
+}
+
+/* Keep header regions in separate grid cells at intermediate desktop widths. */
+@media (min-width: 881px) {
+  .dashboard-app .dashboard-sidebar { display: grid !important; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; }
+  .dashboard-sidebar-brand { min-width: 0; }
+  .header-progress-hub { grid-column: 1 / -1; width: 100%; max-width: none; }
+  .dashboard-mode-switcher { width: auto; order: initial; max-width: 460px; }
+  .header-progress-info { max-width: 300px; }
+  .header-progress-title-row { flex-wrap: wrap; }
+  .search-sort-compact-bar { flex-wrap: wrap; }
+  .search-input-wrapper { flex-basis: 200px; }
+}
+@media (min-width: 1600px) {
+  .dashboard-app .dashboard-sidebar { grid-template-columns: minmax(300px, 1fr) auto minmax(580px, 1.6fr); }
+  .header-progress-hub { grid-column: auto; }
+}
+.dashboard-mode-switcher .mode-switch-btn { font-size: 14px !important; line-height: 1.4 !important; min-height: 44px; padding: 10px 14px; }
+
+@media (max-width: 767px) {
+  .kanban-board-grid { grid-template-columns: minmax(0, 1fr); }
+  .kanban-column { min-height: 110px; }
+  .kanban-subtabs-nav { flex-wrap: wrap; }
+  .kanban-subtab-btn { flex: 1 1 120px; min-height: 44px; }
+}
+
+.job-evidence-details { margin-block: 10px; overflow-wrap: anywhere; }
+.job-evidence-details summary { min-height: 44px; padding-block: 12px; cursor: pointer; }

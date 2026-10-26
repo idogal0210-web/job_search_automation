@@ -17,6 +17,14 @@ from src.state_manager import EvaluationLedger, load_state, save_state_atomic
 def response(**overrides):
     data = dict(status='QUALIFIED', technical_role=True, match_score=80,
                 concrete_matches_count=3, reasoning='התאמה טכנית', sector_key='energy')
+    data['requirement_assessments'] = [
+        {'requirement': requirement, 'importance': 'preferred',
+         'ad_evidence': {'quote': quote, 'source_field': 'snippet'},
+         'profile_evidence': {'quote': profile, 'source_field': 'profile'},
+         'assessment': 'match'}
+        for requirement, quote, profile in [
+            ('Technical maintenance', 'maintenance', 'troubleshooting'),
+            ('Industrial systems', 'industrial', 'Electro-mechanical systems')]]
     data.update(overrides)
     return SimpleNamespace(text=json.dumps(data))
 

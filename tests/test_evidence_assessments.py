@@ -23,7 +23,7 @@ class TestRequirementAssessments(unittest.TestCase):
                 "requirement": "ניסיון מעשי ב-SCADA",
                 "importance": "required",
                 "ad_evidence": {"quote": "ניסיון במערכות SCADA", "source_field": "requirements"},
-                "profile_evidence": {"quote": "שליטה במערכות SCADA", "source_field": "experience"},
+                "profile_evidence": {"quote": "24/7 mission-critical control room operations", "source_field": "experience"},
                 "assessment": "match",
                 "explanation": "התאמה מלאה למערכות בקרה"
             }

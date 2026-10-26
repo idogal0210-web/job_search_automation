@@ -150,7 +150,7 @@ def main():
     email_configured = bool(sender_email and sender_pwd)
     # This status describes evaluation/output preparation, before dispatch.
     health.final_status = ("DEGRADED_PENDING" if health.pending_evaluations else
-                           "DEGRADED_NETWORK" if health.linkedin_failures + health.drushim_failures else
+                           "DEGRADED_NETWORK" if health.linkedin_failures + health.drushim_failures + health.comeet_failures else
                            "SUCCESS")
     if not dashboard_ok:
         health.final_status = "FAILED_DASHBOARD"
@@ -166,7 +166,7 @@ def main():
     try:
         # Reuse evaluated READY jobs on output failure; never rerun AI just to retry email.
         if dashboard_ok and email_configured and health.email_success:
-            ledger.commit_delivery([job["link"] for job in processed_jobs])
+            ledger.commit_delivery([job["link"] for job in daily_top_picks])
         handled_links.update(ledger.completed_links())
         save_state_atomic(STATE_FILE, sorted(handled_links))
     except Exception as error:

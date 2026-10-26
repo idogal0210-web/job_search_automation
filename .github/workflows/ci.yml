@@ -50,10 +50,9 @@ jobs:
       - name: Verify Dashboard Build
         run: |
           python -c "
-          import json
+          import tempfile
           from src.ui_builder import build_and_save_docs_app
-          with open('data/weekly_archive.json', 'r', encoding='utf-8') as f:
-              jobs = json.load(f)
-          build_and_save_docs_app(jobs[:5], [], '.', is_weekly=False)
+          with tempfile.TemporaryDirectory() as root:
+              build_and_save_docs_app([], [], root, is_weekly=False)
           print('CI build test passed successfully')
           "

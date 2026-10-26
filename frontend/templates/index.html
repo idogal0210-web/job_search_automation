@@ -55,7 +55,7 @@
       </button>
       <button type="button" role="tab" id="modeSwitchStudio" class="mode-switch-btn" aria-selected="false" aria-controls="careerStudioWorkspace" onclick="switchDashboardAppMode('studio')">
         <i class="ph-duotone ph-sparkle"></i>
-        <span>סטודיו קריירה וקו״ח מתקדם</span>
+        <span>סטודיו קריירה</span>
       </button>
     </nav>
 
@@ -238,6 +238,18 @@
               <span>כפילויות</span>
             </button>
           </div>
+
+          <details class="advanced-job-filters">
+            <summary>מסננים נוספים</summary>
+            <div class="advanced-filter-grid">
+              <label>התאמה מקצועית מינימלית
+                <select id="scoreFilter" onchange="filterCards()"><option value="0">כל הציונים</option><option value="60">60 ומעלה</option><option value="70">70 ומעלה</option><option value="80">80 ומעלה</option><option value="90">90 ומעלה</option></select>
+              </label>
+              <label>תאריך ברשימה — החל מ־<input type="date" id="dateFilter" onchange="filterCards()"></label>
+              <label>מקור השכר<select id="salaryFilter" onchange="filterCards()"><option value="all">כל המשרות</option><option value="job_ad">שכר שצוין במודעה בלבד</option><option value="estimate">הערכות שכר בלבד</option></select></label>
+              <label>מצב מועמדות<select id="applicationFilter" onchange="filterCards()"><option value="all">כל המצבים</option><option value="not_tracked">ללא מעקב מקושר</option><option value="saved">נשמר למעקב</option><option value="applied">הוגש</option><option value="interview">ראיון</option><option value="offer">הצעה</option><option value="rejected">נדחה</option></select></label>
+            </div>
+          </details>
 
           <!-- Bottom Control Hub: Realtime Result Summary & Quick Reset -->
           <div class="filter-card-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: var(--dashboard-muted); min-height: 31px;">

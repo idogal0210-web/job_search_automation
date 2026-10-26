@@ -3,6 +3,7 @@ import os
 import shutil
 import tempfile
 from datetime import datetime, timezone
+from src.url_utils import canonical_job_url, job_identity, content_identity
 
 def load_state(filepath: str, default=None, *, strict=False):
     if default is None:
@@ -69,23 +70,50 @@ class EvaluationLedger:
         self.save()
 
     def stage_candidates(self, jobs):
+        changed = False
         for job in jobs:
             if job['link'] not in self.jobs:
+                changed = True
                 self.jobs[job['link']] = {
                     'stage': 'RETRY_PENDING', 'job': dict(job), 'attempts': 0,
                     'updated_at': datetime.now(timezone.utc).isoformat()}
-        self.save()
+        if changed:
+            self.save()
 
     def select(self, raw_jobs, handled):
         selected = {}
+        handled_canonical = {canonical_job_url(link) for link in handled}
+        known = {job_identity(record["job"]): link for link, record in self.jobs.items()}
+        known_urls = {canonical_job_url(link): link for link in self.jobs}
+        content_seen = {}
+        for entry in self.jobs.values():
+            key = content_identity(entry["job"])
+            if key:
+                content_seen[key] = entry["job"]
         for link, record in self.jobs.items():
             if record["stage"] != "COMPLETE":
                 selected[link] = dict(record["job"])
         for job in raw_jobs:
             link = job.get("link")
-            if not isinstance(link, str) or not link.startswith(("https://", "http://")):
+            if not canonical_job_url(link):
                 print("[SKIP] malformed job URL", flush=True)
                 continue
+            identity = job_identity(job)
+            existing = known.get(identity) or known_urls.get(canonical_job_url(link))
+            if existing and existing != link:
+                continue
+            if canonical_job_url(link) in handled_canonical and not existing:
+                continue
+            content_key = content_identity(job)
+            previous = content_seen.get(content_key) if content_key else None
+            if previous and previous.get("link") != link and previous.get("source") and job.get("source") and previous["source"] != job["source"]:
+                # Different explicit requisition IDs must remain separate.
+                if not (previous.get("source_id") and job.get("source_id") and previous["source_id"] != job["source_id"]):
+                    continue
+            if content_key:
+                content_seen[content_key] = job
+            known[identity] = link
+            known_urls[canonical_job_url(link)] = link
             record = self.jobs.get(link, {})
             if record.get("stage") == "COMPLETE" or (link in handled and not record):
                 continue

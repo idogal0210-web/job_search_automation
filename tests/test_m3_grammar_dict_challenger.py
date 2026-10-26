@@ -30,7 +30,6 @@ import os
 import re
 import subprocess
 import unittest
-import urllib.request
 from pathlib import Path
 from tests.js_runner import run_js, skip_if_no_js
 
@@ -445,21 +444,10 @@ class TestMilestone3GrammarDictChallenger(unittest.TestCase):
 
     def test_challenge_phosphor_icons_conformance_with_web_v2_1_1(self):
         """Verify that every icon class used in #studioModuleWriter and writer JS is valid in @phosphor-icons/web@2.1.1."""
-        cdn_urls = [
-            "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/duotone/style.css",
-            "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css",
-            "https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
-        ]
+        fixture = json.loads((PROJECT_ROOT / 'tests/fixtures/phosphor-2.1.1-glyphs.json').read_text())
+        valid_glyphs = set(fixture['glyphs'])
 
-        valid_glyphs = set()
-        for url in cdn_urls:
-            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req, timeout=10) as resp:
-                content = resp.read().decode("utf-8")
-                matches = re.findall(r"\.ph-([a-z0-9-]+):before", content)
-                valid_glyphs.update(matches)
-
-        self.assertGreater(len(valid_glyphs), 1400, "Failed to fetch comprehensive Phosphor glyph set")
+        self.assertGreater(len(valid_glyphs), 1400, "Incomplete saved Phosphor glyph set")
 
         # 1. Extract icons from #studioModuleWriter in frontend/templates/index.html
         html = self.html_file.read_text(encoding="utf-8")

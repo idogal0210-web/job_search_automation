@@ -163,6 +163,9 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
         return None
 
     lower_text = text.lower()
+    # This parser returns ILS monthly values; never relabel another currency or period.
+    if re.search(r"\b(?:usd|eur|dollars?|annual salary|annual pay|yearly|per year)\b|[$€]|שנתי|לשנה", lower_text):
+        return None
 
     # Pattern A: Monthly range with explicit numbers (e.g. 14,000 - 18,000 ₪ or שכר: 14,000-18,000)
     match_range = re.search(
@@ -197,7 +200,7 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
                     "quality_level": "high",
                     "quality_reasons": ["שכר נקוב שפורסם ישירות בגוף מודעת המשרה על ידי המעסיק"],
                     "estimate_type": "advertised",
-                    "compensation_basis": "gross_base",
+                    "compensation_basis": "net" if re.search(r"נטו|\bnet\b", lower_text) else "gross_base" if re.search(r"ברוטו|\bgross\b", lower_text) else "unknown",
                     "pay_period": "month",
                     "extracted_min": low,
                     "extracted_max": high,
@@ -223,9 +226,10 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
             low = min(int(match_k.group(1)), int(match_k.group(2))) * 1000
             high = max(int(match_k.group(1)), int(match_k.group(2))) * 1000
             if 6000 <= low <= 50000 and 6000 <= high <= 60000:
+                currency_known = bool(re.search(r'₪|ש[״\"]ח|שקלים|\b(?:nis|ils)\b', window))
                 return {
-                    "salary_range": f"{low:,} - {high:,} ₪",
-                    "salary_source_type": "job_ad",
+                    "salary_range": f"{low:,} - {high:,}" + (" ₪" if currency_known else " (מטבע לא צוין)"),
+                    "salary_source_type": "job_ad" if currency_known else "currency_unspecified",
                     "salary_source_label": "פורסם במודעת המשרה",
                     "salary_source_url": "",
                     "salary_evidence": f"שכר שפורסם במפורש במודעה בקיצור אלפים ({match_k.group(0)}).",
@@ -233,7 +237,7 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
                     "quality_level": "high",
                     "quality_reasons": ["שכר נקוב שפורסם ישירות במודעה בקיצור אלפים"],
                     "estimate_type": "advertised",
-                    "compensation_basis": "gross_base",
+                    "compensation_basis": "net" if re.search(r"נטו|\bnet\b", lower_text) else "gross_base" if re.search(r"ברוטו|\bgross\b", lower_text) else "unknown",
                     "pay_period": "month",
                     "extracted_min": low,
                     "extracted_max": high,
@@ -251,8 +255,7 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
     if match_single:
         amount = int(match_single.group(1)) * 1000
         if 6000 <= amount <= 60000:
-            low = int(amount * 0.95)
-            high = int(amount * 1.05)
+            low = high = amount
             return {
                 "salary_range": f"{amount:,} ₪",
                 "salary_source_type": "job_ad",
@@ -263,7 +266,7 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
                 "quality_level": "high",
                 "quality_reasons": ["שכר נקוב שפורסם ישירות במודעת המשרה על ידי המעסיק"],
                 "estimate_type": "advertised",
-                "compensation_basis": "gross_base",
+                "compensation_basis": "net" if re.search(r"נטו|\bnet\b", lower_text) else "gross_base" if re.search(r"ברוטו|\bgross\b", lower_text) else "unknown",
                 "pay_period": "month",
                 "extracted_min": low,
                 "extracted_max": high,
@@ -282,16 +285,16 @@ def extract_salary_from_ad(text: str) -> Optional[Dict[str, Any]]:
         if 32 <= hourly <= 250:
             monthly = hourly * 182
             return {
-                "salary_range": f"{monthly:,} ₪ (לפי {hourly} ₪/שעה)",
+                "salary_range": f"{hourly} ₪ לשעה; הערכה חודשית: {monthly:,} ₪ לפי 182 שעות",
                 "salary_source_type": "job_ad",
                 "salary_source_label": "פורסם במודעת המשרה (שכר שעתי)",
                 "salary_source_url": "",
-                "salary_evidence": f"שכר שעתי נקוב של {hourly} ₪ לשעה במשרה מלאה (182 שעות חודשיות = {monthly:,} ₪ ברוטו).",
+                "salary_evidence": f"פורסם {hourly} ₪ לשעה; {monthly:,} ₪ לחודש הם חישוב משוער לפי 182 שעות, לא שכר חודשי מובטח.",
                 "salary_confidence": "high",
                 "quality_level": "high",
                 "quality_reasons": ["שכר שעתי נקוב שפורסם במודעת המשרה (חישוב לפי 182 שעות חודשיות במשרה מלאה)"],
                 "estimate_type": "advertised",
-                "compensation_basis": "gross_base",
+                "compensation_basis": "net" if re.search(r"נטו|\bnet\b", lower_text) else "gross_base" if re.search(r"ברוטו|\bgross\b", lower_text) else "unknown",
                 "pay_period": "hour",
                 "extracted_min": monthly,
                 "extracted_max": monthly,
@@ -423,6 +426,8 @@ def evaluate_job_salary(job: Dict[str, Any]) -> Dict[str, Any]:
             evidence = f"מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון{car_note}."
             label = "סקר ענפי 2026 • הנדסאי 2-4 שנים"
 
+    label = label.replace("סקר ענפי 2026", "הערכה פנימית לא מאומתת")
+    evidence = "טווח עזר פנימי לפי סיווג תפקיד; לא אומת מול סקר מקור ולא פורסם במודעת המשרה."
     if car_explicit:
         sal_range += " + רכב צמוד"
     elif car_normative:
@@ -432,11 +437,11 @@ def evaluate_job_salary(job: Dict[str, Any]) -> Dict[str, Any]:
         "salary_range": sal_range,
         "salary_source_type": "sector_benchmark",
         "salary_source_label": label,
-        "salary_source_url": bench["url"],
+        "salary_source_url": "",
         "salary_evidence": evidence,
-        "salary_confidence": "medium",
+        "salary_confidence": "low",
         "quality_level": "medium",
-        "quality_reasons": ["מבוסס סקר שכר ענפי מוסמך 2026 להנדסאים (2-4 שנות ניסיון)", f"התאמה למגזר: {bench['title']}"],
+        "quality_reasons": ["טבלת עזר פנימית ללא אימות מול סקר מקור", f"התאמה למגזר: {bench['title']}"],
         "estimate_type": "market_estimate",
         "compensation_basis": "gross_base",
         "pay_period": "month",

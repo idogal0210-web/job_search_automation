@@ -45,7 +45,7 @@ class Evaluation(BaseModel):
     junior_openness: str = "לא צוין"
     work_model: str = "לא צוין"
     company_requirements: str = "לא צוין"
-    fit_gaps: str = "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
+    fit_gaps: str = "אין מספיק מידע לאימות פערי ההתאמה."
     requirement_assessments: list[RequirementAssessment] = Field(default_factory=list)
 
     @field_validator("junior_openness", mode="before")
@@ -141,7 +141,7 @@ class GeminiPool:
                     kind = classify_error(error)
                     reasons[name] = kind
                     health.gemini_failures += 1
-                    print(f"[MODEL_ERROR] model={name} kind={kind} attempt={attempt+1} error={error}", flush=True)
+                    print(f"[MODEL_ERROR] model={name} kind={kind} attempt={attempt+1}", flush=True)
                     delay = max(2 ** (attempt + 1) + self.jitter(), retry_after(error))
                     if (kind in {"invalid_response", "timeout", "unavailable", "rate_limit"}
                             and attempt + 1 < self.max_attempts and delay <= 8):

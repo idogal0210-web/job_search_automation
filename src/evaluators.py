@@ -139,24 +139,22 @@ Key Competencies:
 QuotaExhaustedError = EvaluationUnavailable
 
 
-def validate_requirement_assessments(assessments, raw_text):
-    """
-    Validates requirement assessments against raw job text to prevent hallucinated quotes.
-    If a quote is provided but not found in the raw text, downgrade quote and set assessment to unknown.
-    """
-    if not assessments or not isinstance(assessments, list):
+def validate_requirement_assessments(assessments, raw_text, profile_text=CV_CONTEXT):
+    """Validate both sides of a claimed match; missing evidence is unknown."""
+    if not isinstance(assessments, list):
         return []
     validated = []
-    norm_text = (raw_text or "").lower()
     for item in assessments:
         entry = dict(item)
-        ad_ev = entry.get("ad_evidence") or {}
-        ad_quote = (ad_ev.get("quote") or "").strip()
-        if ad_quote and ad_quote.lower() not in norm_text:
-            entry["ad_evidence"] = {"quote": "", "source_field": "unverified"}
-            if entry.get("assessment") == "match":
-                entry["assessment"] = "unknown"
-                entry["explanation"] = (entry.get("explanation", "") + " (ציטוט המודעה לא אומת מול הטקסט הגולמי)").strip()
+        verified = True
+        for field, source in (("ad_evidence", raw_text), ("profile_evidence", profile_text)):
+            quote = ((entry.get(field) or {}).get("quote") or "").strip()
+            if not quote or quote.casefold() not in (source or "").casefold():
+                verified = False
+                entry[field] = {"quote": "", "source_field": "unverified"}
+        if not verified:
+            entry["assessment"] = "unknown"
+            entry["explanation"] = "ציטוט המודעה לא אומת או חסרה ראיה מאומתת בפרופיל; נדרשת בדיקה."
         validated.append(entry)
     return validated
 
@@ -235,11 +233,22 @@ Job JSON:
             data["priority_bonus"] = min(5, 100 - base)
         data["match_score"] = base + data["priority_bonus"]
         data["status"] = "QUALIFIED"
+    assessments = data.get("requirement_assessments", [])
+    data["evidence_status"] = "verified_quotes" if assessments and all(
+        item["assessment"] != "unknown" for item in assessments) else "incomplete"
+    if data["status"] == "QUALIFIED" and (
+        not assessments or
+        len({item["ad_evidence"]["quote"].casefold() for item in assessments if item["assessment"] == "match"}) < 2 or
+        any(item.get("importance") == "required" and item["assessment"] != "match" for item in assessments)
+    ):
+        data.update(status="RETRY_PENDING", evaluation_complete=False,
+                    retry_reason="unverified_or_conflicting_requirements",
+                    fit_gaps="נדרש אימות דרישות מול ראיות המודעה והפרופיל.")
     data.update(evaluate_job_salary({**job, "sector_key": data["sector_key"]}))
     print("[EVALUATION] " + json.dumps({
         "company": company, "title": title, "status": data["status"],
         "base_score": base, "bonus": data["priority_bonus"], "score": data["match_score"],
         "matches": data["concrete_matches_count"], "reason_code": reason,
-        "reasoning": data["reasoning"], "model": data["evaluation_model"]
+        "model": data["evaluation_model"]
     }, ensure_ascii=False), flush=True)
     return data

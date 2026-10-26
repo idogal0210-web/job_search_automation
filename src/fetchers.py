@@ -4,6 +4,40 @@ import requests
 import random
 from bs4 import BeautifulSoup
 from dataclasses import dataclass
+from urllib.parse import urlsplit
+from src.url_utils import safe_http_url, canonical_job_url
+
+def _get_with_retries(client, url, **kwargs):
+    """Retry transient read failures only, with bounded exponential delay."""
+    for attempt in range(3):
+        try:
+            response = client.get(url, **kwargs)
+            if response.status_code not in {429, 500, 502, 503, 504} or attempt == 2:
+                return response
+            delay = _retry_delay(response, attempt)
+            if delay > 30:
+                return response  # Defer instead of retrying before the server permits it.
+        except (requests.RequestException, TimeoutError):
+            if attempt == 2:
+                raise
+            delay = 2 ** attempt
+        time.sleep(delay)
+
+
+def _retry_delay(response, attempt):
+    try:
+        retry_after = float(response.headers.get("Retry-After", 0))
+    except (TypeError, ValueError):
+        retry_after = 0
+    return max(2 ** attempt, retry_after)
+
+
+def _source_url(link, domain):
+    if not safe_http_url(link):
+        return False
+    host = urlsplit(link).hostname
+    return host == domain or host.endswith("." + domain)
+
 
 @dataclass
 class RunHealth:
@@ -52,7 +86,7 @@ def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=1
         "sec-fetch-site": "same-origin"
     }
     jobs = []
-    for kw in keywords:
+    for kw in dict.fromkeys(keywords):
         for page in range(max_pages):
             start = page * 25
             url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={requests.utils.quote(kw)}&location={requests.utils.quote(location)}&start={start}"
@@ -65,6 +99,13 @@ def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=1
                     if res.status_code == 200:
                         soup = BeautifulSoup(res.text, "html.parser")
                         cards = soup.find_all("li")
+                        if not soup.select("a.base-card__full-link"):
+                            if res.text.strip() and not soup.select(".jobs-search-no-results-banner"):
+                                health_metrics.linkedin_failures += 1
+                                print("[SOURCE] LinkedIn unexpected extraction structure", flush=True)
+                            else:
+                                health_metrics.linkedin_successes += 1
+                            break
                         for card in cards:
                             link_tag = card.find("a", class_="base-card__full-link")
                             title_tag = card.find("h3", class_="base-search-card__title")
@@ -101,13 +142,21 @@ def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=1
                         break
                     elif res.status_code == 429:
                         print(f"[SOURCE] LinkedIn 429 Rate Limit on {kw}, page {page}. Backing off.")
-                        time.sleep((2 ** attempt) + random.uniform(1, 3))
+                        delay = _retry_delay(res, attempt)
+                        if delay > 30:
+                            health_metrics.linkedin_failures += 1
+                            break
+                        if attempt < 2:
+                            time.sleep(delay)
+                    elif res.status_code in {401, 403}:
+                        health_metrics.linkedin_failures += 1
+                        break
                     else:
                         print(f"[SOURCE] LinkedIn returned {res.status_code} for {kw}. Attempt {attempt+1}")
-                        time.sleep(2)
+                        time.sleep(2 ** attempt)
                 except Exception as e:
-                    print(f"[ERROR] LinkedIn connection error: {e}. Attempt {attempt+1}")
-                    time.sleep(2)
+                    print(f"[ERROR] LinkedIn connection error: {type(e).__name__}. Attempt {attempt+1}")
+                    time.sleep(2 ** attempt)
             else:
                 health_metrics.linkedin_failures += 1
             time.sleep(1 + random.uniform(0.5, 1.5))
@@ -119,11 +168,11 @@ def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=1
 
 def fetch_linkedin_full_job_description(link: str) -> str:
     """Attempt to extract full job description from LinkedIn guest API endpoint."""
-    if not link or "linkedin.com/jobs/view" not in link:
+    if not _source_url(link, "linkedin.com"):
         return ""
     try:
         # Extract numeric job ID from the end of the link
-        match = re.search(r"-(\d+)(?:\?|$)", link)
+        match = re.search(r"/(\d+)$", urlsplit(canonical_job_url(link)).path)
         if not match:
             match = re.search(r"/(\d+)(?:\?|$)", link)
         if not match:
@@ -134,16 +183,16 @@ def fetch_linkedin_full_job_description(link: str) -> str:
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
             "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
         }
-        res = requests.get(api_url, headers=headers, timeout=8)
+        res = _get_with_retries(requests, api_url, headers=headers, timeout=8)
         if res.status_code == 200:
             soup = BeautifulSoup(res.text, "html.parser")
             desc_div = soup.find("div", class_="show-more-less-html__markup") or soup.find("div", class_="description__text")
             if desc_div:
                 clean_text = desc_div.get_text(separator="\n", strip=True)
                 if len(clean_text) > 100:
-                    return clean_text[:2000]
+                    return clean_text
     except Exception as e:
-        pass
+        print(f"[DESCRIPTION] LinkedIn unavailable: {type(e).__name__}", flush=True)
     return ""
 
 
@@ -157,7 +206,7 @@ def fetch_drushim_jobs(keywords, health_metrics, max_pages=1):
     jobs = []
     seen_links = set()
 
-    for kw in keywords:
+    for kw in dict.fromkeys(keywords):
         for page in range(max_pages):
             if page == 0:
                 url = f"https://www.drushim.co.il/jobs/search/{requests.utils.quote(kw)}/"
@@ -172,6 +221,10 @@ def fetch_drushim_jobs(keywords, health_metrics, max_pages=1):
                     if res.status_code == 200:
                         soup = BeautifulSoup(res.text, "html.parser")
                         articles = soup.find_all("article", attrs={"data-nagish": "job-card-item"})
+                        if not articles:
+                            health_metrics.drushim_failures += 1
+                            print("[SOURCE] Drushim no recognized job cards; extraction unverified", flush=True)
+                            break
                         for art in articles:
                             link_tag = art.find("a", href=lambda h: h and "/job/" in h)
                             if not link_tag:
@@ -228,13 +281,21 @@ def fetch_drushim_jobs(keywords, health_metrics, max_pages=1):
                         break
                     elif res.status_code == 429:
                         print(f"[SOURCE] Drushim 429 Rate Limit on {kw}. Backing off.")
-                        time.sleep((2 ** attempt) + random.uniform(1, 3))
+                        delay = _retry_delay(res, attempt)
+                        if delay > 30:
+                            health_metrics.drushim_failures += 1
+                            break
+                        if attempt < 2:
+                            time.sleep(delay)
+                    elif res.status_code in {401, 403}:
+                        health_metrics.drushim_failures += 1
+                        break
                     else:
                         print(f"[SOURCE] Drushim returned {res.status_code} for {kw}. Attempt {attempt+1}")
-                        time.sleep(2)
+                        time.sleep(2 ** attempt)
                 except Exception as e:
-                    print(f"[ERROR] Drushim connection error: {e}. Attempt {attempt+1}")
-                    time.sleep(2)
+                    print(f"[ERROR] Drushim connection error: {type(e).__name__}. Attempt {attempt+1}")
+                    time.sleep(2 ** attempt)
             else:
                 health_metrics.drushim_failures += 1
             time.sleep(1 + random.uniform(0.5, 1.5))
@@ -245,23 +306,23 @@ def fetch_drushim_jobs(keywords, health_metrics, max_pages=1):
 
 def fetch_drushim_full_job_description(link: str) -> str:
     """Attempt to extract full job description from Drushim job page."""
-    if not link or "drushim.co.il/job/" not in link:
+    if not _source_url(link, "drushim.co.il"):
         return ""
     try:
         headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
             "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
         }
-        res = requests.get(link, headers=headers, timeout=8)
+        res = _get_with_retries(requests, link, headers=headers, timeout=8, allow_redirects=False)
         if res.status_code == 200:
             soup = BeautifulSoup(res.text, "html.parser")
             main_desc = soup.find(class_=lambda c: c and ("job-details" in c.lower() or "job-description" in c.lower())) or soup.find("main") or soup.find("article")
             if main_desc:
                 clean_text = main_desc.get_text(separator="\n", strip=True)
                 if len(clean_text) > 100:
-                    return clean_text[:2500]
-    except Exception:
-        pass
+                    return clean_text
+    except Exception as e:
+        print(f"[DESCRIPTION] Drushim unavailable: {type(e).__name__}", flush=True)
     return ""
 
 
@@ -282,7 +343,7 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
 
     client = session or requests
     try:
-        res = client.get(url, headers=headers, timeout=timeout)
+        res = _get_with_retries(client, url, headers=headers, timeout=timeout)
         if res.status_code != 200:
             if health_metrics is not None:
                 health_metrics.comeet_failures += 1
@@ -301,12 +362,12 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
         for pos in positions:
             title = (pos.get("name") or "").strip()
             link = pos.get("url_active_page") or pos.get("url_comeet_hosted_page") or ""
-            if not title or not link:
+            if not title or not safe_http_url(link):
                 continue
 
             loc_obj = pos.get("location") or {}
             loc_parts = [loc_obj.get("city"), loc_obj.get("name") or loc_obj.get("country")]
-            loc_str = ", ".join(p for p in loc_parts if p) or "ישראל"
+            loc_str = ", ".join(p for p in loc_parts if p)
 
             # Combine details
             details_list = (pos.get("custom_fields") or {}).get("details", [])
@@ -317,7 +378,7 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
                 val = re.sub(r"\s+", " ", val).strip()
                 if val:
                     desc_parts.append(f"{d.get('name', 'Details')}: {val}")
-            snippet = " | ".join(desc_parts)[:1200] if desc_parts else title
+            snippet = " | ".join(desc_parts) if desc_parts else title
 
             jobs.append({
                 "title": title,
@@ -327,9 +388,16 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
                 "snippet": snippet,
                 "source": "Comeet",
                 "source_id": pos.get("uid", ""),
+                "description": snippet if desc_parts else "",
+                "description_complete": bool(desc_parts),
                 "is_direct_ats": True
             })
 
+        if positions and not jobs:
+            if health_metrics is not None:
+                health_metrics.comeet_failures += 1
+            print("[COMEET] Nonempty payload contained no valid positions", flush=True)
+            return []
         if health_metrics is not None:
             health_metrics.comeet_successes += 1
             health_metrics.comeet_jobs_found += len(jobs)
@@ -340,6 +408,6 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
     except Exception as e:
         if health_metrics is not None:
             health_metrics.comeet_failures += 1
-        print(f"[COMEET_ERROR] Error fetching from {url}: {e}", flush=True)
+        print(f"[COMEET_ERROR] Error fetching from {url}: {type(e).__name__}", flush=True)
         return []
 

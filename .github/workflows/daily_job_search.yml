@@ -2,18 +2,47 @@ name: Daily Job Search Automation
 
 on:
   schedule:
-    - cron: '17 4 * * 0-5'    # 07:17 שעון ישראל (04:17 UTC) — ימים ראשון עד שישי (ללא שבת)
+    - cron: '17 4 * * 0-5'
+    - cron: '17 5 * * 0-5'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: "daily-job-search"
   cancel-in-progress: false
 
 jobs:
+  schedule-gate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      run: ${{ steps.gate.outputs.run }}
+    steps:
+      - id: gate
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          python - <<'PYTHON'
+          import os
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          local = datetime.now(ZoneInfo("Asia/Jerusalem"))
+          utc_hour = 7 - int(local.utcoffset().total_seconds() // 3600)
+          expected = f"17 {utc_hour} * * 0-5"
+          enabled = os.environ["EVENT_NAME"] == "workflow_dispatch" or os.environ["EVENT_SCHEDULE"] == expected
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write(f"run={str(enabled).lower()}\n")
+          PYTHON
+
   job-search-daily:
+    permissions:
+      contents: write
+    needs: schedule-gate
+    if: needs.schedule-gate.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     name: "Daily Job Search - Ido Gal"
@@ -65,8 +94,9 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Stage all data state and docs dashboard artifacts
-          git add data/ docs/
+          for path in data/jobs_state.json data/evaluation_state.json data/weekly_archive.json data/historical_catalog.json docs/index.html docs/data/jobs.json docs/data/historical_catalog.json docs/dashboard.css docs/dashboard.js docs/assets; do
+            if test -e "$path"; then git add -- "$path"; fi
+          done
           
           if ! git diff --staged --quiet; then
             git commit -m "chore: save job evaluations and dashboard [skip ci]"
@@ -86,8 +116,12 @@ jobs:
                 echo "Successfully pushed to origin/main on attempt $attempt"
                 break
               fi
-              echo "Push attempt $attempt failed. Aborting failed rebase if in-progress..."
-              git rebase --abort 2>/dev/null || true
+              if test -d .git/rebase-merge || test -d .git/rebase-apply; then
+                git rebase --abort
+                echo "Rebase conflict: checkpoint commit retained locally; manual reconciliation required." >&2
+                exit 1
+              fi
+              echo "Push attempt $attempt failed. Waiting before retry..."
               sleep $(( attempt * 5 ))
             done
 
@@ -98,6 +132,18 @@ jobs:
           else
             echo "No changes to commit or push."
           fi
+
+      - name: Preserve checkpoint recovery artifact
+        if: ${{ failure() && steps.search.outcome != 'skipped' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: checkpoint-recovery-${{ github.run_id }}
+          retention-days: 3
+          path: |
+            data/jobs_state.json
+            data/evaluation_state.json
+            data/weekly_archive.json
+            data/historical_catalog.json
 
       - name: Verify Search Outcome
         id: report

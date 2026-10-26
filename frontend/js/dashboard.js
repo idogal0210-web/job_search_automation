@@ -6,9 +6,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   let jobsLoadError = null;
   const initialSavedLinks = [];
   const initialRejectedLinks = [];
-  try {
-    localStorage.removeItem('ido_job_applications_store');
-  } catch(e) {}
+  // Preserve legacy application records for explicit user-controlled migration.
 
   async function fetchJobsData() {
     isJobsLoading = true;
@@ -32,7 +30,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         throw new Error('HTTP ' + resp.status + ' (' + resp.statusText + ')');
       }
       const data = await resp.json();
-      rawJobsData = Array.isArray(data) ? data : (data.jobs || []);
+      const nextJobs = Array.isArray(data) ? data : data.jobs;
+      if (!Array.isArray(nextJobs)) throw new Error('מבנה נתוני המשרות אינו תקין');
+      if (!Array.isArray(data) && config.build_id && data.build_id && config.build_id !== data.build_id) {
+        throw new Error('נתוני המשרות והתצוגה מגרסאות שונות; יש לרענן את הדף');
+      }
+      rawJobsData = nextJobs;
       window.jobsData = rawJobsData;
       isJobsLoading = false;
       renderCards();
@@ -42,7 +45,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       }
 
       // Preload historical catalog in the background so saved/starred jobs from older cycles are immediately available
-      if (!isCatalogLoaded) {
+      const currentLinks = new Set(rawJobsData.map(job => job.link));
+      const needsHistory = [...Object.keys(starredJobs), ...Object.keys(jobStates)].some(link => !currentLinks.has(link));
+      if (!isCatalogLoaded && needsHistory) {
         if (typeof window.requestIdleCallback === 'function') {
           window.requestIdleCallback(() => { loadHistoricalCatalogOnDemand(); }, { timeout: 2000 });
         } else {
@@ -74,7 +79,16 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   }
 
-  async function loadHistoricalCatalogOnDemand() {
+  let catalogLoadPromise = null;
+  function loadHistoricalCatalogOnDemand() {
+    if (isCatalogLoaded) return Promise.resolve();
+    if (!catalogLoadPromise) {
+      catalogLoadPromise = fetchHistoricalCatalog().finally(() => { catalogLoadPromise = null; });
+    }
+    return catalogLoadPromise;
+  }
+
+  async function fetchHistoricalCatalog() {
     if (isCatalogLoaded) return;
     const config = window.__APP_CONFIG__ || {};
     const catalogUrl = config.catalog_data_url || 'data/historical_catalog.json';
@@ -82,7 +96,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const resp = await fetch(catalogUrl, { cache: 'no-cache' });
       if (resp.ok) {
         const cat = await resp.json();
-        historicalCatalog = cat || {};
+        if (!cat || typeof cat !== 'object' || Array.isArray(cat)) throw new Error('Invalid catalog');
+        historicalCatalog = cat;
         isCatalogLoaded = true;
         renderCards();
         updateUI();
@@ -92,6 +107,19 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   }
 
+  function renderEvaluationMetadata(job) {
+    const status = job.evaluation_complete === false ? 'בדיקה חלקית — נדרשת השלמה' :
+      job.evidence_status === 'verified_quotes' ? 'ציטוטי הראיות אומתו מול המקורות' : 'אין אימות מלא של הראיות להערכה זו';
+    const salary = job.salary_range ? escapeHtml(job.salary_range) +
+      (job.salary_source_type === 'job_ad' ? ' — צוין במודעה' : ' — הערכה בלבד') : 'לא צוין שכר';
+    const bonus = Math.max(0, Math.min(5, Number(job.priority_bonus) || 0));
+    return `<div class="job-box"><strong>מצב הערכה:</strong><span>${status}</span>
+      <span>עדיפות מעסיק: +${bonus}; נפרדת מציון ההתאמה המקצועית.</span>
+      <strong>שכר:</strong><span>${salary}</span></div>
+      <details class="job-evidence-details"><summary>דרישות וראיות מקור</summary>
+      ${renderRequirementAssessmentsHtml(job.requirement_assessments)}</details>`;
+  }
+
   function renderRequirementAssessmentsHtml(assessments) {
     if (!assessments || !Array.isArray(assessments) || assessments.length === 0) {
       return '<div style="font-size: 12px; color: var(--dashboard-muted); font-style: italic; padding: 4px 0;">אין פירוט ראיות מובנה להערכה זו</div>';
@@ -99,13 +127,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     return `
       <div class="evidence-container">
-        ${assessments.map(item => {
+        ${assessments.filter(item => item && typeof item === 'object').map(item => {
           const req = escapeHtml(stripEmojis(item.requirement || 'דרישה'));
           const imp = item.importance || 'unknown';
           const impLabel = imp === 'required' ? 'חובה' : (imp === 'preferred' ? 'יתרון' : 'כללי');
           const impClass = imp === 'required' ? 'required' : (imp === 'preferred' ? 'preferred' : '');
 
-          const assess = item.assessment || 'unknown';
+          const assess = ['match','gap','unknown'].includes(item.assessment) ? item.assessment : 'unknown';
           let assessLabel = 'בבדיקה';
           let assessIcon = 'ph-question';
           if (assess === 'match') {
@@ -361,7 +389,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     return state;
   }
 
-  const CLOUD_SYNC_URL = 'https://job-finder-auto-default-rtdb.firebaseio.com/triage.json';
+  // Authenticated per-user adapter must enforce authorization and conflict-safe writes.
+  const privateSync = window.__PRIVATE_SYNC__ || null;
   let cloudSyncTimeout = null;
   let cloudLastUpdated = 0;
   let isSyncInProgress = false;
@@ -435,7 +464,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     isSyncInProgress = true;
     try {
       setCloudSyncStatus('syncing');
-      const resp = await fetch(CLOUD_SYNC_URL, { cache: 'no-cache' });
+      if (!privateSync) { setCloudSyncStatus('offline'); return; }
+      const resp = await privateSync.read();
       if (!resp.ok) {
         throw new Error('Sync status: ' + resp.status);
       }
@@ -543,11 +573,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         updated_at: timestamp
       };
 
-      const resp = await fetch(CLOUD_SYNC_URL, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      if (!privateSync) { setCloudSyncStatus('offline'); return; }
+      const resp = await privateSync.compareAndSwap(payload, cloudLastUpdated);
       if (resp.ok) {
         cloudLastUpdated = Date.now();
         setCloudSyncStatus('synced', cloudLastUpdated);
@@ -1001,13 +1028,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       initials = '<i class="ph-duotone ph-buildings" style="font-size: 20px;"></i>';
       isIcon = true;
     }
-    if (!isIcon) initials = initials.toUpperCase();
+    if (!isIcon) initials = escapeHtml(initials.toUpperCase());
 
     let primaryUrl = localPath;
     let initialStep = 0;
     if (!primaryUrl) {
       if (customLogo && !customLogo.includes('media.licdn.com')) {
-        primaryUrl = customLogo;
+        primaryUrl = sanitizeUrl(customLogo);
       } else if (domain) {
         primaryUrl = 'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://' + encodeURIComponent(domain) + '&size=128';
         initialStep = 1;
@@ -1052,7 +1079,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function getCompanyLogoHtml(companyName, customLogo) {
     const info = getCompanyLogoInfo(companyName, customLogo);
-    const safeComp = info.rawName.replace(/"/g, '&quot;');
+    const safeComp = escapeHtml(info.rawName);
     const safeDom = (info.domain || '').replace(/"/g, '&quot;');
     const brandColor = getCompanyBrandColor(info.rawName);
 
@@ -1435,19 +1462,19 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         latLngBounds.push([lat, lng]);
       }
 
-      const score = Number(job.match_score) || 85;
+      const score = Math.max(0, Math.min(100, Number(job.base_match_score ?? job.match_score) || 0));
       const scoreColor = score >= 85 ? 'var(--dashboard-cyan)' : (score >= 70 ? 'var(--dashboard-lime)' : 'var(--dashboard-gold)');
       const scoreBorder = score >= 85 ? 'rgba(137, 244, 231, 0.8)' : (score >= 70 ? 'rgba(220, 255, 114, 0.8)' : 'rgba(255, 211, 104, 0.8)');
 
       const companyNameClean = stripEmojis(job.company || 'חברה');
       const titleClean = stripEmojis(job.title || 'משרה');
-      const salaryRangeStr = (job.salary_range && job.salary_range !== 'לא צוין') ? stripEmojis(job.salary_range) : 'ללא ציון שכר במודעה';
+      const salaryRangeStr = escapeHtml((job.salary_range && job.salary_range !== 'לא צוין') ? stripEmojis(job.salary_range) + (job.salary_source_type === 'job_ad' ? ' — צוין במודעה' : ' — הערכה בלבד') : 'ללא ציון שכר במודעה');
 
       const logoInfo = getCompanyLogoInfo(job.company, job.logo);
-      const safeComp = companyNameClean.replace(/"/g, '&quot;');
-      const safeTitle = titleClean.replace(/"/g, '&quot;');
-      const safeLink = job.link || '#';
-      const safeId = encodeURIComponent(id);
+      const safeComp = escapeHtml(companyNameClean);
+      const safeTitle = escapeHtml(titleClean);
+      const safeLink = sanitizeUrl(job.link);
+      const safeId = encodeURIComponent(id).replace(/'/g, '%27');
 
       const markerLogoInner = logoInfo.logoUrl ? `
         <img src="${logoInfo.logoUrl}" alt="${safeComp}" loading="lazy" class="map-pin-logo-img"
@@ -1467,7 +1494,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
               ${markerLogoInner}
             </div>
             <div class="map-pin-pointer" style="border-top-color: ${scoreBorder};"></div>
-            <div class="map-pin-company-name" dir="auto">${companyNameClean}</div>
+            <div class="map-pin-company-name" dir="auto">${escapeHtml(companyNameClean)}</div>
           </div>
         `,
         iconSize: [96, 70],
@@ -1489,7 +1516,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             </div>
           </div>
           <div style="font-size: 11.5px; color: var(--dashboard-muted); display: flex; flex-direction: column; gap: 3px; margin-bottom: 10px;">
-            <span><i class="ph-duotone ph-map-pin"></i> ${job.location || 'ישראל'}</span>
+            <span><i class="ph-duotone ph-map-pin"></i> ${escapeHtml(job.location || 'ישראל')}</span>
             <span style="color: var(--dashboard-lime);"><i class="ph-duotone ph-coins"></i> ${salaryRangeStr}</span>
             <span style="color: ${scoreColor}; font-weight: 700;"><i class="ph-duotone ph-chart-line-up"></i> התאמה ${score}%</span>
           </div>
@@ -1686,7 +1713,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (!rawUrl) return '#';
     const trimmed = String(rawUrl).trim();
     if (/^(?:https?:\/\/|mailto:)/i.test(trimmed)) {
-      return trimmed;
+      try {
+        const url = new URL(trimmed);
+        if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) return '#';
+        return escapeHtml(url.href);
+      } catch (_) { return '#'; }
     }
     return '#';
   }
@@ -1814,7 +1845,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     sortedJobs.forEach((job, idx) => {
       const id = job.link || `job_${idx}`;
-      const score = Number(job.match_score) || 85;
+      const score = Math.max(0, Math.min(100, Number(job.base_match_score ?? job.match_score) || 0));
       const company = stripEmojis(job.company || 'חברה');
       const title = stripEmojis(job.title || 'משרה ללא כותרת');
       const link = job.link || '#';
@@ -1826,12 +1857,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (score < 80) scoreClass = 'badge-score-fair';
       else if (score < 90) scoreClass = 'badge-score-med';
 
-      const domain = escapeHtml(stripEmojis(job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה'));
-      const loc = escapeHtml(stripEmojis(job.location || 'ישראל / היברידי'));
-      const jobSum = escapeHtml(stripEmojis(job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.'));
-      const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
-      const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
-      const fitGaps = escapeHtml(stripEmojis(job.fit_gaps || 'אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.'));
+      const domain = escapeHtml(stripEmojis(job.company_domain_product || job.company_summary || 'מידע על החברה לא צוין'));
+      const loc = escapeHtml(stripEmojis(job.location || 'מיקום לא צוין'));
+      const jobSum = escapeHtml(stripEmojis(job.job_summary || job.company_summary || 'לא צוין תיאור מלא למשרה.'));
+      const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'אין ניתוח התאמה מאומת למשרה זו.'));
+      const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'אין ניתוח התאמה מאומת למשרה זו.'));
+      const fitGaps = escapeHtml(stripEmojis(job.fit_gaps || 'אין מספיק מידע לאימות פערי ההתאמה.'));
       const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).'));
       const safeCompany = escapeHtml(company);
       const safeTitle = escapeHtml(title);
@@ -1863,7 +1894,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const curatedTags = getJobCuratedTags(job);
       let tagsHtml = '';
       if (curatedTags && curatedTags.length > 0) {
-        const pills = curatedTags.map(t => `<span class="job-tag-pill ${t.type}"><i class="${t.icon}"></i><span dir="auto">${escapeHtml(t.label)}</span></span>`).join('');
+        const pills = curatedTags.map(t => `<span class="job-tag-pill ${escapeHtml(t.type)}"><i class="${escapeHtml(t.icon)}"></i><span dir="auto">${escapeHtml(t.label)}</span></span>`).join('');
         tagsHtml = `<div class="job-card-tags">${pills}</div>`;
       }
 
@@ -1882,10 +1913,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <div class="job-card-topbar">
           <div class="job-card-topbar-primary">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\\'")}', event)" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}" aria-label="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
+              <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar(${escapeHtml(JSON.stringify(String(id)))}, event)" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}" aria-label="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
                 <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
               </button>
-              <button type="button" class="btn-copy-link" onclick="copyJobLink('${safeLink.replace(/'/g, "\\'")}', event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
+              <button type="button" class="btn-copy-link" onclick="copyJobLink(${escapeHtml(JSON.stringify(String(link)))}, event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
                 <i class="ph-bold ph-share-network"></i>
               </button>
             </div>
@@ -1906,7 +1937,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
         <!-- Job Card Meta Row: Date, Location, Source -->
         <div class="job-card-meta-row">
-          <span class="meta-item"><i class="ph-duotone ph-calendar-blank"></i> <span class="meta-label">פורסם:</span> ${escapeHtml(jobDate)}</span>
+          <span class="meta-item"><i class="ph-duotone ph-calendar-blank"></i> <span class="meta-label">תאריך ברשימה:</span> ${escapeHtml(jobDate)}</span>
           <span class="meta-item"><i class="ph-duotone ph-map-pin"></i> ${loc}</span>
           <span class="meta-item"><i class="ph-duotone ${sourceIcon}"></i> <span class="meta-label">מקור:</span> ${escapeHtml(sourceName)}</span>
         </div>
@@ -1934,6 +1965,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
         <!-- Collapsible Full Information Panels -->
         <div class="job-details-collapsible">
+          ${renderEvaluationMetadata(job)}
           <div class="job-boxes-grid">
             <div class="job-box">
               <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
@@ -1957,10 +1989,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <!-- Action Bar -->
         <div class="job-actions-bar">
           <div class="action-btn-group">
-            <button type="button" onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'saved', event)" class="btn-triage action-save-btn">
+            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved', event)" class="btn-triage action-save-btn">
               <i class="ph-duotone ph-bookmark-simple"></i> <span class="btn-text">שמור להגשה</span>
             </button>
-            <button type="button" onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'rejected', event)" class="btn-triage action-reject-btn">
+            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected', event)" class="btn-triage action-reject-btn">
               <i class="ph-duotone ph-x"></i> <span>הסר משרה</span>
             </button>
           </div>
@@ -1989,22 +2021,22 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const bottomBar = document.getElementById('jobModalBottomBar');
     if (!modal || !headerActions || !body || !bottomBar) return;
 
-    const score = Number(job.match_score) || 85;
+    const score = Math.max(0, Math.min(100, Number(job.base_match_score ?? job.match_score) || 0));
     const company = stripEmojis(job.company || 'חברה');
     const title = stripEmojis(job.title || 'משרה ללא כותרת');
     const link = job.link || '#';
     const safeCompany = escapeHtml(company);
     const safeTitle = escapeHtml(title);
     const safeLink = sanitizeUrl(link);
-    const loc = escapeHtml(stripEmojis(job.location || 'ישראל / היברידי'));
+    const loc = escapeHtml(stripEmojis(job.location || 'מיקום לא צוין'));
     const jobDate = escapeHtml(job.date || 'היום');
     const classifiedSector = classifyJobSector(job);
-    const domain = escapeHtml(stripEmojis(job.company_domain_product || job.company_summary || 'חברה מובילה בתחומה'));
-    const jobSum = escapeHtml(stripEmojis(job.job_summary || job.company_summary || 'תפקיד משמעותי בתפעול וניטור מערכות מתקדמות.'));
-    const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
+    const domain = escapeHtml(stripEmojis(job.company_domain_product || job.company_summary || 'מידע על החברה לא צוין'));
+    const jobSum = escapeHtml(stripEmojis(job.job_summary || job.company_summary || 'לא צוין תיאור מלא למשרה.'));
+    const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'אין ניתוח התאמה מאומת למשרה זו.'));
     const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה.'));
-    const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'התאמה גבוהה לרקע הטכני בהנדסאי מכונות, בקרת 24/7 וסיירת נח"ל.'));
-    const fitGaps = escapeHtml(stripEmojis(job.fit_gaps || 'אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.'));
+    const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'אין ניתוח התאמה מאומת למשרה זו.'));
+    const fitGaps = escapeHtml(stripEmojis(job.fit_gaps || 'אין מספיק מידע לאימות פערי ההתאמה.'));
     const logoHtml = getCompanyLogoHtml(company, job.logo);
     const companyBdi = `<bdi dir="auto">${safeCompany}</bdi>`;
 
@@ -2031,15 +2063,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const curatedTags = getJobCuratedTags(job);
     let tagsHtml = '';
     if (curatedTags && curatedTags.length > 0) {
-      const pills = curatedTags.map(t => `<span class="job-tag-pill ${t.type}"><i class="${t.icon}"></i><span dir="auto">${escapeHtml(t.label)}</span></span>`).join('');
+      const pills = curatedTags.map(t => `<span class="job-tag-pill ${escapeHtml(t.type)}"><i class="${escapeHtml(t.icon)}"></i><span dir="auto">${escapeHtml(t.label)}</span></span>`).join('');
       tagsHtml = `<div class="job-card-tags" style="margin: 6px 0 10px;">${pills}</div>`;
     }
 
     headerActions.innerHTML = `
-      <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar('${id.replace(/'/g, "\\'")}', event); updateModalStar('${id.replace(/'/g, "\\'")}');" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}" aria-label="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
+      <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar(${escapeHtml(JSON.stringify(String(id)))}, event); updateModalStar(${escapeHtml(JSON.stringify(String(id)))});" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}" aria-label="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
         <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
       </button>
-      <button type="button" class="btn-copy-link" onclick="copyJobLink('${safeLink.replace(/'/g, "\\'")}', event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
+      <button type="button" class="btn-copy-link" onclick="copyJobLink(${escapeHtml(JSON.stringify(String(link)))}, event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
         <i class="ph-bold ph-share-network"></i>
       </button>
       <div class="badge-score ${scoreClass}" title="ציון התאמה ${score}%">
@@ -2054,7 +2086,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           <div style="font-size: 13.5px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 2px;" dir="auto" title="${safeCompany}"><bdi>${safeCompany}</bdi></div>
           <h2 style="font-size: 17.5px; font-weight: 700; color: #fff; margin: 0 0 6px; line-height: 1.3;" dir="auto" title="${safeTitle}"><bdi>${safeTitle}</bdi></h2>
           <div style="font-size: 12px; color: var(--dashboard-muted); display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-            <span><i class="ph-duotone ph-calendar-blank"></i> פורסם: ${escapeHtml(jobDate)}</span>
+            <span><i class="ph-duotone ph-calendar-blank"></i> תאריך ברשימה: ${escapeHtml(jobDate)}</span>
             <span><i class="ph-duotone ph-map-pin"></i> ${loc}</span>
             <span><i class="ph-duotone ${sourceIcon}"></i> מקור: ${escapeHtml(sourceName)}</span>
           </div>
@@ -2075,6 +2107,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         </div>
       </div>
 
+      ${renderEvaluationMetadata(job)}
       <div class="job-boxes-grid" style="grid-template-columns: 1fr; gap: 10px;">
         <div class="job-box">
           <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
@@ -2098,10 +2131,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <span>הגש מועמדות באתר המשרה</span> <i class="ph-duotone ph-arrow-up-right"></i>
       </a>
       <div class="job-modal-triage-group">
-        <button id="modalSaveBtn" onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'saved'); updateModalTriageButtons('${id.replace(/'/g, "\\'")}');" class="btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}">
+        <button id="modalSaveBtn" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved'); updateModalTriageButtons(${escapeHtml(JSON.stringify(String(id)))});" class="btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}">
           <i class="ph-duotone ph-bookmark-simple"></i> <span>${state === 'saved' ? 'נשמר להגשה' : 'שמור להגשה'}</span>
         </button>
-        <button id="modalRejectBtn" onclick="toggleAction('${id.replace(/'/g, "\\'")}', 'rejected'); updateModalTriageButtons('${id.replace(/'/g, "\\'")}');" class="btn-triage action-reject-btn ${state === 'rejected' ? 'rejected-active' : ''}">
+        <button id="modalRejectBtn" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected'); updateModalTriageButtons(${escapeHtml(JSON.stringify(String(id)))});" class="btn-triage action-reject-btn ${state === 'rejected' ? 'rejected-active' : ''}">
           <i class="ph-duotone ph-x"></i> <span>הסר משרה</span>
         </button>
       </div>
@@ -2340,6 +2373,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const inp = document.getElementById('searchInput');
     const wrap = document.getElementById('searchInputWrapper');
 
+    for (const [id, value] of Object.entries({scoreFilter:'0', dateFilter:'', salaryFilter:'all', applicationFilter:'all'})) {
+      const control = document.getElementById(id); if (control) control.value = value;
+    }
     if (sec) sec.value = 'all';
     if (reg) reg.value = 'all';
     if (inp) inp.value = '';
@@ -2364,6 +2400,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       wrapper.classList.toggle('has-value', Boolean(searchRaw.length > 0));
     }
     
+    const jobsByLink = new Map(getAllAvailableJobs().map(job => [job.link, job]));
     const cards = document.querySelectorAll('.job-card');
     const rawJobLinks = new Set((rawJobsData || []).map(j => j.link));
     let visibleCount = 0;
@@ -2448,7 +2485,17 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         matchesSearch = cardText.includes(searchInput);
       }
 
-      if (matchesTab && matchesSector && matchesRegion && matchesSearch && state !== 'purged') {
+      const job = jobsByLink.get(id) || {};
+      const scoreMin = Number(document.getElementById('scoreFilter')?.value || 0);
+      const since = document.getElementById('dateFilter')?.value || '';
+      const salaryType = document.getElementById('salaryFilter')?.value || 'all';
+      const application = document.getElementById('applicationFilter')?.value || 'all';
+      const tracked = kanbanApplications.find(entry => entry.sourceLink === id);
+      const matchesAdvanced = Number(job.base_match_score ?? job.match_score ?? 0) >= scoreMin &&
+        (!since || (job.date && job.date >= since)) &&
+        (salaryType === 'all' || (salaryType === 'job_ad' ? job.salary_source_type === 'job_ad' : Boolean(job.salary_range) && job.salary_source_type !== 'job_ad')) &&
+        (application === 'all' || (tracked?.status || 'not_tracked') === application);
+      if (matchesTab && matchesSector && matchesRegion && matchesSearch && matchesAdvanced && state !== 'purged') {
         card.style.display = '';
         card.classList.remove('is-hidden');
         visibleCount++;
@@ -3139,7 +3186,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     const escapeCSV = (val) => {
       if (val === null || val === undefined) return '""';
-      const str = String(val).replace(/"/g, '""');
+      const str = String(val).replace(/^[=+@\-\t\r]/, "'$&").replace(/"/g, '""');
       return `"${str}"`;
     };
 
@@ -5189,11 +5236,11 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
       if (raw) {
         kanbanApplications = JSON.parse(raw);
       } else {
-        kanbanApplications = [...INITIAL_KANBAN_SEED];
+        kanbanApplications = [];
         saveKanbanApplications();
       }
     } catch (e) {
-      kanbanApplications = [...INITIAL_KANBAN_SEED];
+      kanbanApplications = [];
     }
   }
 
@@ -5305,7 +5352,7 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
     if (!select) return;
 
     select.innerHTML = '<option value="">+ הוסף ישירות ממשרות הדשבורד...</option>';
-    const jobs = Array.isArray(allJobs) && allJobs.length > 0 ? allJobs : [];
+    const jobs = getAllAvailableJobs();
     jobs.slice(0, 30).forEach((j, i) => {
       const opt = document.createElement('option');
       opt.value = i;
@@ -5317,11 +5364,12 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
   function addSelectedJobToKanban(jobIdxStr) {
     if (!jobIdxStr && jobIdxStr !== 0) return;
     const idx = parseInt(jobIdxStr, 10);
-    const job = allJobs[idx];
+    const job = getAllAvailableJobs()[idx];
     if (!job) return;
 
     const newApp = {
       id: 'app_' + Date.now(),
+      sourceLink: job.link,
       company: job.company || 'חברה ללא שם',
       role: job.title || 'משרה טכנולוגית',
       status: 'saved',

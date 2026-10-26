@@ -3,7 +3,7 @@ import json
 import re
 import shutil
 from datetime import datetime, timedelta
-from src.state_manager import save_state_atomic
+from src.state_manager import save_state_atomic, load_state
 from src.job_policy import extract_curated_tags
 
 # Load HTML template from frontend/templates/index.html
@@ -30,6 +30,10 @@ def compact_job_for_ui(j):
         "date": j.get("date", ""),
         "source": j.get("source", ""),
         "match_score": j.get("match_score", 0),
+        "base_match_score": j.get("base_match_score", j.get("match_score", 0)),
+        "priority_bonus": j.get("priority_bonus", 0),
+        "evaluation_complete": j.get("evaluation_complete"),
+        "evidence_status": j.get("evidence_status", "legacy"),
         "sector_key": j.get("sector_key", "energy"),
         "company_domain_product": j.get("company_domain_product", ""),
         "company_summary": j.get("company_summary", ""),
@@ -137,11 +141,9 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
     catalog_path = os.path.join(project_root, "data", "historical_catalog.json")
     catalog_data = {}
     if os.path.exists(catalog_path):
-        try:
-            with open(catalog_path, "r", encoding="utf-8") as f:
-                catalog_data = json.load(f)
-        except Exception:
-            catalog_data = {}
+        catalog_data = load_state(catalog_path, {}, strict=True)
+        if not isinstance(catalog_data, dict):
+            raise ValueError("Invalid historical catalog; refusing to publish empty history")
 
     compact_catalog = {link: compact_job_for_ui(j) for link, j in catalog_data.items()}
     save_state_atomic(os.path.join(data_dir, "historical_catalog.json"), compact_catalog)
@@ -171,25 +173,15 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
 
 
 def update_weekly_archive(new_jobs, archive_file_path, rejected_set):
-    """Maintains 7-day rolling window in weekly_archive.json and prunes historical catalog."""
-    archive = []
-    if os.path.exists(archive_file_path):
-        try:
-            with open(archive_file_path, "r", encoding="utf-8") as f:
-                archive = json.load(f)
-        except Exception:
-            archive = []
-
-    # Always keep historical catalog updated with all jobs before pruning
+    """Maintains a rolling weekly view and preserves the complete historical catalog."""
+    archive = load_state(archive_file_path, [], strict=True)
+    if not isinstance(archive, list) or any(not isinstance(job, dict) for job in archive):
+        raise ValueError("Invalid weekly archive; refusing to reset history")
     project_root = os.path.dirname(os.path.dirname(archive_file_path))
     catalog_path = os.path.join(project_root, "data", "historical_catalog.json")
-    catalog = {}
-    if os.path.exists(catalog_path):
-        try:
-            with open(catalog_path, "r", encoding="utf-8") as f:
-                catalog = json.load(f)
-        except Exception:
-            catalog = {}
+    catalog = load_state(catalog_path, {}, strict=True)
+    if not isinstance(catalog, dict) or any(not isinstance(job, dict) for job in catalog.values()):
+        raise ValueError("Invalid historical catalog; refusing to reset history")
 
     for j in archive:
         link = j.get("link")
@@ -214,15 +206,8 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set):
                 if link not in catalog:
                     catalog[link] = job_copy
 
+    # Persist the full history before replacing its rolling weekly view.
+    # Failure must propagate: never claim a successful dashboard after data loss.
+    save_state_atomic(catalog_path, catalog)
     save_state_atomic(archive_file_path, archive)
-
-    try:
-        # Retention policy: prune historical catalog to max 1500 items if needed, preserving newest
-        if len(catalog) > 1500:
-            sorted_items = sorted(catalog.items(), key=lambda kv: kv[1].get("date", ""), reverse=True)
-            catalog = dict(sorted_items[:1500])
-        save_state_atomic(catalog_path, catalog)
-    except Exception as e:
-        print(f"[WARN] Failed to atomically save historical catalog: {e}")
-
     return archive
