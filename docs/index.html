@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261026162404">
+  <link rel="stylesheet" href="dashboard.css?v=20261026183326">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -65,7 +65,7 @@
       <!-- Mobile Collapsible Summary Toggle Button -->
       <button type="button" class="metrics-summary-toggle" id="metricsToggleBtn" onclick="toggleMetricsExpand()" aria-expanded="false" aria-controls="collapsibleMetricsContent" aria-label="הרחב או צמצם פירוט מטריקות">
         <div class="metrics-summary-inline">
-          <span class="metric-summary-pill lime"><span id="summaryNewCount">80</span> חדשות</span>
+          <span class="metric-summary-pill lime"><span id="summaryNewCount">88</span> חדשות</span>
           <span class="metric-summary-pill gold"><span id="summaryStarredCount">7</span> בכוכב</span>
           <span class="metric-summary-pill cyan"><span id="summarySavedCount">0</span> שמורות</span>
           <span class="metric-summary-pill rose"><span id="summaryRejectedCount">0</span> הוסרו</span>
@@ -114,7 +114,7 @@
             <div class="stat-cube-icon lime">
               <i class="ph-duotone ph-sparkle"></i>
             </div>
-            <div class="stat-cube-count" id="statNewCount">80</div>
+            <div class="stat-cube-count" id="statNewCount">88</div>
             <div class="stat-cube-label">משרות חדשות</div>
           </button>
 
@@ -322,7 +322,7 @@
     <div class="cards-view-header">
       <div class="cards-count-summary">
         <i class="ph-duotone ph-briefcase" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
-        <span id="visibleJobsCountText">סה״כ משרות חדשות: 80</span>
+        <span id="visibleJobsCountText">סה״כ משרות חדשות: 88</span>
       </div>
       <div class="view-mode-toggle" role="group" aria-label="מצב תצוגה">
         <button type="button" id="viewGridBtn" class="view-toggle-btn active" onclick="setViewMode('grid')" title="תצוגת קוביות (Grid)">
@@ -1804,14 +1804,14 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261026162404",
+      build_id: "20261026183326",
       schema_version: "2.0.0",
       generated_at: "26.10.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261026162404",
-      catalog_data_url: "data/historical_catalog.json?v=20261026162404"
+      jobs_data_url: "data/jobs.json?v=20261026183326",
+      catalog_data_url: "data/historical_catalog.json?v=20261026183326"
     };
   </script>
-  <script src="dashboard.js?v=20261026162404" defer></script>
+  <script src="dashboard.js?v=20261026183326" defer></script>
 </body>
 </html>
