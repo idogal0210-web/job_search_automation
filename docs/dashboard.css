@@ -82,298 +82,569 @@
       background: rgba(255, 255, 255, 0.32);
     }
 
-    /* Header Nav Enhancements */
+    /* ==========================================================================
+       COCKPIT HEADER ARCHITECTURE (סרגל קוקפיט עליון דו-שכבתי)
+       ========================================================================== */
+    .dashboard-app .dashboard-sidebar,
     .dashboard-sidebar {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 14px !important;
+      background: var(--bg-card) !important;
+      backdrop-filter: blur(28px) !important;
+      -webkit-backdrop-filter: blur(28px) !important;
+      border: 1px solid var(--dashboard-edge) !important;
+      border-radius: 28px !important;
+      padding: 16px 20px !important;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.15), 0 24px 60px rgba(0, 0, 0, 0.45) !important;
+      position: relative !important;
+      overflow: visible !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Tier 1: Brand Cluster, Mode Switcher Tabs, Quick Tools */
+    .cockpit-top-strip {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 20px;
-      border-radius: 28px !important;
-      padding: 12px 20px !important;
-      overflow: hidden !important;
-      position: relative;
+      gap: 16px;
+      width: 100%;
     }
-    .dashboard-sidebar-brand {
+
+    .cockpit-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       flex-shrink: 0;
       text-decoration: none;
     }
-    .brand-icon-pill {
+
+    .brand-icon-gem {
       width: 44px;
       height: 44px;
-      border-radius: 50%;
-      background: linear-gradient(145deg, rgba(220, 255, 114, 0.28), rgba(255, 255, 255, 0.08));
-      border: 1px solid rgba(220, 255, 114, 0.4);
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--dashboard-lime), #89f4e7);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      color: #121810;
+      box-shadow: 0 4px 18px rgba(220, 255, 114, 0.35);
+      flex-shrink: 0;
     }
-    .brand-titles {
+
+    .brand-text-block {
       display: flex;
       flex-direction: column;
       gap: 3px;
     }
-    .brand-title-row {
+
+    .brand-title-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-main-name {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .live-status-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 10px;
+      background: rgba(137, 244, 231, 0.1);
+      border: 1px solid rgba(137, 244, 231, 0.3);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--dashboard-cyan);
+    }
+
+    .live-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--dashboard-cyan);
+      box-shadow: 0 0 8px var(--dashboard-cyan);
+      animation: cockpitPulseAnim 2s infinite ease-in-out;
+    }
+
+    @keyframes cockpitPulseAnim {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .brand-meta-line {
+      font-size: 12.5px;
+      color: var(--dashboard-muted);
       display: flex;
       align-items: center;
       gap: 8px;
     }
-    .brand-title {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--dashboard-text);
-      line-height: 1.2;
+
+    .brand-separator {
+      opacity: 0.4;
     }
-    .header-sync-btn, .header-about-btn {
+
+    /* Mode Switcher Tabs */
+    .cockpit-mode-nav,
+    .dashboard-mode-switcher {
+      background: rgba(0, 0, 0, 0.35) !important;
+      border: 1px solid var(--dashboard-edge) !important;
+      padding: 4px !important;
+      border-radius: 999px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+    }
+
+    .mode-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--dashboard-muted);
+      padding: 9px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      min-height: 44px; /* Accessible 44px tap target */
+      text-decoration: none;
+    }
+
+    .mode-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .mode-tab-btn.active {
+      background: rgba(220, 255, 114, 0.16) !important;
+      color: var(--dashboard-lime) !important;
+      border: 1px solid rgba(220, 255, 114, 0.4) !important;
+      box-shadow: 0 2px 12px rgba(220, 255, 114, 0.15);
+    }
+
+    .mode-tab-btn:focus-visible {
+      outline: 2px solid var(--dashboard-cyan);
+      outline-offset: 2px;
+    }
+
+    /* Quick Tools */
+    .cockpit-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cockpit-tool-btn, .header-sync-btn, .header-about-btn {
       width: 44px;
       height: 44px;
       min-width: 44px;
       min-height: 44px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--dashboard-edge);
       color: var(--dashboard-text);
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.2s ease;
       font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
       padding: 0;
+      position: relative;
     }
-    .header-sync-btn:hover, .header-about-btn:hover {
-      background: rgba(255, 255, 255, 0.16);
-      border-color: rgba(255, 255, 255, 0.4);
+
+    .cockpit-tool-btn:hover, .header-sync-btn:hover, .header-about-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: var(--dashboard-edge-light);
       transform: translateY(-1px);
     }
-    .header-sync-btn:focus-visible, .header-about-btn:focus-visible {
-      outline: 3px solid var(--dashboard-lime);
+
+    .cockpit-tool-btn:focus-visible, .header-sync-btn:focus-visible, .header-about-btn:focus-visible {
+      outline: 2px solid var(--dashboard-cyan);
       outline-offset: 2px;
     }
-    .sync-status-dot {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--dashboard-cyan);
-      box-shadow: 0 0 6px var(--dashboard-cyan);
-      transition: background-color 0.3s ease;
+
+    /* Tier 2: Station Row (Progress & Cubes) */
+    .cockpit-station-row {
+      display: grid !important;
+      grid-template-columns: minmax(340px, 1.1fr) minmax(500px, 2fr) !important;
+      gap: 16px !important;
+      align-items: stretch !important;
+      padding-top: 10px !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+      width: 100% !important;
+      max-width: 100% !important;
     }
-    .sync-status-dot.syncing {
-      background: var(--dashboard-gold);
-      box-shadow: 0 0 8px var(--dashboard-gold);
-    }
-    .sync-status-dot.offline {
-      background: #f87171;
-      box-shadow: 0 0 8px #f87171;
-    }
-    .sync-time-chip {
-      font-size: 11px;
-      color: var(--dashboard-muted);
-      letter-spacing: 0.3px;
-      white-space: nowrap;
-    }
-    .brand-subtitle-row {
+
+    .cockpit-progress-card {
+      background: rgba(0, 0, 0, 0.28);
+      border: 1px solid var(--dashboard-edge);
+      border-radius: 20px;
+      padding: 14px 18px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      gap: 18px;
+      min-width: 0;
     }
-    .brand-subtitle {
-      font-size: 11px;
-      color: var(--dashboard-muted);
-      letter-spacing: 0.5px;
-    }
-    .header-actions-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+
+    .radial-meter-wrap {
+      position: relative;
+      width: 68px;
+      height: 68px;
       flex-shrink: 0;
     }
 
-    /* Header Progress & Navigation Hub */
-    .header-progress-hub {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex: 1;
-      justify-content: center;
-      max-width: 840px;
-    }
-    .dashboard-app .metrics-summary-toggle,
-    .metrics-summary-toggle {
-      display: none !important; /* Desktop hidden */
+    .radial-meter-svg {
+      transform: rotate(-90deg);
       width: 100%;
-      min-height: 44px;
-      padding: 8px 14px;
-      border-radius: 14px !important;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      color: var(--dashboard-text);
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-      font-size: 13px;
-      transition: all 0.2s ease;
-      box-sizing: border-box;
+      height: 100%;
     }
-    .metrics-summary-toggle:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.3);
+
+    .radial-bg-circle {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.1);
+      stroke-width: 6;
     }
-    .metrics-summary-toggle:focus-visible {
-      outline: 3px solid var(--dashboard-lime);
-      outline-offset: 2px;
+
+    .radial-val-circle {
+      fill: none;
+      stroke: var(--dashboard-cyan);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 188.5;
+      stroke-dashoffset: 188.5;
+      filter: drop-shadow(0 0 6px rgba(137, 244, 231, 0.6));
+      transition: stroke-dashoffset 0.8s ease;
     }
-    .metrics-summary-inline {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
+
+    .radial-meter-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
     }
-    .metric-summary-pill {
-      padding: 2.5px 8px;
-      border-radius: 8px;
-      font-size: 11.5px;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-    }
-    .metric-summary-pill.lime { background: rgba(220, 255, 114, 0.16); color: var(--dashboard-lime); }
-    .metric-summary-pill.gold { background: rgba(255, 211, 104, 0.16); color: var(--dashboard-gold); }
-    .metric-summary-pill.cyan { background: rgba(137, 244, 231, 0.16); color: var(--dashboard-cyan); }
-    .metric-summary-pill.rose { background: rgba(248, 113, 113, 0.16); color: #fca5a5; }
-    .metrics-toggle-label {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--dashboard-muted);
-      font-size: 11.5px;
-      font-weight: 600;
-    }
-    .dashboard-app .metrics-collapsible-content,
-    .metrics-collapsible-content {
-      display: flex !important;
-      align-items: center;
-      gap: 14px;
+
+    .progress-content-block {
       flex: 1;
-      justify-content: flex-end;
-      width: auto;
-      min-width: 0;
-    }
-    .header-progress-info {
       display: flex;
       flex-direction: column;
-      gap: 3px;
-      min-width: 160px;
-      max-width: 220px;
-      flex: 1;
+      gap: 8px;
+      min-width: 0;
     }
-    .header-progress-title-row {
+
+    .progress-title-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 8px;
+      align-items: baseline;
     }
-    .header-progress-title {
+
+    .progress-heading {
       font-size: 13.5px;
       font-weight: 700;
-      color: #ffffff;
+      color: #fff;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
     }
+
+    .progress-status-badge {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--dashboard-cyan);
+    }
+
+    .cockpit-segmented-rail {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      overflow: hidden;
+      gap: 2px;
+      padding: 1px;
+    }
+
+    .rail-segment {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .rail-seg-saved {
+      background: var(--dashboard-cyan);
+      box-shadow: 0 0 8px rgba(137, 244, 231, 0.4);
+    }
+
+    .rail-seg-starred {
+      background: var(--dashboard-gold);
+      box-shadow: 0 0 8px rgba(255, 211, 104, 0.4);
+    }
+
+    .rail-seg-new {
+      background: var(--dashboard-lime);
+      box-shadow: 0 0 8px rgba(220, 255, 114, 0.4);
+    }
+
+    .rail-seg-rejected {
+      background: #fca5a5;
+      opacity: 0.8;
+    }
+
+    .rail-legend-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--dashboard-muted);
+      padding: 0 2px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    /* Category Cubes Grid */
+    .cockpit-cubes-grid,
     .header-stat-cubes {
       display: grid !important;
-      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-      gap: 8px !important;
-      flex-shrink: 0 !important;
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 12px !important;
+      width: 100% !important;
     }
-    .dashboard-app .stat-cube-btn,
+
+    .cockpit-cube-btn,
     .stat-cube-btn {
-      background: rgba(0, 0, 0, 0.28) !important;
+      background: rgba(0, 0, 0, 0.3) !important;
       border: 1px solid var(--dashboard-edge) !important;
-      border-radius: 18px !important;
-      padding: 7px 12px !important;
+      border-radius: 20px !important;
+      padding: 12px 14px !important;
       display: flex !important;
-      flex-direction: column !important;
+      flex-direction: row !important;
       align-items: center !important;
-      justify-content: center !important;
-      text-align: center !important;
-      gap: 3px !important;
+      justify-content: flex-start !important;
+      gap: 12px !important;
       cursor: pointer !important;
-      min-width: 82px !important;
-      max-width: 98px !important;
-      min-height: auto !important;
-      height: auto !important;
-      box-sizing: border-box !important;
-      color: var(--dashboard-text) !important;
-      text-decoration: none !important;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.08) !important;
+      font-family: inherit !important;
+      color: inherit !important;
+      text-align: right !important;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      min-height: 64px !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      width: 100% !important;
       position: relative !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
     }
+
+    .cockpit-cube-btn:hover,
     .stat-cube-btn:hover {
-      background: rgba(255, 255, 255, 0.08) !important;
-      border-color: rgba(255, 255, 255, 0.35) !important;
-      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.06) !important;
+      border-color: var(--dashboard-edge-light) !important;
+      transform: translateY(-2px) !important;
     }
+
+    .cockpit-cube-btn:focus-visible,
+    .stat-cube-btn:focus-visible {
+      outline: 2px solid var(--dashboard-cyan) !important;
+      outline-offset: 2px !important;
+    }
+
+    .cockpit-cube-btn.active,
     .stat-cube-btn.active {
-      background: linear-gradient(145deg, rgba(220, 255, 114, 0.18), rgba(255, 255, 255, 0.06)) !important;
+      background: rgba(220, 255, 114, 0.14) !important;
       border-color: var(--dashboard-lime) !important;
-      box-shadow: 0 4px 18px rgba(220, 255, 114, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
+      box-shadow: 0 4px 20px rgba(220, 255, 114, 0.18) !important;
     }
+
+    .cockpit-cube-btn.active.cube-starred,
     .stat-cube-btn.active.cube-starred {
-      background: linear-gradient(145deg, rgba(251, 191, 36, 0.2), rgba(255, 255, 255, 0.06)) !important;
+      background: rgba(255, 211, 104, 0.14) !important;
       border-color: var(--dashboard-gold) !important;
-      box-shadow: 0 4px 18px rgba(251, 191, 36, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
+      box-shadow: 0 4px 20px rgba(255, 211, 104, 0.18) !important;
     }
+
+    .cockpit-cube-btn.active.cube-saved,
     .stat-cube-btn.active.cube-saved {
-      background: linear-gradient(145deg, rgba(137, 244, 231, 0.2), rgba(255, 255, 255, 0.06)) !important;
+      background: rgba(137, 244, 231, 0.14) !important;
       border-color: var(--dashboard-cyan) !important;
-      box-shadow: 0 4px 18px rgba(137, 244, 231, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
+      box-shadow: 0 4px 20px rgba(137, 244, 231, 0.18) !important;
     }
+
+    .cockpit-cube-btn.active.cube-rejected,
     .stat-cube-btn.active.cube-rejected {
-      background: linear-gradient(145deg, rgba(248, 113, 113, 0.18), rgba(255, 255, 255, 0.06)) !important;
+      background: rgba(252, 165, 165, 0.14) !important;
       border-color: #fca5a5 !important;
-      box-shadow: 0 4px 18px rgba(239, 68, 68, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
+      box-shadow: 0 4px 20px rgba(252, 165, 165, 0.18) !important;
     }
-    .stat-cube-icon {
-      width: 28px !important;
-      height: 28px !important;
-      border-radius: 9px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      font-size: 15px !important;
-      font-weight: 700 !important;
-      margin-bottom: 2px !important;
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
-      flex-shrink: 0 !important;
+
+    .cube-icon-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
     }
-    .stat-cube-icon.lime { background: var(--dashboard-lime); color: #171c12; }
-    .stat-cube-icon.gold { background: var(--dashboard-gold); color: #171c12; }
-    .stat-cube-icon.cyan { background: var(--dashboard-cyan); color: #171c12; }
-    .stat-cube-icon.rose { background: #fca5a5; color: #171c12; }
+
+    .cube-icon-box.lime {
+      background: rgba(220, 255, 114, 0.15);
+      color: var(--dashboard-lime);
+      border: 1px solid rgba(220, 255, 114, 0.3);
+    }
+
+    .cube-icon-box.gold {
+      background: rgba(255, 211, 104, 0.15);
+      color: var(--dashboard-gold);
+      border: 1px solid rgba(255, 211, 104, 0.3);
+    }
+
+    .cube-icon-box.cyan {
+      background: rgba(137, 244, 231, 0.15);
+      color: var(--dashboard-cyan);
+      border: 1px solid rgba(137, 244, 231, 0.3);
+    }
+
+    .cube-icon-box.rose {
+      background: rgba(252, 165, 165, 0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(252, 165, 165, 0.3);
+    }
+
+    .cube-data {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .cube-value,
     .stat-cube-count {
-      font-size: 16px !important;
-      font-weight: 700 !important;
+      font-size: 20px !important;
+      font-weight: 800 !important;
       color: #fff !important;
-      line-height: 1.1 !important;
+      line-height: 1.15 !important;
     }
+
+    .cube-caption,
     .stat-cube-label {
-      font-size: 11px !important;
-      font-weight: 600 !important;
+      font-size: 12px !important;
+      font-weight: 500 !important;
       color: var(--dashboard-muted) !important;
       white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    /* Responsive Layout for Cockpit Header */
+    @media (max-width: 1080px) {
+      .cockpit-top-strip {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 12px !important;
+        width: 100% !important;
+      }
+      .cockpit-brand {
+        order: 1 !important;
+        flex: 1 1 auto !important;
+      }
+      .cockpit-tools {
+        order: 2 !important;
+        flex-shrink: 0 !important;
+      }
+      .dashboard-mode-switcher,
+      .cockpit-mode-nav {
+        order: 3 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        box-sizing: border-box !important;
+      }
+      .dashboard-mode-switcher .mode-switch-btn,
+      .cockpit-mode-nav .mode-tab-btn {
+        flex: 1 !important;
+        justify-content: center !important;
+      }
+      .cockpit-station-row {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+        width: 100% !important;
+      }
+      .cockpit-progress-card {
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .cockpit-cubes-grid,
+      .header-stat-cubes {
+        grid-template-columns: repeat(2, 1fr) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        gap: 10px !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .dashboard-app .dashboard-sidebar,
+      .dashboard-sidebar {
+        padding: 12px 14px !important;
+        gap: 12px !important;
+        border-radius: 20px !important;
+      }
+      .brand-title-line {
+        gap: 6px !important;
+      }
+      .brand-main-name {
+        font-size: 15px !important;
+      }
+      .live-status-pill {
+        padding: 2px 8px !important;
+        font-size: 10px !important;
+      }
+      .brand-meta-line {
+        font-size: 11px !important;
+      }
+      .cockpit-cube-btn,
+      .stat-cube-btn {
+        min-height: 56px !important;
+        padding: 8px 10px !important;
+        gap: 8px !important;
+      }
+      .radial-meter-wrap {
+        width: 58px !important;
+        height: 58px !important;
+      }
+      .radial-meter-text {
+        font-size: 13px !important;
+      }
+      .cockpit-progress-card {
+        padding: 12px 14px !important;
+        gap: 14px !important;
+      }
     }
 
     /* Stats Overview Grid (2 Cards: Search/Filters & Sector Chart) */
@@ -1458,42 +1729,43 @@
       }
 
       /* Airy, Legible Header Stat Cubes on Mobile */
+      .cockpit-cubes-grid,
       .header-stat-cubes {
         display: grid !important;
-        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 8px !important;
         padding: 4px 0 !important;
         width: 100% !important;
       }
       .dashboard-app .stat-cube-btn,
+      .cockpit-cube-btn,
       .stat-cube-btn {
         min-width: 0 !important;
         max-width: none !important;
-        padding: 9px 5px !important;
+        padding: 10px 12px !important;
         border-radius: 16px !important;
+        min-height: 56px !important;
         height: auto !important;
-        gap: 3px !important;
+        gap: 8px !important;
       }
-      .stat-cube-icon {
-        width: 24px !important;
-        height: 24px !important;
-        border-radius: 8px !important;
-        margin-bottom: 2px !important;
-        font-size: 13px !important;
+      .cube-icon-box {
+        width: 32px !important;
+        height: 32px !important;
       }
-      .stat-cube-icon i {
-        font-size: 13px !important;
-      }
-      .stat-cube-count {
+      .stat-cube-count,
+      .cube-value {
         font-size: 1.15rem !important;
         line-height: 1.1 !important;
         margin: 1px 0 !important;
         font-weight: 700 !important;
       }
-      .stat-cube-label {
+      .stat-cube-label,
+      .cube-caption {
         font-size: 11px !important;
         line-height: 1.25 !important;
         white-space: normal !important;
+        word-break: break-word !important;
+      }
         font-weight: 600 !important;
         letter-spacing: normal !important;
         overflow-wrap: break-word !important;
@@ -5693,20 +5965,10 @@
   .dashboard-topbar > div { flex-wrap: wrap; }
 }
 
-/* Keep header regions in separate grid cells at intermediate desktop widths. */
+/* Responsive refinements for search/sort bar and cockpit header */
 @media (min-width: 881px) {
-  .dashboard-app .dashboard-sidebar { display: grid !important; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; }
-  .dashboard-sidebar-brand { min-width: 0; }
-  .header-progress-hub { grid-column: 1 / -1; width: 100%; max-width: none; }
-  .dashboard-mode-switcher { width: auto; order: initial; max-width: 460px; }
-  .header-progress-info { max-width: 300px; }
-  .header-progress-title-row { flex-wrap: wrap; }
   .search-sort-compact-bar { flex-wrap: wrap; }
   .search-input-wrapper { flex-basis: 200px; }
-}
-@media (min-width: 1600px) {
-  .dashboard-app .dashboard-sidebar { grid-template-columns: minmax(300px, 1fr) auto minmax(580px, 1.6fr); }
-  .header-progress-hub { grid-column: auto; }
 }
 .dashboard-mode-switcher .mode-switch-btn { font-size: 14px !important; line-height: 1.4 !important; min-height: 44px; padding: 10px 14px; }
 

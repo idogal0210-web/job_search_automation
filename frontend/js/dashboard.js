@@ -2639,6 +2639,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (pctTextEl) pctTextEl.textContent = pct + '%';
     if (summaryChipEl) summaryChipEl.textContent = pct + '% מוינו';
 
+    const radialTextEl = document.getElementById('radialProgressText');
+    const radialCircleEl = document.getElementById('radialProgressCircle');
+    if (radialTextEl) radialTextEl.textContent = pct + '%';
+    if (radialCircleEl) {
+      const circ = 188.5;
+      radialCircleEl.style.strokeDasharray = circ;
+      radialCircleEl.style.strokeDashoffset = (circ * (1 - (pct / 100))).toFixed(1);
+    }
+
     const pNew = activeBatchCount > 0 ? Math.round((totalNewInStore / activeBatchCount) * 100) : 0;
     const pStarred = activeBatchCount > 0 ? Math.round((totalStarredInStore / activeBatchCount) * 100) : 0;
     const pSaved = activeBatchCount > 0 ? Math.round((totalSavedInStore / activeBatchCount) * 100) : 0;
