@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261027011314">
+  <link rel="stylesheet" href="dashboard.css?v=20261027013200">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -80,16 +80,12 @@
         <!-- Progress Summary Info -->
         <div class="header-progress-info">
           <div class="header-progress-title-row">
-            <div style="display: flex; align-items: center; gap: 7px;">
-              <span class="header-progress-title">
-                <i class="ph-duotone ph-chart-pie-slice" style="color: var(--dashboard-cyan); font-size: 16px;"></i>
-                התקדמות סקירה
-              </span>
-              <span class="dashboard-chip" id="progressSummaryChip" style="font-size: 11px; padding: 2px 8px;">0% נסקרו</span>
-            </div>
-            <div style="font-size: 12px; color: var(--dashboard-muted);">
-              <strong id="progressPctText" style="color: #fff; font-size: 14px;">0%</strong> מוינו
-            </div>
+            <span class="header-progress-title">
+              <i class="ph-duotone ph-chart-pie-slice" style="color: var(--dashboard-cyan); font-size: 14px;"></i>
+              <span>סקירה</span>
+            </span>
+            <span class="dashboard-chip progress-pct-chip" id="progressSummaryChip">0% מוינו</span>
+            <span id="progressPctText" style="display: none;" aria-hidden="true">0%</span>
           </div>
 
           <!-- Segmented Progress Bar -->
@@ -1879,14 +1875,14 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261027011314",
+      build_id: "20261027013200",
       schema_version: "2.0.0",
       generated_at: "27.10.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261027011314",
-      catalog_data_url: "data/historical_catalog.json?v=20261027011314"
+      jobs_data_url: "data/jobs.json?v=20261027013200",
+      catalog_data_url: "data/historical_catalog.json?v=20261027013200"
     };
   </script>
-  <script src="dashboard.js?v=20261027011314" defer></script>
+  <script src="dashboard.js?v=20261027013200" defer></script>
 </body>
 </html>

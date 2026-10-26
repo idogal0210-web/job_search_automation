@@ -80,16 +80,12 @@
         <!-- Progress Summary Info -->
         <div class="header-progress-info">
           <div class="header-progress-title-row">
-            <div style="display: flex; align-items: center; gap: 7px;">
-              <span class="header-progress-title">
-                <i class="ph-duotone ph-chart-pie-slice" style="color: var(--dashboard-cyan); font-size: 16px;"></i>
-                התקדמות סקירה
-              </span>
-              <span class="dashboard-chip" id="progressSummaryChip" style="font-size: 11px; padding: 2px 8px;">0% נסקרו</span>
-            </div>
-            <div style="font-size: 12px; color: var(--dashboard-muted);">
-              <strong id="progressPctText" style="color: #fff; font-size: 14px;">0%</strong> מוינו
-            </div>
+            <span class="header-progress-title">
+              <i class="ph-duotone ph-chart-pie-slice" style="color: var(--dashboard-cyan); font-size: 14px;"></i>
+              <span>סקירה</span>
+            </span>
+            <span class="dashboard-chip progress-pct-chip" id="progressSummaryChip">0% מוינו</span>
+            <span id="progressPctText" style="display: none;" aria-hidden="true">0%</span>
           </div>
 
           <!-- Segmented Progress Bar -->

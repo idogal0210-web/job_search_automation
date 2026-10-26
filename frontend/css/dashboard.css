@@ -262,64 +262,99 @@
     .dashboard-app .metrics-collapsible-content,
     .metrics-collapsible-content {
       display: flex !important;
-      align-items: center;
-      gap: 14px;
-      flex: 1;
-      justify-content: flex-end;
-      width: auto;
-      min-width: 0;
+      align-items: center !important;
+      gap: 10px !important;
+      width: auto !important;
+      min-width: 0 !important;
+      flex-shrink: 0 !important;
+      justify-content: flex-end !important;
     }
     .header-progress-info {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      min-width: 105px;
-      max-width: 135px;
-      flex-shrink: 0;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 3px !important;
+      width: 105px !important;
+      min-width: 105px !important;
+      max-width: 105px !important;
+      flex-shrink: 0 !important;
+      overflow: hidden !important;
+      white-space: nowrap !important;
     }
     .header-progress-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 6px;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      width: 100% !important;
+      gap: 4px !important;
+      white-space: nowrap !important;
+      line-height: 1.1 !important;
     }
     .header-progress-title {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      color: var(--dashboard-muted) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+      white-space: nowrap !important;
+    }
+    .progress-pct-chip {
+      font-size: 10.5px !important;
+      font-weight: 800 !important;
+      color: var(--dashboard-cyan) !important;
+      background: rgba(137, 244, 231, 0.12) !important;
+      border: 1px solid rgba(137, 244, 231, 0.3) !important;
+      border-radius: 6px !important;
+      padding: 1px 5px !important;
+      white-space: nowrap !important;
+      line-height: 1.2 !important;
+    }
+    .segmented-progress {
+      width: 100% !important;
+      height: 6px !important;
+      border-radius: 999px !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      display: flex !important;
+      overflow: hidden !important;
+      gap: 1.5px !important;
+      margin: 2px 0 0 0 !important;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+    }
+    .segmented-progress-bar {
+      height: 100% !important;
+      transition: width 0.4s ease !important;
     }
     .header-stat-cubes {
       display: grid !important;
-      grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-      gap: 8px !important;
+      grid-template-columns: repeat(4, 72px) !important;
+      gap: 6px !important;
       flex-shrink: 0 !important;
     }
     .dashboard-app .stat-cube-btn,
     .stat-cube-btn {
-      background: rgba(0, 0, 0, 0.28) !important;
+      background: rgba(0, 0, 0, 0.3) !important;
       border: 1px solid var(--dashboard-edge) !important;
-      border-radius: 18px !important;
-      padding: 7px 12px !important;
+      border-radius: 14px !important;
+      padding: 5px 4px !important;
       display: flex !important;
       flex-direction: column !important;
       align-items: center !important;
       justify-content: center !important;
       text-align: center !important;
-      gap: 3px !important;
+      gap: 2px !important;
       cursor: pointer !important;
-      min-width: 74px !important;
-      max-width: 88px !important;
-      min-height: auto !important;
-      height: auto !important;
+      width: 72px !important;
+      min-width: 72px !important;
+      max-width: 72px !important;
+      height: 56px !important;
+      min-height: 56px !important;
       box-sizing: border-box !important;
       color: var(--dashboard-text) !important;
       text-decoration: none !important;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
       box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.08) !important;
       position: relative !important;
+      flex-shrink: 0 !important;
     }
     .stat-cube-btn:hover {
       background: rgba(255, 255, 255, 0.08) !important;
@@ -347,15 +382,15 @@
       box-shadow: 0 4px 18px rgba(239, 68, 68, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
     }
     .stat-cube-icon {
-      width: 28px !important;
-      height: 28px !important;
-      border-radius: 9px !important;
+      width: 18px !important;
+      height: 18px !important;
+      border-radius: 6px !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-      font-size: 15px !important;
+      font-size: 11px !important;
       font-weight: 700 !important;
-      margin-bottom: 2px !important;
+      margin-bottom: 0 !important;
       box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
       flex-shrink: 0 !important;
     }
@@ -364,16 +399,19 @@
     .stat-cube-icon.cyan { background: var(--dashboard-cyan); color: #171c12; }
     .stat-cube-icon.rose { background: #fca5a5; color: #171c12; }
     .stat-cube-count {
-      font-size: 16px !important;
-      font-weight: 700 !important;
+      font-size: 14.5px !important;
+      font-weight: 800 !important;
       color: #fff !important;
       line-height: 1.1 !important;
+      margin: 0 !important;
     }
     .stat-cube-label {
-      font-size: 11px !important;
+      font-size: 9.5px !important;
       font-weight: 600 !important;
       color: var(--dashboard-muted) !important;
       white-space: nowrap !important;
+      line-height: 1 !important;
+      letter-spacing: -0.2px !important;
     }
 
     /* Stats Overview Grid (2 Cards: Search/Filters & Sector Chart) */
@@ -2522,15 +2560,16 @@
   background: transparent;
   border: 1px solid transparent;
   color: var(--dashboard-muted);
-  padding: 8px 18px;
+  padding: 7px 16px;
   border-radius: 999px;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  min-height: 38px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
 }
@@ -5905,7 +5944,8 @@
     grid-template-columns: 1fr auto 1fr !important;
     align-items: center !important;
     gap: 16px !important;
-    padding: 12px 20px !important;
+    padding: 10px 18px !important;
+    min-height: 76px !important;
   }
   .dashboard-sidebar-brand {
     grid-column: 1 !important;
@@ -5915,16 +5955,27 @@
   .dashboard-mode-switcher {
     grid-column: 2 !important;
     justify-self: center !important;
-    margin: 0 16px !important;
+    margin: 0 auto !important;
     width: auto !important;
     order: initial !important;
+    white-space: nowrap !important;
   }
   .header-progress-hub {
     grid-column: 3 !important;
     justify-self: end !important;
-    width: 100% !important;
-    max-width: 480px !important;
+    width: auto !important;
+    max-width: 100% !important;
     justify-content: flex-end !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+}
+
+/* On intermediate screens under 1150px, hide progress bar to prevent any collision */
+@media (max-width: 1150px) and (min-width: 881px) {
+  .header-progress-info {
+    display: none !important;
   }
 }
 
