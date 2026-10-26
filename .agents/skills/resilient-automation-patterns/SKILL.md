@@ -161,7 +161,7 @@ hierarchy:
 | Data Quality | Action |
 | --- | --- |
 | All sources succeeded | Produce full output, send normally |
-| Some sources failed, fallbacks used | Produce output with degradation banner: "⚠️ חלק מהנתונים מבוססים על מקור חלופי" |
+| Some sources failed, fallbacks used | Produce output with degradation banner: "[DEGRADED] חלק מהנתונים מבוססים על מקור חלופי" |
 | Critical sources failed | Do NOT send a broken/empty report. Log failure, alert, skip this run |
 | Infrastructure failure (SMTP, Git) | Retry once, then save output locally and alert |
 

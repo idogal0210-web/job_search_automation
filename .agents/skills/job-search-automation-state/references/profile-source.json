@@ -2,6 +2,6 @@
   "schema_version": 1,
   "status": "configured",
   "candidate_identity": "Ido Gal",
-  "candidate_profile_path": "/Users/ido/.gemini/antigravity/scratch/התאמת קו״ח & הכנה לראיון/base_profile.md",
+  "candidate_profile_path": "/Users/ido/.gemini/antigravity/scratch/job_search_automation/tools/cv_tailor/base_profile.md",
   "instruction": "Canonical verified candidate profile for Ido Gal. Maintained as single source of truth."
 }

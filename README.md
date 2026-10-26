@@ -54,7 +54,9 @@ job_search_automation/
 │   ├── historical_catalog.json     # קטלוג היסטורי למניעת כפילויות בין סבבים
 │   ├── evaluation_state.json       # מטמון הערכות ותור משרות הממתינות לבדיקה חוזרת
 │   └── evaluation_benchmark_template.json # תבנית ומדגם נתוני כיול למדידת איכות מודלים
-├── tests/                          # חבילת בדיקות אוטומטית מלאה (59 בדיקות עוברות)
+├── tools/                          # כלי עזר ומנועי קריירה נלווים
+│   └── cv_tailor/                  # מנוע התאמת קו"ח (CV Tailoring Engine), מכתבים מקדימים והכנה לראיונות
+├── tests/                          # חבילת בדיקות אוטומטית מלאה (291 בדיקות עוברות)
 │   ├── test_recovery.py            # בדיקות שחזור והתאוששות מכשלים
 │   ├── test_salary_intelligence.py # בדיקות יחידה למנוע הערכת השכר
 │   ├── test_requeue.py             # בדיקות מנגנון החזרה לתור של משרות

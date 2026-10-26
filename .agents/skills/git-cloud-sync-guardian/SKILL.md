@@ -3,13 +3,13 @@ name: git-cloud-sync-guardian
 description: מנטר, מאמת ומבטיח סנכרון מלא ודו-כיווני בין תיקיית העבודה המקומית למאגר ה-Git בענן (GitHub/Cloud), ומונע כשלי ביצוע משימות, דחיית פושים (non-fast-forward), קונפליקטים ודליפות קבצים. כולל את כללי הברזל ל-GitOps ב-CI/CD.
 ---
 
-# Git Cloud Sync Guardian & GitOps Authority 🛡️
+# Git Cloud Sync Guardian & GitOps Authority
 
 סקיל זה נועד להבטיח **התאמה מוחלטת (1:1)** בין סביבת העבודה המקומית למאגר ה-Git בענן (GitHub / Remote), למנוע קונפליקטים, לחסום דחיות (Pushes Rejected), ולהבטיח שרידות מלאה של תהליכי GitOps אוטומטיים בריצות CI/CD (GitHub Actions) ובריצות מקומיות כאחד.
 
 ---
 
-## 🧭 עקרון הליבה: Zero Divergence, Zero Broken Pipelines
+## עקרון הליבה: Zero Divergence, Zero Broken Pipelines
 
 סביבת עבודה מקומית שאינה מסונכרנת עם ה-Remote גורמת ל:
 1. **דחיות Push** (`[rejected - non-fast-forward]`) עקב שינויים שבוצעו ב-GitHub Actions או במחשב אחר במקביל.
@@ -18,7 +18,7 @@ description: מנטר, מאמת ומבטיח סנכרון מלא ודו-כיוו
 
 ---
 
-## 📋 שלב 1: אימות טרום-ביצוע משימה (Pre-Execution Alignment)
+## שלב 1: אימות טרום-ביצוע משימה (Pre-Execution Alignment)
 
 לפני כל שינוי בקוד, הרצת סקריפט או ביצוע משימה, חובה לוודא שהסביבה המקומית מעודכנת מול ה-Remote:
 
@@ -60,7 +60,7 @@ echo "Dirty files locally: $DIRTY"
 
 ---
 
-## 🔒 שלב 2: הגנות בזמן ביצוע המשימה (In-Execution Guardrails)
+## שלב 2: הגנות בזמן ביצוע המשימה (In-Execution Guardrails)
 
 בזמן הרצת תהליכים (איסוף דאטה, ריצות טסטים או עדכון סקריפטים):
 
@@ -82,7 +82,7 @@ echo "Dirty files locally: $DIRTY"
 
 ---
 
-## 🤖 שלב 3: חוקי ברזל ל-GitOps באוטומציות CI/CD (GitHub Actions)
+## שלב 3: חוקי ברזל ל-GitOps באוטומציות CI/CD (GitHub Actions)
 
 בעת כתיבה, עריכה או בדיקה של קובצי Workflow ב-`.github/workflows/`:
 
@@ -112,7 +112,7 @@ fi
 
 ---
 
-## 🚀 שלב 4: הפרוטוקול המקומי לשמירה וסנכרון לענן (Post-Execution Atomic Push)
+## שלב 4: הפרוטוקול המקומי לשמירה וסנכרון לענן (Post-Execution Atomic Push)
 
 בסיום ביצוע משימה מקומית, יש לדחוף את השינויים לענן בצורה אטומית:
 
@@ -145,16 +145,16 @@ LOCAL_REV=$(git rev-parse HEAD)
 REMOTE_REV=$(git rev-parse origin/$BRANCH)
 
 if [ "$LOCAL_REV" = "$REMOTE_REV" ] && [ -z "$(git status --porcelain)" ]; then
-  echo "✅ SYNC SUCCESS: Local workspace and cloud are 100% matched!"
+  echo "[SYNC SUCCESS] Local workspace and cloud are 100% matched!"
 else
-  echo "❌ SYNC WARNING: Mismatch detected between local ($LOCAL_REV) and cloud ($REMOTE_REV)!"
+  echo "[SYNC WARNING] Mismatch detected between local ($LOCAL_REV) and cloud ($REMOTE_REV)!"
   exit 1
 fi
 ```
 
 ---
 
-## 🛠️ שלב 5: טיפול בכשלים והתאוששות (Disaster Recovery & Fallbacks)
+## שלב 5: טיפול בכשלים והתאוששות (Disaster Recovery & Fallbacks)
 
 | סוג שגיאה | גורם | פתרון מומלץ |
 | :--- | :--- | :--- |

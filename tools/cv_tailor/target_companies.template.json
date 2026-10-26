@@ -1,0 +1,23 @@
+{
+  "schema_version": 2,
+  "last_updated": "2026-10-26",
+  "approved_by_user": true,
+  "hard_excluded_companies": [
+    "ExcludedCompany1",
+    "ExcludedCompany2"
+  ],
+  "categories": {
+    "renewables": {
+      "title_he": "אנרגיה מתחדשת",
+      "companies": [
+        {
+          "rank": 1,
+          "name_he": "חברה לדוגמה",
+          "name_en": "Sample Energy Corp",
+          "domain": "example.com",
+          "focus": "פיתוח והקמת מתקני אנרגיה"
+        }
+      ]
+    }
+  }
+}
