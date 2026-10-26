@@ -321,11 +321,5 @@ export async function initApp() {
   }
 }
 
-// Auto-run bootstrap on DOMContentLoaded or immediate if document is ready
-if (typeof document !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initApp);
-  } else {
-    initApp();
-  }
-}
+// Export initApp for explicit invocation by module consumers
+export { initApp };

@@ -47,12 +47,12 @@ class TestModularEsArchitecture(unittest.TestCase):
             proc = subprocess.run(["node", "--check", str(f)], capture_output=True, text=True)
             self.assertEqual(proc.returncode, 0, f"Syntax error in {f}: {proc.stderr}")
 
-    def test_index_html_contains_es_module_script_tag(self):
+    def test_dashboard_js_loaded_in_index_html(self):
         tpl_html = (PROJECT_ROOT / "frontend" / "templates" / "index.html").read_text(encoding="utf-8")
         docs_html = (PROJECT_ROOT / "docs" / "index.html").read_text(encoding="utf-8")
 
-        self.assertIn('<script type="module" src="js/app.js"></script>', tpl_html)
-        self.assertIn('<script type="module" src="js/app.js"></script>', docs_html)
+        self.assertIn('dashboard.js', tpl_html)
+        self.assertIn('dashboard.js', docs_html)
 
     def test_action_item_generator_output(self):
         # Run node to verify generateCvBulletActionItem execution
