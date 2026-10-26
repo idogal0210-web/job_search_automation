@@ -31,7 +31,8 @@ job_search_automation/
 ├── main.py                         # Application CLI entrypoint; coordinates fetch, evaluation, storage, and build
 ├── PROJECT_CONTEXT.md              # Single source of truth context anchor for AI agents and developers
 ├── requirements.txt                # Python package dependencies
-├── .python-version                 # Target Python runtime anchor (Python 3.14 / 3.9+)
+├── requirements-lock.txt           # Exact pinned dependencies for reproducible builds
+├── .python-version                 # Target Python runtime anchor (Python 3.11 / 3.9+)
 ├── .agents/                        # Operational policies and domain skills
 │   ├── rules/                      # System rules (mcp-policy.md, hebrew-rtl.md, critical-thinking-quality.md)
 │   └── skills/                     # Specialized skills (salary-intelligence, cloud-sync, health-audit, etc.)
@@ -42,7 +43,8 @@ job_search_automation/
 ├── frontend/                       # Source files for the web application (modular separation)
 │   ├── templates/index.html        # HTML layout shell and metadata slots
 │   ├── css/dashboard.css           # Modular dashboard CSS styles
-│   └── js/dashboard.js             # Client-side SPA application logic and data fetcher
+│   ├── js/dashboard.js             # Client-side SPA application logic and data fetcher
+│   └── assets/                     # Local static assets and company logos
 ├── src/
 │   ├── pipeline.py                 # Core orchestration pipeline managing run health, stages, and metrics
 │   ├── fetchers.py                 # Multi-source scrapers for LinkedIn, Drushim, and direct Comeet ATS
@@ -52,7 +54,8 @@ job_search_automation/
 │   ├── salary_engine.py            # Evidence-based salary prediction, comparable role calibration, confidence scoring
 │   ├── state_manager.py            # Job deduplication, status tracking (QUALIFIED/DISQUALIFIED/RETRY_PENDING), storage
 │   ├── ui_builder.py               # Build orchestrator compiling frontend/ assets and data into docs/
-│   └── publishers.py               # Email dispatch and webhook notification services
+│   ├── url_utils.py                # URL validation, normalization, and sanitization
+│   └── publishers.py               # Email dispatch and notification services
 ├── docs/
 │   ├── index.html                  # Lightweight production SPA shell (~31KB) hosted on GitHub Pages
 │   ├── dashboard.css               # Compiled dashboard styles
@@ -63,27 +66,32 @@ job_search_automation/
 │   │   ├── jobs.json               # Current jobs payload (schema version 2.0.0, UI-compacted)
 │   │   └── historical_catalog.json # Historical catalog for on-demand lazy lookup
 │   ├── UPGRADE_STATUS.md           # Upgrade implementation tracking matrix for tasks U1-U7
-│   └── assets/                     # Static UI assets and fonts
+│   ├── AUDIT_2026-10-26.md         # Comprehensive local audit and integration verification report
+│   ├── assets/                     # Static UI assets, fonts, and local company logos
+│   └── archive/                    # Archived planning specifications and historical declarations
 ├── data/
 │   ├── jobs_state.json             # Active tracked job identifiers and links
 │   ├── weekly_archive.json         # Complete weekly archive containing full metadata, AI scores, and salary data
 │   ├── historical_catalog.json     # Historical job catalog for cross-cycle deduplication
 │   ├── evaluation_state.json       # Evaluation cache and retry pending queues
 │   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
-├── scripts/
-│   └── evaluate_dataset.py         # Confusion matrix, Precision/Recall/F1 and False Negatives evaluator
-├── tests/                          # Automated unit and integration test suite (73 passing tests)
-│   ├── test_curated_tags.py        # Curated operational tags positive triggers & negative guards tests (14 tests)
+├── tools/                          # Standalone modular tooling
+│   └── cv_tailor/                  # Fact-based CV tailoring and interview prep engine
+├── tests/                          # Automated unit and integration test suite (291 passing tests)
+│   ├── test_curated_tags.py        # Curated operational tags positive triggers & negative guards tests
 │   ├── test_recovery.py            # Degradation and error recovery tests
 │   ├── test_salary_intelligence.py # Salary prediction engine tests
 │   ├── test_requeue.py             # Evaluation requeue and retry tests
 │   ├── test_main_integration.py    # Pipeline integration tests
-│   ├── test_evidence_assessments.py# U4: Requirement assessments & evidence validation tests
-│   ├── test_benchmark_metrics.py   # U5: Benchmark dataset evaluation tests
-│   ├── test_comeet_connector.py    # U7: Direct Comeet ATS connector tests
+│   ├── test_evidence_assessments.py# Requirement assessments & evidence validation tests
+│   ├── test_benchmark_metrics.py   # Benchmark dataset evaluation tests
+│   ├── test_comeet_connector.py    # Direct Comeet ATS connector tests
+│   ├── test_cv_tailor.py           # CV Tailor engine verification tests
+│   ├── test_career_studio_spec.py  # Career Studio specifications tests
 │   ├── test_phase_b_precision.py   # AI evaluation precision and schema tests
 │   └── test_reliability_phase_a.py # Scraper and fallback reliability tests
 └── scripts/
+    ├── evaluate_dataset.py         # Confusion matrix, Precision/Recall/F1 and False Negatives evaluator
     └── requeue_jobs.py             # Utility script for re-evaluating pending or cached jobs
 ```
 

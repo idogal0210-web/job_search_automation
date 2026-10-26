@@ -29,7 +29,7 @@ Execute this comprehensive 5-step procedure whenever the user issues the trigger
 ## שלב 3 - שמירה ובנייה מקומית (Local Persistence & Build)
 1. **שמירה בדיסק:** ודא שכל הקבצים שנערכו או נוצרו נשמרו מקומית בדיסק.
 2. **סריקת סודות ואפס אימוג'ים:** בצע סריקת pre-commit למניעת דליפת מפתחות ואמת אפס אימוג'ים בקבצים החדשים.
-3. **עדכון מסמכי הליבה:** בעת שינוי ארכיטקטוני או שינוי תלויות, ודא סנכרון של `PROJECT_CONTEXT.md`, `README.md`, `requirements.txt` ו-`skills-lock.json`.
+3. **עדכון מסמכי הליבה:** בעת שינוי ארכיטקטוני או שינוי תלויות, ודא סנכרון של `PROJECT_CONTEXT.md`, `README.md`, `requirements.txt` ו-`requirements-lock.txt`.
 4. **אימות .gitignore:** ודא שקובץ `.gitignore` קיים ומתעלם כראוי מ-`.env`, ספריות וירטואליות (`venv/`), ומטמונים.
 
 ## שלב 4 - סנכרון ודחיפה ל-GitHub (GitHub Synchronization)
