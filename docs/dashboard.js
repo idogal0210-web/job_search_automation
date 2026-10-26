@@ -440,6 +440,18 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         cloudBadge.style.borderColor = 'rgba(255, 211, 104, 0.4)';
         cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: var(--dashboard-gold); box-shadow: 0 0 8px var(--dashboard-gold);"></span> <i class="ph-duotone ph-cloud-arrow-up"></i> <span>מעדכן ענן...</span>';
       }
+    } else if (status === 'local') {
+      if (headerDot) {
+        headerDot.className = 'sync-status-dot local';
+        headerDot.title = 'אחסון מקומי (פרטי)';
+      }
+      if (headerIcon) headerIcon.classList.remove('ph-spin');
+      if (cloudBadge) {
+        cloudBadge.className = 'dashboard-chip cloud-local';
+        cloudBadge.style.color = 'var(--dashboard-cyan, #89f4e7)';
+        cloudBadge.style.borderColor = 'rgba(137, 244, 231, 0.4)';
+        cloudBadge.innerHTML = '<span class="dashboard-dot" style="background: var(--dashboard-cyan, #89f4e7); box-shadow: 0 0 8px var(--dashboard-cyan, #89f4e7);"></span> <i class="ph-duotone ph-hard-drive"></i> <span>אחסון מקומי</span>';
+      }
     } else if (status === 'offline' || status === 'error') {
       if (headerDot) {
         headerDot.className = 'sync-status-dot offline';
@@ -464,7 +476,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     isSyncInProgress = true;
     try {
       setCloudSyncStatus('syncing');
-      if (!privateSync) { setCloudSyncStatus('offline'); return; }
+      if (!privateSync) { setCloudSyncStatus('local'); return; }
       const resp = await privateSync.read();
       if (!resp.ok) {
         throw new Error('Sync status: ' + resp.status);
@@ -573,7 +585,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         updated_at: timestamp
       };
 
-      if (!privateSync) { setCloudSyncStatus('offline'); return; }
+      if (!privateSync) { setCloudSyncStatus('local'); return; }
       const resp = await privateSync.compareAndSwap(payload, cloudLastUpdated);
       if (resp.ok) {
         cloudLastUpdated = Date.now();
@@ -3394,9 +3406,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     title_he: "בקר גז טבעי ותפעול מערכות אנרגיה | הנדסאי מכונות",
     title_en: "Gas Controller | Natural Gas & Energy Systems Operations | Practical Mechanical Engineer",
     contact: {
-      phone: "052-632-8886",
-      phone_intl: "+972-52-632-8886",
-      email: "idogal0210@gmail.com",
+      phone: "050-000-0000",
+      phone_intl: "+972-50-000-0000",
+      email: "contact@ido-gal.dev",
       linkedin: "https://www.linkedin.com/in/ido-g",
       location: "תל אביב"
     },
@@ -3424,7 +3436,7 @@ Energean בקר גז תפעול ומוצר אסדת הפקה FPSO נתג״ז PRM
 וולקן עוצמה אחמ״ש אבטחה מתקן אנרגיה אסטרטגי
 Group MER מתקין מערכות סולאריות PV שטח עבודה בגובה
 סיירת נח״ל חבלה והנדסה קרבית פלס 07 רובאי 08 מפעיל רחפנים מבצעי טלמטריה
-טלפון 052-632-8886 דואל idogal0210@gmail.com לינקדאין https://www.linkedin.com/in/ido-g`
+טלפון 050-000-0000 דואל contact@ido-gal.dev לינקדאין https://www.linkedin.com/in/ido-g`
   };
 
   const STATUTORY_HARD_GATES = [
@@ -5634,7 +5646,7 @@ Open for operations management and engineering roles in Israeli energy and clean
 ליצירת קשר דיסקרטי: candidate@confidential.il`;
 
   const ORIGINAL_CV_SUMMARY_TEXT = `עידו גל - הנדסאי מכונות רשום (דיפלומה מס' 115011)
-טלפון: 052-632-8886 | אימייל: idogal94@gmail.com | פתח תקווה
+טלפון: 050-000-0000 | אימייל: contact@ido-gal.dev | פתח תקווה
 ניסיון: בקר גז טבעי בסופרגז טבעי / אנרג'יאן, תפעול מתקני PRMS בלחץ גבוה.
 הסמכות: ASME B31.8, ISO 45001, עבודה בגובה, היתר רעלים, לימודי חשמלאי מוסמך.
 מטיס פנים מוסמך ושילוב מכני של כטב״ם ורחפנים.`;

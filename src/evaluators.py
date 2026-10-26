@@ -7,7 +7,16 @@ from src.job_policy import NON_TECHNICAL_TITLES, deterministic_filter
 from src.salary_engine import evaluate_job_salary
 
 def load_target_companies():
-    """Load user-approved target companies and categories from search-preferences.json."""
+    """Load user-approved target companies and categories from search-preferences.json or local private override."""
+    local_override = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "search_preferences.local.json")
+    if os.path.exists(local_override):
+        try:
+            with open(local_override, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                return data.get("target_companies", []), data.get("target_companies_by_category", {})
+        except Exception:
+            pass
+
     pref_path = os.path.join(
         os.path.dirname(os.path.dirname(__file__)),
         ".agents", "skills", "job-search-automation-state", "references", "search-preferences.json"

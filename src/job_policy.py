@@ -1,3 +1,4 @@
+import os
 import re
 
 NON_TECHNICAL_TITLES = [
@@ -23,7 +24,13 @@ NON_TECHNICAL_TITLES = [
 # Ambiguous words must not disqualify a technical title by themselves.
 AMBIGUOUS = {"sales", "customer support", "service desk", "מוקד", "רכש", "קניין", "קניינית"}
 TECHNICAL = r"\b(?:technical|engineer|technician|scada|plc|hmi|bms)\b|הנדסאי|מהנדס|טכנאי|טכני|בקרה"
-BLACKLIST = ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון"]
+
+# Excluded employers: defaults with environment override via EXCLUDED_EMPLOYERS
+_env_blacklist = os.environ.get("EXCLUDED_EMPLOYERS", "")
+if _env_blacklist:
+    BLACKLIST = [e.strip().lower() for e in _env_blacklist.split(",") if e.strip()]
+else:
+    BLACKLIST = ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון"]
 KEYWORD_GROUPS = {
     "gas": ["natural gas", "גז טבעי"],
     "energy": ["energy", "אנרגיה", "תחנת כוח", "power plant"],

@@ -47,7 +47,7 @@ jobs:
         run: |
           python -m unittest discover tests/ -v
 
-      - name: Verify Dashboard Build
+      - name: Verify Dashboard Build & Sync
         run: |
           python -c "
           import tempfile
@@ -56,3 +56,6 @@ jobs:
               build_and_save_docs_app([], [], root, is_weekly=False)
           print('CI build test passed successfully')
           "
+          cmp docs/dashboard.css frontend/css/dashboard.css
+          cmp docs/dashboard.js frontend/js/dashboard.js
+          echo "Verified: docs/ CSS and JS are synchronized with frontend/ source of truth."

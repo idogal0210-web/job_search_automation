@@ -20,4 +20,6 @@ reports/
 .env.*
 *.pem
 *.key
+*.local.json
+data/*.local.json
 .agents/

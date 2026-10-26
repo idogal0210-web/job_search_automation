@@ -89,11 +89,44 @@ def evaluate_dataset_file(filepath, include_borderline=False):
     return compute_metrics(results)
 
 
+def sample_from_archive(output_path="data/benchmark_samples_to_label.json", count=30):
+    archive_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "weekly_archive.json")
+    if not os.path.exists(archive_path):
+        print(f"Archive not found at {archive_path}")
+        return
+    with open(archive_path, "r", encoding="utf-8") as f:
+        jobs = json.load(f)
+    samples = []
+    for idx, j in enumerate(jobs[:count], 1):
+        samples.append({
+            "sample_id": f"SMP-{idx:03d}",
+            "title": j.get("title", ""),
+            "company": j.get("company", ""),
+            "snippet": j.get("snippet", "")[:300],
+            "expected_label": "TODO: relevant / irrelevant / borderline",
+            "user_notes": ""
+        })
+    result = {
+        "description": "Ground-truth benchmark dataset for manual candidate evaluation",
+        "instructions": "Mark each expected_label as 'relevant', 'irrelevant', or 'borderline'",
+        "samples": samples
+    }
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
+    print(f"[+] Successfully exported {len(samples)} samples to {output_path} for manual labeling.")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Evaluate ground-truth benchmark dataset")
     parser.add_argument("--dataset", default="data/evaluation_benchmark_template.json", help="Path to benchmark JSON")
     parser.add_argument("--include-borderline", action="store_true", help="Include borderline samples as relevant")
+    parser.add_argument("--sample-archive", action="store_true", help="Export samples from weekly archive for manual labeling")
+    parser.add_argument("--output-sample", default="data/benchmark_samples_to_label.json", help="Destination path for sampled benchmark")
     args = parser.parse_args()
+
+    if args.sample_archive:
+        sample_from_archive(args.output_sample)
+        return
 
     try:
         metrics = evaluate_dataset_file(args.dataset, include_borderline=args.include_borderline)

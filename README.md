@@ -14,7 +14,8 @@ job_search_automation/
 ├── main.py                         # תהליך הריצה המרכזי ונקודת הכניסה (CLI Entrypoint)
 ├── PROJECT_CONTEXT.md              # עוגן ההקשר הרשמי ומקור האמת של הפרויקט עבור מפתחים וסוכני AI
 ├── requirements.txt                # תלויות פייתון
-├── .python-version                 # הגדרת גרסת פייתון (Python 3.14 / 3.9+)
+├── requirements-lock.txt           # נעילת גרסאות מדויקת לשחזור מלא של סביבת הריצה
+├── .python-version                 # הגדרת גרסת פייתון רשמית (Python 3.11)
 ├── .agents/                        # חוקי הפעלה ומיומנויות ייעודיות לסוכני AI
 │   ├── rules/                      # חוקי מערכת (zero-emojis.md, save-and-sync.md, hebrew-rtl.md, mcp-policy.md)
 │   └── skills/                     # מיומנויות עבודה (ai-ux-interaction, salary-intelligence, save-and-sync וכו')
@@ -73,11 +74,14 @@ job_search_automation/
 ## דרישות מערכת והתקנה
 
 ### סביבת ריצה
-- **גרסת Python נתמכת**: Python 3.9 ומעלה / Python 3.14 (מאומתת ומסונכרנת מול סביבת הענן ב-GitHub Actions).
+- **גרסת Python נתמכת**: Python 3.11 (תואמת ומסונכרנת לפי קובץ .python-version מול ריצות ה-CI ו-GitHub Actions).
 
 ### התקנת תלויות
 ```bash
 python3 -m pip install --upgrade pip
+# התקנה עם נעילת גרסאות לשחזור מלא:
+pip install -r requirements-lock.txt
+# או התקנת טווחי גרסאות:
 pip install -r requirements.txt
 ```
 
