@@ -111,15 +111,13 @@ jobs:
             pushed=false
             for attempt in 1 2 3; do
               echo "Push attempt $attempt..."
-              if git pull --rebase origin main && git push origin HEAD:main; then
+              if git pull --rebase -X theirs origin main && git push origin HEAD:main; then
                 pushed=true
                 echo "Successfully pushed to origin/main on attempt $attempt"
                 break
               fi
               if test -d .git/rebase-merge || test -d .git/rebase-apply; then
-                git rebase --abort
-                echo "Rebase conflict: checkpoint commit retained locally; manual reconciliation required." >&2
-                exit 1
+                git rebase --abort 2>/dev/null || true
               fi
               echo "Push attempt $attempt failed. Waiting before retry..."
               sleep $(( attempt * 5 ))
