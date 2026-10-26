@@ -31,6 +31,11 @@ jobs:
           python-version-file: .python-version
           cache: 'pip'
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -60,13 +65,19 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          for path in data/jobs_state.json data/evaluation_state.json data/weekly_archive.json data/historical_catalog.json docs/index.html; do
-            if test -f "$path"; then git add -- "$path"; fi
-          done
+          # Stage all data state and docs dashboard artifacts
+          git add data/ docs/
           
           if ! git diff --staged --quiet; then
             git commit -m "chore: save job evaluations and dashboard [skip ci]"
-            
+          fi
+
+          # Discard any remaining unstaged changes or untracked scratch files to guarantee clean working tree
+          git checkout -- . 2>/dev/null || true
+          git clean -fd 2>/dev/null || true
+
+          # Push only if local HEAD is ahead of origin/main
+          if [ $(git rev-list --count origin/main..HEAD) -gt 0 ]; then
             pushed=false
             for attempt in 1 2 3; do
               echo "Push attempt $attempt..."
@@ -75,7 +86,8 @@ jobs:
                 echo "Successfully pushed to origin/main on attempt $attempt"
                 break
               fi
-              echo "Push attempt $attempt failed. Waiting before retry..."
+              echo "Push attempt $attempt failed. Aborting failed rebase if in-progress..."
+              git rebase --abort 2>/dev/null || true
               sleep $(( attempt * 5 ))
             done
 
@@ -118,10 +130,10 @@ jobs:
 
           if sender and pwd:
               msg = MIMEMultipart()
-              msg['Subject'] = Header('⚠️ התראת תקלה: ריצת חיפוש המשרות נכשלה | עידו גל', 'utf-8')
+              msg['Subject'] = Header('[התראת תקלה] ריצת חיפוש המשרות נכשלה | עידו גל', 'utf-8')
               msg['From'] = Header(f'Job Search Alert <{sender}>', 'utf-8')
               msg['To'] = Header(recipient, 'utf-8')
-              body = f'<div dir=\"rtl\" style=\"font-family: Arial; padding: 20px;\"><h2 style=\"color: #dc2626;\">⚠️ התרחשה שגיאה בריצת חיפוש המשרות</h2><p>ריצת האוטומציה נתקלה בשגיאה באחד השלבים.</p><p><a href=\"{run_url}\" style=\"background: #dc2626; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block;\">צפה ביומן הריצה ב-GitHub Actions ↗</a></p></div>'
+              body = f'<div dir=\"rtl\" style=\"font-family: Arial; padding: 20px;\"><h2 style=\"color: #dc2626;\">[שגיאה] התרחשה שגיאה בריצת חיפוש המשרות</h2><p>ריצת האוטומציה נתקלה בשגיאה באחד השלבים.</p><p><a href=\"{run_url}\" style=\"background: #dc2626; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; display: inline-block;\">צפה ביומן הריצה ב-GitHub Actions ↗</a></p></div>'
               msg.attach(MIMEText(body, 'html', 'utf-8'))
               server = smtplib.SMTP('smtp.gmail.com', 587, timeout=20)
               server.starttls()
