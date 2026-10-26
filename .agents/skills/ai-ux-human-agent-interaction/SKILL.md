@@ -77,6 +77,22 @@ To prevent broken, blurry, or missing corporate emblems:
 - **Graceful Error States:** If Gemini rate-limits or a network timeout occurs, present a clean fallback state without breaking the dashboard.
 - **Never Fabricate Progress:** Never display arbitrary percentage progress rings unless backed by real streaming execution events.
 
+### 3.9 Symmetrical Header Bar & Centered Mode Switcher (Desktop Isolation)
+- **Mathematical Centering:** In `.dashboard-sidebar` on desktop (`min-width: 1025px`), use CSS Grid `1fr auto 1fr`. Column 1 holds Brand tools (right), Column 2 centers the Mode Switcher (`לוח משרות` / `סטודיו קריירה`) at exactly 50% screen width, and Column 3 holds category cubes and progress telemetry (left).
+- **Desktop-Only Boundary:** Never leak desktop two-tier or grid refactors into mobile breakpoints (`max-width: 900px`). Mobile must retain its compact vertical single-line summary with the expandable toggle (`#metricsToggleBtn`).
+
+### 3.10 Right-Hand Vertical Pipeline Sidebar for RTL Workspaces
+- **Natural Reading Anchor:** In RTL Hebrew applications, workspace subnavigation and auxiliary action panels must sit on the right-hand side (`grid-template-columns: 310px minmax(0, 1fr)`).
+- **Sticky Accessibility:** The right-hand sidebar must be sticky (`position: sticky; top: 16px;`) so pipeline steps and active document status remain visible during vertical scrolling.
+
+### 3.11 Schematic Sequential Steps & Zero Cognitive Overload
+- **Uniform Visual Hierarchy:** All sequential step buttons (Steps 1 to 6) must feature uniform heights, uniform typography, distinct icons, and circular number badges.
+- **Clutter Elimination:** Avoid information overload, redundant percentage labels, or walls of text inside navigation hubs and sidebars.
+
+### 3.12 Independent Document Upload Architecture
+- **Manual CV Upload:** Support manual user resume uploads (PDF, DOCX, TXT) with clear status reflection, active filename display, and an instantaneous "איפוס לקו״ח בסיס" (Reset to baseline) option.
+- **Decoupled State:** Persist uploaded CV metadata safely in `localStorage` without disrupting baseline candidate profiles or automated scraping runs.
+
 ---
 
 ## 4. Definition of Done

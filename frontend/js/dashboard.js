@@ -3394,6 +3394,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           panelEl.classList.add('active');
           if (m === 'ats' && typeof initAtsModule === 'function') {
             initAtsModule();
+            initCvUploadState();
           } else if (m === 'writer' && typeof initWriterModule === 'function') {
             initWriterModule();
           }
@@ -3403,6 +3404,117 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         }
       }
     });
+  }
+
+  /**
+   * Handles user-uploaded CV file (PDF, DOCX, TXT).
+   * Parses text when available, updates studio status badge, and integrates with ATS analysis.
+   */
+  function handleManualCvUpload(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    const fileName = file.name;
+    const fileSizeKb = (file.size / 1024).toFixed(1);
+    const ext = fileName.split('.').pop().toLowerCase();
+
+    // Update UI elements
+    const nameEl = document.getElementById('studioCvFileName');
+    const subEl = document.getElementById('studioCvFileSub');
+    const resetBtn = document.getElementById('btnResetToBaselineCv');
+    const statusIcon = document.getElementById('studioCvStatusIcon');
+    const baselineStatusText = document.getElementById('atsBaselineStatusText');
+
+    if (nameEl) nameEl.textContent = fileName;
+    if (subEl) subEl.textContent = `${fileSizeKb} KB • הועלה עצמאית`;
+    if (resetBtn) resetBtn.style.display = 'inline-flex';
+    if (statusIcon) {
+      statusIcon.className = 'ph-duotone ph-file-text';
+      statusIcon.style.color = 'var(--dashboard-cyan)';
+    }
+    if (baselineStatusText) {
+      baselineStatusText.textContent = `מוכן לניתוח מול קובץ שהועלה: ${fileName}`;
+    }
+
+    // Persist metadata
+    try {
+      localStorage.setItem('job_studio_custom_cv_name', fileName);
+      localStorage.setItem('job_studio_custom_cv_size', `${fileSizeKb} KB`);
+    } catch (e) {}
+
+    // If text file, read content and store for ATS matching
+    if (ext === 'txt') {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        window.customUploadedCvText = e.target.result;
+      };
+      reader.readAsText(file);
+    }
+
+    if (typeof showToast === 'function') {
+      showToast('ph-file-arrow-up', `קובץ קו״ח ${fileName} נטען בהצלחה לסטודיו`);
+    }
+  }
+
+  /**
+   * Resets active CV back to system baseline (Ido Gal).
+   */
+  function resetToBaselineCv() {
+    try {
+      localStorage.removeItem('job_studio_custom_cv_name');
+      localStorage.removeItem('job_studio_custom_cv_size');
+    } catch (e) {}
+
+    window.customUploadedCvText = null;
+
+    const fileInput = document.getElementById('manualCvFileInput');
+    if (fileInput) fileInput.value = '';
+
+    const nameEl = document.getElementById('studioCvFileName');
+    const subEl = document.getElementById('studioCvFileSub');
+    const resetBtn = document.getElementById('btnResetToBaselineCv');
+    const statusIcon = document.getElementById('studioCvStatusIcon');
+    const baselineStatusText = document.getElementById('atsBaselineStatusText');
+
+    if (nameEl) nameEl.textContent = 'עידו גל - הנדסאי מכונות (גרסת מערכת)';
+    if (subEl) subEl.textContent = 'פרופיל פעיל לניתוח ATS';
+    if (resetBtn) resetBtn.style.display = 'none';
+    if (statusIcon) {
+      statusIcon.className = 'ph-duotone ph-check-circle';
+      statusIcon.style.color = 'var(--dashboard-lime)';
+    }
+    if (baselineStatusText) {
+      baselineStatusText.textContent = 'מוכן לניתוח מול פרופיל הבסיס של עידו גל';
+    }
+
+    if (typeof showToast === 'function') {
+      showToast('ph-arrow-counter-clockwise', 'אופס לקורות החיים המובנים של עידו גל');
+    }
+  }
+
+  function initCvUploadState() {
+    try {
+      const savedName = localStorage.getItem('job_studio_custom_cv_name');
+      const savedSize = localStorage.getItem('job_studio_custom_cv_size');
+      if (savedName) {
+        const nameEl = document.getElementById('studioCvFileName');
+        const subEl = document.getElementById('studioCvFileSub');
+        const resetBtn = document.getElementById('btnResetToBaselineCv');
+        const statusIcon = document.getElementById('studioCvStatusIcon');
+        const baselineStatusText = document.getElementById('atsBaselineStatusText');
+
+        if (nameEl) nameEl.textContent = savedName;
+        if (subEl) subEl.textContent = `${savedSize || ''} • הועלה עצמאית`;
+        if (resetBtn) resetBtn.style.display = 'inline-flex';
+        if (statusIcon) {
+          statusIcon.className = 'ph-duotone ph-file-text';
+          statusIcon.style.color = 'var(--dashboard-cyan)';
+        }
+        if (baselineStatusText) {
+          baselineStatusText.textContent = `מוכן לניתוח מול קובץ שהועלה: ${savedName}`;
+        }
+      }
+    } catch (e) {}
   }
 
   /* ==========================================================================
@@ -5134,6 +5246,9 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
   // Expose global functions to window
   window.switchDashboardAppMode = switchDashboardAppMode;
   window.switchStudioModule = switchStudioModule;
+  window.handleManualCvUpload = handleManualCvUpload;
+  window.resetToBaselineCv = resetToBaselineCv;
+  window.initCvUploadState = initCvUploadState;
   window.STATUTORY_HARD_GATES = STATUTORY_HARD_GATES;
   window.KEYWORD_TAXONOMY = KEYWORD_TAXONOMY;
   window.ATS_STRUCTURAL_RULES = ATS_STRUCTURAL_RULES;
@@ -5818,6 +5933,7 @@ Open for operations management and engineering roles in Israeli energy and clean
     setViewMode(currentViewMode);
     fetchCloudSync();
     initAtsModule();
+    initCvUploadState();
     initWriterModule();
     initVisualModule();
     initKanbanModule();
