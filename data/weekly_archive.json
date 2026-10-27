@@ -1,240 +1,5 @@
 [
   {
-    "title": "System Engineer - Renewable Energy & Energy Storage Projects",
-    "company": "Nextcom group",
-    "link": "https://il.linkedin.com/jobs/view/system-engineer-renewable-energy-energy-storage-projects-at-nextcom-group-4478214360",
-    "snippet": "System Engineer - Renewable Energy & Energy Storage Projects",
-    "query": "Solar Field Service Engineer",
-    "source": "LinkedIn",
-    "match_score": 92,
-    "concrete_matches_count": 3,
-    "reasoning": "המשרה מתאימה במדויק לפרופיל של עידו כהנדסאי מכונות עם התמחות באנרגיה סולארית ואגירת אנרגיה (BESS).",
-    "sector_key": "energy",
-    "sector": "אגירת אנרגיה",
-    "location": "ישראל / מרכז",
-    "company_domain_product": "נקסטקום היא חברה מובילה בתחום תשתיות תקשורת, אנרגיה מתחדשת, פרויקטים סולאריים ומערכות אגירת אנרגיה.",
-    "job_summary": "ניהול, תכנון הנדסי והובלת פרויקטים בתחום האנרגיה המתחדשת ומערכות אגירת אנרגיה (BESS), כולל תיאום טכני, פיקוח בשטח ועבודה ממשקת מול קבלנים וספקים.",
-    "experience_strengths": "ההתמחות של עידו בהנדסאי מכונות ואנרגיה ירוק (סולארי ו-BESS) לצד הבנה רחבה במערכות חשמל ושליטה, מעניקים לו יתרון משמעותי בהובלת פרויקטים הנדסיים מורכבים.",
-    "key_highlights": "התאמה מלאה לעולם האנרגיה המתחדשת והאגירה, עם דגש על שילוב בין הבנה תיאורטית ליכולות ביצוע בשטח.",
-    "company_size": "חברה ציבורית בינונית-גדולה (מעל 500 עובדים)",
-    "junior_openness": "מתאים להנדסאים עם רקע מעשי מוכק באנרגיה ותשתיות",
-    "work_model": "היברידי / שטח",
-    "company_requirements": "השכלה כמהנדס/ת או הנדסאי/ת מכונות/חשמל, ניסיון בפרויקטים בתחום האנרגיה המתחדשת או תשתיות חשמל, יכולת ניהול ממשקים ועבודה עצמאית.",
-    "salary_range": "12,500 - 16,500 ₪ (מקובל רכב ענפי)",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-    "salary_source_url": "",
-    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: סולארי ואגירת אנרגיה (PV / BESS).",
-    "date": "2026-10-18",
-    "salary_confidence": "low",
-    "has_shifts": false,
-    "has_company_car": false,
-    "has_on_call": false,
-    "quality_level": "insufficient",
-    "quality_reasons": [
-      "מודעת המשרה אינה כוללת שכר נקוב",
-      "התפקיד אינו משויך לטבלאות השכר המאושרות"
-    ],
-    "estimate_type": "insufficient_data",
-    "compensation_basis": "unknown",
-    "pay_period": "month",
-    "p25": null,
-    "p50": null,
-    "p75": null,
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFcEtKaxjSiqg/company-logo_100_100/B4DZv6og5pHEAQ-/0/1769436483754/nextcom_group_2_logo?e=2147483647&v=beta&t=Qt5HlSc3Y6EhUCBKGMGClFsUDVG77SKZYPfOOaiy8pA",
-    "status": "QUALIFIED",
-    "technical_role": true,
-    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
-  },
-  {
-    "title": "Field Service Engineer (Ashdod)",
-    "company": "Siemens Energy",
-    "link": "https://il.linkedin.com/jobs/view/field-service-engineer-ashdod-at-siemens-energy-4478867677",
-    "snippet": "How to contribute to our vision as FS Engineer?\nTo ensure business continuity and operational excellence at the Paz Ashdod power station in Israel, Siemens Energy is seeking a Senior Field Service Engineer to support the critical SGT-A65 gas turbine operations. This role is essential for maintaining high equipment availability, delivering specialized technical support, and representing the Service Operations division directly on-site. To address these business aims, the role focuses on three core areas: advanced technical maintenance and commissioning of aeroderivative gas turbines, proactive troubleshooting and diagnostics, and close customer coordination to ensure seamless service delivery. These focus areas directly support the plant's operational uptime. Given the specialized nature of the SGT-A65 technology, the ideal candidate will possess a strong background in mechanical or electrical engineering, extensive experience in field service operations for gas turbines, and exceptional customer-facing communication skills.\nWhat You Need To Make a Difference\n50% Field Service troubleshooting & technical support\n1. Diagnose, troubleshoot, and resolve complex hardware and software faults on gas turbine control systems under tight schedules.\n2. Provide high-level technical support and expert consulting to customers and internal stakeholders regarding control system performance and upgrades.\n3. Lead site surveys, system assessments, and technical audits to identify potential system vulnerabilities and recommend preventive actions.\n30% Commissiong and control system engineering\n1. Execute complex commissioning, start-up, and optimization of Gas Turbine control systems at onshore customer sites.\n2. Perform software modifications, logic updates, and system parameter tuning in alignment with engineering standards and safety protocols.\n3. Conduct thorough functional testing of control loops, protection systems, and auxiliary interfaces during outages and commissioning phases",
-    "query": "Gas Transmission Technician",
-    "source": "LinkedIn",
-    "match_score": 85,
-    "concrete_matches_count": 8,
-    "reasoning": "התאמה גבוהה במיוחד הודות להתמחותו של עידו בגז טבעי והנדסת מכונות, לימודי החשמל והיכרות מעמיקה עם מערכות אנרגיה ובקרה התואמות ישירות לתחזוקת טורבינות גז בתחנת הכוח.",
-    "sector_key": "natural_gas",
-    "sector": "גז טבעי ותשתיות",
-    "location": "אשדוד",
-    "company_domain_product": "סימנס אנרגיה מפתחת ומספקת פתרונות, טורבינות גז וטכנולוגיות מתקדמות למשק האנרגיה ותחנות כוח.",
-    "job_summary": "מתן שירות שדה, פתרון תקלות חומרה ותוכנה והפעלה (Commissioning) למערכות בקרה של טורבינת הגז SGT-A65 בתחנת פז אשדוד. ביצוע כיול לולאות בקרה, עדכוני לוגיקה ובדיקות פונקציונליות להבטחת זמינות ורציפות תפעולית.",
-    "experience_strengths": "הנדסאי מכונות עם התמחות ייעודית בגז טבעי ואנרגיה, לימודי חשמלאי מוסמך, ורקע מעשי מוכח בחדרי בקרה ו-SCADA בתשתיות גז.",
-    "key_highlights": "הזדמנות להשתלב בענקית אנרגיה בינלאומית בתפקיד טכני מתקדם על גבי טורבינות גז קריטיות במשק הישראלי.",
-    "company_size": "10,000+ עובדים (גלובלי)",
-    "junior_openness": "בינונית (התפקיד מוגדר כ-Senior אך הרקע הייעודי בגז טבעי ובקרה פותח דלת משמעותית להנדסאי מוכשר)",
-    "work_model": "עבודת שטח באתר הלקוח (אשדוד)",
-    "company_requirements": "רקע במכונות או חשמל, ניסיון מעשי בשירות שדה או בקרה של טורבינות גז, ויכולת הובלת סקרים ובדיקות תפעוליות מורכבות.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-    "salary_source_url": "",
-    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-    "date": "2026-10-18",
-    "salary_confidence": "low",
-    "has_shifts": false,
-    "has_company_car": false,
-    "has_on_call": false,
-    "quality_level": "insufficient",
-    "quality_reasons": [
-      "מודעת המשרה אינה כוללת שכר נקוב",
-      "התפקיד אינו משויך לטבלאות השכר המאושרות"
-    ],
-    "estimate_type": "insufficient_data",
-    "compensation_basis": "unknown",
-    "pay_period": "month",
-    "p25": null,
-    "p50": null,
-    "p75": null,
-    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFEP39qSjZBGQ/company-logo_100_100/B4DZ82RPxaHgAQ-/0/1783321919016/siemens_energy_logo?e=2147483647&v=beta&t=W1HK8e0tEvjVap-QjwNYMknz-0FLftC-B2cl7RmR7G0",
-    "status": "QUALIFIED",
-    "technical_role": true,
-    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
-  },
-  {
-    "title": "OCS Technician",
-    "company": "Alstom",
-    "link": "https://il.linkedin.com/jobs/view/ocs-technician-at-alstom-4476451048",
-    "snippet": "At Alstom, we understand transport networks and what moves people. From high-speed trains, metros, monorails, and trams, to turnkey systems, services, infrastructure, signalling and digital mobility, we offer our diverse customers the broadest portfolio in the industry. Every day, more than 80 000 colleagues lead the way to greener and smarter mobility worldwide, connecting cities as we reduce carbon and replace cars.\nMaintenance Operator\nPurpose of the job\n- The Maintenance Operator is responsible to service, maintain, perform maintenace repairs of the overhead contcat system (OCS) , Transformers stations (TS) and Infrastructure equipment. As part of the maintenance team, they will ensure the equipment is serviced and maintained in a safe, efficient and cost effective manner whilst constantly seeking to improve quality.\nResponsibilities\nMaintenance\n- Work as directed by and in co-operation with the Team Leaders and Production Management Team in order to:-- Adhere to and work within Quality Systems to the current applicable standards.- Work as part of a team, complete or assist in any of the team's activities to ensure work is completed on time to specification.- Understand and follow work instructions, Standard Operating Sheets and Task Sequencing.- Apply Special Processes.- Support secondary level fault finding as and when required.- Use work related IT Systems as required including MMIS/SES to record progress of operations and status of issues.\nReporting\n- Accurately report status of operations, complete Work Checklists and Work Orders with the required level of detail including completion time.\nContinuous Improvement\n- Make suggestions and recommendations for productivity improvements working with the team leaders and Industrial Team.- Maintain 5S good housekeeping of all related work areas in accordance with set standards.\nTraining/Agility\n- Be capable of accepting training in other skills and carry out duties, e.g. forklift, road vehicle driving (if certified)",
-    "query": "BMS Operator",
-    "source": "LinkedIn",
-    "match_score": 80,
-    "concrete_matches_count": 6,
-    "reasoning": "התפקיד מתמקד באחזקת מערכות חשמול עילי (OCS) ותחנות השנאה בתשתית מסילתית, תחום המתאים ישירות לשילוב של הנדסאי מכונות ולימודי חשמל מוסמך.",
-    "sector_key": "operations",
-    "sector": "תפעול ואחזקה",
-    "location": "מרכז / ירושלים",
-    "company_domain_product": "תאגיד בינלאומי מוביל לפיתוח רכבות, מערכות תשתית מסילתיות ואלקטריפיקציה של תחבורה ציבורית.",
-    "job_summary": "ביצוע תחזוקה מונעת ושוטפת לרשת החשמל העילית (OCS), תחנות השנאה וציוד תשתית מסילתי. איתור תקלות אלקטרו-מכניות, עבודה לפי נהלי בטיחות מחמירים ודיווח במערכות MMIS.",
-    "experience_strengths": "השילוב של רקע מכאני מוצק, לימודי חשמלאי מוסמך ומשמעת שטח פיקודית מעניק מענה מצוין לתחזוקת תחנות השנאה ותשתיות מתח.",
-    "key_highlights": "השתלבות בפרויקטי תשתית תחבורתית קריטיים בחברה רב-לאומית, עם דגש על מערכות אלקטרו-מכניות מורכבות.",
-    "company_size": "גלובלית (80,000+ עובדים)",
-    "junior_openness": "בינונית-גבוהה (מתאים להנדסאים/טכנאים בעלי אוריינטציה טכנית מעשית ונכונות להכשרה)",
-    "work_model": "עבודת שטח ואחזקה",
-    "company_requirements": "רקע טכני במכונות/חשמל, יכולת עבודה בצוות, פתרון תקלות דרג ב', ונכונות לעבודת שטח ואחזקה לפי תקני איכות ובטיחות.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-    "salary_source_url": "",
-    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-    "date": "2026-10-18",
-    "salary_confidence": "low",
-    "has_shifts": false,
-    "has_company_car": false,
-    "has_on_call": false,
-    "quality_level": "insufficient",
-    "quality_reasons": [
-      "מודעת המשרה אינה כוללת שכר נקוב",
-      "התפקיד אינו משויך לטבלאות השכר המאושרות"
-    ],
-    "estimate_type": "insufficient_data",
-    "compensation_basis": "unknown",
-    "pay_period": "month",
-    "p25": null,
-    "p50": null,
-    "p75": null,
-    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI",
-    "status": "QUALIFIED",
-    "technical_role": true,
-    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
-  },
-  {
-    "title": "CAD Operator - Haifa Nazareth LRT Project",
-    "company": "Alstom",
-    "link": "https://il.linkedin.com/jobs/view/cad-operator-haifa-nazareth-lrt-project-at-alstom-4462520336",
-    "snippet": "At Alstom, we understand transport networks and what moves people. From high-speed trains, metros, monorails, and trams, to turnkey systems, services, infrastructure, signalling and digital mobility, we offer our diverse customers the broadest portfolio in the industry. Every day, more than 80 000 colleagues lead the way to greener and smarter mobility worldwide, connecting cities as we reduce carbon and replace cars.\nResponsibilities\nTechical Missions:\nAccountable for:\nUnderstand and analyse requirements in contractual technical documents\nUnderstand a horizontal and vertical railway alignment\nUnder supervision prepare track alignment and track design documents\nUnder supervision prepare the required track documents for construction team (drawings, listings…)\nAssimilation and Deployment of track installation principles so as to carry out proper design\nResponsible for:\nRespect of drawing codification and submission process\nPrepare the track material quantities\nPosition Track components in the alignment and design all track interfaces\nDesign mechanical assemblies for trackwork\nProvision of the track services for the CSDs,\nDesign typical and “for construction” track sections and plan views\nIssuing construction drawings (reinforcement, interface installation, track installation layouts and plans, turnouts and special trackworks installation, road crossing phasing …)\nDuring track installation:\nAccountable for:\nFollow up track installation on site and traceability of installation in order to update construction drawings into “as-built” drawings\nRevision of design or construction drawings in case of modifications\nProviding Return of experience to be implemented in Reference Solutions. Contribute to the RoE committee and documentation update.\nQCD and reporting:\nAccountable for:\nSupports to Project Track Engineering Manager in improvement proposals in term of QCD and during the change order process.\nPerform reporting at project level\nKnowledge & Experience\n:\nMastery of AUTOCA",
-    "query": "טכנאי הולכת גז",
-    "source": "LinkedIn",
-    "match_score": 67,
-    "concrete_matches_count": 5,
-    "reasoning": "התפקיד תואם את הכשרתו כהנדסאי מכונות ושליטתו בעקרונות שרטוט טכני והרכבות מכניות, אך שם דגש עיקרי על שרטוט CAD רציף במקום על תפעול מערכות אנרגיה וניהול שטח.",
-    "sector_key": "operations",
-    "sector": "תכנון ותשתיות תחבורה",
-    "location": "חיפה והצפון",
-    "company_domain_product": "תאגיד בינלאומי מוביל לתשתיות תחבורה מסילתית, רכבות קלות, מערכות איתות ותחבורה ירוקה.",
-    "job_summary": "עריכה והפקת שרטוטי מסילה והרכבות מכניות בתוכנת AutoCAD עבור פרויקט הרכבת הקלה חיפה-נצרת. התפקיד כולל הכנת תוכניות לביצוע (For Construction), ממשקי תכנון ומעקב שטח לעדכון שרטוטי As-Built.",
-    "experience_strengths": "רקע חזק כהנדסאי מכונות עם הבנה במערכות מכניות, לצד יכולת עבודה מדויקת וממושמעת מול ממשקי שטח ותוכניות ביצוע הנדסיות.",
-    "key_highlights": "השתלבות בפרויקט מגה-תשתית לאומי בחברה גלובלית, המשלב עבודה משרדית עם בקרה וליווי צוותי ההקמה בשטח.",
-    "company_size": "גלובלית גדולה (80,000+ עובדים)",
-    "junior_openness": "בינונית (פתוח להנדסאי מכונות מתחילים בעלי שליטה טובה ב-AutoCAD)",
-    "work_model": "היברידי / שילוב משרד חיפה וסיורי שטח בתוואי",
-    "company_requirements": "שליטה מלאה ב-AutoCAD, יכולת קריאת מסמכים הנדסיים מורכבים והבנה בשרטוטי מסילה והרכבות מכניות לתשתיות.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-    "salary_source_url": "",
-    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-    "date": "2026-10-18",
-    "salary_confidence": "low",
-    "has_shifts": false,
-    "has_company_car": false,
-    "has_on_call": false,
-    "quality_level": "insufficient",
-    "quality_reasons": [
-      "מודעת המשרה אינה כוללת שכר נקוב",
-      "התפקיד אינו משויך לטבלאות השכר המאושרות"
-    ],
-    "estimate_type": "insufficient_data",
-    "compensation_basis": "unknown",
-    "pay_period": "month",
-    "p25": null,
-    "p50": null,
-    "p75": null,
-    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQFLUKI2w48YdA/company-logo_100_100/B4EZxGf8CNLAAQ-/0/1770709304114/alstom_logo?e=2147483647&v=beta&t=1LaN58cy14PX20YvCxEEKQKUkoEukSMJMz08dUbpOpI",
-    "status": "QUALIFIED",
-    "technical_role": true,
-    "fit_gaps": "דרישת רקע ייעודי בהנדסה אזרחית ותשתיות מסילתיות (למועמד התמחות במערכות אלקטרו-מכניות ואנרגיה)."
-  },
-  {
-    "title": "Automation Field Service Technician - Remote",
-    "company": "Concentric Power Services",
-    "link": "https://il.linkedin.com/jobs/view/automation-field-service-technician-remote-at-concentric-power-services-4477748427",
-    "snippet": "Job Type\nFull-time\nDescription\nConcentric, LLC\nis the nation’s largest independent industrial power provider, delivering forklift power, critical infrastructure, mechanical/HVAC, and dedicated material handling and automation maintenance solutions. Through a nationwide network of technicians, engineers, and support teams, Concentric understands and prioritizes the unique needs of each customer to maximize uptime, improve operational efficiency, and maintain infrastructure. We provide reliable, scalable solutions that support data centers, telecommunications providers, utilities, manufacturing, distribution, commercial facilities, and other mission-critical environments across America.\nJob Summary\nThe\nField\nAutomation Technician\nis responsible for maintaining, troubleshooting, repairing, and optimizing automated systems and industrial equipment to ensure safe, reliable, and efficient operations. This role supports facility productivity by performing preventive and corrective maintenance on a variety of material handling, automation, and building support equipment, including electric forklifts, conveyors, robotic systems, case sealers and erectors, dock equipment, scissor lifts, tuggers, floor scrubbers, and racking systems. The Automation Technician works closely with operations and engineering teams to minimize downtime, improve equipment performance, and support continuous improvement initiatives while adhering to all safety, quality, and maintenance standards. This position reports to a Service Manager or designee and does not have any direct reports.\nKey Job Responsibilities\nReliable attendance and punctuality.\nTimely and accurate completion of all work orders and service records per the company time standard.\nResponsible for being the point of contact for customers.\nPerform and complete preventive maintenance (PM) and repairs.\nFacilitate work and repair requests.\nProvide shift coverage.\nCoordinate and facilitate warranty requests.\nFacilitate outside vendor work",
-    "query": "Rotating Equipment Mechanic",
-    "source": "LinkedIn",
-    "match_score": 65,
-    "concrete_matches_count": 3,
-    "reasoning": "תחזוקה, פתרון תקלות ואופטימיזציה של מערכות אוטומטיות ותעשייתיות (כולל ציוד חומרה ואלקטרומכանի).",
-    "sector_key": "energy_tech",
-    "sector": "תפעול ואחזקה",
-    "location": "מרוחק / ארה\"ב (משרה מרחוק)",
-    "company_domain_product": "חברת ספקיות חשמל ותשתיות קריטיות בארה\"ב המספקת פתרונות כוח תעשייתיים, מערכות אוטומציה ואחזקה למרכזי נתונים.",
-    "job_summary": "אחריות על תחזוקה, אבחון ותיקון של מערכות אוטומטיות וציוד תעשייתי, ביצוע פעולות תחזוקה מונעת ומתקנת, ועבודה מול צוותי הנדסה ותפעול להבטחת זמינות הציוד.",
-    "experience_strengths": "ניסיון מעשי בהנדסת מכונות, איתור תקלות במערכות מורכבות, ויכולת טכנית גבוהה הנדרשת לעבודה שטחית ואינטגרטיבית.",
-    "key_highlights": "התאמה ליכולות הטכניות והמעשיות של עידו בתחום האחזקה והמערכות האוטומטיות.",
-    "company_size": "גדול (מעל 500 עובדים)",
-    "junior_openness": "בינוני",
-    "work_model": "מרחוק / שטח",
-    "company_requirements": "ניסיון בתחזוקה ומערכות אוטומטיות תעשייתיות, יכולת עבודה עצמאית מול לקוחות, ואמינות גבוהה.",
-    "salary_range": "11,500 - 15,000 ₪",
-    "salary_source_type": "sector_benchmark",
-    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-    "salary_source_url": "",
-    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-    "date": "2026-10-18",
-    "salary_confidence": "low",
-    "has_shifts": true,
-    "has_company_car": false,
-    "has_on_call": false,
-    "quality_level": "insufficient",
-    "quality_reasons": [
-      "מודעת המשרה אינה כוללת שכר נקוב",
-      "התפקיד אינו משויך לטבלאות השכר המאושרות"
-    ],
-    "estimate_type": "insufficient_data",
-    "compensation_basis": "unknown",
-    "pay_period": "month",
-    "p25": null,
-    "p50": null,
-    "p75": null,
-    "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQH5lEXI21btYA/company-logo_100_100/company-logo_100_100/0/1630567845124/advanced_battery_technologies_inc__logo?e=2147483647&v=beta&t=wgtCFD9Bzt3NSUk4LHcweNsoJSIePdINLvz_7qjertw",
-    "status": "QUALIFIED",
-    "technical_role": true,
-    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
-  },
-  {
     "title": "טכנאי/ת שטח – מערכות גז טבעי דחוס  CNG",
     "company": "ALUMENERGY",
     "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%A9%D7%98%D7%97-%E2%80%93-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%92%D7%96-%D7%98%D7%91%D7%A2%D7%99-%D7%93%D7%97%D7%95%D7%A1-cng-at-alumenergy-4478217200",
@@ -5419,5 +5184,768 @@
     "p25": 16000,
     "p50": 18500,
     "p75": 21000
+  },
+  {
+    "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%A6%D7%A0%D7%A8%D7%AA-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%A7%D7%99%D7%98%D7%95%D7%A8-%D7%90%D7%95%D7%95%D7%99%D7%A8-%D7%9E%D7%99%D7%9D-%D7%95%D7%94%D7%99%D7%93%D7%A8%D7%90%D7%95%D7%9C%D7%99%D7%A7%D7%94-at-elbit-systems-israel-4481085996",
+    "title": "טכנאי.ת צנרת מערכות קיטור, אוויר, מים והידראוליקה",
+    "company": "Elbit Systems Israel",
+    "snippet": "לאתר החברה ברמת השרון דרוש.ה טכנאי.ת צנרת מערכות קיטור, אוויר, מים והידראוליקה\nתיאור התפקיד:\nידע וניסיון בעבודה על מערכות קיטור, אוויר, מים והידראוליקה\nיכולת מלאה לתיקון צנרות מכלל הסוגים עפ\"י הגדרת משרד טכני ועפ\"י דרישות יצרן\nיכול לבצע ייצור הברגות בצנרת\nמתן שירות איכותי ויעיל לטובת שיפור צרכי המפעל\nעבודה בשעות נוספות וזמינות מלאה לצרכי המפעל להגעה עפ\"י קריאה\nעבודה מול ממשקים שונים בחברה: מחלקות הייצור, צוות אחזקה, מהנדסי המשרד הטכני, מנהל הייצור, מנהל המפעל, ספקים וקבלני משנה\nדרישות:\nטכנאי.ת / הנדסאי.ת עם רקע בתיקון וייצור צנרות / מכונות / חומרים\nהכרת תחום ההידראוליקה, מערכות קיטור, מערכת אוויר ומים\nניסיון מעשי בייצור הברגות בצנרות (חלקים / הרכבות)\nניסיון בעבודה עם קבלי משנה וספקים פנימיים וחיצוניים\nידע בקריאת שרטוטים / מפרטים\nידע בשימוש במגוון מכשירי / אמצעי מדידה כמו קליבר, מדיד להברגות ועוד\nיכולת עבודה עצמאית בסביבה מטריציונית\nיכולת עבודה בתנאי לחץ ובתנאים משתנים, תוך ביצוע התאמות ושינויים\nתקשורת בינאישית טובה, אמינות, יושר מקצועי, רצון ויכולת להתמודד עם תחומי לימוד חדשים ודייקנות\nכישורי הבעה ברמה גבוהה בכתב ובע\"פ\nאנגלית ברמה טובה\nשפות נוספות - יתרון\n#Ramat HaSharon\n*הפניה מיועדת לנשים וגברים כאחד\n**רק פניות מתאימות יענו\nדרישות המשרה",
+    "query": "Gas Transmission Technician",
+    "source": "LinkedIn",
+    "location": "רמת השרון",
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q",
+    "date": "2026-10-27",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "לאתר החברה ברמת השרון דרוש.ה טכנאי.ת צנרת מערכות קיטור, אוויר, מים והידראוליקה\nתיאור התפקיד:\nידע וניסיון בעבודה על מערכות קיטור, אוויר, מים והידראוליקה\nיכולת מלאה לתיקון צנרות מכלל הסוגים עפ\"י הגדרת משרד טכני ועפ\"י דרישות יצרן\nיכול לבצע ייצור הברגות בצנרת\nמתן שירות איכותי ויעיל לטובת שיפור צרכי המפעל\nעבודה בשעות נוספות וזמינות מלאה לצרכי המפעל להגעה עפ\"י קריאה\nעבודה מול ממשקים שונים בחברה: מחלקות הייצור, צוות אחזקה, מהנדסי המשרד הטכני, מנהל הייצור, מנהל המפעל, ספקים וקבלני משנה\nדרישות:\nטכנאי.ת / הנדסאי.ת עם רקע בתיקון וייצור צנרות / מכונות / חומרים\nהכרת תחום ההידראוליקה, מערכות קיטור, מערכת אוויר ומים\nניסיון מעשי בייצור הברגות בצנרות (חלקים / הרכבות)\nניסיון בעבודה עם קבלי משנה וספקים פנימיים וחיצוניים\nידע בקריאת שרטוטים / מפרטים\nידע בשימוש במגוון מכשירי / אמצעי מדידה כמו קליבר, מדיד להברגות ועוד\nיכולת עבודה עצמאית בסביבה מטריציונית\nיכולת עבודה בתנאי לחץ ובתנאים משתנים, תוך ביצוע התאמות ושינויים\nתקשורת בינאישית טובה, אמינות, יושר מקצועי, רצון ויכולת להתמודד עם תחומי לימוד חדשים ודייקנות\nכישורי הבעה ברמה גבוהה בכתב ובע\"פ\nאנגלית ברמה טובה\nשפות נוספות - יתרון\n#Ramat HaSharon\n*הפניה מיועדת לנשים וגברים כאחד\n**רק פניות מתאימות יענו\nדרישות המשרה",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 90,
+    "concrete_matches_count": 4,
+    "reasoning": "המועמד הינו הנדסאי מכונות מוסמך עם רקע מוצק במערכות אלקטרו-מכניות, ניסיון מעשי בשטח ויכולת קריאת שרטוטים, התואם את דרישות התפקיד כטכנאי צנרת ומערכות זורמים.",
+    "sector_key": "operations",
+    "sector": "תעשייה ביטחונית ואחזקה",
+    "company_domain_product": "מערכות ביטחוניות",
+    "job_summary": "אחריות על אחזקה, תיקון וייצור צנרות למערכות קיטור, אוויר, מים והידראוליקה, עבודה עם שרטוטים מכניים וממשקים מרובים במפעל.",
+    "experience_strengths": "הנדסאי מכונות בהכשרתו עם התמחות במערכות אנרגיה וזרימה, ניסיון מעשי במערכות אלקטרו-מכניות ופתרון תקלות.",
+    "key_highlights": "הנדסאי מכונות, יכולת עבודה עם מערכות זורמים, קריאת שרטוטים, עבודה בסביבה תעשייתית.",
+    "company_size": "גדול",
+    "junior_openness": "פתוח למועמדים מתאימים",
+    "work_model": "נוכחות פיזית במפעל",
+    "company_requirements": "הנדסאי/ת טכנאי/ת עם רקע בתיקון צנרות/מכונות, הכרת מערכות הידראוליקה, אוויר ומים, קריאת שרטוטים, ניסיון מעשי.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "טכנאי.ת / הנדסאי.ת עם רקע בתיקון וייצור צנרות / מכונות / חומרים",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "טכנאי.ת / הנדסאי.ת עם רקע בתיקון וייצור צנרות / מכונות / חומרים",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בתואר הנדסאי מכונות ובעל רקע מערכתי רלוונטי."
+      },
+      {
+        "requirement": "הכרת תחום ההידראוליקה, מערכות קיטור, מערכת אוויר ומים",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "הכרת תחום ההידראוליקה, מערכות קיטור, מערכת אוויר ומים",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Natural gas transmission/distribution control, nomination allocations, pressure/flow monitoring",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש רקע רב בשליטה במערכות זרימה, לחץ ותשתיות אנרגיה."
+      },
+      {
+        "requirement": "ידע בקריאת שרטוטים / מפרטים",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ידע בקריאת שרטוטים / מפרטים",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Practical Mechanical Engineer",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "כחלק מהכשרתו כהנדסאי מכונות, המועמד שולט בקריאת שרטוטים טכניים."
+      }
+    ],
+    "evaluation_source": "gemini",
+    "evaluation_model": "gemini-3.5-flash-lite",
+    "evaluation_complete": true,
+    "base_match_score": 85,
+    "priority_bonus": 5,
+    "is_target_company": true,
+    "disqualification_reason": "",
+    "target_category": "drones_uav_and_defense",
+    "evidence_status": "verified_quotes",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": false,
+    "has_company_car": false,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 11500,
+    "p50": 13250,
+    "p75": 15000
+  },
+  {
+    "link": "https://il.linkedin.com/jobs/view/noc-student-position-at-yael-korentec-technologies-4483377323",
+    "title": "NOC Student Position",
+    "company": "Yael Korentec Technologies",
+    "snippet": "We're Hiring: Control & Monitoring Systems Specialist- Student Position\n(JB-17219)\n⚡\nWe are recruiting for a leading electrical company in northern Israel!\nWe are looking for a\nControl & Monitoring Systems Specialist\nto join an essential technical operations team.\nAbout the Role:\nMaintain and monitor existing command and control (C&C) systems under the guidance of a Team Lead.\nSupport emergency systems and manage hands-on computer operations.\nShift-based role, including non-standard hours as needed:\nMorning:\n07:00 – 14:00\nEvening:\n14:00 – 21:00\nNight:\n21:00 – 07:00\nFridays:\n07:00 – 12:00 , 12:00 – 18:00 (No Saturday shifts).\nRequirements (Meeting one of the following):\nB.Sc. in Computer Science or Computer Engineering (open to 2nd-year students and above)\nOR\na Bachelor’s degree in another field with a certified Information Systems course (at least 100 hours).\nOR\nPractical Engineer (הנדסאי/ת) in a technological field.\nOR\nGraduate of an advanced Information Systems course (at least 150 hours).\nOR\nIDF / Security forces veteran with hands-on experience in control and monitoring systems.\nExperience in technical support\n📍\nLocation:\nNorthern Israel\n📩 Interested? Send your CV or reach out via direct message.",
+    "query": "Energy Control Room Operator",
+    "source": "LinkedIn",
+    "location": "צפון הארץ",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFq2n4jjN5FiA/company-logo_100_100/B4DZ87.GThIEAU-/0/1783417562602/korentec_logo?e=2147483647&v=beta&t=trMbBadqYi9XWlNYf2ahMGW3z9uiAmC2W-6EweIhAeU",
+    "date": "2026-10-27",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "We're Hiring: Control & Monitoring Systems Specialist- Student Position\n(JB-17219)\n⚡\nWe are recruiting for a leading electrical company in northern Israel!\nWe are looking for a\nControl & Monitoring Systems Specialist\nto join an essential technical operations team.\nAbout the Role:\nMaintain and monitor existing command and control (C&C) systems under the guidance of a Team Lead.\nSupport emergency systems and manage hands-on computer operations.\nShift-based role, including non-standard hours as needed:\nMorning:\n07:00 – 14:00\nEvening:\n14:00 – 21:00\nNight:\n21:00 – 07:00\nFridays:\n07:00 – 12:00 , 12:00 – 18:00 (No Saturday shifts).\nRequirements (Meeting one of the following):\nB.Sc. in Computer Science or Computer Engineering (open to 2nd-year students and above)\nOR\na Bachelor’s degree in another field with a certified Information Systems course (at least 100 hours).\nOR\nPractical Engineer (הנדסאי/ת) in a technological field.\nOR\nGraduate of an advanced Information Systems course (at least 150 hours).\nOR\nIDF / Security forces veteran with hands-on experience in control and monitoring systems.\nExperience in technical support\n📍\nLocation:\nNorthern Israel\n📩 Interested? Send your CV or reach out via direct message.",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 88,
+    "concrete_matches_count": 4,
+    "reasoning": "התפקיד מתמקד בניטור ותפעול מערכות שליטה ובקרה (NOC) במשמרות בחברת חשמל. עידו בעל דיפלומת הנדסאי מכונות וניסיון רלוונטי בחדרי בקרת SCADA/NOC, ולכן מדובר בהתאמה גבוהה.",
+    "sector_key": "scada",
+    "sector": "שליטה ובקרה / אנרגיה",
+    "company_domain_product": "טכנולוגיות מידע ושירותים טכנולוגיים עבור חברת חשמל",
+    "job_summary": "מפעילי/ת מערכות ניטור ובקרה (NOC / C&C) לעבודה במשמרות (כולל ערב/לילה וסופי שבוע) עבור חברת חשמל בצפון.",
+    "experience_strengths": "ניסיון בתפעול חדרי בקרה SCADA/NOC 24/7, תגובה באירועי חירום והשכלה כהנדסאי מכונות.",
+    "key_highlights": "עבודה במשמרות, ניטור מערכות C&C, מתאים להנדסאים או יוצאי יחידות צבאיות רלוונטיות.",
+    "company_size": "unknown",
+    "junior_openness": "פתוח לג'וניורים, סטודנטים והנדסאים",
+    "work_model": "משמרות באתר (On-site)",
+    "company_requirements": "עמידה באחד מתנאי הסף: תואר הנדסאי טכנולוגי, B.Sc במדעי המחשב/הנדסה, או ניסיון צבאי במערכות מו\"ב, לצד ניסיון בתמיכה טכנית.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "השכלה כהנדסאי/ת בתחום טכנולוגי או ניסיון צבאי במערכות בקרה",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Practical Engineer (הנדסאי/ת) in a technological field.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "עידו מחזיק בדיפלומת הנדסאי מכונות העונה באופן מלא על דרישת הסף."
+      },
+      {
+        "requirement": "תפעול וניטור מערכות שליטה ובקרה (C&C / NOC)",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Maintain and monitor existing command and control (C&C) systems under the guidance of a Team Lead.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Real-Time Operations Control (SCADA / NOC / 24/7 Control Rooms)",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "לעידו ניסיון ישיר בחדרי בקרה 24/7 ובמערכות SCADA/NOC."
+      },
+      {
+        "requirement": "נכונות לעבודה במשמרות כולל שעות לא שגרתיות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Shift-based role, including non-standard hours as needed",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "24/7 mission-critical control room operations",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "עידו מנוסה בעבודה בסביבת חדרי בקרה קריטיים במתכונת 24/7."
+      }
+    ],
+    "evaluation_source": "gemini",
+    "evaluation_model": "gemini-3.5-flash",
+    "evaluation_complete": true,
+    "base_match_score": 88,
+    "priority_bonus": 0,
+    "is_target_company": false,
+    "disqualification_reason": "",
+    "target_category": "",
+    "evidence_status": "verified_quotes",
+    "salary_range": "16,000 - 21,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • כולל משמרות 24/7",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות).",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות)"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": true,
+    "has_company_car": false,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 16000,
+    "p50": 18500,
+    "p75": 21000
+  },
+  {
+    "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A4%D7%A2%D7%99%D7%9C-%D7%94-%D7%9E%D7%9B%D7%95%D7%A0%D7%94-at-sun-pharma-4369484609",
+    "title": "מפעיל/ה מכונה",
+    "company": "SUN PHARMA",
+    "snippet": "אחריות לתפעול מכונות בתא הייצור על פי נהלי תהליך הייצור תוך עמידה בסטנדרטים ללא פגיעה באיכות המוצר.\nאחריות כוללת על תהליך הייצור, ביצוע סט-אפים ונקיונות.\nביצוע שיפור מתמיד לתהליכי העבודה והייצור\nעבודה ב 3 משמרות:7:00-16:00 \\ 15:30-23:45 \\ 23:15-07:30\nRequirements:\nהשכלה- 12 שנ\"ל לפחות\nניסיון בהפעלת מכונה/עבודה בייצור- חובה\nרקע/ אוריינטציה טכנית - חובה\nשליטה מלאה בעברית\nנסיון בעבודה במשמרות",
+    "query": "Gas Plant Operator",
+    "source": "LinkedIn",
+    "location": "לא צויין",
+    "logo": "https://media.licdn.com/dms/image/v2/C510BAQHL2VM5GKS6Zw/company-logo_100_100/company-logo_100_100/0/1630609829433/sun_pharma_logo?e=2147483647&v=beta&t=02gZUw4hPm1ksrFxbwHZD5xrI7LFmS_GXwBpZTHWI5I",
+    "date": "2026-10-27",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "אחריות לתפעול מכונות בתא הייצור על פי נהלי תהליך הייצור תוך עמידה בסטנדרטים ללא פגיעה באיכות המוצר.\nאחריות כוללת על תהליך הייצור, ביצוע סט-אפים ונקיונות.\nביצוע שיפור מתמיד לתהליכי העבודה והייצור\nעבודה ב 3 משמרות:7:00-16:00 \\ 15:30-23:45 \\ 23:15-07:30\nRequirements:\nהשכלה- 12 שנ\"ל לפחות\nניסיון בהפעלת מכונה/עבודה בייצור- חובה\nרקע/ אוריינטציה טכנית - חובה\nשליטה מלאה בעברית\nנסיון בעבודה במשמרות",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 85,
+    "concrete_matches_count": 3,
+    "reasoning": "לעידו יש ניסיון מעשי ואוריינטציה טכנית חזקה המשתלבים היטב עם דרישות התפקיד להפעלת מכונות ותהליכי ייצור.",
+    "sector_key": "operations",
+    "sector": "תעשייה וייצור",
+    "company_domain_product": "SUN PHARMA",
+    "job_summary": "אחריות לתפעול מכונות בתא הייצור, ביצוע סט-אפים, ניקיונות ושיפור מתמיד לתהליכי העבודה ב-3 משמרות.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם רקע מעשי חזק במערכות אלקטרו-מכניות ותפעול מערכות מורכבות.",
+    "key_highlights": "אוריינטציה טכנית גבוהה, יכולת עבודה במשמרות וניסיון בהפעלת מערכות טכניות.",
+    "company_size": "לא צויין",
+    "junior_openness": "לא צויין",
+    "work_model": "משמרות",
+    "company_requirements": "12 שנות לימוד, ניסיון בהפעלת מכונה/ייצור, אוריינטציה טכנית, עברית מלאה וניסיון במשמרות.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "ניסיון בהפעלת מכונה/עבודה בייצור",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ניסיון בהפעלת מכונה/עבודה בייצור- חובה",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע כהנדסאי מכונות המקנה לו אוריינטציה והבנה טכנית מעולה הנדרשת לתפעול מערכות ייצור."
+      },
+      {
+        "requirement": "רקע/ אוריינטציה טכנית",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "רקע/ אוריינטציה טכנית - חובה",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מוגדר כאיש מקצוע טכני רב-תחומי עם הכשרה פורמלית במכונות."
+      }
+    ],
+    "evaluation_source": "gemini",
+    "evaluation_model": "gemini-3.5-flash-lite",
+    "evaluation_complete": true,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "is_target_company": false,
+    "disqualification_reason": "",
+    "target_category": "",
+    "evidence_status": "verified_quotes",
+    "salary_range": "13,500 - 17,500 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • כולל משמרות",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": true,
+    "has_company_car": false,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 13500,
+    "p50": 15500,
+    "p75": 17500
+  },
+  {
+    "link": "https://il.linkedin.com/jobs/view/field-service-technician-%E2%80%93-%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%A9%D7%99%D7%A8%D7%95%D7%AA-%D7%A9%D7%98%D7%97-at-dty-optical-4481460208",
+    "title": "Field Service Technician – טכנאי/ת שירות שטח",
+    "company": "DTY Optical",
+    "snippet": "DTY שרותי אופטיקה\n— יבואנית מכשור אבחון וטיפול לרפואת עיניים בישראל מאז 1987 — מחפשת טכנאי/ת שירות שטח.\nאנחנו מחפשים טכנאי/ת שטח עם ידיים טובות ואוריינטציה טכנית גבוהה, להתקנה, אחזקה ותיקון של מכשור אבחון וטיפול מתקדם אצל לקוחותינו — מרפאות עיניים, בתי חולים, קופות חולים ומעבדות.\nמה תעשו בתפקיד:\nהתקנה וכיול של מכשור אופתלמי באתרי הלקוחות\nתחזוקה מונעת, אבחון תקלות ותיקון בשטח ובמעבדה\nמתן הדרכה טכנית ותמיכה שוטפת ללקוחות\nדיווח ותיעוד קריאות שירות במערכת\nמה אנחנו מחפשים:\nרקע טכני/אלקטרוני — הנדסאי/ת, טכנאי/ת או ניסיון מוכח\nיחסי אנוש מצוינים ושירותיות גבוהה\nרישיון נהיגה בתוקף — חובה\nאנגלית טכנית ברמה טובה — יתרון\nמיקום:\nמרכז הארץ + ניוד ·\nהיקף:\nמשרה מלאה\nהכשרות אצל היצרנים בחו״ל, צוות ותיק ותנאים מלאים. פרטים נוספים: https://dty.co.il/careers",
+    "query": "PV Technician",
+    "source": "LinkedIn",
+    "location": "מרכז הארץ",
+    "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQGqEtjSb0Uthg/company-logo_100_100/company-logo_100_100/0/1646466072250?e=2147483647&v=beta&t=9y0SiU6IgGmZea0X6LCEHeIVJ3-Hd_dZiooY-B-Zf5A",
+    "date": "2026-10-27",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "DTY שרותי אופטיקה\n— יבואנית מכשור אבחון וטיפול לרפואת עיניים בישראל מאז 1987 — מחפשת טכנאי/ת שירות שטח.\nאנחנו מחפשים טכנאי/ת שטח עם ידיים טובות ואוריינטציה טכנית גבוהה, להתקנה, אחזקה ותיקון של מכשור אבחון וטיפול מתקדם אצל לקוחותינו — מרפאות עיניים, בתי חולים, קופות חולים ומעבדות.\nמה תעשו בתפקיד:\nהתקנה וכיול של מכשור אופתלמי באתרי הלקוחות\nתחזוקה מונעת, אבחון תקלות ותיקון בשטח ובמעבדה\nמתן הדרכה טכנית ותמיכה שוטפת ללקוחות\nדיווח ותיעוד קריאות שירות במערכת\nמה אנחנו מחפשים:\nרקע טכני/אלקטרוני — הנדסאי/ת, טכנאי/ת או ניסיון מוכח\nיחסי אנוש מצוינים ושירותיות גבוהה\nרישיון נהיגה בתוקף — חובה\nאנגלית טכנית ברמה טובה — יתרון\nמיקום:\nמרכז הארץ + ניוד ·\nהיקף:\nמשרה מלאה\nהכשרות אצל היצרנים בחו״ל, צוות ותיק ותנאים מלאים. פרטים נוספים: https://dty.co.il/careers",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 85,
+    "concrete_matches_count": 3,
+    "reasoning": "המוועמד בעל רקע טכני חזק הכולל הנדסאי מכונות וניסיון בהתקנות, כיול, אחזקה ותיקון של מערכות אלקטרו-מכניות. תפקיד טכנאי השטח תואם את כישוריו המעשיים.",
+    "sector_key": "other",
+    "sector": "ציוד רפואי ואופטיקה",
+    "company_domain_product": "יבואנית מכשור אבחון וטיפול לרפואת עיניים בישראל",
+    "job_summary": "התקנה, אחזקה ותיקון של מכשור אבחון וטיפול מתקדם במרפאות ובתי חולים, כולל כיול, אבחון תקלות ומתן הדרכה טכנית ללקוחות.",
+    "experience_strengths": "הנדסאי מכונות מוסמך, רקע בהתקנה, כיול ותחזוקה של מערכות הנדסיות ומערכות שטח מורכבות.",
+    "key_highlights": "התקנה וכיול מכשור באתרי לקוחות, אבחון תקלות ותחזוקה שוטפת.",
+    "company_size": "לא צוין",
+    "junior_openness": "פתוח למועמדים בעלי רקע טכני, הנדסאים, טכנאים או ניסיון מוכח.",
+    "work_model": "משרה מלאה, שטח",
+    "company_requirements": "רקע טכני/אלקטרוני, רישיון נהיגה בתוקף חובה, אנגלית טכנית יתרון.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "רקע טכני/אלקטרוני — הנדסאי/ת, טכנאי/ת או ניסיון מוכח",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "רקע טכני/אלקטרוני — הנדסאי/ת, טכנאי/ת או ניסיון מוכח",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "המוועמד הוא הנדסאי מכונות מוסמך בעל הכשרה טכנית מתאימה."
+      },
+      {
+        "requirement": "התקנה וכיול של מכשור באתרי הלקוחות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "התקנה וכיול של מכשור אופתלמי באתרי הלקוחות",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "site supervision, equipment commissioning, troubleshooting",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון בהרצה, כיול ופתרון תקלות בשטח (commissioning and troubleshooting)."
+      },
+      {
+        "requirement": "אנגלית טכנית ברמה טובה",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "אנגלית טכנית ברמה טובה — יתרון",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
+          "source_field": "Tech & AI"
+        },
+        "assessment": "unknown",
+        "explanation": "לא צוין במפורש ברמת השליטה באנגלית בקורות החיים."
+      }
+    ],
+    "evaluation_source": "gemini",
+    "evaluation_model": "gemini-3.5-flash-lite",
+    "evaluation_complete": true,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "is_target_company": false,
+    "disqualification_reason": "",
+    "target_category": "",
+    "evidence_status": "incomplete",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": false,
+    "has_company_car": false,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 11500,
+    "p50": 13250,
+    "p75": 15000
+  },
+  {
+    "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%90%D7%95%D7%98%D7%95%D7%9E%D7%A6%D7%99%D7%94-%D7%9E%D7%A9%D7%A8%D7%94-%D7%9E%D7%A1-69370-at-sle-logistics-4481088432",
+    "title": "טכנאי אוטומציה - משרה מס' 69370",
+    "company": "SLE Logistics",
+    "snippet": "למרכז הלוגיסטי האוטומטי והמתקדם של סלא בשוהם דרוש.ה טכנאי.ת אוטומציה להצטרפות לצוות מקצועי המפעיל מערכות מהמתקדמות בעולם.\nאם יש לך רקע טכני, אהבה לטכנולוגיה ויכולת לפתור תקלות בסביבה דינמית ומתקדמת, זו ההזדמנות שלך להשתלב בארגון מוביל בתחום שרשרת האספקה והלוגיסטיקה הרפואית.\nמה כולל התפקיד?\n✔טיפול בתקלות מכניות, חשמליות ובקרתיות במערכות אוטומטיות\n✔ ביצוע אחזקה מונעת בהתאם לתוכנית עבודה\n✔ עבודה עם מערכות PLC, רובוטים, מסועים ומחסנים אוטומטיים\n✔ מתן מענה לתקלות בזמן אמת\n✔ תיעוד פעולות תחזוקה במערכות ממוחשבות\nמה אנחנו מחפשים?\n✅ ניסיון טכני במערכות אוטומציה / מכניקה / חשמל\n✅ אנגלית טכנית ברמה טובה\n✅ נכונות לעבודה במשמרות\n✅ יכולת עבודה בצוות ופתרון בעיות\n✅ אחריות, שירותיות ויכולת למידה עצמאית\nיתרון משמעותי\n• ידע במכניקה, פנאומטיקה והידראוליקה\n• תעודת חשמלאי מוסמך / חשמלאי מוסך\n💡 למה להצטרף אלינו\n▪ עבודה עם טכנולוגיות אוטומציה ורובוטיקה מתקדמות\n▪ סביבת עבודה חדשנית ומאתגרת\n▪ אפשרויות למידה והתפתחות מקצועית\n▪ השפעה ישירה על פעילות שרשרת האספקה של אחד ממרכזי הלוגיסטיקה המתקדמים בישראל\n📍 מיקום: שוהם\n📩 קורות חיים ניתן לשלוח ל: careersil@teva.co.il נא לציין מספר משרה 69370",
+    "query": "Electro-Mechanical Technician",
+    "source": "LinkedIn",
+    "location": "שוהם",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEyybSlfnaWTg/company-logo_100_100/B4DZ241k.1KMAQ-/0/1776922546502/sle_israel_logo?e=2147483647&v=beta&t=goJMFQKyjAdJFAwHNL3iVRgQRc-jhgOYHSfiolyhrxA",
+    "date": "2026-10-27",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "למרכז הלוגיסטי האוטומטי והמתקדם של סלא בשוהם דרוש.ה טכנאי.ת אוטומציה להצטרפות לצוות מקצועי המפעיל מערכות מהמתקדמות בעולם.\nאם יש לך רקע טכני, אהבה לטכנולוגיה ויכולת לפתור תקלות בסביבה דינמית ומתקדמת, זו ההזדמנות שלך להשתלב בארגון מוביל בתחום שרשרת האספקה והלוגיסטיקה הרפואית.\nמה כולל התפקיד?\n✔טיפול בתקלות מכניות, חשמליות ובקרתיות במערכות אוטומטיות\n✔ ביצוע אחזקה מונעת בהתאם לתוכנית עבודה\n✔ עבודה עם מערכות PLC, רובוטים, מסועים ומחסנים אוטומטיים\n✔ מתן מענה לתקלות בזמן אמת\n✔ תיעוד פעולות תחזוקה במערכות ממוחשבות\nמה אנחנו מחפשים?\n✅ ניסיון טכני במערכות אוטומציה / מכניקה / חשמל\n✅ אנגלית טכנית ברמה טובה\n✅ נכונות לעבודה במשמרות\n✅ יכולת עבודה בצוות ופתרון בעיות\n✅ אחריות, שירותיות ויכולת למידה עצמאית\nיתרון משמעותי\n• ידע במכניקה, פנאומטיקה והידראוליקה\n• תעודת חשמלאי מוסמך / חשמלאי מוסך\n💡 למה להצטרף אלינו\n▪ עבודה עם טכנולוגיות אוטומציה ורובוטיקה מתקדמות\n▪ סביבת עבודה חדשנית ומאתגרת\n▪ אפשרויות למידה והתפתחות מקצועית\n▪ השפעה ישירה על פעילות שרשרת האספקה של אחד ממרכזי הלוגיסטיקה המתקדמים בישראל\n📍 מיקום: שוהם\n📩 קורות חיים ניתן לשלוח ל: careersil@teva.co.il נא לציין מספר משרה 69370",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 85,
+    "concrete_matches_count": 4,
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע חזק במערכות אלקטרו-מכניות ואוטומציה, ומתאים לתפקיד טכנאי אוטומציה באחזקה ותקלות.",
+    "sector_key": "operations",
+    "sector": "לוגיסטיקה ואוטומציה",
+    "company_domain_product": "מרכז לוגיסטי אוטונומי ומתקדם",
+    "job_summary": "תפקיד טכנאי אוטומציה האחראי על טיפול בתקלות מכניות, חשמליות ובקרתיות, ביצוע אחזקה מונעת ועבודה עם מערכות PLC ורובוטיקה במרכז הלוגיסטי של סלא בשוהם.",
+    "experience_strengths": "הנדסאי מכונות בהכשרתו, ניסיון מעשי בהפעלה ותחזוקה של מערכות אלקטרו-מכניות, שליטה במערכות בקרה ואוטומציה.",
+    "key_highlights": "התאמה מלאה לפן הטכני והמכני, ניסיון באבחון תקלות ופתרונן בסביבה מבצעית ודינמית.",
+    "company_size": "לא צוין במפורש",
+    "junior_openness": "לא צוין במפורש",
+    "work_model": "משמרות",
+    "company_requirements": "ניסיון טכני באוטומציה/מכניקה/חשמל, אנגלית טכנית, נכונות לעבודה במשמרות, יתרון לתעודת חשמלאי מוסמך.",
+    "fit_gaps": "תעודת חשמלאי מוסמך עדיין בתהליכי סיום ולא מלאה, אך אין בכך פער סף פוסל שכן מדובר ביתרון בלבד לפי דרישות המשרה.",
+    "requirement_assessments": [
+      {
+        "requirement": "ניסיון טכני במערכות אוטומציה / מכניקה / חשמל",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ניסיון טכני במערכות אוטומציה / מכניקה / חשמל",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש השכלה והכשרה כהנדסאי מכונות וניסיון במערכות אלקטרו-מכניות."
+      },
+      {
+        "requirement": "תעודת חשמלאי מוסמך",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "תעודת חשמלאי מוסמך / חשמלאי מוסך",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Electrician Studies (חשמלאי מוסמך - לקראת סיום ההסמכה)",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "gap",
+        "explanation": "המועמד עדיין לקראת סיום ההסמכה ולכן טרם מחזיק בתעודה הסופית, אך מדובר בדרישת יתרון."
+      },
+      {
+        "requirement": "נכונות לעבודה במשמרות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "נכונות לעבודה במשמרות",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "24/7 mission-critical control room operations, crisis response",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "המועמד בעל ניסיון בעבודה בסביבת חדר בקרה ומבצעיות סביב השעון."
+      }
+    ],
+    "evaluation_source": "gemini",
+    "evaluation_model": "gemini-3.5-flash-lite",
+    "evaluation_complete": true,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "is_target_company": false,
+    "disqualification_reason": "",
+    "target_category": "",
+    "evidence_status": "verified_quotes",
+    "salary_range": "13,500 - 17,500 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • כולל משמרות",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": true,
+    "has_company_car": false,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 13500,
+    "p50": 15500,
+    "p75": 17500
+  },
+  {
+    "link": "https://www.drushim.co.il/job/38873661/351481e2/",
+    "title": "מפעיל/ת מכונות - מפעל לוחות גבס תנאים טובים",
+    "company": "כרמית מיסטר פיקס",
+    "snippet": "כ\nמפעיל/ת מכונות - מפעל לוחות גבס תנאים טובים\nכרמית מיסטר פיקס\nקיסריה\n1-2 שנים\nמשמרות\nלפני 2 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלמפעל לוחות גבס בפארק תעשייה קיסריה דרושים/ות מפעילי מכונות. התפקיד כולל:\nהפעלה, ניטור ותחזוקה של תחנות הייצור בקו לוחות הגבס/פרופילים.\nעבודה בהתאם להוראות עבודה, עבודה בסביבה ממוחשבת, מערכות Priority (ERP/MES)               לצורך דיווחים וקריאת משימות.\nהקפדה על עבודה בטוחה, איכותית ויעילה.\nתנאים והיקף משרה:\nמיקום: פארק תעשייה קיסריה.\nסוג משרה: משרה מלאה / עבודה במשמרות.\nעבודה בסביבה הדורשת משמעת בטיחות גבוהה, סדר ודיוק.\nדרישות התפקיד\nהבנה טכנית ויכולת איתור תקלות תהליכיות - חובה.\nיכולת עבודה פיזית, עמידה ממושכת ועבודה במשמרות - חובה.\nעברית ברמה גבוהה - חובה.\nניסיון כמפעיל/ת קו ייצור (יתרון משמעותי לתעשיית הגבס/מתכת/כימיה).\nיכולת עבודה בסביבת ERP/MES - יתרון.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nתעשיה / ייצור\nתחומים\nמפעיל/ת מכונות\nטכנאי/ת - תעשייה וייצור",
+    "query": "מפעיל מערכות SCADA",
+    "source": "Drushim",
+    "location": "קיסריה",
+    "logo": "",
+    "date": "2026-10-27",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "כ\nמפעיל/ת מכונות - מפעל לוחות גבס תנאים טובים\nכרמית מיסטר פיקס\nקיסריה\n1-2 שנים\nמשמרות\nלפני 2 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלמפעל לוחות גבס בפארק תעשייה קיסריה דרושים/ות מפעילי מכונות. התפקיד כולל:\nהפעלה, ניטור ותחזוקה של תחנות הייצור בקו לוחות הגבס/פרופילים.\nעבודה בהתאם להוראות עבודה, עבודה בסביבה ממוחשבת, מערכות Priority (ERP/MES)               לצורך דיווחים וקריאת משימות.\nהקפדה על עבודה בטוחה, איכותית ויעילה.\nתנאים והיקף משרה:\nמיקום: פארק תעשייה קיסריה.\nסוג משרה: משרה מלאה / עבודה במשמרות.\nעבודה בסביבה הדורשת משמעת בטיחות גבוהה, סדר ודיוק.\nדרישות התפקיד\nהבנה טכנית ויכולת איתור תקלות תהליכיות - חובה.\nיכולת עבודה פיזית, עמידה ממושכת ועבודה במשמרות - חובה.\nעברית ברמה גבוהה - חובה.\nניסיון כמפעיל/ת קו ייצור (יתרון משמעותי לתעשיית הגבס/מתכת/כימיה).\nיכולת עבודה בסביבת ERP/MES - יתרון.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nתעשיה / ייצור\nתחומים\nמפעיל/ת מכונות\nטכנאי/ת - תעשייה וייצור",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 80,
+    "concrete_matches_count": 5,
+    "reasoning": "עידו מתאים לתפקיד מפעיל מכונות הודות להשכלתו כהנדסאי מכונות, ניסיונו בתחזוקה ואיתור תקלות במערכות אלקטרו-מכניות, וניסיונו בעבודה במשמרות ובסביבות ממוחשבות.",
+    "sector_key": "operations",
+    "sector": "תעשייה וייצור",
+    "company_domain_product": "ייצור לוחות גבס ופרופילים",
+    "job_summary": "הפעלה, ניטור ותחזוקה של תחנות ייצור בקו לוחות גבס, עבודה בסביבה ממוחשבת (Priority) ובמשמרות במפעל בקיסריה.",
+    "experience_strengths": "השכלה כהנדסאי מכונות, רקע טכני עשיר במערכות אלקטרו-מכניות, איתור תקלות, עבודה במשמרות ושימוש במערכות ERP כגון SAP.",
+    "key_highlights": "הנדסאי מכונות עם ידע טכני רחב, יכולת עבודה בסביבה ממוחשבת וניסיון תפעולי במשמרות.",
+    "company_size": "unknown",
+    "junior_openness": "פתוח (נדרש ניסיון של 1-2 שנים)",
+    "work_model": "משמרות",
+    "company_requirements": "הבנה טכנית ואיתור תקלות (חובה), עבודה פיזית ומשמרות (חובה), עברית ברמה גבוהה (חובה), ניסיון כמפעיל קו ייצור (יתרון), עבודה בסביבת ERP/MES (יתרון).",
+    "fit_gaps": "חסר ניסיון מעשי קודם כמפעיל קו ייצור בתעשיית הגבס או הכימיה, והתפקיד עשוי להיות בדרג נמוך מהשכלתו כהנדסאי מכונות.",
+    "requirement_assessments": [
+      {
+        "requirement": "הבנה טכנית ויכולת איתור תקלות תהליכיות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "הבנה טכנית ויכולת איתור תקלות תהליכיות - חובה.",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "לעידו השכלה רשמית כהנדסאי מכונות ורקע עשיר באיתור ותקן תקלות אלקטרו-מכניות."
+      },
+      {
+        "requirement": "יכולת עבודה פיזית, עמידה ממושכת ועבודה במשמרות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "יכולת עבודה פיזית, עמידה ממושכת ועבודה במשמרות - חובה.",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "24/7 mission-critical control room operations",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "לעידו ניסיון בעבודה במשמרות רציפות ורקע פיזי כלוחם ומפקד בסיירת."
+      },
+      {
+        "requirement": "עברית ברמה גבוהה",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "עברית ברמה גבוהה - חובה.",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "עידו גל",
+          "source_field": "Candidate"
+        },
+        "assessment": "match",
+        "explanation": "דובר עברית שפת אם."
+      },
+      {
+        "requirement": "ניסיון כמפעיל/ת קו ייצור",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "ניסיון כמפעיל/ת קו ייצור (יתרון משמעותי לתעשיית הגבס/מתכת/כימיה).",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "",
+          "source_field": "unverified"
+        },
+        "assessment": "unknown",
+        "explanation": "ציטוט המודעה לא אומת או חסרה ראיה מאומתת בפרופיל; נדרשת בדיקה."
+      },
+      {
+        "requirement": "יכולת עבודה בסביבת ERP/MES",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "יכולת עבודה בסביבת ERP/MES - יתרון.",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "SAP, Excel data modeling",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "לעידו ניסיון בעבודה עם תוכנות ERP כגון SAP."
+      }
+    ],
+    "evaluation_source": "gemini",
+    "evaluation_model": "gemini-3.5-flash",
+    "evaluation_complete": true,
+    "base_match_score": 80,
+    "priority_bonus": 0,
+    "is_target_company": false,
+    "disqualification_reason": "",
+    "target_category": "",
+    "evidence_status": "incomplete",
+    "salary_range": "13,500 - 17,500 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • כולל משמרות",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": true,
+    "has_company_car": false,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 13500,
+    "p50": 15500,
+    "p75": 17500
+  },
+  {
+    "link": "https://www.drushim.co.il/job/38873547/4b64941c/",
+    "title": "מפעיל/ת מכונות - מפעל ניצבים ומסלולים",
+    "company": "כרמית מיסטר פיקס",
+    "snippet": "כ\nמפעיל/ת מכונות - מפעל ניצבים ומסלולים\nכרמית מיסטר פיקס\nקיסריה\n1-2 שנים\nמשמרות\nלפני 2 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברת מיסטר פיקס בפארק תעשייה קיסריה דרושים/ות מפעילי מכונות. התפקיד כולל:\nהפעלה, ניטור ותחזוקה של תחנות הייצור בקו לוחות הגבס/פרופילים.\nעבודה בהתאם להוראות עבודה, עבודה בסביבה ממוחשבת, מערכות Priority (ERP/MES)               לצורך דיווחים וקריאת משימות.\nהקפדה על עבודה בטוחה, איכותית ויעילה.\nתנאים והיקף משרה:\nמיקום: פארק תעשייה קיסריה.\nסוג משרה: משרה מלאה / עבודה במשמרות.\nעבודה בסביבה הדורשת משמעת בטיחות גבוהה, סדר ודיוק.\nדרישות התפקיד\nהבנה טכנית ויכולת איתור תקלות תהליכיות - חובה.\nיכולת עבודה פיזית, עמידה ממושכת ועבודה במשמרות - חובה.\nעברית ברמה גבוהה - חובה.\nניסיון כמפעיל/ת קו ייצור (יתרון משמעותי לתעשיית הגבס/מתכת/כימיה).\nיכולת עבודה בסביבת ERP/MES - יתרון.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nתעשיה / ייצור\nתחומים\nמפעיל/ת מכונות\nטכנאי/ת - תעשייה וייצור",
+    "query": "מפעיל מערכות SCADA",
+    "source": "Drushim",
+    "location": "קיסריה",
+    "logo": "",
+    "date": "2026-10-27",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "כ\nמפעיל/ת מכונות - מפעל ניצבים ומסלולים\nכרמית מיסטר פיקס\nקיסריה\n1-2 שנים\nמשמרות\nלפני 2 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברת מיסטר פיקס בפארק תעשייה קיסריה דרושים/ות מפעילי מכונות. התפקיד כולל:\nהפעלה, ניטור ותחזוקה של תחנות הייצור בקו לוחות הגבס/פרופילים.\nעבודה בהתאם להוראות עבודה, עבודה בסביבה ממוחשבת, מערכות Priority (ERP/MES)               לצורך דיווחים וקריאת משימות.\nהקפדה על עבודה בטוחה, איכותית ויעילה.\nתנאים והיקף משרה:\nמיקום: פארק תעשייה קיסריה.\nסוג משרה: משרה מלאה / עבודה במשמרות.\nעבודה בסביבה הדורשת משמעת בטיחות גבוהה, סדר ודיוק.\nדרישות התפקיד\nהבנה טכנית ויכולת איתור תקלות תהליכיות - חובה.\nיכולת עבודה פיזית, עמידה ממושכת ועבודה במשמרות - חובה.\nעברית ברמה גבוהה - חובה.\nניסיון כמפעיל/ת קו ייצור (יתרון משמעותי לתעשיית הגבס/מתכת/כימיה).\nיכולת עבודה בסביבת ERP/MES - יתרון.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nתעשיה / ייצור\nתחומים\nמפעיל/ת מכונות\nטכנאי/ת - תעשייה וייצור",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 75,
+    "concrete_matches_count": 4,
+    "reasoning": "המשרה דורשת הבנה טכנית, איתור תקלות ותפעול מערכות. כהנדסאי מכונות עם רקע במערכות אלקטרו-מכאניות וסביבות מבוקרות, עידו עונה היטב על דרישות הסף.",
+    "sector_key": "operations",
+    "sector": "תעשייה וייצור",
+    "company_domain_product": "כרמית מיסטר פיקס - ייצור מוצרי גבס ופרופילים",
+    "job_summary": "הפעלת מכונות, ניטור ותחזוקת תחנות ייצור בקו פרופילים ולוחות גבס, עבודה בסביבה ממוחשבת (Priority/MES) ופתרון תקלות תהליכיות במשמרות.",
+    "experience_strengths": "השכלה כהנדסאי מכונות, ניסיון באיתור תקלות במערכות אלקטרו-מכאניות, ניטור תהליכים ועבודה בסביבה ממוחשבת ומבוקרת.",
+    "key_highlights": "הנדסאי מכונות עם הבנה טכנית מעמיקה, יכולת איתור תקלות וניסיון במערכות ממוחשבות.",
+    "company_size": "unknown",
+    "junior_openness": "מתאים לבעלי ניסיון קצר (1-2 שנים) ולבעלי רקע טכני.",
+    "work_model": "משרה מלאה, עבודה במשמרות באתר החברה בקיסריה.",
+    "company_requirements": "הבנה טכנית ויכולת איתור תקלות תהליכיות, עבודה פיזית במשמרות, עברית ברמה גבוהה, יתרון לניסיון כמפעיל קו ייצור ועבודה בסביבת ERP/MES.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "הבנה טכנית ויכולת איתור תקלות תהליכיות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "הבנה טכנית ויכולת איתור תקלות תהליכיות - חובה.",
+          "source_field": "requirements"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "לעידו השכלה כהנדסאי מכונות ורקע מעשי בפתרון תקלות במערכות אלקטרו-מכאניות."
+      },
+      {
+        "requirement": "עבודה בסביבה ממוחשבת ומערכות ERP/MES",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "",
+          "source_field": "unverified"
+        },
+        "profile_evidence": {
+          "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "unknown",
+        "explanation": "ציטוט המודעה לא אומת או חסרה ראיה מאומתת בפרופיל; נדרשת בדיקה."
+      },
+      {
+        "requirement": "ניסיון כמפעיל/ת קו ייצור",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "ניסיון כמפעיל/ת קו ייצור (יתרון משמעותי לתעשיית הגבס/מתכת/כימיה).",
+          "source_field": "requirements"
+        },
+        "profile_evidence": {
+          "quote": "",
+          "source_field": "unverified"
+        },
+        "assessment": "unknown",
+        "explanation": "ציטוט המודעה לא אומת או חסרה ראיה מאומתת בפרופיל; נדרשת בדיקה."
+      },
+      {
+        "requirement": "עברית ברמה גבוהה",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "עברית ברמה גבוהה - חובה.",
+          "source_field": "requirements"
+        },
+        "profile_evidence": {
+          "quote": "עידו גל",
+          "source_field": "Candidate Name"
+        },
+        "assessment": "match",
+        "explanation": "דובר עברית שפת אם."
+      }
+    ],
+    "evaluation_source": "gemini",
+    "evaluation_model": "gemini-3.5-flash",
+    "evaluation_complete": true,
+    "base_match_score": 75,
+    "priority_bonus": 0,
+    "is_target_company": false,
+    "disqualification_reason": "",
+    "target_category": "",
+    "evidence_status": "incomplete",
+    "salary_range": "13,500 - 17,500 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • כולל משמרות",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": true,
+    "has_company_car": false,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 13500,
+    "p50": 15500,
+    "p75": 17500
   }
 ]
