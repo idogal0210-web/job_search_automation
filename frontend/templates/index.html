@@ -24,43 +24,46 @@
 <div class="dashboard-app" dir="rtl">
 
   <!-- Top Navigation Pill (So-Me Pill Header) -->
-  <header class="dashboard-sidebar">
-    <div class="dashboard-sidebar-brand">
+  <header class="dashboard-sidebar dashboard-header">
+    <!-- Header Section Right (Profile & Actions) -->
+    <div class="header-section header-section-right dashboard-sidebar-brand">
       <div class="brand-icon-pill">
         <i class="ph-duotone ph-rocket-launch" style="font-size: 22px; color: #000;"></i>
       </div>
-      <div class="brand-titles">
+      <div class="brand-titles profile-info">
         <div class="brand-title-row">
-          <span class="brand-title">עידו גל | בקרת משרות</span>
-          <button type="button" id="headerSyncBtn" class="header-sync-btn" onclick="triggerSyncModal()" title="סנכרון נתונים עם הענן" aria-label="סנכרון נתונים עם הענן">
+          <span class="brand-title profile-title">עידו גל | בקרת משרות</span>
+          <button type="button" id="headerSyncBtn" class="header-sync-btn icon-button" onclick="triggerSyncModal()" title="סנכרון נתונים עם הענן" aria-label="סנכרון נתונים עם הענן">
             <i class="ph-duotone ph-cloud-arrow-up" id="headerSyncIcon"></i>
             <span class="sync-status-dot" id="headerSyncDot" role="status" aria-live="polite"></span>
           </button>
-          <button type="button" class="header-about-btn" onclick="openAboutModal()" title="אודות המערכת" aria-label="אודות המערכת">
+          <button type="button" class="header-about-btn icon-button" onclick="openAboutModal()" title="אודות המערכת" aria-label="אודות המערכת">
             <i class="ph-duotone ph-info"></i>
           </button>
         </div>
         <div class="brand-subtitle-row">
-          <span class="brand-subtitle">אנרגיה, גז טבעי ורחפנים</span>
+          <span class="brand-subtitle profile-subtitle">אנרגיה, גז טבעי ורחפנים</span>
           <span class="sync-time-chip" id="lastSyncTimeChip" title="מועד סנכרון אחרון">עודכן: __NOW_STR__</span>
         </div>
       </div>
     </div>
 
-    <!-- Top-Level App Mode Switcher (Job Radar vs Career Studio) - Symmetrical & Centered -->
-    <nav class="dashboard-mode-switcher" role="tablist" aria-label="מצב מערכת ראשי">
-      <button type="button" role="tab" id="modeSwitchRadar" class="mode-switch-btn active" aria-selected="true" aria-controls="radarWorkspace" onclick="switchDashboardAppMode('radar')">
-        <i class="ph-duotone ph-crosshair"></i>
-        <span>לוח משרות</span>
-      </button>
-      <button type="button" role="tab" id="modeSwitchStudio" class="mode-switch-btn" aria-selected="false" aria-controls="careerStudioWorkspace" onclick="switchDashboardAppMode('studio')">
-        <i class="ph-duotone ph-sparkle"></i>
-        <span>סטודיו קריירה</span>
-      </button>
-    </nav>
+    <!-- Header Section Center (Mode Switcher) - Symmetrical & Centered -->
+    <div class="header-section header-section-center nav-pills-wrapper">
+      <nav class="dashboard-mode-switcher" role="tablist" aria-label="מצב מערכת ראשי">
+        <button type="button" role="tab" id="modeSwitchRadar" class="mode-switch-btn nav-btn active" aria-selected="true" aria-controls="radarWorkspace" onclick="switchDashboardAppMode('radar')">
+          <i class="ph-duotone ph-crosshair"></i>
+          <span>לוח משרות</span>
+        </button>
+        <button type="button" role="tab" id="modeSwitchStudio" class="mode-switch-btn nav-btn" aria-selected="false" aria-controls="careerStudioWorkspace" onclick="switchDashboardAppMode('studio')">
+          <i class="ph-duotone ph-sparkle"></i>
+          <span>סטודיו קריירה</span>
+        </button>
+      </nav>
+    </div>
 
-    <!-- Progress & Category Navigation Hub (Compact single-row summary, expandable on mobile) -->
-    <div class="header-progress-hub">
+    <!-- Header Section Left (Progress & Category Navigation Hub) -->
+    <div class="header-section header-section-left header-progress-hub">
 
       <!-- Mobile Collapsible Summary Toggle Button -->
       <button type="button" class="metrics-summary-toggle" id="metricsToggleBtn" onclick="toggleMetricsExpand()" aria-expanded="false" aria-controls="collapsibleMetricsContent" aria-label="הרחב או צמצם פירוט מטריקות">
@@ -105,8 +108,8 @@
         </div>
 
         <!-- 4 Interactive Category Cubes -->
-        <div class="header-stat-cubes">
-          <button type="button" id="cube_all" class="stat-cube-btn active" onclick="setFilter('all', this)" title="משרות חדשות שטרם נסקרו">
+        <div class="header-stat-cubes stats-container">
+          <button type="button" id="cube_all" class="stat-cube-btn stat-box active active-stat" onclick="setFilter('all', this)" title="משרות חדשות שטרם נסקרו">
             <div class="stat-cube-icon lime">
               <i class="ph-duotone ph-sparkle"></i>
             </div>
@@ -114,7 +117,7 @@
             <div class="stat-cube-label">משרות חדשות</div>
           </button>
 
-          <button type="button" id="cube_starred" class="stat-cube-btn cube-starred" onclick="setFilter('starred', this)" title="משרות שסומנו בכוכב">
+          <button type="button" id="cube_starred" class="stat-cube-btn stat-box cube-starred" onclick="setFilter('starred', this)" title="משרות שסומנו בכוכב">
             <div class="stat-cube-icon gold">
               <i class="ph-fill ph-star"></i>
             </div>
@@ -122,7 +125,7 @@
             <div class="stat-cube-label">מסומנות בכוכב</div>
           </button>
 
-          <button type="button" id="cube_saved" class="stat-cube-btn cube-saved" onclick="setFilter('saved', this)" title="משרות שנשמרו להגשה">
+          <button type="button" id="cube_saved" class="stat-cube-btn stat-box cube-saved" onclick="setFilter('saved', this)" title="משרות שנשמרו להגשה">
             <div class="stat-cube-icon cyan">
               <i class="ph-duotone ph-bookmark-simple"></i>
             </div>
@@ -130,7 +133,7 @@
             <div class="stat-cube-label">שמורות להגשה</div>
           </button>
 
-          <button type="button" id="cube_rejected" class="stat-cube-btn cube-rejected" onclick="setFilter('rejected', this)" title="משרות שהוסרו מהסבב">
+          <button type="button" id="cube_rejected" class="stat-cube-btn stat-box cube-rejected" onclick="setFilter('rejected', this)" title="משרות שהוסרו מהסבב">
             <div class="stat-cube-icon rose">
               <i class="ph-duotone ph-trash"></i>
             </div>

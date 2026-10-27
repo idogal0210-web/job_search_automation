@@ -82,21 +82,64 @@
       background: rgba(255, 255, 255, 0.32);
     }
 
-    /* Header Nav Enhancements */
+    /* --- קונטיינר ראשי --- */
+    .dashboard-header,
+    .dashboard-app .dashboard-sidebar,
     .dashboard-sidebar {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      direction: rtl; /* יישור מימין לשמאל */
+      justify-content: space-between; /* פיזור 3 האזורים: ימין, אמצע, שמאל */
+      align-items: center; /* יישור כל האלמנטים לאמצע הציר האנכי */
+      padding: 12px 24px;
+      background: rgba(40, 42, 40, 0.85);
+      border-radius: 99px; /* מסגרת עגולה לחלוטין */
       gap: 20px;
-      border-radius: 28px !important;
-      padding: 12px 20px !important;
-      overflow: hidden !important;
+      min-height: 80px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-sizing: border-box;
       position: relative;
     }
+
+    /* --- חלוקה לאזורים (ימין, אמצע, שמאל) --- */
+    .header-section {
+      display: flex;
+      align-items: center;
+      gap: 16px; /* רווח אחיד בין קבוצות אלמנטים באותו אזור */
+    }
+
+    .header-section-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1 1 0;
+      min-width: 0;
+      justify-content: flex-start;
+    }
+
+    .header-section-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .header-section-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1 1 0;
+      min-width: 0;
+      justify-content: flex-end;
+    }
+
+    /* --- אזור טקסט ופרופיל (צד ימין) --- */
     .dashboard-sidebar-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       flex-shrink: 0;
       text-decoration: none;
     }
@@ -104,61 +147,74 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: linear-gradient(145deg, rgba(220, 255, 114, 0.28), rgba(255, 255, 255, 0.08));
-      border: 1px solid rgba(220, 255, 114, 0.4);
+      background: linear-gradient(145deg, rgba(168, 213, 115, 0.28), rgba(255, 255, 255, 0.08));
+      border: 1px solid rgba(168, 213, 115, 0.4);
       box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 20px;
+      flex-shrink: 0;
     }
+    .profile-info,
     .brand-titles {
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      justify-content: center;
+      gap: 4px;
     }
     .brand-title-row {
       display: flex;
       align-items: center;
       gap: 8px;
+      white-space: nowrap;
     }
+    .profile-title,
     .brand-title {
-      font-size: 17px;
+      font-size: 1.1rem;
       font-weight: 700;
-      color: var(--dashboard-text);
+      color: #ffffff;
+      margin: 0;
       line-height: 1.2;
+      white-space: nowrap;
     }
-    .header-sync-btn, .header-about-btn {
-      width: 44px;
-      height: 44px;
-      min-width: 44px;
-      min-height: 44px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: var(--dashboard-text);
-      display: inline-flex;
+    .icon-button,
+    .header-sync-btn,
+    .header-about-btn {
+      display: flex;
       align-items: center;
       justify-content: center;
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      min-height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      padding: 0;
       cursor: pointer;
       position: relative;
       transition: all 0.2s ease;
       font-size: 18px;
-      padding: 0;
     }
-    .header-sync-btn:hover, .header-about-btn:hover {
-      background: rgba(255, 255, 255, 0.16);
-      border-color: rgba(255, 255, 255, 0.4);
+    .icon-button:hover,
+    .header-sync-btn:hover,
+    .header-about-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
       transform: translateY(-1px);
     }
-    .header-sync-btn:focus-visible, .header-about-btn:focus-visible {
-      outline: 3px solid var(--dashboard-lime);
+    .icon-button:focus-visible,
+    .header-sync-btn:focus-visible,
+    .header-about-btn:focus-visible {
+      outline: 3px solid #a8d573;
       outline-offset: 2px;
     }
     .sync-status-dot {
       position: absolute;
-      top: 8px;
-      left: 8px;
+      top: 6px;
+      left: 6px;
       width: 8px;
       height: 8px;
       border-radius: 50%;
@@ -174,22 +230,25 @@
       background: #f87171;
       box-shadow: 0 0 8px #f87171;
     }
+    .brand-subtitle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+    }
+    .profile-subtitle,
+    .brand-subtitle {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin: 0;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
     .sync-time-chip {
       font-size: 11px;
       color: var(--dashboard-muted);
       letter-spacing: 0.3px;
       white-space: nowrap;
-    }
-    .brand-subtitle-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .brand-subtitle {
-      font-size: 11px;
-      color: var(--dashboard-muted);
-      letter-spacing: 0.5px;
     }
     .header-actions-group {
       display: flex;
@@ -203,9 +262,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      flex: 1;
-      justify-content: center;
-      max-width: 840px;
+      justify-content: flex-end;
     }
     .dashboard-app .metrics-summary-toggle,
     .metrics-summary-toggle {
@@ -324,62 +381,68 @@
       height: 100% !important;
       transition: width 0.4s ease !important;
     }
+    /* --- כרטיסיות סטטיסטיקה (צד שמאל) --- */
+    .stats-container,
     .header-stat-cubes {
-      display: grid !important;
-      grid-template-columns: repeat(4, 72px) !important;
-      gap: 6px !important;
+      display: flex !important;
+      align-items: stretch !important; /* מוודא שכל הכרטיסיות באותו גובה */
+      gap: 10px !important;
       flex-shrink: 0 !important;
     }
+    .stat-box,
     .dashboard-app .stat-cube-btn,
     .stat-cube-btn {
-      background: rgba(0, 0, 0, 0.3) !important;
-      border: 1px solid var(--dashboard-edge) !important;
-      border-radius: 14px !important;
-      padding: 5px 4px !important;
       display: flex !important;
       flex-direction: column !important;
       align-items: center !important;
       justify-content: center !important;
-      text-align: center !important;
-      gap: 2px !important;
-      cursor: pointer !important;
-      width: 72px !important;
       min-width: 72px !important;
-      max-width: 72px !important;
-      height: 56px !important;
-      min-height: 56px !important;
+      padding: 8px 12px !important;
+      background: rgba(30, 30, 30, 0.6) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 16px !important;
+      color: #ffffff !important;
+      transition: all 0.2s ease !important;
+      cursor: pointer !important;
       box-sizing: border-box !important;
-      color: var(--dashboard-text) !important;
-      text-decoration: none !important;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.08) !important;
       position: relative !important;
       flex-shrink: 0 !important;
+      gap: 3px !important;
+      text-align: center !important;
+      text-decoration: none !important;
+      outline: none;
     }
+    .stat-box:hover,
     .stat-cube-btn:hover {
       background: rgba(255, 255, 255, 0.08) !important;
-      border-color: rgba(255, 255, 255, 0.35) !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
       transform: translateY(-2px);
     }
+    /* כרטיסייה מודגשת (משרות חדשות) */
+    .stat-box.active-stat,
+    .stat-box.active,
     .stat-cube-btn.active {
-      background: linear-gradient(145deg, rgba(220, 255, 114, 0.18), rgba(255, 255, 255, 0.06)) !important;
-      border-color: var(--dashboard-lime) !important;
-      box-shadow: 0 4px 18px rgba(220, 255, 114, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
+      border: 1.5px solid #a8d573 !important;
+      background: rgba(168, 213, 115, 0.08) !important;
+      box-shadow: 0 0 15px rgba(168, 213, 115, 0.15) !important;
     }
+    .stat-box.active.cube-starred,
     .stat-cube-btn.active.cube-starred {
-      background: linear-gradient(145deg, rgba(251, 191, 36, 0.2), rgba(255, 255, 255, 0.06)) !important;
       border-color: var(--dashboard-gold) !important;
-      box-shadow: 0 4px 18px rgba(251, 191, 36, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
+      background: rgba(251, 191, 36, 0.12) !important;
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.15) !important;
     }
+    .stat-box.active.cube-saved,
     .stat-cube-btn.active.cube-saved {
-      background: linear-gradient(145deg, rgba(137, 244, 231, 0.2), rgba(255, 255, 255, 0.06)) !important;
       border-color: var(--dashboard-cyan) !important;
-      box-shadow: 0 4px 18px rgba(137, 244, 231, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
+      background: rgba(137, 244, 231, 0.12) !important;
+      box-shadow: 0 0 15px rgba(137, 244, 231, 0.15) !important;
     }
+    .stat-box.active.cube-rejected,
     .stat-cube-btn.active.cube-rejected {
-      background: linear-gradient(145deg, rgba(248, 113, 113, 0.18), rgba(255, 255, 255, 0.06)) !important;
-      border-color: #fca5a5 !important;
-      box-shadow: 0 4px 18px rgba(239, 68, 68, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.2) !important;
+      border-color: #f87171 !important;
+      background: rgba(248, 113, 113, 0.12) !important;
+      box-shadow: 0 0 15px rgba(248, 113, 113, 0.15) !important;
     }
     .stat-cube-icon {
       width: 18px !important;
@@ -399,19 +462,18 @@
     .stat-cube-icon.cyan { background: var(--dashboard-cyan); color: #171c12; }
     .stat-cube-icon.rose { background: #fca5a5; color: #171c12; }
     .stat-cube-count {
-      font-size: 14.5px !important;
+      font-size: 15px !important;
       font-weight: 800 !important;
-      color: #fff !important;
+      color: #ffffff !important;
       line-height: 1.1 !important;
       margin: 0 !important;
     }
     .stat-cube-label {
-      font-size: 9.5px !important;
+      font-size: 10px !important;
       font-weight: 600 !important;
-      color: var(--dashboard-muted) !important;
+      color: rgba(255, 255, 255, 0.7) !important;
       white-space: nowrap !important;
       line-height: 1 !important;
-      letter-spacing: -0.2px !important;
     }
 
     /* Stats Overview Grid (2 Cards: Search/Filters & Sector Chart) */
@@ -2540,68 +2602,80 @@
    Milestone 1: Architecture Framework, Mode Switcher & Career Studio SPA
    ========================================================================== */
 
-/* Top-Level Mode Switcher in Header */
+/* --- אזור כפתורי אמצע (לוח משרות / סטודיו קריירה) --- */
+.dashboard-sidebar nav.dashboard-mode-switcher,
+.dashboard-header .dashboard-mode-switcher,
+.dashboard-header .nav-pills,
+.nav-pills,
 .dashboard-mode-switcher {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: rgba(0, 0, 0, 0.45);
-  border: 1px solid var(--dashboard-edge);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: 999px;
-  padding: 4px;
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.25);
-  flex-shrink: 0;
+  display: flex !important;
+  flex: 0 0 auto !important;
+  align-items: center !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 99px !important;
+  padding: 4px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: none !important;
+  width: auto !important;
+  max-width: none !important;
   z-index: 10;
 }
 
+.nav-btn,
 .mode-switch-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 24px;
+  border-radius: 99px;
+  color: #ffffff;
+  font-weight: 500;
+  cursor: pointer;
   background: transparent;
   border: 1px solid transparent;
-  color: var(--dashboard-muted);
-  padding: 7px 16px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 700;
   font-family: inherit;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 38px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 14px;
+  line-height: 1.4;
+  min-height: 40px;
   white-space: nowrap;
+  transition: all 0.2s ease;
 }
 
+.nav-btn i,
 .mode-switch-btn i {
-  font-size: 16px;
-  color: var(--dashboard-muted);
-  transition: color 0.25s ease;
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease;
 }
 
+.nav-btn:hover,
 .mode-switch-btn:hover {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.08);
 }
 
+.nav-btn:hover i,
 .mode-switch-btn:hover i {
   color: #ffffff;
 }
 
+/* כפתור פעיל (לוח משרות) */
+.nav-btn.active,
 .mode-switch-btn.active {
-  background: linear-gradient(135deg, rgba(220, 255, 114, 0.22), rgba(137, 244, 231, 0.2));
-  color: #ffffff;
-  border: 1px solid rgba(220, 255, 114, 0.45);
-  box-shadow: 0 2px 14px rgba(220, 255, 114, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  background: rgba(168, 213, 115, 0.15) !important;
+  border: 1px solid #a8d573 !important;
+  box-shadow: 0 0 15px rgba(168, 213, 115, 0.15) !important;
+  color: #ffffff !important;
 }
 
+.nav-btn.active i,
 .mode-switch-btn.active i {
-  color: var(--dashboard-lime) !important;
+  color: #a8d573 !important;
 }
 
+.nav-btn:focus-visible,
 .mode-switch-btn:focus-visible {
-  outline: 3px solid var(--dashboard-lime);
+  outline: 3px solid #a8d573;
   outline-offset: 2px;
 }
 
@@ -5937,71 +6011,100 @@
 }
 
 /* Symmetrical Header Architecture on Desktop (Horizontally Centered Mode Switcher) */
-@media (min-width: 1025px) {
+@media (min-width: 1181px) {
   .dashboard-app .dashboard-sidebar,
-  .dashboard-sidebar {
-    display: grid !important;
-    grid-template-columns: 1fr auto 1fr !important;
+  .dashboard-sidebar,
+  .dashboard-header {
+    display: flex !important;
+    direction: rtl !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 12px 24px !important;
+    background: rgba(40, 42, 40, 0.85) !important;
+    border-radius: 99px !important;
+    gap: 20px !important;
+    min-height: 80px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+    box-sizing: border-box !important;
+  }
+  .header-section-right {
+    flex: 0 0 auto !important;
+    justify-content: flex-start !important;
+    display: flex !important;
     align-items: center !important;
     gap: 16px !important;
-    padding: 10px 18px !important;
-    min-height: 76px !important;
   }
-  .dashboard-sidebar-brand {
-    grid-column: 1 !important;
-    justify-self: start !important;
-    min-width: 0 !important;
+  .header-section-center {
+    flex: 0 0 auto !important;
+    justify-content: center !important;
+    display: flex !important;
+    align-items: center !important;
   }
-  .dashboard-mode-switcher {
-    grid-column: 2 !important;
-    justify-self: center !important;
-    margin: 0 auto !important;
-    width: auto !important;
-    order: initial !important;
-    white-space: nowrap !important;
-  }
-  .header-progress-hub {
-    grid-column: 3 !important;
-    justify-self: end !important;
-    width: auto !important;
-    max-width: 100% !important;
+  .header-section-left {
+    flex: 0 0 auto !important;
     justify-content: flex-end !important;
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important;
+    gap: 16px !important;
   }
 }
 
-/* On intermediate screens under 1150px, hide progress bar to prevent any collision */
-@media (max-width: 1150px) and (min-width: 881px) {
-  .header-progress-info {
-    display: none !important;
+/* Intermediate desktop screens (1181px - 1280px): adapt padding and gap to prevent any collision */
+@media (min-width: 1181px) and (max-width: 1280px) {
+  .dashboard-app .dashboard-sidebar,
+  .dashboard-sidebar,
+  .dashboard-header {
+    padding: 12px 16px !important;
+    gap: 12px !important;
+  }
+  .header-section {
+    gap: 12px !important;
+  }
+  .nav-btn,
+  .mode-switch-btn {
+    padding: 8px 18px !important;
+  }
+  .stats-container,
+  .header-stat-cubes {
+    gap: 8px !important;
+  }
+  .stat-box,
+  .stat-cube-btn {
+    padding: 7px 8px !important;
+    min-width: 68px !important;
   }
 }
 
-@media (min-width: 881px) and (max-width: 1024px) {
-  .dashboard-app .dashboard-sidebar {
+/* Hide desktop progress bar so left section matches right section in width and centers the nav-pills */
+.header-progress-info {
+  display: none !important;
+}
+
+@media (min-width: 881px) and (max-width: 1180px) {
+  .dashboard-app .dashboard-sidebar,
+  .dashboard-header {
     display: flex !important;
     flex-direction: column !important;
     gap: 12px !important;
     align-items: center !important;
+    border-radius: 28px !important;
+    padding: 16px !important;
   }
-  .dashboard-sidebar-brand {
+  .header-section-right {
     width: 100% !important;
     justify-content: space-between !important;
   }
-  .dashboard-mode-switcher {
+  .header-section-center {
     width: auto !important;
     margin: 0 auto !important;
     justify-content: center !important;
   }
-  .header-progress-hub {
+  .header-section-left {
     width: 100% !important;
     max-width: 100% !important;
     justify-content: center !important;
   }
 }
-.dashboard-mode-switcher .mode-switch-btn { font-size: 14px !important; line-height: 1.4 !important; min-height: 44px; padding: 10px 14px; }
 
 @media (max-width: 767px) {
   .kanban-board-grid { grid-template-columns: minmax(0, 1fr); }
