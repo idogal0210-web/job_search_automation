@@ -1,49 +1,49 @@
 ---
 name: save-and-sync
-description: Protocol executed whenever the user says "שמור ועדכן", "שמור וסנכרן", or "Save and update". Validates project integrity, enforces zero-waste lean directory hygiene by purging obsolete legacy files and wrappers, runs test suite, checks secret leaks, verifies zero emojis, persists files, commits and pushes to Git/GitHub, and provides a structured executive summary in RTL.
+description: Protocol executed whenever the user says "שמור ועדכן", "שמור וסנכרן", "סנכרן ונקה", or "Save and update". Validates project integrity, enforces zero-waste lean directory hygiene via scripts/project_hygiene.py, runs test suite, checks secret leaks, verifies zero emojis, persists files, commits and pushes to GitHub, and provides a structured executive summary in RTL.
 ---
 
 # Save & Sync Protocol ("שמור ועדכן")
 
-Execute this comprehensive 5-step procedure whenever the user issues the trigger phrase **"שמור ועדכן"**, **"שמור וסנכרן"**, or **"Save and update"**:
+Execute this comprehensive 5-step procedure whenever the user issues the trigger phrase **"שמור ועדכן"**, **"שמור וסנכרן"**, **"סנכרן ונקה"**, or **"Save and update"**:
 
 ## שלב 1 - בדיקת תקינות ושלמות (Code & Integrity Validation)
-1. **הידור ובדיקת תחביר מלאה:** הרץ בדיקת קומפילציה ותחביר לכל קובצי הקוד הפעילים בפרויקט (`python3 -m py_compile ...`).
-2. **אימות קובצי נתונים ותצורה:** אמת תקינות של כל קובצי ה-JSON, הסכמות והקונפיגורציות בפרויקט (`json.load`).
+1. **הידור ובדיקת תחביר מלאה:** הרץ בדיקת קומפילציה ותחביר באמצעות `python3 scripts/project_hygiene.py --validate`.
+2. **אימות קובצי נתונים ותצורה:** אימות תקינות של כל קובצי ה-JSON, הסכמות והקונפיגורציות בפרויקט.
 3. **בדיקות יחידה אוטומטיות:** הרץ את מערך הטסטים המלא (`python3 -m unittest discover -s tests -p "test_*.py"`).
 4. **בדיקת שלמות:** ודא אפס שגיאות תחביר, אפס כשלים בבדיקות, אפס ייבואים שבורים ואפס תלויות חסרות לפני המעבר לשלבים הבאים.
 
-## שלב 2 - טיהור מוחלט של קבצים מיותרים (Zero-Waste & Lean Directory Hygiene)
-אכוף את חוק הברזל: **"לא יישאר בפרויקט אפילו קובץ אחד שאין בו שימוש פעיל או צורך ממשי"**.
-בצע סריקה אקטיבית ומחיקה אוטומטית של:
-- **סקריפטים ותיקיות עבר ישנות:** תיקיות כגון `legacy/` או סקריפטים שהוחלפו ואינם חלק מתהליך הייצור.
-- **קובצי מעטפת כפולים (Root Forwarders / Wrappers):** קבצים כפולים בשורש הפרויקט כאשר המימוש כבר יושב בצורה מודולרית בתוך `src/`.
-- **קבצים של אוטומציות או תכונות שבוטלו:** כל קובץ, סקריפט או תצורה של פיצ'ר שאינו פעיל עוד.
-- **קובצי טיוטה, תצוגות זמניות ודאמפים:** קבצים כגון `sample_*.html`, `temp_*`, `test_*.html`, דאמפים של טסטים ותצוגות מקדימות חד-פעמיות.
-- **סקריפטים חד-פעמיים:** סקריפטים זמניים שנוצרו לניפוי שגיאות או בדיקות (`tmp_*.py`, `scratch_*.py`, `test_*.py`).
-- **קובצי מטמון וזבל מערכת:** מחיקה רקורסיבית של `__pycache__/`, `*.pyc`, `*.pyo`, `.DS_Store`, `Thumbs.db`, וקובצי לוג מקומיים (`*.log`).
+## שלב 2 - טיהור דטרמיניסטי של קבצים מיותרים (Project Hygiene & Zero-Waste)
+אכוף את מדיניות הניקוי המוגדרת בקובץ `.save-and-sync.yml` באמצעות הסקריפט הייעודי:
+1. **הפעלת ניקוי:** הרץ `python3 scripts/project_hygiene.py --clean`.
+2. **פריטים המנוקים אוטומטית (שכבה 2 ושכבה 3):**
+   - קובצי מטמון וזבל מערכת: `__pycache__/`, `*.pyc`, `*.pyo`, `.DS_Store`, `Thumbs.db`.
+   - קובצי גיבוי וטיוטות זמניות: `*.bak`, `*.tmp`, `*.temp`.
+   - קובצי לוג ישנים מ-7 ימים תחת `logs/`.
+3. **סייג בטיחות מוחלט (שכבה 1 - מוגנים לתמיד):**
+   - לעולם אין למחוק קובצי ליבה פעילים (`main.py`, `src/**`), קובצי נתונים וארכיון (`data/**`), דשבורד (`docs/**`), קובצי תצורה (`.env`, `requirements*.txt`, `.gitignore`), קובצי תיעוד (`README.md`, `PROJECT_CONTEXT.md`), סקריפטים (`scripts/**`) או תהליכי CI/CD (`.github/workflows/`).
 
-> **סייג בטיחות (Safety Guard):**
-> לעולם אין למחוק קובצי ליבה פעילים (כגון `main.py`), מודולים פעילים בתוך `src/`, מסדי נתונים וארכיונים פעילים בתוך `data/`, קובצי תצורה חיוניים (`.env`, `requirements.txt`, `.gitignore`), קובצי תיעוד רשמיים (`README.md`, `docs/`) או תהליכי CI/CD פעילים ב-`.github/workflows/`.
-
-## שלב 3 - שמירה ובנייה מקומית (Local Persistence & Build)
+## שלב 3 - שמירה ובדיקת אבטחה (Local Persistence & Security Check)
 1. **שמירה בדיסק:** ודא שכל הקבצים שנערכו או נוצרו נשמרו מקומית בדיסק.
-2. **סריקת סודות ואפס אימוג'ים:** בצע סריקת pre-commit למניעת דליפת מפתחות ואמת אפס אימוג'ים בקבצים החדשים.
+2. **סריקת סודות ואפס אימוג'ים:** הרץ `python3 scripts/project_hygiene.py --check-secrets` לוודא אפס דליפת מפתחות ואמת אפס אימוג'ים בקבצים החדשים ובסיכומי מנהלים.
 3. **עדכון מסמכי הליבה:** בעת שינוי ארכיטקטוני או שינוי תלויות, ודא סנכרון של `PROJECT_CONTEXT.md`, `README.md`, `requirements.txt` ו-`requirements-lock.txt`.
-4. **אימות .gitignore:** ודא שקובץ `.gitignore` קיים ומתעלם כראוי מ-`.env`, ספריות וירטואליות (`venv/`), ומטמונים.
+4. **אימות .gitignore:** ודא שקובץ `.gitignore` קיים ומתעלם כראוי מ-`.env`, `.recovery/`, ספריות וירטואליות (`venv/`), ומטמונים.
 
 ## שלב 4 - סנכרון ודחיפה ל-GitHub (GitHub Synchronization)
 > **כלל מנחה:** כאשר המשתמש אומר "גיט", הכוונה היא תמיד ל-**GitHub**, ויש להתייחס לפלטפורמה ולכתוב תמיד **GitHub**.
 - בדיקת סטטוס: `git status --porcelain`.
-- צירוף כל השינויים והמחיקות: `git add -A`.
-- יצירת הודעת Commit סמנטית (ללא אימוג'ים): `feat: ...`, `fix: ...`, `chore: ...`.
-- דחיפה ל-GitHub: `git push origin <branch>`.
-- אימות עץ עבודה נקי (`working tree clean`) ותאימות 1:1 מול ה-Remote.
+- בדיקת סנכרון מול ה-Remote: `git fetch origin main`.
+- צירוף השינויים המאושרים בלבד: `git add <paths>`.
+- יצירת הודעת Commit סמנטית (ללא אימוג'ים): `feat(...)`, `fix(...)`, `chore(...)`, `refactor(...)`.
+- דחיפה ל-GitHub: `git push origin main`.
+- אימות עץ עבודה נקי (`working tree clean`) ותאימות מול ה-Remote.
 
 ## שלב 5 - דוח סיכום תמציתי בעברית (RTL Executive Summary)
 הפק דוח סיכום מובנה ומקצועי ביישור מלא לימין (RTL) ללא אימוג'ים כלל:
+- פעולה שבוצעה: [שמירה / סנכרון / סנכרון ונקה]
 - בדיקת תקינות: תקין (הידור קוד, אימות נתונים, כל בדיקות היחידה עברו)
-- טיהור קבצים מיותרים (Zero Waste): פירוט קבצי עבר/כפילויות/זבל שנמחקו
+- טיהור קבצים מיותרים (Zero Waste): פירוט מדויק של כמות הפריטים שנוקו ושטח הדיסק שפונה
+- סריקת אבטחה: אפס סודות, אפס אימוג'ים
 - קבצים שנשמרו מקומית: פירוט הקבצים שעודכנו
 - סנכרון GitHub: סטטוס דחיפה, Hash והודעת ה-Commit
-- שורה תחתונה: הפרויקט רזה, נקי, מאובטח, שמור ומסונכרן במלואו
+- שורה תחתונה: הפרויקט רזה, נקי, מאובטח, שמור ומסונכרן במלואו מול GitHub

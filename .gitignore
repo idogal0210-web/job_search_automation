@@ -24,6 +24,7 @@ reports/
 data/*.local.json
 
 # Private CV Tailor data and personal profiles
+.recovery/
 tools/cv_tailor/base_profile.md
 tools/cv_tailor/target_companies.json
 tools/cv_tailor/target_companies.md

@@ -1,0 +1,55 @@
+# save-and-sync Project Policy Configuration
+# Project: job_search_automation
+version: 1
+project: job_search_automation
+expected_remote: origin
+expected_branch: main
+
+# Tier 1: Protected Paths (Never delete or relocate under any circumstance)
+protected_paths:
+  - "main.py"
+  - "src/**"
+  - "data/**"
+  - "docs/**"
+  - ".agents/**"
+  - ".github/**"
+  - ".env"
+  - ".gitignore"
+  - "requirements*.txt"
+  - "tests/**"
+  - "tools/**"
+  - "frontend/**"
+  - "scripts/**"
+  - "PROJECT_CONTEXT.md"
+  - "README.md"
+
+# Tier 2: Ephemeral & Disposable Patterns (Immediate safe removal on CLEAN / SYNC_AND_CLEAN)
+disposable_patterns:
+  - "**/*.bak"
+  - "**/*.tmp"
+  - "**/*.temp"
+  - "**/.DS_Store"
+  - "**/Thumbs.db"
+  - "**/__pycache__"
+  - "**/*.pyc"
+  - "**/*.pyo"
+
+# Tier 3: Log Retention Rules
+log_retention:
+  max_age_days: 7
+  max_lines: 500
+  paths:
+    - "logs/*.log"
+
+# Tier 4: Safe Recovery & Staging
+recovery:
+  enabled: true
+  path: ".recovery"
+  retention_days: 14
+
+# Validation Checks
+validation:
+  python_syntax_check: true
+  json_syntax_check: true
+  secret_scan: true
+  run_unit_tests: true
