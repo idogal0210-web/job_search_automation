@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#1e1e24"/>
+  <!-- Light Rail Train Front & Metro Track in Crimson -->
+  <path d="M42 32 C42 26 86 26 86 32 L90 68 C90 74 86 78 78 78 H50 C42 78 38 74 38 68 Z" fill="#cf142b"/>
+  <rect x="46" y="38" width="36" height="18" rx="4" fill="#ffffff" opacity="0.9"/>
+  <circle cx="50" cy="68" r="4" fill="#facc15"/>
+  <circle cx="78" cy="68" r="4" fill="#facc15"/>
+  <path d="M34 92 L54 82 L74 82 L94 92" stroke="#ffffff" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <text x="64" y="108" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="1.5">TEVEL METRO</text>
+  <text x="64" y="118" font-family="system-ui, -apple-system, sans-serif" font-size="8" font-weight="700" fill="#f87171" text-anchor="middle">תבל מטרו</text>
+</svg>

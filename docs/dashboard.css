@@ -835,6 +835,31 @@
       gap: 6px;
       flex-wrap: wrap;
     }
+    /* Salary Chip in Card Topbar */
+    .job-salary-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+      background: rgba(45, 212, 191, 0.12);
+      border: 1px solid rgba(45, 212, 191, 0.35);
+      color: #2dd4bf;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+    .job-salary-chip i {
+      font-size: 13px;
+    }
+    .job-salary-chip.salary-chip-ad {
+      background: rgba(168, 213, 115, 0.16);
+      border: 1px solid rgba(168, 213, 115, 0.42);
+      color: #a8d573;
+    }
+
     .badge-score {
       padding: 5px 12px;
       border-radius: 999px;
@@ -1105,12 +1130,130 @@
     .job-actions-bar {
       display: flex;
       flex-direction: column;
-      gap: 9px;
-      padding-top: 14px;
+      gap: 8px;
+      padding-top: 12px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       margin-top: auto;
       width: 100%;
     }
+    .job-actions-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+    }
+    .job-actions-bottom-row {
+      width: 100%;
+      margin-top: 2px;
+    }
+
+    /* Rightmost: Expand Full Details - slightly larger, caret icon */
+    .job-actions-top-row .btn-toggle-details {
+      flex: 1.25;
+      min-height: 40px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #e2e8df;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .job-actions-top-row .btn-toggle-details:hover {
+      background: rgba(137, 244, 231, 0.12);
+      border-color: var(--dashboard-cyan);
+      color: #ffffff;
+    }
+    .job-actions-top-row .btn-toggle-details.expanded {
+      background: rgba(137, 244, 231, 0.16);
+      border-color: var(--dashboard-cyan);
+      color: var(--dashboard-cyan);
+    }
+
+    /* Middle: Saved for submission - bookmark icon */
+    .job-actions-top-row .action-save-btn {
+      flex: 1;
+      min-height: 40px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    /* Leftmost: Trash icon only in red, circular */
+    .job-actions-top-row .action-reject-btn {
+      width: 40px;
+      min-width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      border-radius: 50%;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      background: rgba(239, 68, 68, 0.1);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .job-actions-top-row .action-reject-btn i {
+      font-size: 18px;
+      color: #ef4444;
+    }
+    .job-actions-top-row .action-reject-btn:hover {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: #ef4444;
+      transform: scale(1.06);
+    }
+    .job-actions-top-row .action-reject-btn.rejected-active {
+      background: rgba(239, 68, 68, 0.35);
+      border-color: #ef4444;
+      box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+    }
+
+    /* Bottom-most: Apply - thin and elegant */
+    .btn-apply.btn-apply-elegant,
+    .dashboard-app a.btn-apply.btn-apply-elegant {
+      width: 100%;
+      min-height: 36px;
+      height: 36px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.88) 0%, rgba(5, 150, 105, 0.88) 100%);
+      border: 1px solid rgba(52, 211, 153, 0.35);
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.2);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      color: #ffffff !important;
+    }
+    .btn-apply.btn-apply-elegant:hover,
+    .dashboard-app a.btn-apply.btn-apply-elegant:hover {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border-color: rgba(52, 211, 153, 0.6);
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+      transform: translateY(-1px);
+    }
+
     .action-btn-group {
       display: grid;
       grid-template-columns: 1fr 1fr;

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#002b49"/>
+  <circle cx="64" cy="48" r="22" fill="#f15a24"/>
+  <path d="M54 38 L62 48 L54 58 H60 L68 48 L60 38 Z" fill="#ffffff"/>
+  <path d="M64 38 L72 48 L64 58 H70 L78 48 L70 38 Z" fill="#ffffff"/>
+  <text x="64" y="88" font-family="'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="2">KNAPP</text>
+  <text x="64" y="104" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#f15a24" text-anchor="middle" letter-spacing="1">AUTOMATION</text>
+</svg>

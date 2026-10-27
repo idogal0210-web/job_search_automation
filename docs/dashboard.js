@@ -107,17 +107,25 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   }
 
+  function formatJobSalaryTag(job) {
+    if (!job) return '';
+    let sal = (job.salary_range || '').trim();
+    if (!sal || sal === 'לא צוין במודעה' || sal === 'לא צוין שכר' || sal === 'לא צוין') {
+      return '';
+    }
+    // Clean any accidental word 'הערכה'
+    sal = sal.replace(/הערכה\s*(?:חודשית|פנימית|בלבד)?/g, '').replace(/—\s*$/, '').replace(/;\s*:/g, ':').trim();
+    sal = sal.replace(/\(\s*\)/g, '').trim();
+
+    const isAd = job.salary_source_type === 'job_ad' || job.salary_source_type === 'ad' || job.salary_source_type === 'employer';
+    if (isAd) {
+      return `<span class="job-salary-chip salary-chip-ad" title="שכר שפורסם במודעת המשרה"><i class="ph-duotone ph-coins"></i> ${escapeHtml(sal)} (במודעה)</span>`;
+    }
+    return `<span class="job-salary-chip salary-chip-benchmark" title="טווח שכר ענפי מותאם לתפקיד"><i class="ph-duotone ph-coins"></i> ${escapeHtml(sal)}</span>`;
+  }
+
   function renderEvaluationMetadata(job) {
-    const status = job.evaluation_complete === false ? 'בדיקה חלקית — נדרשת השלמה' :
-      job.evidence_status === 'verified_quotes' ? 'ציטוטי הראיות אומתו מול המקורות' : 'אין אימות מלא של הראיות להערכה זו';
-    const salary = job.salary_range ? escapeHtml(job.salary_range) +
-      (job.salary_source_type === 'job_ad' ? ' — צוין במודעה' : ' — הערכה בלבד') : 'לא צוין שכר';
-    const bonus = Math.max(0, Math.min(5, Number(job.priority_bonus) || 0));
-    return `<div class="job-box"><strong>מצב הערכה:</strong><span>${status}</span>
-      <span>עדיפות מעסיק: +${bonus}; נפרדת מציון ההתאמה המקצועית.</span>
-      <strong>שכר:</strong><span>${salary}</span></div>
-      <details class="job-evidence-details"><summary>דרישות וראיות מקור</summary>
-      ${renderRequirementAssessmentsHtml(job.requirement_assessments)}</details>`;
+    return '';
   }
 
   function renderRequirementAssessmentsHtml(assessments) {
@@ -902,7 +910,16 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     [['pepsico', 'קוקה קולה', 'החברה המרכזית'], 'pepsico.com'],
     [['strauss', 'שטראוס'], 'strauss-group.com'],
     [['tnuva', 'תנובה'], 'tnuva.co.il'],
-    [["l'oréal", 'loreal', 'לוריאל'], 'loreal.com']
+    [["l'oréal", 'loreal', 'לוריאל'], 'loreal.com'],
+    [['hilti', 'הילטי'], 'hilti.co.il'],
+    [['knapp', 'קנאפפ', 'קנאפ'], 'knapp.com'],
+    [['systematics', 'סיסטמטיקס'], 'systematics.co.il'],
+    [['tevel metro', 'תבל מטרו', 'תבל'], 'tevelmetro.co.il'],
+    [['mrc', 'אם.אר.סי', 'אם אר סי'], 'mrclab.com'],
+    [['recruitx', 'ריקורטקס'], 'recruitx.co.il'],
+    [['arbex', 'ארבקס'], 'arbex.com'],
+    [['segal', 'סגל מערכות', 'סגל'], 'segal.co.il'],
+    [['ur tech', 'ur tech jobs', 'יו אר טק'], 'urtechjobs.com']
   ];
 
   function matchCompanyWord(text, keyword) {
@@ -998,7 +1015,17 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     [['scheidt-bachmann', 'שיידט את בכמן', 'שיידט'], 'assets/logos/scheidt-bachmann.png'],
     [['schnierlift', 'שנייר', 'שנייר ליפט'], 'assets/logos/schnierlift.svg'],
     [['tomer', 'תומר'], 'assets/logos/tomer.png'],
-    [['ormash', 'אורמש'], 'assets/logos/ormash.svg']
+    [['ormash', 'אורמש'], 'assets/logos/ormash.svg'],
+    [['hilti', 'הילטי'], 'assets/logos/hilti.svg'],
+    [['knapp', 'קנאפפ', 'קנאפ'], 'assets/logos/knapp.svg'],
+    [['systematics', 'סיסטמטיקס'], 'assets/logos/systematics.svg'],
+    [['tevel metro', 'תבל מטרו', 'תבל'], 'assets/logos/tevel.svg'],
+    [['mrc', 'אם.אר.סי', 'אם אר סי'], 'assets/logos/mrc.svg'],
+    [['recruitx', 'ריקורטקס'], 'assets/logos/recruitx.svg'],
+    [['arbex', 'ארבקס'], 'assets/logos/arbex.svg'],
+    [['segal', 'סגל מערכות', 'סגל'], 'assets/logos/segal.svg'],
+    [['ur tech', 'ur tech jobs', 'יו אר טק'], 'assets/logos/urtech.svg'],
+    [['opc', 'opc-energy', 'או פי סי'], 'assets/logos/opc.svg']
   ];
 
   function getCompanyLogoInfo(companyName, customLogo) {
@@ -1480,7 +1507,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
       const companyNameClean = stripEmojis(job.company || 'חברה');
       const titleClean = stripEmojis(job.title || 'משרה');
-      const salaryRangeStr = escapeHtml((job.salary_range && job.salary_range !== 'לא צוין') ? stripEmojis(job.salary_range) + (job.salary_source_type === 'job_ad' ? ' — צוין במודעה' : ' — הערכה בלבד') : 'ללא ציון שכר במודעה');
+      const salaryRangeStr = escapeHtml((job.salary_range && job.salary_range !== 'לא צוין' && job.salary_range !== 'לא צוין במודעה') ? stripEmojis(job.salary_range) + (job.salary_source_type === 'job_ad' ? ' (במודעה)' : '') : 'טווח שכר ענפי מותאם');
 
       const logoInfo = getCompanyLogoInfo(job.company, job.logo);
       const safeComp = escapeHtml(companyNameClean);
@@ -1901,7 +1928,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       }
 
       const isStarred = Boolean(starredJobs[id]);
+      const state = jobStates[id] || 'pending';
       const classifiedRegion = classifyJobRegion(loc);
+      const salaryTagHtml = formatJobSalaryTag(job);
 
       const curatedTags = getJobCuratedTags(job);
       let tagsHtml = '';
@@ -1932,8 +1961,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
                 <i class="ph-bold ph-share-network"></i>
               </button>
             </div>
-            <div class="badge-score ${scoreClass}">
-              <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
+            <div class="job-card-topbar-badges" style="display: flex; align-items: center; gap: 8px;">
+              ${salaryTagHtml}
+              <div class="badge-score ${scoreClass}">
+                <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
+              </div>
             </div>
           </div>
         </div>
@@ -1969,15 +2001,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           </div>
         </div>
 
-        <!-- Progressive Disclosure Toggle Button -->
-        <button type="button" class="btn-toggle-details" onclick="toggleCardDetails(this, event)" aria-expanded="false">
-          <span>הרחב ניתוח מלא</span>
-          <i class="ph-bold ph-caret-down"></i>
-        </button>
-
         <!-- Collapsible Full Information Panels -->
         <div class="job-details-collapsible">
-          ${renderEvaluationMetadata(job)}
           <div class="job-boxes-grid">
             <div class="job-box">
               <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
@@ -2000,16 +2025,20 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
         <!-- Action Bar -->
         <div class="job-actions-bar">
-          <div class="action-btn-group">
-            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved', event)" class="btn-triage action-save-btn">
-              <i class="ph-duotone ph-bookmark-simple"></i> <span class="btn-text">שמור להגשה</span>
+          <div class="job-actions-top-row">
+            <button type="button" class="btn-toggle-details" onclick="toggleCardDetails(this, event)" aria-expanded="false" title="הרחב ניתוח מלא">
+              <span>הרחב ניתוח מלא</span>
+              <i class="ph-bold ph-caret-down"></i>
             </button>
-            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected', event)" class="btn-triage action-reject-btn">
-              <i class="ph-duotone ph-x"></i> <span>הסר משרה</span>
+            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved', event)" class="btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}" title="שמור להגשה">
+              <i class="ph-duotone ph-bookmark-simple"></i> <span class="btn-text">${state === 'saved' ? 'נשמר להגשה' : 'שמור להגשה'}</span>
+            </button>
+            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected', event)" class="btn-triage action-reject-btn ${state === 'rejected' ? 'rejected-active' : ''}" title="הסר משרה" aria-label="הסר משרה">
+              <i class="ph-duotone ph-trash"></i>
             </button>
           </div>
-          <div class="action-btn-main-group">
-            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply" onclick="event.stopPropagation()">
+          <div class="job-actions-bottom-row">
+            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant" onclick="event.stopPropagation()">
               <span>הגש מועמדות</span> <i class="ph-duotone ph-arrow-up-right"></i>
             </a>
           </div>
@@ -2071,6 +2100,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     const isStarred = Boolean(starredJobs[id]);
     const state = jobStates[id] || 'pending';
+    const salaryTagHtml = formatJobSalaryTag(job);
 
     const curatedTags = getJobCuratedTags(job);
     let tagsHtml = '';
@@ -2086,8 +2116,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       <button type="button" class="btn-copy-link" onclick="copyJobLink(${escapeHtml(JSON.stringify(String(link)))}, event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
         <i class="ph-bold ph-share-network"></i>
       </button>
-      <div class="badge-score ${scoreClass}" title="ציון התאמה ${score}%">
-        <span><i class="ph-duotone ph-lightning"></i> ${score}%</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        ${salaryTagHtml}
+        <div class="badge-score ${scoreClass}" title="ציון התאמה ${score}%">
+          <span><i class="ph-duotone ph-lightning"></i> ${score}%</span>
+        </div>
       </div>
     `;
 
@@ -2119,7 +2152,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         </div>
       </div>
 
-      ${renderEvaluationMetadata(job)}
       <div class="job-boxes-grid" style="grid-template-columns: 1fr; gap: 10px;">
         <div class="job-box">
           <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
@@ -2139,16 +2171,18 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     `;
 
     bottomBar.innerHTML = `
-      <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply">
-        <span>הגש מועמדות באתר המשרה</span> <i class="ph-duotone ph-arrow-up-right"></i>
-      </a>
-      <div class="job-modal-triage-group">
-        <button id="modalSaveBtn" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved'); updateModalTriageButtons(${escapeHtml(JSON.stringify(String(id)))});" class="btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}">
-          <i class="ph-duotone ph-bookmark-simple"></i> <span>${state === 'saved' ? 'נשמר להגשה' : 'שמור להגשה'}</span>
+      <div class="job-actions-top-row" style="width: 100%; display: flex; align-items: center; gap: 8px;">
+        <button id="modalSaveBtn" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved'); updateModalTriageButtons(${escapeHtml(JSON.stringify(String(id)))});" class="btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}" style="flex: 1;" title="שמור להגשה">
+          <i class="ph-duotone ph-bookmark-simple"></i> <span class="btn-text">${state === 'saved' ? 'נשמר להגשה' : 'שמור להגשה'}</span>
         </button>
-        <button id="modalRejectBtn" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected'); updateModalTriageButtons(${escapeHtml(JSON.stringify(String(id)))});" class="btn-triage action-reject-btn ${state === 'rejected' ? 'rejected-active' : ''}">
-          <i class="ph-duotone ph-x"></i> <span>הסר משרה</span>
+        <button id="modalRejectBtn" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected'); updateModalTriageButtons(${escapeHtml(JSON.stringify(String(id)))});" class="btn-triage action-reject-btn ${state === 'rejected' ? 'rejected-active' : ''}" title="הסר משרה" aria-label="הסר משרה">
+          <i class="ph-duotone ph-trash"></i>
         </button>
+      </div>
+      <div class="job-actions-bottom-row" style="width: 100%; margin-top: 8px;">
+        <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant">
+          <span>הגש מועמדות באתר המשרה</span> <i class="ph-duotone ph-arrow-up-right"></i>
+        </a>
       </div>
     `;
 

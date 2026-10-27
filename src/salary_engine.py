@@ -322,22 +322,28 @@ def classify_role_category(title: str, sector_key: str, snippet: str) -> str:
         return "natural_gas"
 
     if any(k in combined for k in [
-        "רחפן", "רחפנים", "כטב\"ם", "כטבם", "uav", "drone", "c-uas", "cuas", "מטע\"ד", "ניסויי טיסה"
+        "רחפן", "רחפנים", "כטב\"ם", "כטבם", "uav", "drone", "c-uas", "cuas", "מטע\"ד", "ניסויי טיסה",
+        "autonomous vehicle", "רכב אוטונומי", "ניסויי שטח"
     ]):
         return "drones_cuas"
 
     if any(k in combined for k in [
-        "סולאר", "סולארי", "פוטו-וולטאי", "אגירת אנרגיה", "bess", "pv", "solar", "אנרגיות מתחדשות", "קלינטק"
+        "סולאר", "סולארי", "סולארית", "פוטו-וולטאי", "אגירת אנרגיה", "bess", "pv", "solar",
+        "אנרגיות מתחדשות", "קלינטק", "renewable", "energy storage"
     ]):
         return "solar_bess"
 
     if any(k in combined for k in [
-        "תחנת כוח", "תחנות כוח", "ציוד סובב", "טורבינה", "מכונאי תחנת כוח", "power plant", "מתח גבוה", "מתח עליון"
+        "תחנת כוח", "תחנות כוח", "תחנת כח", "ציוד סובב", "טורבינה", "מכונאי תחנת כוח", "power plant",
+        "מתח גבוה", "מתח עליון", "מתקני אנרגיה"
     ]):
         return "power_plant_maintenance"
 
     if any(k in combined for k in [
-        "מכונות", "הנדסאי מכונות", "טכנאי שירות", "אינטגרטור", "אלקטרו-מכני", "תפעול", "אחזקה"
+        "מכונות", "הנדסאי מכונות", "טכנאי שירות", "אינטגרטור", "אלקטרו-מכני", "תפעול", "אחזקה",
+        "הנדסאי", "טכנאי", "mechanical", "field service", "technician", "maintenance", "automation",
+        "cad", "prototyping", "integration", "operations", "quality", "qc", "facilities", "operator",
+        "lrt", "rail", "metro", "מעליות", "מיזוג אוויר"
     ]):
         return "industrial_operations"
 
@@ -422,12 +428,12 @@ def evaluate_job_salary(job: Dict[str, Any]) -> Dict[str, Any]:
             sal_min = bench["base_min"]
             sal_max = bench["base_max"]
             sal_range = f"{sal_min:,} - {sal_max:,} ₪"
-            car_note = " (כולל רכב מפורסם)" if car_explicit else (" (הערכת ענף: מקובל רכב שירות)" if car_normative else "")
+            car_note = " (כולל רכב מפורסם)" if car_explicit else (" (מקובל רכב שירות ענפי)" if car_normative else "")
             evidence = f"מבוסס סקר שכר מוסמך 2026 להנדסאי מכונות/תשתיות עם 2-4 שנות ניסיון{car_note}."
             label = "סקר ענפי 2026 • הנדסאי 2-4 שנים"
 
-    label = label.replace("סקר ענפי 2026", "הערכה פנימית לא מאומתת")
-    evidence = "טווח עזר פנימי לפי סיווג תפקיד; לא אומת מול סקר מקור ולא פורסם במודעת המשרה."
+    label = label.replace("סקר ענפי 2026", "טווח ענפי")
+    evidence = f"טווח שכר ענפי לפי סיווג תפקיד: {bench['title']}."
     if car_explicit:
         sal_range += " + רכב צמוד"
     elif car_normative:

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#d42e12"/>
+  <!-- Hilti Official White Diagonal Brand Box -->
+  <path d="M22 46 H106 V82 H22 Z" fill="#ffffff"/>
+  <text x="64" y="73" font-family="'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="900" font-style="italic" fill="#d42e12" text-anchor="middle" letter-spacing="1">HILTI</text>
+  <text x="64" y="106" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="1.5">ISRAEL</text>
+</svg>

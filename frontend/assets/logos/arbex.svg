@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#0f172a"/>
+  <!-- Modern Hexagonal Automation Gear -->
+  <polygon points="64,28 88,42 88,70 64,84 40,70 40,42" fill="none" stroke="#10b981" stroke-width="3"/>
+  <circle cx="64" cy="56" r="12" fill="#059669"/>
+  <circle cx="64" cy="56" r="5" fill="#ffffff"/>
+  <text x="64" y="104" font-family="'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="2">ARBEX</text>
+</svg>

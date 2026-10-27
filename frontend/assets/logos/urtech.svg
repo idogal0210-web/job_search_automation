@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#111827"/>
+  <!-- Modern Monogram U-R Connected Node -->
+  <path d="M44 36 V58 C44 68 54 74 64 74 C74 74 84 68 84 58 V36" fill="none" stroke="#06b6d4" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="64" cy="54" r="6" fill="#6366f1"/>
+  <text x="64" y="94" font-family="'Helvetica Neue', Arial, sans-serif" font-size="14" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="1.5">UR TECH</text>
+  <text x="64" y="107" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" font-weight="700" fill="#06b6d4" text-anchor="middle" letter-spacing="1">JOBS</text>
+</svg>

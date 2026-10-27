@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#1e293b"/>
+  <!-- Electromechanical interconnected waves -->
+  <circle cx="64" cy="50" r="22" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
+  <path d="M50 50 Q57 40 64 50 T78 50" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="64" cy="50" r="4" fill="#ffffff"/>
+  <text x="64" y="90" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="1">SEGAL SYSTEMS</text>
+  <text x="64" y="104" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" fill="#f59e0b" text-anchor="middle">סגל מערכות</text>
+</svg>

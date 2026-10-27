@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#0f172a"/>
+  <!-- Energy Gas Turbine Flame & Cogeneration Icon -->
+  <circle cx="64" cy="50" r="24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="6,4"/>
+  <path d="M64 34 C58 44 54 48 54 56 C54 62 58 66 64 66 C70 66 74 62 74 56 C74 48 70 44 64 34 Z" fill="#f59e0b"/>
+  <path d="M64 44 C61 50 59 52 59 56 C59 59 61 61 64 61 C67 61 69 59 69 56 C69 52 67 50 64 44 Z" fill="#fbbf24"/>
+  <text x="64" y="92" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="2">MRC</text>
+  <text x="64" y="106" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" font-weight="700" fill="#38bdf8" text-anchor="middle" letter-spacing="1">ENERGY &amp; POWER</text>
+</svg>
