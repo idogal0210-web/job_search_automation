@@ -3441,52 +3441,219 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   /**
-   * Handles user-uploaded CV file (PDF, DOCX, TXT).
-   * Parses text when available, updates studio status badge, and integrates with ATS analysis.
+   * Returns active CV profile (custom uploaded resume if present, or baseline CANONICAL_CV_PROFILE).
    */
-  function handleManualCvUpload(event) {
-    const file = event.target.files && event.target.files[0];
+  function getActiveCvProfile() {
+    if (window.customUploadedCvProfile) {
+      return window.customUploadedCvProfile;
+    }
+    if (window.customUploadedCvText && typeof window.customUploadedCvText === 'string' && window.customUploadedCvText.trim().length > 0) {
+      return {
+        name: window.customUploadedCvName || "מועמד עצמאי (קובץ שהועלה)",
+        name_en: "Candidate (Custom Upload)",
+        title_he: "קורות חיים שהועלו עצמאית",
+        title_en: "Candidate Uploaded Resume",
+        text: window.customUploadedCvText,
+        skills: [],
+        education: [],
+        experience: [window.customUploadedCvText]
+      };
+    }
+    return CANONICAL_CV_PROFILE;
+  }
+
+  /**
+   * Decodes printable text blocks from ArrayBuffer as an offline/robust fallback.
+   */
+  function extractRawBinaryText(arrayBuffer) {
+    try {
+      const decoder = new TextDecoder('utf-8', { fatal: false });
+      const rawStr = decoder.decode(arrayBuffer);
+      const xmlMatches = rawStr.match(/<w:t[^>]*>(.*?)<\/w:t>/g);
+      if (xmlMatches && xmlMatches.length > 0) {
+        return xmlMatches.map(m => m.replace(/<[^>]+>/g, '')).join(' ');
+      }
+      const printable = rawStr.replace(/[^\x20-\x7E\u0590-\u05FF\n\r\t]/g, ' ');
+      return printable.replace(/\s{2,}/g, ' ').trim();
+    } catch (e) {
+      return '';
+    }
+  }
+
+  /**
+   * Extracts text from TXT file.
+   */
+  function extractTxtText(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target.result || '');
+      reader.onerror = (e) => reject(e);
+      reader.readAsText(file);
+    });
+  }
+
+  /**
+   * Extracts text from PDF file via PDF.js with fallback.
+   */
+  async function extractPdfText(file) {
+    const arrayBuffer = await file.arrayBuffer();
+    if (typeof window !== 'undefined' && window.pdfjsLib && window.pdfjsLib.getDocument) {
+      try {
+        if (!window.pdfjsLib.GlobalWorkerOptions.workerSrc) {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+        const loadingTask = window.pdfjsLib.getDocument({ data: arrayBuffer });
+        const pdf = await loadingTask.promise;
+        const pageTexts = [];
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const pageStr = textContent.items.map(item => item.str).join(' ');
+          pageTexts.push(pageStr);
+        }
+        const fullText = pageTexts.join('\n').trim();
+        if (fullText.length > 0) return fullText;
+      } catch (err) {
+        console.warn('[PDF.js Extraction Fallback]', err);
+      }
+    }
+    return extractRawBinaryText(arrayBuffer);
+  }
+
+  /**
+   * Extracts text from DOCX file via Mammoth with XML fallback.
+   */
+  async function extractDocxText(file) {
+    const arrayBuffer = await file.arrayBuffer();
+    if (typeof window !== 'undefined' && window.mammoth && window.mammoth.extractRawText) {
+      try {
+        const result = await window.mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+        if (result && result.value && result.value.trim().length > 0) {
+          return result.value.trim();
+        }
+      } catch (err) {
+        console.warn('[Mammoth Extraction Fallback]', err);
+      }
+    }
+    return extractRawBinaryText(arrayBuffer);
+  }
+
+  /**
+   * Generic dispatcher for client-side CV text extraction.
+   */
+  async function extractTextFromFile(file) {
+    const fileName = (file.name || '').toLowerCase();
+    const ext = fileName.split('.').pop();
+    if (ext === 'txt') {
+      return await extractTxtText(file);
+    } else if (ext === 'pdf') {
+      return await extractPdfText(file);
+    } else if (ext === 'docx' || ext === 'doc') {
+      return await extractDocxText(file);
+    }
+    return await extractTxtText(file);
+  }
+
+  /**
+   * Processes an uploaded CV file: extracts text, updates state, and recalculates ATS matches.
+   */
+  async function processCvFile(file) {
     if (!file) return;
 
     const fileName = file.name;
     const fileSizeKb = (file.size / 1024).toFixed(1);
     const ext = fileName.split('.').pop().toLowerCase();
 
-    // Update UI elements
-    const nameEl = document.getElementById('studioCvFileName');
-    const subEl = document.getElementById('studioCvFileSub');
-    const resetBtn = document.getElementById('btnResetToBaselineCv');
-    const statusIcon = document.getElementById('studioCvStatusIcon');
-    const baselineStatusText = document.getElementById('atsBaselineStatusText');
-
-    if (nameEl) nameEl.textContent = fileName;
-    if (subEl) subEl.textContent = `${fileSizeKb} KB • הועלה עצמאית`;
-    if (resetBtn) resetBtn.style.display = 'inline-flex';
-    if (statusIcon) {
-      statusIcon.className = 'ph-duotone ph-file-text';
-      statusIcon.style.color = 'var(--dashboard-cyan)';
-    }
-    if (baselineStatusText) {
-      baselineStatusText.textContent = `מוכן לניתוח מול קובץ שהועלה: ${fileName}`;
+    if (!['pdf', 'docx', 'doc', 'txt'].includes(ext)) {
+      if (typeof showToast === 'function') {
+        showToast('ph-warning', 'פורמט לא נתמך. אנא העלה קובץ מסוג PDF, DOCX או TXT.');
+      }
+      return;
     }
 
-    // Persist metadata
+    const feedbackEl = document.getElementById('studioCvParseFeedback');
+    const feedbackMsgEl = document.getElementById('studioCvParseMsg');
+    if (feedbackEl) feedbackEl.style.display = 'flex';
+    if (feedbackMsgEl) feedbackMsgEl.textContent = `מחלץ טקסט מתוך ${fileName}...`;
+
     try {
-      localStorage.setItem('job_studio_custom_cv_name', fileName);
-      localStorage.setItem('job_studio_custom_cv_size', `${fileSizeKb} KB`);
-    } catch (e) {}
+      const extractedText = await extractTextFromFile(file);
+      const cleanText = (extractedText || '').replace(/\s{2,}/g, ' ').trim();
+      const wordCount = cleanText ? cleanText.split(/\s+/).filter(Boolean).length : 0;
 
-    // If text file, read content and store for ATS matching
-    if (ext === 'txt') {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        window.customUploadedCvText = e.target.result;
+      window.customUploadedCvName = fileName;
+      window.customUploadedCvText = cleanText;
+      window.customUploadedCvProfile = {
+        name: fileName.replace(/\.[^/.]+$/, ''),
+        name_en: "Uploaded Candidate",
+        title_he: "מועמד עצמאי (קובץ שהועלה)",
+        title_en: "Candidate Uploaded Resume",
+        text: cleanText,
+        skills: [],
+        education: [],
+        experience: [cleanText]
       };
-      reader.readAsText(file);
-    }
 
-    if (typeof showToast === 'function') {
-      showToast('ph-file-arrow-up', `קובץ קו״ח ${fileName} נטען בהצלחה לסטודיו`);
+      // Update UI elements
+      const nameEl = document.getElementById('studioCvFileName');
+      const subEl = document.getElementById('studioCvFileSub');
+      const resetBtn = document.getElementById('btnResetToBaselineCv');
+      const statusIcon = document.getElementById('studioCvStatusIcon');
+      const baselineStatusText = document.getElementById('atsBaselineStatusText');
+
+      if (nameEl) nameEl.textContent = fileName;
+      if (subEl) subEl.textContent = `${fileSizeKb} KB • ${wordCount} מילים • הועלה עצמאית`;
+      if (resetBtn) resetBtn.style.display = 'inline-flex';
+      if (statusIcon) {
+        statusIcon.className = 'ph-duotone ph-file-text';
+        statusIcon.style.color = 'var(--dashboard-cyan)';
+      }
+      if (baselineStatusText) {
+        baselineStatusText.textContent = `מוכן לניתוח מול קובץ שהועלה: ${fileName} (${wordCount} מילים)`;
+      }
+
+      // Persist state in localStorage
+      try {
+        localStorage.setItem('job_studio_custom_cv_name', fileName);
+        localStorage.setItem('job_studio_custom_cv_size', `${fileSizeKb} KB`);
+        if (cleanText && cleanText.length < 300000) {
+          localStorage.setItem('job_studio_custom_cv_text', cleanText);
+        }
+      } catch (e) {}
+
+      if (feedbackEl) {
+        feedbackEl.style.display = 'flex';
+        if (feedbackMsgEl) feedbackMsgEl.textContent = `חילוץ טקסט הושלם: ${wordCount} מילים זוהו בהצלחה`;
+        setTimeout(() => {
+          if (feedbackEl) feedbackEl.style.display = 'none';
+        }, 3500);
+      }
+
+      if (typeof showToast === 'function') {
+        showToast('ph-file-arrow-up', `קובץ ${fileName} נטען וחולץ (${wordCount} מילים)`);
+      }
+
+      // Re-trigger ATS evaluation with the newly uploaded CV
+      triggerAtsMatching();
+
+    } catch (err) {
+      console.error('[CV Extraction Error]', err);
+      if (feedbackEl) {
+        if (feedbackMsgEl) feedbackMsgEl.textContent = 'שגיאה בחילוץ הטקסט מהקובץ שנבחר.';
+      }
+      if (typeof showToast === 'function') {
+        showToast('ph-x-circle', 'שגיאה בחילוץ תוכן קורות החיים');
+      }
+    }
+  }
+
+  /**
+   * Handles user-uploaded CV file input change event.
+   */
+  function handleManualCvUpload(event) {
+    const file = event.target.files && event.target.files[0];
+    if (file) {
+      processCvFile(file);
     }
   }
 
@@ -3497,9 +3664,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     try {
       localStorage.removeItem('job_studio_custom_cv_name');
       localStorage.removeItem('job_studio_custom_cv_size');
+      localStorage.removeItem('job_studio_custom_cv_text');
     } catch (e) {}
 
+    window.customUploadedCvName = null;
     window.customUploadedCvText = null;
+    window.customUploadedCvProfile = null;
 
     const fileInput = document.getElementById('manualCvFileInput');
     if (fileInput) fileInput.value = '';
@@ -3509,7 +3679,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const resetBtn = document.getElementById('btnResetToBaselineCv');
     const statusIcon = document.getElementById('studioCvStatusIcon');
     const baselineStatusText = document.getElementById('atsBaselineStatusText');
+    const feedbackEl = document.getElementById('studioCvParseFeedback');
 
+    if (feedbackEl) feedbackEl.style.display = 'none';
     if (nameEl) nameEl.textContent = 'עידו גל - הנדסאי מכונות (גרסת מערכת)';
     if (subEl) subEl.textContent = 'פרופיל פעיל לניתוח ATS';
     if (resetBtn) resetBtn.style.display = 'none';
@@ -3521,16 +3693,80 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       baselineStatusText.textContent = 'מוכן לניתוח מול פרופיל הבסיס של עידו גל';
     }
 
+    triggerAtsMatching();
+
     if (typeof showToast === 'function') {
       showToast('ph-arrow-counter-clockwise', 'אופס לקורות החיים המובנים של עידו גל');
     }
   }
 
+  /**
+   * Initializes Drag & Drop listeners on #studioCvDropZone.
+   */
+  function initCvDropZone() {
+    const dropZone = document.getElementById('studioCvDropZone');
+    if (!dropZone || dropZone.dataset.bound === 'true') return;
+    dropZone.dataset.bound = 'true';
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.add('drag-active');
+      });
+    });
+
+    ['dragleave', 'dragend'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.classList.remove('drag-active');
+      });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.remove('drag-active');
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+        processCvFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    dropZone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const input = document.getElementById('manualCvFileInput');
+        if (input) input.click();
+      }
+    });
+  }
+
+  /**
+   * Restores uploaded CV metadata and extracted text from localStorage on page load.
+   */
   function initCvUploadState() {
     try {
       const savedName = localStorage.getItem('job_studio_custom_cv_name');
       const savedSize = localStorage.getItem('job_studio_custom_cv_size');
+      const savedText = localStorage.getItem('job_studio_custom_cv_text');
+
       if (savedName) {
+        window.customUploadedCvName = savedName;
+        if (savedText) {
+          window.customUploadedCvText = savedText;
+          window.customUploadedCvProfile = {
+            name: savedName.replace(/\.[^/.]+$/, ''),
+            name_en: "Uploaded Candidate",
+            title_he: "מועמד עצמאי (קובץ שהועלה)",
+            title_en: "Candidate Uploaded Resume",
+            text: savedText,
+            skills: [],
+            education: [],
+            experience: [savedText]
+          };
+        }
+
         const nameEl = document.getElementById('studioCvFileName');
         const subEl = document.getElementById('studioCvFileSub');
         const resetBtn = document.getElementById('btnResetToBaselineCv');
@@ -3549,6 +3785,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         }
       }
     } catch (e) {}
+
+    initCvDropZone();
   }
 
   /* ==========================================================================
@@ -3740,10 +3978,11 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
     }
   ];
 
-  function evaluateHardGates(jobText) {
+  function evaluateHardGates(jobText, cvProfile) {
     if (!jobText || typeof jobText !== 'string' || !jobText.trim()) {
       return [];
     }
+    const isCustom = cvProfile && cvProfile.text && cvProfile !== CANONICAL_CV_PROFILE;
     const results = [];
     STATUTORY_HARD_GATES.forEach(gate => {
       if (gate.regex.test(jobText)) {
@@ -3751,37 +3990,48 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
         let evidence = gate.candidate_evidence;
         let note = gate.note_he || '';
 
-        // Context-aware evaluation for B.Sc. Engineer gate (preference / advantage detection)
-        if (gate.id === 'gate_degree_bsc_engineer') {
-          const bscRegex = new RegExp(gate.regex.source, 'gi');
-          let match;
-          let isAdvantage = false;
-          let hasExplicitMandatory = false;
-
-          while ((match = bscRegex.exec(jobText)) !== null) {
-            const preText = jobText.substring(Math.max(0, match.index - 60), match.index);
-            const postText = jobText.substring(match.index + match[0].length, Math.min(jobText.length, match.index + match[0].length + 40));
-
-            const clauseBefore = preText.split(/[\n,;]/).pop() || '';
-            const clauseAfter = postText.split(/[\n,;]/)[0] || '';
-
-            const hasPrefPre = /(?:יתרון(?:\s+משמעותי)?|עדיפות(?:\s+משמעותית)?|רצוי|advantage|preferred|preference)/i.test(clauseBefore);
-            const hasPrefPost = /(?:יתרון(?:\s+משמעותי)?|עדיפות(?:\s+משמעותית)?|רצוי|advantage|preferred)/i.test(clauseAfter);
-
-            const hasMandatory = /(?:חובה|דרישת[\s-]+סף|תנאי[\s-]+סף|דרישות[\s-]+סף|required|mandatory|must\s+have)/i.test(clauseBefore) ||
-                                 /(?:חובה|בלבד|required|mandatory)/i.test(clauseAfter);
-
-            if ((hasPrefPre || hasPrefPost) && !hasMandatory) {
-              isAdvantage = true;
-            } else if (hasMandatory) {
-              hasExplicitMandatory = true;
-            }
+        if (isCustom) {
+          const cvText = cvProfile.text || '';
+          if (gate.regex.test(cvText)) {
+            status = 'PASS';
+            evidence = 'הדרישה אותרה במסמך קורות החיים שהועלה.';
+          } else {
+            status = 'GAP';
+            evidence = 'הדרישה לא אותרה במסמך קורות החיים שהועלה.';
           }
+        } else {
+          // Context-aware evaluation for B.Sc. Engineer gate (preference / advantage detection)
+          if (gate.id === 'gate_degree_bsc_engineer') {
+            const bscRegex = new RegExp(gate.regex.source, 'gi');
+            let match;
+            let isAdvantage = false;
+            let hasExplicitMandatory = false;
 
-          if (isAdvantage && !hasExplicitMandatory) {
-            status = 'NOTICE';
-            evidence = 'למועמד דיפלומת הנדסאי מכונות מוסמך; תואר מהנדס הוגדר במשרה כיתרון / עדיפות בלבד ולא כדרישת סף פוסלת.';
-            note = 'דרישת יתרון — אינה מהווה פער סף פוסל (Hard Gate).';
+            while ((match = bscRegex.exec(jobText)) !== null) {
+              const preText = jobText.substring(Math.max(0, match.index - 60), match.index);
+              const postText = jobText.substring(match.index + match[0].length, Math.min(jobText.length, match.index + match[0].length + 40));
+
+              const clauseBefore = preText.split(/[\n,;]/).pop() || '';
+              const clauseAfter = postText.split(/[\n,;]/)[0] || '';
+
+              const hasPrefPre = /(?:יתרון(?:\s+משמעותי)?|עדיפות(?:\s+משמעותית)?|רצוי|advantage|preferred|preference)/i.test(clauseBefore);
+              const hasPrefPost = /(?:יתרון(?:\s+משמעותי)?|עדיפות(?:\s+משמעותית)?|רצוי|advantage|preferred)/i.test(clauseAfter);
+
+              const hasMandatory = /(?:חובה|דרישת[\s-]+סף|תנאי[\s-]+סף|דרישות[\s-]+סף|required|mandatory|must\s+have)/i.test(clauseBefore) ||
+                                   /(?:חובה|בלבד|required|mandatory)/i.test(clauseAfter);
+
+              if ((hasPrefPre || hasPrefPost) && !hasMandatory) {
+                isAdvantage = true;
+              } else if (hasMandatory) {
+                hasExplicitMandatory = true;
+              }
+            }
+
+            if (isAdvantage && !hasExplicitMandatory) {
+              status = 'NOTICE';
+              evidence = 'למועמד דיפלומת הנדסאי מכונות מוסמך; תואר מהנדס הוגדר במשרה כיתרון / עדיפות בלבד ולא כדרישת סף פוסלת.';
+              note = 'דרישת יתרון — אינה מהווה פער סף פוסל (Hard Gate).';
+            }
           }
         }
 
@@ -3931,7 +4181,8 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
     }
 
     // Rule 3: Zero-Emoji ATS Guard
-    const contentText = (el && (el.innerText || el.textContent)) ? (el.innerText || el.textContent) : CANONICAL_CV_PROFILE.text;
+    const activeCv = (typeof getActiveCvProfile === 'function') ? getActiveCvProfile() : CANONICAL_CV_PROFILE;
+    const contentText = (el && (el.innerText || el.textContent)) ? (el.innerText || el.textContent) : (activeCv.text || CANONICAL_CV_PROFILE.text);
     const emojiRegex = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{FE0F}\u{20E3}]|&#(?:12\d{4}|x1[fF][0-9a-fA-F]{3});/u;
     const hasEmoji = emojiRegex.test(contentText);
     if (hasEmoji) {
@@ -3985,7 +4236,7 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
       };
     }
 
-    const hardGates = evaluateHardGates(jobText);
+    const hardGates = evaluateHardGates(jobText, cvProfile);
 
     // Disjunctive & alternative qualification resolution
     const mechGate = hardGates.find(g => g.id === 'gate_practical_mech_eng');
@@ -4242,7 +4493,7 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
     const inputEl = document.getElementById('atsJobInput');
     const jobText = inputEl ? inputEl.value : '';
 
-    const report = runAtsJobMatching(jobText, CANONICAL_CV_PROFILE);
+    const report = runAtsJobMatching(jobText, getActiveCvProfile());
 
     // Update Percentage Match Gauge
     const scoreValEl = document.getElementById('atsScoreValue');
@@ -5280,6 +5531,9 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
   // Expose global functions to window
   window.switchDashboardAppMode = switchDashboardAppMode;
   window.switchStudioModule = switchStudioModule;
+  window.getActiveCvProfile = getActiveCvProfile;
+  window.processCvFile = processCvFile;
+  window.extractTextFromFile = extractTextFromFile;
   window.handleManualCvUpload = handleManualCvUpload;
   window.resetToBaselineCv = resetToBaselineCv;
   window.initCvUploadState = initCvUploadState;

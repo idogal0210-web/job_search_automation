@@ -18,6 +18,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
   <link rel="stylesheet" href="dashboard.css?v=__BUILD_ID__">
 </head>
 <body dir="rtl">
@@ -403,12 +405,28 @@
               </div>
             </div>
 
+            <!-- Drag & Drop Zone with Direct File Affordance -->
+            <div id="studioCvDropZone" class="studio-cv-drop-area" onclick="document.getElementById('manualCvFileInput').click()" role="button" tabindex="0" aria-label="אזור גרירה והעלאת קורות חיים">
+              <div class="studio-drop-content">
+                <i class="ph-duotone ph-cloud-arrow-up studio-drop-icon"></i>
+                <span class="studio-drop-title">גרור ושחרר קובץ לכאן</span>
+                <span class="studio-drop-subtitle">או לחץ לבחירת קובץ</span>
+                <span class="studio-drop-formats">PDF • DOCX • TXT (חילוץ טקסט מלא בדפדפן)</span>
+              </div>
+            </div>
+
+            <!-- Real-time Parsing Status Feedback -->
+            <div id="studioCvParseFeedback" class="studio-cv-parse-feedback" style="display: none;" role="status" aria-live="polite">
+              <div class="studio-parse-spinner"></div>
+              <span id="studioCvParseMsg">מחלץ טקסט מהמסמך...</span>
+            </div>
+
             <input type="file" id="manualCvFileInput" accept=".pdf,.docx,.txt" style="display: none;" onchange="handleManualCvUpload(event)">
             
             <div class="studio-cv-actions">
               <button type="button" class="studio-upload-btn" onclick="document.getElementById('manualCvFileInput').click()" aria-label="העלאת קובץ קורות חיים עצמאי">
                 <i class="ph-duotone ph-upload-simple"></i>
-                <span>העלאת קובץ קו״ח (PDF/DOCX/TXT)</span>
+                <span>בחר קובץ ידנית</span>
               </button>
               
               <button type="button" id="btnResetToBaselineCv" class="studio-reset-cv-btn" onclick="resetToBaselineCv()" style="display: none;" title="חזרה לקורות החיים המובנים של עידו גל">
