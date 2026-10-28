@@ -919,7 +919,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     [['recruitx', 'ריקורטקס'], 'recruitx.co.il'],
     [['arbex', 'ארבקס'], 'arbex.com'],
     [['segal', 'סגל מערכות', 'סגל'], 'segal.co.il'],
-    [['ur tech', 'ur tech jobs', 'יו אר טק'], 'urtechjobs.com']
+    [['ur tech', 'ur tech jobs', 'יו אר טק'], 'urtechjobs.com'],
+    [['dty', 'dty optical', 'ד.ט.י'], 'dty.co.il'],
+    [['sle', 'sle logistics', 'ס.ל.א', 'סלא'], 'sle.co.il'],
+    [['sun pharma', 'סאן פארמה'], 'sunpharma.com'],
+    [['korentec', 'yael korentec', 'קבוצת יעל', 'קורנטק'], 'yaelgroup.com'],
+    [['כרמית מיסטר פיקס', 'מיסטר פיקס', 'mr fix', 'mr. fix'], 'carmit-mrfix.com']
   ];
 
   function matchCompanyWord(text, keyword) {
@@ -1025,7 +1030,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     [['arbex', 'ארבקס'], 'assets/logos/arbex.svg'],
     [['segal', 'סגל מערכות', 'סגל'], 'assets/logos/segal.svg'],
     [['ur tech', 'ur tech jobs', 'יו אר טק'], 'assets/logos/urtech.svg'],
-    [['opc', 'opc-energy', 'או פי סי'], 'assets/logos/opc.svg']
+    [['opc', 'opc-energy', 'או פי סי'], 'assets/logos/opc.svg'],
+    [['dty optical', 'dty', 'ד.ט.י'], 'assets/logos/dty.png'],
+    [['sle logistics', 'sle', 'ס.ל.א', 'סלא'], 'assets/logos/sle.png'],
+    [['sun pharma', 'סאן פארמה'], 'assets/logos/sunpharma.svg'],
+    [['yael korentec', 'korentec', 'קבוצת יעל', 'קורנטק'], 'assets/logos/yael.png'],
+    [['כרמית מיסטר פיקס', 'מיסטר פיקס', 'mr fix', 'mr. fix'], 'assets/logos/mrfix.png']
   ];
 
   function getCompanyLogoInfo(companyName, customLogo) {
