@@ -1,4 +1,5 @@
 import os
+import re
 import smtplib
 import time
 from html import escape
@@ -29,17 +30,34 @@ def format_salary_badge(job):
         return "לא צוין שכר - הערכה בלבד", False
 
 
+def wrap_ltr_tokens(text):
+    """Wrap Latin text/acronyms in ltr span while preserving HTML entities."""
+    if not text:
+        return ""
+    text_str = str(text)
+    has_latin = any('a' <= c.lower() <= 'z' for c in text_str)
+    has_hebrew = any('\u0590' <= c <= '\u05ea' for c in text_str)
+    if has_latin and not has_hebrew:
+        return f'<span class="text-ltr">{text_str}</span>'
+    if has_latin and has_hebrew:
+        def replacer(m):
+            token = m.group(0)
+            if token.startswith('&') and token.endswith(';'):
+                return token
+            return f'<span class="text-ltr">{token}</span>'
+        return re.sub(r'(&[a-zA-Z0-9#]+;)|(\b[A-Za-z][A-Za-z0-9\-_/]*\b)', replacer, text_str)
+    return text_str
+
+
 def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
     # Enforce strictly up to 5 jobs in daily email
     jobs = (jobs or [])[:5]
-    top_3 = (top_3 or [])[:min(3, len(jobs))]
     # Escape copies at the rendering boundary; leave source records untouched.
     def safe_job(job):
         return {key: escape(safe_http_url(value), quote=True) if key in {"link", "salary_source_url"}
                 else escape(value, quote=True) if isinstance(value, str) else value
                 for key, value in job.items()}
     jobs = [safe_job(job) for job in jobs]
-    top_3 = [safe_job(job) for job in top_3]
     dashboard_url = escape(safe_http_url(dashboard_url), quote=True)
     now_str = datetime.now().strftime("%d.%m.%Y")
     
@@ -47,169 +65,212 @@ def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
     incomplete = bool(health and (pending or health.linkedin_failures or health.drushim_failures or getattr(health, "comeet_failures", 0) or health.final_status.startswith('FAILED_')))
     run_notice = (f'הריצה הושלמה חלקית. {pending} משרות ממתינות לבדיקה מלאה; ייתכנו תוצאות חסרות.'
                   if incomplete else 'בדיקת המשרות הושלמה.')
+
+    dashboard_btn_html = ""
+    if dashboard_url:
+        dashboard_btn_html = f"""
+          <tr>
+            <td align="center" style="padding-bottom: 20px;">
+              <a href="{dashboard_url}" target="_blank" style="display: inline-block; padding: 10px 20px; background-color: #21262d; border: 1px solid #30363d; border-radius: 6px; color: #58a6ff; font-size: 13px; font-weight: 600; text-decoration: none;">
+                מעבר לדשבורד המלא וניהול משרות ↗
+              </a>
+            </td>
+          </tr>"""
+
+    notice_row_html = ""
+    if incomplete:
+        notice_row_html = f"""
+          <tr>
+            <td style="padding-bottom: 16px;">
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #21262d; border: 1px solid #d29922; border-radius: 6px;">
+                <tr>
+                  <td align="center" style="padding: 10px 14px; color: #e3b341; font-size: 13px;">
+                    {run_notice}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>"""
+
     if not jobs:
-        return f"""<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<body style="font-family: Arial, sans-serif; background-color: #020617; color: #f8fafc; padding: 20px; direction: rtl; text-align: center;">
-    <h1 style="color: #38bdf8;">🎯 דוח משרות יומי - {now_str}</h1>
-    <p>{run_notice}</p>
-    <p>אין משרות חדשות שאושרו בדוח זה.</p>
-    <p>נמשיך לסרוק מחר!</p>
-</body>
-</html>
-"""
-
-    sectors = {
-        "energy": {"title": "⚡ תשתיות אנרגיה, גז טבעי ו-SCADA", "jobs": []},
-        "drones": {"title": '🚁 רחפנים, כטב"ם אוטונומי ורובוטיקה', "jobs": []},
-        "cuas": {"title": "🛡️ מערכות הגנת C-UAS וביטחון", "jobs": []},
-        "avionics": {"title": '📡 מטע"דים, אלקטרו-אופטיקה ואוויוניקה', "jobs": []}
-    }
-
-    for j in jobs:
-        sec_key = j.get("sector_key", "energy")
-        if sec_key not in sectors:
-            sec_key = "energy"
-        sectors[sec_key]["jobs"].append(j)
-
-    top_3_html = ""
-    if top_3:
-        top_items = ""
-        for idx, pick in enumerate(top_3, 1):
-            comp_domain = pick.get('company_domain_product', pick.get('sector', ''))
-            top_items += f"""
-            <div style="background-color: #1e293b; padding: 14px 18px; margin-bottom: 10px; border-radius: 10px; border-right: 4px solid #f59e0b; display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <div style="font-weight: 800; color: #f8fafc; font-size: 15.5px;">{idx}. {pick.get('company')} – {pick.get('title')}</div>
-                    <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">
-                        <span style="color: #34d399; font-weight: bold;">{pick.get('base_match_score', pick.get('match_score'))}% התאמה</span> • <span style="color: #38bdf8; font-weight: bold;">{format_salary_badge(pick)[0]}</span> • {comp_domain}
-                    </div>
-                </div>
-                <div>
-                    <a href="{pick.get('link')}" target="_blank" style="background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color: #ffffff; padding: 6px 14px; text-decoration: none; border-radius: 6px; font-size: 12px; font-weight: bold; display: inline-block;">הגש מועמדות ↗</a>
-                </div>
-            </div>
-            """
-        top_3_html = f"""
-        <div style="background-color: #0f172a; border: 1px solid #f59e0b; border-radius: 14px; padding: 18px; margin-bottom: 26px; box-shadow: 0 4px 14px rgba(245, 158, 11, 0.15);">
-            <div style="font-size: 16px; font-weight: 800; color: #fbbf24; margin-bottom: 14px;">משרות הזהב המובילות (Top 3 Picks):</div>
-            {top_items}
-        </div>
-        """
-
-    sector_blocks_html = ""
-    for sec_key, sec_data in sectors.items():
-        sec_jobs = sec_data["jobs"]
-        if not sec_jobs:
-            continue
-        
-        cards_html = ""
-        for idx, j in enumerate(sec_jobs, 1):
-            comp_name = j.get('company', 'חברה')
-            comp_domain = j.get('company_domain_product', j.get('company_summary', j.get('sector', '')))
-            loc = j.get('location', 'ישראל')
-            score = j.get('base_match_score', j.get('match_score', 0))
+        empty_card_html = f"""
+          <tr>
+            <td style="padding-bottom: 16px;">
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; overflow: hidden;">
+                <tr>
+                  <td align="center" style="padding: 24px 16px; color: #c9d1d9; font-size: 14px; line-height: 1.6;">
+                    <p style="margin: 0 0 8px 0; color: #f0f6fc; font-size: 15px; font-weight: 600;">אין משרות חדשות שאושרו בדוח זה.</p>
+                    <p style="margin: 0 0 8px 0; color: #8b949e; font-size: 13px;">{run_notice}</p>
+                    <p style="margin: 0; color: #8b949e; font-size: 13px;">נמשיך לסרוק מחר!</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>"""
+        cards_content = empty_card_html
+    else:
+        cards_list = []
+        for idx, j in enumerate(jobs, 1):
+            title = j.get("title", "")
+            company = j.get("company", "")
+            title_html = wrap_ltr_tokens(title)
+            comp_html = wrap_ltr_tokens(company)
             
-            card_title = f"{comp_name} - {j.get('title', '')}"
-            job_sum = j.get('job_summary', j.get('company_summary', ''))
-            strengths = j.get('experience_strengths', j.get('reasoning', ''))
-            highlights = j.get('key_highlights', '')
-            
-            is_junior = is_junior_friendly_job(j)
-            junior_badge_html = ''
-            if is_junior:
-                junior_badge_html = '<span style="background-color: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; display: inline-block; margin-left: 6px; margin-bottom: 6px;">מתאים לג\'וניור</span>'
-
-            if sec_key in ['drones', 'cuas', 'avionics']:
-                badge_html = '<span style="background-color: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 6px;">🚁 רחפנים וכטב"ם אוטונומי</span>'
+            if comp_html:
+                header_title = f"{idx}. {title_html} | {comp_html}"
             else:
-                badge_html = '<span style="background-color: rgba(14, 165, 233, 0.15); color: #38bdf8; border: 1px solid rgba(14, 165, 233, 0.3); padding: 3px 10px; border-radius: 9999px; font-size: 11px; font-weight: bold; display: inline-block; margin-bottom: 6px;">⚡ תשתיות אנרגיה וגז טבעי</span>'
+                header_title = f"{idx}. {title_html}"
 
-            badge_html = f"{badge_html} {junior_badge_html}".strip()
+            score = j.get("base_match_score", j.get("match_score", 0))
+            _, is_ad = format_salary_badge(j)
+            raw_sal = (j.get("salary_range") or "").strip()
+            sal_note = "(צוין במשרה)" if is_ad else "(הערכה בלבד)"
+            if raw_sal and raw_sal not in {"לא צוין", "לא צוין במודעה"}:
+                sal_clean = raw_sal if ("₪" in raw_sal or any(sym in raw_sal for sym in ["$", "€"])) else f"{raw_sal} ₪"
+                salary_display = f'<span class="text-ltr">{sal_clean}</span> {sal_note}'
+            else:
+                salary_display = f'לא צוין {sal_note}'
 
-            boxes_html = ""
-            if comp_domain and comp_domain.strip():
-                boxes_html += f'<div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #38bdf8; font-weight: bold;">תחום ומוצר החברה:</span> {comp_domain}</div>'
-            if job_sum and job_sum.strip():
-                boxes_html += f'<div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(51, 65, 85, 0.6); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #38bdf8; font-weight: bold;">תקציר המשרה:</span> {job_sum}</div>'
-            if strengths and strengths.strip():
-                boxes_html += f'<div style="background-color: rgba(6, 78, 59, 0.2); border: 1px solid rgba(5, 150, 105, 0.35); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;"><span style="color: #4ade80; font-weight: bold;">נקודות חוזק מהניסיון:</span> {strengths}</div>'
-            comp_reqs = j.get('company_requirements', j.get('key_highlights', ''))
-            if comp_reqs and comp_reqs.strip():
-                boxes_html += f'<div style="background-color: rgba(2, 6, 23, 0.6); border: 1px solid rgba(14, 165, 233, 0.4); border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #cbd5e1;"><span style="color: #38bdf8; font-weight: bold;">דרישות החברה עבור המשרה:</span> {comp_reqs}</div>'
+            domain = j.get('company_domain_product') or j.get('company_summary') or j.get('sector') or 'טכנולוגיה ותשתיות'
+            domain_html = wrap_ltr_tokens(domain)
 
-            sal_text, is_ad = format_salary_badge(j)
-            sal_color = "#34d399" if is_ad else "#38bdf8"
-            sal_bg = "rgba(16, 185, 129, 0.1)" if is_ad else "rgba(56, 189, 248, 0.08)"
-            sal_border = "rgba(16, 185, 129, 0.3)" if is_ad else "rgba(56, 189, 248, 0.25)"
-            sal_label = j.get('salary_source_label', '')
-            sal_evidence = j.get('salary_evidence', '')
-            sal_url = j.get('salary_source_url', '')
-            sal_link_html = f' <a href="{sal_url}" target="_blank" style="color: #38bdf8; text-decoration: underline; font-size: 11px; margin-right: 8px;">[אימות מקור ↗]</a>' if sal_url else ''
-            evidence_html = f'<br><span style="font-size: 11px; color: #cbd5e1;">{sal_evidence}</span>' if sal_evidence else ''
-            label_html = f' <span style="font-size: 11.5px; color: #94a3b8;">({sal_label})</span>' if sal_label else ''
-            boxes_html += f'<div style="background-color: {sal_bg}; border: 1px solid {sal_border}; border-radius: 10px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #e2e8f0;"><span style="color: {sal_color}; font-weight: bold;">שכר:</span> <strong style="color: #ffffff;">{sal_text}</strong>{label_html}{sal_link_html}{evidence_html}</div>'
+            reqs = j.get('company_requirements') or j.get('key_highlights') or j.get('experience_strengths') or j.get('job_summary') or 'דרישות המשרה מפורטות בלינק המצורף.'
+            reqs_html = wrap_ltr_tokens(reqs)
 
-            cards_html += f"""
-            <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 14px; padding: 20px; margin-bottom: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.35);">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #334155; padding-bottom: 12px; margin-bottom: 14px;">
-                    <div>
-                        {badge_html}
-                        <h2 style="font-size: 17px; font-weight: bold; color: #ffffff; margin: 0; line-height: 1.4;">
-                            {idx}. {card_title} <span style="font-size: 12.5px; font-weight: normal; color: #94a3b8; margin-right: 6px;">• {loc}</span>
-                        </h2>
-                    </div>
-                    <div style="background-color: rgba(16, 185, 129, 0.15); color: #34d399; font-size: 12.5px; font-weight: 800; padding: 4px 12px; border-radius: 9999px; border: 1px solid rgba(16, 185, 129, 0.35); white-space: nowrap; margin-right: 12px;">
-                        {score}% התאמה
-                    </div>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 8px;">
-                    {boxes_html}
-                </div>
-                <div style="border-top: 1px solid rgba(51, 65, 85, 0.6); padding-top: 14px; margin-top: 14px; text-align: left;">
-                    <a href="{j.get('link')}" target="_blank" style="background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color: #ffffff; padding: 9px 22px; text-decoration: none; border-radius: 8px; font-size: 12.5px; font-weight: bold; display: inline-block;">
-                        הגש מועמדות למשרה ↗
-                    </a>
-                </div>
-            </div>
-            """
-            
-        sector_blocks_html += f"""
-        <div style="margin-bottom: 28px;">
-            <div style="font-size: 17.5px; font-weight: 800; color: #f8fafc; margin-bottom: 14px; border-bottom: 2px solid #0284c7; padding-bottom: 6px;">
-                {sec_data['title']} ({len(sec_jobs)} משרות)
-            </div>
-            {cards_html}
-        </div>
-        """
+            job_link = j.get("link") or "#"
+
+            card_item = f"""
+          <!-- תחילת כרטיס משרה {idx} -->
+          <tr>
+            <td style="padding-bottom: 16px;">
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #161b22; border: 1px solid #30363d; border-radius: 10px; overflow: hidden;">
+                <tr>
+                  <td style="padding: 16px;">
+                    
+                    <!-- שם המשרה והחברה -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td align="right" style="color: #58a6ff; font-size: 16px; font-weight: bold; line-height: 1.4; padding-bottom: 8px;">
+                          {header_title}
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- שכר ואחוזי התאמה בשורה מודגשת -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #21262d; border-radius: 6px; margin-bottom: 12px;">
+                      <tr>
+                        <td align="right" style="padding: 8px 10px; color: #3fb950; font-size: 13px; font-weight: 600;">
+                          התאמה: {score}% &nbsp;|&nbsp; שכר: {salary_display}
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- פרטי המשרה -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td align="right" style="color: #c9d1d9; font-size: 13px; line-height: 1.6; padding-bottom: 16px;">
+                          <strong style="color: #8b949e;">תחום ומוצר:</strong> {domain_html}<br>
+                          <strong style="color: #8b949e;">דרישות עיקריות:</strong> {reqs_html}
+                        </td>
+                      </tr>
+                    </table>
+
+                    <!-- כפתור הגשת מועמדות לרוחב מלא -->
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td align="center" style="background-color: #1f6feb; border-radius: 6px;">
+                          <a href="{job_link}" target="_blank" style="display: block; padding: 12px 16px; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: bold; text-align: center; white-space: nowrap;">
+                            הגשת מועמדות למשרה ↗
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <!-- סוף כרטיס משרה {idx} -->"""
+            cards_list.append(card_item)
+        cards_content = "\n".join(cards_list)
 
     html = f"""<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>דוח משרות יומי</title>
+  <style>
+    body {{
+      margin: 0;
+      padding: 0;
+      background-color: #0d1117;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }}
+    table {{
+      border-spacing: 0;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+    }}
+    td {{
+      padding: 0;
+    }}
+    img {{
+      border: 0;
+      -ms-interpolation-mode: bicubic;
+    }}
+    .text-ltr {{
+      direction: ltr !important;
+      unicode-bidi: embed !important;
+      display: inline-block;
+    }}
+  </style>
 </head>
-<body style="font-family: Arial, sans-serif; background-color: #020617; color: #f8fafc; margin: 0; padding: 20px; direction: rtl;">
-    <div style="max-width: 680px; margin: 0 auto; background-color: #0b1329; border-radius: 16px; padding: 24px; border: 1px solid #1e293b; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+<body style="margin: 0; padding: 12px; background-color: #0d1117;">
+
+  <!-- מיכל ראשי ממורכז -->
+  <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" dir="rtl" style="background-color: #0d1117;">
+    <tr>
+      <td align="center">
         
-        <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #ffffff; border-radius: 14px; padding: 24px; text-align: center; margin-bottom: 24px; border: 1px solid #334155;">
-            <h1 style="margin: 0 0 6px 0; font-size: 22px; color: #38bdf8; font-weight: 800;">🎯 דוח משרות יומי מאוחד | עידו גל</h1>
-            <div style="font-size: 13px; color: #94a3b8;">תאריך סריקה: {now_str} | סה"כ משרות נבחרות: {len(jobs)}</div>
-        </div>
+        <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="max-width: 460px; width: 100%;">
+          
+          <!-- כותרת ראשית -->
+          <tr>
+            <td align="center" style="padding: 16px 8px 24px 8px;">
+              <h1 style="margin: 0; color: #f0f6fc; font-size: 20px; font-weight: 700; line-height: 1.3;">
+                🎯 דוח משרות יומי מאוחד
+              </h1>
+              <p style="margin: 6px 0 0 0; color: #8b949e; font-size: 13px;">
+                תאריך סריקה: <span class="text-ltr">{now_str}</span>
+              </p>
+            </td>
+          </tr>
 
-        <div style="text-align: center; margin-bottom: 26px;">
-            <a href="{dashboard_url}" target="_blank" style="background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color: #ffffff; font-size: 14.5px; font-weight: bold; text-decoration: none; padding: 13px 28px; border-radius: 12px; display: inline-block;">
-                🚀 פתח דוח אינטראקטיבי וניהול משרות (✔️ / ✖️) ↗
-            </a>
-        </div>
+          <!-- כפתור דשבורד אינטראקטיבי -->{dashboard_btn_html}
 
-        <p style="color:#fbbf24;">{run_notice}</p>
-        {top_3_html}
-        {sector_blocks_html}
+          <!-- הודעת סטטוס ריצה חלקי -->{notice_row_html}
 
-        <div style="border-top: 1px solid #1e293b; padding-top: 16px; text-align: center; font-size: 12px; color: #64748b;">
-            דוח זה הופק באופן אוטומטי ע"י מערכת Job Search Automation עבור עידו גל.
-        </div>
-    </div>
+          <!-- כרטיסי משרות -->{cards_content}
+
+          <!-- פוטר -->
+          <tr>
+            <td align="center" style="padding: 16px 8px 24px 8px; border-top: 1px solid #30363d;">
+              <p style="margin: 0; color: #8b949e; font-size: 12px; line-height: 1.5;">
+                דוח זה הופק באופן אוטומטי ע&quot;י מערכת Job Search Automation עבור עידו גל.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
 </body>
 </html>
 """

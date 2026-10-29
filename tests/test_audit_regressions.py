@@ -36,7 +36,7 @@ class AuditRegressionTests(unittest.TestCase):
     def test_top_pick_salary_has_estimate_label(self):
         html = build_unified_html_email([{'link':'https://example.com','salary_range':'15000'}],
                                        [{'link':'https://example.com','salary_range':'15000'}], 'https://example.com')
-        self.assertGreaterEqual(html.count('הערכה בלבד'), 2)
+        self.assertGreaterEqual(html.count('הערכה בלבד'), 1)
 
     def test_smtp_quit_failure_does_not_resend(self):
         server = MagicMock(); server.quit.side_effect = OSError('closed')

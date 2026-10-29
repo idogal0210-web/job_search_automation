@@ -6,11 +6,13 @@ Verifies file existence, exports, zero emoji compliance, and action item outputs
 
 import json
 import os
+import shutil
 import subprocess
 import unittest
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+NODE_CMD = shutil.which("node") or ("/usr/local/bin/node" if Path("/usr/local/bin/node").exists() else "node")
 
 
 class TestModularEsArchitecture(unittest.TestCase):
@@ -44,7 +46,7 @@ class TestModularEsArchitecture(unittest.TestCase):
             self.docs_js / "modules" / "render.js",
         ]
         for f in files_to_check:
-            proc = subprocess.run(["node", "--check", str(f)], capture_output=True, text=True)
+            proc = subprocess.run([NODE_CMD, "--check", str(f)], capture_output=True, text=True)
             self.assertEqual(proc.returncode, 0, f"Syntax error in {f}: {proc.stderr}")
 
     def test_dashboard_js_loaded_in_index_html(self):
@@ -81,7 +83,7 @@ class TestModularEsArchitecture(unittest.TestCase):
 
         console.log('OK');
         """
-        proc = subprocess.run(["node", "--input-type=module", "-e", node_script], cwd=str(PROJECT_ROOT), capture_output=True, text=True)
+        proc = subprocess.run([NODE_CMD, "--input-type=module", "-e", node_script], cwd=str(PROJECT_ROOT), capture_output=True, text=True)
         self.assertEqual(proc.returncode, 0, f"Action item generator test failed: {proc.stderr}")
         self.assertIn("OK", proc.stdout)
 
