@@ -508,7 +508,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         if (data.updated_at) {
           cloudLastUpdated = new Date(data.updated_at).getTime();
         }
-        if (Array.isArray(data.saved) || Array.isArray(data.starred) || Array.isArray(data.purged) || Array.isArray(data.rejected)) {
+        if (forceMirror) {
           const newJobStates = {};
           if (Array.isArray(data.purged)) {
             data.purged.forEach(link => { newJobStates[link] = 'purged'; });
@@ -519,6 +519,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           if (Array.isArray(data.rejected)) {
             data.rejected.forEach(link => { newJobStates[link] = 'rejected'; });
           }
+          // Preserve any locally purged jobs so permanently deleted jobs NEVER resurrect
+          Object.keys(jobStates).forEach(link => {
+            if (jobStates[link] === 'purged') {
+              newJobStates[link] = 'purged';
+            }
+          });
           const newStarredJobs = {};
           if (Array.isArray(data.starred)) {
             data.starred.forEach(link => {
@@ -535,6 +541,42 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           updateCubeCountsImmediately();
           renderCards();
           updateUI();
+        } else {
+          // Background sync (on focus/load/online): incremental merge, never discard local triage actions
+          let changed = false;
+          if (Array.isArray(data.purged)) {
+            data.purged.forEach(link => {
+              if (jobStates[link] !== 'purged') {
+                jobStates[link] = 'purged';
+                changed = true;
+              }
+            });
+          }
+          if (Array.isArray(data.saved)) {
+            data.saved.forEach(link => {
+              if (jobStates[link] !== 'purged' && jobStates[link] !== 'rejected' && jobStates[link] !== 'saved') {
+                jobStates[link] = 'saved';
+                changed = true;
+              }
+            });
+          }
+          if (Array.isArray(data.starred)) {
+            data.starred.forEach(link => {
+              if (jobStates[link] !== 'purged' && jobStates[link] !== 'rejected') {
+                if (!starredJobs[link]) {
+                  starredJobs[link] = true;
+                  changed = true;
+                }
+              }
+            });
+          }
+          if (changed) {
+            saveStarredJobs(starredJobs);
+            saveTriageState(jobStates);
+            updateCubeCountsImmediately();
+            renderCards();
+            updateUI();
+          }
         }
         setCloudSyncStatus('synced', cloudLastUpdated || Date.now());
       } else {
@@ -2030,12 +2072,21 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
               <span>הרחב ניתוח מלא</span>
               <i class="ph-bold ph-caret-down"></i>
             </button>
+            ${state === 'rejected' ? `
+            <button type="button" onclick="restoreJob(${escapeHtml(JSON.stringify(String(id)))}, event)" class="btn-triage" title="שחזר לחדשות" aria-label="שחזר לחדשות">
+              <i class="ph-duotone ph-arrow-counter-clockwise"></i> <span class="btn-text">שחזר לחדשות</span>
+            </button>
+            <button type="button" onclick="purgeJobPermanently(${escapeHtml(JSON.stringify(String(id)))}, event)" class="btn-triage action-reject-btn rejected-active" title="מחיקה לצמיתות" aria-label="מחיקה לצמיתות" style="background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-color: rgba(239, 68, 68, 0.5);">
+              <i class="ph-duotone ph-trash-simple"></i> <span class="btn-text">מחק לצמיתות</span>
+            </button>
+            ` : `
             <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved', event)" class="btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}" title="שמור להגשה">
               <i class="ph-duotone ph-bookmark-simple"></i> <span class="btn-text">${state === 'saved' ? 'נשמר להגשה' : 'שמור להגשה'}</span>
             </button>
-            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected', event)" class="btn-triage action-reject-btn ${state === 'rejected' ? 'rejected-active' : ''}" title="הסר משרה" aria-label="הסר משרה">
+            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected', event)" class="btn-triage action-reject-btn" title="הסר משרה" aria-label="הסר משרה">
               <i class="ph-duotone ph-trash"></i>
             </button>
+            `}
           </div>
           <div class="job-actions-bottom-row">
             <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant" onclick="event.stopPropagation()">
@@ -2172,12 +2223,21 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     bottomBar.innerHTML = `
       <div class="job-actions-top-row" style="width: 100%; display: flex; align-items: center; gap: 8px;">
+        ${state === 'rejected' ? `
+        <button onclick="restoreJob(${escapeHtml(JSON.stringify(String(id)))}); closeJobModal();" class="btn-triage" style="flex: 1;" title="שחזר למשרות חדשות">
+          <i class="ph-duotone ph-arrow-counter-clockwise"></i> <span>שחזר לחדשות</span>
+        </button>
+        <button onclick="purgeJobPermanently(${escapeHtml(JSON.stringify(String(id)))}); closeJobModal();" class="btn-triage action-reject-btn rejected-active" style="flex: 1; background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-color: rgba(239, 68, 68, 0.5);" title="מחק לצמיתות">
+          <i class="ph-duotone ph-trash-simple"></i> <span>מחק לצמיתות</span>
+        </button>
+        ` : `
         <button id="modalSaveBtn" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved'); updateModalTriageButtons(${escapeHtml(JSON.stringify(String(id)))});" class="btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}" style="flex: 1;" title="שמור להגשה">
           <i class="ph-duotone ph-bookmark-simple"></i> <span class="btn-text">${state === 'saved' ? 'נשמר להגשה' : 'שמור להגשה'}</span>
         </button>
         <button id="modalRejectBtn" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected'); updateModalTriageButtons(${escapeHtml(JSON.stringify(String(id)))});" class="btn-triage action-reject-btn ${state === 'rejected' ? 'rejected-active' : ''}" title="הסר משרה" aria-label="הסר משרה">
           <i class="ph-duotone ph-trash"></i>
         </button>
+        `}
       </div>
       <div class="job-actions-bottom-row" style="width: 100%; margin-top: 8px;">
         <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant">
@@ -2273,20 +2333,56 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       evt.preventDefault();
     }
     const current = jobStates[id];
-    if (current === action) {
-      delete jobStates[id];
-      showToast('ph-arrow-counter-clockwise', 'הסטטוס אופס והמשרה הוחזרה לחדשות');
-    } else {
-      jobStates[id] = action;
-      if (action === 'saved') {
+    if (action === 'rejected') {
+      if (current === 'rejected') {
+        jobStates[id] = 'purged';
+        showToast('ph-trash', 'המשרה נמחקה לצמיתות ולא תוצג שוב');
+      } else {
+        jobStates[id] = 'rejected';
+        showToast('ph-trash', 'המשרה הועברה למשרות שהוסרו');
+      }
+    } else if (action === 'saved') {
+      if (current === 'saved') {
+        delete jobStates[id];
+        showToast('ph-arrow-counter-clockwise', 'המשרה הוסרה מהשמורות והוחזרה לחדשות');
+      } else {
+        jobStates[id] = 'saved';
         showToast('ph-bookmark-simple', 'המשרה נשמרה להגשה והועברה ללשונית נשמרו');
-      } else if (action === 'rejected') {
-        showToast('ph-trash', 'המשרה הוסרה ולא תוצג שוב');
       }
     }
     saveTriageState(jobStates);
+    updateCubeCountsImmediately();
+    renderCards();
     updateUI();
     scheduleCloudPush();
+  }
+
+  function purgeJobPermanently(id, evt) {
+    if (evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
+    jobStates[id] = 'purged';
+    saveTriageState(jobStates);
+    updateCubeCountsImmediately();
+    renderCards();
+    updateUI();
+    scheduleCloudPush();
+    showToast('ph-trash', 'המשרה נמחקה לצמיתות ולא תוצג שוב');
+  }
+
+  function restoreJob(id, evt) {
+    if (evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
+    delete jobStates[id];
+    saveTriageState(jobStates);
+    updateCubeCountsImmediately();
+    renderCards();
+    updateUI();
+    scheduleCloudPush();
+    showToast('ph-arrow-counter-clockwise', 'המשרה שוחזרה בהצלחה למשרות חדשות');
   }
 
   function setFilter(filter, el) {
@@ -3209,8 +3305,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     });
 
     saveTriageState(jobStates);
+    updateCubeCountsImmediately();
+    renderCards();
     updateUI();
-    pushCloudSync();
+    scheduleCloudPush();
     showToast('ph-trash', `כל ${rejectedKeys.length} המשרות שהוסרו נמחקו לצמיתות והמונה אופס ל-0`);
   }
 
@@ -6212,6 +6310,9 @@ Open for operations management and engineering roles in Israeli energy and clean
   window.initSkillsModule = initSkillsModule;
   window.toggleAnonymizerMode = toggleAnonymizerMode;
   window.copyAnonymizedCv = copyAnonymizedCv;
+  window.purgeJobPermanently = purgeJobPermanently;
+  window.restoreJob = restoreJob;
+  window.clearAllRejected = clearAllRejected;
 
 
   window.onload = () => {
