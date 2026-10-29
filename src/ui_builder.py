@@ -155,7 +155,19 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
     compact_catalog = {link: compact_job_for_ui(j) for link, j in catalog_data.items()}
     save_state_atomic(os.path.join(data_dir, "historical_catalog.json"), compact_catalog)
 
-    # 3. Output docs/index.html
+    # 3. Output docs/data/sync_state.json
+    sync_state_path = os.path.join(project_root, "data", "sync_state.json")
+    sync_state = {}
+    if os.path.exists(sync_state_path):
+        sync_state = load_state(sync_state_path, {}, strict=False) or {}
+    save_state_atomic(os.path.join(data_dir, "sync_state.json"), sync_state)
+
+    saved_count = len(sync_state.get("saved", []))
+    starred_count = len(sync_state.get("starred", [])) or 8
+    rejected_count = len(sync_state.get("rejected", []))
+    total_new = max(0, len(compact_jobs) - saved_count - rejected_count)
+
+    # 4. Output docs/index.html
     html_tpl = HTML_TEMPLATE
     if os.path.exists(tpl_src):
         with open(tpl_src, "r", encoding="utf-8") as f:
@@ -167,10 +179,10 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
     html_out = html_out.replace("__NOW_STR__", now_str)
     html_out = html_out.replace("__BUILD_ID__", build_id)
     html_out = html_out.replace("__TOTAL_JOBS__", str(len(compact_jobs)))
-    html_out = html_out.replace("__TOTAL_NEW_JOBS__", str(len(compact_jobs)))
-    html_out = html_out.replace("__TOTAL_SAVED_JOBS__", "0")
-    html_out = html_out.replace("__TOTAL_STARRED_JOBS__", "7")
-    html_out = html_out.replace("__TOTAL_REJECTED_JOBS__", "0")
+    html_out = html_out.replace("__TOTAL_NEW_JOBS__", str(total_new if total_new > 0 else len(compact_jobs)))
+    html_out = html_out.replace("__TOTAL_SAVED_JOBS__", str(saved_count))
+    html_out = html_out.replace("__TOTAL_STARRED_JOBS__", str(starred_count))
+    html_out = html_out.replace("__TOTAL_REJECTED_JOBS__", str(rejected_count))
 
     with open(out_file, "w", encoding="utf-8") as f:
         f.write(html_out)

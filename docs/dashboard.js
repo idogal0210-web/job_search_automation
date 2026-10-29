@@ -206,6 +206,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     "https://il.linkedin.com/jobs/view/high-pressure-natural-gas-project-israel-at-rina-4469463836",
     "https://www.comeet.com/jobs/enlightenergy/99.006/project-manager---construction---enlight-local/92.F66",
     "https://il.linkedin.com/jobs/view/junior-business-development-manager-at-ormash-group-%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%90%D7%95%D7%A8%D7%9E%D7%A9-4468984224",
+    "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4447699352",
     "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4481350574",
     "https://il.linkedin.com/jobs/view/practical-engineer-at-solaredge-technologies-4481748648",
     "https://il.linkedin.com/jobs/view/system-engineer-renewable-energy-energy-storage-projects-at-nextcom-group-4478214360"
@@ -484,12 +485,25 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     isSyncInProgress = true;
     try {
       setCloudSyncStatus('syncing');
-      if (!privateSync) { setCloudSyncStatus('local'); return; }
-      const resp = await privateSync.read();
-      if (!resp.ok) {
-        throw new Error('Sync status: ' + resp.status);
+      let data = null;
+      if (privateSync) {
+        try {
+          const resp = await privateSync.read();
+          if (resp && resp.ok) {
+            data = await resp.json();
+          }
+        } catch(e) {}
       }
-      const data = await resp.json();
+      if (!data) {
+        const config = window.__APP_CONFIG__ || {};
+        const syncUrl = config.sync_data_url || 'data/sync_state.json';
+        try {
+          const resp = await fetch(syncUrl + (syncUrl.includes('?') ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store' });
+          if (resp && resp.ok) {
+            data = await resp.json();
+          }
+        } catch(e) {}
+      }
       if (data) {
         if (data.updated_at) {
           cloudLastUpdated = new Date(data.updated_at).getTime();
@@ -550,6 +564,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         }
         if (changed) {
           saveTriageState(jobStates);
+          updateCubeCountsImmediately();
           renderCards();
           updateUI();
         }
@@ -621,16 +636,16 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function getSyncDelta() {
     const delta = {};
-    const baseSaved = new Set(typeof initialSavedLinks !== 'undefined' && Array.isArray(initialSavedLinks) ? initialSavedLinks : []);
-    const baseRejected = new Set(typeof initialRejectedLinks !== 'undefined' && Array.isArray(initialRejectedLinks) ? initialRejectedLinks : []);
-
     for (const [link, state] of Object.entries(jobStates)) {
-      const wasSaved = baseSaved.has(link);
-      const wasRejected = baseRejected.has(link);
-      if (state === 'saved' && !wasSaved) {
+      if (state === 'saved') {
         delta[extractJobId(link)] = 's';
-      } else if (state === 'rejected' && !wasRejected) {
+      } else if (state === 'rejected') {
         delta[extractJobId(link)] = 'r';
+      }
+    }
+    for (const [link, isStar] of Object.entries(starredJobs)) {
+      if (isStar) {
+        delta[extractJobId(link)] = '*';
       }
     }
     return delta;
@@ -655,20 +670,27 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         if (incomingDelta && typeof incomingDelta === 'object') {
           let count = 0;
           for (const [idOrLink, val] of Object.entries(incomingDelta)) {
-            const fullState = (val === 's' || val === 'saved') ? 'saved' : 'rejected';
             const match = rawJobsData.find(j => j.link && (j.link === idOrLink || j.link.includes(idOrLink)));
-            if (match) {
-              jobStates[match.link] = fullState;
-              count++;
+            const targetLink = match ? match.link : idOrLink;
+            if (val === '*' || val === 'starred') {
+              starredJobs[targetLink] = true;
+              if (jobStates[targetLink] === 'rejected' || jobStates[targetLink] === 'purged') {
+                delete jobStates[targetLink];
+              }
+            } else if (val === 's' || val === 'saved') {
+              jobStates[targetLink] = 'saved';
             } else {
-              jobStates[idOrLink] = fullState;
-              count++;
+              jobStates[targetLink] = 'rejected';
             }
+            count++;
           }
+          saveStarredJobs(starredJobs);
           saveTriageState(jobStates);
           window.history.replaceState({}, document.title, window.location.pathname);
           setTimeout(() => {
             showToast('ph-check-circle', count > 0 ? `סונכרנו בהצלחה ${count} משרות חדשות!` : 'הדשבורד מסונכרן ומעודכן!');
+            updateCubeCountsImmediately();
+            renderCards();
             updateUI();
           }, 300);
         }
@@ -2987,9 +3009,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   async function confirmSync() {
-    const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved');
-    const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
-    
     const syncBtn = document.getElementById('syncConfirmBtn');
     if (syncBtn) {
       syncBtn.disabled = true;
@@ -2997,10 +3016,19 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
 
     saveTriageState(jobStates);
+    saveStarredJobs(starredJobs);
+    await fetchCloudSync();
     await pushCloudSync();
+    updateCubeCountsImmediately();
+    renderCards();
+    updateUI();
+
+    const savedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'saved').length;
+    const starredCount = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id])).length;
+    const rejectedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected').length;
 
     closeSyncModal();
-    showToast('ph-cloud-check', `כל הסימונים סונכרנו לענן בהצלחה! (${savedList.length} שמורות, ${rejectedList.length} הוסרו)`);
+    showToast('ph-cloud-check', `סונכרן בהצלחה מול הדשבורד! (${savedCount} שמורות, ${starredCount} בכוכב, ${rejectedCount} הוסרו)`);
     if (syncBtn) {
       syncBtn.disabled = false;
       syncBtn.textContent = "אשר וסנכרן עכשיו";

@@ -20,6 +20,7 @@ export const DEFAULT_STARRED_LINKS = [
   "https://il.linkedin.com/jobs/view/high-pressure-natural-gas-project-israel-at-rina-4469463836",
   "https://www.comeet.com/jobs/enlightenergy/99.006/project-manager---construction---enlight-local/92.F66",
   "https://il.linkedin.com/jobs/view/junior-business-development-manager-at-ormash-group-%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%90%D7%95%D7%A8%D7%9E%D7%A9-4468984224",
+  "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4447699352",
   "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4481350574",
   "https://il.linkedin.com/jobs/view/practical-engineer-at-solaredge-technologies-4481748648",
   "https://il.linkedin.com/jobs/view/system-engineer-renewable-energy-energy-storage-projects-at-nextcom-group-4478214360"
