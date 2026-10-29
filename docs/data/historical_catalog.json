@@ -26893,5 +26893,436 @@
         "label": "Junior"
       }
     ]
+  },
+  "https://il.linkedin.com/jobs/view/grid-interconnection-coordinator-at-enlight-renewable-energy-ltd-enlt-4484959233": {
+    "link": "https://il.linkedin.com/jobs/view/grid-interconnection-coordinator-at-enlight-renewable-energy-ltd-enlt-4484959233",
+    "title": "Grid & Interconnection Coordinator",
+    "company": "Enlight Renewable Energy Ltd (ENLT)",
+    "location": "ישראל",
+    "date": "2026-10-29",
+    "source": "LinkedIn",
+    "match_score": 90,
+    "base_match_score": 85,
+    "priority_bonus": 5,
+    "evaluation_complete": true,
+    "evidence_status": "incomplete",
+    "sector_key": "solar",
+    "company_domain_product": "Enlight Renewable Energy Ltd",
+    "company_summary": "",
+    "job_summary": "רכז/ת רשת וחיבורים במחלקת פיתוח אנרגיה מתחדשת, האחראי על ניהול ומעקב בקשות חיבור לרשת מול חברת החשמל ונגה, ניהול תיקים הנדסיים ותיאומים טכניים.",
+    "company_requirements": "1-3 שנות ניסיון בתפקיד תפעולי או אדמיניסטרטיבי בחברה הנדסית או תשתית; תואר ראשון או הנדסאי בהנדסת תעשייה וניהול או חשמל - יתרון; ניסיון בעבודה מול חברת החשמל ונגה - יתרון משמעותי; שליטה באופיס.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם התמחות באנרגיה סולארית ואגירת אנרגיה, ניסיון במערכות תפעוליות והנדסיות, והכרות עם תחום החשמל והאנרגיה המתחדשת.",
+    "reasoning": "המועמד הינו הנדסאי מכונות מוסמך עם התמחות באנרגיה סולארית ואגירת אנרגיה, ובעל רקע טכני ותפעולי המתאים לתיאום רשת וחיבורים חשמליים מול חברת החשמל ונגה.",
+    "key_highlights": "הנדסאי מכונות בהתמחות אנרגיה ירוקה, רקע בתפעול מערכות אנרגיה, שליטה ביישומי מחשב וקליטת מידע טכני.",
+    "salary_range": "12,500 - 16,500 ₪ (מקובל רכב ענפי)",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: סולארי ואגירת אנרגיה (PV / BESS).",
+    "salary_source_url": "",
+    "p25": 12500,
+    "p75": 16500,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY",
+    "snippet": "We are seeking a coordinator to join our Renewable Energy Development Department to serve as a central function within the department’s electrical sector, acting as a grid and interconnection coordinator in the electricity field.\nThe coordinator will work closely with project managers, engineering teams, advisors, and senior management, providing operational support to the department's electrical sector, managing documentation and ongoing follow-up with the IEC, Noga, and design consultants.\nResponsibilities:\nManaging and tracking grid connection requests, including Distribution System Operator (DSO) responses, connection surveys, technical coordination, and various procedures with the IEC and Noga.\nDocumenting, consolidating, and archiving connection files, electrical design documents, schematics, and inspection reports, including management via the Israel Electric Corporation (IEC) ordering portal.\nHandling administrative processing of IEC and Noga vouchers and fees, bank guarantees, and contractual engagements in coordination with IEC representatives and internal finance departments.\nCoordinating internal and joint site visits with the IEC, scheduling working meetings, and conducting routine status updates with the IEC and Noga.\nRequirements:\n1–3 years of experience in operational or administrative roles within an engineering, infrastructure, electrical, or planning company.\nBachelor's degree / Practical Engineer in Industrial Engineering & Management or Electrical Engineering – an advantage.\nExperience in engineering, infrastructure, or electrical design – an advantage.\nExperience working with Israel Electric Corporation (IEC) / Noga mechanisms, including familiarity with terms and forms for electrical facilities and energy storage systems – a significant advantage.\nHands-on experience with the Israel Electric Corporation (IEC) ordering portal – a significant advantage.\nFull proficiency in MS Office (Outlook, Word, Excel) and CRM/ERP systems (Priority, Monday).\nBasic ability to read engineering and electrical documentation.",
+    "requirement_assessments": [
+      {
+        "requirement": "Practical Engineer / Bachelor's degree in Electrical Engineering or Industrial Engineering & Management - advantage",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "Bachelor's degree / Practical Engineer in Industrial Engineering & Management or Electrical Engineering – an advantage.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בתואר הנדסאי מוסמך בהתמחות ירוקה, העונה לדרישת ההנדסאי."
+      },
+      {
+        "requirement": "1-3 years of experience in operational or administrative roles within an engineering or infrastructure company",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "1–3 years of experience in operational or administrative roles within an engineering, infrastructure, electrical, or planning company.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "24/7 mission-critical control room operations, crisis response, supply continuity, process automation.",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון בתפעול מערכות ובחדרי בקרה קריטיים התואמים את הדרישה הניסיונית."
+      },
+      {
+        "requirement": "Basic ability to read engineering and electrical documentation",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "Basic ability to read engineering and electrical documentation.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "",
+          "source_field": "unverified"
+        },
+        "assessment": "unknown",
+        "explanation": "ציטוט המודעה לא אומת או חסרה ראיה מאומתת בפרופיל; נדרשת בדיקה."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד כהנדסאי עם רקע רלוונטי בתחום האנרגיה.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://www.drushim.co.il/job/38703896/9e9e2668/": {
+    "link": "https://www.drushim.co.il/job/38703896/9e9e2668/",
+    "title": "עובד/ת יצור למפעל בטחוני שכר גבוה",
+    "company": "אורטל ולעבודה: קריות",
+    "location": "קריית ים",
+    "date": "2026-10-29",
+    "source": "Drushim",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "operations",
+    "company_domain_product": "מפעל בטחוני",
+    "company_summary": "",
+    "job_summary": "דרוש/ה עובד/ת ייצור למפעל ביטחוני למגוון תפקידי ייצור כגון הנדסאי/ת מכונות, מפעיל/ת מכונה ומכונאי/ת.",
+    "company_requirements": "ניסיון בייצור מהווה יתרון אך לא חובה.",
+    "experience_strengths": "הנדסאי מכונות מוסמך, רקע במערכות אלקטרו-מכניות, תפעול ותחזוקה.",
+    "reasoning": "המוועמד הוא הנדסאי מכונות מוסמך עם רקע במערכות אלקטרו-מכניות, המתאים לתפקידי ייצור, הפעלת מכונות והנדסאות במפעל ביטחוני.",
+    "key_highlights": "הנדסאי מכונות מוסמך, ניסיון במערכות שטח ותפעול.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "https://webapi.drushim.co.il/logos/890324/page/639263622810052461.png",
+    "snippet": "עובד/ת יצור למפעל בטחוני שכר גבוה\nאורטל ולעבודה: קריות\nקריית ים\nללא נסיון\nמשרה מלאה\nלפני 3 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלמפעל בטחוני דרוש/ה עובד/ת יצור\nשכר גבוה למגוון תפקדי יצור : הנדסאי/ת מכונות , מפעיל/ת מכונה , מכונאי /מבנאי , יצור ועוד\nדרישות התפקיד\nניסיון בייצור יתרון\nלא חובה ניסיון\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nתעשיה / ייצור\nתחומים\nטכנאי/ת - תעשייה וייצור\nמפעיל/ת מכונות\nעובד/ת ייצור",
+    "requirement_assessments": [
+      {
+        "requirement": "הנדסאי/ת מכונות",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "הנדסאי/ת מכונות",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בדיפלומה של הנדסאי מכונות בדיוק כמופיע בדרישות."
+      },
+      {
+        "requirement": "ניסיון בייצור יתרון",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "ניסיון בייצור יתרון",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון מעשי בתחום האלקטרו-מכני והשטח."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": true,
+    "curated_tags": [
+      {
+        "type": "tag-junior",
+        "icon": "ph-bold ph-graduation-cap",
+        "label": "Junior"
+      }
+    ]
+  },
+  "https://www.drushim.co.il/job/38880064/d5fb083f/": {
+    "link": "https://www.drushim.co.il/job/38880064/d5fb083f/",
+    "title": "מהנדס/ת או הנדסאי/ת בקרה ומכשור",
+    "company": "סימנס אנרגיה",
+    "location": "אשדוד",
+    "date": "2026-10-29",
+    "source": "Drushim",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "incomplete",
+    "sector_key": "energy",
+    "company_domain_product": "טורבינות גז ומערכות שירות לתחנות כוח",
+    "company_summary": "",
+    "job_summary": "תפקיד Resident Engineer המשלב עבודה מעשית עם מערכות בקרה ומכשור, איתור ופתרון תקלות, תחזוקה ותמיכה טכנית באתר באשדוד.",
+    "company_requirements": "הנדסאי/ת או מהנדס/ת בתחום טכני רלוונטי, ניסיון מעשי בבקרה ומכשור או אחזקה תעשייתית, אנגלית טכנית ברמה גבוהה.",
+    "experience_strengths": "הנדסאי מכונות מוסמך, רקע חזק במערכות אנרגיה, בקרת תהליכים, שליטה במערכות SCADA ורקע מבצעי טכני מוכח.",
+    "reasoning": "לעידו יש השכלה כהנדסאי מכונות וניסיון מעשי מוצק במערכות בקרה, אנרגיה ותחזוקה תעשייתית, מה שמתאים מאוד לדרישות התפקיד כמהנדס/ת או הנדסאי/ת בקרה ומכשור בסימנס אנרגיה.",
+    "key_highlights": "השכלה רלוונטית בהנדסאות מכונות, ניסיון מעשי בתחום האנרגיה והבקרה, אוריינטציה טכנית ו-Hands-on גבוהה.",
+    "salary_range": "16,000 - 21,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • כולל משמרות 24/7",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות).",
+    "salary_source_url": "",
+    "p25": 16000,
+    "p75": 21000,
+    "logo": "https://webapi.drushim.co.il/logos/4072843/page/638593295897057226.jpg",
+    "snippet": "מהנדס/ת או הנדסאי/ת בקרה ומכשור\nסימנס אנרגיה\nאשדוד\n1-2 שנים\nמשרה מלאה\nלפני 3 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nמהנדס/ת או הנדסאי/ת בקרה ומכשור לתפקיד Resident Engineer משמעותי ומאתגר בתחנת כוח באשדוד.\nהתפקיד מהווה חלק ממערך השירות של החברה וכולל עבודה בסביבה טכנולוגית מתקדמת עם מערכות בקרה ומכשור של טורבינות גז.\nבמסגרת התפקיד תהיה/,תהיי בעל אחריות מקצועית ישירה על איתור, אבחון ופתרון תקלות,\nביצוע תחזוקה ותמיכה טכנית במערכות קריטיות, תוך עבודה מול הלקוח ובשיתוף פעולה שוטף עם צוותי מומחים בארץ ובחו\"ל.\nתחומי אחריות :\nאיתור, אבחון ופתרון תקלות מורכבות במערכות בקרה ומכשור.\nעבודה מעשית עם מערכות PLC/HMI, כולל קריאת לוגיקות בקרה, דיאגנוסטיקה ואיתור תקלות.\nעבודה עם חיישנים, משדרים (Transmitters), שסתומי בקרה ומערכות עזר תעשייתיות.\nביצוע תחזוקה מונעת ומתקנת במערכות קריטיות.\nביצוע בדיקות פונקציונליות, שינויים והתאמות במערכות בקרה.\nביצוע תהליכי דיאגנוסטיקה ו-Root Cause Analysis לצורך ניתוח תקלות ומניעת הישנותן.\nתמיכה בפעילויות Commissioning, Start-up והשבתות מתוכננות.\nמתן מענה טכני מקצועי ושוטף ללקוח באתר.\nעבודה משותפת עם צוותי Engineering ו-Product Support בישראל ובחו\"ל.\nהכנת דוחות טכניים ותיעוד פעילויות השירות.\nהשתתפות בכוננויות ומתן מענה לקריאות שירות בהתאם לצורכי האתר.\nדרישות התפקיד\nמהנדס/ת או הנדסאי/ת חשמל, בקרה, מכשור, אלקטרוניקה, מכטרוניקה או תחום טכני רלוונטי.\nניסיון מעשי בתחומי בקרה, מכשור, אחזקה או שירות בסביבה תעשייתית.\nניסיון בעבודה עם מערכות PLC/HMI קריאת לוגיקות בקרה, דיאגנוסטיקה ואיתור תקלות.\nהיכרות מעשית עם מכשור תעשייתי, חיישנים, Transmitters ושסתומי בקרה.\nיכולת קריאה והבנה של שרטוטי חשמל, בקרה ומכשור.\nיכולת עצמאית לאיתור ופתרון תקלות, מהציוד בשטח ועד למערכת הבקרה.\nאוריינטציה טכנית גבוהה ויכולת Hands-On.\nאנגלית טכנית ברמה טובה מאוד, קריאה, כתיבה ודיבור.\nהתפקיד כולל השתתפות בסבב כוננויות והקפצות לאתר, לרבות בשעות לא שגרתיות, סופי שבוע וחגים.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתעשיה / ייצור\nתחומים\nהנדסאי/ת חשמל\nמהנדס/ת חשמל\nמהנדס/ת אלקטרוניקה\nאיש/ת מכשור ובקרה\nחשמל ואלקטרוניקה",
+    "requirement_assessments": [
+      {
+        "requirement": "מהנדס/ת או הנדסאי/ת חשמל, בקרה, מכשור, אלקטרוניקה, מכטרוניקה או תחום טכני רלוונטי.",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "מהנדס/ת או הנדסאי/ת חשמל, בקרה, מכשור, אלקטרוניקה, מכטרוניקה או תחום טכני רלוונטי.",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד הוא הנדסאי מכונות מוסמך בהתמחות אנרגיה ירוקה וגז טבעי, העונה על דרישת ההשכלה."
+      },
+      {
+        "requirement": "ניסיון מעשי בתחומי בקרה, מכשור, אחזקה או שירות בסביבה תעשייתית.",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ניסיון מעשי בתחומי בקרה, מכשור, אחזקה או שירות בסביבה תעשייתית.",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Natural gas transmission/distribution control, nomination allocations, pressure/flow monitoring, solar PV field systems",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון מעשי בתפעול ובקרה של מערכות אנרגיה תעשייתיות כמו גז טבעי ומערכות סולאריות."
+      },
+      {
+        "requirement": "אנגלית טכנית ברמה טובה מאוד, קריאה, כתיבה ודיבור.",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "אנגלית טכנית ברמה טובה מאוד, קריאה, כתיבה ודיבור.",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "היכולת לעבוד עם מערכות מתקדמות וכלים טכנולוגיים מעידה על שליטה טובה באנגלית טכנית."
+      },
+      {
+        "requirement": "אוריינטציה טכנית גבוהה ויכולת Hands-On.",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "אוריינטציה טכנית גבוהה ויכולת Hands-On.",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "",
+          "source_field": "unverified"
+        },
+        "assessment": "unknown",
+        "explanation": "ציטוט המודעה לא אומת או חסרה ראיה מאומתת בפרופיל; נדרשת בדיקה."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://www.drushim.co.il/job/38898304/f068f314/": {
+    "link": "https://www.drushim.co.il/job/38898304/f068f314/",
+    "title": "דרוש\\ה טכנאי התקנות ושירות",
+    "company": "הוואסיז ס.פ",
+    "location": "ירכא",
+    "date": "2026-10-29",
+    "source": "Drushim",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "operations",
+    "company_domain_product": "פתרונות חימום",
+    "company_summary": "",
+    "job_summary": "דרוש/ה טכנאי/ת התקנות ושירות לקמינים, כולל התקנות, טיפול בתקלות בבית הלקוח ונסיעות להכשרות בחו\"ל.",
+    "company_requirements": "ניסיון בטכנאות, מכונות, חשמל ואלקטרוניקה, ניידות, אנגלית ברמה גבוהה מאוד, תודעת שירות.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם רקע מעשי במערכות אלקטרו-מכניות, טיפול בתקלות שטח ומתן שירות.",
+    "reasoning": "המועמד הוא הנדסאי מכונות עם רקע טכני חזק במערכות אלקטרו-מכניות, ועונה על דרישות הטכנאות והחשמל במשרה.",
+    "key_highlights": "התאמה טובה לניסיון הנדרש במכונות וחשמל, יכולת טכנית מוכחת.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "",
+    "snippet": "ה\nדרוש\\ה טכנאי התקנות ושירות\nהוואסיז ס.פ\nירכא\n1-2 שנים\nמשרה מלאה\nלפני 1 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברה המתמחה בפתרונות חימום דרוש\\ה טכנאי התקנות ושירות\nהתפקיד כולל:\n* התקנות קמיני עץ פלט וחשמל\n* שירות שנתי לקמינים\n* מעקב קריאות שירות וטיפול בתקלות בבית הלקוח\n* הכשרות והשתלמויות שנתיות בחו\"ל\nדרישות התפקיד\nניסיון מוכח בטכנאות , מכינקה , חשמל , אוקטרוניקה , מחשוב\nניידות\nנכונות להכשרות שנתיות במפעלים בחו\"ל\nאנגלית ברמה גבוהה מאוד\nתודעת שירות גבוהה\nזמינות לעבודה בשעות לא שגרתיות\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nבעלי מקצוע\nתעשיה / ייצור\nתחומים\nטכנאי/ת\nמתקינים\nאינסטלציה\nטכנאי/ת - תעשייה וייצור\nחשמל ואלקטרוניקה",
+    "requirement_assessments": [
+      {
+        "requirement": "ניסיון מוכח בטכנאות , מכינקה , חשמל , אוקטרוניקה , מחשוב",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ניסיון מוכח בטכנאות , מכינקה , חשמל , אוקטרוניקה , מחשוב",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש רקע בהנדסת מכונות ולימודי חשמל המכסים דרישה זו."
+      },
+      {
+        "requirement": "ניידות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ניידות",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש רקע מבצעי המעיד על יכולת תנועה ועבודה בשטח."
+      },
+      {
+        "requirement": "אנגלית ברמה גבוהה מאוד",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "אנגלית ברמה גבוהה מאוד",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Gemini/Copilot AI workflows, SAP, Excel data modeling.",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "המועמד שולט בכלים טכנולוגיים מתקדמים המעידים על יכולת עבודה באנגלית."
+      },
+      {
+        "requirement": "תודעת שירות גבוהה",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "תודעת שירות גבוהה",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "24/7 mission-critical control room operations, crisis response",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "המועמד בעל ניסיון בתפעול מערכות קריטיות ומתן מענה בחירום."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד הטכניות.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://www.drushim.co.il/job/38905258/433a391e/": {
+    "link": "https://www.drushim.co.il/job/38905258/433a391e/",
+    "title": "לחברת לודן טק-דרוש/ה הנדסאי מכונות",
+    "company": "נתון-נוף ים בטחון בע\"מ",
+    "location": "אור יהודה",
+    "date": "2026-10-29",
+    "source": "Drushim",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "operations",
+    "company_domain_product": "לודן טק / מערכות מכניות ומפעל",
+    "company_summary": "",
+    "job_summary": "אחריות לתקינות ולזמינות המכונות והמערכות המכניות במפעל באמצעות תחזוקה מונעת ואיתור תקלות.",
+    "company_requirements": "הנדסאי מכונות, הבנה טכנית, עבודה בצוות ושפה עברית.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם רקע בהתקנה, תפעול ותחזוקה של מערכות אלקטרו-מכניות.",
+    "reasoning": "עידו הינו הנדסאי מכונות מוסמך בעל רקע טכני מתאים לתחזוקת מערכות מכניות ומפעלים, והמשרה דורשת הנדסאי מכונות עם הבנה טכנית.",
+    "key_highlights": "הנדסאי מכונות מוסמך, נכונות לעבודה במשרה מלאה, יכולת עבודה בצוות והבנה טכנית.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "https://webapi.drushim.co.il/logos/284015/page/638463571972940933.png",
+    "snippet": "לחברת לודן טק-דרוש/ה הנדסאי מכונות\nנתון-נוף ים בטחון בע\"מ\nאור יהודה\nללא נסיון\nמשרה מלאה\nלפני 4 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברת לודן טק באור יהודה דרוש/ה הנדסאי מכונות\nמשרה מלאה (שעות נוספות בתשלום)\nא-ה 07:00-17:00\nמטרת התפקיד\nאחריות לתקינות ולזמינות המכונות והמערכות המכניות במפעל, באמצעות תחזוקה מונעת, איתור ותיקון תקלות ומתן תמיכה טכנית לתהליכי הייצור, תוך שמירה על איכות ובטיחות העבודה.\nשכר גבוה +סיבוס\nלפרטים: 054-95852363 ליטל\nדרישות התפקיד\nחובה הבנה טכנית -\nשפה עברית - קריאה, כתיבה\n*יכולת עבודה בצוות*\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתחומים\nהנדסאי/ת מכונות\nהנדסאים כללי\nמהנדס/ת אלקטרוניקה",
+    "requirement_assessments": [
+      {
+        "requirement": "הנדסאי מכונות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "לחברת לודן טק באור יהודה דרוש/ה הנדסאי מכונות",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המוועמד הוא הנדסאי מכונות מוסמך בדיוק כנדרש."
+      },
+      {
+        "requirement": "הבנה טכנית",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "חובה הבנה טכנית",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע רב-תחומי והבנה טכנית עמוקה במערכות מכניות."
+      },
+      {
+        "requirement": "יכולת עבודה בצוות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "יכולת עבודה בצוות",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון פיקודי ועבודה בצוות מסגרת שירות קרבי."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": true,
+    "curated_tags": [
+      {
+        "type": "tag-junior",
+        "icon": "ph-bold ph-graduation-cap",
+        "label": "Junior"
+      }
+    ]
   }
 }
