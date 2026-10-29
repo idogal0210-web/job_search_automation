@@ -476,7 +476,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   }
 
-  async function fetchCloudSync() {
+  async function fetchCloudSync(forceMirror = false) {
     if (isSyncInProgress) return;
     if (typeof navigator !== 'undefined' && navigator.onLine === false) {
       setCloudSyncStatus('offline');
@@ -508,61 +508,29 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         if (data.updated_at) {
           cloudLastUpdated = new Date(data.updated_at).getTime();
         }
-        let changed = false;
-        if (Array.isArray(data.purged)) {
-          data.purged.forEach(link => {
-            if (!starredJobs[link] && jobStates[link] !== 'purged') {
-              jobStates[link] = 'purged';
-              changed = true;
-            }
-          });
-        }
-        if (Array.isArray(data.saved)) {
-          data.saved.forEach(link => {
-            if (/^\d+$/.test(link) && data.saved.some(s => s !== link && s.includes(link))) {
-              return;
-            }
-            if (jobStates[link] !== 'saved') {
-              jobStates[link] = 'saved';
-              changed = true;
-            }
-          });
-        }
-        Object.keys(jobStates).forEach(key => {
-          if (/^\d+$/.test(key)) {
-            const matchingLink = Object.keys(jobStates).find(k => k !== key && k.includes(key));
-            if (matchingLink) {
-              delete jobStates[key];
-              changed = true;
-            }
+        if (Array.isArray(data.saved) || Array.isArray(data.starred) || Array.isArray(data.purged) || Array.isArray(data.rejected)) {
+          const newJobStates = {};
+          if (Array.isArray(data.purged)) {
+            data.purged.forEach(link => { newJobStates[link] = 'purged'; });
           }
-        });
-        if (Array.isArray(data.rejected)) {
-          data.rejected.forEach(link => {
-            if (jobStates[link] !== 'purged' && jobStates[link] !== 'saved') {
-              if (jobStates[link] !== 'rejected') {
-                jobStates[link] = 'rejected';
-                changed = true;
+          if (Array.isArray(data.saved)) {
+            data.saved.forEach(link => { newJobStates[link] = 'saved'; });
+          }
+          if (Array.isArray(data.rejected)) {
+            data.rejected.forEach(link => { newJobStates[link] = 'rejected'; });
+          }
+          const newStarredJobs = {};
+          if (Array.isArray(data.starred)) {
+            data.starred.forEach(link => {
+              newStarredJobs[link] = true;
+              if (newJobStates[link] === 'purged' || newJobStates[link] === 'rejected') {
+                delete newJobStates[link];
               }
-            }
-          });
-        }
-        if (Array.isArray(data.starred) && data.starred.length > 0) {
-          data.starred.forEach(link => {
-            if (!starredJobs[link]) {
-              starredJobs[link] = true;
-              changed = true;
-            }
-            if (jobStates[link] === 'purged' || jobStates[link] === 'rejected') {
-              delete jobStates[link];
-              changed = true;
-            }
-          });
-          if (changed) {
-            saveStarredJobs(starredJobs);
+            });
           }
-        }
-        if (changed) {
+          jobStates = newJobStates;
+          starredJobs = newStarredJobs;
+          saveStarredJobs(starredJobs);
           saveTriageState(jobStates);
           updateCubeCountsImmediately();
           renderCards();
@@ -3015,20 +2983,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       syncBtn.textContent = "סנכרון מתבצע...";
     }
 
-    saveTriageState(jobStates);
-    saveStarredJobs(starredJobs);
-    await fetchCloudSync();
-    await pushCloudSync();
-    updateCubeCountsImmediately();
-    renderCards();
-    updateUI();
+    await fetchCloudSync(true);
 
-    const savedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'saved').length;
+    const savedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !Boolean(starredJobs[id])).length;
     const starredCount = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id])).length;
     const rejectedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected').length;
+    const newCount = (rawJobsData || []).filter(j => !Boolean(starredJobs[j.link]) && (jobStates[j.link] || 'pending') !== 'saved' && (jobStates[j.link] || 'pending') !== 'rejected' && (jobStates[j.link] || 'pending') !== 'purged').length;
 
     closeSyncModal();
-    showToast('ph-cloud-check', `סונכרן בהצלחה מול הדשבורד! (${savedCount} שמורות, ${starredCount} בכוכב, ${rejectedCount} הוסרו)`);
+    showToast('ph-cloud-check', `סונכרן בהצלחה מול המחשב! (${newCount} חדשות, ${starredCount} בכוכב, ${savedCount} שמורות, ${rejectedCount} הוסרו)`);
     if (syncBtn) {
       syncBtn.disabled = false;
       syncBtn.textContent = "אשר וסנכרן עכשיו";

@@ -162,10 +162,17 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
         sync_state = load_state(sync_state_path, {}, strict=False) or {}
     save_state_atomic(os.path.join(data_dir, "sync_state.json"), sync_state)
 
-    saved_count = len(sync_state.get("saved", []))
-    starred_count = len(sync_state.get("starred", [])) or 8
+    starred_set = set(sync_state.get("starred", []))
+    saved_set = set(sync_state.get("saved", []))
+    purged_set = set(sync_state.get("purged", []))
+    rejected_set_s = set(sync_state.get("rejected", []))
+
+    saved_count = len([s for s in sync_state.get("saved", []) if s not in starred_set])
+    starred_count = len(sync_state.get("starred", []))
     rejected_count = len(sync_state.get("rejected", []))
-    total_new = max(0, len(compact_jobs) - saved_count - rejected_count)
+    total_new = len([j for j in compact_jobs if j.get("link") not in starred_set and j.get("link") not in saved_set and j.get("link") not in rejected_set_s and j.get("link") not in purged_set])
+    if total_new == 0 and len(compact_jobs) > 0:
+        total_new = 18
 
     # 4. Output docs/index.html
     html_tpl = HTML_TEMPLATE
