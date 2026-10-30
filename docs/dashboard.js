@@ -184,10 +184,29 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   let currentSort = 'date_desc';
   const STORAGE_KEY = 'ido_job_triage_store';
   const STARRED_STORAGE_KEY = 'ido_job_starred_store';
+  const ALT_LINKS_STORAGE_KEY = 'ido_job_alt_links_store';
   const VIEW_MODE_KEY = 'ido_job_view_mode';
   const SORT_STORAGE_KEY = 'ido_job_sort_mode';
   let currentViewMode = 'grid';
   let allJobsMap = {};
+  let altLinksStore = loadAltLinksState();
+
+  function loadAltLinksState() {
+    try {
+      const stored = localStorage.getItem(ALT_LINKS_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed && typeof parsed === 'object') return parsed;
+      }
+    } catch (e) {}
+    return {};
+  }
+
+  function saveAltLinksState(state) {
+    try {
+      localStorage.setItem(ALT_LINKS_STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {}
+  }
   try {
     const savedView = localStorage.getItem(VIEW_MODE_KEY);
     if (savedView === 'map') {
@@ -2088,10 +2107,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             </button>
             `}
           </div>
-          <div class="job-actions-bottom-row">
-            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant" onclick="event.stopPropagation()">
+          <div class="job-actions-bottom-row" style="display: flex; gap: 8px; align-items: center;">
+            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant" style="flex: 1;" onclick="event.stopPropagation()">
               <span>הגש מועמדות</span> <i class="ph-duotone ph-arrow-up-right"></i>
             </a>
+            ${Array.isArray(altLinksStore[id]) && altLinksStore[id].length > 0 ? `
+              <a href="${sanitizeUrl(altLinksStore[id][0])}" target="_blank" rel="noopener noreferrer" class="btn-triage" style="padding: 10px 14px; font-size: 13px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" onclick="event.stopPropagation()" title="מקור נוסף להגשת מועמדות (מוזג מכפילות)">
+                <i class="ph-duotone ph-link"></i> <span>מקור נוסף (${altLinksStore[id].length})</span>
+              </a>
+            ` : ''}
           </div>
         </div>
       `;
@@ -2239,10 +2263,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         </button>
         `}
       </div>
-      <div class="job-actions-bottom-row" style="width: 100%; margin-top: 8px;">
-        <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant">
+      <div class="job-actions-bottom-row" style="width: 100%; margin-top: 8px; display: flex; gap: 8px; align-items: center;">
+        <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant" style="flex: 1;">
           <span>הגש מועמדות באתר המשרה</span> <i class="ph-duotone ph-arrow-up-right"></i>
         </a>
+        ${Array.isArray(altLinksStore[id]) && altLinksStore[id].length > 0 ? `
+          <a href="${sanitizeUrl(altLinksStore[id][0])}" target="_blank" rel="noopener noreferrer" class="btn-triage" style="padding: 10px 14px; font-size: 13px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="מקור נוסף להגשת מועמדות (מוזג מכפילות)">
+            <i class="ph-duotone ph-link"></i> <span>מקור נוסף (${altLinksStore[id].length})</span>
+          </a>
+        ` : ''}
       </div>
     `;
 
@@ -3096,193 +3125,302 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function openDuplicatesModal() {
     const content = document.getElementById('duplicatesContent');
+    if (!content) return;
 
-    function normalize(str) {
+    // 1. נרמול טקסט והסרת מילות רעש
+    function cleanText(str) {
       if (!str) return '';
-      return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
+      return str.toLowerCase()
+        .replace(/[^א-תa-z0-9]/g, ' ')
+        .replace(/\b(דרוש|דרושה|דרושים|בכיר|גוניור|junior|senior|remote|hybrid|israel|ישראל|מרכז|צפון|דרום|תל אביב|חיפה|פתח תקווה|משרה מלאה|היברידי)\b/gi, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    // 2. חישוב דמיון (Levenshtein Distance מנורמל ל-0 עד 100%)
+    function getSimilarity(s1, s2) {
+      if (s1 === s2) return 100;
+      if (!s1 || !s2) return 0;
+
+      const l1 = s1.length;
+      const l2 = s2.length;
+      const track = Array(l2 + 1).fill(null).map(() => Array(l1 + 1).fill(null));
+      for (let i = 0; i <= l1; i += 1) track[0][i] = i;
+      for (let j = 0; j <= l2; j += 1) track[j][0] = j;
+
+      for (let j = 1; j <= l2; j += 1) {
+        for (let i = 1; i <= l1; i += 1) {
+          const indicator = s1[i - 1] === s2[j - 1] ? 0 : 1;
+          track[j][i] = Math.min(
+            track[j][i - 1] + 1,
+            track[j - 1][i] + 1,
+            track[j - 1][i - 1] + indicator
+          );
+        }
+      }
+      const dist = track[l2][l1];
+      return Math.round((1 - dist / Math.max(l1, l2)) * 100);
+    }
+
+    // 3. חילוץ מזהה ייחודי מהקישור
+    function extractJobId(link) {
+      if (!link) return null;
+      try {
+        const cleanUrl = link.split('?')[0].split('#')[0];
+        const drushimMatch = cleanUrl.match(/\/job\/(\d+)/i);
+        if (drushimMatch) return 'drushim-' + drushimMatch[1];
+        const comeetMatch = cleanUrl.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\/?$/);
+        if (comeetMatch && cleanUrl.includes('comeet')) return 'comeet-' + comeetMatch[1];
+        const numMatch = cleanUrl.match(/\/(\d{6,12})(?:\/|$)/);
+        if (numMatch) return 'id-' + numMatch[1];
+      } catch (e) {}
+      return null;
     }
 
     const allJobs = getAllAvailableJobs();
-
     const activeJobs = allJobs.filter(job => {
       const state = jobStates[job.link] || 'pending';
       return state === 'saved' || state === 'pending';
     });
 
-    const groups = {};
-    
-    function extractJobId(link) {
-      if (!link) return null;
-      const drushimMatch = link.match(/\/job\/(\d+)\//);
-      if (drushimMatch) return 'drushim-' + drushimMatch[1];
-      const match = link.match(/(\d{9,11})(?:[/?#]|$)/);
-      if (match) return match[1];
-      const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\/?$/);
-      if (comeetMatch && link.includes('comeet')) return comeetMatch[1];
-      return null;
-    }
+    // 4. אשכול משרות לקבוצות חשודות
+    const groups = [];
 
     activeJobs.forEach((job, idx) => {
-      const titleCompKey = normalize(job.company) + '|' + normalize(job.title);
-      let cleanTitle = normalize(job.title).replace(/(israel|remote|hybrid|tel aviv|haifa)$/i, '').trim();
-      const cleanTitleCompKey = normalize(job.company) + '|' + cleanTitle;
+      const jobCleanTitle = cleanText(job.title);
+      const jobCleanCompany = cleanText(job.company);
       const jobId = extractJobId(job.link);
-      
-      let foundKey = null;
-      if (jobId) {
-        foundKey = Object.keys(groups).find(k => k.startsWith('ID: ' + jobId));
-        if (!foundKey) foundKey = 'ID: ' + jobId + ' | ' + titleCompKey;
-      } else {
-        foundKey = Object.keys(groups).find(k => k.includes(cleanTitleCompKey)) || titleCompKey;
+      const jobItem = { ...job, _idx: idx, _cleanTitle: jobCleanTitle, _cleanCompany: jobCleanCompany, _id: jobId };
+
+      let matchedGroup = null;
+
+      for (const group of groups) {
+        const leader = group.leader;
+
+        // בדיקת זהות מזהה קישור
+        if (jobId && leader._id && jobId === leader._id) {
+          matchedGroup = group;
+          matchedGroup.matchReason = 'מזהה משרה זהה בקישור';
+          matchedGroup.matchScore = 100;
+          break;
+        }
+
+        // בדיקת דמיון כותרת וחברה
+        const titleSim = getSimilarity(jobCleanTitle, leader._cleanTitle);
+        const compSim = (jobCleanCompany && leader._cleanCompany)
+          ? getSimilarity(jobCleanCompany, leader._cleanCompany)
+          : 0;
+
+        // תנאי א: חברה זהה/קרובה (מעל 80%) וכותרת דומה (מעל 70%)
+        if (compSim >= 80 && titleSim >= 70) {
+          matchedGroup = group;
+          matchedGroup.matchReason = `חברה זהה + כותרת דומה (${titleSim}%)`;
+          matchedGroup.matchScore = Math.round((titleSim * 0.7) + (compSim * 0.3));
+          break;
+        }
+
+        // תנאי ב: כותרת כמעט זהה לחלוטין (מעל 88%) גם ללא זיהוי חברה
+        if (titleSim >= 88 && jobCleanTitle.length > 7) {
+          matchedGroup = group;
+          matchedGroup.matchReason = `כותרת כמעט זהה (${titleSim}%)`;
+          matchedGroup.matchScore = titleSim;
+          break;
+        }
       }
-      
-      if (!groups[foundKey]) groups[foundKey] = [];
-      groups[foundKey].push({ ...job, _idx: idx });
+
+      if (matchedGroup) {
+        matchedGroup.items.push(jobItem);
+      } else {
+        groups.push({
+          leader: jobItem,
+          items: [jobItem],
+          matchReason: '',
+          matchScore: 0
+        });
+      }
     });
 
-    const dupGroups = Object.entries(groups).filter(([k, g]) => g.length > 1);
+    // סינון רק לקבוצות שבהן נמצאו 2 משרות ומעלה
+    const dupGroups = groups.filter(g => g.items.length > 1);
 
+    // 5. רינדור המודל עם אפשרות בחירה ופעולה בעיצוב כהה תואם
     if (dupGroups.length === 0) {
       content.innerHTML = `
-        <div style="text-align: center; padding: 32px 12px;">
-          <div style="font-size: 40px; margin-bottom: 12px; color: var(--dashboard-lime);"><i class="ph-duotone ph-check-circle"></i></div>
-          <div style="font-weight: 700; color: var(--dashboard-lime); font-size: 16px;">לא נמצאו כפילויות!</div>
-          <div style="color: var(--dashboard-muted); font-size: 13px; margin-top: 6px;">כל ${activeJobs.length} המשרות הפעילות (שמורות וחדשות) ייחודיות לחלוטין.</div>
-        </div>`;
-    } else {
-      const totalDups = dupGroups.reduce((sum, [k, g]) => sum + g.length - 1, 0);
-      let html = `
-        <div style="background: rgba(255, 211, 104, 0.12); border: 1px solid rgba(255, 211, 104, 0.35); border-radius: 16px; padding: 12px 16px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px;">
-            <span style="font-size: 18px; color: var(--dashboard-gold);"><i class="ph-duotone ph-warning"></i></span>
-            <span style="color: var(--dashboard-gold); font-weight: 600;">אותרו <strong>${dupGroups.length}</strong> קבוצות עם <strong>${totalDups}</strong> כפילויות</span>
-          </div>
-        </div>`;
-
-      dupGroups.forEach(([key, group], gi) => {
-        const rep = group[0];
-        const safeComp = escapeHtml(rep.company || '—');
-        const safeTitle = escapeHtml(rep.title || '—');
-        const encKey = encodeURIComponent(key);
-        html += `
-          <div style="background: rgba(0, 0, 0, 0.28); border: 1px solid var(--dashboard-edge); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; gap: 10px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
-              <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px;">
-                <span class="dashboard-chip" style="font-size: 11px; padding: 2px 8px;">#${gi + 1}</span>
-                <span style="color: #fff;">${safeComp} — ${safeTitle}</span>
-                <span class="dashboard-chip" style="color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4); font-size: 11px; padding: 2px 8px;">${group.length} מופעים</span>
-              </div>
-              <button onclick="purgeDuplicateGroup('${encKey}')" class="tool-btn" style="min-height: 36px; padding: 6px 14px; font-size: 12px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="שמור מופע אחד ומחק את שאר הכפילויות">
-                <i class="ph-duotone ph-lightning"></i> השאר אחת
-              </button>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 8px;">`;
-
-        group.forEach((job, ji) => {
-          const score = job.match_score || '—';
-          const date = escapeHtml(job.date || '—');
-          const link = job.link || '#';
-          const safeLink = sanitizeUrl(link);
-          const encLink = encodeURIComponent(link);
-          const state = jobStates[job.link] || 'pending';
-          const isSaved = state === 'saved';
-          const statusBadge = isSaved
-            ? `<span class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); font-size: 11px; padding: 2px 8px;"><i class="ph-duotone ph-bookmark-simple"></i> שמורה</span>`
-            : `<span class="dashboard-chip" style="color: var(--dashboard-lime); border-color: rgba(220, 255, 114, 0.4); font-size: 11px; padding: 2px 8px;"><i class="ph-duotone ph-sparkle"></i> חדשה</span>`;
-
-          html += `
-            <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 10px 14px; gap: 10px;">
-              <div style="display: flex; align-items: center; gap: 8px; font-size: 13px;">
-                <span style="font-size: 11px; color: var(--dashboard-muted);">#${ji + 1}</span>
-                ${statusBadge}
-                <span style="font-weight: 700; color: var(--dashboard-lime);">${score}%</span>
-                <span style="color: var(--dashboard-muted); font-size: 12px;">${date}</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <a href="${safeLink}" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); font-weight: 600; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 4px;">
-                  פתח <i class="ph-duotone ph-arrow-up-right"></i>
-                </a>
-                <button onclick="purgeSingleJob('${encLink}')" class="btn-triage" style="min-height: 32px; padding: 4px 10px; font-size: 14px; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border-color: rgba(239, 68, 68, 0.4);" title="מחק כפילות זו">
-                  <i class="ph-duotone ph-trash"></i>
-                </button>
-              </div>
-            </div>`;
-        });
-        html += `</div></div>`;
-      });
-
-      content.innerHTML = html;
+        <div style="padding: 32px 16px; text-align: center; color: var(--dashboard-muted); font-size: 15px;">
+          <div style="font-size: 38px; color: var(--dashboard-lime); margin-bottom: 10px;"><i class="ph-duotone ph-check-circle"></i></div>
+          <div style="color: #fff; font-weight: 700; font-size: 16px; margin-bottom: 4px;">לא אותרו כפילויות!</div>
+          <div>כל ${activeJobs.length} המשרות הפעילות (שמורות וחדשות) ייחודיות לחלוטין.</div>
+        </div>
+      `;
+      document.getElementById('duplicatesModal').classList.remove('hidden');
+      return;
     }
 
+    const totalDups = dupGroups.reduce((sum, g) => sum + g.items.length - 1, 0);
+
+    let html = `
+      <div style="display: flex; flex-direction: column; gap: 14px; direction: rtl; text-align: right;">
+        <div style="padding: 10px 14px; background: rgba(255, 211, 104, 0.12); border: 1px solid rgba(255, 211, 104, 0.35); border-radius: 12px; font-size: 13px; color: var(--dashboard-gold); display: flex; align-items: center; gap: 8px;">
+          <i class="ph-duotone ph-warning" style="font-size: 18px;"></i>
+          <span>אותרו <strong>${dupGroups.length}</strong> קבוצות חשודות עם <strong>${totalDups}</strong> כפילויות. באפשרותך לאחד מקורות, להסיר כפילויות או להתעלם.</span>
+        </div>
+    `;
+
+    dupGroups.forEach((group, gIdx) => {
+      const primary = group.items[0];
+      const duplicates = group.items.slice(1);
+      const safeComp = escapeHtml(primary.company || '—');
+      const safeTitle = escapeHtml(primary.title || '—');
+
+      html += `
+        <div id="dup-card-${gIdx}" style="border: 1px solid var(--dashboard-edge); border-radius: 14px; padding: 14px; background: rgba(22, 27, 34, 0.85); box-shadow: 0 4px 14px rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px; gap: 8px; flex-wrap: wrap;">
+            <span class="dashboard-chip" style="font-size: 12px; color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.4); padding: 3px 10px; font-weight: 700;">
+              <i class="ph-duotone ph-sparkle"></i> ${group.matchReason} (${group.matchScore}%)
+            </span>
+            <div style="display: flex; gap: 8px;">
+              <button onclick="handleMergeDuplicates(${gIdx})" class="btn-triage" style="background: rgba(14, 165, 233, 0.22); color: #38bdf8; border-color: rgba(14, 165, 233, 0.45); padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer;" title="שמור ראשית ומזג קישורים">
+                <i class="ph-duotone ph-link"></i> <span>אחד (שמור ומזג קישורים)</span>
+              </button>
+              <button onclick="handleRemoveDuplicates(${gIdx})" class="btn-triage action-reject-btn" style="background: rgba(239, 68, 68, 0.22); color: #fca5a5; border-color: rgba(239, 68, 68, 0.45); padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer;" title="הסר כפולות">
+                <i class="ph-duotone ph-trash-simple"></i> <span>הסר כפולות</span>
+              </button>
+              <button onclick="handleIgnoreGroup(${gIdx})" class="btn-triage" style="padding: 5px 10px; font-size: 12px; color: var(--dashboard-muted); border-color: rgba(255, 255, 255, 0.15); cursor: pointer;">
+                <span>התעלם</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- משרה עיקרית -->
+          <div style="padding: 10px 12px; background: rgba(14, 165, 233, 0.08); border-radius: 8px; border-right: 3px solid var(--dashboard-cyan);">
+            <div style="font-size: 11px; color: var(--dashboard-cyan); font-weight: 700; margin-bottom: 2px;">משרה מקורית מובילה:</div>
+            <div style="font-weight: 700; font-size: 14px; color: #fff;">${safeTitle}</div>
+            <div style="font-size: 12px; color: var(--dashboard-muted); margin-top: 4px; display: flex; align-items: center; gap: 8px;">
+              <span>${safeComp}</span>
+              <span>|</span>
+              <a href="${sanitizeUrl(primary.link)}" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 4px;">
+                פתח קישור <i class="ph-duotone ph-arrow-up-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- משרות כפולות -->
+          <div style="padding-right: 6px;">
+            <div style="font-size: 11px; color: #fca5a5; font-weight: 700; margin-bottom: 6px;">כפילויות שנמצאו (${duplicates.length}):</div>
+            ${duplicates.map(dup => `
+              <div style="padding: 8px 10px; border-top: 1px dashed rgba(255, 255, 255, 0.08); font-size: 13px; color: #cbd5e1; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                <div>
+                  <span style="font-weight: 600; color: #fff;">${escapeHtml(dup.title || 'ללא כותרת')}</span>
+                  <span style="color: var(--dashboard-muted);"> - ${escapeHtml(dup.company || 'ללא חברה')}</span>
+                </div>
+                <a href="${sanitizeUrl(dup.link)}" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; display: inline-flex; align-items: center; gap: 3px;">
+                  פתח <i class="ph-duotone ph-arrow-up-right"></i>
+                </a>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+    content.innerHTML = html;
+
+    // שמירת הקבוצות בזיכרון הגלובלי לצורך פעולות הכפתורים
+    window.__activeDuplicateGroups = dupGroups;
     document.getElementById('duplicatesModal').classList.remove('hidden');
   }
 
-  function purgeSingleJob(encLink) {
-    const link = decodeURIComponent(encLink);
-    if (!link) return;
-    jobStates[link] = 'purged';
+  // 1. פעולת איחוד: שומרת את הראשית, מעתיקה אליה הערות/קישורים של הכפולות ומנטרלת את הכפילויות
+  function handleMergeDuplicates(groupIndex) {
+    if (!window.__activeDuplicateGroups) return;
+    const group = window.__activeDuplicateGroups[groupIndex];
+    if (!group) return;
+
+    const primary = group.items[0];
+    const duplicates = group.items.slice(1);
+
+    if (!Array.isArray(altLinksStore[primary.link])) {
+      altLinksStore[primary.link] = [];
+    }
+
+    duplicates.forEach(dup => {
+      if (dup.link && !altLinksStore[primary.link].includes(dup.link)) {
+        altLinksStore[primary.link].push(dup.link);
+      }
+      jobStates[dup.link] = 'purged';
+    });
+
+    saveAltLinksState(altLinksStore);
     saveTriageState(jobStates);
+    updateCubeCountsImmediately();
+    renderCards();
     updateUI();
-    pushCloudSync();
-    showToast('ph-trash', 'הכפילות נמחקה בהצלחה');
-    openDuplicatesModal();
+    scheduleCloudPush();
+
+    const card = document.getElementById(`dup-card-${groupIndex}`);
+    if (card) {
+      card.style.background = 'rgba(34, 197, 94, 0.15)';
+      card.style.borderColor = 'rgba(34, 197, 94, 0.4)';
+      card.innerHTML = `<div style="color: var(--dashboard-lime); font-size: 13px; font-weight: 600; padding: 8px 12px;"><i class="ph-duotone ph-check-circle"></i> המשרות מוזגו בהצלחה למשרה הראשית! הקישורים הנוספים נשמרו.</div>`;
+      setTimeout(() => {
+        card.remove();
+        checkRemainingDuplicateCards();
+      }, 1200);
+    }
   }
 
-  function purgeDuplicateGroup(encKey) {
-    const targetKey = decodeURIComponent(encKey);
-    function normalize(str) {
-      if (!str) return '';
-      return str.toLowerCase().replace(/[^א-תa-z0-9]/g, ' ').replace(/  +/g, ' ').trim();
-    }
+  // 2. פעולת הסרה: העברת כל המשרות הכפולות (חוץ מהראשונה) לסטטוס 'purged' (מנוטרל לצמיתות)
+  function handleRemoveDuplicates(groupIndex) {
+    if (!window.__activeDuplicateGroups) return;
+    const group = window.__activeDuplicateGroups[groupIndex];
+    if (!group) return;
 
-    const allJobs = getAllAvailableJobs();
-
-    function extractJobId(link) {
-      if (!link) return null;
-      const drushimMatch = link.match(/\/job\/(\d+)\//);
-      if (drushimMatch) return 'drushim-' + drushimMatch[1];
-      const match = link.match(/(\d{9,11})(?:[/?#]|$)/);
-      if (match) return match[1];
-      const comeetMatch = link.match(/([a-zA-Z0-9]+-[a-zA-Z0-9]+)\/?$/);
-      if (comeetMatch && link.includes('comeet')) return comeetMatch[1];
-      return null;
-    }
-    
-    const activeJobs = allJobs.filter(job => {
-      const state = jobStates[job.link] || 'pending';
-      if (state !== 'saved' && state !== 'pending') return false;
-      
-      const titleCompKey = normalize(job.company) + '|' + normalize(job.title);
-      let cleanTitle = normalize(job.title).replace(/(israel|remote|hybrid|tel aviv|haifa)$/i, '').trim();
-      const cleanTitleCompKey = normalize(job.company) + '|' + cleanTitle;
-      const jobId = extractJobId(job.link);
-      
-      if (targetKey.startsWith('ID: ') && jobId) {
-        return targetKey.includes(jobId);
-      } else {
-        return titleCompKey === targetKey || cleanTitleCompKey === targetKey || targetKey.includes(cleanTitleCompKey);
-      }
-    });
-
-    if (activeJobs.length <= 1) return;
-
-    activeJobs.sort((a, b) => {
-      const aSaved = jobStates[a.link] === 'saved' ? 1 : 0;
-      const bSaved = jobStates[b.link] === 'saved' ? 1 : 0;
-      if (aSaved !== bSaved) return bSaved - aSaved;
-      return (Number(b.match_score) || 0) - (Number(a.match_score) || 0);
-    });
-
-    const toPurge = activeJobs.slice(1);
-    toPurge.forEach(j => {
-      jobStates[j.link] = 'purged';
+    const duplicates = group.items.slice(1);
+    duplicates.forEach(dup => {
+      jobStates[dup.link] = 'purged';
     });
 
     saveTriageState(jobStates);
+    updateCubeCountsImmediately();
+    renderCards();
     updateUI();
-    pushCloudSync();
-    showToast('ph-lightning', `הושארה משרה אחת ונמחקו ${toPurge.length} כפילויות`);
-    openDuplicatesModal();
+    scheduleCloudPush();
+
+    const card = document.getElementById(`dup-card-${groupIndex}`);
+    if (card) {
+      card.style.background = 'rgba(239, 68, 68, 0.15)';
+      card.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+      card.innerHTML = `<div style="color: #fca5a5; font-size: 13px; font-weight: 600; padding: 8px 12px;"><i class="ph-duotone ph-trash-simple"></i> ${duplicates.length} כפילויות הוסרו מלוח המשרות.</div>`;
+      setTimeout(() => {
+        card.remove();
+        checkRemainingDuplicateCards();
+      }, 1200);
+    }
+  }
+
+  // 3. התעלמות: הסרת הכרטיס מהחלון בלי לשנות את סטטוס המשרות
+  function handleIgnoreGroup(groupIndex) {
+    const card = document.getElementById(`dup-card-${groupIndex}`);
+    if (card) {
+      card.remove();
+      checkRemainingDuplicateCards();
+    }
+  }
+
+  function checkRemainingDuplicateCards() {
+    const content = document.getElementById('duplicatesContent');
+    if (!content) return;
+    const remaining = content.querySelectorAll('[id^="dup-card-"]');
+    if (remaining.length === 0) {
+      content.innerHTML = `
+        <div style="padding: 32px 16px; text-align: center; color: var(--dashboard-muted); font-size: 15px;">
+          <div style="font-size: 38px; color: var(--dashboard-lime); margin-bottom: 10px;"><i class="ph-duotone ph-check-circle"></i></div>
+          <div style="color: #fff; font-weight: 700; font-size: 16px; margin-bottom: 4px;">כל הכפילויות טופלו בהצלחה!</div>
+          <div>לוח המשרות נקי ומסונכרן.</div>
+        </div>
+      `;
+    }
   }
 
   function closeDuplicatesModal() {
@@ -6313,6 +6451,11 @@ Open for operations management and engineering roles in Israeli energy and clean
   window.purgeJobPermanently = purgeJobPermanently;
   window.restoreJob = restoreJob;
   window.clearAllRejected = clearAllRejected;
+  window.openDuplicatesModal = openDuplicatesModal;
+  window.closeDuplicatesModal = closeDuplicatesModal;
+  window.handleMergeDuplicates = handleMergeDuplicates;
+  window.handleRemoveDuplicates = handleRemoveDuplicates;
+  window.handleIgnoreGroup = handleIgnoreGroup;
 
 
   window.onload = () => {
