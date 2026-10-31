@@ -238,6 +238,10 @@
               <i class="ph-duotone ph-copy"></i>
               <span>כפילויות</span>
             </button>
+            <button type="button" onclick="openInactiveJobsModal()" class="tool-btn-compact" title="סרוק משרות לא פעילות שנסגרו" aria-label="סריקת משרות לא פעילות">
+              <i class="ph-duotone ph-link-break"></i>
+              <span>משרות שנסגרו</span>
+            </button>
           </div>
 
           <details class="advanced-job-filters">
@@ -1841,6 +1845,29 @@
             <small style="color: var(--dashboard-muted);">זיהוי משרות זהות או דומות לפי כותרת, מזהה וחברה</small>
           </div>
         </div>
+
+  <!-- Inactive Jobs Modal -->
+  <div id="inactiveJobsModal" class="dashboard-modal-backdrop hidden" onclick="if(event.target===this)closeInactiveJobsModal()">
+    <div class="dashboard-card dashboard-modal-box" style="max-width: 680px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="stat-icon-squircle" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">
+            <i class="ph-duotone ph-link-break"></i>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 18px; font-weight: 600;">סריקת משרות לא פעילות</h3>
+            <small style="color: var(--dashboard-muted);">זיהוי משרות שנסגרו, הוסרו או שהגשת קורות החיים אליהן הסתיימה</small>
+          </div>
+        </div>
+        <button onclick="closeInactiveJobsModal()" class="tool-btn" style="min-height: 36px; padding: 6px 12px; font-size: 16px; cursor: pointer; border-radius: 999px;" aria-label="סגור"><i class="ph-bold ph-x"></i></button>
+      </div>
+
+      <div id="inactiveJobsContent" style="max-height: 55vh; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 14px;">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
         <button onclick="closeDuplicatesModal()" class="tool-btn" style="min-height: 36px; padding: 6px 12px; font-size: 16px; cursor: pointer; border-radius: 999px;" aria-label="סגור"><i class="ph-bold ph-x"></i></button>
       </div>
 

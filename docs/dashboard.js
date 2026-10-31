@@ -234,11 +234,55 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   let jobStates = loadTriageState();
   let starredJobs = loadStarredJobs();
 
+  function getCanonicalJobKey(link) {
+    if (!link) return '';
+    try {
+      let clean = String(link).trim().split('?')[0].split('#')[0].replace(/\/+$/, '');
+      clean = clean.replace(/^(https?:\/\/)[a-z]{2,3}\.linkedin\.com\//, '$1www.linkedin.com/');
+      const liMatch = clean.match(/\/jobs\/view\/.*?-?(\d{8,12})$/) || clean.match(/\/jobs\/view\/(\d{8,12})$/);
+      if (liMatch) return 'li_' + liMatch[1];
+      const drushimMatch = clean.match(/\/job\/(\d+)/i);
+      if (drushimMatch) return 'drushim_' + drushimMatch[1];
+      const comeetMatch = clean.match(/comeet\.com\/jobs\/[^\/]+\/[^\/]+\/([^\/]+)/i);
+      if (comeetMatch) return 'comeet_' + comeetMatch[1];
+      return clean.toLowerCase();
+    } catch (e) {
+      return String(link).trim();
+    }
+  }
+
+  function getJobState(id) {
+    if (!id) return 'pending';
+    if (typeof jobStates === 'object' && jobStates !== null && jobStates[id]) return jobStates[id];
+    const canon = getCanonicalJobKey(id);
+    if (!canon || typeof jobStates !== 'object' || jobStates === null) return 'pending';
+    for (const [key, state] of Object.entries(jobStates)) {
+      if (getCanonicalJobKey(key) === canon) {
+        return state;
+      }
+    }
+    return 'pending';
+  }
+
+  function isJobStarred(id) {
+    if (!id || typeof starredJobs !== 'object' || starredJobs === null) return false;
+    if (starredJobs[id]) return true;
+    const canon = getCanonicalJobKey(id);
+    if (!canon) return false;
+    for (const [key, isStar] of Object.entries(starredJobs)) {
+      if (isStar && getCanonicalJobKey(key) === canon) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   function loadStarredJobs() {
     let stars = {};
+    let stored = null;
     try {
-      const stored = localStorage.getItem(STARRED_STORAGE_KEY);
-      if (stored) {
+      stored = localStorage.getItem(STARRED_STORAGE_KEY);
+      if (stored !== null) {
         stars = JSON.parse(stored);
       }
     } catch(e) {
@@ -249,8 +293,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       stars = {};
     }
 
-    // Default restore 7 verified starred jobs if empty
-    if (Object.keys(stars).length === 0 && Array.isArray(DEFAULT_STARRED_JOBS)) {
+    // Default restore verified starred jobs only on very first clean initialization
+    if (stored === null && Array.isArray(DEFAULT_STARRED_JOBS)) {
       DEFAULT_STARRED_JOBS.forEach(link => {
         stars[link] = true;
       });
@@ -259,10 +303,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       } catch(e) {}
     }
 
+    // Authoritative state reconciliation: rejection or purge supersedes starred
     if (typeof jobStates === 'object' && jobStates !== null) {
       Object.keys(stars).forEach(link => {
         if (stars[link] && (jobStates[link] === 'purged' || jobStates[link] === 'rejected')) {
-          delete jobStates[link];
+          delete stars[link];
         }
       });
     }
@@ -281,11 +326,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (typeof jobStates === 'object' && jobStates !== null && typeof starredJobs === 'object' && starredJobs !== null) {
         Object.keys(starredJobs).forEach(link => {
           if (starredJobs[link] && (jobStates[link] === 'purged' || jobStates[link] === 'rejected')) {
-            delete jobStates[link];
+            delete starredJobs[link];
           }
         });
       }
-      const savedCount = Object.keys(jobStates).filter(link => jobStates[link] === 'saved' && !Boolean(starredJobs[link])).length;
+      const savedCount = Object.keys(jobStates).filter(link => jobStates[link] === 'saved' && !isJobStarred(link)).length;
       const starredCount = Object.keys(starredJobs).filter(link => Boolean(starredJobs[link]) && (jobStates[link] || 'pending') !== 'rejected' && (jobStates[link] || 'pending') !== 'purged').length;
       const rejectedCount = Object.keys(jobStates).filter(link => jobStates[link] === 'rejected').length;
 
@@ -538,21 +583,30 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           if (Array.isArray(data.rejected)) {
             data.rejected.forEach(link => { newJobStates[link] = 'rejected'; });
           }
-          // Preserve any locally purged jobs so permanently deleted jobs NEVER resurrect
+          // Preserve local states (saved, rejected, purged) so user decisions are NEVER wiped on mirror sync
           Object.keys(jobStates).forEach(link => {
-            if (jobStates[link] === 'purged') {
-              newJobStates[link] = 'purged';
+            if (jobStates[link] === 'purged' || jobStates[link] === 'rejected' || jobStates[link] === 'saved') {
+              newJobStates[link] = jobStates[link];
             }
           });
           const newStarredJobs = {};
           if (Array.isArray(data.starred)) {
             data.starred.forEach(link => {
               newStarredJobs[link] = true;
-              if (newJobStates[link] === 'purged' || newJobStates[link] === 'rejected') {
-                delete newJobStates[link];
-              }
             });
           }
+          // Preserve local starred jobs
+          Object.keys(starredJobs).forEach(link => {
+            if (starredJobs[link]) {
+              newStarredJobs[link] = true;
+            }
+          });
+          // Clean up conflicting starred states (rejection/purged trumps starred)
+          Object.keys(newStarredJobs).forEach(link => {
+            if (newJobStates[link] === 'purged' || newJobStates[link] === 'rejected') {
+              delete newStarredJobs[link];
+            }
+          });
           jobStates = newJobStates;
           starredJobs = newStarredJobs;
           saveStarredJobs(starredJobs);
@@ -2361,8 +2415,17 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       evt.stopPropagation();
       evt.preventDefault();
     }
-    const current = jobStates[id];
+    const current = getJobState(id);
+    const canon = getCanonicalJobKey(id);
+
     if (action === 'rejected') {
+      if (starredJobs[id] || isJobStarred(id)) {
+        delete starredJobs[id];
+        for (const k of Object.keys(starredJobs)) {
+          if (getCanonicalJobKey(k) === canon) delete starredJobs[k];
+        }
+        saveStarredJobs(starredJobs);
+      }
       if (current === 'rejected') {
         jobStates[id] = 'purged';
         showToast('ph-trash', 'המשרה נמחקה לצמיתות ולא תוצג שוב');
@@ -2373,6 +2436,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     } else if (action === 'saved') {
       if (current === 'saved') {
         delete jobStates[id];
+        for (const k of Object.keys(jobStates)) {
+          if (getCanonicalJobKey(k) === canon) delete jobStates[k];
+        }
         showToast('ph-arrow-counter-clockwise', 'המשרה הוסרה מהשמורות והוחזרה לחדשות');
       } else {
         jobStates[id] = 'saved';
@@ -2391,6 +2457,14 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       evt.stopPropagation();
       evt.preventDefault();
     }
+    const canon = getCanonicalJobKey(id);
+    if (starredJobs[id] || isJobStarred(id)) {
+      delete starredJobs[id];
+      for (const k of Object.keys(starredJobs)) {
+        if (getCanonicalJobKey(k) === canon) delete starredJobs[k];
+      }
+      saveStarredJobs(starredJobs);
+    }
     jobStates[id] = 'purged';
     saveTriageState(jobStates);
     updateCubeCountsImmediately();
@@ -2405,7 +2479,18 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       evt.stopPropagation();
       evt.preventDefault();
     }
+    const canon = getCanonicalJobKey(id);
+    if (starredJobs[id] || isJobStarred(id)) {
+      delete starredJobs[id];
+      for (const k of Object.keys(starredJobs)) {
+        if (getCanonicalJobKey(k) === canon) delete starredJobs[k];
+      }
+      saveStarredJobs(starredJobs);
+    }
     delete jobStates[id];
+    for (const k of Object.keys(jobStates)) {
+      if (getCanonicalJobKey(k) === canon) delete jobStates[k];
+    }
     saveTriageState(jobStates);
     updateCubeCountsImmediately();
     renderCards();
@@ -2607,7 +2692,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         }
       }
 
-      const isStarred = Boolean(starredJobs[id]);
+      const isStarred = isJobStarred(id);
       const isCurrentBatchJob = rawJobLinks.has(id);
 
       let matchesTab = false;
@@ -3096,6 +3181,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         closeAboutModal();
         closeSyncModal();
         closeDuplicatesModal();
+        closeInactiveJobsModal();
         if (typeof closeJobModal === 'function') closeJobModal();
       }
     });
@@ -3432,6 +3518,189 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   function closeDuplicatesModal() {
     document.getElementById('duplicatesModal').classList.add('hidden');
   }
+
+  let cachedInactiveJobsReport = null;
+
+  async function openInactiveJobsModal() {
+    const modal = document.getElementById('inactiveJobsModal');
+    const content = document.getElementById('inactiveJobsContent');
+    if (!modal || !content) return;
+
+    modal.classList.remove('hidden');
+
+    content.innerHTML = `
+      <div style="padding: 24px; text-align: center; color: var(--dashboard-muted); font-size: 14px;">
+        <i class="ph-duotone ph-spinner-gap ph-spin" style="font-size: 24px; display: block; margin-bottom: 8px;"></i>
+        בודק משרות שנסגרו או הוסרו...
+      </div>
+    `;
+
+    try {
+      if (!cachedInactiveJobsReport) {
+        const resp = await fetch('data/inactive_jobs.json?t=' + Date.now(), { cache: 'no-store' });
+        if (resp && resp.ok) {
+          cachedInactiveJobsReport = await resp.json();
+        }
+      }
+    } catch(e) {}
+
+    renderInactiveJobsModalContent();
+  }
+
+  function closeInactiveJobsModal() {
+    const modal = document.getElementById('inactiveJobsModal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function renderInactiveJobsModalContent() {
+    const content = document.getElementById('inactiveJobsContent');
+    if (!content) return;
+
+    const allJobs = getAllAvailableJobs();
+    const activeJobsMap = new Map();
+    allJobs.forEach(j => {
+      const state = getJobState(j.link);
+      if (state !== 'rejected' && state !== 'purged') {
+        activeJobsMap.set(getCanonicalJobKey(j.link), j);
+      }
+    });
+
+    const inactiveList = [];
+    const seenLinks = new Set();
+
+    // Check report items from inactive_jobs.json
+    if (cachedInactiveJobsReport && Array.isArray(cachedInactiveJobsReport.inactive_jobs)) {
+      cachedInactiveJobsReport.inactive_jobs.forEach(item => {
+        const canon = getCanonicalJobKey(item.link);
+        if (activeJobsMap.has(canon) && !seenLinks.has(canon)) {
+          const matchedJob = activeJobsMap.get(canon);
+          inactiveList.push({
+            link: matchedJob.link,
+            title: matchedJob.title || item.title || 'משרה ללא כותרת',
+            company: matchedJob.company || item.company || 'חברה לא צוינה',
+            reason: item.reason || 'המשרה נסגרה לקבלת מועמדויות',
+            status_code: item.status_code || 0
+          });
+          seenLinks.add(canon);
+        }
+      });
+    }
+
+    // Also check jobs in data that have explicit inactive flags
+    allJobs.forEach(j => {
+      const canon = getCanonicalJobKey(j.link);
+      const state = getJobState(j.link);
+      if (state !== 'rejected' && state !== 'purged' && !seenLinks.has(canon)) {
+        if (j.is_active === false || j.is_expired === true || j.is_closed === true) {
+          inactiveList.push({
+            link: j.link,
+            title: j.title || 'משרה ללא כותרת',
+            company: j.company || 'חברה לא צוינה',
+            reason: j.closure_reason || 'המשרה אינה פעילה באתר',
+            status_code: 0
+          });
+          seenLinks.add(canon);
+        }
+      }
+    });
+
+    if (inactiveList.length === 0) {
+      content.innerHTML = `
+        <div style="padding: 32px 16px; text-align: center; color: var(--dashboard-muted); font-size: 14.5px;">
+          <div style="font-size: 28px; margin-bottom: 8px; color: var(--dashboard-lime);"><i class="ph-duotone ph-check-circle"></i></div>
+          <div style="font-weight: 600; color: #fff; margin-bottom: 4px;">כל המשרות הפעילות זמינות להגשה!</div>
+          <div>לא אותרו משרות שנסגרו או הוסרו במאגר הפעיל.</div>
+        </div>
+      `;
+      return;
+    }
+
+    let html = `
+      <div style="display: flex; flex-direction: column; gap: 14px; direction: rtl; text-align: right;">
+        <div style="padding: 10px 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 8px; font-size: 13px; color: #fca5a5; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div>
+            אותרו <strong>${inactiveList.length}</strong> משרות שאינן פעילות עוד או שהגשת המועמדות אליהן נסגרה.
+          </div>
+          <button type="button" onclick="handleRemoveAllInactiveJobs()" class="btn-triage" style="background: rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.6); color: #fff; font-size: 12px; padding: 5px 12px; cursor: pointer; border-radius: 6px;">
+            <i class="ph-duotone ph-trash"></i> <span>הסר את כולן ללשונית הוסרו</span>
+          </button>
+        </div>
+    `;
+
+    inactiveList.forEach((job, idx) => {
+      const safeLink = sanitizeUrl(job.link);
+      const safeTitle = escapeHtml(job.title);
+      const safeCompany = escapeHtml(job.company);
+      const safeReason = escapeHtml(job.reason);
+
+      html += `
+        <div id="inactive-card-${idx}" style="border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 12px 14px; background: rgba(255, 255, 255, 0.03); display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+          <div style="flex: 1; min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="font-size: 11px; background: rgba(239, 68, 68, 0.2); color: #fca5a5; padding: 2px 8px; border-radius: 4px; font-weight: 600;">
+                ${safeReason}
+              </span>
+            </div>
+            <div style="font-weight: 600; font-size: 14px; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+              ${safeTitle}
+            </div>
+            <div style="font-size: 12px; color: var(--dashboard-muted);">
+              ${safeCompany} | <a href="${safeLink}" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); text-decoration: none;">בדיקת קישור ↗</a>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; flex-shrink: 0;">
+            <button type="button" onclick="handleRemoveInactiveJob(${escapeHtml(JSON.stringify(job.link))}, ${idx})" class="btn-triage" style="background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; font-size: 12px; padding: 5px 10px; cursor: pointer; border-radius: 6px;">
+              <i class="ph-duotone ph-trash"></i> <span>הסר משרה</span>
+            </button>
+          </div>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+    content.innerHTML = html;
+  }
+
+  function handleRemoveInactiveJob(link, cardIdx) {
+    toggleAction(link, 'rejected');
+    const card = document.getElementById('inactive-card-' + cardIdx);
+    if (card) {
+      card.style.opacity = '0.4';
+      card.style.pointerEvents = 'none';
+      card.innerHTML = `
+        <div style="color: var(--dashboard-muted); font-size: 13px; padding: 6px 0;">
+          <i class="ph-bold ph-check"></i> המשרה הועברה למשרות שהוסרו
+        </div>
+      `;
+    }
+  }
+
+  function handleRemoveAllInactiveJobs() {
+    const allJobs = getAllAvailableJobs();
+    const activeJobsMap = new Map();
+    allJobs.forEach(j => {
+      const state = getJobState(j.link);
+      if (state !== 'rejected' && state !== 'purged') {
+        activeJobsMap.set(getCanonicalJobKey(j.link), j);
+      }
+    });
+
+    let removedCount = 0;
+    if (cachedInactiveJobsReport && Array.isArray(cachedInactiveJobsReport.inactive_jobs)) {
+      cachedInactiveJobsReport.inactive_jobs.forEach(item => {
+        const canon = getCanonicalJobKey(item.link);
+        if (activeJobsMap.has(canon)) {
+          const matchedJob = activeJobsMap.get(canon);
+          toggleAction(matchedJob.link, 'rejected');
+          removedCount++;
+        }
+      });
+    }
+
+    renderInactiveJobsModalContent();
+    showToast('ph-trash', `הוסרו ${removedCount} משרות לא פעילות`);
+  }
+
 
   function clearAllRejected() {
     const rejectedKeys = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected');
@@ -6459,6 +6728,10 @@ Open for operations management and engineering roles in Israeli energy and clean
   window.clearAllRejected = clearAllRejected;
   window.openDuplicatesModal = openDuplicatesModal;
   window.closeDuplicatesModal = closeDuplicatesModal;
+  window.openInactiveJobsModal = openInactiveJobsModal;
+  window.closeInactiveJobsModal = closeInactiveJobsModal;
+  window.handleRemoveInactiveJob = handleRemoveInactiveJob;
+  window.handleRemoveAllInactiveJobs = handleRemoveAllInactiveJobs;
   window.handleMergeDuplicates = handleMergeDuplicates;
   window.handleRemoveDuplicates = handleRemoveDuplicates;
   window.handleIgnoreGroup = handleIgnoreGroup;
