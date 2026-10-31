@@ -28,6 +28,18 @@ USER_AGENT = (
 )
 
 INACTIVE_SIGNATURES = [
+    # English indicators - LinkedIn & International
+    (r"not currently accepting applications", "הגשת המועמדות נסגרה (Not currently accepting applications)"),
+    (r"no longer accepting applications", "הגשת המועמדות נסגרה (No longer accepting applications)"),
+    (r"(?:not|no longer|not currently)\s+accepting\s+applications", "הגשת המועמדות נסגרה"),
+    (r"this job is no longer available", "המשרה אינה זמינה עוד"),
+    (r"this position is closed", "המשרה נסגרה"),
+    (r"position is no longer open", "המשרה אינה פתוחה עוד"),
+    (r"job posting has expired", "תוקף פרסום המשרה פג"),
+    (r"applications are no longer being accepted", "הגשת המועמדות נסגרה"),
+    (r"closed-job__flavor", "משרה סגורה בלינקדאין"),
+    (r"topcard__flavor--closed", "משרה סגורה בלינקדאין"),
+    (r"page not found", "דף המשרה לא נמצא"),
     # Hebrew indicators
     (r"המשרה (?:אינה|איננה) פעילה", "המשרה אינה פעילה באתר"),
     (r"המשרה נסגרה", "המשרה נסגרה לקבלת מועמדויות"),
@@ -35,13 +47,7 @@ INACTIVE_SIGNATURES = [
     (r"לא אותרה משרה", "לא אותרה משרה פעילה"),
     (r"מודעה זו אינה רלוונטית", "המודעה אינה רלוונטית עוד"),
     (r"הגשת מועמדות למשרה זו הסתיימה", "הגשת מועמדות הסתיימה"),
-    # English indicators
-    (r"no longer accepting applications", "הגשת המועמדות נסגרה"),
-    (r"this job is no longer available", "המשרה אינה זמינה עוד"),
-    (r"this position is closed", "המשרה נסגרה"),
-    (r"position is no longer open", "המשרה אינה פתוחה עוד"),
-    (r"job posting has expired", "תוקף פרסום המשרה פג"),
-    (r"page not found", "דף המשרה לא נמצא"),
+    (r"(?:אינה|איננה|לא) מקבלת מועמדויות", "הגשת המועמדות נסגרה"),
 ]
 
 

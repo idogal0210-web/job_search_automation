@@ -1,6 +1,103 @@
 {
-  "scanned_at": "2026-10-31T00:40:00Z",
-  "total_scanned": 98,
-  "inactive_count": 0,
-  "inactive_jobs": []
+  "scanned_at": "2026-10-31T00:58:15.788401Z",
+  "total_scanned": 101,
+  "inactive_count": 12,
+  "inactive_jobs": [
+    {
+      "link": "https://il.linkedin.com/jobs/view/capacity-installation-technician-data-center-infrastructure-delivery-at-amazon-web-services-aws-4484490129",
+      "title": "Capacity Installation Technician, Data Center, Infrastructure Delivery",
+      "company": "Amazon Web Services (AWS)",
+      "reason": "משרה סגורה בלינקדאין",
+      "status_code": 200,
+      "detected_at": "2026-10-31T00:58:05.601740Z"
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/noc-student-position-at-yael-korentec-technologies-4483377323",
+      "title": "NOC Student Position",
+      "company": "Yael Korentec Technologies",
+      "reason": "משרה סגורה בלינקדאין",
+      "status_code": 200,
+      "detected_at": "2026-10-31T00:58:07.100356Z"
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/aircraft-mechanic-at-jobsseek-4482461472",
+      "title": "Aircraft Mechanic",
+      "company": "JobsSeek",
+      "reason": "משרה סגורה בלינקדאין",
+      "status_code": 200,
+      "detected_at": "2026-10-31T00:58:10.513521Z"
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/electronics-technician-at-confidential-careers-4480000353",
+      "title": "Electronics Technician",
+      "company": "Confidential Careers",
+      "reason": "משרה סגורה בלינקדאין",
+      "status_code": 200,
+      "detected_at": "2026-10-31T00:58:11.618323Z"
+    },
+    {
+      "link": "https://www.drushim.co.il/job/38559534/39430537/",
+      "title": "מפעיל/ת - כוון/ת מחרטות CNC בראשל\"צ - שכר גבוה!!",
+      "company": "JOB SPACE",
+      "reason": "דף המשרה הוסר (HTTP 410)",
+      "status_code": 410,
+      "detected_at": "2026-10-31T00:58:12.360949Z"
+    },
+    {
+      "link": "https://www.drushim.co.il/job/38492901/9dfd82bb/",
+      "title": "חשמלאי.ת מכונות, בקרה ותשתיות - מיל\"י",
+      "company": "כלמוביל",
+      "reason": "דף המשרה הוסר (HTTP 410)",
+      "status_code": 410,
+      "detected_at": "2026-10-31T00:58:13.593629Z"
+    },
+    {
+      "link": "https://www.drushim.co.il/job/38566659/0e94973f/",
+      "title": "הנדסאי\\ת \\ טכנאי\\ת אינטגרציה ושילובים",
+      "company": "דאטה וויי - Dataway",
+      "reason": "דף המשרה הוסר (HTTP 410)",
+      "status_code": 410,
+      "detected_at": "2026-10-31T00:58:13.999108Z"
+    },
+    {
+      "link": "https://www.drushim.co.il/job/38578439/a40dcc99/",
+      "title": "טכנאי/הנדסאי אחזקה למערכות ייצור מתקדמות",
+      "company": "VPG",
+      "reason": "דף המשרה הוסר (HTTP 410)",
+      "status_code": 410,
+      "detected_at": "2026-10-31T00:58:14.549657Z"
+    },
+    {
+      "link": "https://www.drushim.co.il/job/31937863/7172a3ef/",
+      "title": "דרוש/ה מפעיל מכונה עם יכולות ניהוליות",
+      "company": "חברה מובילה (דיסקרטי)",
+      "reason": "דף המשרה הוסר (HTTP 410)",
+      "status_code": 410,
+      "detected_at": "2026-10-31T00:58:14.961452Z"
+    },
+    {
+      "link": "https://www.drushim.co.il/job/38572454/1465b9d1/",
+      "title": "מפעיל/ה מערכת ייצור",
+      "company": "חברה מובילה (דיסקרטי)",
+      "reason": "דף המשרה הוסר (HTTP 410)",
+      "status_code": 410,
+      "detected_at": "2026-10-31T00:58:15.205455Z"
+    },
+    {
+      "link": "https://www.drushim.co.il/job/38574088/a3c8b9cb/",
+      "title": "דרושים טכנאי שטח - ציוד מקצועי למטבחים - רכב צמוד",
+      "company": "ניגא שף בע\"מ",
+      "reason": "דף המשרה הוסר (HTTP 410)",
+      "status_code": 410,
+      "detected_at": "2026-10-31T00:58:15.469441Z"
+    },
+    {
+      "link": "https://www.drushim.co.il/job/38501147/e6250655/",
+      "title": "מפעיל/ת מערכות הנדסיות ו\\או GIS",
+      "company": "חברה מובילה (דיסקרטי)",
+      "reason": "דף המשרה הוסר (HTTP 410)",
+      "status_code": 410,
+      "detected_at": "2026-10-31T00:58:15.755730Z"
+    }
+  ]
 }
