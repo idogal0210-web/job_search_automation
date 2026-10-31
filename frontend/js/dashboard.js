@@ -3210,6 +3210,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   function openDuplicatesModal() {
+    const modal = document.getElementById('duplicatesModal');
+    if (modal) modal.classList.remove('hidden');
     const content = document.getElementById('duplicatesContent');
     if (!content) return;
 

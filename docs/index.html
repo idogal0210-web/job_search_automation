@@ -234,13 +234,13 @@
               </div>
             </div>
 
-            <button type="button" onclick="openDuplicatesModal()" class="tool-btn-compact" title="סרוק כפילויות משרות" aria-label="בדיקת כפילויות משרות">
-              <i class="ph-duotone ph-copy"></i>
+            <button type="button" onclick="openDuplicatesModal()" class="tool-btn-compact" style="height: 34px; min-height: 34px; padding: 0 10px; font-size: 12px; gap: 5px; border-radius: 8px; border-color: rgba(255, 211, 104, 0.35); color: var(--dashboard-gold);" title="סרוק כפילויות משרות" aria-label="בדיקת כפילויות משרות">
+              <i class="ph-duotone ph-copy" style="font-size: 15px;"></i>
               <span>כפילויות</span>
             </button>
-            <button type="button" onclick="openInactiveJobsModal()" class="tool-btn-compact" title="סרוק משרות לא פעילות שנסגרו" aria-label="סריקת משרות לא פעילות">
-              <i class="ph-duotone ph-link-break"></i>
-              <span>משרות שנסגרו</span>
+            <button type="button" onclick="openInactiveJobsModal()" class="tool-btn-compact" style="height: 34px; min-height: 34px; padding: 0 10px; font-size: 12px; gap: 5px; border-radius: 8px; border-color: rgba(239, 68, 68, 0.35); color: #fca5a5;" title="סרוק משרות לא פעילות שנסגרו" aria-label="סריקת משרות לא פעילות">
+              <i class="ph-duotone ph-link-break" style="font-size: 15px;"></i>
+              <span>שנסגרו</span>
             </button>
           </div>
 
@@ -1838,13 +1838,25 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
         <div style="display: flex; align-items: center; gap: 12px;">
           <div class="stat-icon-squircle gold">
-            <i class="ph-duotone ph-magnifying-glass"></i>
+            <i class="ph-duotone ph-copy"></i>
           </div>
           <div>
             <h3 style="margin: 0; font-size: 18px; font-weight: 600;">בדיקת כפילות משרות</h3>
             <small style="color: var(--dashboard-muted);">זיהוי משרות זהות או דומות לפי כותרת, מזהה וחברה</small>
           </div>
         </div>
+        <button onclick="closeDuplicatesModal()" class="tool-btn" style="min-height: 36px; padding: 6px 12px; font-size: 16px; cursor: pointer; border-radius: 999px;" aria-label="סגור"><i class="ph-bold ph-x"></i></button>
+      </div>
+
+      <div id="duplicatesContent" style="max-height: 55vh; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 14px;">
+        <!-- Filled by JS -->
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 18px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <button onclick="closeDuplicatesModal()" class="tool-btn">סגור</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Inactive Jobs Modal -->
   <div id="inactiveJobsModal" class="dashboard-modal-backdrop hidden" onclick="if(event.target===this)closeInactiveJobsModal()">
@@ -1865,18 +1877,9 @@
       <div id="inactiveJobsContent" style="max-height: 55vh; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 14px;">
         <!-- Populated dynamically -->
       </div>
-    </div>
-  </div>
-
-        <button onclick="closeDuplicatesModal()" class="tool-btn" style="min-height: 36px; padding: 6px 12px; font-size: 16px; cursor: pointer; border-radius: 999px;" aria-label="סגור"><i class="ph-bold ph-x"></i></button>
-      </div>
-
-      <div id="duplicatesContent" style="max-height: 55vh; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 14px;">
-        <!-- Filled by JS -->
-      </div>
 
       <div style="display: flex; justify-content: flex-end; margin-top: 18px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
-        <button onclick="closeDuplicatesModal()" class="tool-btn">סגור</button>
+        <button onclick="closeInactiveJobsModal()" class="tool-btn">סגור</button>
       </div>
     </div>
   </div>
