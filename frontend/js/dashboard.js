@@ -2146,7 +2146,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
               <i class="ph-bold ph-caret-down"></i>
             </button>
             ${state === 'rejected' ? `
-            <button type="button" onclick="restoreJob(${escapeHtml(JSON.stringify(String(id)))}, event)" class="btn-triage" title="שחזר לחדשות" aria-label="שחזר לחדשות">
+            <button type="button" onclick="restoreJob(${escapeHtml(JSON.stringify(String(id)))}, event)" class="btn-triage action-restore-btn" title="שחזר לחדשות" aria-label="שחזר לחדשות">
               <i class="ph-duotone ph-arrow-counter-clockwise"></i> <span class="btn-text">שחזר לחדשות</span>
             </button>
             <button type="button" onclick="purgeJobPermanently(${escapeHtml(JSON.stringify(String(id)))}, event)" class="btn-triage action-reject-btn rejected-active" title="מחיקה לצמיתות" aria-label="מחיקה לצמיתות" style="background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-color: rgba(239, 68, 68, 0.5);">
