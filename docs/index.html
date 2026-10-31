@@ -1700,7 +1700,7 @@
   </div>
 
   <!-- Add New Application Modal for Kanban -->
-  <div id="addKanbanModal" class="dashboard-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="addKanbanModalTitle" onclick="if(event.target===this)closeAddApplicationModal()">
+  <dialog id="addKanbanModal" class="dashboard-modal-backdrop" aria-labelledby="addKanbanModalTitle" onclick="if(event.target===this)closeAddApplicationModal()">
     <div class="dashboard-card dashboard-modal-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
         <h3 id="addKanbanModalTitle" style="margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
@@ -1752,10 +1752,10 @@
         </div>
       </form>
     </div>
-  </div>
+  </dialog>
 
   <!-- About System Modal -->
-  <div id="aboutModal" class="dashboard-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="aboutModalTitle" onclick="if(event.target===this)closeAboutModal()">
+  <dialog id="aboutModal" class="dashboard-modal-backdrop" aria-labelledby="aboutModalTitle" onclick="if(event.target===this)closeAboutModal()">
     <div class="dashboard-card dashboard-modal-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
         <h3 id="aboutModalTitle" style="margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
@@ -1779,10 +1779,10 @@
         <button type="button" onclick="closeAboutModal()" class="tool-btn" style="padding: 9px 22px; border-radius: 999px; min-height: 44px; min-width: 80px;">סגור</button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Sync Modal -->
-  <div id="syncModal" class="dashboard-modal-backdrop hidden" onclick="if(event.target===this)closeSyncModal()">
+  <dialog id="syncModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeSyncModal()">
     <div class="dashboard-card dashboard-modal-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 14px;">
         <div style="display: flex; align-items: center; gap: 12px;">
@@ -1830,10 +1830,10 @@
         </button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Duplicates Modal -->
-  <div id="duplicatesModal" class="dashboard-modal-backdrop hidden" onclick="if(event.target===this)closeDuplicatesModal()">
+  <dialog id="duplicatesModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeDuplicatesModal()">
     <div class="dashboard-card dashboard-modal-box" style="max-width: 680px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
         <div style="display: flex; align-items: center; gap: 12px;">
@@ -1856,10 +1856,10 @@
         <button onclick="closeDuplicatesModal()" class="tool-btn">סגור</button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Inactive Jobs Modal -->
-  <div id="inactiveJobsModal" class="dashboard-modal-backdrop hidden" onclick="if(event.target===this)closeInactiveJobsModal()">
+  <dialog id="inactiveJobsModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeInactiveJobsModal()">
     <div class="dashboard-card dashboard-modal-box" style="max-width: 680px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
         <div style="display: flex; align-items: center; gap: 12px;">
@@ -1882,10 +1882,10 @@
         <button onclick="closeInactiveJobsModal()" class="tool-btn">סגור</button>
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Dedicated Mobile Job Details Modal / Screen -->
-  <div id="jobDetailsModal" class="dashboard-modal-backdrop hidden" onclick="if(event.target===this)closeJobModal()">
+  <dialog id="jobDetailsModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeJobModal()">
     <div class="dashboard-card dashboard-modal-box job-details-modal-box" id="jobModalBox">
       <!-- Modal Header Bar -->
       <div class="job-modal-header-bar">
@@ -1908,10 +1908,10 @@
         <!-- Dynamically populated: Apply link and Save/Reject buttons -->
       </div>
     </div>
-  </div>
+  </dialog>
 
   <!-- Toast Notification -->
-  <div id="toast" class="dashboard-toast">
+  <div id="toast" class="dashboard-toast" popover="manual" role="status" aria-live="polite">
     <span id="toastIcon"><i class="ph-duotone ph-bell-simple"></i></span>
     <span id="toastMsg">ההודעה עודכנה</span>
   </div>

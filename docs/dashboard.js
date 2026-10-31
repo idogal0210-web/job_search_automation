@@ -1905,6 +1905,32 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     return str.replace(/\p{Extended_Pictographic}/gu, '').replace(/[\u2600-\u27BF]/g, '').trim();
   }
 
+  // Native <dialog> helpers: top layer, inert page, focus return and Esc/back-gesture dismissal
+  function openDialogEl(el) {
+    if (!el) return;
+    if (typeof el.showModal === 'function') {
+      if (!el.open) el.showModal();
+    } else {
+      el.setAttribute('open', '');
+    }
+  }
+
+  function closeDialogEl(el) {
+    if (!el) return;
+    if (typeof el.close === 'function') {
+      if (el.open) el.close();
+    } else {
+      el.removeAttribute('open');
+    }
+  }
+
+  // close does not bubble; capture it so Esc and back-gesture dismissal also release scroll lock
+  document.addEventListener('close', (e) => {
+    if (e.target && e.target.matches && e.target.matches('dialog.dashboard-modal-backdrop')) {
+      document.body.style.overflow = '';
+    }
+  }, true);
+
   function toggleCardDetails(btn, evt) {
     if (evt) {
       evt.stopPropagation();
@@ -1912,6 +1938,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
     const card = btn.closest('.job-card');
     if (!card) return;
+    // On phones the full analysis opens in a full-screen sheet instead of growing the feed
+    const cardId = card.getAttribute('data-id');
+    if (cardId && window.matchMedia('(max-width: 768px)').matches && allJobsMap[cardId]) {
+      openJobModal(cardId);
+      return;
+    }
     const details = card.querySelector('.job-details-collapsible');
     if (!details) return;
     const isExpanded = details.classList.contains('expanded');
@@ -2329,7 +2361,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       </div>
     `;
 
-    modal.classList.remove('hidden');
+    openDialogEl(modal);
     document.body.style.overflow = 'hidden';
   }
 
@@ -2359,7 +2391,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function closeJobModal() {
     const modal = document.getElementById('jobDetailsModal');
-    if (modal) modal.classList.add('hidden');
+    closeDialogEl(modal);
     document.body.style.overflow = '';
   }
 
@@ -3112,6 +3144,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   }
 
+  let toastHideTimer = null;
+  let toastPopoverTimer = null;
   function showToast(icon, msg) {
     const toast = document.getElementById('toast');
     if (!toast) return;
@@ -3124,9 +3158,21 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       }
     }
     document.getElementById('toastMsg').textContent = msg;
+    clearTimeout(toastHideTimer);
+    clearTimeout(toastPopoverTimer);
+    // Popover keeps the toast in the top layer so it stays visible above open dialogs
+    if (typeof toast.showPopover === 'function' && !toast.matches(':popover-open')) {
+      try { toast.showPopover(); } catch (e) { /* already open */ }
+    }
+    void toast.offsetWidth;
     toast.classList.add('show');
-    setTimeout(() => {
+    toastHideTimer = setTimeout(() => {
       toast.classList.remove('show');
+      toastPopoverTimer = setTimeout(() => {
+        if (typeof toast.hidePopover === 'function' && toast.matches(':popover-open')) {
+          try { toast.hidePopover(); } catch (e) { /* already closed */ }
+        }
+      }, 400);
     }, 2800);
   }
 
@@ -3135,11 +3181,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const rejectedCount = Object.values(jobStates).filter(s => s === 'rejected').length;
     document.getElementById('syncSavedCount').textContent = savedCount;
     document.getElementById('syncRejectedCount').textContent = rejectedCount;
-    document.getElementById('syncModal').classList.remove('hidden');
+    openDialogEl(document.getElementById('syncModal'));
   }
 
   function closeSyncModal() {
-    document.getElementById('syncModal').classList.add('hidden');
+    closeDialogEl(document.getElementById('syncModal'));
   }
 
   let aboutModalPrevFocus = null;
@@ -3147,7 +3193,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     aboutModalPrevFocus = document.activeElement;
     const modal = document.getElementById('aboutModal');
     if (!modal) return;
-    modal.classList.remove('hidden');
+    openDialogEl(modal);
     const closeBtn = modal.querySelector('.modal-close-btn');
     if (closeBtn) closeBtn.focus();
   }
@@ -3155,7 +3201,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   function closeAboutModal() {
     const modal = document.getElementById('aboutModal');
     if (!modal) return;
-    modal.classList.add('hidden');
+    closeDialogEl(modal);
     if (aboutModalPrevFocus && typeof aboutModalPrevFocus.focus === 'function') {
       aboutModalPrevFocus.focus();
     }
@@ -3211,7 +3257,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function openDuplicatesModal() {
     const modal = document.getElementById('duplicatesModal');
-    if (modal) modal.classList.remove('hidden');
+    openDialogEl(modal);
     const content = document.getElementById('duplicatesContent');
     if (!content) return;
 
@@ -3342,7 +3388,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           <div>כל ${activeJobs.length} המשרות הפעילות (חדשות, שמורות ובכוכב) ייחודיות לחלוטין.</div>
         </div>
       `;
-      document.getElementById('duplicatesModal').classList.remove('hidden');
+      openDialogEl(document.getElementById('duplicatesModal'));
       return;
     }
 
@@ -3418,7 +3464,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     // שמירת הקבוצות בזיכרון הגלובלי לצורך פעולות הכפתורים
     window.__activeDuplicateGroups = dupGroups;
-    document.getElementById('duplicatesModal').classList.remove('hidden');
+    openDialogEl(document.getElementById('duplicatesModal'));
   }
 
   // 1. פעולת איחוד: שומרת את הראשית, מעתיקה אליה הערות/קישורים של הכפולות ומנטרלת את הכפילויות
@@ -3518,7 +3564,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   function closeDuplicatesModal() {
-    document.getElementById('duplicatesModal').classList.add('hidden');
+    closeDialogEl(document.getElementById('duplicatesModal'));
   }
 
   let cachedInactiveJobsReport = null;
@@ -3528,7 +3574,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const content = document.getElementById('inactiveJobsContent');
     if (!modal || !content) return;
 
-    modal.classList.remove('hidden');
+    openDialogEl(modal);
 
     content.innerHTML = `
       <div style="padding: 24px; text-align: center; color: var(--dashboard-muted); font-size: 14px;">
@@ -3551,7 +3597,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function closeInactiveJobsModal() {
     const modal = document.getElementById('inactiveJobsModal');
-    if (modal) modal.classList.add('hidden');
+    closeDialogEl(modal);
   }
 
   function renderInactiveJobsModalContent() {
@@ -6413,12 +6459,12 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
 
   function openAddApplicationModal() {
     const modal = document.getElementById('addKanbanModal');
-    if (modal) modal.classList.remove('hidden');
+    openDialogEl(modal);
   }
 
   function closeAddApplicationModal() {
     const modal = document.getElementById('addKanbanModal');
-    if (modal) modal.classList.add('hidden');
+    closeDialogEl(modal);
   }
 
   function handleSaveNewApplication(e) {
