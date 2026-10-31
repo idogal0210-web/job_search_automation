@@ -3180,7 +3180,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const allJobs = getAllAvailableJobs();
     const activeJobs = allJobs.filter(job => {
       const state = jobStates[job.link] || 'pending';
-      return state === 'saved' || state === 'pending';
+      const isStarred = Boolean(starredJobs[job.link]);
+      if (state === 'rejected' || state === 'purged') return false;
+      return isStarred || state === 'saved' || state === 'pending';
     });
 
     // 4. אשכול משרות לקבוצות חשודות
@@ -3249,7 +3251,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <div style="padding: 32px 16px; text-align: center; color: var(--dashboard-muted); font-size: 15px;">
           <div style="font-size: 38px; color: var(--dashboard-lime); margin-bottom: 10px;"><i class="ph-duotone ph-check-circle"></i></div>
           <div style="color: #fff; font-weight: 700; font-size: 16px; margin-bottom: 4px;">לא אותרו כפילויות!</div>
-          <div>כל ${activeJobs.length} המשרות הפעילות (שמורות וחדשות) ייחודיות לחלוטין.</div>
+          <div>כל ${activeJobs.length} המשרות הפעילות (חדשות, שמורות ובכוכב) ייחודיות לחלוטין.</div>
         </div>
       `;
       document.getElementById('duplicatesModal').classList.remove('hidden');
@@ -3349,8 +3351,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         altLinksStore[primary.link].push(dup.link);
       }
       jobStates[dup.link] = 'purged';
+      delete starredJobs[dup.link];
     });
 
+    saveStarredJobs(starredJobs);
     saveAltLinksState(altLinksStore);
     saveTriageState(jobStates);
     updateCubeCountsImmediately();
@@ -3379,8 +3383,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const duplicates = group.items.slice(1);
     duplicates.forEach(dup => {
       jobStates[dup.link] = 'purged';
+      delete starredJobs[dup.link];
     });
 
+    saveStarredJobs(starredJobs);
     saveTriageState(jobStates);
     updateCubeCountsImmediately();
     renderCards();
