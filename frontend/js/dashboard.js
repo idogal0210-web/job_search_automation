@@ -2068,7 +2068,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <!-- Top Meta Row -->
         <div class="job-card-topbar">
           <div class="job-card-topbar-primary">
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="job-card-actions-group" style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
               <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar(${escapeHtml(JSON.stringify(String(id)))}, event)" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}" aria-label="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
                 <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
               </button>
@@ -2076,7 +2076,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
                 <i class="ph-bold ph-share-network"></i>
               </button>
             </div>
-            <div class="job-card-topbar-badges" style="display: flex; align-items: center; gap: 8px;">
+            <div class="job-card-topbar-badges" style="display: flex; align-items: center; gap: 6px; min-width: 0; flex: 1; overflow: hidden;">
               ${salaryTagHtml}
               <div class="badge-score ${scoreClass}">
                 <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
@@ -2150,7 +2150,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
               <i class="ph-duotone ph-arrow-counter-clockwise"></i> <span class="btn-text">שחזר לחדשות</span>
             </button>
             <button type="button" onclick="purgeJobPermanently(${escapeHtml(JSON.stringify(String(id)))}, event)" class="btn-triage action-reject-btn rejected-active" title="מחיקה לצמיתות" aria-label="מחיקה לצמיתות" style="background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-color: rgba(239, 68, 68, 0.5);">
-              <i class="ph-duotone ph-trash-simple"></i> <span class="btn-text">מחק לצמיתות</span>
+              <i class="ph-duotone ph-trash-simple"></i>
             </button>
             ` : `
             <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved', event)" class="btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}" title="שמור להגשה">
@@ -2305,7 +2305,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <button onclick="restoreJob(${escapeHtml(JSON.stringify(String(id)))}); closeJobModal();" class="btn-triage" style="flex: 1;" title="שחזר למשרות חדשות">
           <i class="ph-duotone ph-arrow-counter-clockwise"></i> <span>שחזר לחדשות</span>
         </button>
-        <button onclick="purgeJobPermanently(${escapeHtml(JSON.stringify(String(id)))}); closeJobModal();" class="btn-triage action-reject-btn rejected-active" style="flex: 1; background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-color: rgba(239, 68, 68, 0.5);" title="מחק לצמיתות">
+        <button onclick="purgeJobPermanently(${escapeHtml(JSON.stringify(String(id)))}); closeJobModal();" class="btn-triage rejected-active" style="flex: 1; border-radius: 12px; min-height: 40px; padding: 0 16px; background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-color: rgba(239, 68, 68, 0.5); display: inline-flex; align-items: center; justify-content: center; gap: 8px;" title="מחק לצמיתות">
           <i class="ph-duotone ph-trash-simple"></i> <span>מחק לצמיתות</span>
         </button>
         ` : `

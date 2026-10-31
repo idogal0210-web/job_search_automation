@@ -821,7 +821,14 @@
       gap: 8px;
       width: 100%;
     }
+    .job-card-topbar-primary > .job-card-actions-group,
     .job-card-topbar-primary > div:first-child {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .job-card-topbar-badges {
       display: flex;
       align-items: center;
       gap: 6px;
@@ -840,12 +847,15 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 4px 10px;
+      padding: 3px 8px;
       border-radius: 999px;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
       line-height: 1.2;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
       background: rgba(45, 212, 191, 0.12);
       border: 1px solid rgba(45, 212, 191, 0.35);
       color: #2dd4bf;
@@ -1941,11 +1951,11 @@
         letter-spacing: -0.2px !important;
       }
       #cardsContainer .btn-star {
-        width: 38px !important;
-        height: 38px !important;
-        min-width: 38px !important;
-        min-height: 38px !important;
-        font-size: 16px !important;
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        min-height: 30px !important;
+        font-size: 14px !important;
         border-radius: 999px !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -1955,6 +1965,7 @@
         color: var(--dashboard-muted) !important;
         transition: all 0.15s ease !important;
         position: relative !important;
+        flex-shrink: 0 !important;
       }
       #cardsContainer .btn-star.is-starred {
         background: rgba(255, 211, 104, 0.2) !important;
@@ -1962,11 +1973,11 @@
         color: var(--dashboard-gold) !important;
       }
       #cardsContainer .btn-copy-link {
-        width: 38px !important;
-        height: 38px !important;
-        min-width: 38px !important;
-        min-height: 38px !important;
-        font-size: 15px !important;
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        min-height: 30px !important;
+        font-size: 13.5px !important;
         background: rgba(255, 255, 255, 0.06) !important;
         border: 1px solid rgba(255, 255, 255, 0.14) !important;
         border-radius: 999px !important;
@@ -1974,6 +1985,9 @@
         align-items: center !important;
         justify-content: center !important;
         color: var(--dashboard-muted) !important;
+        transition: all 0.15s ease !important;
+        position: relative !important;
+        flex-shrink: 0 !important;
       }
       #cardsContainer .job-card-main-header {
         display: flex !important;
@@ -2268,14 +2282,16 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.16);
       color: var(--dashboard-muted);
-      width: 32px;
-      height: 32px;
-      border-radius: 10px;
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+      min-height: 30px;
+      border-radius: 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       flex-shrink: 0;
       position: relative;
