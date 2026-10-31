@@ -6621,3 +6621,23 @@ label,
     scroll-behavior: auto !important;
   }
 }
+
+/* Mobile Phase A.2: fix clipped salary chip and wrapped header mode switch */
+@media (max-width: 768px) {
+  /* Let badges wrap so the salary chip drops to its own row instead of being cut off */
+  #cardsContainer .job-card-topbar-badges {
+    flex-wrap: wrap !important;
+    overflow: visible !important;
+    row-gap: 4px !important;
+  }
+  #cardsContainer .job-salary-chip {
+    max-width: 100%;
+  }
+  /* Keep each header mode button on a single line with matching heights */
+  .dashboard-mode-switcher .mode-switch-btn {
+    white-space: nowrap;
+    font-size: 14.5px;
+    gap: 6px;
+    padding-inline: 12px !important;
+  }
+}
