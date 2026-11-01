@@ -185,11 +185,18 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   const STORAGE_KEY = 'ido_job_triage_store';
   const STARRED_STORAGE_KEY = 'ido_job_starred_store';
   const ALT_LINKS_STORAGE_KEY = 'ido_job_alt_links_store';
+  const LAST_LOCAL_EDIT_KEY = 'ido_job_last_local_edit_time';
   const VIEW_MODE_KEY = 'ido_job_view_mode';
   const SORT_STORAGE_KEY = 'ido_job_sort_mode';
   let currentViewMode = 'grid';
   let allJobsMap = {};
   let altLinksStore = loadAltLinksState();
+
+  function recordLocalEdit() {
+    try {
+      localStorage.setItem(LAST_LOCAL_EDIT_KEY, String(Date.now()));
+    } catch (e) {}
+  }
 
   function loadAltLinksState() {
     try {
@@ -334,19 +341,53 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const starredCount = Object.keys(starredJobs).filter(link => Boolean(starredJobs[link]) && (jobStates[link] || 'pending') !== 'rejected' && (jobStates[link] || 'pending') !== 'purged').length;
       const rejectedCount = Object.keys(jobStates).filter(link => jobStates[link] === 'rejected').length;
 
+      let newCount = 18;
+      if (Array.isArray(rawJobsData) && rawJobsData.length > 0) {
+        newCount = rawJobsData.filter(j => {
+          const st = jobStates[j.link] || 'pending';
+          const isSt = isJobStarred(j.link);
+          return !isSt && st !== 'saved' && st !== 'rejected' && st !== 'purged';
+        }).length;
+      } else {
+        const statNewInit = document.getElementById('statNewCount');
+        if (statNewInit && statNewInit.textContent) {
+          const parsed = parseInt(statNewInit.textContent, 10);
+          if (!isNaN(parsed) && parsed > 0) newCount = parsed;
+        }
+      }
+
+      const statNewEl = document.getElementById('statNewCount');
       const statSavedEl = document.getElementById('statSavedCount');
       const statStarredEl = document.getElementById('statStarredCount');
       const statRejectedEl = document.getElementById('statRejectedCount');
+      if (statNewEl) statNewEl.textContent = newCount;
       if (statSavedEl) statSavedEl.textContent = savedCount;
       if (statStarredEl) statStarredEl.textContent = starredCount;
       if (statRejectedEl) statRejectedEl.textContent = rejectedCount;
 
+      const summaryNew = document.getElementById('summaryNewCount');
+      const summaryStarred = document.getElementById('summaryStarredCount');
+      const summarySaved = document.getElementById('summarySavedCount');
+      const summaryRejected = document.getElementById('summaryRejectedCount');
+      if (summaryNew) summaryNew.textContent = newCount;
+      if (summaryStarred) summaryStarred.textContent = starredCount;
+      if (summarySaved) summarySaved.textContent = savedCount;
+      if (summaryRejected) summaryRejected.textContent = rejectedCount;
+
+      const countAllEl = document.getElementById('countAll');
       const countSavedEl = document.getElementById('countSaved');
       const countStarredNavEl = document.getElementById('countStarredNav');
       const countRejectedEl = document.getElementById('countRejected');
+      if (countAllEl) countAllEl.textContent = newCount;
       if (countSavedEl) countSavedEl.textContent = savedCount;
       if (countStarredNavEl) countStarredNavEl.textContent = starredCount;
       if (countRejectedEl) countRejectedEl.textContent = rejectedCount;
+
+      const activeBatchCount = newCount + starredCount + savedCount + rejectedCount;
+      const triaged = starredCount + savedCount + rejectedCount;
+      const pct = activeBatchCount > 0 ? Math.round((triaged / activeBatchCount) * 100) : 0;
+      const summaryChipEl = document.getElementById('progressSummaryChip');
+      if (summaryChipEl) summaryChipEl.textContent = pct + '% מוינו';
     } catch(e) {}
   }
 
@@ -355,6 +396,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       evt.stopPropagation();
       evt.preventDefault();
     }
+    recordLocalEdit();
     if (starredJobs[id]) {
       delete starredJobs[id];
       showToast('ph-star', 'הוסר מהמשרות המסומנות בכוכב');
@@ -569,10 +611,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         } catch(e) {}
       }
       if (data) {
-        if (data.updated_at) {
-          cloudLastUpdated = new Date(data.updated_at).getTime();
+        const remoteTimestamp = data.updated_at ? new Date(data.updated_at).getTime() : 0;
+        if (remoteTimestamp) {
+          cloudLastUpdated = remoteTimestamp;
         }
-        if (forceMirror) {
+
+        const lastLocalEdit = Number(localStorage.getItem(LAST_LOCAL_EDIT_KEY) || 0);
+        const shouldMirrorFromRemote = forceMirror || (lastLocalEdit === 0) || (remoteTimestamp >= lastLocalEdit);
+
+        if (shouldMirrorFromRemote) {
           const newJobStates = {};
           if (Array.isArray(data.purged)) {
             data.purged.forEach(link => { newJobStates[link] = 'purged'; });
@@ -583,24 +630,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           if (Array.isArray(data.rejected)) {
             data.rejected.forEach(link => { newJobStates[link] = 'rejected'; });
           }
-          // Preserve local states (saved, rejected, purged) so user decisions are NEVER wiped on mirror sync
-          Object.keys(jobStates).forEach(link => {
-            if (jobStates[link] === 'purged' || jobStates[link] === 'rejected' || jobStates[link] === 'saved') {
-              newJobStates[link] = jobStates[link];
-            }
-          });
           const newStarredJobs = {};
           if (Array.isArray(data.starred)) {
             data.starred.forEach(link => {
               newStarredJobs[link] = true;
             });
           }
-          // Preserve local starred jobs
-          Object.keys(starredJobs).forEach(link => {
-            if (starredJobs[link]) {
-              newStarredJobs[link] = true;
-            }
-          });
           // Clean up conflicting starred states (rejection/purged trumps starred)
           Object.keys(newStarredJobs).forEach(link => {
             if (newJobStates[link] === 'purged' || newJobStates[link] === 'rejected') {
@@ -615,7 +650,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           renderCards();
           updateUI();
         } else {
-          // Background sync (on focus/load/online): incremental merge, never discard local triage actions
+          // Device has newer local unsynced edits: conflict-free incremental merge
           let changed = false;
           if (Array.isArray(data.purged)) {
             data.purged.forEach(link => {
@@ -625,9 +660,17 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
               }
             });
           }
+          if (Array.isArray(data.rejected)) {
+            data.rejected.forEach(link => {
+              if (!jobStates[link] || jobStates[link] === 'pending') {
+                jobStates[link] = 'rejected';
+                changed = true;
+              }
+            });
+          }
           if (Array.isArray(data.saved)) {
             data.saved.forEach(link => {
-              if (jobStates[link] !== 'purged' && jobStates[link] !== 'rejected' && jobStates[link] !== 'saved') {
+              if (!jobStates[link] || jobStates[link] === 'pending') {
                 jobStates[link] = 'saved';
                 changed = true;
               }
@@ -2447,6 +2490,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       evt.stopPropagation();
       evt.preventDefault();
     }
+    recordLocalEdit();
     const current = getJobState(id);
     const canon = getCanonicalJobKey(id);
 
@@ -2489,6 +2533,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       evt.stopPropagation();
       evt.preventDefault();
     }
+    recordLocalEdit();
     const canon = getCanonicalJobKey(id);
     if (starredJobs[id] || isJobStarred(id)) {
       delete starredJobs[id];
@@ -2511,6 +2556,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       evt.stopPropagation();
       evt.preventDefault();
     }
+    recordLocalEdit();
     const canon = getCanonicalJobKey(id);
     if (starredJobs[id] || isJobStarred(id)) {
       delete starredJobs[id];
@@ -2548,6 +2594,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       targetEl.classList.add('active');
       targetEl.setAttribute('aria-current', 'page');
     }
+
+    document.querySelectorAll('.metric-summary-pill').forEach(p => p.classList.remove('active-pill'));
+    const pillMap = { 'all': 'lime', 'starred': 'gold', 'saved': 'cyan', 'rejected': 'rose' };
+    const activePill = document.querySelector(`.metric-summary-pill.${pillMap[filter]}`);
+    if (activePill) activePill.classList.add('active-pill');
 
     if (filter === 'saved' || filter === 'rejected' || filter === 'starred') {
       loadHistoricalCatalogOnDemand();
@@ -2809,12 +2860,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     // Calculate exact totals using truth state
     let totalNewInStore = (rawJobsData || []).filter(j => {
       const st = jobStates[j.link] || 'pending';
-      const isSt = Boolean(starredJobs[j.link]);
+      const isSt = isJobStarred(j.link);
       return !isSt && st !== 'saved' && st !== 'rejected' && st !== 'purged';
     }).length;
 
     let totalSavedInStore = Object.keys(jobStates).filter(link => {
-      return jobStates[link] === 'saved' && !Boolean(starredJobs[link]);
+      return jobStates[link] === 'saved' && !isJobStarred(link);
     }).length;
 
     let totalStarredInStore = Object.keys(starredJobs).filter(link => {
@@ -3240,12 +3291,16 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       syncBtn.textContent = "סנכרון מתבצע...";
     }
 
+    try {
+      localStorage.removeItem(LAST_LOCAL_EDIT_KEY);
+    } catch(e) {}
+
     await fetchCloudSync(true);
 
-    const savedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !Boolean(starredJobs[id])).length;
-    const starredCount = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id])).length;
+    const savedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !isJobStarred(id)).length;
+    const starredCount = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id]) && (jobStates[id] || 'pending') !== 'rejected' && (jobStates[id] || 'pending') !== 'purged').length;
     const rejectedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected').length;
-    const newCount = (rawJobsData || []).filter(j => !Boolean(starredJobs[j.link]) && (jobStates[j.link] || 'pending') !== 'saved' && (jobStates[j.link] || 'pending') !== 'rejected' && (jobStates[j.link] || 'pending') !== 'purged').length;
+    const newCount = (rawJobsData || []).filter(j => !isJobStarred(j.link) && (jobStates[j.link] || 'pending') !== 'saved' && (jobStates[j.link] || 'pending') !== 'rejected' && (jobStates[j.link] || 'pending') !== 'purged').length;
 
     closeSyncModal();
     showToast('ph-cloud-check', `סונכרן בהצלחה מול המחשב! (${newCount} חדשות, ${starredCount} בכוכב, ${savedCount} שמורות, ${rejectedCount} הוסרו)`);
@@ -3765,6 +3820,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       jobStates[id] = 'purged';
     });
 
+    recordLocalEdit();
     saveTriageState(jobStates);
     updateCubeCountsImmediately();
     renderCards();
@@ -6796,13 +6852,13 @@ Open for operations management and engineering roles in Israeli energy and clean
   window.handleIgnoreGroup = handleIgnoreGroup;
 
 
-  window.onload = () => {
+  window.onload = async () => {
     updateCubeCountsImmediately();
     checkUrlSync();
     updateSortIconAndToast(currentSort, false);
-    fetchJobsData();
+    await fetchCloudSync();
+    await fetchJobsData();
     setViewMode(currentViewMode);
-    fetchCloudSync();
     initAtsModule();
     initCvUploadState();
     initWriterModule();

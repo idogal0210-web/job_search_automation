@@ -286,11 +286,14 @@
       box-sizing: border-box;
     }
     @media (hover: hover) {
-  .metrics-summary-toggle:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.3);
+      .metrics-summary-toggle:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+      .metric-summary-pill:hover {
+        filter: brightness(1.15);
+      }
     }
-}
     .metrics-summary-toggle:focus-visible {
       outline: 3px solid var(--dashboard-lime);
       outline-offset: 2px;
@@ -309,6 +312,18 @@
       display: inline-flex;
       align-items: center;
       gap: 3px;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+    }
+    .metric-summary-pill:active {
+      transform: scale(0.96);
+    }
+    .metric-summary-pill.active-pill {
+      box-shadow: 0 0 0 1.5px currentColor, 0 2px 8px rgba(0, 0, 0, 0.4);
+      filter: brightness(1.2);
     }
     .metric-summary-pill.lime { background: rgba(220, 255, 114, 0.16); color: var(--dashboard-lime); }
     .metric-summary-pill.gold { background: rgba(255, 211, 104, 0.16); color: var(--dashboard-gold); }

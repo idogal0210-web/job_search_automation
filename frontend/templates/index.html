@@ -70,10 +70,10 @@
       <!-- Mobile Collapsible Summary Toggle Button -->
       <button type="button" class="metrics-summary-toggle" id="metricsToggleBtn" onclick="toggleMetricsExpand()" aria-expanded="false" aria-controls="collapsibleMetricsContent" aria-label="הרחב או צמצם פירוט מטריקות">
         <div class="metrics-summary-inline">
-          <span class="metric-summary-pill lime"><span id="summaryNewCount">__TOTAL_NEW_JOBS__</span> חדשות</span>
-          <span class="metric-summary-pill gold"><span id="summaryStarredCount">__TOTAL_STARRED_JOBS__</span> בכוכב</span>
-          <span class="metric-summary-pill cyan"><span id="summarySavedCount">__TOTAL_SAVED_JOBS__</span> שמורות</span>
-          <span class="metric-summary-pill rose"><span id="summaryRejectedCount">__TOTAL_REJECTED_JOBS__</span> הוסרו</span>
+          <span class="metric-summary-pill lime active-pill" onclick="event.stopPropagation(); setFilter('all', document.getElementById('cube_all'));" role="button" tabindex="0" title="הצג משרות חדשות"><span id="summaryNewCount">__TOTAL_NEW_JOBS__</span> חדשות</span>
+          <span class="metric-summary-pill gold" onclick="event.stopPropagation(); setFilter('starred', document.getElementById('cube_starred'));" role="button" tabindex="0" title="הצג משרות בכוכב"><span id="summaryStarredCount">__TOTAL_STARRED_JOBS__</span> בכוכב</span>
+          <span class="metric-summary-pill cyan" onclick="event.stopPropagation(); setFilter('saved', document.getElementById('cube_saved'));" role="button" tabindex="0" title="הצג משרות שמורות"><span id="summarySavedCount">__TOTAL_SAVED_JOBS__</span> שמורות</span>
+          <span class="metric-summary-pill rose" onclick="event.stopPropagation(); setFilter('rejected', document.getElementById('cube_rejected'));" role="button" tabindex="0" title="הצג משרות שהוסרו"><span id="summaryRejectedCount">__TOTAL_REJECTED_JOBS__</span> הוסרו</span>
         </div>
         <div class="metrics-toggle-label">
           <span id="metricsToggleText">פירוט</span>
@@ -327,7 +327,7 @@
     <div class="cards-view-header">
       <div class="cards-count-summary">
         <i class="ph-duotone ph-briefcase" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
-        <span id="visibleJobsCountText">סה״כ משרות חדשות: __TOTAL_JOBS__</span>
+        <span id="visibleJobsCountText">סה״כ משרות חדשות: __TOTAL_NEW_JOBS__</span>
       </div>
       <div class="view-mode-toggle" role="group" aria-label="מצב תצוגה">
         <button type="button" id="viewGridBtn" class="view-toggle-btn active" onclick="setViewMode('grid')" title="תצוגת קוביות (Grid)">
