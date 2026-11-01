@@ -3864,6 +3864,17 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
    * @param {boolean} [updateHash=true] - Whether to update window.location.hash
    */
   function switchDashboardAppMode(mode, updateHash = true) {
+    const mobJobs = document.getElementById('mobNavJobs');
+    const mobStudio = document.getElementById('mobNavStudio');
+    if (mobJobs && mobStudio) {
+      if (mode === 'studio') {
+        mobJobs.classList.remove('active');
+        mobStudio.classList.add('active');
+      } else {
+        mobJobs.classList.add('active');
+        mobStudio.classList.remove('active');
+      }
+    }
     const targetMode = (mode === 'studio') ? 'studio' : 'radar';
     currentAppMode = targetMode;
 
