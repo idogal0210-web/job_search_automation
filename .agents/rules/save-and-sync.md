@@ -1,6 +1,7 @@
 ---
 name: save-and-sync
 description: Protocol executed whenever the user says "שמור ועדכן", "שמור וסנכרן", "סנכרן ונקה", or "Save and update". Validates project integrity, enforces zero-waste lean directory hygiene via scripts/project_hygiene.py, runs test suite, checks secret leaks, verifies zero emojis, persists files, commits and pushes to GitHub, and provides a structured executive summary in RTL.
+globs: "*"
 ---
 
 # Save & Sync Protocol ("שמור ועדכן")

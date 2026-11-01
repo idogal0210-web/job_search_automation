@@ -1,3 +1,8 @@
+---
+description: MCP server policies, restrictions, and explicit triggers for job_search_automation
+globs: "*"
+---
+
 # מדיניות והנחיות שימוש בשרתי MCP — פרויקט job_search_automation
 
 מסמך זה מהווה פרוטוקול הפעלה מחייב עבור סוכן ה-AI בעת עבודה על פרויקט חיפוש המשרות.

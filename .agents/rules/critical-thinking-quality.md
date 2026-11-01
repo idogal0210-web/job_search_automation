@@ -1,6 +1,6 @@
 ---
 description: Enforce critical constructive thinking, unwavering quality standards, and continuous learning across all interactions and coding tasks
-globs: *
+globs: "*"
 ---
 
 # Critical Thinking, Quality Excellence & Continuous Learning

@@ -1,6 +1,6 @@
 ---
 description: Trigger interactive 5-capability menu on start of conversation or user greeting
-globs: *
+globs: "*"
 ---
 
 # Interactive Greeting Rule (תפריט 5 היכולות הראשיות)

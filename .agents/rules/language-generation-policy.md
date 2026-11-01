@@ -1,6 +1,6 @@
 ---
 description: Always generate tailored CV in Hebrew only by default. Generate English version only when explicitly requested by the user.
-globs: *
+globs: "tools/cv_tailor/**"
 ---
 
 # Language Generation Policy

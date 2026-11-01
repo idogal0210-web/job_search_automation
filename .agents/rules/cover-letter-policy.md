@@ -1,6 +1,6 @@
 ---
 description: Always ask the user explicitly before generating a cover letter, rather than generating it automatically.
-globs: *
+globs: "tools/cv_tailor/**"
 ---
 
 # Cover Letter Generation Policy

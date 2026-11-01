@@ -1,6 +1,6 @@
 ---
 description: Enforce strict candidate realism, locked original job titles, and zero inflation across all tailored CV and cover letter outputs
-globs: *
+globs: "tools/cv_tailor/**"
 ---
 
 # Candidate Realism, Locked Titles & Anti-Fluff Policy

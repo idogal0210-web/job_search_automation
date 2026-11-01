@@ -1,3 +1,8 @@
+---
+description: Enforce zero-scan navigation, bulk data lockout, scoped UI/CSS reading, and output minimization
+globs: "*"
+---
+
 # Token Efficiency & Scoped Execution Guard
 
 ## 1. Architectural Grounding & Zero-Scan Navigation

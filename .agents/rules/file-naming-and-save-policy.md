@@ -1,6 +1,6 @@
 ---
 description: Always ask user confirmation before saving files at the end of research, and use short, clear, simple file names.
-globs: *
+globs: "tools/cv_tailor/**"
 ---
 
 # File Naming & Save Confirmation Policy
