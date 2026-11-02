@@ -228,14 +228,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     currentSort = localStorage.getItem(SORT_STORAGE_KEY) || 'date_desc';
   } catch(e) {}
   const DEFAULT_STARRED_JOBS = [
-    "https://il.linkedin.com/jobs/view/%D7%AA%D7%94%D7%9C%D7%99%D7%9B%D7%99-%D7%91%D7%A7%D7%A8%D7%94-%D7%95-ai-at-iai-israel-aerospace-industries-4478429532",
-    "https://il.linkedin.com/jobs/view/high-pressure-natural-gas-project-israel-at-rina-4469463836",
-    "https://www.comeet.com/jobs/enlightenergy/99.006/project-manager---construction---enlight-local/92.F66",
-    "https://il.linkedin.com/jobs/view/junior-business-development-manager-at-ormash-group-%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%90%D7%95%D7%A8%D7%9E%D7%A9-4468984224",
-    "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4447699352",
     "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4481350574",
     "https://il.linkedin.com/jobs/view/practical-engineer-at-solaredge-technologies-4481748648",
-    "https://il.linkedin.com/jobs/view/system-engineer-renewable-energy-energy-storage-projects-at-nextcom-group-4478214360"
+    "https://il.linkedin.com/jobs/view/system-engineer-renewable-energy-energy-storage-projects-at-nextcom-group-4478214360",
+    "https://il.linkedin.com/jobs/view/%D7%AA%D7%94%D7%9C%D7%99%D7%9B%D7%99-%D7%91%D7%A7%D7%A8%D7%94-%D7%95-ai-at-iai-israel-aerospace-industries-4478429532",
+    "https://www.comeet.com/jobs/enlightenergy/99.006/project-manager---construction---enlight-local/92.F66",
+    "https://il.linkedin.com/jobs/view/high-pressure-natural-gas-project-israel-at-rina-4469463836"
   ];
 
   const UNSTARRED_STORAGE_KEY = 'ido_job_unstarred_keys';
@@ -3297,10 +3295,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   function triggerSyncModal() {
-    const savedCount = Object.values(jobStates).filter(s => s === 'saved').length;
+    const savedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !isJobStarred(id)).length;
+    const starredCount = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id]) && (jobStates[id] || 'pending') !== 'rejected' && (jobStates[id] || 'pending') !== 'purged').length;
     const rejectedCount = Object.values(jobStates).filter(s => s === 'rejected').length;
-    document.getElementById('syncSavedCount').textContent = savedCount;
-    document.getElementById('syncRejectedCount').textContent = rejectedCount;
+    const starredEl = document.getElementById('syncStarredCount');
+    if (starredEl) starredEl.textContent = starredCount;
+    const savedEl = document.getElementById('syncSavedCount');
+    if (savedEl) savedEl.textContent = savedCount;
+    const rejEl = document.getElementById('syncRejectedCount');
+    if (rejEl) rejEl.textContent = rejectedCount;
     openDialogEl(document.getElementById('syncModal'));
   }
 
@@ -3361,10 +3364,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
 
     try {
+      // 1. Force push existing local triage/starred state into cloud/backend state
+      await pushCloudSync();
+      // 2. Clear any stale edit flags and reconcile safely
       localStorage.removeItem(LAST_LOCAL_EDIT_KEY);
+      await fetchCloudSync(false);
     } catch(e) {}
-
-    await fetchCloudSync(true);
 
     const savedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !isJobStarred(id)).length;
     const starredCount = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id]) && (jobStates[id] || 'pending') !== 'rejected' && (jobStates[id] || 'pending') !== 'purged').length;
