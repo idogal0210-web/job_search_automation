@@ -7,7 +7,7 @@
     "query": "מפעיל מערכות SCADA",
     "source": "Drushim",
     "location": "תל אביב, רחובות, כפר סבא, נתניה",
-    "logo": "",
+    "logo": "assets/logos/segal.svg",
     "date": "2026-10-26",
     "source_id": "",
     "is_direct_ats": "",
@@ -88,7 +88,8 @@
     "has_on_call": true,
     "p25": 16000,
     "p50": 18500,
-    "p75": 21000
+    "p75": 21000,
+    "company_logo_url": "assets/logos/segal.svg"
   },
   {
     "link": "https://www.drushim.co.il/job/38839119/b263f520/",
@@ -98,7 +99,7 @@
     "query": "מפעיל חדר בקרה SCADA",
     "source": "Drushim",
     "location": "אלון התבור (עפולה)",
-    "logo": "",
+    "logo": "assets/logos/mrc.svg",
     "date": "2026-10-26",
     "source_id": "",
     "is_direct_ats": "",
@@ -193,7 +194,8 @@
     "has_on_call": false,
     "p25": 16000,
     "p50": 18500,
-    "p75": 21000
+    "p75": 21000,
+    "company_logo_url": "assets/logos/mrc.svg"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%90%D7%97%D7%96%D7%A7%D7%94-at-elbit-systems-israel-4481091738",
@@ -298,7 +300,8 @@
     "has_on_call": false,
     "p25": 13500,
     "p50": 15500,
-    "p75": 17500
+    "p75": 17500,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q"
   },
   {
     "link": "https://www.drushim.co.il/job/38862850/b1a062db/",
@@ -403,7 +406,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/27381/page/636866879793234132.png"
   },
   {
     "link": "https://www.drushim.co.il/job/38871989/0e2c52c4/",
@@ -413,7 +417,7 @@
     "query": "הנדסאי מכונות",
     "source": "Drushim",
     "location": "מודיעין-מכבים-רעות, ירושלים, ראשון לציון, רחובות",
-    "logo": "",
+    "logo": "assets/logos/knapp.svg",
     "date": "2026-10-26",
     "source_id": "",
     "is_direct_ats": "",
@@ -494,7 +498,8 @@
     "has_on_call": false,
     "p25": 13500,
     "p50": 15500,
-    "p75": 17500
+    "p75": 17500,
+    "company_logo_url": "assets/logos/knapp.svg"
   },
   {
     "link": "https://www.drushim.co.il/job/38856751/92237962/",
@@ -504,7 +509,7 @@
     "query": "תחנת כוח",
     "source": "Drushim",
     "location": "חדרה",
-    "logo": "",
+    "logo": "assets/logos/opc.svg",
     "date": "2026-10-26",
     "source_id": "",
     "is_direct_ats": "",
@@ -613,7 +618,8 @@
     "has_on_call": false,
     "p25": 12500,
     "p50": 14500,
-    "p75": 16500
+    "p75": 16500,
+    "company_logo_url": "assets/logos/opc.svg"
   },
   {
     "link": "https://www.drushim.co.il/job/38844477/340cb295/",
@@ -718,7 +724,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/574468/page/637599656370522730.png"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/warehouse-automation-technician-%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%90%D7%95%D7%98%D7%95%D7%9E%D7%A6%D7%99%D7%94-at-arbex-4444700607",
@@ -809,7 +816,8 @@
     "has_on_call": false,
     "p25": 13500,
     "p50": 15500,
-    "p75": 17500
+    "p75": 17500,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQF_pywmFu_keg/company-logo_100_100/B4EZ9vrt.AJ0AI-/0/1784285159528/arbex_logo?e=2147483647&v=beta&t=db1Ev2eGbczGO4ZjIVxd06S6xoTqsUaXJr6EQWmrDdY"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/project-integration-service-coordinator-at-ur-tech-jobs-4448563772",
@@ -899,7 +907,8 @@
     "has_on_call": false,
     "p25": null,
     "p50": null,
-    "p75": null
+    "p75": null,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQHTY9Lka_BCcw/company-logo_100_100/B4DZeJUNnCGkAQ-/0/1750355467559?e=2147483647&v=beta&t=9I-ctzMlpzYaeSz0iyVfoWnsyA_Wz3i8ev87ixjHgCA"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%95%D7%9E%D7%97%D7%94-%D7%99%D7%AA-%D7%AA%D7%9E%D7%99%D7%9B%D7%94-%D7%98%D7%9B%D7%A0%D7%99%D7%AA-%D7%9C%D7%A2%D7%95%D7%9C%D7%9D-%D7%94%D7%94%D7%93%D7%A4%D7%A1%D7%94-%D7%91%D7%AA%D7%9C%D7%AA-%D7%9E%D7%9E%D7%93-3d-printing-at-systematics-ltd-solutions-at-work-4482947118",
@@ -1018,7 +1027,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQGz7IW4fWmBsQ/company-logo_100_100/company-logo_100_100/0/1631337167690?e=2147483647&v=beta&t=Sj8hOOX33OZPw2xOX3T3gRF2RHFGTOMC9QjtfcdMFko"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%A8%D7%90%D7%A9-%D7%A6%D7%95%D7%95%D7%AA-%D7%94%D7%A8%D7%9B%D7%91%D7%95%D7%AA-%D7%99%D7%93%D7%A0%D7%99%D7%95%D7%AA-at-netafim-4480272702",
@@ -1123,7 +1133,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQFtDN6UBUBKSA/company-logo_100_100/B4DZxxEecNKYAQ-/0/1771423525029/netafim_logo?e=2147483647&v=beta&t=7o-XZCC-_T33w7n36T7a2xgEiT1CtR7d_6JMZzHkG7A"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/integration-technician-%E2%80%93-part-time-jb-5624-at-recruitx-4483524441",
@@ -1214,7 +1225,8 @@
     "has_on_call": false,
     "p25": 13000,
     "p50": 14500,
-    "p75": 16000
+    "p75": 16000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQFedHybMZhyZw/company-logo_100_100/company-logo_100_100/0/1630585909736/barak_recruitment_and_consultancy_logo?e=2147483647&v=beta&t=BK_y3CU1C8vNkDH3PwQTnrDFv0nBdiDJayt7LApN7h0"
   },
   {
     "link": "https://www.drushim.co.il/job/38872806/9c571745/",
@@ -1333,7 +1345,8 @@
     "has_on_call": false,
     "p25": 16000,
     "p50": 18500,
-    "p75": 21000
+    "p75": 21000,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/3644317/page/639240473796353283.png"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%A6%D7%A0%D7%A8%D7%AA-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%A7%D7%99%D7%98%D7%95%D7%A8-%D7%90%D7%95%D7%95%D7%99%D7%A8-%D7%9E%D7%99%D7%9D-%D7%95%D7%94%D7%99%D7%93%D7%A8%D7%90%D7%95%D7%9C%D7%99%D7%A7%D7%94-at-elbit-systems-israel-4481085996",
@@ -1438,7 +1451,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/noc-student-position-at-yael-korentec-technologies-4483377323",
@@ -1543,7 +1557,8 @@
     "has_on_call": false,
     "p25": 16000,
     "p50": 18500,
-    "p75": 21000
+    "p75": 21000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQFq2n4jjN5FiA/company-logo_100_100/B4DZ87.GThIEAU-/0/1783417562602/korentec_logo?e=2147483647&v=beta&t=trMbBadqYi9XWlNYf2ahMGW3z9uiAmC2W-6EweIhAeU"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A4%D7%A2%D7%99%D7%9C-%D7%94-%D7%9E%D7%9B%D7%95%D7%A0%D7%94-at-sun-pharma-4369484609",
@@ -1634,7 +1649,8 @@
     "has_on_call": false,
     "p25": 13500,
     "p50": 15500,
-    "p75": 17500
+    "p75": 17500,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/C510BAQHL2VM5GKS6Zw/company-logo_100_100/company-logo_100_100/0/1630609829433/sun_pharma_logo?e=2147483647&v=beta&t=02gZUw4hPm1ksrFxbwHZD5xrI7LFmS_GXwBpZTHWI5I"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/field-service-technician-%E2%80%93-%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%A9%D7%99%D7%A8%D7%95%D7%AA-%D7%A9%D7%98%D7%97-at-dty-optical-4481460208",
@@ -1739,7 +1755,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQGqEtjSb0Uthg/company-logo_100_100/company-logo_100_100/0/1646466072250?e=2147483647&v=beta&t=9y0SiU6IgGmZea0X6LCEHeIVJ3-Hd_dZiooY-B-Zf5A"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%90%D7%95%D7%98%D7%95%D7%9E%D7%A6%D7%99%D7%94-%D7%9E%D7%A9%D7%A8%D7%94-%D7%9E%D7%A1-69370-at-sle-logistics-4481088432",
@@ -1844,7 +1861,8 @@
     "has_on_call": false,
     "p25": 13500,
     "p50": 15500,
-    "p75": 17500
+    "p75": 17500,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQEyybSlfnaWTg/company-logo_100_100/B4DZ241k.1KMAQ-/0/1776922546502/sle_israel_logo?e=2147483647&v=beta&t=goJMFQKyjAdJFAwHNL3iVRgQRc-jhgOYHSfiolyhrxA"
   },
   {
     "link": "https://www.drushim.co.il/job/38873661/351481e2/",
@@ -1854,7 +1872,7 @@
     "query": "מפעיל מערכות SCADA",
     "source": "Drushim",
     "location": "קיסריה",
-    "logo": "",
+    "logo": "assets/logos/mrfix.png",
     "date": "2026-10-27",
     "source_id": "",
     "is_direct_ats": "",
@@ -1977,7 +1995,8 @@
     "has_on_call": false,
     "p25": 13500,
     "p50": 15500,
-    "p75": 17500
+    "p75": 17500,
+    "company_logo_url": "assets/logos/mrfix.png"
   },
   {
     "link": "https://www.drushim.co.il/job/38873547/4b64941c/",
@@ -1987,7 +2006,7 @@
     "query": "מפעיל מערכות SCADA",
     "source": "Drushim",
     "location": "קיסריה",
-    "logo": "",
+    "logo": "assets/logos/mrfix.png",
     "date": "2026-10-27",
     "source_id": "",
     "is_direct_ats": "",
@@ -2096,7 +2115,8 @@
     "has_on_call": false,
     "p25": 13500,
     "p50": 15500,
-    "p75": 17500
+    "p75": 17500,
+    "company_logo_url": "assets/logos/mrfix.png"
   },
   {
     "link": "https://www.drushim.co.il/job/38861881/12fcb777/",
@@ -2187,7 +2207,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/1283833/page/637591767225899673.jpg"
   },
   {
     "link": "https://www.drushim.co.il/job/38856181/6d16d50b/",
@@ -2197,7 +2218,7 @@
     "query": "הנדסאי מכונות",
     "source": "Drushim",
     "location": "פתח תקווה",
-    "logo": "",
+    "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico",
     "date": "2026-10-28",
     "source_id": "",
     "is_direct_ats": "",
@@ -2306,7 +2327,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%93%D7%A8%D7%95%D7%A9-%D7%94-%D7%9E%D7%AA%D7%9B%D7%A0%D7%9F-%D7%AA-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%AA%D7%A7%D7%A9%D7%95%D7%A8%D7%AA-%D7%95%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%95%D7%AA-at-octally-integration-4476664576",
@@ -2411,7 +2433,8 @@
     "has_on_call": false,
     "p25": 13000,
     "p50": 14500,
-    "p75": 16000
+    "p75": 16000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQG8v90vqzvZrQ/company-logo_100_100/company-logo_100_100/0/1707033975909/octallyintegration_ltd_logo?e=2147483647&v=beta&t=u-EO8u3FdIxvWYVcN1w6psIf8u6E6t7xKiH03keQzW8"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/qc-inspector-at-acs-motion-control-4483842593",
@@ -2516,7 +2539,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQHKW3Nw4MPLUQ/company-logo_100_100/B56ZxX0V7.G4AU-/0/1770999865432/acs_motion_control_logo?e=2147483647&v=beta&t=9sjtUDBAnmUjVA-R6XIk7dJAGgJdzuvAZCXL0W691Fg"
   },
   {
     "link": "https://www.drushim.co.il/job/38671330/524ae40a/",
@@ -2607,7 +2631,8 @@
     "has_on_call": false,
     "p25": 13500,
     "p50": 15500,
-    "p75": 17500
+    "p75": 17500,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/15117/page/639134116604840087.png"
   },
   {
     "link": "https://www.drushim.co.il/job/38880425/7221a31a/",
@@ -2712,7 +2737,8 @@
     "has_on_call": false,
     "p25": 15000,
     "p50": 17250,
-    "p75": 19500
+    "p75": 19500,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/4072843/page/638593295897057226.jpg"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%94-%E2%80%94-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%90%D7%95%D7%98%D7%95%D7%A0%D7%95%D7%9E%D7%99%D7%95%D7%AA-at-solar-solutions-%D7%A4%D7%AA%D7%A8%D7%95%D7%A0%D7%95%D7%AA-%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99%D7%99%D7%9D-4484458939",
@@ -2803,7 +2829,8 @@
     "has_on_call": false,
     "p25": 14500,
     "p50": 16500,
-    "p75": 18500
+    "p75": 18500,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQEgnZgGoLwx8A/company-logo_100_100/B56aDT6HFAI4AI-/0/1790261621452?e=2147483647&v=beta&t=iUPZ7e20f9CAXOaQvuMdFOEYI3kkIrF4KN9lFBpJVYo"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/field-system-qa-at-d-fend-solutions-4484716418",
@@ -2922,7 +2949,8 @@
     "has_on_call": false,
     "p25": 14000,
     "p50": 16500,
-    "p75": 19000
+    "p75": 19000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQGLdvnhsyCXXw/company-logo_100_100/B4DaAfU2AsJoAI-/0/1787231953667/d_fend_solutions_logo?e=2147483647&v=beta&t=HVQ8NPo1t8LaDiuTTHdTxqL4fxl3NprC_BoiIJIguJo"
   },
   {
     "link": "https://www.comeet.com/jobs/enlightenergy/99.006/grid--interconnection-coordinator/19.47C",
@@ -2932,7 +2960,7 @@
     "query": "",
     "source": "Comeet",
     "location": "Rosh Haayin, Israel",
-    "logo": "",
+    "logo": "assets/logos/enlight.png",
     "date": "2026-10-29",
     "source_id": "19.47C",
     "is_direct_ats": true,
@@ -3041,7 +3069,8 @@
     "has_on_call": false,
     "p25": 12500,
     "p50": 14500,
-    "p75": 16500
+    "p75": 16500,
+    "company_logo_url": "assets/logos/enlight.png"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/noc-team-member-at-cellcom-4484425695",
@@ -3174,7 +3203,8 @@
     "has_on_call": false,
     "p25": 16000,
     "p50": 18500,
-    "p75": 21000
+    "p75": 21000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQGOZ9PA06okgA/company-logo_100_100/company-logo_100_100/0/1733046434928/cellcom_logo?e=2147483647&v=beta&t=ext0FZOGngVxvLsNVQJd6KBg9sHjHTRBehcAxJKf_eI"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A8%D7%9B%D7%99%D7%91-%D7%94-%D7%9E%D7%A8%D7%99%D7%A6-%D7%94-%D7%9E%D7%9B%D7%A0%D7%99-%D7%91%D7%99%D7%99%D7%A6%D7%95%D7%A8-at-acs-motion-control-4483843543",
@@ -3293,7 +3323,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQHKW3Nw4MPLUQ/company-logo_100_100/B56ZxX0V7.G4AU-/0/1770999865432/acs_motion_control_logo?e=2147483647&v=beta&t=9sjtUDBAnmUjVA-R6XIk7dJAGgJdzuvAZCXL0W691Fg"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/mechanical-engineer-maker-at-tevel-4482500284",
@@ -3384,7 +3415,8 @@
     "has_on_call": false,
     "p25": 14000,
     "p50": 16500,
-    "p75": 19000
+    "p75": 19000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQGTXohjRkQuRQ/company-logo_100_100/company-logo_100_100/0/1660417861627/tevel_aerobotics_technologies_logo?e=2147483647&v=beta&t=F-PU8ZvY6m0gR1FGFROyumN03qyQIQdNiCfes5Gu7O0"
   },
   {
     "link": "https://www.drushim.co.il/job/38884187/43b48c69/",
@@ -3394,7 +3426,7 @@
     "query": "הנדסאי מכונות",
     "source": "Drushim",
     "location": "מעבר אלנבי",
-    "logo": "",
+    "logo": null,
     "date": "2026-10-29",
     "source_id": "",
     "is_direct_ats": "",
@@ -3475,7 +3507,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": null
   },
   {
     "link": "https://il.linkedin.com/jobs/view/capacity-installation-technician-data-center-infrastructure-delivery-at-amazon-web-services-aws-4484490129",
@@ -3566,7 +3599,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQFqdm1TZ-RZKQ/company-logo_100_100/B4EZgOay6gHEAY-/0/1752588562343/amazon_web_services_logo?e=2147483647&v=beta&t=813v--p_AS7bme1J7PlAyB2BEU4-c9ba9AUzyuGb5Wg"
   },
   {
     "link": "https://www.drushim.co.il/job/38877613/5ccf9562/",
@@ -3671,7 +3705,8 @@
     "has_on_call": false,
     "p25": 13500,
     "p50": 15500,
-    "p75": 17500
+    "p75": 17500,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/5709/page/637848555675496133.png"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/grid-interconnection-coordinator-at-enlight-renewable-energy-ltd-enlt-4484959233",
@@ -3776,7 +3811,8 @@
     "has_on_call": false,
     "p25": 12500,
     "p50": 14500,
-    "p75": 16500
+    "p75": 16500,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY"
   },
   {
     "link": "https://www.drushim.co.il/job/38703896/9e9e2668/",
@@ -3867,7 +3903,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/890324/page/639263622810052461.png"
   },
   {
     "link": "https://www.drushim.co.il/job/38880064/d5fb083f/",
@@ -3986,7 +4023,8 @@
     "has_on_call": true,
     "p25": 16000,
     "p50": 18500,
-    "p75": 21000
+    "p75": 21000,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/4072843/page/638593295897057226.jpg"
   },
   {
     "link": "https://www.drushim.co.il/job/38898304/f068f314/",
@@ -3996,7 +4034,7 @@
     "query": "טכנאי שירות",
     "source": "Drushim",
     "location": "ירכא",
-    "logo": "",
+    "logo": null,
     "date": "2026-10-29",
     "source_id": "",
     "is_direct_ats": "",
@@ -4105,7 +4143,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": null
   },
   {
     "link": "https://www.drushim.co.il/job/38905258/433a391e/",
@@ -4210,7 +4249,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/284015/page/638463571972940933.png"
   },
   {
     "link": "https://www.drushim.co.il/job/38894884/f7eb5294/",
@@ -4315,7 +4355,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/3912084/page/638574070215162792.png"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-%D7%93%D7%95%D7%A8-%D7%94%D7%9E%D7%A9%D7%9A-at-pepsico-4483040575",
@@ -4434,7 +4475,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQH6OpZgQIX1lQ/company-logo_100_100/B4EZoqk4DAKYAQ-/0/1761650901484/pepsico_logo?e=2147483647&v=beta&t=Lgsla1hKgGAsV9EW_3o3z-eK0IiVZDlbNSFo8JGkNTQ"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/delivery-project-manager-israel-at-sungrow-europe-4485230613",
@@ -4553,7 +4595,8 @@
     "has_on_call": false,
     "p25": 12500,
     "p50": 14500,
-    "p75": 16500
+    "p75": 16500,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQFCUTveqO9o4A/company-logo_100_100/B4DZ1sPkRJHwAQ-/0/1775637513725/sungroweurope_logo?e=2147483647&v=beta&t=ByEsKt11KoO48q0wgWYYDEKz883x_YduPwOCM2D-e28"
   },
   {
     "link": "https://www.drushim.co.il/job/38694149/d4f303fc/",
@@ -4644,7 +4687,8 @@
     "has_on_call": false,
     "p25": 13500,
     "p50": 15500,
-    "p75": 17500
+    "p75": 17500,
+    "company_logo_url": "https://webapi.drushim.co.il/logos/3445900/page/639245431320306693.png"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%94%D7%A0%D7%93%D7%A1-%D7%AA-%D7%90%D7%97%D7%96%D7%A7%D7%94-%D7%9C%D7%9E%D7%97%D7%9C%D7%A7%D7%AA-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%91%D7%90%D7%AA%D7%A8-%D7%90%D7%A1%D7%9D-%D7%A0%D7%A1%D7%98%D7%9C%D7%94-%D7%91%D7%A9%D7%93%D7%A8%D7%95%D7%AA-at-nestl%C3%A9-4484941739",
@@ -4763,7 +4807,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQGaL-YyJ8xd7Q/company-logo_100_100/company-logo_100_100/0/1630615758178/nestle_s_a__logo?e=2147483647&v=beta&t=qny1ZgIJDhBogZZt76AygBuYNGdIj4UhIDvQ2R15drY"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/machine-operator-%D7%9E%D7%A4%D7%A2%D7%99%D7%9C-%D7%AA-%D7%9E%D7%9B%D7%95%D7%A0%D7%94-%D7%A2%D7%A4%D7%95%D7%9C%D7%94-at-kimberly-clark-4485243967",
@@ -4868,7 +4913,8 @@
     "has_on_call": false,
     "p25": 13500,
     "p50": 15500,
-    "p75": 17500
+    "p75": 17500,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQGlS6eTfiyQMw/company-logo_100_100/company-logo_100_100/0/1711458004114/kimberly_clark_logo?e=2147483647&v=beta&t=c3DbHBqw9PXsDnkUAk5TuMc4bB98SNZvE6uRRm179UQ"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/technician-for-elevator-and-escalator-modernization-at-linked-magic-4483985458",
@@ -4973,7 +5019,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQFNTT5dJd8eWw/company-logo_100_100/company-logo_100_100/0/1689829881237/linkedin_magic_logo?e=2147483647&v=beta&t=5893nX82xenAjmZ9OTsmc1IyeuQlAfGSQryompuymQI"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/engineering-technician-r-d-at-helios-4481457226",
@@ -5092,6 +5139,7 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQHdUV219DdOdQ/company-logo_100_100/company-logo_100_100/0/1719476546358/project_helios_logo?e=2147483647&v=beta&t=McZPRX1EGVbS5JkijdvPFhUrgmgX5YAOKeSq444oXv0"
   }
 ]

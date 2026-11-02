@@ -947,12 +947,12 @@
       gap: 12px;
     }
     .job-company-logo {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
       background: #ffffff;
       border: 1px solid var(--dashboard-edge);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -964,7 +964,7 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      padding: 4px;
+      padding: 2px;
     }
     .job-company-avatar {
       width: 100%;
@@ -2089,14 +2089,14 @@
         margin: 0 0 6px 0 !important;
       }
       #cardsContainer .job-company-logo {
-        width: 44px !important;
-        height: 44px !important;
-        border-radius: 12px !important;
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 8px !important;
         margin: 0 !important;
         flex-shrink: 0 !important;
         background: #ffffff !important;
         border: 1px solid rgba(255, 255, 255, 0.14) !important;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25) !important;
       }
       #cardsContainer .job-company-avatar {
         font-size: 15px !important;

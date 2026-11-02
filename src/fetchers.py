@@ -135,6 +135,7 @@ def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=1
                                     "link": link,
                                     "snippet": snippet,
                                     "logo": logo,
+                                    "company_logo_url": logo or None,
                                     "query": kw,
                                     "source": "LinkedIn"
                                 })
@@ -274,6 +275,7 @@ def fetch_drushim_jobs(keywords, health_metrics, max_pages=1):
                                 "link": link,
                                 "snippet": snippet,
                                 "logo": logo,
+                                "company_logo_url": logo or None,
                                 "query": kw,
                                 "source": "Drushim"
                             })
@@ -380,12 +382,15 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
                     desc_parts.append(f"{d.get('name', 'Details')}: {val}")
             snippet = " | ".join(desc_parts) if desc_parts else title
 
+            comeet_logo = "assets/logos/enlight.png" if "enlight" in company_slug.lower() else None
             jobs.append({
                 "title": title,
                 "company": company_display_name,
                 "link": link,
                 "location": loc_str,
                 "snippet": snippet,
+                "logo": comeet_logo,
+                "company_logo_url": comeet_logo,
                 "source": "Comeet",
                 "source_id": pos.get("uid", ""),
                 "description": snippet if desc_parts else "",

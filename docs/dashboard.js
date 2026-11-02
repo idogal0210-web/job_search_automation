@@ -1128,7 +1128,33 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     [['sle', 'sle logistics', 'ס.ל.א', 'סלא'], 'sle.co.il'],
     [['sun pharma', 'סאן פארמה'], 'sunpharma.com'],
     [['korentec', 'yael korentec', 'קבוצת יעל', 'קורנטק'], 'yaelgroup.com'],
-    [['כרמית מיסטר פיקס', 'מיסטר פיקס', 'mr fix', 'mr. fix'], 'carmit-mrfix.com']
+    [['כרמית מיסטר פיקס', 'מיסטר פיקס', 'mr fix', 'mr. fix'], 'carmit-mrfix.com'],
+    [['bird aero', 'bird aerosystems', 'בירד'], 'birdaero.com'],
+    [['abra', 'אברא'], 'abra-it.com'],
+    [['iff'], 'iff.com'],
+    [['sungrow', 'סאנגרו'], 'sungrowpower.com'],
+    [['kyndryl', 'קינדריל'], 'kyndryl.com'],
+    [['drivenets', 'דרייבנטס'], 'drivenets.com'],
+    [['kela', 'קלה'], 'kela-tech.com'],
+    [['exodigo', 'אקסודיגו'], 'exodigo.com'],
+    [['forsight', 'פורסייט רובוטיקס'], 'forsightrobotics.com'],
+    [['mda space', 'mda'], 'mda.space'],
+    [['mer group', 'מר'], 'mer-group.com'],
+    [['commit'], 'commit.tech'],
+    [['comblack', 'קומבלק'], 'comblack.co.il'],
+    [['nuvei', 'נוביי'], 'nuvei.com'],
+    [['mentee', 'mentee robotics', 'מנטי'], 'menteebot.com'],
+    [['vishay intertechnology'], 'vishay.com'],
+    [['longi solar', 'longi'], 'longi.com'],
+    [['sofar', 'sofar solar'], 'sofarsolar.com'],
+    [['fieldcore'], 'fieldcore.com'],
+    [['cellcom', 'סלקום'], 'cellcom.co.il'],
+    [['cbc israel', 'החברה המרכזית למשקאות'], 'cocacola.co.il'],
+    [['ortal', 'אורטל ולעבודה'], 'ortal-hr.co.il'],
+    [['ducart', 'דוקרט'], 'ducart.co.il'],
+    [['kimberly-clark', 'קימברלי קלארק'], 'kimberly-clark.com'],
+    [['helios'], 'project-helios.space'],
+    [['elmo motion control', 'אלמו'], 'elmomc.com']
   ];
 
   function matchCompanyWord(text, keyword) {
@@ -1286,7 +1312,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     let primaryUrl = localPath;
     let initialStep = 0;
     if (!primaryUrl) {
-      if (customLogo && !customLogo.includes('media.licdn.com')) {
+      if (customLogo) {
         primaryUrl = sanitizeUrl(customLogo);
       } else if (domain) {
         primaryUrl = 'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://' + encodeURIComponent(domain) + '&size=128';
@@ -1299,7 +1325,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function handleCompanyLogoError(img, domain) {
     if (!domain) {
-      showCompanyLogoAvatar(img);
+      hideCompanyLogoElement(img);
       return;
     }
     const step = parseInt(img.dataset.step || '0', 10);
@@ -1310,7 +1336,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       img.dataset.step = '2';
       img.src = 'https://icons.duckduckgo.com/ip3/' + encodeURIComponent(domain) + '.ico';
     } else {
-      showCompanyLogoAvatar(img);
+      hideCompanyLogoElement(img);
     }
   }
 
@@ -1321,12 +1347,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   }
 
-  function showCompanyLogoAvatar(img) {
-    img.style.display = 'none';
-    const parent = img.parentElement;
+  function hideCompanyLogoElement(img) {
+    const parent = img.closest('.job-company-logo');
     if (parent) {
-      const avatar = parent.querySelector('.job-company-avatar');
-      if (avatar) avatar.style.display = 'flex';
+      parent.style.display = 'none';
+    } else {
+      img.style.display = 'none';
     }
   }
 
@@ -1334,7 +1360,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const info = getCompanyLogoInfo(companyName, customLogo);
     const safeComp = escapeHtml(info.rawName);
     const safeDom = (info.domain || '').replace(/"/g, '&quot;');
-    const brandColor = getCompanyBrandColor(info.rawName);
 
     if (info.primaryUrl) {
       return `
@@ -1346,16 +1371,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
                data-step="${info.initialStep}"
                onload="handleCompanyLogoLoad(this, '${safeDom}')" 
                onerror="handleCompanyLogoError(this, '${safeDom}')" />
-          <div class="job-company-avatar" style="display: none; background: ${brandColor[0]}; color: ${brandColor[1]};">${info.initials}</div>
-        </div>
-      `;
-    } else {
-      return `
-        <div class="job-company-logo" title="${safeComp}">
-          <div class="job-company-avatar" style="background: ${brandColor[0]}; color: ${brandColor[1]};">${info.initials}</div>
         </div>
       `;
     }
+    return '';
   }
 
   // Israeli Geolocation Coordinate Dictionary (Latitude, Longitude)
