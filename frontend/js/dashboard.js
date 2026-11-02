@@ -850,7 +850,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         if (incomingDelta && typeof incomingDelta === 'object') {
           let count = 0;
           for (const [idOrLink, val] of Object.entries(incomingDelta)) {
-            const match = rawJobsData.find(j => j.link && (j.link === idOrLink || j.link.includes(idOrLink)));
+            const match = (rawJobsData || []).find(j => j.link && (j.link === idOrLink || j.link.includes(idOrLink)));
             const targetLink = match ? match.link : idOrLink;
             if (val === '*' || val === 'starred') {
               starredJobs[targetLink] = true;
@@ -864,11 +864,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             }
             count++;
           }
+          recordLocalEdit();
           saveStarredJobs(starredJobs);
           saveTriageState(jobStates);
           window.history.replaceState({}, document.title, window.location.pathname);
           setTimeout(() => {
-            showToast('ph-check-circle', count > 0 ? `סונכרנו בהצלחה ${count} משרות חדשות!` : 'הדשבורד מסונכרן ומעודכן!');
+            showToast('ph-check-circle', count > 0 ? `סונכרנו בהצלחה ${count} משרות מהקישור!` : 'הדשבורד מסונכרן ומעודכן!');
             updateCubeCountsImmediately();
             renderCards();
             updateUI();
@@ -3354,6 +3355,34 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         if (typeof closeJobModal === 'function') closeJobModal();
       }
     });
+  }
+
+  async function pullLatestFromCloud() {
+    const pullBtn = document.getElementById('syncPullRemoteBtn');
+    if (pullBtn) {
+      pullBtn.disabled = true;
+      pullBtn.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> מושך נתונים מהענן...';
+    }
+
+    try {
+      localStorage.removeItem(LAST_LOCAL_EDIT_KEY);
+      await fetchCloudSync(true);
+      await loadHistoricalCatalogOnDemand();
+      renderCards();
+      updateUI();
+      const savedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !isJobStarred(id)).length;
+      const starredCount = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id]) && (jobStates[id] || 'pending') !== 'rejected' && (jobStates[id] || 'pending') !== 'purged').length;
+      const newCount = (rawJobsData || []).filter(j => !isJobStarred(j.link) && (jobStates[j.link] || 'pending') !== 'saved' && (jobStates[j.link] || 'pending') !== 'rejected' && (jobStates[j.link] || 'pending') !== 'purged').length;
+      closeSyncModal();
+      showToast('ph-cloud-arrow-down', `נתוני הענן נמשכו בהצלחה! (${savedCount} שמורות, ${starredCount} בכוכב, ${newCount} חדשות)`);
+    } catch (e) {
+      showToast('ph-warning', 'שגיאה במשיכת נתונים מהענן');
+    } finally {
+      if (pullBtn) {
+        pullBtn.disabled = false;
+        pullBtn.innerHTML = '<i class="ph-duotone ph-cloud-arrow-down"></i> משוך ושחזר נתונים מהענן לטלפון / מחשב';
+      }
+    }
   }
 
   async function confirmSync() {
@@ -6930,8 +6959,8 @@ Open for operations management and engineering roles in Israeli energy and clean
     updateCubeCountsImmediately();
     checkUrlSync();
     updateSortIconAndToast(currentSort, false);
-    await fetchCloudSync();
     await fetchJobsData();
+    await fetchCloudSync();
     setViewMode(currentViewMode);
     initAtsModule();
     initCvUploadState();

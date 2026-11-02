@@ -20,7 +20,7 @@
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261102025439">
+  <link rel="stylesheet" href="dashboard.css?v=20261102031620">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -1807,20 +1807,26 @@
       </div>
 
       <p style="font-size: 14px; color: var(--dashboard-muted); line-height: 1.6; margin-bottom: 18px;">
-        הדשבורד שומר ומעדכן את כל המשרות שסימנת באופן רציף. סנכרון ישיר מאפשר לפתוח את הסימונים בכל מכשיר.
+        הדשבורד שומר את כל הסימונים שלך בדפדפן המקומי. במידה ואתה פותח את הדשבורד במכשיר חדש או בטלפון, באפשרותך למשוך את המצב המעודכן מהענן בלחיצה אחת.
       </p>
 
-      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; padding: 12px 16px; background: rgba(137,244,231,0.06); border: 1px solid rgba(137,244,231,0.2); border-radius: 16px;">
-        <span style="font-size: 13px; color: var(--dashboard-muted);">סנכרון מיידי בין מכשירים:</span>
-        <button onclick="shareSyncLink()" class="dashboard-chip" style="cursor: pointer; padding: 7px 16px; font-size: 13px;">
-          <i class="ph-duotone ph-share-network"></i> שיתוף קישור סנכרון
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+        <button id="syncPullRemoteBtn" type="button" onclick="pullLatestFromCloud()" class="tool-btn" style="width: 100%; justify-content: center; gap: 8px; min-height: 42px; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.1); color: var(--dashboard-cyan); font-weight: 600;">
+          <i class="ph-duotone ph-cloud-arrow-down"></i> משוך ושחזר נתונים מהענן לטלפון / מחשב
         </button>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px; background: rgba(137,244,231,0.06); border: 1px solid rgba(137,244,231,0.2); border-radius: 16px;">
+          <span style="font-size: 13px; color: var(--dashboard-muted);">סנכרון ישיר בין מכשירים:</span>
+          <button type="button" onclick="shareSyncLink()" class="dashboard-chip" style="cursor: pointer; padding: 7px 16px; font-size: 13px;">
+            <i class="ph-duotone ph-share-network"></i> שיתוף קישור סנכרון
+          </button>
+        </div>
       </div>
 
       <div style="display: flex; justify-content: flex-end; gap: 12px;">
-        <button onclick="closeSyncModal()" class="tool-btn">סגור</button>
-        <button id="syncConfirmBtn" onclick="confirmSync()" class="dashboard-primary">
-          אשר וסנכרן עכשיו
+        <button type="button" onclick="closeSyncModal()" class="tool-btn">סגור</button>
+        <button type="button" id="syncConfirmBtn" onclick="confirmSync()" class="dashboard-primary">
+          שמור וסנכרן
         </button>
       </div>
     </div>
@@ -1940,15 +1946,15 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261102025439",
+      build_id: "20261102031620",
       schema_version: "2.0.0",
       generated_at: "02.11.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261102025439",
-      catalog_data_url: "data/historical_catalog.json?v=20261102025439",
-      sync_data_url: "data/sync_state.json?v=20261102025439"
+      jobs_data_url: "data/jobs.json?v=20261102031620",
+      catalog_data_url: "data/historical_catalog.json?v=20261102031620",
+      sync_data_url: "data/sync_state.json?v=20261102031620"
     };
   </script>
-  <script src="dashboard.js?v=20261102025439" defer></script>
+  <script src="dashboard.js?v=20261102031620" defer></script>
 </body>
 </html>
