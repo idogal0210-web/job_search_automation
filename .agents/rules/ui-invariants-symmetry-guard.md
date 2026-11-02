@@ -1,12 +1,12 @@
 ---
-description: UI invariants, desktop-mobile isolation, mathematical symmetry, and schematic pipeline guidelines for job_search_automation.
+description: UI invariants, unified desktop architecture, mathematical symmetry, and schematic pipeline guidelines for job_search_automation.
 globs: "*.html, *.css, *.js, frontend/**, docs/**"
 ---
 
 # כללי ברזל לעיצוב וסנכרון ממשק (UI Invariants & Symmetry Guard)
 
-## 1. בידוד רספונסיבי מוחלט (Desktop-Mobile Isolation)
-- כל שינוי, שדרוג או רפקטורינג בממשק הדסקטופ (min-width: 1025px) חייב להיות מבודד לחלוטין מתצוגת המובייל (max-width: 900px).
+## 1. ארכיטקטורת דשבורד אחודה לדסקטופ (Unified Desktop Architecture)
+- המערכת מבוססת על דשבורד אחד אחוד בתצורת דסקטופ (Desktop-First). במידה והדשבורד נפתח במכשיר נייד, הוא מוצג במבנה הדסקטופ האחוד ללא רכיבי ניווט נפרדים או מצבי מובייל ייעודיים.
 - אסור ששינוי בסרגלי הניווט, בכותרות או בפריסות יגרור עיוות, שינוי עימוד או פגיעה בקוביות המשרות (Category Cubes: cube_all, cube_starred, cube_saved, cube_rejected).
 - מבנה קוביות המשרות בדסקטופ הוא קומפקטי ואנכי (flex-direction: column).
 

@@ -20,7 +20,7 @@ globs: "*"
   - Absolute data lockout: Do not touch or inspect any files in `data/`. Rely strictly on HTML markup and CSS classes.
   - Scoped reading: Do not load full 4,000+ line HTML files. Always pass `StartLine` and `EndLine` to `read_file` to inspect only the target component.
   - Dual-template symmetry: Keep `frontend/templates/index.html` and `docs/index.html` in 1:1 synchronization.
-  - Targeted verification: Run only `tests/test_mobile_css.py` and `tests/test_template_docs_sync.py`.
+  - Targeted verification: Run only `tests/test_template_docs_sync.py`.
 
 ## 4. Scoped Backend & Logic Tasks
 - When modifying scrapers or AI scoring logic, inspect only the specific module under `src/` and its matching test file under `tests/`.

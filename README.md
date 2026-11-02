@@ -86,7 +86,6 @@ job_search_automation/
     ├── validate_zero_emoji.py      # אימות מוחלט של מדיניות אפס אימוג'ים בקוד, בממשק ובדוחות
     ├── evaluate_dataset.py         # כלי הערכת דיוק, כיסוי, F1 וניתוח False Negatives
     ├── requeue_jobs.py             # סקריפט שירות להערכה חוזרת סלקטיבית של משרות מהארכיון
-    ├── check_responsive.py         # כלי אימות רספונסיביות ותצוגה במובייל ודסקטופ
     └── update_job_gaps_and_reasoning.py # כלי עדכון נימוקי התאמה ופערי משרות
 ```
 

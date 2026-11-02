@@ -6611,23 +6611,7 @@
 .job-evidence-details summary { min-height: 44px; padding-block: 12px; cursor: pointer; }
 
 
-/* ==========================================================================
-   Mobile Phase A: iOS/Safari hardening (safe-area, input zoom, dvh,
-   touch feedback, hit areas, scroll containment, reduced motion)
-   ========================================================================== */
-
-/* Safe Area: keep content clear of the notch, rounded corners and home indicator */
-body {
-  padding-block-start: env(safe-area-inset-top, 0px);
-  padding-block-end: env(safe-area-inset-bottom, 0px);
-  padding-inline: env(safe-area-inset-left, 0px) env(safe-area-inset-right, 0px);
-}
-.btn-back-to-top {
-  bottom: calc(26px + env(safe-area-inset-bottom, 0px));
-  left: calc(26px + env(safe-area-inset-left, 0px));
-}
-
-/* Touch behavior: no double-tap zoom delay, no grey tap flash */
+/* Interactive behavior */
 button,
 a,
 select,
@@ -6657,50 +6641,10 @@ label,
   overscroll-behavior: contain;
 }
 
-/* Dynamic viewport units: stable heights as Safari toolbars collapse */
+/* Dynamic viewport units */
 @supports (height: 100dvh) {
   .dashboard-modal-box { max-height: 85dvh; }
   .job-details-modal-box { max-height: 90dvh; }
-  @media (max-width: 768px) {
-    .job-details-modal-box { max-height: 94dvh !important; height: 94dvh !important; }
-    #duplicatesModal .dashboard-modal-box { max-height: 88dvh !important; }
-  }
-}
-
-@media (max-width: 768px) {
-  /* 16px minimum prevents the forced focus zoom on iOS Safari */
-  body :is(
-    input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]),
-    select,
-    textarea
-  ) {
-    font-size: max(16px, 1em) !important;
-  }
-
-  /* Visual size stays compact; the tappable area grows to 44px via a hit area */
-  #cardsContainer .btn-star,
-  #cardsContainer .btn-copy-link,
-  .job-actions-top-row .btn-toggle-details,
-  .job-actions-top-row .action-reject-btn {
-    position: relative;
-  }
-  #cardsContainer .btn-star::after,
-  #cardsContainer .btn-copy-link::after {
-    content: "";
-    position: absolute;
-    inset: -4px;
-  }
-  .job-actions-top-row .btn-toggle-details::after {
-    content: "";
-    position: absolute;
-    inset-block: -2px;
-    inset-inline: 0;
-  }
-  .job-actions-top-row .action-reject-btn::after {
-    content: "";
-    position: absolute;
-    inset: -2px;
-  }
 }
 
 /* Respect reduced-motion preference */
@@ -6712,84 +6656,5 @@ label,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* Mobile Phase A.2: fix clipped salary chip and wrapped header mode switch */
-@media (max-width: 768px) {
-  /* Let badges wrap so the salary chip drops to its own row instead of being cut off */
-  #cardsContainer .job-card-topbar-badges {
-    flex-wrap: wrap !important;
-    overflow: visible !important;
-    row-gap: 4px !important;
-  }
-  #cardsContainer .job-salary-chip {
-    max-width: 100%;
-    font-size: 12px !important;
-    padding: 3.5px 10px !important;
-    border-radius: 999px !important;
-  }
-  #cardsContainer .job-card-meta-row {
-    font-size: 12px !important;
-    padding: 4px 0 6px 0 !important;
-    gap: 10px !important;
-  }
-  /* Keep each header mode button on a single line with matching heights */
-  .dashboard-mode-switcher .mode-switch-btn {
-    white-space: nowrap;
-    font-size: 14.5px;
-    gap: 6px;
-    padding-inline: 12px !important;
-  }
-}
-
-/* Mobile Bottom Bar (Thumb Zone) */
-.mobile-bottom-nav {
-  display: none;
-}
-@media (max-width: 768px) {
-  .mobile-bottom-nav {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: calc(56px + env(safe-area-inset-bottom, 0px));
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    background: rgba(15, 23, 42, 0.94);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    z-index: 90;
-    justify-content: space-around;
-    align-items: center;
-  }
-  .mobile-nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    background: none;
-    border: none;
-    color: var(--dashboard-muted);
-    font-size: 11px;
-    font-weight: 600;
-    padding: 6px 0;
-    cursor: pointer;
-    transition: color 0.15s ease;
-  }
-  .mobile-nav-item i {
-    font-size: 20px;
-  }
-  .mobile-nav-item.active {
-    color: var(--dashboard-lime);
-  }
-  body {
-    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px)) !important;
-  }
-  .btn-back-to-top {
-    bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }

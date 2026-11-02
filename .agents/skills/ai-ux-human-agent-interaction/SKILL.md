@@ -1,6 +1,6 @@
 ---
 name: ai-ux-human-agent-interaction
-description: "Specialized Human-Agent Interaction (HAI) and UX engine for job_search_automation. Implements the global agent-experience-interaction-designer standard for the HTML dashboard (docs/index.html), zero-tag job cards, 1:1 desktop-mobile structural parity, high-res company logos, transparent AI scoring, and daily reporting."
+description: "Specialized Human-Agent Interaction (HAI) and UX engine for job_search_automation. Implements the global agent-experience-interaction-designer standard for the HTML dashboard (docs/index.html), zero-tag job cards, unified desktop dashboard architecture, high-res company logos, transparent AI scoring, and daily reporting."
 ---
 
 # AI UX & Human-Agent Interaction Designer (Job Search Specialization)
@@ -19,7 +19,7 @@ Your mission is to ensure that the interface between Ido Gal and the autonomous 
 - **Predictable & Verifiable:** Scrape runs, filtered jobs, and error states reflect actual telemetry — never fabricated progress.
 - **Cognitively Lightweight (The 5-Second Rule):** Ido can open the daily dashboard or email digest and assess top matches in under 5 seconds.
 - **Zero-Tag Clean Aesthetics:** Symmetrical, clean metric cubes without visual clutter, tag chips, or pill noise.
-- **Accessible & RTL:** Flawless Hebrew typography (`dir="rtl"`), high contrast, and responsive layout for mobile Safari and desktop Chrome.
+- **Accessible & RTL:** Flawless Hebrew typography (`dir="rtl"`), high contrast, and clean layout for desktop and modern browsers.
 
 ---
 
@@ -32,7 +32,7 @@ Activate this skill when:
 - Designing category filters (Energy, Drones/UAV, All) and score thresholds.
 - Polishing daily email digest formatting and executive summaries.
 - Enhancing error reporting and telemetry visibility (e.g. Comeet/LinkedIn network timeouts, quota limits).
-- Ensuring 1:1 structural parity between mobile and desktop presentations.
+- Ensuring unified desktop dashboard architecture and preventing divergent mobile-only clutter.
 
 ---
 
@@ -46,16 +46,16 @@ Every job card must communicate:
 
 ### 3.2 Responsive Cube Card Architecture
 - Maintain the responsive cube/card layout where key decision data is visible on the primary face, and secondary details are progressively disclosed via toggle/drawer.
-- Prevent vertical and horizontal bloat — ensure cards stack cleanly on mobile viewports with zero horizontal scroll.
+- Prevent vertical and horizontal bloat — ensure cards stack cleanly without horizontal scroll.
 
 ### 3.3 Zero-Tag Architecture (Strict Clean Design)
 - **Zero Tag Chips:** Completely eliminate tag chips, badges, and pill chips from job cards and generator logic.
 - **Structured Metric Grid:** Replace tags with structured, symmetrical 4-pill metric grids (Location, Experience, Role Type, Salary/Field) directly under the header.
 - **Pure AI Synthesis:** Keep categorization and fit explanation embedded directly inside the AI rationale paragraph rather than scattered across chips.
 
-### 3.4 Desktop-Mobile 1:1 Structural Parity
-- **Identical Component Hierarchy:** Mobile and desktop layouts must contain the exact same structural components, cards, action buttons (2x2 action grid: Apply, Star, Dismiss, Details), and progressive disclosure details.
-- **CSS-Only Proportional Scaling:** Adapt exclusively through responsive CSS media queries, grid columns, and viewport-friendly padding/typography. Never omit, hide, or alter core interactive features on mobile.
+### 3.4 Unified Desktop Dashboard Architecture
+- **Single Source of Truth:** A single, clean desktop-first dashboard layout. There are no separate mobile navigation bars (no bottom thumb-bars) or dedicated mobile-only modes.
+- **Natural Accessibility:** If viewed on a smaller screen or mobile device, the dashboard displays the unified desktop layout without separate divergent mobile subsystems.
 
 ### 3.5 User Triage State & LocalStorage Integrity
 - **Non-Destructive Hydration:** User annotations (starred jobs, dismissed jobs, applied status, and seen markers) stored in `localStorage` must NEVER be wiped, overwritten, or reset during UI updates or new scrapings.

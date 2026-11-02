@@ -1884,7 +1884,7 @@
     </div>
   </dialog>
 
-  <!-- Dedicated Mobile Job Details Modal / Screen -->
+  <!-- Job Details Modal -->
   <dialog id="jobDetailsModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeJobModal()">
     <div class="dashboard-card dashboard-modal-box job-details-modal-box" id="jobModalBox">
       <!-- Modal Header Bar -->
@@ -1910,25 +1910,6 @@
     </div>
   </dialog>
 
-  <!-- Mobile Thumb-Zone Bottom Navigation -->
-  <nav class="mobile-bottom-nav" aria-label="ניווט תחתון מהיר">
-    <button type="button" class="mobile-nav-item active" id="mobNavJobs" onclick="switchDashboardAppMode('radar'); window.scrollTo({top:0, behavior:'smooth'});">
-      <i class="ph-duotone ph-briefcase"></i>
-      <span>משרות</span>
-    </button>
-    <button type="button" class="mobile-nav-item" id="mobNavStudio" onclick="switchDashboardAppMode('studio'); window.scrollTo({top:0, behavior:'smooth'});">
-      <i class="ph-duotone ph-sparkle"></i>
-      <span>סטודיו</span>
-    </button>
-    <button type="button" class="mobile-nav-item" id="mobNavFilters" onclick="const f=document.querySelector('.controls-inputs-stack'); if(f){ f.scrollIntoView({behavior:'smooth'}); }">
-      <i class="ph-duotone ph-faders"></i>
-      <span>סינון</span>
-    </button>
-    <button type="button" class="mobile-nav-item" id="mobNavTop" onclick="window.scrollTo({top:0, behavior:'smooth'});">
-      <i class="ph-duotone ph-arrow-up"></i>
-      <span>למעלה</span>
-    </button>
-  </nav>
 
   <!-- Toast Notification -->
   <div id="toast" class="dashboard-toast" popover="manual" role="status" aria-live="polite">
