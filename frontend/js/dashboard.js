@@ -4696,40 +4696,40 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   const CANONICAL_CV_PROFILE = {
     name: "עידו גל",
     name_en: "Ido Gal",
-    title_he: "בקר גז טבעי ותפעול מערכות אנרגיה | הנדסאי מכונות",
-    title_en: "Gas Controller | Natural Gas & Energy Systems Operations | Practical Mechanical Engineer",
+    title_he: "הנדסאי מכונות | בקרת גז טבעי | תפעול מערכות אנרגיה",
+    title_en: "Gas Controller | Natural Gas Operations | Practical Mechanical Engineer",
     contact: {
-      phone: "050-000-0000",
-      phone_intl: "+972-50-000-0000",
-      email: "contact@ido-gal.dev",
+      phone: "052-632-8886",
+      phone_intl: "+972-52-632-8886",
+      email: "idogal0210@gmail.com",
       linkedin: "https://www.linkedin.com/in/ido-g",
       location: "תל אביב"
     },
     education: [
-      "הנדסאי מכונות – התמחות בגז טבעי ובאנרגיה ירוקה, המרכז האקדמי רופין, 2022. פרויקט גמר: השוואת נצילות וכדאיות כלכלית וטכנית של מערכת סולארית PV בעלת פאנלים דו-צדדיים (Bifacial) לבין מערכת בעלת פאנלים חד-צדדיים (Monofacial).",
-      "לימודי חשמלאי מוסמך, המרכז האקדמי רופין, 2026 (במהלך לימודים, כחודשיים לסיום)."
+      "לימודי חשמלאי מוסמך | המרכז האקדמי רופין | צפי סיום: דצמבר 2026",
+      "הנדסאי מכונות — התמחות בגז טבעי ובאנרגיה ירוקה | המרכז האקדמי רופין | 2022. פרויקט גמר: השוואת נצילות וכדאיות כלכלית וטכנית בין מערכות סולאריות בעלות פאנלים דו־צדדיים (Bifacial) לבין מערכות בעלות פאנלים חד־צדדיים (Monofacial)."
     ],
     experience: [
-      "Energean Israel Ltd. (2022–היום): בקר גז - תפעול ומוצר. בקרה 24/7, ניטור לחצים וספיקות, Nomination ו-Re-nomination, ממשק מול אסדת הפקה ימית (FPSO), נתג״ז, לקוחות מסחריים, משמרות לילה עצמאיות, דוחות SAP ו-Excel, אוטומציה עם Copilot 365 ו-Gemini.",
-      "וולקן עוצמה בע״מ / Energean (2020–2022): אחמ״ש אבטחה, מתקן אנרגיה אסטרטגי.",
-      "ראש צוות ומדריך מכירות (2015–2020): פעילות בינלאומית (ארה״ב וגרמניה) באנגלית שוטפת.",
-      "Group MER (2010–2012): מתקין מערכות סולאריות PV בשטח."
+      "בקר גז — תפעול ומוצר | Energean Israel Ltd. | נובמבר 2022 – ספטמבר 2026: בקרה 24/7 על אספקת גז טבעי לתחנות כוח ומפעלי תעשייה, ניטור לחצים וספיקות בזמן אמת עם AVEVA System Platform, טיפול ב-Nomination ו-Re-nomination, תיאום מול אסדת ההפקה הימית (FPSO), נתג״ז (INGL) והמחלקה המסחרית, פיתוח סוכן חישוב כמויות גז ב-Microsoft 365 Copilot עבור 10+ לקוחות גדולים, שיפור תהליך העברת משמרת עם סוכן Copilot נפרד, ודוחות Excel ו-SAP כולל דוח משמרות לילה לסמנכ״ל.",
+      "אחראי משמרת אבטחה במתקן אנרגיה אסטרטגי | וולקן עוצמה בע״מ / Energean Israel Ltd. | 2020–2022.",
+      "ראש צוות ומדריך מכירות | חברות מכירות בפעילות בינלאומית | 2015–2020 (ארה״ב וקו ישראל–גרמניה).",
+      "מתקין מערכות סולאריות | MER Group | 2010–2012: התקנה, חיווט והרכבה פיזית של מערכות פוטו־וולטאיות (PV)."
     ],
-    military: "סיירת נח״ל | חבלה והנדסה קרבית | 2012–2015 (כולל קבע). רובאי 08, פלס/חבלה 07, ניסיון מבצעי בהפעלת רחפנים (UAV), סריקה ומיפוי שטח.",
+    military: "סיירת נח״ל | לוחם ומפקד בתחום החבלה וההנדסה הקרבית | 2012–2015 (כולל שירות קבע והובלת תחום החבלה ביחידה). ניסיון מבצעי בהפעלת רחפנים (UAV) לסריקה ומיפוי שטח. הסמכות: רובאי 07, פלס/חבלה 08.",
     skills: [
-      "SCADA", "PRMS", "Nomination", "Re-nomination", "FPSO", "SAP", "Excel",
-      "Copilot 365", "Gemini", "Bifacial PV", "Monofacial PV", "ניטור לחצים וספיקות",
-      "אסדת הפקה", "נתג״ז", "חבלה 07", "רובאי 08", "הפעלת רחפנים", "UAV",
+      "AVEVA System Platform", "SCADA", "PRMS", "Nomination", "Re-nomination", "FPSO", "INGL",
+      "SAP", "Microsoft Excel", "Microsoft 365 Copilot", "Google Gemini", "Bifacial PV", "Monofacial PV",
+      "ניטור לחצים וספיקות", "אסדת הפקה", "נתג״ז", "חבלה 07", "רובאי 08", "הפעלת רחפנים", "UAV",
       "מתח נמוך", "חוק החשמל"
     ],
-    text: `עידו גל בקר גז טבעי ותפעול מערכות אנרגיה הנדסאי מכונות רופין 2022 אנרגיה ירוקה וגז טבעי
+    text: `עידו גל הנדסאי מכונות בקרת גז טבעי תפעול מערכות אנרגיה רופין 2022 אנרגיה ירוקה וגז טבעי
 פרויקט גמר פאנלים סולאריים דו צדדיים Bifacial PV מול Monofacial
-לימודי חשמלאי מוסמך רופין 2026 לקראת סיום חוק החשמל חישובים תיאורטיים
-Energean בקר גז תפעול ומוצר אסדת הפקה FPSO נתג״ז PRMS SCADA Nomination Re-nomination SAP Excel מתקן אנרגיה 24/7
-וולקן עוצמה אחמ״ש אבטחה מתקן אנרגיה אסטרטגי
-Group MER מתקין מערכות סולאריות PV שטח עבודה בגובה
-סיירת נח״ל חבלה והנדסה קרבית פלס 07 רובאי 08 מפעיל רחפנים מבצעי טלמטריה
-טלפון 050-000-0000 דואל contact@ido-gal.dev לינקדאין https://www.linkedin.com/in/ido-g`
+לימודי חשמלאי מוסמך רופין צפי סיום דצמבר 2026 לקראת סיום חוק החשמל חישובים תיאורטיים
+Energean Israel Ltd בקר גז תפעול ומוצר נובמבר 2022 ספטמבר 2026 AVEVA System Platform אסדת הפקה FPSO נתג״ז INGL PRMS SCADA Nomination Re-nomination SAP Excel Microsoft 365 Copilot Google Gemini מתקן אנרגיה 24/7
+וולקן עוצמה אחראי משמרת אבטחה במתקן אנרגיה אסטרטגי אחמ״ש אבטחה
+MER Group מתקין מערכות סולאריות PV שטח עבודה בגובה
+סיירת נח״ל לוחם ומפקד בתחום החבלה וההנדסה הקרבית פלס 07 חבלה 08 רובאי 07 רובאי 08 מפעיל רחפנים מבצעי טלמטריה
+טלפון 052-632-8886 0526328886 +972-52-632-8886 דואל idogal0210@gmail.com לינקדאין https://www.linkedin.com/in/ido-g`
   };
 
   const STATUTORY_HARD_GATES = [
@@ -6648,10 +6648,8 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
   }
 
   function copyLinkedInOptimizedBio() {
-    const bioText = `Natural Gas Operations & Energy Systems Specialist | Practical Mechanical Engineer (Dip. 115011)
-Specializing in high-pressure PRMS stations, ASME B31.8 & ISO 45001 compliance, HAZOP studies and rigorous Zero LTI safety culture.
-Experienced in SCADA/HMI control, industrial consumer hookups, and UAV systems flight testing. Currently pursuing Certified Electrician certification.
-Open for operations management and engineering roles in Israeli energy and cleantech infrastructure.`;
+    const bioText = `Gas Controller | Natural Gas Operations | Practical Mechanical Engineer
+Practical Mechanical Engineer with experience in 24/7 natural gas operations, real-time supply monitoring, Nomination and Re-nomination management, and offshore production coordination at Energean Israel. Collaborated with commercial teams and strategic customers, making independent operational decisions. Improved operational reporting and shift handovers using Excel, SAP, Microsoft 365 Copilot, and AI tools; brings international team leadership and commercial experience.`;
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(bioText).then(() => {
@@ -6672,16 +6670,16 @@ Open for operations management and engineering roles in Israeli energy and clean
 
   let isAnonymizerActive = false;
 
-  const ANONYMIZED_CV_TEXT = `הנדסאי מכונות רשום (דיפלומה מוסמכת 115011) עם ניסיון עשיר בתפעול מערכי גז טבעי בלחץ גבוה (מתקני PRMS), תחנות כוח ושדות סולאריים.
-מומחיות מוכחת בתקני ASME B31.8 ו-ISO 45001, הובלת משטרי בטיחות מחמירים (0 תאונות עבודה - Zero LTI), פיקוח עבודות קבלנים וסקרי HAZOP.
-בוגר קורס מטיסי פנים ומומחה בשילוב מכני של מערכות כטב״ם ניסוי. כעת בלימודי חשמלאי מוסמך.
+  const ANONYMIZED_CV_TEXT = `הנדסאי מכונות בהתמחות בגז טבעי ובאנרגיה ירוקה עם ניסיון בבקרה תפעולית בזמן אמת ובתיאום אספקת גז במערך 24/7.
+ניסיון בניטור לחצים וספיקות עם AVEVA System Platform, ניהול Nomination ו-Re-nomination ותיאום מול אסדת הפקה ימית ונתג״ז.
+פיתוח סוכני Microsoft 365 Copilot לחישוב כמויות גז ושיפור העברת משמרת, עבודה עם SAP ו-Excel וכעת בלימודי חשמלאי מוסמך.
 ליצירת קשר דיסקרטי: candidate@confidential.il`;
 
-  const ORIGINAL_CV_SUMMARY_TEXT = `עידו גל - הנדסאי מכונות רשום (דיפלומה מס' 115011)
-טלפון: 050-000-0000 | אימייל: contact@ido-gal.dev | פתח תקווה
-ניסיון: בקר גז טבעי בסופרגז טבעי / אנרג'יאן, תפעול מתקני PRMS בלחץ גבוה.
-הסמכות: ASME B31.8, ISO 45001, עבודה בגובה, היתר רעלים, לימודי חשמלאי מוסמך.
-מטיס פנים מוסמך ושילוב מכני של כטב״ם ורחפנים.`;
+  const ORIGINAL_CV_SUMMARY_TEXT = `עידו גל — הנדסאי מכונות | בקרת גז טבעי | תפעול מערכות אנרגיה
+תל אביב | 0526328886 | idogal0210@gmail.com | linkedin.com/in/ido-g/
+ניסיון: בקר גז — תפעול ומוצר ב-Energean Israel Ltd. (2022–2026), עבודה עם AVEVA System Platform, SAP ו-Excel.
+פיתוח סוכני Microsoft 365 Copilot לחישוב כמויות גז עבור 10+ לקוחות גדולים ולשיפור תהליך העברת משמרת.
+השכלה: הנדסאי מכונות (רופין 2022) ולימודי חשמלאי מוסמך (צפי סיום: דצמבר 2026).`;
 
   function initSkillsModule() {
     const toggle = document.getElementById('anonToggleCheckbox');

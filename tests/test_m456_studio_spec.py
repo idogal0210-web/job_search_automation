@@ -78,6 +78,10 @@ class TestCareerStudioMilestones456(unittest.TestCase):
 
     def test_m4_04_cv_html_files_exist_in_frontend_and_docs(self):
         required_files = [
+            "cv_he.html",
+            "cv_en.html"
+        ]
+        removed_files = [
             "cv_gas_he.html",
             "cv_solar_he.html",
             "cv_drones_he.html",
@@ -93,17 +97,18 @@ class TestCareerStudioMilestones456(unittest.TestCase):
                 content = f.read()
                 self.assertGreater(len(content), 1000)
                 self.assertEqual(len(check_text(content)), 0)
+        for old_name in removed_files:
+            self.assertFalse(os.path.exists(os.path.join(CV_DIR, old_name)))
+            self.assertFalse(os.path.exists(os.path.join(DOCS_CV_DIR, old_name)))
 
-    def test_m5_04_cv_hub_four_cards_exist_inside_writer_step(self):
+    def test_m5_04_cv_hub_cards_exist_inside_writer_step(self):
         writer = self.soup.find(id="studioModuleWriter")
         self.assertIsNotNone(writer)
         cards = writer.find_all(class_="cv-hub-card")
-        self.assertEqual(len(cards), 4, "Must have exactly 4 tailored CV cards in Hub")
+        self.assertEqual(len(cards), 2, "Must have exactly 2 updated CV cards (HE and EN) in Hub")
         titles = [c.find(class_="cv-hub-title").get_text() for c in cards]
-        self.assertTrue(any("גז טבעי" in t for t in titles))
-        self.assertTrue(any("סולארי" in t or "PV" in t for t in titles))
-        self.assertTrue(any("כטב״ם" in t or "רחפנים" in t for t in titles))
-        self.assertTrue(any("Mechanical" in t or "Gas" in t for t in titles))
+        self.assertTrue(any("בקרת גז טבעי" in t for t in titles))
+        self.assertTrue(any("Practical Mechanical Engineer" in t for t in titles))
 
 
     # -------------------------------------------------------------------------

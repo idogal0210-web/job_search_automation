@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta name="description" content="לוח בקרת משרות וסטודיו קריירה הנדסי — עידו גל. סריקת משרות אנרגיה, גז טבעי, סולארי, מכונות ורחפנים, ניתוח התאמת ATS וניהול גרסאות קורות חיים.">
-  <title>לוח משרות טכנולוגיות — עידו גל</title>
+  <title>__TITLE__</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="theme.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/duotone/style.css">
@@ -21,7 +21,7 @@
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261102170927">
+  <link rel="stylesheet" href="dashboard.css?v=__BUILD_ID__">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -46,7 +46,7 @@
         </div>
         <div class="brand-subtitle-row">
           <span class="brand-subtitle profile-subtitle">אנרגיה, גז טבעי ורחפנים</span>
-          <span class="sync-time-chip" id="lastSyncTimeChip" title="מועד סנכרון אחרון">עודכן: 02.11.2026</span>
+          <span class="sync-time-chip" id="lastSyncTimeChip" title="מועד סנכרון אחרון">עודכן: __NOW_STR__</span>
         </div>
       </div>
     </div>
@@ -71,10 +71,10 @@
       <!-- Mobile Collapsible Summary Toggle Button -->
       <button type="button" class="metrics-summary-toggle" id="metricsToggleBtn" onclick="toggleMetricsExpand()" aria-expanded="false" aria-controls="collapsibleMetricsContent" aria-label="הרחב או צמצם פירוט מטריקות">
         <div class="metrics-summary-inline">
-          <span class="metric-summary-pill lime active-pill" onclick="event.stopPropagation(); setFilter('all', document.getElementById('cube_all'));" role="button" tabindex="0" title="הצג משרות חדשות"><span id="summaryNewCount">31</span> חדשות</span>
-          <span class="metric-summary-pill gold" onclick="event.stopPropagation(); setFilter('starred', document.getElementById('cube_starred'));" role="button" tabindex="0" title="הצג משרות בכוכב"><span id="summaryStarredCount">6</span> בכוכב</span>
-          <span class="metric-summary-pill cyan" onclick="event.stopPropagation(); setFilter('saved', document.getElementById('cube_saved'));" role="button" tabindex="0" title="הצג משרות שמורות"><span id="summarySavedCount">52</span> שמורות</span>
-          <span class="metric-summary-pill rose" onclick="event.stopPropagation(); setFilter('rejected', document.getElementById('cube_rejected'));" role="button" tabindex="0" title="הצג משרות שהוסרו"><span id="summaryRejectedCount">0</span> הוסרו</span>
+          <span class="metric-summary-pill lime active-pill" onclick="event.stopPropagation(); setFilter('all', document.getElementById('cube_all'));" role="button" tabindex="0" title="הצג משרות חדשות"><span id="summaryNewCount">__TOTAL_NEW_JOBS__</span> חדשות</span>
+          <span class="metric-summary-pill gold" onclick="event.stopPropagation(); setFilter('starred', document.getElementById('cube_starred'));" role="button" tabindex="0" title="הצג משרות בכוכב"><span id="summaryStarredCount">__TOTAL_STARRED_JOBS__</span> בכוכב</span>
+          <span class="metric-summary-pill cyan" onclick="event.stopPropagation(); setFilter('saved', document.getElementById('cube_saved'));" role="button" tabindex="0" title="הצג משרות שמורות"><span id="summarySavedCount">__TOTAL_SAVED_JOBS__</span> שמורות</span>
+          <span class="metric-summary-pill rose" onclick="event.stopPropagation(); setFilter('rejected', document.getElementById('cube_rejected'));" role="button" tabindex="0" title="הצג משרות שהוסרו"><span id="summaryRejectedCount">__TOTAL_REJECTED_JOBS__</span> הוסרו</span>
         </div>
         <div class="metrics-toggle-label">
           <span id="metricsToggleText">פירוט</span>
@@ -116,7 +116,7 @@
             <div class="stat-cube-icon lime">
               <i class="ph-duotone ph-sparkle"></i>
             </div>
-            <div class="stat-cube-count" id="statNewCount">31</div>
+            <div class="stat-cube-count" id="statNewCount">__TOTAL_NEW_JOBS__</div>
             <div class="stat-cube-label">משרות חדשות</div>
           </button>
 
@@ -124,7 +124,7 @@
             <div class="stat-cube-icon gold">
               <i class="ph-fill ph-star"></i>
             </div>
-            <div class="stat-cube-count" id="statStarredCount">6</div>
+            <div class="stat-cube-count" id="statStarredCount">__TOTAL_STARRED_JOBS__</div>
             <div class="stat-cube-label">מסומנות בכוכב</div>
           </button>
 
@@ -132,7 +132,7 @@
             <div class="stat-cube-icon cyan">
               <i class="ph-duotone ph-bookmark-simple"></i>
             </div>
-            <div class="stat-cube-count" id="statSavedCount">52</div>
+            <div class="stat-cube-count" id="statSavedCount">__TOTAL_SAVED_JOBS__</div>
             <div class="stat-cube-label">שמורות להגשה</div>
           </button>
 
@@ -140,7 +140,7 @@
             <div class="stat-cube-icon rose">
               <i class="ph-duotone ph-trash"></i>
             </div>
-            <div class="stat-cube-count" id="statRejectedCount">0</div>
+            <div class="stat-cube-count" id="statRejectedCount">__TOTAL_REJECTED_JOBS__</div>
             <div class="stat-cube-label">הוסרו מהסבב</div>
           </button>
         </div>
@@ -160,9 +160,9 @@
         <span class="dashboard-local">סריקה יומית חכמה • התאמה לפרופיל הנדסאי מכונות, אנרגיה ורחפנים</span>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
-        <span>תאריך סריקה: <strong>02.11.2026</strong></span>
+        <span>תאריך סריקה: <strong>__NOW_STR__</strong></span>
         <span class="dashboard-divider">|</span>
-        <span class="dashboard-chip" style="font-size: 11px; padding: 2px 10px;">סריקה יומית</span>
+        <span class="dashboard-chip" style="font-size: 11px; padding: 2px 10px;">__REPORT_TYPE_LABEL__</span>
       </div>
     </div>
 
@@ -316,7 +316,7 @@
     <div class="cards-view-header">
       <div class="cards-count-summary">
         <i class="ph-duotone ph-briefcase" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
-        <span id="visibleJobsCountText">סה״כ משרות חדשות: 31</span>
+        <span id="visibleJobsCountText">סה״כ משרות חדשות: __TOTAL_NEW_JOBS__</span>
       </div>
       <div class="view-mode-toggle" role="group" aria-label="מצב תצוגה">
         <button type="button" id="viewGridBtn" class="view-toggle-btn active" onclick="setViewMode('grid')" title="תצוגת קוביות (Grid)">
@@ -983,107 +983,55 @@
               </div>
             </div>
 
-            <div class="studio-step-head" id="step-writer-5"><span class="studio-step-num" aria-hidden="true">5</span><div class="studio-step-text"><h4 class="studio-step-title">בחירת גרסת קורות חיים</h4><p class="studio-step-hint">צפה או הורד את הגרסה המתאימה לתחום המשרה.</p></div></div>
+            <div class="studio-step-head" id="step-writer-5"><span class="studio-step-num" aria-hidden="true">5</span><div class="studio-step-text"><h4 class="studio-step-title">בחירת גרסת קורות חיים</h4><p class="studio-step-hint">צפה או הורד את קורות החיים המעודכנים בעברית או באנגלית.</p></div></div>
             <!-- STEP: CV versions hub -->
             <div id="writerCvHubGrid" class="cv-hub-grid">
-                <!-- Version 1: Gas & Energy Plants -->
+                <!-- Version 1: Hebrew CV -->
                 <div class="cv-hub-card">
                   <div class="cv-hub-card-header">
-                    <div class="cv-hub-tag cyan">גז טבעי ותחנות כוח</div>
+                    <div class="cv-hub-tag cyan">קורות חיים בעברית</div>
                     <span class="cv-hub-format">עברית • A4 Page</span>
                   </div>
-                  <h4 class="cv-hub-title">בקר גז טבעי ומערכות אנרגיה</h4>
-                  <p class="cv-hub-desc">גרסה מותאמת ללחץ גבוה, מתקני PRMS, סקרי HAZOP, תקני ASME B31.8, סופרגז ואנרג׳יאן.</p>
+                  <h4 class="cv-hub-title">עידו גל — הנדסאי מכונות | בקרת גז טבעי | תפעול מערכות אנרגיה</h4>
+                  <p class="cv-hub-desc">גרסה מלאה ומעודכנת בעברית: בקרה תפעולית 24/7 ב-Energean Israel, עבודה עם AVEVA System Platform, ניהול Nomination ופיתוח סוכני Microsoft 365 Copilot.</p>
                   <div class="cv-hub-badges">
-                    <span class="hub-badge">PRMS</span>
-                    <span class="hub-badge">ASME B31.8</span>
-                    <span class="hub-badge">Zero LTI</span>
+                    <span class="hub-badge">AVEVA System Platform</span>
+                    <span class="hub-badge">Nomination &amp; Re-nomination</span>
+                    <span class="hub-badge">Microsoft 365 Copilot</span>
                     <span class="hub-badge">הנדסאי מכונות</span>
                   </div>
                   <div class="cv-hub-actions">
-                    <a href="career/cv/cv_gas_he.html" target="_blank" class="cv-hub-btn secondary">
+                    <a href="career/cv/cv_he.html" target="_blank" class="cv-hub-btn secondary">
                       <i class="ph-duotone ph-arrow-square-out"></i>
                       <span>צפייה ישירה</span>
                     </a>
-                    <a href="career/cv/cv_gas_he.html" download="CV_Ido_Gal_Natural_Gas.html" class="cv-hub-btn primary">
+                    <a href="career/cv/cv_he.html" download="Ido_Gal_CV_-_HE.html" class="cv-hub-btn primary">
                       <i class="ph-duotone ph-download-simple"></i>
                       <span>הורדת קובץ</span>
                     </a>
                   </div>
                 </div>
 
-                <!-- Version 2: Solar PV & Renewables -->
+                <!-- Version 2: English CV -->
                 <div class="cv-hub-card">
                   <div class="cv-hub-card-header">
-                    <div class="cv-hub-tag lime">אנרגיה סולארית ומתחדשת</div>
-                    <span class="cv-hub-format">עברית • A4 Page</span>
-                  </div>
-                  <h4 class="cv-hub-title">מנהל תפעול שדות PV ואנרגיה מתחדשת</h4>
-                  <p class="cv-hub-desc">גרסה ממוקדת לחברות אנרגיה מתחדשת (Enlight, נופר), שדות פוטו-וולטאיים, אגירה במתח גבוה ו-SCADA.</p>
-                  <div class="cv-hub-badges">
-                    <span class="hub-badge">Solar PV</span>
-                    <span class="hub-badge">Enlight</span>
-                    <span class="hub-badge">בקרת מתח גבוה</span>
-                    <span class="hub-badge">לימודי חשמלאי</span>
-                  </div>
-                  <div class="cv-hub-actions">
-                    <a href="career/cv/cv_solar_he.html" target="_blank" class="cv-hub-btn secondary">
-                      <i class="ph-duotone ph-arrow-square-out"></i>
-                      <span>צפייה ישירה</span>
-                    </a>
-                    <a href="career/cv/cv_solar_he.html" download="CV_Ido_Gal_Renewable_Energy.html" class="cv-hub-btn primary">
-                      <i class="ph-duotone ph-download-simple"></i>
-                      <span>הורדת קובץ</span>
-                    </a>
-                  </div>
-                </div>
-
-                <!-- Version 3: Drones, UAV & Defense -->
-                <div class="cv-hub-card">
-                  <div class="cv-hub-card-header">
-                    <div class="cv-hub-tag gold">רחפנים, כטב״ם וביטחון</div>
-                    <span class="cv-hub-format">עברית • A4 Page</span>
-                  </div>
-                  <h4 class="cv-hub-title">מטיס פנים והנדסאי שילוב מערכות כטב״ם</h4>
-                  <p class="cv-hub-desc">גרסה ייעודית לחברות ביטחוניות (פרסאוס, אלביט, רפאל) עם דגש על שילוב מכני, ניסויי שדה והטסה.</p>
-                  <div class="cv-hub-badges">
-                    <span class="hub-badge">מטיס כטב״ם</span>
-                    <span class="hub-badge">אלביט / פרסאוס</span>
-                    <span class="hub-badge">שילוב מכני</span>
-                    <span class="hub-badge">ניסויי שדה</span>
-                  </div>
-                  <div class="cv-hub-actions">
-                    <a href="career/cv/cv_drones_he.html" target="_blank" class="cv-hub-btn secondary">
-                      <i class="ph-duotone ph-arrow-square-out"></i>
-                      <span>צפייה ישירה</span>
-                    </a>
-                    <a href="career/cv/cv_drones_he.html" download="CV_Ido_Gal_Drones_Defense.html" class="cv-hub-btn primary">
-                      <i class="ph-duotone ph-download-simple"></i>
-                      <span>הורדת קובץ</span>
-                    </a>
-                  </div>
-                </div>
-
-                <!-- Version 4: International English -->
-                <div class="cv-hub-card">
-                  <div class="cv-hub-card-header">
-                    <div class="cv-hub-tag purple">International English</div>
+                    <div class="cv-hub-tag purple">English CV</div>
                     <span class="cv-hub-format">English • Single A4</span>
                   </div>
-                  <h4 class="cv-hub-title">Gas Operations & Mechanical Practical Engineer</h4>
-                  <p class="cv-hub-desc">Executive international resume tailored for global energy corporations, OEM EPCs and multinational operators.</p>
+                  <h4 class="cv-hub-title">Ido Gal — Gas Controller | Natural Gas Operations | Practical Mechanical Engineer</h4>
+                  <p class="cv-hub-desc">Updated English resume: 24/7 natural gas operations at Energean Israel, INGL &amp; offshore production coordination, Nomination management, SAP, Excel &amp; Copilot AI.</p>
                   <div class="cv-hub-badges">
-                    <span class="hub-badge">PRMS High-Pressure</span>
-                    <span class="hub-badge">ASME B31.8</span>
-                    <span class="hub-badge">Zero LTI Record</span>
-                    <span class="hub-badge">SCADA / HSE</span>
+                    <span class="hub-badge">24/7 Gas Operations</span>
+                    <span class="hub-badge">INGL &amp; Offshore</span>
+                    <span class="hub-badge">SAP &amp; Advanced Excel</span>
+                    <span class="hub-badge">Practical Mechanical Engineer</span>
                   </div>
                   <div class="cv-hub-actions">
-                    <a href="career/cv/cv_base_en.html" target="_blank" class="cv-hub-btn secondary">
+                    <a href="career/cv/cv_en.html" target="_blank" class="cv-hub-btn secondary">
                       <i class="ph-duotone ph-arrow-square-out"></i>
                       <span>צפייה ישירה</span>
                     </a>
-                    <a href="career/cv/cv_base_en.html" download="CV_Ido_Gal_International_EN.html" class="cv-hub-btn primary">
+                    <a href="career/cv/cv_en.html" download="Ido_Gal_CV_-_EN.html" class="cv-hub-btn primary">
                       <i class="ph-duotone ph-download-simple"></i>
                       <span>הורדת קובץ</span>
                     </a>
@@ -1248,8 +1196,8 @@
                       </div>
                       <div class="check-details">
                         <div class="check-title">כותרת ראשית (Headline)</div>
-                        <div class="check-cv-val">בקו״ח: בקר גז טבעי ותפעול מערכות אנרגיה • הנדסאי מכונות</div>
-                        <div class="check-li-val">ב-LinkedIn: Natural Gas & Energy Systems Operations | Mechanical P.E.</div>
+                        <div class="check-cv-val">בקו״ח: הנדסאי מכונות | בקרת גז טבעי | תפעול מערכות אנרגיה</div>
+                        <div class="check-li-val">ב-LinkedIn: Gas Controller | Natural Gas Operations | Practical Mechanical Engineer</div>
                       </div>
                     </div>
 
@@ -1260,8 +1208,8 @@
                       </div>
                       <div class="check-details">
                         <div class="check-title">רישיונות והסמכות (Licenses)</div>
-                        <div class="check-cv-val">בקו״ח: דיפלומה 115011, ASME B31.8, עבודה בגובה, היתר רעלים</div>
-                        <div class="check-li-val">ב-LinkedIn: מומלץ להוסיף את תעודת ASME B31.8 ורישיון עבודה בגובה</div>
+                        <div class="check-cv-val">בקו״ח: הנדסאי מכונות (רופין 2022), לימודי חשמלאי מוסמך (צפי דצמבר 2026)</div>
+                        <div class="check-li-val">ב-LinkedIn: מומלץ לעדכן את צפי סיום לימודי חשמלאי מוסמך ומערכות AVEVA System Platform</div>
                       </div>
                     </div>
 
@@ -1272,7 +1220,7 @@
                       </div>
                       <div class="check-details">
                         <div class="check-title">רצף תעסוקתי ותפקיד אחרון</div>
-                        <div class="check-cv-val">בקו״ח: סופרגז טבעי (בקרת PRMS וחיבור צרכנים)</div>
+                        <div class="check-cv-val">בקו״ח: בקר גז — תפעול ומוצר | Energean Israel Ltd. (2022–2026)</div>
                         <div class="check-li-val">ב-LinkedIn: תאריכים תואמים במדויק (100% עקביות)</div>
                       </div>
                     </div>
@@ -1415,12 +1363,12 @@
                     <span class="anon-masked">[מועמד מנוסה - הנדסאי מכונות]</span>
                   </div>
                   <div class="anon-rule-row">
-                    <span class="anon-orig">052-632-8886 / idogal94@gmail.com</span>
+                    <span class="anon-orig">0526328886 / idogal0210@gmail.com</span>
                     <i class="ph-duotone ph-arrow-left"></i>
                     <span class="anon-masked">[05X-XXXXXXX / candidate@confidential.il]</span>
                   </div>
                   <div class="anon-rule-row">
-                    <span class="anon-orig">סופרגז טבעי / אנרג'יאן</span>
+                    <span class="anon-orig">Energean Israel Ltd.</span>
                     <i class="ph-duotone ph-arrow-left"></i>
                     <span class="anon-masked">[חברת תשתיות ואנרגיה מובילה]</span>
                   </div>
@@ -1429,9 +1377,9 @@
                 <!-- Live Anonymized Text Box -->
                 <div class="anon-output-wrapper">
                   <label for="anonymizedPreviewArea" class="anon-output-label">תצוגת נוסח אנונימי מוכן לשיתוף:</label>
-                  <textarea id="anonymizedPreviewArea" class="anon-textarea" rows="6" readonly>הנדסאי מכונות רשום (דיפלומה מוסמכת 115011) עם ניסיון עשיר בתפעול מערכי גז טבעי בלחץ גבוה (מתקני PRMS), תחנות כוח ושדות סולאריים.
-מומחיות מוכחת בתקני ASME B31.8 ו-ISO 45001, הובלת משטרי בטיחות מחמירים (0 תאונות עבודה - Zero LTI), פיקוח עבודות קבלנים וסקרי HAZOP.
-בוגר קורס מטיסי פנים ומומחה בשילוב מכני של מערכות כטב״ם ניסוי. כעת בלימודי חשמלאי מוסמך.
+                  <textarea id="anonymizedPreviewArea" class="anon-textarea" rows="6" readonly>הנדסאי מכונות בהתמחות בגז טבעי ובאנרגיה ירוקה עם ניסיון בבקרה תפעולית בזמן אמת ובתיאום אספקת גז במערך 24/7.
+ניסיון בניטור לחצים וספיקות עם AVEVA System Platform, ניהול Nomination ו-Re-nomination ותיאום מול אסדת הפקה ימית ונתג״ז.
+פיתוח סוכני Microsoft 365 Copilot לחישוב כמויות גז ושיפור העברת משמרת, עבודה עם SAP ו-Excel וכעת בלימודי חשמלאי מוסמך.
 ליצירת קשר דיסקרטי: candidate@confidential.il</textarea>
                 </div>
 
@@ -1639,15 +1587,15 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261102170927",
+      build_id: "__BUILD_ID__",
       schema_version: "2.0.0",
-      generated_at: "02.11.2026",
-      report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261102170927",
-      catalog_data_url: "data/historical_catalog.json?v=20261102170927",
-      sync_data_url: "data/sync_state.json?v=20261102170927"
+      generated_at: "__NOW_STR__",
+      report_type: "__REPORT_TYPE_LABEL__",
+      jobs_data_url: "data/jobs.json?v=__BUILD_ID__",
+      catalog_data_url: "data/historical_catalog.json?v=__BUILD_ID__",
+      sync_data_url: "data/sync_state.json?v=__BUILD_ID__"
     };
   </script>
-  <script src="dashboard.js?v=20261102170927" defer></script>
+  <script src="dashboard.js?v=__BUILD_ID__" defer></script>
 </body>
 </html>

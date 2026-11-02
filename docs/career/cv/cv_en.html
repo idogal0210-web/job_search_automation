@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - Ido Gal</title>
+    <style>
+        :root {
+            --primary: #15803d;
+            --primary-dark: #166534;
+            --text-main: #0f172a;
+            --text-muted: #334155;
+            --border-color: #cbd5e1;
+            --bg-page: #f1f5f9;
+            --bg-card: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            direction: ltr;
+            text-align: left;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            padding: 20px 0;
+            line-height: 1.32;
+            font-size: 9.8pt;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .page-container {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 10mm 13mm;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-block {
+            text-align: center;
+            border-bottom: 2px solid var(--primary-dark);
+            padding-bottom: 6px;
+            margin-bottom: 6px;
+        }
+
+        .main-title {
+            font-size: 20pt;
+            color: var(--primary-dark);
+            margin-bottom: 2px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 10.5pt;
+            color: var(--text-main);
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .contact-line {
+            font-size: 9.2pt;
+            color: var(--text-muted);
+        }
+
+        .section-title {
+            font-size: 10pt;
+            color: var(--primary-dark);
+            margin-top: 7px;
+            margin-bottom: 3px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .competencies-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px 24px;
+            margin: 3px 0 4px 0;
+            padding-left: 16px;
+        }
+
+        .competencies-grid li {
+            font-size: 9.4pt;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 5px;
+            margin-bottom: 1.5px;
+            gap: 8px;
+        }
+
+        .item-title {
+            font-size: 9.8pt;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .item-date {
+            font-size: 9.2pt;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .paragraph {
+            margin: 2px 0;
+            font-size: 9.5pt;
+            color: var(--text-main);
+            line-height: 1.34;
+        }
+
+        .cv-list {
+            margin: 2px 0 3px 0;
+            padding-right: 0;
+            padding-left: 16px;
+        }
+
+        .cv-list li {
+            margin-bottom: 1.8px;
+            font-size: 9.4pt;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        strong {
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        a {
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+            body {
+                background-color: #ffffff;
+                padding: 0;
+                margin: 0;
+            }
+            .page-container {
+                box-shadow: none;
+                padding: 8mm 12mm;
+                width: 100%;
+                max-width: 100%;
+                min-height: auto;
+                height: 100%;
+            }
+            .section-title {
+                break-after: avoid;
+            }
+            .item-header, .cv-list li {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <header class="header-block">
+            <h1 class="main-title">IDO GAL</h1>
+            <p class="subtitle">Gas Controller | Natural Gas Operations | Practical Mechanical Engineer</p>
+            <p class="contact-line">Tel Aviv, Israel | +972-52-632-8886 | <a href="mailto:idogal0210@gmail.com">idogal0210@gmail.com</a> | <a href="https://www.linkedin.com/in/ido-g" target="_blank" rel="noopener">linkedin.com/in/ido-g</a></p>
+        </header>
+
+        <h2 class="section-title">Professional Summary</h2>
+        <p class="paragraph">Practical Mechanical Engineer with experience in 24/7 natural gas operations, real-time supply monitoring, Nomination and Re-nomination management, and offshore production coordination at Energean Israel. Collaborated with commercial teams and strategic customers, making independent operational decisions. Improved operational reporting and shift handovers using Excel, SAP, Microsoft 365 Copilot, and AI tools; brings international team leadership and commercial experience.</p>
+
+        <h2 class="section-title">Core Competencies</h2>
+        <ul class="competencies-grid">
+            <li>Natural Gas Operations &amp; Supply Management</li>
+            <li>Advanced Microsoft Excel &amp; SAP</li>
+            <li>Real-Time Monitoring &amp; Control</li>
+            <li>Microsoft 365 Copilot &amp; AI Tools</li>
+            <li>Nomination &amp; Re-nomination Management</li>
+            <li>Gas Pressure, Flow &amp; Quantity Monitoring</li>
+            <li>Operational Reporting &amp; Data Analysis</li>
+            <li>Offshore Production Coordination</li>
+            <li>Process Optimization &amp; Shift Handovers</li>
+            <li>Commercial &amp; Customer Coordination</li>
+        </ul>
+
+        <h2 class="section-title">Professional Experience</h2>
+
+        <div class="item-header">
+            <h3 class="item-title">ENERGEAN ISRAEL LTD. – Gas Controller – Operations and Product</h3>
+            <span class="item-date">Nov 2022 - Sep 2026</span>
+        </div>
+        <ul class="cv-list">
+            <li>Monitored and controlled natural gas supply to power generation facilities and industrial customers in a 24/7 operational environment, tracking pressures, flow rates, quantities, and deviations.</li>
+            <li>Managed Nomination and Re-nomination requests against production availability, operational constraints, and commercial requirements.</li>
+            <li>Coordinated with offshore production facilities, Israel Natural Gas Lines (INGL), commercial teams, and strategic customers to support supply continuity.</li>
+            <li>Made independent operational decisions during night shifts, including responses to abnormal conditions and unplanned events.</li>
+            <li>Improved the preparation and accuracy of gas quantity reports for senior management using advanced Excel, Microsoft 365 Copilot, and AI tools.</li>
+            <li>Streamlined shift handover procedures and reduced manual work to help limit operational errors and potential financial losses.</li>
+            <li>Supported commercial targets through direct customer coordination; maintained operational records in SAP and Excel and trained new Gas Controllers.</li>
+        </ul>
+
+        <div class="item-header">
+            <h3 class="item-title">ENERGEAN ISRAEL LTD. / VOLCAN OTZMA LTD. – Security Shift Supervisor – Strategic Energy Facility</h3>
+            <span class="item-date">2020–2022</span>
+        </div>
+        <ul class="cv-list">
+            <li>Supervised security and access-control procedures at strategic natural gas infrastructure, coordinating incident responses with operational personnel to support facility continuity.</li>
+        </ul>
+
+        <div class="item-header">
+            <h3 class="item-title">INTERNATIONAL BUSINESS OPERATIONS – Team Leader &amp; Sales Instructor</h3>
+            <span class="item-date">2015–2020</span>
+        </div>
+        <ul class="cv-list">
+            <li>Recruited, trained, and coached sales representatives in international markets, including the United States and business activities involving Israel and Germany.</li>
+            <li>Implemented structured work practices and supported sales targets in multicultural English-speaking teams.</li>
+        </ul>
+
+        <div class="item-header">
+            <h3 class="item-title">MER GROUP – Solar Systems Installer</h3>
+            <span class="item-date">2010–2012</span>
+        </div>
+        <ul class="cv-list">
+            <li>Installed, wired, and assembled photovoltaic (PV) systems and assisted with initial system operation in accordance with technical and safety requirements.</li>
+        </ul>
+
+        <h2 class="section-title">Education &amp; Certifications</h2>
+        <div class="item-header">
+            <h3 class="item-title">RUPPIN ACADEMIC CENTER – Practical Mechanical Engineer – Natural Gas &amp; Green Energy</h3>
+            <span class="item-date">2022</span>
+        </div>
+        <p class="paragraph">Final Project: Technical and economic feasibility analysis comparing bifacial and monofacial photovoltaic solar systems.</p>
+
+        <div class="item-header">
+            <h3 class="item-title">RUPPIN ACADEMIC CENTER – Electrician Certification Studies</h3>
+            <span class="item-date">2026</span>
+        </div>
+        <p class="paragraph">Studies toward electrician certification.</p>
+
+        <h2 class="section-title">Military Service</h2>
+        <div class="item-header">
+            <h3 class="item-title">SAYERET NAHAL – IDF – Combat Engineering &amp; Demolitions</h3>
+            <span class="item-date">2012–2015</span>
+        </div>
+        <p class="paragraph">Served as a combat soldier and commander in demolitions and combat engineering; subsequently led unit demolitions activities as a career soldier.</p>
+        <p class="paragraph">Operated drones and performed field scanning and mapping. Qualifications: Rifleman 08; Demolitions / Combat Engineering 07.</p>
+
+        <h2 class="section-title">Languages</h2>
+        <p class="paragraph"><strong>Hebrew:</strong> Native | <strong>English:</strong> Full Professional Proficiency</p>
+    </div>
+</body>
+</html>

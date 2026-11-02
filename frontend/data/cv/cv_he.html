@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>קורות חיים - עידו גל</title>
+    <style>
+        :root {
+            --primary: #15803d;
+            --primary-dark: #166534;
+            --text-main: #0f172a;
+            --text-muted: #334155;
+            --border-color: #cbd5e1;
+            --bg-page: #f1f5f9;
+            --bg-card: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            padding: 20px 0;
+            line-height: 1.34;
+            font-size: 10pt;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        .page-container {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 10mm 13mm;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-block {
+            border-bottom: 2px solid var(--primary-dark);
+            padding-bottom: 6px;
+            margin-bottom: 6px;
+        }
+
+        .main-title {
+            font-size: 20pt;
+            color: var(--primary-dark);
+            margin-bottom: 2px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 10.8pt;
+            color: var(--text-main);
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .contact-line {
+            font-size: 9.4pt;
+            color: var(--text-muted);
+        }
+
+        .section-title {
+            font-size: 10.8pt;
+            color: var(--primary-dark);
+            margin-top: 7px;
+            margin-bottom: 3px;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1px;
+        }
+
+        .item-title {
+            font-size: 10pt;
+            color: #0f172a;
+            margin-top: 4px;
+            margin-bottom: 1.5px;
+            font-weight: 700;
+        }
+
+        .item-meta {
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .paragraph {
+            margin: 2px 0;
+            font-size: 9.6pt;
+            color: var(--text-main);
+            line-height: 1.34;
+        }
+
+        .cv-list {
+            margin: 2px 0 3px 0;
+            padding-right: 16px;
+            padding-left: 0;
+        }
+
+        .cv-list li {
+            margin-bottom: 1.8px;
+            font-size: 9.5pt;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        strong {
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        a {
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+            body {
+                background-color: #ffffff;
+                padding: 0;
+                margin: 0;
+            }
+            .page-container {
+                box-shadow: none;
+                padding: 8mm 12mm;
+                width: 100%;
+                max-width: 100%;
+                min-height: auto;
+                height: 100%;
+            }
+            .section-title {
+                break-after: avoid;
+            }
+            .item-title, .cv-list li {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <header class="header-block">
+            <h1 class="main-title">עידו גל</h1>
+            <p class="subtitle">הנדסאי מכונות | בקרת גז טבעי | תפעול מערכות אנרגיה</p>
+            <p class="contact-line">תל אביב | <span dir="ltr">0526328886</span> | <a href="mailto:idogal0210@gmail.com">idogal0210@gmail.com</a> | <a href="https://www.linkedin.com/in/ido-g/" target="_blank" rel="noopener">linkedin.com/in/ido-g/</a></p>
+        </header>
+
+        <h2 class="section-title">תמצית מקצועית</h2>
+        <p class="paragraph">הנדסאי מכונות בהתמחות בגז טבעי ובאנרגיה ירוקה, בעל ניסיון בבקרה תפעולית בזמן אמת ובתיאום אספקת גז במערך 24/7. ניסיון בקבלת החלטות עצמאית, בניתוח נתונים ובהתאמת האספקה לצורכי הלקוחות, למגבלות התפעול ולדרישות המסחריות. שילוב יכולות טכניות עם הובלת שיפור תהליכים, פיתוח כלי AI לשימוש בקרים וניסיון בהובלת צוותים ובהדרכה בארץ ובחו״ל. שאיפה להשתלב בתפקיד בקר אנרגיה בכיר, עם אחריות רחבה לשיפור התפעול ולתמיכה בקבלת החלטות.</p>
+
+        <h2 class="section-title">ניסיון מקצועי</h2>
+
+        <h3 class="item-title">בקר גז — תפעול ומוצר <span class="item-meta">| Energean Israel Ltd. | נובמבר 2022 – ספטמבר 2026</span></h3>
+        <ul class="cv-list">
+            <li>בקרה על אספקת גז טבעי לתחנות כוח ולמפעלי תעשייה במערך 24/7; ניטור לחצים, ספיקות וכמויות אספקה בזמן אמת ועבודה עם AVEVA System Platform.</li>
+            <li>זיהוי חריגות וקבלת החלטות תפעוליות עצמאית במשמרות לילה ובאירועים בלתי מתוכננים, לצורך שמירה על רציפות האספקה.</li>
+            <li>טיפול בבקשות Nomination ו־Re-nomination, לרבות שינויים בכמויות המבוקשות במהלך היום והזמנות לימים הבאים, בהתאם למגבלות התפעוליות ולהנחיות המסחריות.</li>
+            <li>תיאום בין אסדת ההפקה הימית, נתג״ז, המחלקה המסחרית ולקוחות הקצה, להתאמת זמינות ההפקה לפרופיל האספקה.</li>
+            <li>פיתוח סוכן לחישוב כמויות גז באמצעות Microsoft 365 Copilot, ששימש גם בקרים נוספים. הסוכן תמך בטיפול בבקשות של יותר מ־10 לקוחות גדולים, תוך התחשבות בשינויים בהזמנות ובתנאי חוזים והסכמים פרטניים לכל לקוח.</li>
+            <li>הובלת שיפור בתהליך העברת משמרת, באמצעות נוהל מסודר ופיתוח סוכן Copilot נפרד, לצמצום הסיכון לטעויות ולהשמטת מידע תפעולי חיוני.</li>
+            <li>ניתוח נתוני אספקה והפקת דוחות תפעוליים באמצעות Excel ו־SAP; כתיבת דוח מפורט על היקף הפעילות ואופי העבודה במשמרות לילה, שיועד לסמנכ״ל החברה.</li>
+        </ul>
+
+        <h3 class="item-title">אחראי משמרת אבטחה במתקן אנרגיה אסטרטגי <span class="item-meta">| וולקן עוצמה בע״מ / Energean Israel Ltd. | 2020–2022</span></h3>
+        <ul class="cv-list">
+            <li>אחריות משמרת באבטחת תשתית גז טבעי רגישה, בסביבה תפעולית מפוקחת ובהתאם לנהלי בטיחות, אבטחה ובקרת גישה מחמירים.</li>
+            <li>תיאום עם גורמים תפעוליים ומקצועיים ותגובה לאירועים, תוך שמירה על רציפות פעילות האתר.</li>
+        </ul>
+
+        <h3 class="item-title">ראש צוות ומדריך מכירות <span class="item-meta">| חברות מכירות בפעילות בינלאומית | 2015–2020</span></h3>
+        <ul class="cv-list">
+            <li>הובלת צוותי מכירות, גיוס והכשרת נציגים בארה״ב ובפעילות על קו ישראל–גרמניה.</li>
+            <li>חניכת עובדים חדשים, הטמעת שיטות עבודה וליווי מקצועי לשיפור ביצועים, תוך עבודה שוטפת באנגלית בסביבה רב־תרבותית.</li>
+        </ul>
+
+        <h3 class="item-title">מתקין מערכות סולאריות <span class="item-meta">| MER Group | 2010–2012</span></h3>
+        <ul class="cv-list">
+            <li>התקנה, חיווט והרכבה פיזית של מערכות פוטו־וולטאיות (PV), וסיוע בהפעלה ראשונית.</li>
+            <li>ביצוע עבודות שטח בהקמת מערכות אנרגיה מתחדשת, בהתאם לדרישות הטכניות ולהנחיות הבטיחות.</li>
+        </ul>
+
+        <h2 class="section-title">מערכות וכלים טכנולוגיים</h2>
+        <p class="paragraph"><strong>בקרה ומערכות ארגוניות:</strong> AVEVA System Platform, SAP.</p>
+        <p class="paragraph"><strong>ניתוח נתונים ויישומי משרד:</strong> Microsoft Excel — נוסחאות, ניתוח נתונים ודוחות תפעוליים; Microsoft Office.</p>
+        <p class="paragraph"><strong>AI ואוטומציה:</strong> Microsoft 365 Copilot, Google Gemini — פיתוח סוכנים ושימוש בכלי AI בתהליכי עבודה ודיווח.</p>
+
+        <h2 class="section-title">השכלה והכשרה מקצועית</h2>
+        <p class="paragraph"><strong>לימודי חשמלאי מוסמך</strong> <span class="item-meta">| המרכז האקדמי רופין | צפי סיום: דצמבר 2026</span></p>
+        <p class="paragraph"><strong>הנדסאי מכונות — התמחות בגז טבעי ובאנרגיה ירוקה</strong> <span class="item-meta">| המרכז האקדמי רופין | 2022</span></p>
+        <p class="paragraph">פרויקט גמר: השוואת נצילות וכדאיות כלכלית וטכנית בין מערכות סולאריות בעלות פאנלים דו־צדדיים (Bifacial) לבין מערכות בעלות פאנלים חד־צדדיים (Monofacial).</p>
+
+        <h2 class="section-title">שירות צבאי</h2>
+        <p class="paragraph"><strong>סיירת נח״ל</strong> <span class="item-meta">| לוחם ומפקד בתחום החבלה וההנדסה הקרבית | 2012–2015</span></p>
+        <ul class="cv-list">
+            <li>שירות כלוחם וכמפקד, ובהמשך שירות קבע והובלת תחום החבלה ביחידה.</li>
+            <li>ניסיון מבצעי בהפעלת רחפנים לצורכי סריקה ומיפוי שטח, תצפית ואיתור, כחלק מהפעילות המבצעית של היחידה.</li>
+            <li>הסמכות: רובאי 07, פלס/חבלה 08.</li>
+        </ul>
+
+        <h2 class="section-title">שפות</h2>
+        <p class="paragraph"><strong>עברית:</strong> שפת אם. | <strong>אנגלית:</strong> שליטה מקצועית מלאה.</p>
+    </div>
+</body>
+</html>
