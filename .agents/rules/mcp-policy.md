@@ -1,6 +1,6 @@
 ---
-description: MCP server policies, restrictions, and explicit triggers for job_search_automation
-globs: "*"
+trigger: always_on
+description: "MCP server policies, restrictions, and explicit triggers for job_search_automation."
 ---
 
 # מדיניות והנחיות שימוש בשרתי MCP — פרויקט job_search_automation

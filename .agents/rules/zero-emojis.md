@@ -1,6 +1,6 @@
 ---
-description: Enforce strict zero-emoji policy across all code, comments, documentation, commit messages, PRs, and chat responses.
-globs: "*"
+trigger: always_on
+description: "Enforce strict zero-emoji policy across all code, comments, documentation, commit messages, PRs, and chat responses."
 ---
 
 # Zero-Emoji Mandatory Rule

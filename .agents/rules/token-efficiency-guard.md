@@ -1,6 +1,6 @@
 ---
-description: Enforce zero-scan navigation, bulk data lockout, scoped UI/CSS reading, and output minimization
-globs: "*"
+trigger: always_on
+description: "Enforce zero-scan navigation, bulk data lockout, scoped UI/CSS reading, and output minimization."
 ---
 
 # Token Efficiency & Scoped Execution Guard

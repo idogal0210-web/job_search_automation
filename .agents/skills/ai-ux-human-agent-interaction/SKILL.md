@@ -61,32 +61,31 @@ Every job card must communicate:
 - **Non-Destructive Hydration:** User annotations (starred jobs, dismissed jobs, applied status, and seen markers) stored in `localStorage` must NEVER be wiped, overwritten, or reset during UI updates or new scrapings.
 - **Self-Healing Schema Migration:** Always validate and safely migrate triage data structures on page load without treating existing unreviewed jobs as newly injected alerts.
 
-### 3.6 4-Tier High-Resolution Company Logo Pipeline
-To prevent broken, blurry, or missing corporate emblems:
-1. **Tier 1 - Direct Overrides:** Custom curated vector/PNG assets in `docs/assets/logos/`.
-2. **Tier 2 - Clearbit High-Res Logo API:** Automated domain resolution (`https://logo.clearbit.com/{domain}`).
-3. **Tier 3 - DuckDuckGo / Google Favicon High-Res Favicons:** Secondary automated visual fetch.
-4. **Tier 4 - Vector Monogram Fallback:** Clean inline SVG avatar displaying the company's Hebrew/English initials with deterministic brand coloring.
+### 3.6 Verified High-Resolution Company Logo Pipeline (Zero Synthetic Logos)
+To prevent broken, blurry, or fabricated corporate emblems:
+1. **Tier 1 - Direct Overrides:** Custom curated official vector/PNG assets in `docs/assets/logos/`.
+2. **Tier 2 - Verified Corporate Logo / Favicon:** Official company logo URL from LinkedIn or high-res official domain favicon.
+3. **Tier 3 - Clean Typography Fallback (Zero Monograms):** Never invent synthetic logos or generic letter monograms/avatars. If no verified official logo exists or if loading fails (`onerror`), hide the image element cleanly and render the company name in crisp typography.
 
 ### 3.7 Zero-Waste UI Engineering
 - **Pure Vanilla Stack:** Pure HTML5, modern CSS3 (Flexbox/Grid, CSS custom properties), and lightweight JavaScript.
 - **Strictly No Heavy Frameworks:** Do not inject React, Vue, or bulky UI libraries that introduce build steps or slow down load times.
 
 ### 3.8 Rigorous Execution Telemetry & Error UX
-- **Truthful Status Reporting:** Clearly display last scrape timestamp, total jobs evaluated, and count of disqualified jobs.
+- **Truthful Status Reporting:** Clearly display last scrape timestamp, total jobs evaluated, and count of disqualified jobs, as well as unverified job counts in the closed-jobs scanner.
 - **Graceful Error States:** If Gemini rate-limits or a network timeout occurs, present a clean fallback state without breaking the dashboard.
 - **Never Fabricate Progress:** Never display arbitrary percentage progress rings unless backed by real streaming execution events.
 
-### 3.9 Symmetrical Header Bar & Centered Mode Switcher (Desktop Isolation)
-- **Mathematical Centering:** In `.dashboard-sidebar` on desktop (`min-width: 1025px`), use CSS Grid `1fr auto 1fr`. Column 1 holds Brand tools (right), Column 2 centers the Mode Switcher (`לוח משרות` / `סטודיו קריירה`) at exactly 50% screen width, and Column 3 holds category cubes and progress telemetry (left).
-- **Desktop-Only Boundary:** Never leak desktop two-tier or grid refactors into mobile breakpoints (`max-width: 900px`). Mobile must retain its compact vertical single-line summary with the expandable toggle (`#metricsToggleBtn`).
+### 3.9 Symmetrical Header Bar & Centered Mode Switcher
+- **Mathematical Centering:** In `.dashboard-sidebar` on desktop (`min-width: 1181px`), use symmetrical layout where Column 1 holds Brand tools (right), Column 2 centers the Mode Switcher (`לוח משרות` / `סטודיו קריירה`) at 50% screen width, and Column 3 holds category cubes (left).
 
 ### 3.10 Right-Hand Vertical Pipeline Sidebar for RTL Workspaces
 - **Natural Reading Anchor:** In RTL Hebrew applications, workspace subnavigation and auxiliary action panels must sit on the right-hand side (`grid-template-columns: 310px minmax(0, 1fr)`).
 - **Sticky Accessibility:** The right-hand sidebar must be sticky (`position: sticky; top: 16px;`) so pipeline steps and active document status remain visible during vertical scrolling.
 
 ### 3.11 Schematic Sequential Steps & Zero Cognitive Overload
-- **Uniform Visual Hierarchy:** All sequential step buttons (Steps 1 to 6) must feature uniform heights, uniform typography, distinct icons, and circular number badges.
+- **Uniform Visual Hierarchy:** All 4 sequential stage buttons (Stages 1 to 4) feature uniform heights, uniform typography, distinct icons, and circular number badges (1 to 4).
+- **Single-Column Numbered Flow:** Inside each stage, actions are organized vertically in a single column of numbered steps (`1, 2, 3...`) with a quick-jump step outline bar at the top of the stage.
 - **Clutter Elimination:** Avoid information overload, redundant percentage labels, or walls of text inside navigation hubs and sidebars.
 
 ### 3.12 Independent Document Upload Architecture

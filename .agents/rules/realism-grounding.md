@@ -1,6 +1,7 @@
 ---
-description: Enforce strict candidate realism, locked original job titles, and zero inflation across all tailored CV and cover letter outputs
-globs: "tools/cv_tailor/**"
+trigger: glob
+description: "Enforce strict candidate realism, locked original job titles, and zero inflation across all tailored CV and cover letter outputs."
+globs: ".agents/skills/cv-tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**"
 ---
 
 # Candidate Realism, Locked Titles & Anti-Fluff Policy
@@ -21,12 +22,6 @@ globs: "tools/cv_tailor/**"
 
 3. **Bridge the Gap Honestly:**
    - Position the candidate as an authentic, high-potential Practical Mechanical Engineer with strong operational grounding and renewable energy education.
-
-## 4. Zero Synthetic Logos Policy (איסור מוחלט על לוגואים גנריים או מלאכותיים)
-- חל איסור מוחלט להמציא לוגו, לייצר גרפיקה מלאכותית, או להשתמש במונוגרמות אותיות גנריות (כגון אווטאר אותיות).
-- קישור לוגו (`company_logo_url`) חייב להיות אך ורק קישור ישיר מאומת מתוך עמוד החברה ב-LinkedIn, או Favicon רשמי ברזולוציה גבוהה מדומיין הבית של החברה, או נכס וקטורי רשמי מקומי.
-- במידה ולא קיים לוגו רשמי מאומת, השדה `company_logo_url` יישאר ריק (`null`), ושם החברה יוצג בטיפוגרפיה נקייה.
-- כל תגית תמונת לוגו בממשק תכלול מנגנון `onerror` תקני המסתיר את תגית התמונה בצורה חלקה במידה והלוגו נחסם או נכשל בטעינה (404/CORS), ללא עיוות מבנה הכרטיס.
 
 ## Absolute Truthfulness & Asking Clarifications
 - If a target role or domain requires skills/experience not documented in `base_profile.md`, NEVER assume or fabricate them.
