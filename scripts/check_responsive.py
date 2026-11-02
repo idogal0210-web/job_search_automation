@@ -40,18 +40,23 @@ with sync_playwright() as p:
         metrics['height']=height;metrics['errors']=errors
         metrics['chart']=page.evaluate("typeof Chart !== 'undefined'")
         if phase != 'before':
-            page.locator('.advanced-job-filters summary').click()
-            page.locator('#scoreFilter').select_option('90')
-            metrics['score_filter_empty']=page.locator('.job-card:visible').count()==0
-            page.evaluate('resetAllFilters()')
-            page.locator('#salaryFilter').select_option('job_ad')
-            metrics['verified_salary_filter_empty']=page.locator('.job-card:visible').count()==0
-            page.evaluate('resetAllFilters()')
+            adv_summary = page.locator('.advanced-job-filters summary')
+            if adv_summary.count() > 0:
+                adv_summary.click()
+                if page.locator('#scoreFilter').count() > 0:
+                    page.locator('#scoreFilter').select_option('90')
+                    metrics['score_filter_empty']=page.locator('.job-card:visible').count()==0
+                    page.evaluate('resetAllFilters()')
+                if page.locator('#salaryFilter').count() > 0:
+                    page.locator('#salaryFilter').select_option('job_ad')
+                    metrics['verified_salary_filter_empty']=page.locator('.job-card:visible').count()==0
+                    page.evaluate('resetAllFilters()')
             page.locator('#searchInput').fill('NO_MATCH_SYNTHETIC')
             page.wait_for_timeout(350)
             metrics['search_empty']=page.locator('.job-card:visible').count()==0
             page.evaluate('resetAllFilters()')
-            page.locator('.advanced-job-filters summary').click()
+            if adv_summary.count() > 0:
+                adv_summary.click()
         page.evaluate("document.querySelectorAll('.job-card').forEach(e=>{e.style.contentVisibility='visible'})")
         metrics['header_overlap']=page.evaluate('''() => {const elements=[...document.querySelector('.dashboard-sidebar').children].filter(e=>e.getBoundingClientRect().width>0);return elements.some((a,i)=>elements.slice(i+1).some(b=>{const x=a.getBoundingClientRect(),y=b.getBoundingClientRect();return Math.min(x.right,y.right)-Math.max(x.left,y.left)>2&&Math.min(x.bottom,y.bottom)-Math.max(x.top,y.top)>2}))}''')
         page.evaluate('scrollTo(0,0)')

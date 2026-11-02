@@ -6496,15 +6496,7 @@
 }
 
 
-/* Optional filters share the existing visual tokens and remain accessible at 320px. */
-.advanced-job-filters { margin-block: 8px; min-width: 0; }
-.advanced-job-filters summary { cursor: pointer; min-height: 44px; padding-block: 12px; }
-.advanced-filter-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
-.advanced-filter-grid label { display: grid; gap: 6px; min-width: 0; font-size: 13px; }
-.advanced-filter-grid select, .advanced-filter-grid input { width: 100%; min-width: 0; min-height: 44px; font: inherit; color: var(--dashboard-text); background: #171c12; border: 1px solid var(--dashboard-edge); border-radius: 10px; padding: 8px; }
-@media (min-width: 768px) {
-  .advanced-filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
+
 @media (max-width: 767px) {
   .dashboard-mode-switcher { width: 100%; }
   .dashboard-mode-switcher button { flex: 1; min-width: 0; }

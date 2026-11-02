@@ -77,7 +77,7 @@ def generate_interactive_html(jobs, rejected_links, is_weekly=False):
     html = html.replace("__TOTAL_JOBS__", str(total_new))
     html = html.replace("__TOTAL_NEW_JOBS__", str(total_new))
     html = html.replace("__TOTAL_SAVED_JOBS__", "0")
-    html = html.replace("__TOTAL_STARRED_JOBS__", "7")
+    html = html.replace("__TOTAL_STARRED_JOBS__", "0")
     html = html.replace("__TOTAL_REJECTED_JOBS__", "0")
     return html
 
@@ -171,8 +171,6 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
     starred_count = len(sync_state.get("starred", []))
     rejected_count = len(sync_state.get("rejected", []))
     total_new = len([j for j in compact_jobs if j.get("link") not in starred_set and j.get("link") not in saved_set and j.get("link") not in rejected_set_s and j.get("link") not in purged_set])
-    if total_new == 0 and len(compact_jobs) > 0:
-        total_new = 18
 
     # 4. Output docs/index.html
     html_tpl = HTML_TEMPLATE
@@ -198,7 +196,7 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
     return out_file
 
 
-def update_weekly_archive(new_jobs, archive_file_path, rejected_set):
+def update_weekly_archive(new_jobs, archive_file_path, rejected_set=None):
     """Maintains a rolling weekly view and preserves the complete historical catalog."""
     archive = load_state(archive_file_path, [], strict=True)
     if not isinstance(archive, list) or any(not isinstance(job, dict) for job in archive):
@@ -209,6 +207,33 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set):
     if not isinstance(catalog, dict) or any(not isinstance(job, dict) for job in catalog.values()):
         raise ValueError("Invalid historical catalog; refusing to reset history")
 
+    from src.url_utils import canonical_job_url, job_identity, stable_job_id
+
+    # Reconcile user overrides: load purged and rejected links from sync_state.json
+    all_rejected = set(rejected_set or [])
+    sync_state_path = os.path.join(project_root, "data", "sync_state.json")
+    if os.path.exists(sync_state_path):
+        sync_state = load_state(sync_state_path, {}, strict=False) or {}
+        all_rejected.update(sync_state.get("purged", []))
+        all_rejected.update(sync_state.get("rejected", []))
+
+    rejected_canonical = {canonical_job_url(l) for l in all_rejected if l}
+    rejected_stable_ids = {stable_job_id(l) for l in all_rejected if l}
+
+    def _is_rejected(j):
+        link = j.get("link", "")
+        if not link:
+            return True
+        if link in all_rejected:
+            return True
+        c_link = canonical_job_url(link)
+        if c_link and c_link in rejected_canonical:
+            return True
+        s_id = stable_job_id(j)
+        if s_id and s_id in rejected_stable_ids:
+            return True
+        return False
+
     for j in archive:
         link = j.get("link")
         if link and link not in catalog:
@@ -216,21 +241,38 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set):
 
     cutoff_date = (datetime.now() - timedelta(days=8)).strftime("%Y-%m-%d")
     archive = [j for j in archive if j.get("date", "") >= cutoff_date]
-    archive = [j for j in archive if j.get("link") not in rejected_set]
+    archive = [j for j in archive if not _is_rejected(j)]
 
     seen_links = {j.get("link") for j in archive}
+    seen_canonical = {canonical_job_url(j.get("link")) for j in archive if j.get("link")}
+    seen_identities = {job_identity(j) for j in archive if isinstance(j, dict)}
+    seen_stable_ids = {stable_job_id(j) for j in archive if isinstance(j, dict)}
     today_str = datetime.now().strftime("%Y-%m-%d")
 
     if new_jobs:
         for job in new_jobs:
             link = job.get("link")
-            if link and link not in seen_links and link not in rejected_set:
-                seen_links.add(link)
-                job_copy = dict(job)
-                job_copy["date"] = today_str
-                archive.append(job_copy)
-                if link not in catalog:
-                    catalog[link] = job_copy
+            if not link or _is_rejected(job):
+                continue
+            c_link = canonical_job_url(link)
+            ident = job_identity(job)
+            s_id = stable_job_id(job)
+
+            if link in seen_links or (c_link and c_link in seen_canonical) or ident in seen_identities or (s_id and s_id in seen_stable_ids):
+                continue
+
+            seen_links.add(link)
+            if c_link:
+                seen_canonical.add(c_link)
+            seen_identities.add(ident)
+            if s_id:
+                seen_stable_ids.add(s_id)
+
+            job_copy = dict(job)
+            job_copy["date"] = today_str
+            archive.append(job_copy)
+            if link not in catalog:
+                catalog[link] = job_copy
 
     # Persist the full history before replacing its rolling weekly view.
     # Failure must propagate: never claim a successful dashboard after data loss.
