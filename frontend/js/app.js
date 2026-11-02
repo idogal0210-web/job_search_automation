@@ -126,14 +126,12 @@ export function switchDashboardAppMode(mode, updateHash = true) {
 
 export function switchStudioModule(moduleId) {
   if (typeof document === 'undefined') return;
-  const modules = ['ats', 'writer', 'visual', 'kanban', 'interview', 'skills'];
+  const modules = ['ats', 'writer', 'interview', 'skills'];
   const activeModule = modules.includes(moduleId) ? moduleId : 'ats';
 
   const tabMap = {
     ats: 'studioTabAts',
     writer: 'studioTabWriter',
-    visual: 'studioTabVisual',
-    kanban: 'studioTabKanban',
     interview: 'studioTabInterview',
     skills: 'studioTabSkills'
   };
@@ -141,8 +139,6 @@ export function switchStudioModule(moduleId) {
   const panelMap = {
     ats: 'studioModuleAts',
     writer: 'studioModuleWriter',
-    visual: 'studioModuleVisual',
-    kanban: 'studioModuleKanban',
     interview: 'studioModuleInterview',
     skills: 'studioModuleSkills'
   };

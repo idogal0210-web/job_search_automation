@@ -97,15 +97,13 @@ class TestMilestone1ChallengerStress(unittest.TestCase):
         self.assertGreater(studio_pos, radar_pos, "careerStudioWorkspace must follow radarWorkspace")
 
     def test_studio_modules_semantic_scaffolding(self):
-        """TC-CHALLENGER-M1-04: Verify all 6 semantic module containers are present in Studio."""
+        """TC-CHALLENGER-M1-04: Verify all 4 semantic module containers are present in Studio."""
         content = (PROJECT_ROOT / "frontend" / "templates" / "index.html").read_text(
             encoding="utf-8"
         )
         modules = [
             "studioModuleAts",
             "studioModuleWriter",
-            "studioModuleVisual",
-            "studioModuleKanban",
             "studioModuleInterview",
             "studioModuleSkills",
         ]

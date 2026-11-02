@@ -454,23 +454,7 @@
                 </div>
               </button>
               
-              <button type="button" role="tab" id="studioTabVisual" class="studio-subnav-btn studio-step-btn" aria-selected="false" aria-controls="studioModuleVisual" onclick="switchStudioModule('visual')">
-                <div class="step-num-badge">3</div>
-                <div class="step-icon-wrap"><i class="ph-duotone ph-eye"></i></div>
-                <div class="step-content-meta">
-                  <span class="step-title">סימולטור F-Pattern ו-A4</span>
-                  <span class="step-desc">מבנה ויזואלי ומסגרת</span>
-                </div>
-              </button>
               
-              <button type="button" role="tab" id="studioTabKanban" class="studio-subnav-btn studio-step-btn" aria-selected="false" aria-controls="studioModuleKanban" onclick="switchStudioModule('kanban')">
-                <div class="step-num-badge">4</div>
-                <div class="step-icon-wrap"><i class="ph-duotone ph-kanban"></i></div>
-                <div class="step-content-meta">
-                  <span class="step-title">גרסאות קו״ח וקנבן</span>
-                  <span class="step-desc">ניהול גרסאות ומעקב</span>
-                </div>
-              </button>
               
               <button type="button" role="tab" id="studioTabInterview" class="studio-subnav-btn studio-step-btn" aria-selected="false" aria-controls="studioModuleInterview" onclick="switchStudioModule('interview')">
                 <div class="step-num-badge">5</div>
@@ -508,9 +492,12 @@
                 <p class="studio-module-desc">הערכת התאמה לפרופיל הנדסאי מכונות, בדיקת רישיונות חובה סטטוטוריים וזיהוי פערי מילות מפתח</p>
               </div>
             </div>
+
+            <nav class="studio-step-outline" aria-label="קפיצה מהירה בין צעדי השלב"><ol><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-ats-1')"><span class="studio-outline-num" aria-hidden="true">1</span><span>בחירת משרה והפעלת הניתוח</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-ats-2')"><span class="studio-outline-num" aria-hidden="true">2</span><span>קריאת ציון ההתאמה</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-ats-3')"><span class="studio-outline-num" aria-hidden="true">3</span><span>פירוט הממצאים</span></button></li></ol></nav>
             
             <div id="atsModuleContent" class="ats-workspace-content">
               <!-- Top Section: Job Selector & Free Textarea -->
+              <div class="studio-step-head" id="step-ats-1"><span class="studio-step-num" aria-hidden="true">1</span><div class="studio-step-text"><h4 class="studio-step-title">בחירת משרה והפעלת הניתוח</h4><p class="studio-step-hint">בחר משרה מהמאגר או הדבק טקסט, ולחץ על הפעלת הניתוח.</p></div></div>
               <div class="studio-card-glass ats-input-panel">
                 <div class="ats-panel-header">
                   <div class="ats-panel-title">
@@ -573,6 +560,7 @@
               </div>
 
               <!-- Middle Section: Score Gauge & Key Indicators -->
+              <div class="studio-step-head" id="step-ats-2"><span class="studio-step-num" aria-hidden="true">2</span><div class="studio-step-text"><h4 class="studio-step-title">קריאת ציון ההתאמה</h4><p class="studio-step-hint">הציון הכולל ושלושת המדדים המרכזיים.</p></div></div>
               <div class="ats-kpi-row">
                 <!-- Circular Percentage Match Gauge -->
                 <div class="studio-card-glass ats-gauge-card">
@@ -632,6 +620,7 @@
               </div>
 
               <!-- Bottom Section: Detailed Cards (Hard Gates, Keywords, Structural) -->
+              <div class="studio-step-head" id="step-ats-3"><span class="studio-step-num" aria-hidden="true">3</span><div class="studio-step-text"><h4 class="studio-step-title">פירוט הממצאים</h4><p class="studio-step-hint">שערי סף, מילות מפתח חסרות ותאימות מבנה.</p></div></div>
               <div class="ats-details-grid">
                 
                 <!-- Card 1: Statutory Hard Gates Scanner -->
@@ -744,8 +733,11 @@
                 <p class="studio-module-desc">שדרוג משפטים פסיביים להישגים מדידים מבוססי מדדי בטיחות ותפעול (HSE) ב-3 סגנונות</p>
               </div>
             </div>
+
+            <nav class="studio-step-outline" aria-label="קפיצה מהירה בין צעדי השלב"><ol><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-writer-1')"><span class="studio-outline-num" aria-hidden="true">1</span><span>בחירת סגנון כתיבה</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-writer-2')"><span class="studio-outline-num" aria-hidden="true">2</span><span>הכרת נוסחת ההישג</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-writer-3')"><span class="studio-outline-num" aria-hidden="true">3</span><span>ניסוח ושדרוג נקודה</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-writer-4')"><span class="studio-outline-num" aria-hidden="true">4</span><span>מילון מונחים דו-לשוני</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-writer-5')"><span class="studio-outline-num" aria-hidden="true">5</span><span>בחירת גרסת קורות חיים</span></button></li></ol></nav>
             <div id="writerModuleContent" class="writer-workspace-content">
               <!-- Top Section: Tone Selector & Profile Summary -->
+              <div class="studio-step-head" id="step-writer-1"><span class="studio-step-num" aria-hidden="true">1</span><div class="studio-step-text"><h4 class="studio-step-title">בחירת סגנון כתיבה</h4><p class="studio-step-hint">בחר את הסגנון שבו ינוסחו ההישגים.</p></div></div>
               <div class="writer-topbar">
                 <div class="writer-mode-selector-wrapper">
                   <span class="writer-selector-label">
@@ -792,6 +784,7 @@
               </div>
 
               <!-- Formula Banner -->
+              <div class="studio-step-head" id="step-writer-2"><span class="studio-step-num" aria-hidden="true">2</span><div class="studio-step-text"><h4 class="studio-step-title">הכרת נוסחת ההישג</h4><p class="studio-step-hint">מבנה מומלץ לכל נקודה בקורות החיים.</p></div></div>
               <div class="writer-formula-banner">
                 <div class="writer-formula-title">
                   <i class="ph-duotone ph-function" style="color: var(--dashboard-lime);"></i>
@@ -816,6 +809,7 @@
               </div>
 
               <!-- Two-Column Interactive Workbench -->
+              <div class="studio-step-head" id="step-writer-3"><span class="studio-step-num" aria-hidden="true">3</span><div class="studio-step-text"><h4 class="studio-step-title">ניסוח ושדרוג נקודה</h4><p class="studio-step-hint">כתוב ניסוח גולמי, שדרג אותו ובדוק איכות.</p></div></div>
               <div class="writer-workbench">
                 <!-- Left Column: Raw Input -->
                 <div class="studio-card-glass writer-card-column">
@@ -938,6 +932,7 @@
                 </div>
               </div>
 
+              <div class="studio-step-head" id="step-writer-4"><span class="studio-step-num" aria-hidden="true">4</span><div class="studio-step-text"><h4 class="studio-step-title">מילון מונחים דו-לשוני</h4><p class="studio-step-hint">חפש מונח תעשייתי והעתק את התרגום.</p></div></div>
               <!-- Lower Section: Bilingual Energy Terminology Dictionary Explorer -->
               <div class="studio-card-glass writer-dictionary-section">
                 <div class="writer-dict-header">
@@ -988,246 +983,10 @@
                 </div>
               </div>
             </div>
-          </div>
-        </section>
 
-        <!-- Module 3: Visual UX Heatmap & Auto-Fit A4 Engine (Milestone 4) -->
-        <section id="studioModuleVisual" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabVisual" style="display: none;">
-          <div class="studio-module-card">
-            <div class="studio-module-header">
-              <div class="studio-module-icon gold">
-                <i class="ph-duotone ph-eye"></i>
-              </div>
-              <div style="flex: 1;">
-                <h3 class="studio-module-title">סימולטור קריאה F-Pattern, התאמה חכמה ל-A4 ותצוגת מובייל</h3>
-                <p class="studio-module-desc">הקרנת מפת חום של 6 שניות לקריאת מגייס, אלגוריתם התאמה אוטומטי לעמוד A4 יחיד ותצוגת סמארטפון</p>
-              </div>
-            </div>
-
-            <!-- Visual Simulator Controls Toolbar -->
-            <div class="visual-toolbar">
-              <div class="visual-toolbar-group">
-                <label for="visualCvVersionSelect" class="visual-toolbar-label">
-                  <i class="ph-duotone ph-file-text"></i>
-                  <span>גרסת קו״ח:</span>
-                </label>
-                <select id="visualCvVersionSelect" class="visual-select" onchange="changeVisualCvVersion(this.value)">
-                  <option value="cv_gas_he">גז טבעי ותחנות כוח (עברית)</option>
-                  <option value="cv_solar_he">אנרגיה סולארית ואנלייט (עברית)</option>
-                  <option value="cv_drones_he">כטב״ם, רחפנים וביטחון (עברית)</option>
-                  <option value="cv_base_en">International Mechanical & Energy (English)</option>
-                </select>
-              </div>
-
-              <div class="visual-toolbar-actions">
-                <button type="button" id="btnToggleHeatmap" class="visual-action-btn active" onclick="toggleHeatmapOverlay()">
-                  <i class="ph-duotone ph-flame"></i>
-                  <span>מפת חום 6 שניות</span>
-                </button>
-                <button type="button" id="btnAutoFitA4" class="visual-action-btn" onclick="applyA4AutoFit()">
-                  <i class="ph-duotone ph-arrows-in"></i>
-                  <span>התאמה לעמוד A4 (Auto-Fit)</span>
-                </button>
-                <button type="button" id="btnToggleMobilePreview" class="visual-action-btn" onclick="toggleMobilePreview()">
-                  <i class="ph-duotone ph-device-mobile"></i>
-                  <span>תצוגת מובייל</span>
-                </button>
-                <button type="button" id="btnPrintVisualCv" class="visual-action-btn" onclick="printVisualCv()">
-                  <i class="ph-duotone ph-printer"></i>
-                  <span>הדפסה / PDF</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Heatmap Guidance & Status Bar -->
-            <div id="visualStatusBar" class="visual-status-banner">
-              <div class="visual-status-badge">
-                <i class="ph-duotone ph-info"></i>
-                <span id="visualStatusText">מפת חום מופעלת: סימולציית F-Pattern מציגה את מוקדי המבט של מגייס ב-6 השניות הראשונות</span>
-              </div>
-              <div class="heatmap-legend">
-                <span class="legend-item"><span class="legend-dot red"></span>0-2 שניות (פרטי קשר והסמכת הנדסאי)</span>
-                <span class="legend-item"><span class="legend-dot amber"></span>2-4 שניות (תפקיד אחרון ו-PRMS)</span>
-                <span class="legend-item"><span class="legend-dot cyan"></span>4-6 שניות (מיומנויות ו-HSE)</span>
-              </div>
-            </div>
-
-            <!-- Preview Viewport Container -->
-            <div id="visualViewportContainer" class="visual-viewport-container">
-              <!-- Mobile Bezel Mockup Wrapper -->
-              <div id="mobileMockupFrame" class="mobile-mockup-frame">
-                <div class="mobile-speaker-notch"></div>
-                <div class="mobile-screen-area">
-                  <div class="cv-preview-sheet" id="cvPreviewSheet">
-                    <!-- Heatmap Overlay Canvas & Hotspots -->
-                    <div id="heatmapOverlayLayer" class="heatmap-overlay-layer">
-                      <div class="heatmap-hotspot spot-header" title="מוקד 1 (0-1.5 שניות): שם, תואר הנדסאי רשום ופרטי התקשרות">
-                        <span class="hotspot-pulse red"></span>
-                        <span class="hotspot-label">מוקד 1: כותרת והסמכה</span>
-                      </div>
-                      <div class="heatmap-hotspot spot-summary" title="מוקד 2 (1.5-3 שניות): תמצית מנהלים ומומחיות בלחץ גבוה">
-                        <span class="hotspot-pulse red"></span>
-                        <span class="hotspot-label">מוקד 2: תמצית פרופיל</span>
-                      </div>
-                      <div class="heatmap-hotspot spot-experience" title="מוקד 3 (3-4.5 שניות): תפקיד אחרון בסופרגז ותפעול PRMS">
-                        <span class="hotspot-pulse amber"></span>
-                        <span class="hotspot-label">מוקד 3: ניסיון תפעולי אחרון</span>
-                      </div>
-                      <div class="heatmap-hotspot spot-skills" title="מוקד 4 (4.5-6 שניות): תקני בטיחות ASME/ISO, רישיונות ו-SCADA">
-                        <span class="hotspot-pulse cyan"></span>
-                        <span class="hotspot-label">מוקד 4: תקנים ומיומנויות</span>
-                      </div>
-                    </div>
-
-                    <!-- Rendered CV Document Frame -->
-                    <iframe id="cvPreviewIframe" class="cv-preview-iframe" title="תצוגה מקדימה של קורות החיים" src="career/cv/cv_gas_he.html"></iframe>
-                  </div>
-                </div>
-                <div class="mobile-home-indicator"></div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- Module 4: Multi-Version CV Hub & Kanban Tracker (Milestone 5) -->
-        <section id="studioModuleKanban" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabKanban" style="display: none;">
-          <div class="studio-module-card">
-            <div class="studio-module-header">
-              <div class="studio-module-icon cyan">
-                <i class="ph-duotone ph-kanban"></i>
-              </div>
-              <div style="flex: 1;">
-                <h3 class="studio-module-title">מרכז גרסאות קו״ח מותאמות ולוח מעקב הגשות (Kanban Tracker)</h3>
-                <p class="studio-module-desc">ניהול 4 גרסאות ייעודיות לתחומי היעד ולוח מעקב אינטראקטיבי אחר סטטוס מועמדויות</p>
-              </div>
-            </div>
-
-            <!-- Sub-Tabs for Kanban Module -->
-            <div class="kanban-subtabs-nav">
-              <button type="button" id="subtabKanbanBoardBtn" class="kanban-subtab-btn active" onclick="switchKanbanSubtab('board')">
-                <i class="ph-duotone ph-kanban"></i>
-                <span>לוח מעקב מועמדויות (Pipeline)</span>
-              </button>
-              <button type="button" id="subtabCvHubBtn" class="kanban-subtab-btn" onclick="switchKanbanSubtab('hub')">
-                <i class="ph-duotone ph-folder-notch-open"></i>
-                <span>מרכז 4 גרסאות קו״ח מותאמות</span>
-              </button>
-            </div>
-
-            <!-- Subtab 1: Interactive Kanban Board -->
-            <div id="kanbanBoardView" class="kanban-subtab-view">
-              <!-- Kanban Action Bar -->
-              <div class="kanban-action-bar">
-                <div class="kanban-metrics-strip">
-                  <div class="kanban-metric-pill">
-                    <span class="metric-num" id="kanbanTotalCount">0</span>
-                    <span class="metric-lbl">סה״כ מועמדויות</span>
-                  </div>
-                  <div class="kanban-metric-pill active-pill">
-                    <span class="metric-num" id="kanbanActiveCount">0</span>
-                    <span class="metric-lbl">בתהליך פעיל</span>
-                  </div>
-                  <div class="kanban-metric-pill interview-pill">
-                    <span class="metric-num" id="kanbanInterviewCount">0</span>
-                    <span class="metric-lbl">ראיונות</span>
-                  </div>
-                  <div class="kanban-metric-pill success-pill">
-                    <span class="metric-num" id="kanbanOfferCount">0</span>
-                    <span class="metric-lbl">הצעות שכר</span>
-                  </div>
-                </div>
-
-                <div class="kanban-controls-group">
-                  <select id="kanbanAddFromJobsDropdown" class="kanban-job-select" onchange="addSelectedJobToKanban(this.value)">
-                    <option value="">+ הוסף ישירות ממשרות הדשבורד...</option>
-                  </select>
-                  <button type="button" class="kanban-btn primary" onclick="openAddApplicationModal()">
-                    <i class="ph-duotone ph-plus-circle"></i>
-                    <span>הוסף מועמדות ידנית</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Kanban Columns Grid -->
-              <div class="kanban-board-grid">
-                <!-- Column 1: Saved -->
-                <div class="kanban-column" id="kanbanCol_saved" data-status="saved">
-                  <div class="kanban-column-header">
-                    <div class="kanban-col-title-wrap">
-                      <span class="kanban-col-indicator grey"></span>
-                      <span class="kanban-col-title">נשמר להגשה</span>
-                    </div>
-                    <span class="kanban-col-count" id="count_saved">0</span>
-                  </div>
-                  <div class="kanban-cards-container" id="cards_saved"></div>
-                </div>
-
-                <!-- Column 2: Applied -->
-                <div class="kanban-column" id="kanbanCol_applied" data-status="applied">
-                  <div class="kanban-column-header">
-                    <div class="kanban-col-title-wrap">
-                      <span class="kanban-col-indicator cyan"></span>
-                      <span class="kanban-col-title">הוגש למעסיק</span>
-                    </div>
-                    <span class="kanban-col-count" id="count_applied">0</span>
-                  </div>
-                  <div class="kanban-cards-container" id="cards_applied"></div>
-                </div>
-
-                <!-- Column 3: Screening -->
-                <div class="kanban-column" id="kanbanCol_screening" data-status="screening">
-                  <div class="kanban-column-header">
-                    <div class="kanban-col-title-wrap">
-                      <span class="kanban-col-indicator gold"></span>
-                      <span class="kanban-col-title">במיון / סינון</span>
-                    </div>
-                    <span class="kanban-col-count" id="count_screening">0</span>
-                  </div>
-                  <div class="kanban-cards-container" id="cards_screening"></div>
-                </div>
-
-                <!-- Column 4: Interview -->
-                <div class="kanban-column" id="kanbanCol_interview" data-status="interview">
-                  <div class="kanban-column-header">
-                    <div class="kanban-col-title-wrap">
-                      <span class="kanban-col-indicator purple"></span>
-                      <span class="kanban-col-title">זימון לראיון</span>
-                    </div>
-                    <span class="kanban-col-count" id="count_interview">0</span>
-                  </div>
-                  <div class="kanban-cards-container" id="cards_interview"></div>
-                </div>
-
-                <!-- Column 5: Offer -->
-                <div class="kanban-column" id="kanbanCol_offer" data-status="offer">
-                  <div class="kanban-column-header">
-                    <div class="kanban-col-title-wrap">
-                      <span class="kanban-col-indicator lime"></span>
-                      <span class="kanban-col-title">הצעת שכר / חוזה</span>
-                    </div>
-                    <span class="kanban-col-count" id="count_offer">0</span>
-                  </div>
-                  <div class="kanban-cards-container" id="cards_offer"></div>
-                </div>
-
-                <!-- Column 6: Rejected -->
-                <div class="kanban-column" id="kanbanCol_rejected" data-status="rejected">
-                  <div class="kanban-column-header">
-                    <div class="kanban-col-title-wrap">
-                      <span class="kanban-col-indicator rose"></span>
-                      <span class="kanban-col-title">הוסר / לא רלוונטי</span>
-                    </div>
-                    <span class="kanban-col-count" id="count_rejected">0</span>
-                  </div>
-                  <div class="kanban-cards-container" id="cards_rejected"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Subtab 2: 4 Tailored CV Versions Hub -->
-            <div id="kanbanCvHubView" class="kanban-subtab-view" style="display: none;">
-              <div class="cv-hub-grid">
+            <div class="studio-step-head" id="step-writer-5"><span class="studio-step-num" aria-hidden="true">5</span><div class="studio-step-text"><h4 class="studio-step-title">בחירת גרסת קורות חיים</h4><p class="studio-step-hint">צפה או הורד את הגרסה המתאימה לתחום המשרה.</p></div></div>
+            <!-- STEP: CV versions hub -->
+            <div id="writerCvHubGrid" class="cv-hub-grid">
                 <!-- Version 1: Gas & Energy Plants -->
                 <div class="cv-hub-card">
                   <div class="cv-hub-card-header">
@@ -1332,10 +1091,9 @@
                   </div>
                 </div>
               </div>
-            </div>
-
           </div>
         </section>
+
 
         <!-- Module 5: Voice Interview Simulator & LinkedIn Alignment (Milestone 6) -->
         <section id="studioModuleInterview" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabInterview" style="display: none;">
@@ -1350,10 +1108,13 @@
               </div>
             </div>
 
+            <nav class="studio-step-outline" aria-label="קפיצה מהירה בין צעדי השלב"><ol><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-interview-1')"><span class="studio-outline-num" aria-hidden="true">1</span><span>בחירת תרחיש ושאלה</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-interview-2')"><span class="studio-outline-num" aria-hidden="true">2</span><span>מענה והערכת STAR</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-interview-3')"><span class="studio-outline-num" aria-hidden="true">3</span><span>הלימה מול LinkedIn</span></button></li></ol></nav>
+
             <div class="interview-workbench">
               <!-- Column 1: Questions & STAR Simulator -->
               <div class="interview-col-main">
                 <!-- Question Generator Card -->
+                <div class="studio-step-head" id="step-interview-1"><span class="studio-step-num" aria-hidden="true">1</span><div class="studio-step-text"><h4 class="studio-step-title">בחירת תרחיש ושאלה</h4><p class="studio-step-hint">בחר קטגוריה וקבל שאלת ראיון.</p></div></div>
                 <div class="interview-section-box">
                   <div class="section-box-header">
                     <div class="section-box-title">
@@ -1386,6 +1147,7 @@
                 </div>
 
                 <!-- Voice Recording & STAR Evaluation Card -->
+                <div class="studio-step-head" id="step-interview-2"><span class="studio-step-num" aria-hidden="true">2</span><div class="studio-step-text"><h4 class="studio-step-title">מענה והערכת STAR</h4><p class="studio-step-hint">הקלט או כתוב תשובה וקבל ציון לפי מודל STAR.</p></div></div>
                 <div class="interview-section-box">
                   <div class="section-box-header">
                     <div class="section-box-title">
@@ -1467,6 +1229,7 @@
 
               <!-- Column 2: LinkedIn Profile Alignment -->
               <div class="interview-col-side">
+                <div class="studio-step-head" id="step-interview-3"><span class="studio-step-num" aria-hidden="true">3</span><div class="studio-step-text"><h4 class="studio-step-title">הלימה מול LinkedIn</h4><p class="studio-step-hint">בדוק שהפרופיל הציבורי עקבי עם קורות החיים.</p></div></div>
                 <div class="interview-section-box">
                   <div class="section-box-header">
                     <div class="section-box-title">
@@ -1543,9 +1306,12 @@
               </div>
             </div>
 
+            <nav class="studio-step-outline" aria-label="קפיצה מהירה בין צעדי השלב"><ol><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-skills-1')"><span class="studio-outline-num" aria-hidden="true">1</span><span>פערי מיומנויות והסמכות</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-skills-2')"><span class="studio-outline-num" aria-hidden="true">2</span><span>אנונימיזציה לשיתוף</span></button></li></ol></nav>
+
             <div class="skills-workbench">
               <!-- Column 1: Skill Gap Engine -->
               <div class="skills-col-gaps">
+                <div class="studio-step-head" id="step-skills-1"><span class="studio-step-num" aria-hidden="true">1</span><div class="studio-step-text"><h4 class="studio-step-title">פערי מיומנויות והסמכות</h4><p class="studio-step-hint">הסמכות מומלצות להשלמה, עם קישורי הכשרה.</p></div></div>
                 <div class="skills-box-header">
                   <div class="skills-box-title">
                     <i class="ph-duotone ph-graduation-cap"></i>
@@ -1627,6 +1393,7 @@
 
               <!-- Column 2: One-Click Privacy Anonymizer -->
               <div class="skills-col-anon">
+                <div class="studio-step-head" id="step-skills-2"><span class="studio-step-num" aria-hidden="true">2</span><div class="studio-step-text"><h4 class="studio-step-title">אנונימיזציה לשיתוף</h4><p class="studio-step-hint">הסתר פרטים מזהים לפני שיתוף קורות החיים.</p></div></div>
                 <div class="skills-box-header">
                   <div class="skills-box-title">
                     <i class="ph-duotone ph-user-circle-gear"></i>
@@ -1687,60 +1454,6 @@
 
   </div>
 
-  <!-- Add New Application Modal for Kanban -->
-  <dialog id="addKanbanModal" class="dashboard-modal-backdrop" aria-labelledby="addKanbanModalTitle" onclick="if(event.target===this)closeAddApplicationModal()">
-    <div class="dashboard-card dashboard-modal-box">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
-        <h3 id="addKanbanModalTitle" style="margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-          <i class="ph-duotone ph-plus-circle" style="color: var(--dashboard-cyan); font-size: 22px;"></i>
-          <span>הוספת מועמדות חדשה ללוח המעקב</span>
-        </h3>
-        <button type="button" onclick="closeAddApplicationModal()" style="background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer;">
-          <i class="ph-bold ph-x"></i>
-        </button>
-      </div>
-      <form id="addKanbanForm" onsubmit="handleSaveNewApplication(event)" class="kanban-modal-form">
-        <div class="form-group">
-          <label for="kanbanCompanyInput" class="form-label">שם החברה:</label>
-          <input type="text" id="kanbanCompanyInput" class="form-input" required placeholder="לדוגמה: אנלייט אנרגיה, דור אלון, אלביט">
-        </div>
-        <div class="form-group">
-          <label for="kanbanRoleInput" class="form-label">כותרת התפקיד:</label>
-          <input type="text" id="kanbanRoleInput" class="form-input" required placeholder="לדוגמה: מנהל תפעול מתקני גז / מהנדס שדה">
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="kanbanStatusSelect" class="form-label">שלב ב-Pipeline:</label>
-            <select id="kanbanStatusSelect" class="form-select">
-              <option value="saved">נשמר להגשה</option>
-              <option value="applied" selected>הוגש למעסיק</option>
-              <option value="screening">במיון / סינון</option>
-              <option value="interview">זימון לראיון</option>
-              <option value="offer">הצעת שכר / חוזה</option>
-              <option value="rejected">הוסר / לא רלוונטי</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="kanbanVersionSelect" class="form-label">גרסת קו״ח שנשלחה:</label>
-            <select id="kanbanVersionSelect" class="form-select">
-              <option value="גז טבעי">גז טבעי ותחנות כוח</option>
-              <option value="סולארי">סולארי ואנלייט</option>
-              <option value="כטב״ם">כטב״ם ורחפנים</option>
-              <option value="אנגלית">International English</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="kanbanNotesInput" class="form-label">הערות / אנשי קשר:</label>
-          <textarea id="kanbanNotesInput" class="form-textarea" rows="2" placeholder="שם המגייס/ת, תאריך ראיון טלפוני, קישור למשרה..."></textarea>
-        </div>
-        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
-          <button type="button" onclick="closeAddApplicationModal()" class="kanban-btn secondary">ביטול</button>
-          <button type="submit" class="kanban-btn primary">שמור מועמדות</button>
-        </div>
-      </form>
-    </div>
-  </dialog>
 
   <!-- About System Modal -->
   <dialog id="aboutModal" class="dashboard-modal-backdrop" aria-labelledby="aboutModalTitle" onclick="if(event.target===this)closeAboutModal()">

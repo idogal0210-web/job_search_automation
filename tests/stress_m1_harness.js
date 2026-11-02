@@ -183,14 +183,10 @@
       cube_starred: createMockElement('cube_starred', ['stat-cube-btn']),
       studioTabAts: createMockElement('studioTabAts', ['studio-subnav-btn', 'active']),
       studioTabWriter: createMockElement('studioTabWriter', ['studio-subnav-btn']),
-      studioTabVisual: createMockElement('studioTabVisual', ['studio-subnav-btn']),
-      studioTabKanban: createMockElement('studioTabKanban', ['studio-subnav-btn']),
       studioTabInterview: createMockElement('studioTabInterview', ['studio-subnav-btn']),
       studioTabSkills: createMockElement('studioTabSkills', ['studio-subnav-btn']),
       studioModuleAts: createMockElement('studioModuleAts', ['studio-module-panel', 'active'], 'block'),
       studioModuleWriter: createMockElement('studioModuleWriter', ['studio-module-panel'], 'none'),
-      studioModuleVisual: createMockElement('studioModuleVisual', ['studio-module-panel'], 'none'),
-      studioModuleKanban: createMockElement('studioModuleKanban', ['studio-module-panel'], 'none'),
       studioModuleInterview: createMockElement('studioModuleInterview', ['studio-module-panel'], 'none'),
       studioModuleSkills: createMockElement('studioModuleSkills', ['studio-module-panel'], 'none')
     };
@@ -784,7 +780,7 @@
     globalThis.window = env.window;
     globalThis.document = env.document;
 
-    const validModules = ['ats', 'writer', 'visual', 'kanban', 'interview', 'skills'];
+    const validModules = ['ats', 'writer', 'interview', 'skills'];
 
     validModules.forEach(function (mod) {
       switchStudioModule(mod);

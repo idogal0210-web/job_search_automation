@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Specification and E2E Tests for Career Studio Milestones 4, 5, and 6:
-- Milestone 4: Visual Simulator, 6-Second Heatmap, Auto-Fit A4 Engine, Mobile Viewport
-- Milestone 5: Multi-Version CV Hub & Interactive Kanban Application Tracker
+- Milestone 4/5: CV files and Multi-Version CV Hub (visual simulator and Kanban removed)
 - Milestone 6: Voice Interview Simulator, STAR Analysis, LinkedIn Alignment, Skill Gap Engine & Anonymizer
 """
 
@@ -34,31 +33,36 @@ class TestCareerStudioMilestones456(unittest.TestCase):
             cls.dashboard_css = f.read()
 
     # -------------------------------------------------------------------------
-    # Milestone 4 Tests: Visual Simulator, Heatmap, Auto-Fit & Mobile
+    # Removed modules, CV hub inside writer stage, numbered step flow
     # -------------------------------------------------------------------------
-    def test_m4_01_visual_module_container_exists(self):
-        panel = self.soup.find(id="studioModuleVisual")
-        self.assertIsNotNone(panel, "studioModuleVisual must exist")
-        self.assertEqual(panel.get("role"), "tabpanel")
-        self.assertEqual(panel.get("aria-labelledby"), "studioTabVisual")
+    def test_removed_visual_and_kanban_modules_absent(self):
+        for ident in ("studioModuleVisual", "studioTabVisual", "studioModuleKanban",
+                      "studioTabKanban", "addKanbanModal", "heatmapOverlayLayer"):
+            self.assertIsNone(self.soup.find(id=ident), ident)
+        for token in ("initVisualModule", "initKanbanModule", "toggleHeatmapOverlay",
+                      "applyA4AutoFit", "moveKanbanCard"):
+            self.assertNotIn(token, self.dashboard_js)
+        for token in ("kanban-", "heatmap-", "visual-toolbar"):
+            self.assertNotIn(token, self.dashboard_css)
 
-    def test_m4_02_visual_controls_toolbar(self):
-        self.assertIsNotNone(self.soup.find(id="visualCvVersionSelect"))
-        self.assertIsNotNone(self.soup.find(id="btnToggleHeatmap"))
-        self.assertIsNotNone(self.soup.find(id="btnAutoFitA4"))
-        self.assertIsNotNone(self.soup.find(id="btnToggleMobilePreview"))
-        self.assertIsNotNone(self.soup.find(id="btnPrintVisualCv"))
+    def test_studio_has_exactly_four_stages(self):
+        tabs = [t for t in self.soup.find_all(id=True) if t["id"].startswith("studioTab")]
+        self.assertEqual(len(tabs), 4)
+        panels = [t for t in self.soup.find_all("section", id=True) if t["id"].startswith("studioModule")]
+        self.assertEqual(len(panels), 4)
 
-    def test_m4_03_heatmap_overlay_hotspots(self):
-        overlay = self.soup.find(id="heatmapOverlayLayer")
-        self.assertIsNotNone(overlay)
-        hotspots = overlay.find_all(class_="heatmap-hotspot")
-        self.assertGreaterEqual(len(hotspots), 4, "Must have at least 4 F-pattern focal hotspots")
-        classes = " ".join([" ".join(h.get("class", [])) for h in hotspots])
-        self.assertIn("spot-header", classes)
-        self.assertIn("spot-summary", classes)
-        self.assertIn("spot-experience", classes)
-        self.assertIn("spot-skills", classes)
+    def test_each_stage_has_sequential_numbered_steps(self):
+        expected = {"studioModuleAts": 3, "studioModuleWriter": 5,
+                    "studioModuleInterview": 3, "studioModuleSkills": 2}
+        for pid, count in expected.items():
+            panel = self.soup.find(id=pid)
+            nums = [int(n.get_text()) for n in panel.find_all(class_="studio-step-num")]
+            self.assertEqual(nums, list(range(1, count + 1)), pid)
+            outline = panel.find(class_="studio-step-outline")
+            self.assertIsNotNone(outline, pid)
+            self.assertEqual(len(outline.find_all("button")), count, pid)
+            for i in range(1, count + 1):
+                self.assertIsNotNone(panel.find(id=f"step-{pid[len('studioModule'):].lower()}-{i}"))
 
     def test_m4_04_cv_html_files_exist_in_frontend_and_docs(self):
         required_files = [
@@ -78,41 +82,10 @@ class TestCareerStudioMilestones456(unittest.TestCase):
                 self.assertGreater(len(content), 1000)
                 self.assertEqual(len(check_text(content)), 0)
 
-    def test_m4_05_visual_js_functions_exposed(self):
-        self.assertIn("function initVisualModule", self.dashboard_js)
-        self.assertIn("function changeVisualCvVersion", self.dashboard_js)
-        self.assertIn("function toggleHeatmapOverlay", self.dashboard_js)
-        self.assertIn("function applyA4AutoFit", self.dashboard_js)
-        self.assertIn("function toggleMobilePreview", self.dashboard_js)
-        self.assertIn("window.changeVisualCvVersion =", self.dashboard_js)
-
-    # -------------------------------------------------------------------------
-    # Milestone 5 Tests: Multi-Version CV Hub & Kanban Tracker
-    # -------------------------------------------------------------------------
-    def test_m5_01_kanban_module_container_exists(self):
-        panel = self.soup.find(id="studioModuleKanban")
-        self.assertIsNotNone(panel, "studioModuleKanban must exist")
-        self.assertEqual(panel.get("role"), "tabpanel")
-        self.assertEqual(panel.get("aria-labelledby"), "studioTabKanban")
-
-    def test_m5_02_kanban_subtabs_exist(self):
-        self.assertIsNotNone(self.soup.find(id="subtabKanbanBoardBtn"))
-        self.assertIsNotNone(self.soup.find(id="subtabCvHubBtn"))
-        self.assertIsNotNone(self.soup.find(id="kanbanBoardView"))
-        self.assertIsNotNone(self.soup.find(id="kanbanCvHubView"))
-
-    def test_m5_03_kanban_all_six_columns_exist(self):
-        statuses = ["saved", "applied", "screening", "interview", "offer", "rejected"]
-        for st in statuses:
-            col = self.soup.find(id="kanbanCol_" + st)
-            self.assertIsNotNone(col, f"Kanban column for status '{st}' must exist")
-            cards_container = self.soup.find(id="cards_" + st)
-            self.assertIsNotNone(cards_container, f"Cards container for '{st}' must exist")
-            count_badge = self.soup.find(id="count_" + st)
-            self.assertIsNotNone(count_badge, f"Count badge for '{st}' must exist")
-
-    def test_m5_04_cv_hub_four_cards_exist(self):
-        cards = self.soup.find_all(class_="cv-hub-card")
+    def test_m5_04_cv_hub_four_cards_exist_inside_writer_step(self):
+        writer = self.soup.find(id="studioModuleWriter")
+        self.assertIsNotNone(writer)
+        cards = writer.find_all(class_="cv-hub-card")
         self.assertEqual(len(cards), 4, "Must have exactly 4 tailored CV cards in Hub")
         titles = [c.find(class_="cv-hub-title").get_text() for c in cards]
         self.assertTrue(any("גז טבעי" in t for t in titles))
@@ -120,20 +93,6 @@ class TestCareerStudioMilestones456(unittest.TestCase):
         self.assertTrue(any("כטב״ם" in t or "רחפנים" in t for t in titles))
         self.assertTrue(any("Mechanical" in t or "Gas" in t for t in titles))
 
-    def test_m5_05_kanban_modal_exists(self):
-        modal = self.soup.find(id="addKanbanModal")
-        self.assertIsNotNone(modal)
-        self.assertIsNotNone(self.soup.find(id="kanbanCompanyInput"))
-        self.assertIsNotNone(self.soup.find(id="kanbanRoleInput"))
-        self.assertIsNotNone(self.soup.find(id="kanbanStatusSelect"))
-        self.assertIsNotNone(self.soup.find(id="kanbanVersionSelect"))
-
-    def test_m5_06_kanban_js_functions_exposed(self):
-        self.assertIn("function initKanbanModule", self.dashboard_js)
-        self.assertIn("function switchKanbanSubtab", self.dashboard_js)
-        self.assertIn("function moveKanbanCard", self.dashboard_js)
-        self.assertIn("function deleteKanbanCard", self.dashboard_js)
-        self.assertIn("window.initKanbanModule =", self.dashboard_js)
 
     # -------------------------------------------------------------------------
     # Milestone 6 Tests: Interview, STAR, LinkedIn, Skill Gaps & Anonymizer

@@ -4172,17 +4172,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   /**
    * Switches the active module inside Career Studio workspace.
-   * @param {string} moduleId - 'ats', 'writer', 'visual', 'kanban', 'interview', 'skills'
+   * @param {string} moduleId - 'ats', 'writer', 'interview', 'skills'
    */
   function switchStudioModule(moduleId) {
-    const modules = ['ats', 'writer', 'visual', 'kanban', 'interview', 'skills'];
+    const modules = ['ats', 'writer', 'interview', 'skills'];
     const activeModule = modules.includes(moduleId) ? moduleId : 'ats';
 
     const tabMap = {
       ats: 'studioTabAts',
       writer: 'studioTabWriter',
-      visual: 'studioTabVisual',
-      kanban: 'studioTabKanban',
       interview: 'studioTabInterview',
       skills: 'studioTabSkills'
     };
@@ -4190,8 +4188,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const panelMap = {
       ats: 'studioModuleAts',
       writer: 'studioModuleWriter',
-      visual: 'studioModuleVisual',
-      kanban: 'studioModuleKanban',
       interview: 'studioModuleInterview',
       skills: 'studioModuleSkills'
     };
@@ -6364,372 +6360,6 @@ Group MER מתקין מערכות סולאריות PV שטח עבודה בגוב
 
 
   // ==========================================================================
-  // Milestone 4: Visual UX Simulator, 6s Heatmap & A4 Auto-Fit
-  // ==========================================================================
-
-  let isHeatmapActive = true;
-  let isMobilePreviewActive = false;
-  let isA4AutoFitActive = false;
-
-  function initVisualModule() {
-    const sel = document.getElementById('visualCvVersionSelect');
-    if (sel) {
-      sel.value = 'cv_gas_he';
-    }
-  }
-
-  function changeVisualCvVersion(versionKey) {
-    const iframe = document.getElementById('cvPreviewIframe');
-    const statusText = document.getElementById('visualStatusText');
-    if (!iframe) return;
-
-    const versionNames = {
-      'cv_gas_he': 'גז טבעי ותחנות כוח (עברית)',
-      'cv_solar_he': 'אנרגיה סולארית ואנלייט (עברית)',
-      'cv_drones_he': 'כטב״ם, רחפנים וביטחון (עברית)',
-      'cv_base_en': 'International Mechanical & Energy (English)'
-    };
-
-    iframe.src = 'career/cv/' + versionKey + '.html';
-    if (statusText) {
-      statusText.textContent = 'נטענה גרסת: ' + (versionNames[versionKey] || versionKey) + ' • מפת חום וסריקת A4 פעילות';
-    }
-  }
-
-  function toggleHeatmapOverlay() {
-    const overlay = document.getElementById('heatmapOverlayLayer');
-    const btn = document.getElementById('btnToggleHeatmap');
-    const statusText = document.getElementById('visualStatusText');
-    if (!overlay) return;
-
-    isHeatmapActive = !isHeatmapActive;
-    if (isHeatmapActive) {
-      overlay.classList.remove('hidden');
-      if (btn) btn.classList.add('active');
-      if (statusText) statusText.textContent = 'מפת חום מופעלת: סימולציית F-Pattern מציגה 4 מוקדי מבט של מגייס ב-6 השניות הראשונות';
-    } else {
-      overlay.classList.add('hidden');
-      if (btn) btn.classList.remove('active');
-      if (statusText) statusText.textContent = 'מפת חום כבויה: תצוגת מסמך נקייה';
-    }
-  }
-
-  function applyA4AutoFit() {
-    const sheet = document.getElementById('cvPreviewSheet');
-    const iframe = document.getElementById('cvPreviewIframe');
-    const btn = document.getElementById('btnAutoFitA4');
-    const statusText = document.getElementById('visualStatusText');
-    if (!sheet) return;
-
-    isA4AutoFitActive = !isA4AutoFitActive;
-    if (isA4AutoFitActive) {
-      sheet.style.transform = 'scale(0.95)';
-      sheet.style.transformOrigin = 'top center';
-      sheet.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
-      if (btn) btn.classList.add('active');
-      if (statusText) statusText.textContent = '[+] אלגוריתם Auto-Fit הופעל: הותאם לעמוד A4 יחיד (Scale: 95%, שוליים: 10 מ״מ, 0 שורות גולשות)';
-      showToast('הותאם בהצלחה לעמוד A4 בודד ללא גלישת שורות', 'success');
-    } else {
-      sheet.style.transform = 'none';
-      sheet.style.boxShadow = '';
-      if (btn) btn.classList.remove('active');
-      if (statusText) statusText.textContent = 'התאמת A4 אופסה לגודל רגיל';
-    }
-  }
-
-  function toggleMobilePreview() {
-    const frame = document.getElementById('mobileMockupFrame');
-    const btn = document.getElementById('btnToggleMobilePreview');
-    const statusText = document.getElementById('visualStatusText');
-    if (!frame) return;
-
-    isMobilePreviewActive = !isMobilePreviewActive;
-    if (isMobilePreviewActive) {
-      frame.classList.add('mobile-active');
-      if (btn) btn.classList.add('active');
-      if (statusText) statusText.textContent = 'תצוגת מובייל מופעלת: רוחב תצוגה מדויק 375px להדמיית מסך סמארטפון של מנהל הגיוס';
-    } else {
-      frame.classList.remove('mobile-active');
-      if (btn) btn.classList.remove('active');
-      if (statusText) statusText.textContent = 'חזרה לתצוגת שולחן עבודה / מסמך A4 רגיל';
-    }
-  }
-
-  function printVisualCv() {
-    const iframe = document.getElementById('cvPreviewIframe');
-    if (iframe && iframe.contentWindow) {
-      try {
-        iframe.contentWindow.focus();
-        iframe.contentWindow.print();
-        return;
-      } catch (e) {}
-    }
-    window.print();
-  }
-
-
-  // ==========================================================================
-  // Milestone 5: Multi-Version CV Hub & Interactive Kanban Tracker
-  // ==========================================================================
-
-  const KANBAN_STORAGE_KEY = 'career_hub_kanban_applications_v1';
-  let kanbanApplications = [];
-
-  const INITIAL_KANBAN_SEED = [
-    {
-      id: 'app_1',
-      company: 'אנלייט אנרגיה מתחדשת',
-      role: 'מנהל תפעול שדות סולאריים ו-PV',
-      status: 'interview',
-      version: 'סולארי',
-      date: '22.10.2026',
-      notes: 'ראיון מקצועי שני מול סמנכ״ל תפעול והנדסה.'
-    },
-    {
-      id: 'app_2',
-      company: 'דור אלון גז טבעי',
-      role: 'בקר תחנות כוח ומערכות PRMS',
-      status: 'applied',
-      version: 'גז טבעי',
-      date: '24.10.2026',
-      notes: 'הגשה ישירה דרך האתר עם גרסת גז מותאמת.'
-    },
-    {
-      id: 'app_3',
-      company: 'אלביט מערכות - חטיבת כטב״ם',
-      role: 'הנדסאי שילוב מערכות וניסויי שדה',
-      status: 'screening',
-      version: 'כטב״ם',
-      date: '23.10.2026',
-      notes: 'שיחת היכרות טלפונית חיובית עם המגייסת.'
-    },
-    {
-      id: 'app_4',
-      company: 'סופרגז טבעי בע״מ',
-      role: 'מנהל פרויקטי גז תעשייתי',
-      status: 'offer',
-      version: 'גז טבעי',
-      date: '18.10.2026',
-      notes: 'הצעת שכר בבחינה; דיון על תנאי כוננות רכב.'
-    },
-    {
-      id: 'app_5',
-      company: 'נופר אנרגיה',
-      role: 'מנהל פרויקטי אגירת אנרגיה',
-      status: 'saved',
-      version: 'סולארי',
-      date: '25.10.2026',
-      notes: 'משרה נשמרה מהדשבורד להגשה השבוע.'
-    }
-  ];
-
-  function initKanbanModule() {
-    loadKanbanApplications();
-    renderKanbanBoard();
-    populateKanbanJobDropdown();
-  }
-
-  function loadKanbanApplications() {
-    try {
-      const raw = localStorage.getItem(KANBAN_STORAGE_KEY);
-      if (raw) {
-        kanbanApplications = JSON.parse(raw);
-      } else {
-        kanbanApplications = [];
-        saveKanbanApplications();
-      }
-    } catch (e) {
-      kanbanApplications = [];
-    }
-  }
-
-  function saveKanbanApplications() {
-    try {
-      localStorage.setItem(KANBAN_STORAGE_KEY, JSON.stringify(kanbanApplications));
-    } catch (e) {}
-  }
-
-  function switchKanbanSubtab(subtab) {
-    const boardBtn = document.getElementById('subtabKanbanBoardBtn');
-    const hubBtn = document.getElementById('subtabCvHubBtn');
-    const boardView = document.getElementById('kanbanBoardView');
-    const hubView = document.getElementById('kanbanCvHubView');
-
-    if (subtab === 'hub') {
-      if (hubBtn) hubBtn.classList.add('active');
-      if (boardBtn) boardBtn.classList.remove('active');
-      if (hubView) hubView.style.display = 'block';
-      if (boardView) boardView.style.display = 'none';
-    } else {
-      if (boardBtn) boardBtn.classList.add('active');
-      if (hubBtn) hubBtn.classList.remove('active');
-      if (boardView) boardView.style.display = 'block';
-      if (hubView) hubView.style.display = 'none';
-    }
-  }
-
-  function renderKanbanBoard() {
-    const statuses = ['saved', 'applied', 'screening', 'interview', 'offer', 'rejected'];
-    const counts = { saved: 0, applied: 0, screening: 0, interview: 0, offer: 0, rejected: 0 };
-
-    statuses.forEach(s => {
-      const container = document.getElementById('cards_' + s);
-      if (container) container.innerHTML = '';
-    });
-
-    kanbanApplications.forEach(app => {
-      const st = app.status || 'saved';
-      if (counts[st] !== undefined) counts[st]++;
-
-      const container = document.getElementById('cards_' + st);
-      if (!container) return;
-
-      const card = document.createElement('div');
-      card.className = 'kanban-card';
-      card.id = 'kcard_' + app.id;
-
-      card.innerHTML = `
-        <div class="kanban-card-top">
-          <span class="kanban-card-company">${escapeHtml(app.company)}</span>
-          <span class="kanban-card-date">${escapeHtml(app.date || '')}</span>
-        </div>
-        <div class="kanban-card-role">${escapeHtml(app.role)}</div>
-        ${app.notes ? `<div style="font-size: 11px; color: #cbd5e1; margin-bottom: 6px; line-height: 1.3;">${escapeHtml(app.notes)}</div>` : ''}
-        <div class="kanban-card-meta">
-          <span class="kanban-card-tag">${escapeHtml(app.version || 'גרסה כללית')}</span>
-          <div class="kanban-card-move-btns">
-            ${st !== 'saved' ? `<button type="button" class="card-move-btn" onclick="moveKanbanCard('${app.id}', -1)" title="העבר שלב אחורה"><i class="ph-bold ph-caret-right"></i></button>` : ''}
-            ${st !== 'rejected' && st !== 'offer' ? `<button type="button" class="card-move-btn" onclick="moveKanbanCard('${app.id}', 1)" title="העבר שלב קדימה"><i class="ph-bold ph-caret-left"></i></button>` : ''}
-            <button type="button" class="card-move-btn" onclick="deleteKanbanCard('${app.id}')" title="מחק מועמדות"><i class="ph-bold ph-trash"></i></button>
-          </div>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-
-    statuses.forEach(s => {
-      const countEl = document.getElementById('count_' + s);
-      if (countEl) countEl.textContent = counts[s];
-    });
-
-    const totalEl = document.getElementById('kanbanTotalCount');
-    const activeEl = document.getElementById('kanbanActiveCount');
-    const interviewEl = document.getElementById('kanbanInterviewCount');
-    const offerEl = document.getElementById('kanbanOfferCount');
-
-    if (totalEl) totalEl.textContent = kanbanApplications.length;
-    if (activeEl) activeEl.textContent = counts.applied + counts.screening + counts.interview;
-    if (interviewEl) interviewEl.textContent = counts.interview;
-    if (offerEl) offerEl.textContent = counts.offer;
-  }
-
-  function moveKanbanCard(appId, dir) {
-    const statuses = ['saved', 'applied', 'screening', 'interview', 'offer', 'rejected'];
-    const app = kanbanApplications.find(a => a.id === appId);
-    if (!app) return;
-
-    const currIdx = statuses.indexOf(app.status);
-    let nextIdx = currIdx + dir;
-    if (nextIdx < 0) nextIdx = 0;
-    if (nextIdx >= statuses.length) nextIdx = statuses.length - 1;
-
-    app.status = statuses[nextIdx];
-    saveKanbanApplications();
-    renderKanbanBoard();
-    showToast('סטטוס עודכן ל: ' + statuses[nextIdx], 'info');
-  }
-
-  function deleteKanbanCard(appId) {
-    kanbanApplications = kanbanApplications.filter(a => a.id !== appId);
-    saveKanbanApplications();
-    renderKanbanBoard();
-    showToast('מועמדות הוסרה מלוח הקנבן', 'info');
-  }
-
-  function populateKanbanJobDropdown() {
-    const select = document.getElementById('kanbanAddFromJobsDropdown');
-    if (!select) return;
-
-    select.innerHTML = '<option value="">+ הוסף ישירות ממשרות הדשבורד...</option>';
-    const jobs = getAllAvailableJobs();
-    jobs.slice(0, 30).forEach((j, i) => {
-      const opt = document.createElement('option');
-      opt.value = i;
-      opt.textContent = `${j.company || 'חברה'} - ${j.title || 'משרה'}`;
-      select.appendChild(opt);
-    });
-  }
-
-  function addSelectedJobToKanban(jobIdxStr) {
-    if (!jobIdxStr && jobIdxStr !== 0) return;
-    const idx = parseInt(jobIdxStr, 10);
-    const job = getAllAvailableJobs()[idx];
-    if (!job) return;
-
-    const newApp = {
-      id: 'app_' + Date.now(),
-      sourceLink: job.link,
-      company: job.company || 'חברה ללא שם',
-      role: job.title || 'משרה טכנולוגית',
-      status: 'saved',
-      version: 'גז טבעי',
-      date: new Date().toLocaleDateString('he-IL'),
-      notes: job.location ? `מיקום: ${job.location}` : ''
-    };
-
-    kanbanApplications.unshift(newApp);
-    saveKanbanApplications();
-    renderKanbanBoard();
-    showToast(`משרה מ-${newApp.company} נוספה לקנבן!`, 'success');
-
-    const select = document.getElementById('kanbanAddFromJobsDropdown');
-    if (select) select.value = '';
-  }
-
-  function openAddApplicationModal() {
-    const modal = document.getElementById('addKanbanModal');
-    openDialogEl(modal);
-  }
-
-  function closeAddApplicationModal() {
-    const modal = document.getElementById('addKanbanModal');
-    closeDialogEl(modal);
-  }
-
-  function handleSaveNewApplication(e) {
-    e.preventDefault();
-    const companyInput = document.getElementById('kanbanCompanyInput');
-    const roleInput = document.getElementById('kanbanRoleInput');
-    const statusSelect = document.getElementById('kanbanStatusSelect');
-    const versionSelect = document.getElementById('kanbanVersionSelect');
-    const notesInput = document.getElementById('kanbanNotesInput');
-
-    if (!companyInput || !roleInput) return;
-
-    const newApp = {
-      id: 'app_' + Date.now(),
-      company: companyInput.value.trim(),
-      role: roleInput.value.trim(),
-      status: statusSelect ? statusSelect.value : 'applied',
-      version: versionSelect ? versionSelect.value : 'גז טבעי',
-      date: new Date().toLocaleDateString('he-IL'),
-      notes: notesInput ? notesInput.value.trim() : ''
-    };
-
-    kanbanApplications.unshift(newApp);
-    saveKanbanApplications();
-    renderKanbanBoard();
-    closeAddApplicationModal();
-
-    companyInput.value = '';
-    roleInput.value = '';
-    if (notesInput) notesInput.value = '';
-
-    showToast(`מועמדות ל-${newApp.company} נשמרה בהצלחה!`, 'success');
-  }
-
-
-  // ==========================================================================
   // Milestone 6: Interview Q&A, Web Audio STAR, LinkedIn & Anonymizer
   // ==========================================================================
 
@@ -6974,21 +6604,17 @@ Open for operations management and engineering roles in Israeli energy and clean
   }
 
   // Window Exposures for Milestones 4, 5, 6
-  window.changeVisualCvVersion = changeVisualCvVersion;
-  window.toggleHeatmapOverlay = toggleHeatmapOverlay;
-  window.applyA4AutoFit = applyA4AutoFit;
-  window.toggleMobilePreview = toggleMobilePreview;
-  window.printVisualCv = printVisualCv;
-  window.initVisualModule = initVisualModule;
 
-  window.initKanbanModule = initKanbanModule;
-  window.switchKanbanSubtab = switchKanbanSubtab;
-  window.moveKanbanCard = moveKanbanCard;
-  window.deleteKanbanCard = deleteKanbanCard;
-  window.addSelectedJobToKanban = addSelectedJobToKanban;
-  window.openAddApplicationModal = openAddApplicationModal;
-  window.closeAddApplicationModal = closeAddApplicationModal;
-  window.handleSaveNewApplication = handleSaveNewApplication;
+
+  function scrollToStudioStep(stepId) {
+    const el = document.getElementById(stepId);
+    if (!el) return;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    el.setAttribute('tabindex', '-1');
+    el.focus({ preventScroll: true });
+  }
+  window.scrollToStudioStep = scrollToStudioStep;
 
   window.initInterviewModule = initInterviewModule;
   window.setInterviewCategory = setInterviewCategory;
@@ -7024,8 +6650,6 @@ Open for operations management and engineering roles in Israeli energy and clean
     initAtsModule();
     initCvUploadState();
     initWriterModule();
-    initVisualModule();
-    initKanbanModule();
     initInterviewModule();
     initSkillsModule();
 
