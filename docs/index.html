@@ -6,6 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
+  <meta name="description" content="לוח בקרת משרות וסטודיו קריירה הנדסי — עידו גל. סריקת משרות אנרגיה, גז טבעי, סולארי, מכונות ורחפנים, ניתוח התאמת ATS וניהול גרסאות קורות חיים.">
   <title>לוח משרות טכנולוגיות — עידו גל</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="theme.css">
@@ -34,7 +35,7 @@
       </div>
       <div class="brand-titles profile-info">
         <div class="brand-title-row">
-          <span class="brand-title profile-title">עידו גל | בקרת משרות</span>
+          <h1 class="brand-title profile-title">עידו גל | בקרת משרות</h1>
           <button type="button" id="headerSyncBtn" class="header-sync-btn icon-button" onclick="triggerSyncModal()" title="סנכרון נתונים עם הענן" aria-label="סנכרון נתונים עם הענן">
             <i class="ph-duotone ph-cloud-arrow-up" id="headerSyncIcon"></i>
             <span class="sync-status-dot" id="headerSyncDot" role="status" aria-live="polite"></span>
@@ -147,7 +148,7 @@
     </div>
   </header>
 
-  <div class="dashboard-main">
+  <main class="dashboard-main">
 
     <!-- Job Radar Workspace View -->
     <div id="radarWorkspace" class="dashboard-view-container active">
@@ -328,7 +329,7 @@
     </div>
 
     <!-- Job Cards List -->
-    <main id="cardsContainer"></main>
+    <div id="cardsContainer"></div>
 
     <!-- Map View Container -->
     <div id="mapViewContainer" style="display: none;">
@@ -398,7 +399,7 @@
             </div>
 
             <!-- Drag & Drop Zone with Direct File Affordance -->
-            <div id="studioCvDropZone" class="studio-cv-drop-area" onclick="document.getElementById('manualCvFileInput').click()" role="button" tabindex="0" aria-label="אזור גרירה והעלאת קורות חיים">
+            <div id="studioCvDropZone" class="studio-cv-drop-area" onclick="document.getElementById('manualCvFileInput').click()" role="button" tabindex="0">
               <div class="studio-drop-content">
                 <i class="ph-duotone ph-cloud-arrow-up studio-drop-icon"></i>
                 <span class="studio-drop-title">גרור ושחרר קובץ לכאן</span>
@@ -416,7 +417,7 @@
             <input type="file" id="manualCvFileInput" accept=".pdf,.docx,.txt" style="display: none;" onchange="handleManualCvUpload(event)">
             
             <div class="studio-cv-actions">
-              <button type="button" class="studio-upload-btn" onclick="document.getElementById('manualCvFileInput').click()" aria-label="העלאת קובץ קורות חיים עצמאי">
+              <button type="button" class="studio-upload-btn" onclick="document.getElementById('manualCvFileInput').click()">
                 <i class="ph-duotone ph-upload-simple"></i>
                 <span>בחר קובץ ידנית</span>
               </button>
@@ -428,7 +429,7 @@
             </div>
           </div>
 
-          <!-- Card 2: Schematic Sequential Workflow Pipeline (Steps 1 to 6) -->
+          <!-- Card 2: Schematic Sequential Workflow Pipeline (Steps 1 to 4) -->
           <div class="studio-sidebar-card">
             <div class="studio-sidebar-card-header">
               <i class="ph-duotone ph-steps"></i>
@@ -449,15 +450,13 @@
                 <div class="step-num-badge">2</div>
                 <div class="step-icon-wrap"><i class="ph-duotone ph-pen-nib"></i></div>
                 <div class="step-content-meta">
-                  <span class="step-title">עורך תוכן וסגנון AI</span>
-                  <span class="step-desc">נוסח הישגים וסגנון</span>
+                  <span class="step-title">עורך תוכן וגרסאות קו״ח</span>
+                  <span class="step-desc">ניסוח הישגים, מילון וגרסאות</span>
                 </div>
               </button>
               
-              
-              
               <button type="button" role="tab" id="studioTabInterview" class="studio-subnav-btn studio-step-btn" aria-selected="false" aria-controls="studioModuleInterview" onclick="switchStudioModule('interview')">
-                <div class="step-num-badge">5</div>
+                <div class="step-num-badge">3</div>
                 <div class="step-icon-wrap"><i class="ph-duotone ph-microphone"></i></div>
                 <div class="step-content-meta">
                   <span class="step-title">סימולטור ראיונות ו-LinkedIn</span>
@@ -466,7 +465,7 @@
               </button>
               
               <button type="button" role="tab" id="studioTabSkills" class="studio-subnav-btn studio-step-btn" aria-selected="false" aria-controls="studioModuleSkills" onclick="switchStudioModule('skills')">
-                <div class="step-num-badge">6</div>
+                <div class="step-num-badge">4</div>
                 <div class="step-icon-wrap"><i class="ph-duotone ph-shield-check"></i></div>
                 <div class="step-content-meta">
                   <span class="step-title">מיומנויות ואנונימיזציה</span>
@@ -949,8 +948,8 @@
                 <div class="writer-dict-toolbar">
                   <div class="writer-dict-search-wrap">
                     <i class="ph-duotone ph-magnifying-glass writer-dict-search-icon"></i>
-                    <input type="text" id="dictSearchInput" class="writer-dict-search-input" placeholder="חפש מונח באנגלית או בעברית (לדוגמה: PRMS, SCADA, Bifacial, נומינציה, LTI)..." oninput="onDictSearchInputChanged()">
-                    <button type="button" class="writer-dict-clear-btn" id="btnDictClearSearch" onclick="clearDictSearch()" style="display: none;">
+                    <input type="text" id="dictSearchInput" class="writer-dict-search-input" aria-label="חיפוש במילון המונחים הדו-לשוני" placeholder="חפש מונח באנגלית או בעברית (לדוגמה: PRMS, SCADA, Bifacial, נומינציה, LTI)..." oninput="onDictSearchInputChanged()">
+                    <button type="button" class="writer-dict-clear-btn" id="btnDictClearSearch" aria-label="נקה חיפוש במילון" onclick="clearDictSearch()" style="display: none;">
                       <i class="ph-duotone ph-x"></i>
                     </button>
                   </div>
@@ -1400,8 +1399,8 @@
                     <span>מצב אנונימי (One-Click Anonymizer)</span>
                   </div>
                   <!-- Anonymizer Switch -->
-                  <label class="anon-switch-wrap">
-                    <input type="checkbox" id="anonToggleCheckbox" onchange="toggleAnonymizerMode(this.checked)">
+                  <label class="anon-switch-wrap" aria-label="הפעלת מצב אנונימי">
+                    <input type="checkbox" id="anonToggleCheckbox" aria-label="הפעלת מצב אנונימי" onchange="toggleAnonymizerMode(this.checked)">
                     <span class="anon-slider"></span>
                   </label>
                 </div>
@@ -1429,7 +1428,7 @@
 
                 <!-- Live Anonymized Text Box -->
                 <div class="anon-output-wrapper">
-                  <div class="anon-output-label">תצוגת נוסח אנונימי מוכן לשיתוף:</div>
+                  <label for="anonymizedPreviewArea" class="anon-output-label">תצוגת נוסח אנונימי מוכן לשיתוף:</label>
                   <textarea id="anonymizedPreviewArea" class="anon-textarea" rows="6" readonly>הנדסאי מכונות רשום (דיפלומה מוסמכת 115011) עם ניסיון עשיר בתפעול מערכי גז טבעי בלחץ גבוה (מתקני PRMS), תחנות כוח ושדות סולאריים.
 מומחיות מוכחת בתקני ASME B31.8 ו-ISO 45001, הובלת משטרי בטיחות מחמירים (0 תאונות עבודה - Zero LTI), פיקוח עבודות קבלנים וסקרי HAZOP.
 בוגר קורס מטיסי פנים ומומחה בשילוב מכני של מערכות כטב״ם ניסוי. כעת בלימודי חשמלאי מוסמך.
@@ -1452,7 +1451,7 @@
 
     </div><!-- /#careerStudioWorkspace -->
 
-  </div>
+  </main>
 
 
   <!-- About System Modal -->

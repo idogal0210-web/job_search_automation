@@ -5393,7 +5393,8 @@
 
 .cv-hub-btn {
   flex: 1;
-  padding: 8px 12px;
+  min-height: 44px;
+  padding: 10px 14px;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 600;
@@ -5831,11 +5832,13 @@
 
 .skill-time { font-size: 10px; color: #64748b; }
 .skill-link-btn {
+  min-height: 44px;
+  padding-inline: 10px;
   font-size: 11px;
   color: var(--dashboard-cyan);
   text-decoration: none;
   font-weight: 600;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 4px;
 }
@@ -5847,16 +5850,30 @@
 /* Anonymizer Switch & Masking Rules */
 .anon-switch-wrap {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   width: 44px;
-  height: 22px;
+  height: 44px;
+  cursor: pointer;
 }
 
-.anon-switch-wrap input { opacity: 0; width: 0; height: 0; }
+.anon-switch-wrap input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
 .anon-slider {
   position: absolute;
   cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
+  left: 0; right: 0;
+  top: 50%;
+  height: 22px;
+  transform: translateY(-50%);
   background-color: #334155;
   transition: 0.3s;
   border-radius: 22px;

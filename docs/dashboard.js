@@ -3796,6 +3796,32 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   let cachedInactiveJobsReport = null;
+  const JOB_CHECK_URL_KEY = 'job_check_worker_url';
+  const liveCheckResults = new Map();
+  let liveCheckRunning = false;
+  let liveCheckProgress = { done: 0, total: 0 };
+
+  function getJobCheckWorkerUrl() {
+    let stored = '';
+    try { stored = localStorage.getItem(JOB_CHECK_URL_KEY) || ''; } catch (e) {}
+    const cfg = (window.__APP_CONFIG__ && window.__APP_CONFIG__.job_check_url) || '';
+    return (stored || cfg || '').trim();
+  }
+
+  function saveJobCheckWorkerUrl() {
+    const input = document.getElementById('jobCheckWorkerInput');
+    if (!input) return;
+    const raw = input.value.trim();
+    if (raw && !/^https:\/\/[^\s]+$/i.test(raw)) {
+      showToast('ph-warning', 'כתובת ה-Worker חייבת להתחיל ב-https://');
+      return;
+    }
+    try {
+      if (raw) localStorage.setItem(JOB_CHECK_URL_KEY, raw);
+      else localStorage.removeItem(JOB_CHECK_URL_KEY);
+    } catch (e) {}
+    renderInactiveJobsModalContent();
+  }
 
   async function openInactiveJobsModal() {
     const modal = document.getElementById('inactiveJobsModal');
@@ -3828,10 +3854,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     closeDialogEl(modal);
   }
 
-  function renderInactiveJobsModalContent() {
-    const content = document.getElementById('inactiveJobsContent');
-    if (!content) return;
-
+  function computeInactiveState() {
     const allJobs = getAllAvailableJobs();
     const activeJobsMap = new Map();
     allJobs.forEach(j => {
@@ -3842,50 +3865,160 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     });
 
     const inactiveList = [];
-    const seenLinks = new Set();
+    const seen = new Set();
+    const push = (job, reason, statusCode) => {
+      const canon = getCanonicalJobKey(job.link);
+      if (seen.has(canon)) return;
+      seen.add(canon);
+      inactiveList.push({
+        link: job.link,
+        title: job.title || 'משרה ללא כותרת',
+        company: job.company || 'חברה לא צוינה',
+        reason: reason,
+        status_code: statusCode || 0
+      });
+    };
 
-    // Check report items from inactive_jobs.json
-    if (cachedInactiveJobsReport && Array.isArray(cachedInactiveJobsReport.inactive_jobs)) {
-      cachedInactiveJobsReport.inactive_jobs.forEach(item => {
+    liveCheckResults.forEach((res, canon) => {
+      if (res.state === 'inactive' && activeJobsMap.has(canon)) {
+        push(activeJobsMap.get(canon), res.reason || 'המשרה אינה פעילה באתר', res.status);
+      }
+    });
+
+    const report = cachedInactiveJobsReport;
+    if (report && Array.isArray(report.inactive_jobs)) {
+      report.inactive_jobs.forEach(item => {
         const canon = getCanonicalJobKey(item.link);
-        if (activeJobsMap.has(canon) && !seenLinks.has(canon)) {
-          const matchedJob = activeJobsMap.get(canon);
-          inactiveList.push({
-            link: matchedJob.link,
-            title: matchedJob.title || item.title || 'משרה ללא כותרת',
-            company: matchedJob.company || item.company || 'חברה לא צוינה',
-            reason: item.reason || 'המשרה נסגרה לקבלת מועמדויות',
-            status_code: item.status_code || 0
-          });
-          seenLinks.add(canon);
+        const live = liveCheckResults.get(canon);
+        if (live && live.state === 'active') return;
+        if (activeJobsMap.has(canon)) {
+          push(activeJobsMap.get(canon), item.reason || 'המשרה נסגרה לקבלת מועמדויות', item.status_code);
         }
       });
     }
 
-    // Also check jobs in data that have explicit inactive flags
-    allJobs.forEach(j => {
-      const canon = getCanonicalJobKey(j.link);
-      const state = getJobState(j.link);
-      if (state !== 'rejected' && state !== 'purged' && !seenLinks.has(canon)) {
-        if (j.is_active === false || j.is_expired === true || j.is_closed === true) {
-          inactiveList.push({
-            link: j.link,
-            title: j.title || 'משרה ללא כותרת',
-            company: j.company || 'חברה לא צוינה',
-            reason: j.closure_reason || 'המשרה אינה פעילה באתר',
-            status_code: 0
-          });
-          seenLinks.add(canon);
-        }
+    activeJobsMap.forEach((j, canon) => {
+      if (j.is_active === false || j.is_expired === true || j.is_closed === true) {
+        push(j, j.closure_reason || 'המשרה אינה פעילה באתר', 0);
       }
     });
 
+    const verified = new Set();
+    if (report && Array.isArray(report.verified_links)) {
+      report.verified_links.forEach(l => verified.add(getCanonicalJobKey(l)));
+    } else if (report && Array.isArray(report.inactive_jobs)) {
+      report.inactive_jobs.forEach(i => verified.add(getCanonicalJobKey(i.link)));
+    }
+    liveCheckResults.forEach((res, canon) => { if (res.state !== 'unknown') verified.add(canon); });
+
+    let unchecked = 0;
+    activeJobsMap.forEach((j, canon) => { if (!verified.has(canon)) unchecked++; });
+
+    return { inactiveList, activeJobsMap, unchecked, totalActive: activeJobsMap.size };
+  }
+
+  function inactiveStatusPanelHtml(st) {
+    const report = cachedInactiveJobsReport;
+    let reportLine = 'אין דוח סריקה זמין.';
+    if (report && report.scanned_at) {
+      let when = report.scanned_at;
+      try { when = new Date(report.scanned_at).toLocaleString('he-IL'); } catch (e) {}
+      reportLine = `דוח סריקה אחרון: ${escapeHtml(when)}`;
+    }
+    const unknownLive = Array.from(liveCheckResults.values()).filter(r => r.state === 'unknown').length;
+    const coverage = st.unchecked > 0
+      ? `<strong>${st.unchecked}</strong> מתוך ${st.totalActive} משרות לא אומתו (חדשות או חסומות לבדיקה). הדוח אינו מכסה אותן.`
+      : `כל ${st.totalActive} המשרות הפעילות נבדקו.`;
+    const workerUrl = getJobCheckWorkerUrl();
+    let live;
+    if (workerUrl) {
+      const label = liveCheckRunning
+        ? `בודק ${liveCheckProgress.done} מתוך ${liveCheckProgress.total}...`
+        : `בדיקה חיה של ${st.totalActive} משרות`;
+      live = `
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <button type="button" id="btnLiveJobCheck" class="tool-btn" style="min-height:44px; padding:8px 14px;" onclick="runLiveJobCheck()" ${liveCheckRunning ? 'disabled aria-disabled="true"' : ''}>
+            <i class="ph-duotone ph-broadcast"></i> <span>${label}</span>
+          </button>
+          <progress id="liveCheckProgress" max="${liveCheckProgress.total || 1}" value="${liveCheckProgress.done}" aria-label="התקדמות הבדיקה החיה" style="${liveCheckRunning ? '' : 'display:none;'} flex:1; min-width:120px;"></progress>
+          ${unknownLive ? `<span style="font-size:12px; color:#fcd34d;">${unknownLive} משרות לא ניתנו לאימות בבדיקה האחרונה</span>` : ''}
+        </div>`;
+    } else {
+      live = `
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <label for="jobCheckWorkerInput" style="font-size:12px; color:#cbd5e1;">לבדיקה חיה בלחיצה, הדבק כתובת Worker (הוראות: tools/cloudflare-worker/README.md)</label>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <input id="jobCheckWorkerInput" type="url" inputmode="url" dir="ltr" placeholder="https://job-check.example.workers.dev" style="flex:1; min-width:200px; min-height:44px; padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(15,23,42,0.9); color:#fff;">
+            <button type="button" class="tool-btn" style="min-height:44px; padding:8px 14px;" onclick="saveJobCheckWorkerUrl()">שמור</button>
+          </div>
+        </div>`;
+    }
+    return `
+      <div style="padding:12px 14px; border:1px solid rgba(255,255,255,0.1); border-radius:8px; background:rgba(255,255,255,0.03); display:flex; flex-direction:column; gap:10px; font-size:13px; color:#cbd5e1;">
+        <div>${reportLine}</div>
+        <div role="status" aria-live="polite">${coverage}</div>
+        ${live}
+      </div>`;
+  }
+
+  async function runLiveJobCheck() {
+    const workerUrl = getJobCheckWorkerUrl();
+    if (!workerUrl || liveCheckRunning) return;
+    const st = computeInactiveState();
+    const targets = Array.from(st.activeJobsMap.entries());
+    liveCheckRunning = true;
+    liveCheckProgress = { done: 0, total: targets.length };
+    renderInactiveJobsModalContent();
+
+    const base = workerUrl.replace(/\/+$/, '');
+    let cursor = 0;
+    const worker = async () => {
+      while (cursor < targets.length) {
+        const [canon, job] = targets[cursor++];
+        try {
+          const resp = await fetch(base + '/?u=' + encodeURIComponent(job.link));
+          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          const data = await resp.json();
+          liveCheckResults.set(canon, { state: data.state || 'unknown', reason: data.reason || '', status: data.status || 0 });
+        } catch (e) {
+          liveCheckResults.set(canon, { state: 'unknown', reason: 'שגיאת תקשורת מול ה-Worker', status: 0 });
+        }
+        liveCheckProgress.done++;
+        const bar = document.getElementById('liveCheckProgress');
+        if (bar) bar.value = liveCheckProgress.done;
+        const btn = document.getElementById('btnLiveJobCheck');
+        if (btn) {
+          const span = btn.querySelector('span');
+          if (span) span.textContent = `בודק ${liveCheckProgress.done} מתוך ${liveCheckProgress.total}...`;
+        }
+      }
+    };
+    await Promise.all([worker(), worker(), worker(), worker()]);
+    liveCheckRunning = false;
+    renderInactiveJobsModalContent();
+    const found = computeInactiveState().inactiveList.length;
+    showToast('ph-check-circle', `הבדיקה החיה הסתיימה: ${found} משרות לא פעילות`);
+  }
+
+  function renderInactiveJobsModalContent() {
+    const content = document.getElementById('inactiveJobsContent');
+    if (!content) return;
+
+    const st = computeInactiveState();
+    const inactiveList = st.inactiveList;
+    const panel = inactiveStatusPanelHtml(st);
+
     if (inactiveList.length === 0) {
+      const honest = st.unchecked > 0
+        ? 'לא אותרו משרות סגורות מבין המשרות שנבדקו. חלק מהמשרות לא אומתו, ולכן ייתכן שיש משרות סגורות שלא זוהו.'
+        : 'לא אותרו משרות שנסגרו או הוסרו במאגר הפעיל.';
       content.innerHTML = `
-        <div style="padding: 32px 16px; text-align: center; color: var(--dashboard-muted); font-size: 14.5px;">
-          <div style="font-size: 28px; margin-bottom: 8px; color: var(--dashboard-lime);"><i class="ph-duotone ph-check-circle"></i></div>
-          <div style="font-weight: 600; color: #fff; margin-bottom: 4px;">כל המשרות הפעילות זמינות להגשה!</div>
-          <div>לא אותרו משרות שנסגרו או הוסרו במאגר הפעיל.</div>
+        <div style="display:flex; flex-direction:column; gap:14px; direction: rtl; text-align: right;">
+          ${panel}
+          <div style="padding: 24px 16px; text-align: center; color: var(--dashboard-muted); font-size: 14.5px;">
+            <div style="font-size: 28px; margin-bottom: 8px; color: var(--dashboard-lime);"><i class="ph-duotone ph-check-circle"></i></div>
+            <div>${honest}</div>
+          </div>
         </div>
       `;
       return;
@@ -3893,11 +4026,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     let html = `
       <div style="display: flex; flex-direction: column; gap: 14px; direction: rtl; text-align: right;">
+        ${panel}
         <div style="padding: 10px 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 8px; font-size: 13px; color: #fca5a5; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
           <div>
             אותרו <strong>${inactiveList.length}</strong> משרות שאינן פעילות עוד או שהגשת המועמדות אליהן נסגרה.
           </div>
-          <button type="button" onclick="handleRemoveAllInactiveJobs()" class="btn-triage" style="background: rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.6); color: #fff; font-size: 12px; padding: 5px 12px; cursor: pointer; border-radius: 6px;">
+          <button type="button" onclick="handleRemoveAllInactiveJobs()" class="btn-triage" style="background: rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.6); color: #fff; font-size: 12px; padding: 5px 12px; min-height: 44px; cursor: pointer; border-radius: 6px;">
             <i class="ph-duotone ph-trash"></i> <span>הסר את כולן ללשונית הוסרו</span>
           </button>
         </div>
@@ -3921,11 +4055,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
               ${safeTitle}
             </div>
             <div style="font-size: 12px; color: var(--dashboard-muted);">
-              ${safeCompany} | <a href="${safeLink}" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); text-decoration: none;">בדיקת קישור ↗</a>
+              ${safeCompany} | <a href="${safeLink}" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); text-decoration: none;">בדיקת קישור</a>
             </div>
           </div>
           <div style="display: flex; gap: 8px; flex-shrink: 0;">
-            <button type="button" onclick="handleRemoveInactiveJob(${escapeHtml(JSON.stringify(job.link))}, ${idx})" class="btn-triage" style="background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; font-size: 12px; padding: 5px 10px; cursor: pointer; border-radius: 6px;">
+            <button type="button" onclick="handleRemoveInactiveJob(${escapeHtml(JSON.stringify(job.link))}, ${idx})" class="btn-triage" style="background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.4); color: #fca5a5; font-size: 12px; padding: 5px 10px; min-height: 44px; cursor: pointer; border-radius: 6px;">
               <i class="ph-duotone ph-trash"></i> <span>הסר משרה</span>
             </button>
           </div>
@@ -3952,29 +4086,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   function handleRemoveAllInactiveJobs() {
-    const allJobs = getAllAvailableJobs();
-    const activeJobsMap = new Map();
-    allJobs.forEach(j => {
-      const state = getJobState(j.link);
-      if (state !== 'rejected' && state !== 'purged') {
-        activeJobsMap.set(getCanonicalJobKey(j.link), j);
-      }
-    });
-
-    let removedCount = 0;
-    if (cachedInactiveJobsReport && Array.isArray(cachedInactiveJobsReport.inactive_jobs)) {
-      cachedInactiveJobsReport.inactive_jobs.forEach(item => {
-        const canon = getCanonicalJobKey(item.link);
-        if (activeJobsMap.has(canon)) {
-          const matchedJob = activeJobsMap.get(canon);
-          toggleAction(matchedJob.link, 'rejected');
-          removedCount++;
-        }
-      });
-    }
-
+    const st = computeInactiveState();
+    st.inactiveList.forEach(item => toggleAction(item.link, 'rejected'));
     renderInactiveJobsModalContent();
-    showToast('ph-trash', `הוסרו ${removedCount} משרות לא פעילות`);
+    showToast('ph-trash', `הוסרו ${st.inactiveList.length} משרות לא פעילות`);
   }
 
 
@@ -6632,6 +6747,8 @@ Open for operations management and engineering roles in Israeli energy and clean
   window.openDuplicatesModal = openDuplicatesModal;
   window.closeDuplicatesModal = closeDuplicatesModal;
   window.openInactiveJobsModal = openInactiveJobsModal;
+  window.runLiveJobCheck = runLiveJobCheck;
+  window.saveJobCheckWorkerUrl = saveJobCheckWorkerUrl;
   window.closeInactiveJobsModal = closeInactiveJobsModal;
   window.handleRemoveInactiveJob = handleRemoveInactiveJob;
   window.handleRemoveAllInactiveJobs = handleRemoveAllInactiveJobs;

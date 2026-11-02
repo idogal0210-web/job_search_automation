@@ -48,8 +48,20 @@ class TestCareerStudioMilestones456(unittest.TestCase):
     def test_studio_has_exactly_four_stages(self):
         tabs = [t for t in self.soup.find_all(id=True) if t["id"].startswith("studioTab")]
         self.assertEqual(len(tabs), 4)
+        badge_nums = [int(t.find(class_="step-num-badge").get_text().strip()) for t in tabs]
+        self.assertEqual(badge_nums, [1, 2, 3, 4])
         panels = [t for t in self.soup.find_all("section", id=True) if t["id"].startswith("studioModule")]
         self.assertEqual(len(panels), 4)
+
+    def test_a11y_main_landmark_h1_and_live_job_check_exposed(self):
+        mains = self.soup.find_all("main")
+        self.assertEqual(len(mains), 1, "Document must have exactly one <main> landmark")
+        self.assertIn("dashboard-main", mains[0].get("class", []))
+        h1s = self.soup.find_all("h1")
+        self.assertEqual(len(h1s), 1, "Document must have a top-level <h1>")
+        self.assertIn("function runLiveJobCheck", self.dashboard_js)
+        self.assertIn("function computeInactiveState", self.dashboard_js)
+        self.assertIn("window.runLiveJobCheck =", self.dashboard_js)
 
     def test_each_stage_has_sequential_numbered_steps(self):
         expected = {"studioModuleAts": 3, "studioModuleWriter": 5,

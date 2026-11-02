@@ -40,6 +40,14 @@ INACTIVE_SIGNATURES = [
     (r"closed-job__flavor", "משרה סגורה בלינקדאין"),
     (r"topcard__flavor--closed", "משרה סגורה בלינקדאין"),
     (r"page not found", "דף המשרה לא נמצא"),
+    (r"job (?:has been|was) (?:filled|closed|removed)", "המשרה נסגרה"),
+    (r"no longer (?:available|open|active)", "המשרה אינה זמינה עוד"),
+    (r"this (?:job|position|role) (?:is|has been) (?:closed|filled|expired)", "המשרה נסגרה"),
+    (r"posting (?:is )?(?:closed|expired)", "תוקף פרסום המשרה פג"),
+    (r"position (?:has been )?filled", "המשרה אויישה"),
+    (r"המשרה אוישה", "המשרה אוישה"),
+    (r"המשרה הוסרה", "המשרה הוסרה מהאתר"),
+    (r"פג תוקף", "תוקף פרסום המשרה פג"),
     # Hebrew indicators
     (r"המשרה (?:אינה|איננה) פעילה", "המשרה אינה פעילה באתר"),
     (r"המשרה נסגרה", "המשרה נסגרה לקבלת מועמדויות"),
@@ -51,14 +59,27 @@ INACTIVE_SIGNATURES = [
 ]
 
 
-def check_job_url(job: Dict, timeout: int = 8) -> Tuple[bool, str, int]:
+def _valid_through_expired(html: str) -> bool:
+    """Returns True when a JSON-LD JobPosting declares a validThrough date in the past."""
+    for match in re.finditer(r'"validThrough"\s*:\s*"(\d{4}-\d{2}-\d{2})', html):
+        try:
+            if datetime.strptime(match.group(1), "%Y-%m-%d").date() < datetime.utcnow().date():
+                return True
+        except ValueError:
+            continue
+    return False
+
+
+def check_job_url(job: Dict, timeout: int = 12) -> Tuple[str, str, int]:
     """
-    Checks if a job URL is active or closed.
-    Returns: (is_inactive, reason, status_code)
+    Classifies a job URL.
+    Returns: (state, reason, status_code) where state is one of
+    "inactive" (confirmed closed/removed), "active" (loaded, no closure signal) or
+    "unknown" (could not be verified: blocked, rate limited, server error, timeout).
     """
     link = job.get("link", "").strip()
     if not link or not link.startswith("http"):
-        return True, "קישור לא תקין או חסר", 0
+        return "inactive", "קישור לא תקין או חסר", 0
 
     headers = {
         "User-Agent": USER_AGENT,
@@ -66,33 +87,44 @@ def check_job_url(job: Dict, timeout: int = 8) -> Tuple[bool, str, int]:
         "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7",
     }
 
-    try:
-        resp = requests.get(link, headers=headers, timeout=timeout, allow_redirects=True)
-        status = resp.status_code
+    resp = None
+    last_error = ""
+    for attempt in range(2):
+        try:
+            resp = requests.get(link, headers=headers, timeout=timeout, allow_redirects=True)
+        except requests.exceptions.Timeout:
+            last_error = "פסק זמן בבדיקת הקישור"
+        except requests.exceptions.RequestException as exc:
+            last_error = f"שגיאת תקשורת: {str(exc)[:50]}"
+        else:
+            if resp.status_code in (429, 503) and attempt == 0:
+                time.sleep(2)
+                continue
+            break
+        time.sleep(1)
 
-        if status in (404, 410):
-            return True, f"דף המשרה הוסר (HTTP {status})", status
+    if resp is None:
+        return "unknown", last_error or "לא ניתן לאמת את הקישור", 0
 
-        if status >= 500:
-            return False, f"שגיאת שרת זמנית (HTTP {status})", status
+    status = resp.status_code
+    if status in (404, 410):
+        return "inactive", f"דף המשרה הוסר (HTTP {status})", status
+    if status in (401, 403, 429) or status >= 500:
+        return "unknown", f"האתר חסם או לא ענה (HTTP {status}), לא ניתן לאמת", status
 
-        # Check for redirects to generic search or homepages
-        final_url = resp.url.lower()
-        if "jobs/view" in link.lower() and "jobs/view" not in final_url and ("linkedin.com" in final_url):
-            return True, "הפניה לדף ראשי - המשרה הוסרה", status
+    final_url = resp.url.lower()
+    if "jobs/view" in link.lower() and "jobs/view" not in final_url and "linkedin.com" in final_url:
+        return "inactive", "הפניה לדף ראשי - המשרה הוסרה", status
 
-        # Check text signatures
-        text = resp.text.lower()
-        for pattern, reason in INACTIVE_SIGNATURES:
-            if re.search(pattern, text, re.IGNORECASE):
-                return True, reason, status
+    html = resp.text
+    text = html.lower()
+    for pattern, reason in INACTIVE_SIGNATURES:
+        if re.search(pattern, text, re.IGNORECASE):
+            return "inactive", reason, status
+    if _valid_through_expired(html):
+        return "inactive", "תוקף פרסום המשרה פג (validThrough)", status
 
-        return False, "משרה פעילה ומאומתת", status
-
-    except requests.exceptions.Timeout:
-        return False, "פסק זמן בבדיקת הקישור", 0
-    except requests.exceptions.RequestException as exc:
-        return False, f"שגיאת תקשורת: {str(exc)[:50]}", 0
+    return "active", "משרה פעילה ומאומתת", status
 
 
 def load_target_jobs(jobs_path: str) -> List[Dict]:
@@ -126,6 +158,8 @@ def run_scanner(limit: Optional[int] = None, max_workers: int = 5, dry_run: bool
     logger.info(f"Scanning {len(all_jobs)} jobs for inactive/closed status...")
 
     inactive_list = []
+    scanned_links = []
+    unknown_links = []
     scanned_count = 0
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -134,8 +168,12 @@ def run_scanner(limit: Optional[int] = None, max_workers: int = 5, dry_run: bool
             job = future_to_job[future]
             scanned_count += 1
             try:
-                is_inactive, reason, status_code = future.result()
-                if is_inactive:
+                state, reason, status_code = future.result()
+                if state == "unknown":
+                    unknown_links.append(job.get("link", ""))
+                else:
+                    scanned_links.append(job.get("link", ""))
+                if state == "inactive":
                     inactive_item = {
                         "link": job.get("link", ""),
                         "title": job.get("title", ""),
@@ -153,7 +191,10 @@ def run_scanner(limit: Optional[int] = None, max_workers: int = 5, dry_run: bool
         "scanned_at": datetime.utcnow().isoformat() + "Z",
         "total_scanned": scanned_count,
         "inactive_count": len(inactive_list),
+        "unknown_count": len(unknown_links),
         "inactive_jobs": inactive_list,
+        "verified_links": scanned_links,
+        "unknown_links": unknown_links,
     }
 
     if not dry_run:
@@ -180,7 +221,7 @@ def main():
 
     report = run_scanner(limit=args.limit, max_workers=args.workers, dry_run=args.dry_run)
     logger.info(
-        f"Completed scan: {report['total_scanned']} checked, {report['inactive_count']} inactive detected."
+        f"Completed scan: {report['total_scanned']} checked, {report['inactive_count']} inactive detected, {report['unknown_count']} unverified."
     )
 
 
