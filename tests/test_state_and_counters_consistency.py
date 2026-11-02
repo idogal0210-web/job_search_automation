@@ -116,6 +116,37 @@ class TestDashboardStateAndCountersConsistency(unittest.TestCase):
         self.assertIn("UNSTARRED_STORAGE_KEY", js_content)
         self.assertIn("RESTORED_STORAGE_KEY", js_content)
 
+    def test_mobile_input_font_size_and_touch_targets(self):
+        css_content = (PROJECT_ROOT / "frontend" / "css" / "dashboard.css").read_text(encoding="utf-8")
+        # Ensure mobile input and select font size is >= 16px to prevent Safari auto-zoom
+        self.assertIn("font-size: 16px !important", css_content)
+        # Ensure 44x44px touch targets on mobile
+        self.assertIn("min-height: 44px !important", css_content)
+        self.assertIn("min-width: 44px !important", css_content)
+
+    def test_zero_synthetic_logos_policy(self):
+        js_content = (PROJECT_ROOT / "frontend" / "js" / "dashboard.js").read_text(encoding="utf-8")
+        # Ensure no monogram letter avatars are rendered
+        self.assertNotIn('<div class="job-company-avatar"', js_content)
+        # Ensure onerror handler is present on logo image
+        self.assertIn("onerror=", js_content)
+        self.assertIn("handleCompanyLogoError", js_content)
+
+    def test_content_job_hash_resilience(self):
+        from src.url_utils import content_job_hash
+        job_variant1 = {
+            "company": 'סולאראדג׳ בע"מ',
+            "title": "טכנאי/ת שירות (M/F) — מתקנים סולאריים"
+        }
+        job_variant2 = {
+            "company": "  סולאראדג'  ",
+            "title": "טכנאי שירות - מתקנים סולאריים"
+        }
+        hash1 = content_job_hash(job_variant1)
+        hash2 = content_job_hash(job_variant2)
+        self.assertTrue(hash1.startswith("ch_"))
+        self.assertEqual(hash1, hash2)
+
 
 if __name__ == "__main__":
     unittest.main()

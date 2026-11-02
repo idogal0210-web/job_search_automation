@@ -5,6 +5,7 @@ import shutil
 from datetime import datetime, timedelta
 from src.state_manager import save_state_atomic, load_state
 from src.job_policy import extract_curated_tags
+from src.url_utils import stable_job_id, content_job_hash
 
 # Load HTML template from frontend/templates/index.html
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -52,6 +53,8 @@ def compact_job_for_ui(j):
         "logo": j.get("company_logo_url") or j.get("logo"),
         "company_logo_url": j.get("company_logo_url") or j.get("logo"),
         "snippet": j.get("snippet", ""),
+        "stable_job_id": stable_job_id(j),
+        "content_hash": content_job_hash(j),
         "requirement_assessments": j.get("requirement_assessments", []),
         "fit_gaps": j.get("fit_gaps", ""),
         "is_direct_ats": j.get("is_direct_ats", False),
@@ -208,11 +211,12 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set=None):
     if not isinstance(catalog, dict) or any(not isinstance(job, dict) for job in catalog.values()):
         raise ValueError("Invalid historical catalog; refusing to reset history")
 
-    from src.url_utils import canonical_job_url, job_identity, stable_job_id
+    from src.url_utils import canonical_job_url, job_identity, stable_job_id, content_job_hash
 
     # Reconcile user overrides: load purged and rejected links from sync_state.json
     all_rejected = set(rejected_set or [])
     sync_state_path = os.path.join(project_root, "data", "sync_state.json")
+    sync_state = {}
     if os.path.exists(sync_state_path):
         sync_state = load_state(sync_state_path, {}, strict=False) or {}
         all_rejected.update(sync_state.get("purged", []))
@@ -220,8 +224,55 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set=None):
 
     rejected_canonical = {canonical_job_url(l) for l in all_rejected if l}
     rejected_stable_ids = {stable_job_id(l) for l in all_rejected if l}
+    rejected_content_hashes = set()
+
+    # Build content hashes and stable ids from existing catalog and archive records
+    archive_by_link = {j.get("link"): j for j in archive if isinstance(j, dict) and j.get("link")}
+    for l in all_rejected:
+        job_rec = catalog.get(l) or archive_by_link.get(l)
+        if isinstance(job_rec, dict):
+            ch = content_job_hash(job_rec)
+            if ch:
+                rejected_content_hashes.add(ch)
+            sid = stable_job_id(job_rec)
+            if sid:
+                rejected_stable_ids.add(sid)
+
+    # Reconcile purged set: remove permanently purged jobs from catalog
+    purged_links = set(sync_state.get("purged", []))
+    purged_canonical = {canonical_job_url(l) for l in purged_links if l}
+    purged_stable_ids = {stable_job_id(l) for l in purged_links if l}
+    purged_content_hashes = set()
+    for l in purged_links:
+        job_rec = catalog.get(l) or archive_by_link.get(l)
+        if isinstance(job_rec, dict):
+            ch = content_job_hash(job_rec)
+            if ch:
+                purged_content_hashes.add(ch)
+            sid = stable_job_id(job_rec)
+            if sid:
+                purged_stable_ids.add(sid)
+
+    def _is_purged(j):
+        if not isinstance(j, dict):
+            return False
+        link = j.get("link", "")
+        if link and link in purged_links:
+            return True
+        c_link = canonical_job_url(link)
+        if c_link and c_link in purged_canonical:
+            return True
+        s_id = stable_job_id(j)
+        if s_id and s_id in purged_stable_ids:
+            return True
+        ch = content_job_hash(j)
+        if ch and ch in purged_content_hashes:
+            return True
+        return False
 
     def _is_rejected(j):
+        if not isinstance(j, dict):
+            return True
         link = j.get("link", "")
         if not link:
             return True
@@ -233,11 +284,17 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set=None):
         s_id = stable_job_id(j)
         if s_id and s_id in rejected_stable_ids:
             return True
+        ch = content_job_hash(j)
+        if ch and ch in rejected_content_hashes:
+            return True
         return False
+
+    # Purge permanently from catalog
+    catalog = {k: v for k, v in catalog.items() if not _is_purged(v) and k not in purged_links}
 
     for j in archive:
         link = j.get("link")
-        if link and link not in catalog:
+        if link and link not in catalog and not _is_rejected(j):
             catalog[link] = j
 
     cutoff_date = (datetime.now() - timedelta(days=8)).strftime("%Y-%m-%d")
@@ -248,6 +305,7 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set=None):
     seen_canonical = {canonical_job_url(j.get("link")) for j in archive if j.get("link")}
     seen_identities = {job_identity(j) for j in archive if isinstance(j, dict)}
     seen_stable_ids = {stable_job_id(j) for j in archive if isinstance(j, dict)}
+    seen_content_hashes = {content_job_hash(j) for j in archive if isinstance(j, dict) and content_job_hash(j)}
     today_str = datetime.now().strftime("%Y-%m-%d")
 
     if new_jobs:
@@ -258,8 +316,9 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set=None):
             c_link = canonical_job_url(link)
             ident = job_identity(job)
             s_id = stable_job_id(job)
+            c_hash = content_job_hash(job)
 
-            if link in seen_links or (c_link and c_link in seen_canonical) or ident in seen_identities or (s_id and s_id in seen_stable_ids):
+            if link in seen_links or (c_link and c_link in seen_canonical) or ident in seen_identities or (s_id and s_id in seen_stable_ids) or (c_hash and c_hash in seen_content_hashes):
                 continue
 
             seen_links.add(link)
@@ -268,6 +327,8 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set=None):
             seen_identities.add(ident)
             if s_id:
                 seen_stable_ids.add(s_id)
+            if c_hash:
+                seen_content_hashes.add(c_hash)
 
             job_copy = dict(job)
             job_copy["date"] = today_str

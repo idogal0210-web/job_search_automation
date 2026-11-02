@@ -311,6 +311,16 @@ export function updateCubeCountsImmediately() {
   if (elSaved) elSaved.textContent = counts.savedCount;
   if (elRejected) elRejected.textContent = counts.rejectedCount;
 
+  const summaryNew = document.getElementById('summaryNewCount');
+  const summaryStarred = document.getElementById('summaryStarredCount');
+  const summarySaved = document.getElementById('summarySavedCount');
+  const summaryRejected = document.getElementById('summaryRejectedCount');
+
+  if (summaryNew) summaryNew.textContent = counts.newCount;
+  if (summaryStarred) summaryStarred.textContent = counts.starredCount;
+  if (summarySaved) summarySaved.textContent = counts.savedCount;
+  if (summaryRejected) summaryRejected.textContent = counts.rejectedCount;
+
   // Segmented progress bar
   const segNew = document.getElementById('progressSegNew');
   const segStarred = document.getElementById('progressSegStarred');

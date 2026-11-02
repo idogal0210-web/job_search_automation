@@ -287,51 +287,93 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   }
 
+  function normalizeTextForHash(text) {
+    if (!text) return '';
+    let cleaned = String(text).replace(/[\u200b-\u200f\u00a0\ufeff]/g, ' ').toLowerCase();
+    cleaned = cleaned.replace(/\/ת\b|\/ה\b|\/ית\b/g, '');
+    cleaned = cleaned.replace(/\((?:m\/f|d\/m\/w|גברים\/נשים|מ\/נ|דיסקרטי|דרושים|דרוש|דרושה)\)/g, ' ');
+    cleaned = cleaned.replace(/\b(?:בע"מ|בעמ|בע״מ|ltd\.?|inc\.?|corp\.?|gmbh|llc)\b/g, ' ');
+    cleaned = cleaned.replace(/[^\w\sא-ת]/g, ' ');
+    return cleaned.trim().replace(/\s+/g, ' ');
+  }
+
+  function getContentJobHash(jobOrLink) {
+    if (!jobOrLink) return '';
+    if (typeof jobOrLink === 'object') {
+      if (jobOrLink.content_hash) return jobOrLink.content_hash;
+      const comp = normalizeTextForHash(jobOrLink.company || '');
+      const tit = normalizeTextForHash(jobOrLink.title || '');
+      if (comp && tit) {
+        let hash = 0;
+        const str = `${comp}|${tit}`;
+        for (let i = 0; i < str.length; i++) {
+          hash = ((hash << 5) - hash) + str.charCodeAt(i);
+          hash |= 0;
+        }
+        return 'ch_' + Math.abs(hash).toString(36);
+      }
+    }
+    return '';
+  }
+
+  function getJobKeys(idOrJob) {
+    const keys = [];
+    if (!idOrJob) return keys;
+    let job = null;
+    let id = '';
+    if (typeof idOrJob === 'string') {
+      id = idOrJob;
+      job = (typeof allJobsMap !== 'undefined' && allJobsMap[id]) ||
+            (rawJobsData || []).find(j => j.link === id) ||
+            (typeof historicalCatalog !== 'undefined' && historicalCatalog[id]) || null;
+    } else if (typeof idOrJob === 'object') {
+      job = idOrJob;
+      id = job.link || '';
+    }
+    if (id) keys.push(id);
+    const canon = getCanonicalJobKey(id);
+    if (canon && !keys.includes(canon)) keys.push(canon);
+    if (job) {
+      if (job.stable_job_id && !keys.includes(job.stable_job_id)) keys.push(job.stable_job_id);
+      const sid = getStableJobId(job);
+      if (sid && !keys.includes(sid)) keys.push(sid);
+      if (job.content_hash && !keys.includes(job.content_hash)) keys.push(job.content_hash);
+      const ch = getContentJobHash(job);
+      if (ch && !keys.includes(ch)) keys.push(ch);
+    }
+    return keys;
+  }
+
   function getStableJobId(jobOrLink) {
     if (!jobOrLink) return '';
     if (typeof jobOrLink === 'string') return getCanonicalJobKey(jobOrLink);
+    if (jobOrLink.stable_job_id) return jobOrLink.stable_job_id;
     const link = jobOrLink.link || '';
     const canon = getCanonicalJobKey(link);
     if (canon && !canon.startsWith('http')) return canon;
-    const company = (jobOrLink.company || '').trim().toLowerCase().replace(/\s+/g, ' ');
-    const title = (jobOrLink.title || '').trim().toLowerCase().replace(/\s+/g, ' ');
-    if (company && title) {
-      let hash = 0;
-      const str = `${company}|${title}`;
-      for (let i = 0; i < str.length; i++) {
-        hash = ((hash << 5) - hash) + str.charCodeAt(i);
-        hash |= 0;
-      }
-      return 'ch_' + Math.abs(hash).toString(36);
-    }
+    const ch = getContentJobHash(jobOrLink);
+    if (ch) return ch;
     return canon || String(link).trim().toLowerCase();
   }
 
   function getJobState(id) {
-    if (!id) return 'pending';
-    if (typeof jobStates === 'object' && jobStates !== null && jobStates[id]) return jobStates[id];
-    const canon = getCanonicalJobKey(id);
-    if (canon && typeof jobStates === 'object' && jobStates !== null && jobStates[canon]) return jobStates[canon];
-    if (!canon || typeof jobStates !== 'object' || jobStates === null) return 'pending';
-    for (const [key, state] of Object.entries(jobStates)) {
-      if (getCanonicalJobKey(key) === canon || key === id) {
-        return state;
-      }
+    if (!id || typeof jobStates !== 'object' || jobStates === null) return 'pending';
+    const keys = getJobKeys(id);
+    for (const k of keys) {
+      if (jobStates[k]) return jobStates[k];
     }
     return 'pending';
   }
 
   function isJobStarred(id) {
     if (!id || typeof starredJobs !== 'object' || starredJobs === null) return false;
+    const keys = getJobKeys(id);
     const unstarredMap = loadUnstarredJobs();
-    const canon = getCanonicalJobKey(id);
-    if (unstarredMap[id] || (canon && unstarredMap[canon])) return false;
-    if (starredJobs[id]) return true;
-    if (canon && starredJobs[canon]) return true;
-    for (const [key, isStar] of Object.entries(starredJobs)) {
-      if (isStar && (getCanonicalJobKey(key) === canon || key === id)) {
-        return true;
-      }
+    for (const k of keys) {
+      if (unstarredMap[k]) return false;
+    }
+    for (const k of keys) {
+      if (starredJobs[k]) return true;
     }
     return false;
   }
@@ -404,31 +446,30 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       evt.preventDefault();
     }
     recordLocalEdit();
-    const canon = getCanonicalJobKey(id);
+    const keys = getJobKeys(id);
     const currentlyStarred = isJobStarred(id);
     const unstarredMap = loadUnstarredJobs();
 
     if (currentlyStarred) {
-      delete starredJobs[id];
-      if (canon) delete starredJobs[canon];
+      keys.forEach(k => {
+        delete starredJobs[k];
+        unstarredMap[k] = true;
+      });
       for (const k of Object.keys(starredJobs)) {
-        if (getCanonicalJobKey(k) === canon) delete starredJobs[k];
+        if (keys.some(ref => getCanonicalJobKey(k) === getCanonicalJobKey(ref))) delete starredJobs[k];
       }
-      unstarredMap[id] = true;
-      if (canon) unstarredMap[canon] = true;
       saveUnstarredJobs(unstarredMap);
       showToast('ph-star', 'הוסר מהמשרות המסומנות בכוכב');
     } else {
-      starredJobs[id] = true;
-      if (canon) starredJobs[canon] = true;
-      delete unstarredMap[id];
-      if (canon) delete unstarredMap[canon];
+      keys.forEach(k => {
+        starredJobs[k] = true;
+        delete unstarredMap[k];
+        if (jobStates && (jobStates[k] === 'purged' || jobStates[k] === 'rejected')) {
+          delete jobStates[k];
+        }
+      });
       saveUnstarredJobs(unstarredMap);
-      if (jobStates && (jobStates[id] === 'purged' || jobStates[id] === 'rejected')) {
-        delete jobStates[id];
-        if (canon) delete jobStates[canon];
-        saveTriageState(jobStates);
-      }
+      saveTriageState(jobStates);
       showToast('ph-fill ph-star', 'המשרה סומנה בכוכב והועברה ללשונית בכוכב');
     }
     saveStarredJobs(starredJobs);
@@ -1153,7 +1194,34 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     [['ducart', 'דוקרט'], 'ducart.co.il'],
     [['kimberly-clark', 'קימברלי קלארק'], 'kimberly-clark.com'],
     [['helios'], 'project-helios.space'],
-    [['elmo motion control', 'אלמו'], 'elmomc.com']
+    [['elmo motion control', 'אלמו'], 'elmomc.com'],
+    [['pacaya', 'pacaya hr'], 'pacaya.co.il'],
+    [['team 3', 'צוות 3', 'team 3 group'], 'team3.co.il'],
+    [['esp710'], 'esp710.com'],
+    [['aitan'], 'aitan.com'],
+    [['growings robotx', 'growings'], 'growings-robotx.com'],
+    [['hct', 'hadarom container', 'הדרום קונטיינר'], 'hct.co.il'],
+    [['utron'], 'utron-sys.com'],
+    [['tehiru', 'tehiru aerial'], 'tehiru.com'],
+    [['magnus metal', 'magnus'], 'magnusmetal.com'],
+    [['ein-hashofet', 'עין השופט'], 'ehltg.com'],
+    [['utila'], 'utila.io'],
+    [['rhino federated', 'rhino'], 'rhinofc.com'],
+    [['rina'], 'rina.org'],
+    [['ersg'], 'ersg-global.com'],
+    [['clou ess', 'clou'], 'clouglobal.com'],
+    [['supercom'], 'supercom.com'],
+    [['elmor', 'אלמור'], 'elmor.co.il'],
+    [['ageera'], 'ageera.co.il'],
+    [['nextpower'], 'nextpower.com'],
+    [['repair carbon'], 'repair-carbon.com'],
+    [['d-fend', 'd-fend solutions'], 'd-fendsolutions.com'],
+    [['edwards vacuum', 'edwards'], 'edwardsvacuum.com'],
+    [['wds technologies', 'wds'], 'wdstech.co.il'],
+    [['sightec'], 'sightec.com'],
+    [['spearuav', 'spear uav'], 'spearuav.com'],
+    [['percepto', 'פרספטו'], 'percepto.co'],
+    [['allpha', 'allpha innovation'], 'allpha-innovation.com']
   ];
 
   function matchCompanyWord(text, keyword) {
@@ -1365,11 +1433,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <div class="job-company-logo" title="${safeComp}">
           <img src="${info.primaryUrl}" 
                alt="${safeComp}" 
+               class="job-logo-img" 
                loading="lazy" 
                decoding="async" 
                data-step="${info.initialStep}"
                onload="handleCompanyLogoLoad(this, '${safeDom}')" 
-               onerror="handleCompanyLogoError(this, '${safeDom}')" />
+               onerror="if(typeof handleCompanyLogoError==='function'){handleCompanyLogoError(this, '${safeDom}');}else{const p=this.closest('.job-company-logo');if(p)p.style.display='none';}" />
         </div>
       `;
     }
@@ -2566,37 +2635,41 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
     recordLocalEdit();
     const current = getJobState(id);
-    const canon = getCanonicalJobKey(id);
+    const keys = getJobKeys(id);
 
     if (action === 'rejected') {
-      if (starredJobs[id] || isJobStarred(id)) {
-        delete starredJobs[id];
-        if (canon) delete starredJobs[canon];
-        for (const k of Object.keys(starredJobs)) {
-          if (getCanonicalJobKey(k) === canon) delete starredJobs[k];
-        }
-        saveStarredJobs(starredJobs);
+      keys.forEach(k => {
+        delete starredJobs[k];
+      });
+      for (const k of Object.keys(starredJobs)) {
+        if (keys.some(ref => getCanonicalJobKey(k) === getCanonicalJobKey(ref))) delete starredJobs[k];
       }
+      saveStarredJobs(starredJobs);
+
       if (current === 'rejected') {
-        jobStates[id] = 'purged';
-        if (canon) jobStates[canon] = 'purged';
+        keys.forEach(k => {
+          jobStates[k] = 'purged';
+        });
         showToast('ph-trash', 'המשרה נמחקה לצמיתות ולא תוצג שוב');
       } else {
-        jobStates[id] = 'rejected';
-        if (canon) jobStates[canon] = 'rejected';
+        keys.forEach(k => {
+          jobStates[k] = 'rejected';
+        });
         showToast('ph-trash', 'המשרה הועברה למשרות שהוסרו');
       }
     } else if (action === 'saved') {
       if (current === 'saved') {
-        delete jobStates[id];
-        if (canon) delete jobStates[canon];
+        keys.forEach(k => {
+          delete jobStates[k];
+        });
         for (const k of Object.keys(jobStates)) {
-          if (getCanonicalJobKey(k) === canon) delete jobStates[k];
+          if (keys.some(ref => getCanonicalJobKey(k) === getCanonicalJobKey(ref))) delete jobStates[k];
         }
         showToast('ph-arrow-counter-clockwise', 'המשרה הוסרה מהשמורות והוחזרה לחדשות');
       } else {
-        jobStates[id] = 'saved';
-        if (canon) jobStates[canon] = 'saved';
+        keys.forEach(k => {
+          jobStates[k] = 'saved';
+        });
         showToast('ph-bookmark-simple', 'המשרה נשמרה להגשה והועברה ללשונית נשמרו');
       }
     }
@@ -2612,17 +2685,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       evt.preventDefault();
     }
     recordLocalEdit();
-    const canon = getCanonicalJobKey(id);
-    if (starredJobs[id] || isJobStarred(id)) {
-      delete starredJobs[id];
-      if (canon) delete starredJobs[canon];
-      for (const k of Object.keys(starredJobs)) {
-        if (getCanonicalJobKey(k) === canon) delete starredJobs[k];
-      }
-      saveStarredJobs(starredJobs);
+    const keys = getJobKeys(id);
+    keys.forEach(k => {
+      delete starredJobs[k];
+      jobStates[k] = 'purged';
+    });
+    for (const k of Object.keys(starredJobs)) {
+      if (keys.some(ref => getCanonicalJobKey(k) === getCanonicalJobKey(ref))) delete starredJobs[k];
     }
-    jobStates[id] = 'purged';
-    if (canon) jobStates[canon] = 'purged';
+    saveStarredJobs(starredJobs);
     saveTriageState(jobStates);
     renderCards();
     updateUI();
@@ -2636,25 +2707,24 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       evt.preventDefault();
     }
     recordLocalEdit();
-    const canon = getCanonicalJobKey(id);
+    const keys = getJobKeys(id);
     const restoredMap = loadRestoredJobs();
-    restoredMap[id] = true;
-    if (canon) restoredMap[canon] = true;
+    keys.forEach(k => {
+      restoredMap[k] = true;
+    });
     saveRestoredJobs(restoredMap);
 
-    if (starredJobs[id] || isJobStarred(id)) {
-      delete starredJobs[id];
-      if (canon) delete starredJobs[canon];
-      for (const k of Object.keys(starredJobs)) {
-        if (getCanonicalJobKey(k) === canon) delete starredJobs[k];
-      }
-      saveStarredJobs(starredJobs);
+    keys.forEach(k => {
+      delete starredJobs[k];
+      delete jobStates[k];
+    });
+    for (const k of Object.keys(starredJobs)) {
+      if (keys.some(ref => getCanonicalJobKey(k) === getCanonicalJobKey(ref))) delete starredJobs[k];
     }
-    delete jobStates[id];
-    if (canon) delete jobStates[canon];
     for (const k of Object.keys(jobStates)) {
-      if (getCanonicalJobKey(k) === canon) delete jobStates[k];
+      if (keys.some(ref => getCanonicalJobKey(k) === getCanonicalJobKey(ref))) delete jobStates[k];
     }
+    saveStarredJobs(starredJobs);
     saveTriageState(jobStates);
     renderCards();
     updateUI();

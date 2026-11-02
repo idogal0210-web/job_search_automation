@@ -3429,7 +3429,8 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQFVu8fgvCZMcw/company-logo_100_100/company-logo_100_100/0/1656575042637/elbit_systems_ltd_logo?e=2147483647&v=beta&t=thhyWI1tpwu0e_2FMadmEpucjwav6dZallxGqfVRa-Q"
   },
   {
     "link": "https://il.linkedin.com/jobs/view/support-for-elevator-and-escalator-modernization-at-linked-magic-4484326410",
@@ -3534,6 +3535,7 @@
     "has_on_call": false,
     "p25": 11500,
     "p50": 13250,
-    "p75": 15000
+    "p75": 15000,
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQFNTT5dJd8eWw/company-logo_100_100/company-logo_100_100/0/1689829881237/linkedin_magic_logo?e=2147483647&v=beta&t=5893nX82xenAjmZ9OTsmc1IyeuQlAfGSQryompuymQI"
   }
 ]

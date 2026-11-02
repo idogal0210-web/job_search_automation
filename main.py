@@ -28,6 +28,11 @@ def main():
     if not isinstance(state, list) or not all(isinstance(link, str) for link in state):
         raise ValueError("jobs_state.json must remain a list of URLs")
     handled_links = set(state)
+    sync_state_path = root / "data" / "sync_state.json"
+    if sync_state_path.exists():
+        sync_state = load_state(str(sync_state_path), default={}, strict=False) or {}
+        user_overrides = set(sync_state.get("purged", [])) | set(sync_state.get("rejected", []))
+        handled_links.update(user_overrides)
     ledger = EvaluationLedger(root / "data" / "evaluation_state.json")
     energy_keywords = [
         "SCADA Control Room Operator", "מפעיל חדר בקרה SCADA", "מפעיל מערכות SCADA",
@@ -168,6 +173,10 @@ def main():
         if dashboard_ok and email_configured and health.email_success:
             ledger.commit_delivery([job["link"] for job in daily_top_picks])
         handled_links.update(ledger.completed_links())
+        if sync_state_path.exists():
+            sync_state = load_state(str(sync_state_path), default={}, strict=False) or {}
+            handled_links.update(sync_state.get("purged", []))
+            handled_links.update(sync_state.get("rejected", []))
         save_state_atomic(STATE_FILE, sorted(handled_links))
     except Exception as error:
         state_ok = False
