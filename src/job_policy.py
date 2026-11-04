@@ -22,8 +22,15 @@ NON_TECHNICAL_TITLES = [
 
 
 # Ambiguous words must not disqualify a technical title by themselves.
-AMBIGUOUS = {"sales", "customer support", "service desk", "מוקד", "רכש", "קניין", "קניינית"}
-TECHNICAL = r"\b(?:technical|engineer|technician|scada|plc|hmi|bms)\b|הנדסאי|מהנדס|טכנאי|טכני|בקרה"
+AMBIGUOUS = {
+    "sales", "customer support", "service desk", "מוקד", "רכש", "קניין", "קניינית",
+    "סליקה", "מנייה", "התחשבנות", "billing", "settlement", "commercial"
+}
+TECHNICAL = (
+    r"\b(?:technical|engineer|technician|scada|plc|hmi|bms|aveva|operator|operations|dispatcher|"
+    r"bess|grid|commercial|nominations?|renominations?|settlement|billing|energy|solar|gas|pv)\b|"
+    r"הנדסאי|מהנדס|טכנאי|טכני|בקרה|תפעול|משמרת|רשת|גז|אנרגיה|סולאר|אגירה|רנומינצי|נומינצי|מנייה|התחשבנות|סליקה|מתקנ"
+)
 
 # Excluded employers: defaults with environment override via EXCLUDED_EMPLOYERS
 _env_blacklist = os.environ.get("EXCLUDED_EMPLOYERS", "")
@@ -31,14 +38,34 @@ if _env_blacklist:
     BLACKLIST = [e.strip().lower() for e in _env_blacklist.split(",") if e.strip()]
 else:
     BLACKLIST = ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון"]
+
+KNOWN_ENTERPRISE_EMPLOYERS = {
+    "opc", "dalia", "דליה", "או פי סי", "enlight", "אנלייט", "energix", "אנרג'יקס", "אנרגיקס",
+    "ormat", "אורמת", "doral", "דוראל", "nofar", "נופר", "שיכון ובינוי", "shikun & binui",
+    "shikun vebinui", "econergy", "אקונרג'י", "teralight", "טראילייט", "solaredge", "סולאראדג'",
+    "סולאראדג", "supergas", "סופרגז", "rimon", "רימון", "newmed", "ניו-מד", "ניומד", "isramco",
+    "ישראמקו", "edeltech", "אדלטק", "ecoppia", "אקופיה", "robotican", "רובוטיקאן", "percepto",
+    "פרספטו", "xtend", "אקסטנד", "elbit", "אלביט", "rafael", "רפאל", "iai", "תעשייה אווירית",
+    "תעשיה אווירית", "תע\"א", "חברת החשמל", "חח\"י", "iec", "מקורות", "mekorot", "בזן", "bazan"
+}
+
+def is_known_enterprise(company_name):
+    if not company_name:
+        return False
+    c = company_name.lower().strip()
+    return any(has_term(c, term) for term in KNOWN_ENTERPRISE_EMPLOYERS)
+
 KEYWORD_GROUPS = {
-    "gas": ["natural gas", "גז טבעי"],
-    "energy": ["energy", "אנרגיה", "תחנת כוח", "power plant"],
-    "mechanical": ["mechanical", "מכונות", "מכונאי"],
-    "control": ["scada", "plc", "hmi", "bms", "בקרה"],
-    "solar": ["solar", "pv", "סולארי", "פוטו"],
-    "drones": ["drone", "drones", "uav", "uas", "רחפן", "רחפנים", "כטב"],
-    "storage": ["bess", "אגירה", "סוללות"],
+    "gas": ["natural gas", "גז טבעי", "מתקני גז", "מתקן גז", "prms"],
+    "energy": ["energy", "אנרגיה", "תחנת כוח", "power plant", "תשתיות אנרגיה"],
+    "mechanical": ["mechanical", "מכונות", "מכונאי", "ציוד סובב", "מתקני לחץ"],
+    "control": ["scada", "plc", "hmi", "bms", "aveva", "בקרה", "אוטומציה"],
+    "solar": ["solar", "pv", "סולארי", "פוטו", "פוטו-וולטאי", "bifacial"],
+    "drones": ["drone", "drones", "uav", "uas", "רחפן", "רחפנים", "כטב", "מטיס"],
+    "storage": ["bess", "אגירה", "סוללות", "bess operator", "אנרגיה מתחדשת ואגירה"],
+    "grid": ["grid interconnection", "חיבורי רשת", "רשת חשמל", "תחנת השנאה", "הסדרה"],
+    "commercial": ["nominations", "renominations", "רנומינציות", "נומינציות", "תפעול מסחרי", "סליקה", "מנייה", "התחשבנות", "settlement", "billing"],
+    "dispatch": ["dispatcher", "בקר אנרגיה", "מנהל משמרת", "בקר גז בכיר", "בקר בכיר", "gas dispatcher"]
 }
 
 
@@ -82,6 +109,52 @@ def advertised_high_salary(text):
     return False
 
 
+def advertised_very_high_salary(text):
+    """Conservative: explicit monthly ILS lower bound >= 20,000."""
+    number = r"(?:\d{1,2}[,.]\d{3}|\d{4,5}|\d{1,2}(?:\.\d+)?[kK])"
+    for line in re.split(r"[\n;|]", text):
+        lowtext = line.lower()
+        if any(k in lowtext for k in ("לשעה", "שעתי", "hour", "annual", "year", "שנתי", "לשנה", "נטו", "net", "עד ", "up to", "$", "usd", "eur", "€")):
+            continue
+        if not re.search(r"שכר|משכורת|salary|compensation|comp:", lowtext):
+            continue
+        if not re.search(r"חודש|month", lowtext):
+            continue
+        if not re.search(r"₪|ש[״\"]ח|שקלים|\b(?:nis|ils)\b", lowtext):
+            continue
+        match = re.search(r"(" + number + r")(?:\s*[-–]\s*(" + number + r"))?", line)
+        if match:
+            def value(s):
+                return float(s[:-1]) * 1000 if s.lower().endswith("k") else int(s.replace(",", "").replace(".", ""))
+            amounts = [value(s) for s in match.groups() if s]
+            if amounts and 20000 <= min(amounts) <= max(amounts) <= 80000:
+                return True
+    return False
+
+
+def advertised_low_salary(text):
+    """Conservative: explicit monthly ILS upper bound strictly < 15,000."""
+    number = r"(?:\d{1,2}[,.]\d{3}|\d{4,5}|\d{1,2}(?:\.\d+)?[kK])"
+    for line in re.split(r"[\n;|]", text):
+        lowtext = line.lower()
+        if any(k in lowtext for k in ("לשעה", "שעתי", "hour", "annual", "year", "שנתי", "לשנה", "נטו", "net", "$", "usd", "eur", "€")):
+            continue
+        if not re.search(r"שכר|משכורת|salary|compensation|comp:", lowtext):
+            continue
+        if not re.search(r"חודש|month", lowtext):
+            continue
+        if not re.search(r"₪|ש[״\"]ח|שקלים|\b(?:nis|ils)\b", lowtext):
+            continue
+        match = re.search(r"(" + number + r")(?:\s*[-–]\s*(" + number + r"))?", line)
+        if match:
+            def value(s):
+                return float(s[:-1]) * 1000 if s.lower().endswith("k") else int(s.replace(",", "").replace(".", ""))
+            amounts = [value(s) for s in match.groups() if s]
+            if amounts and max(amounts) < 15000 and min(amounts) >= 5000:
+                return True
+    return False
+
+
 def deterministic_filter(job):
     title, company = job.get("title", ""), job.get("company", "")
     for term in BLACKLIST:
@@ -90,18 +163,38 @@ def deterministic_filter(job):
     # Explicit irrelevant occupations; do not reject the bare Hebrew word בקר.
     if re.search(r"קצב(?:/ית|/ה)?(?:\s|$)|מפעל בקר|לבקר תנובה|פקיד/ת קבלה", title):
         return rejection("irrelevant_occupation", "תוצאת חיפוש שאינה תפקיד טכני")
+
+    # Manual workshop / assembly line work with no engineering horizon
+    if re.search(r"מכונאי\s+רכב|מוסך|מכונאות\s+רכב|פחח|צמיגאי|מרכיב\s+בפס\s+ייצור|עובד/ת?\s+פס\s+ייצור|מרכיב/ת?\s+לפס|מתקין\s+מערכות\s+שמע|מרכיב\s+מכני\s+בפס", title):
+        if not re.search(r"מהנדס|הנדסאי|מנהל|lead|head|scada|plc", title, re.I):
+            return rejection("manual_no_engineering_horizon", "עבודה ידנית או מוסכית ללא אופק הנדסי")
+
+    text = f"{title} {job.get('snippet', '')}"
+
+    # Explicit low salary rejection (< 15,000 ILS / month)
+    if advertised_low_salary(text):
+        return rejection("below_salary_floor", "שכר מפורסם נמוך מ-15,000 ₪ לחודש")
+
     for term in NON_TECHNICAL_TITLES:
         if not has_term(title, term):
             continue
         if term in AMBIGUOUS and re.search(TECHNICAL, title, re.I):
             continue
         return rejection("non_technical_role", f"תפקיד שנפסל לפי הכותרת: {term}")
+
+    # Control room validation
     if re.search(r"חדר בקרה|מוקד בקרה|בקרת חדר|control room", title, re.I):
-        text = f"{title} {job.get('snippet', '')}"
-        industrial = re.search(r"\b(?:scada|plc|hmi|bms)\b|סקאדה|טלמטריה|גז טבעי|תחנת כוח|תשתיות חשמל|תשתיות מים|מתקן תעשייתי", text, re.I)
+        industrial = re.search(r"\b(?:scada|plc|hmi|bms|aveva)\b|סקאדה|טלמטריה|גז טבעי|תחנת כוח|תשתיות חשמל|תשתיות מים|מתקן תעשייתי|bess|אגירה|טורבינ", text, re.I)
         if not industrial and not advertised_high_salary(text):
             return rejection("control_room_lacks_scada_or_high_salary",
                              "אין במודעה עדות לבקרה תעשייתית או לשכר חודשי מובטח של 18,000 ₪ ומעלה")
+
+        # 24/7 shifts check: requires industrial process control AND (advertised salary >= 20k OR known enterprise company)
+        is_24_7 = bool(re.search(r"24/7|משמרות\s+לילה|סבב\s+משמרות|משמרות\s+סביב\s+השעון", text, re.I))
+        if is_24_7 and not advertised_very_high_salary(text) and not is_known_enterprise(company):
+            return rejection("control_room_24_7_unverified_high_salary",
+                             "משרת משמרות 24/7 ללא עדות לשכר חודשי מובטח של 20,000 ₪ ומעלה או שיוך למעסיק מוביל")
+
     return None
 
 

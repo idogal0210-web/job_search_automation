@@ -88,9 +88,21 @@ def main():
         "Smart Energy Integrator", "אינטגרטור אנרגיה חכמה",
         "CleanTech Technician", "טכנאי קלינטק"
     ]
+
+    specialized_energy_roles = [
+        "Renewable Energy & BESS Operator", "בקר תפעול מערכות אנרגיה מתחדשת ואגירה",
+        "Grid Interconnection Coordinator", "מתאם חיבורי רשת ותשתיות", "מתאם חיבורי רשת",
+        "Commercial Operations & Nominations Specialist", "Commercial Operations Coordinator",
+        "מתאם תפעול מסחרי ורנומינציות", "מומחה תפעול מסחרי ורנומינציות",
+        "Operational Automation & SCADA Specialist", "אינטגרטור תפעול ואוטומציה לחדרי בקרה",
+        "Energy Settlement & Billing Coordinator", "מתאם התחשבנות מנייה וסליקה", "מתאם סליקה ומנייה",
+        "Gas & Pressure Systems Operations Specialist", "הנדסאי תפעול ואחזקת מתקני לחץ וגז",
+        "Senior Energy Dispatcher", "Senior Gas Dispatcher", "בקר אנרגיה בכיר", "מנהל משמרת בקרה"
+    ]
     
-    # Extend energy keywords with energy tech
+    # Extend energy keywords with energy tech and high-demand specialized roles
     energy_keywords.extend(energy_tech_keywords)
+    energy_keywords.extend(specialized_energy_roles)
 
     print("[FETCH] Scraping LinkedIn (Energy)...")
     linkedin_energy = fetch_linkedin_jobs(energy_keywords, health, max_pages=2)
@@ -101,6 +113,13 @@ def main():
     drushim_keywords = [
         "מפעיל חדר בקרה SCADA",
         "מפעיל מערכות SCADA",
+        "בקר תפעול מערכות אנרגיה מתחדשת ואגירה",
+        "מתאם חיבורי רשת",
+        "תפעול מסחרי ורנומינציות",
+        "אינטגרטור תפעול ואוטומציה",
+        "מתאם התחשבנות ומנייה",
+        "הנדסאי תפעול ואחזקת מתקני לחץ וגז",
+        "מנהל משמרת בקרה",
         "הנדסאי מכונות",
         "גז טבעי",
         "סולארי",

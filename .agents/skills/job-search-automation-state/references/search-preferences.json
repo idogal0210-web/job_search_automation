@@ -19,23 +19,47 @@
     "cleaning",
     "nontechnical administrative roles",
     "security/CCTV monitoring",
-    "customer-service call centers"
+    "customer-service call centers",
+    "auto mechanics and garage labor",
+    "routine assembly line labor with no engineering horizon"
+  ],
+  "salary_policy": {
+    "absolute_floor_ils": 15000,
+    "shifts_24_7_floor_ils": 20000,
+    "target_compensation_range_ils": "16,000 - 25,000+"
+  },
+  "specialized_target_roles": [
+    "Renewable Energy & BESS Operator",
+    "Grid Interconnection Coordinator",
+    "Commercial Operations & Nominations Specialist",
+    "Operational Automation & SCADA Specialist",
+    "Energy Settlement & Billing Coordinator",
+    "Gas & Pressure Systems Operations Specialist",
+    "Senior Energy / Gas Dispatcher"
   ],
   "domains": {
     "energy": {
       "threshold": 60,
-      "priority": [
+      "tier1_priority": [
         "Solar PV",
-        "natural gas",
-        "power stations"
+        "BESS Energy Storage",
+        "Green Energy",
+        "Natural Gas"
       ],
-      "also_consider": [
-        "BESS",
-        "electrical grid",
-        "thermal systems",
-        "turbines",
-        "engines",
-        "industrial facilities"
+      "tier2_priority": [
+        "Energy Infrastructure",
+        "Grid Interconnection",
+        "Power Stations",
+        "Operational Automation & SCADA",
+        "Commercial Operations & Nominations",
+        "Energy Settlement & Billing",
+        "Gas & Pressure Systems"
+      ],
+      "tier3_priority": [
+        "Industrial Mechanical Operations",
+        "Rotating Equipment",
+        "Thermal Systems",
+        "Turbines"
       ]
     },
     "uav_defence": {
@@ -51,8 +75,8 @@
     }
   },
   "control_room_rule": {
-    "require": "Explicit industrial SCADA/telemetry OR explicitly advertised salary >= 18000 ILS per month",
-    "precedence": "Excluded nontechnical/security/customer-service roles remain excluded even if salary is high. Unknown salary is not evidence that the salary threshold is met."
+    "require": "Explicit industrial SCADA/telemetry AND (explicitly advertised salary >= 20000 ILS per month OR recognized tier-1 enterprise employer)",
+    "precedence": "Excluded nontechnical/security/customer-service/manual roles remain excluded even if salary is high. Advertised salary < 15,000 ILS is strictly disqualified."
   },
   "minimum_distinct_matches": 3,
   "maximum_daily_picks": 5,

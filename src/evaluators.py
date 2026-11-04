@@ -131,14 +131,15 @@ def is_target_company(company_name: str) -> tuple[bool, str]:
 
 CV_CONTEXT = """
 Candidate: Ido Gal (עידו גל)
-Core Profile: Multidisciplinary Technical Professional & Practical Mechanical Engineer with Deep Specialization in Energy Systems (Natural Gas, Solar PV, BESS Energy Storage), Real-Time Operations Control (SCADA / NOC / 24/7 Control Rooms), Electrical Studies (Certified Electrician in progress), and Combat Engineering / Tactical Field Operations Leadership (סיירת נח"ל).
+Core Profile: Multidisciplinary Technical Professional & Practical Mechanical Engineer with Deep Specialization in Energy Systems (Natural Gas, Solar PV, BESS Energy Storage), Real-Time Operations Control (SCADA / AVEVA / 24/7 Control Rooms), Electrical Studies (Certified Electrician in progress), and Combat Engineering / Tactical Field Operations Leadership (סיירת נח"ל).
 Education & Credentials:
 - Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).
 - Certified Electrician Studies (חשמלאי מוסמך - לקראת סיום ההסמכה).
 - Military: Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח"ל).
-Key Competencies:
-- Energy & Utilities: Natural gas transmission/distribution control, nomination allocations, pressure/flow monitoring, solar PV field systems, battery storage (BESS), clean-tech integration.
-- Operations, C2 & SCADA: 24/7 mission-critical control room operations, crisis response, supply continuity, process automation.
+Key Competencies & Target Operational Focus:
+- Energy & Utilities: Natural gas transmission/distribution control, nomination and re-nomination allocations, gas metering, settlement and billing coordination, PRMS and high-pressure gas facilities, solar PV field systems, battery storage (BESS) operations, clean-tech integration.
+- Operations, C2 & SCADA: Senior energy/gas dispatcher, 24/7 mission-critical control room operations, crisis response, supply continuity, operational automation (AVEVA System Platform, SCADA integrations, Python and Copilot AI calculation agents).
+- Grid & Infrastructure: Grid interconnection coordination, high voltage interfaces, substation and utility protocols.
 - Field, Integration & Hands-on: Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting, drone/UAV integration and flight operations.
 - Tech & AI: Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.
 """
@@ -187,7 +188,12 @@ Candidate profile:
 Rules:
 - Technical field operations, maintenance, commissioning, industrial control,
   electro-mechanical systems and practical integration can qualify.
+- High-priority target roles with strong candidate fit: Renewable Energy & BESS Operator,
+  Grid Interconnection Coordinator, Commercial Operations & Nominations Specialist,
+  Operational Automation & SCADA Specialist, Energy Settlement & Billing Coordinator,
+  Gas & Pressure Systems Specialist (PRMS), and Senior Energy / Gas Dispatcher.
 - Pure sales, HR, marketing, administration and nontechnical support must fail.
+- Auto mechanics, garage work, and routine assembly line labor with no engineering horizon must fail.
 - Presales/support titles require inspection of actual technical duties;
   a technical word or energy employer alone is insufficient.
 - Mandatory licenses/certifications the candidate does not yet hold are gaps.
