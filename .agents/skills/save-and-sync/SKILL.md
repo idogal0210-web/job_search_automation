@@ -32,7 +32,7 @@ Policy configuration is strictly loaded from `.save-and-sync.yml` at the reposit
 1. **Tier 1 — Protected (Never Delete)**:
    `main.py`, `src/**`, `data/**` (jobs state, evaluation state, catalogs), `docs/**` (dashboard), `.agents/**`, `.github/**`, `.env`, `.gitignore`, `requirements*.txt`, `tests/**`, `tools/**`, `frontend/**`, `scripts/**`, `PROJECT_CONTEXT.md`, `README.md`.
 2. **Tier 2 — Ephemeral Disposable (Safe Immediate Purge)**:
-   `__pycache__/`, `*.pyc`, `*.pyo`, `.DS_Store`, `Thumbs.db`, `*.bak`, `*.tmp`, `*.temp`.
+   `__pycache__/`, `*.pyc`, `*.pyo`, `.DS_Store`, `Thumbs.db`, `*.bak`, `*.tmp`, `*.temp`, `*-intake*.md`, `*review-snapshot*.md`.
 3. **Tier 3 — Log Retention**:
    Logs under `logs/*.log` older than 7 days or larger than 500 lines are pruned/truncated via `scripts/project_hygiene.py`.
 4. **Tier 4 — Untracked / Unknown Candidates**:
@@ -67,7 +67,7 @@ Captures exact count of items removed and total disk space freed.
 1. Inspect working tree: `git status --porcelain`.
 2. Fetch remote and check divergence: `git fetch origin main`.
 3. If remote is ahead, integrate cleanly per policy before pushing. Never rebase over uncommitted changes; never force-push.
-4. Stage verified files: `git add <paths>`.
+4. Stage verified files: `git add <paths>`. Ensure temporary review/intake snapshots (`*-intake*.md`, `*review-snapshot*.md`) are excluded or purged.
 5. Create semantic commit: `feat(...)`, `fix(...)`, `chore(...)`, `refactor(...)`.
 6. Push to GitHub: `git push origin main` (retry up to 3 times on transient transport failures with backoff).
 7. Verify remote branch tip matches local commit.

@@ -53,6 +53,8 @@ DISPOSABLE_PATTERNS = [
     "Thumbs.db",
     "*.pyc",
     "*.pyo",
+    "*-intake*.md",
+    "*review-snapshot*.md",
 ]
 
 SECRET_PATTERNS = [

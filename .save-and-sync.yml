@@ -33,6 +33,8 @@ disposable_patterns:
   - "**/__pycache__"
   - "**/*.pyc"
   - "**/*.pyo"
+  - "**/*-intake*.md"
+  - "**/*review-snapshot*.md"
 
 # Tier 3: Log Retention Rules
 log_retention:
