@@ -1804,7 +1804,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
       const score = Math.max(0, Math.min(100, Number(job.base_match_score ?? job.match_score) || 0));
       const scoreColor = score >= 85 ? 'var(--dashboard-cyan)' : (score >= 70 ? 'var(--dashboard-lime)' : 'var(--dashboard-gold)');
-      const scoreBorder = score >= 85 ? 'rgba(137, 244, 231, 0.8)' : (score >= 70 ? 'rgba(220, 255, 114, 0.8)' : 'rgba(255, 211, 104, 0.8)');
+      const scoreBorder = score >= 85 ? 'rgba(137, 244, 231, 0.8)' : (score >= 70 ? 'rgba(52, 211, 153, 0.8)' : 'rgba(255, 211, 104, 0.8)');
 
       const companyNameClean = stripEmojis(job.company || 'חברה');
       const titleClean = stripEmojis(job.title || 'משרה');
@@ -3208,7 +3208,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         if (chartChipEl) {
           chartChipEl.innerHTML = `<i class="ph-duotone ph-bookmark-simple"></i> ${sourceJobs.length} שמורות`;
           chartChipEl.style.color = 'var(--dashboard-lime)';
-          chartChipEl.style.borderColor = 'rgba(220, 255, 114, 0.4)';
+          chartChipEl.style.borderColor = 'rgba(52, 211, 153, 0.4)';
         }
       } else if (currentFilter === 'starred') {
         sourceJobs = allAvailableJobs.filter(j => Boolean(starredJobs[j.link]) && jobStates[j.link] !== 'rejected' && jobStates[j.link] !== 'purged');
@@ -3268,7 +3268,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const colorMap = {
         'סולאר': '#ffd368',
         'בקרה ו-SCADA': '#89f4e7',
-        'רחפנים': '#dcff72',
+        'רחפנים': '#34d399',
         'תפעול ואחזקה': '#b4fcf1',
         'אגירה': '#a0c03e',
         'גז טבעי': '#fca5a5',
