@@ -691,6 +691,37 @@ export function generateCvBulletActionItem(keywordOrGate, jobContext = {}) {
   };
 }
 
+export const STUDIO_BRIDGE_DEFAULT_URL = 'http://127.0.0.1:8765';
+
+/**
+ * Calls the local Python Gemini Bridge Server with timeout and graceful fallback.
+ * @param {string} endpoint - e.g. '/api/interview/evaluate', '/api/ats/match', '/api/writer/tailor'
+ * @param {object} payload - Request body JSON
+ * @returns {Promise<object|null>} Parsed JSON from bridge or null when offline
+ */
+export async function callStudioAi(endpoint, payload) {
+  if (typeof fetch !== 'function') return null;
+  const baseUrl = (typeof window !== 'undefined' && window.STUDIO_BRIDGE_URL) || STUDIO_BRIDGE_DEFAULT_URL;
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), 8000) : null;
+
+  try {
+    const resp = await fetch(`${baseUrl}${cleanEndpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload || {}),
+      signal: controller ? controller.signal : undefined
+    });
+    if (timer) clearTimeout(timer);
+    if (!resp || !resp.ok) return null;
+    return await resp.json();
+  } catch (err) {
+    if (timer) clearTimeout(timer);
+    return null;
+  }
+}
+
 // Window export for tests and headless runners
 if (typeof window !== 'undefined') {
   window.CANONICAL_CV_PROFILE = CANONICAL_CV_PROFILE;
@@ -702,4 +733,5 @@ if (typeof window !== 'undefined') {
   window.checkAtsStructuralCompliance = checkAtsStructuralCompliance;
   window.runAtsJobMatching = runAtsJobMatching;
   window.generateCvBulletActionItem = generateCvBulletActionItem;
+  window.callStudioAi = callStudioAi;
 }

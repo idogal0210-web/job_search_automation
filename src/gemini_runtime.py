@@ -56,6 +56,43 @@ class Evaluation(BaseModel):
         return str(v) if v is not None else "לא צוין"
 
 
+class StarInterviewEvaluation(BaseModel):
+    model_config = ConfigDict(strict=True)
+    situation_score: int = Field(ge=0, le=25)
+    task_score: int = Field(ge=0, le=25)
+    action_score: int = Field(ge=0, le=25)
+    result_score: int = Field(ge=0, le=25)
+    total_score: int = Field(ge=0, le=100)
+    situation_feedback: str = Field(min_length=1)
+    task_feedback: str = Field(min_length=1)
+    action_feedback: str = Field(min_length=1)
+    result_feedback: str = Field(min_length=1)
+    strengths: list[str] = Field(default_factory=list)
+    improvements: list[str] = Field(default_factory=list)
+    improved_answer: str = Field(min_length=1)
+    verdict_badge: str = "ניתוח מבוסס Gemini AI"
+
+
+class CvTailoredBullet(BaseModel):
+    model_config = ConfigDict(strict=True)
+    transformed_bullet: str = Field(min_length=1)
+    tone_mode: Literal["technical", "operational", "strategic"] = "technical"
+    quality_score: int = Field(ge=0, le=100)
+    has_active_verb: bool = True
+    has_metric: bool = True
+    has_scope: bool = True
+    suggestions: list[str] = Field(default_factory=list)
+
+
+class AtsSemanticMatch(BaseModel):
+    model_config = ConfigDict(strict=True)
+    semantic_score: int = Field(ge=0, le=100)
+    summary: str = Field(min_length=1)
+    matched_strengths: list[str] = Field(default_factory=list)
+    critical_gaps: list[str] = Field(default_factory=list)
+    tailoring_tips: list[str] = Field(default_factory=list)
+
+
 class EvaluationUnavailable(RuntimeError):
     def __init__(self, reasons):
         self.reasons = reasons

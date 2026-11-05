@@ -6222,10 +6222,181 @@ label,
 }
 
 /* ==========================================================================
-   Career Studio: Numbered step flow (single vertical column per stage)
+   Career Studio: Split-Pane Architecture & Step-by-Step UX
    ========================================================================== */
-.interview-workbench, .skills-workbench {
-  grid-template-columns: minmax(0, 1fr);
+.studio-workspace-layout.studio-split-workspace {
+  display: block;
+  width: 100%;
+  margin-block-start: 12px;
+}
+
+.studio-cv-top-pill {
+  margin-bottom: 0 !important;
+  padding: 6px 12px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: rgba(15, 23, 42, 0.72) !important;
+  border: 1px solid rgba(52, 211, 153, 0.35) !important;
+  flex-wrap: wrap;
+}
+
+.studio-compact-upload-btn,
+.studio-compact-reset-btn {
+  width: auto !important;
+  min-block-size: 44px !important;
+  min-inline-size: 44px !important;
+  padding: 6px 14px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+}
+
+.studio-compact-stepbar-wrap {
+  background: var(--dashboard-glass);
+  border: 1px solid var(--dashboard-edge);
+  border-radius: 18px;
+  padding: 10px 14px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.studio-subnav-pill.studio-top-horizontal-steps {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  flex-direction: row !important;
+}
+
+@media (max-width: 950px) {
+  .studio-subnav-pill.studio-top-horizontal-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .studio-subnav-pill.studio-top-horizontal-steps {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+/* Split-Pane Grid: 45% Input Pane / 55% Results Pane on Desktop */
+.studio-split-pane-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 45fr) minmax(0, 55fr) !important;
+  gap: 20px !important;
+  align-items: start !important;
+}
+
+.studio-split-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-inline-size: 0;
+}
+
+.interview-workbench,
+.skills-workbench {
+  display: grid !important;
+  grid-template-columns: minmax(0, 45fr) minmax(0, 55fr) !important;
+  gap: 20px !important;
+  align-items: start !important;
+}
+
+@media (max-width: 960px) {
+  .studio-split-pane-grid,
+  .interview-workbench,
+  .skills-workbench,
+  .writer-workbench {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+}
+
+/* Enforce >=44px Touch Targets across Career Studio interactive elements */
+#careerStudioWorkspace button,
+#careerStudioWorkspace select,
+#careerStudioWorkspace .cv-hub-btn,
+#careerStudioWorkspace .skill-link-btn,
+#careerStudioWorkspace .q-chip,
+#careerStudioWorkspace .ats-chip-btn,
+#careerStudioWorkspace .writer-preset-btn,
+#careerStudioWorkspace .writer-dict-cat-btn,
+#careerStudioWorkspace .writer-tone-btn,
+#careerStudioWorkspace .writer-icon-btn {
+  min-block-size: 44px;
+  min-inline-size: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* AI Thinking Indicator Banner */
+.studio-ai-thinking-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.16), rgba(52, 211, 153, 0.12));
+  border: 1px solid rgba(137, 244, 231, 0.4);
+  color: var(--dashboard-cyan);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Interview Practice History List */
+.interview-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-block-size: 260px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+}
+
+.interview-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+}
+
+.interview-history-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-inline-size: 0;
+}
+
+.interview-history-q {
+  font-weight: 700;
+  color: #f1f5f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.interview-history-date {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.interview-history-score {
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(52, 211, 153, 0.16);
+  color: #34d399;
+  white-space: nowrap;
 }
 
 .studio-step-outline {
@@ -6238,6 +6409,7 @@ label,
   padding: 0;
   display: flex;
   flex-wrap: wrap;
+  flex-wrap: balance;
   gap: 8px;
 }
 
