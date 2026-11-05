@@ -6306,3 +6306,31 @@ label,
 }
 
 .studio-step-head + * { margin-block-start: 4px; }
+
+/* Career Studio - Progressive Workflow Subtle Glow */
+.studio-step-active-glow {
+  border-color: rgba(52, 211, 153, 0.5) !important;
+  box-shadow: 0 0 0 1.5px rgba(52, 211, 153, 0.35), 0 8px 24px -4px rgba(52, 211, 153, 0.18) !important;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.ats-kpi-row.studio-step-active-glow > .ats-gauge-card,
+.ats-kpi-row.studio-step-active-glow .ats-kpi-box {
+  border-color: rgba(52, 211, 153, 0.5) !important;
+  box-shadow: 0 0 0 1.5px rgba(52, 211, 153, 0.35), 0 8px 24px -4px rgba(52, 211, 153, 0.18) !important;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.studio-step-head.active-step-head .studio-step-num {
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.35), 0 0 14px rgba(52, 211, 153, 0.45);
+  transition: box-shadow 0.35s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .studio-step-active-glow,
+  .ats-kpi-row.studio-step-active-glow > .ats-gauge-card,
+  .ats-kpi-row.studio-step-active-glow .ats-kpi-box,
+  .studio-step-head.active-step-head .studio-step-num {
+    transition: none !important;
+  }
+}

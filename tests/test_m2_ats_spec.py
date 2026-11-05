@@ -264,6 +264,33 @@ class TestMilestone2AtsSpec(unittest.TestCase):
         self.assertIn('runAtsJobMatching', docs_js_txt)
         self.assertIn('STATUTORY_HARD_GATES', docs_js_txt)
 
+    def test_m2_17_job_selector_and_step_glow_spec(self):
+        """TC-M2-17: Career Studio step glow classes and filtered ATS job selector are implemented."""
+        html = self.html_file.read_text(encoding="utf-8")
+        docs_html = self.docs_html.read_text(encoding="utf-8")
+        css = self.css_file.read_text(encoding="utf-8")
+        js = self.js_file.read_text(encoding="utf-8")
+
+        # HTML elements
+        for doc in (html, docs_html):
+            self.assertIn('id="atsStep1Panel"', doc)
+            self.assertIn('id="atsStep2Row"', doc)
+            self.assertIn('id="atsStep3Grid"', doc)
+            self.assertIn('studio-step-active-glow', doc)
+
+        # CSS styling
+        self.assertIn('.studio-step-active-glow', css)
+        self.assertIn('.ats-kpi-row.studio-step-active-glow', css)
+        self.assertIn('.studio-step-head.active-step-head', css)
+
+        # JS functions
+        self.assertIn('setAtsActiveStep', js)
+        self.assertIn('atsEligibleJobs', js)
+        self.assertIn('[כוכב]', js)
+        self.assertIn('[שמורה]', js)
+        self.assertIn('setAtsActiveStep(2)', js)
+        self.assertIn('setAtsActiveStep(1)', js)
+
 
 if __name__ == "__main__":
     unittest.main()

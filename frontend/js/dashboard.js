@@ -4235,6 +4235,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (progressHub) {
         progressHub.classList.add('studio-mode-hub-compact');
       }
+      if (typeof populateAtsJobSelector === 'function') {
+        populateAtsJobSelector();
+      }
       if (updateHash && window.location.hash !== '#studio') {
         window.location.hash = '#studio';
       }
@@ -5298,29 +5301,101 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
   /* ATS UI Controller */
   let atsInputDebounceTimer = null;
 
+  let atsEligibleJobs = [];
+
+  function setAtsActiveStep(stepNum) {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+    const step1El = document.getElementById('atsStep1Panel');
+    const step2El = document.getElementById('atsStep2Row');
+    const head1 = document.getElementById('step-ats-1');
+    const head2 = document.getElementById('step-ats-2');
+
+    if (stepNum === 2) {
+      if (step1El) step1El.classList.remove('studio-step-active-glow');
+      if (head1) head1.classList.remove('active-step-head');
+      if (step2El) step2El.classList.add('studio-step-active-glow');
+      if (head2) head2.classList.add('active-step-head');
+    } else {
+      if (step2El) step2El.classList.remove('studio-step-active-glow');
+      if (head2) head2.classList.remove('active-step-head');
+      if (step1El) step1El.classList.add('studio-step-active-glow');
+      if (head1) head1.classList.add('active-step-head');
+    }
+  }
+
   function populateAtsJobSelector() {
     if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
     const sel = document.getElementById('atsJobSelector');
     if (!sel) return;
     const currentVal = sel.value;
-    sel.innerHTML = '<option value="">-- בחר משרה מתוך מאגר המשרות הפעיל --</option>';
-    const jobs = Array.isArray(rawJobsData) ? rawJobsData : (window.jobsData || []);
-    jobs.forEach((job, idx) => {
+
+    const allJobs = (typeof getAllAvailableJobs === 'function')
+      ? getAllAvailableJobs()
+      : (Array.isArray(rawJobsData) ? rawJobsData : (window.jobsData || []));
+
+    // Filter only jobs that are currently starred or saved from jobs page, excluding rejected/purged
+    atsEligibleJobs = (allJobs || []).filter(job => {
+      if (!job) return false;
+      const link = job.link || job.id;
+      const state = (typeof getJobState === 'function')
+        ? getJobState(link)
+        : ((typeof jobStates !== 'undefined' && jobStates && jobStates[link]) || 'pending');
+      if (state === 'rejected' || state === 'purged') return false;
+
+      const isStarred = (typeof isJobStarred === 'function')
+        ? isJobStarred(link)
+        : Boolean(typeof starredJobs !== 'undefined' && starredJobs && starredJobs[link]);
+      const isSaved = (state === 'saved');
+
+      return isStarred || isSaved;
+    });
+
+    if (atsEligibleJobs.length === 0) {
+      sel.innerHTML = '<option value="">-- אין משרות מסומנות בכוכב או שמורות כרגע (יש לסמן בלוח המשרות) --</option>';
+      return;
+    }
+
+    sel.innerHTML = '<option value="">-- בחר משרה מתוך המשרות השמורות והמסומנות בכוכב (' + atsEligibleJobs.length + ') --</option>';
+    atsEligibleJobs.forEach((job, idx) => {
       const opt = document.createElement('option');
       opt.value = String(idx);
+
+      const link = job.link || job.id;
+      const state = (typeof getJobState === 'function')
+        ? getJobState(link)
+        : ((typeof jobStates !== 'undefined' && jobStates && jobStates[link]) || 'pending');
+      const isStarred = (typeof isJobStarred === 'function')
+        ? isJobStarred(link)
+        : Boolean(typeof starredJobs !== 'undefined' && starredJobs && starredJobs[link]);
+
+      let tag = '';
+      if (isStarred && state === 'saved') {
+        tag = '[כוכב + שמורה]';
+      } else if (isStarred) {
+        tag = '[כוכב]';
+      } else {
+        tag = '[שמורה]';
+      }
+
       const scoreTag = job.match_score ? `[${job.match_score}%]` : '';
-      opt.textContent = `${scoreTag} ${job.title || 'ללא כותרת'} • ${job.company || 'חברה לא צוינה'}`;
+      const prefix = [tag, scoreTag].filter(Boolean).join(' ');
+      opt.textContent = `${prefix} ${job.title || 'ללא כותרת'} • ${job.company || 'חברה לא צוינה'}`;
       sel.appendChild(opt);
     });
-    if (currentVal) sel.value = currentVal;
+
+    if (currentVal && atsEligibleJobs[parseInt(currentVal, 10)]) {
+      sel.value = currentVal;
+    }
   }
 
   function onAtsJobSelected(jobIndex) {
     if (jobIndex === '' || jobIndex === null || jobIndex === undefined) return;
-    const jobs = Array.isArray(rawJobsData) ? rawJobsData : (window.jobsData || []);
+    const pool = (Array.isArray(atsEligibleJobs) && atsEligibleJobs.length > 0)
+      ? atsEligibleJobs
+      : (Array.isArray(rawJobsData) ? rawJobsData : (window.jobsData || []));
     const idx = parseInt(jobIndex, 10);
-    if (isNaN(idx) || !jobs[idx]) return;
-    const job = jobs[idx];
+    if (isNaN(idx) || !pool[idx]) return;
+    const job = pool[idx];
 
     const parts = [
       job.title ? `כותרת משרה: ${job.title}` : '',
@@ -5383,6 +5458,7 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     const sel = document.getElementById('atsJobSelector');
     if (sel) sel.value = '';
     triggerAtsMatching();
+    setAtsActiveStep(1);
   }
 
   function triggerAtsMatching() {
@@ -5474,6 +5550,13 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     renderHardGates(report.hardGates, jobText);
     renderKeywordTaxonomy(report.missingKeywords, report.matchedKeywords, jobText);
     renderAtsStructuralChecklist(report.structuralCompliance);
+
+    // Progressive step subtle glow transition
+    if (jobText && jobText.trim()) {
+      setAtsActiveStep(2);
+    } else {
+      setAtsActiveStep(1);
+    }
   }
 
   function renderHardGates(triggeredGates, jobText) {
@@ -5645,6 +5728,8 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
     if (!document.getElementById('atsModuleContent') && !document.getElementById('atsJobSelector')) return;
     populateAtsJobSelector();
+    const hasJobInput = Boolean(document.getElementById('atsJobInput')?.value?.trim());
+    setAtsActiveStep(hasJobInput ? 2 : 1);
     if (!atsInitialized) {
       renderHardGates([], '');
       renderKeywordTaxonomy({ methodologies: [], financials: [], systems: [], energy: [] }, { methodologies: [], financials: [], systems: [], energy: [] }, '');
@@ -6442,6 +6527,8 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
   window.checkAtsStructuralCompliance = checkAtsStructuralCompliance;
   window.runAtsJobMatching = runAtsJobMatching;
   window.initAtsModule = initAtsModule;
+  window.populateAtsJobSelector = populateAtsJobSelector;
+  window.setAtsActiveStep = setAtsActiveStep;
   window.triggerAtsMatching = triggerAtsMatching;
   window.onAtsJobSelected = onAtsJobSelected;
   window.onAtsInputChanged = onAtsInputChanged;

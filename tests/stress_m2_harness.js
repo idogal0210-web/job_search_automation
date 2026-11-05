@@ -197,7 +197,11 @@
     atsKeywordsFinancials: createMockElement('atsKeywordsFinancials', [], ''),
     atsKeywordsSystems: createMockElement('atsKeywordsSystems', [], ''),
     atsKeywordsEnergy: createMockElement('atsKeywordsEnergy', [], ''),
-    atsRulesChecklist: createMockElement('atsRulesChecklist', [], '')
+    atsRulesChecklist: createMockElement('atsRulesChecklist', [], ''),
+    atsStep1Panel: createMockElement('atsStep1Panel', ['studio-step-active-glow'], ''),
+    atsStep2Row: createMockElement('atsStep2Row', [], ''),
+    'step-ats-1': createMockElement('step-ats-1', ['active-step-head'], ''),
+    'step-ats-2': createMockElement('step-ats-2', [], '')
   };
 
   const timerQueue = [];
@@ -781,6 +785,19 @@
       window.clearAtsInput();
     }, 'clearAtsInput must not throw');
     assertEqual(mockDomElements.atsScoreValue.textContent, '0%', 'Cleared ATS score is 0%');
+    assert(mockDomElements.atsStep1Panel.classList.contains('studio-step-active-glow'), 'Step 1 has glow on clear');
+    assert(!mockDomElements.atsStep2Row.classList.contains('studio-step-active-glow'), 'Step 2 has no glow on clear');
+
+    // Test step glow transition when job is matched
+    assertDoesNotThrow(() => {
+      window.loadSampleAtsJob('gas');
+    }, 'loadSampleAtsJob gas must not throw');
+    assert(mockDomElements.atsStep2Row.classList.contains('studio-step-active-glow'), 'Step 2 gains glow when matched');
+    assert(!mockDomElements.atsStep1Panel.classList.contains('studio-step-active-glow'), 'Step 1 loses glow when matched');
+
+    // Reset back via clear
+    window.clearAtsInput();
+    assert(mockDomElements.atsStep1Panel.classList.contains('studio-step-active-glow'), 'Step 1 regains glow on clear');
 
     // Invalid selector indices
     const badIndices = [-1, 999999, 'invalid', null, undefined, NaN, {}];
