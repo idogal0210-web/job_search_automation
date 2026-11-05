@@ -40,6 +40,12 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
   - Success criteria: 7 specialized roles added to scraping and keyword groups, salary floor (<15k) and 24/7 rules implemented, test suite passes 100%, zero emojis.
   - Evidence: Verified via 305/305 unit tests passing (`tests/test_policy_expansion.py`), zero-emoji audit passed (0 emojis), hygiene validation clean. Completed 2026-11-04.
 
+### Phase 5: Architecture Modularization & External Refactoring (November 2026)
+- [x] **TASK-09**: Implement architectural review recommendations (modular pipeline, configuration centralization, prompt externalization, unified GeminiPool, deduplicated salary extraction).
+  - Target files: `main.py`, `src/config.py`, `src/prompts.py`, `prompts/`, `src/fetchers.py`, `src/job_policy.py`, `src/gemini_runtime.py`, `tools/cv_tailor/`, `.save-and-sync.yml`
+  - Success criteria: Monolithic `main()` decomposed to ~20 lines, embedded prompts moved to versioned text files under `prompts/`, search keywords & aliases centralized in `src/config.py`, deduplicated salary regex into `extract_advertised_monthly_ils_amounts`, `JobFetcher` abstract registry, `GeminiPool.generate_json` wired across tools, ephemeral intake patterns added to hygiene policy, 305/305 tests passing, zero emojis.
+  - Evidence: Verified via 305/305 unit tests passing (`Ran 305 tests in 10.5s OK`), zero-emoji audit passed (0 emojis), hygiene validation clean, committed & pushed in `524ca08`, `cf807e8`, `90b4d2e`. Completed 2026-11-05.
+
 
 ---
 

@@ -42,12 +42,19 @@ job_search_automation/
 │       └── daily_job_search.yml    # Active scheduled daily GitHub Actions cron workflow (07:17 IST / 04:17 UTC)
 ├── frontend/                       # Source files for the web application (modular separation)
 │   ├── templates/index.html        # HTML layout shell and metadata slots
+│   ├── templates/email_report.html # Externalized HTML email digest template
 │   ├── css/dashboard.css           # Modular dashboard CSS styles
 │   ├── js/dashboard.js             # Client-side SPA application logic and data fetcher
 │   └── assets/                     # Local static assets and company logos
+├── prompts/                        # Versioned LLM prompts extracted from code
+│   ├── job_evaluation_v1.txt       # Core job evaluation structured prompt
+│   ├── cv_analysis_v1.txt          # CV gap analysis prompt
+│   └── cv_generation_v1.txt        # CV tailoring generator prompt
 ├── src/
 │   ├── pipeline.py                 # Core orchestration pipeline managing run health, stages, and metrics
-│   ├── fetchers.py                 # Multi-source scrapers for LinkedIn, Drushim, and direct Comeet ATS
+│   ├── config.py                   # Centralized configuration loader (keywords, aliases, thresholds)
+│   ├── prompts.py                  # Prompt template loader with caching
+│   ├── fetchers.py                 # Multi-source scrapers with JobFetcher registry (LinkedIn, Drushim, Comeet)
 │   ├── job_policy.py               # Deterministic blacklist filters, technical keyword sets, and title rules
 │   ├── gemini_runtime.py           # Multi-model Gemini fallback pool with structured output validation and retry
 │   ├── evaluators.py               # Match score evaluator (0-100), target company bonuses, and keyword fallback
@@ -77,7 +84,7 @@ job_search_automation/
 │   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
 ├── tools/                          # Standalone modular tooling
 │   └── cv_tailor/                  # Fact-based CV tailoring and interview prep engine
-├── tests/                          # Automated unit and integration test suite (291 passing tests)
+├── tests/                          # Automated unit and integration test suite (305 passing tests)
 │   ├── test_curated_tags.py        # Curated operational tags positive triggers & negative guards tests
 │   ├── test_recovery.py            # Degradation and error recovery tests
 │   ├── test_salary_intelligence.py # Salary prediction engine tests
