@@ -2322,37 +2322,34 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <!-- Curated Tags (0 to 5 tags, flexible) -->
         ${tagsHtml}
 
-        <!-- 2 Distinct Bubbles: Domain & Requirements -->
-        <div class="job-bubbles-wrapper">
-          <div class="job-bubble job-bubble-domain">
-            <strong class="bubble-title"><i class="ph-duotone ph-buildings"></i> תחום ומוצר:</strong>
-            <span class="bubble-content">${domain}</span>
+        <!-- Clean Key Requirements (Canva-inspired layout) -->
+        <div class="job-key-requirements">
+          <div class="job-key-requirements-header">
+            <i class="ph-duotone ph-check-circle"></i>
+            <span>דרישות מפתח:</span>
           </div>
-          <div class="job-bubble job-bubble-reqs">
-            <strong class="bubble-title"><i class="ph-duotone ph-check-square"></i> דרישות המשרה:</strong>
-            <span class="bubble-content">${companyReqs}</span>
-          </div>
+          <div class="job-key-requirements-content">${companyReqs}</div>
         </div>
 
         <!-- Collapsible Full Information Panels -->
         <div class="job-details-collapsible">
-          <div class="job-boxes-grid">
+          <div class="job-boxes-grid" style="margin-top: 8px;">
+            <div class="job-box">
+              <strong><i class="ph-duotone ph-buildings"></i> תחום ומוצר:</strong>
+              <span>${domain}</span>
+            </div>
             <div class="job-box">
               <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
               <span>${jobSum}</span>
             </div>
-            <div class="job-box highlight">
+            <div class="job-box highlight-mint">
               <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
               <span>${quickInsight}</span>
             </div>
-          </div>
-
-          <!-- Fit Gaps Section -->
-          <div class="job-box highlight" style="margin-top: 10px; border-color: rgba(251, 191, 36, 0.4); background: rgba(251, 191, 36, 0.04);">
-            <strong style="color: var(--dashboard-gold, #fbbf24); display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-              <i class="ph-duotone ph-warning-circle"></i> פערי התאמה:
-            </strong>
-            <span style="font-size: 12.5px; line-height: 1.5; color: #e2e8f0;">${fitGaps}</span>
+            <div class="job-box highlight-gold">
+              <strong><i class="ph-duotone ph-warning-circle"></i> פערי התאמה:</strong>
+              <span>${fitGaps}</span>
+            </div>
           </div>
         </div>
 
@@ -2488,31 +2485,30 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       ${tagsHtml}
 
       <!-- 2 Distinct Bubbles: Domain & Requirements -->
-      <div class="job-bubbles-wrapper" style="margin: 4px 0 6px;">
-        <div class="job-bubble job-bubble-domain" style="padding: 10px 14px; font-size: 13.5px;">
+      <div class="job-bubbles-wrapper" style="margin: 4px 0 8px;">
+        <div class="job-bubble job-bubble-domain">
           <strong class="bubble-title"><i class="ph-duotone ph-buildings"></i> תחום ומוצר:</strong>
           <span class="bubble-content">${domain}</span>
         </div>
-        <div class="job-bubble job-bubble-reqs" style="padding: 10px 14px; font-size: 13.5px;">
+        <div class="job-bubble job-bubble-reqs">
           <strong class="bubble-title"><i class="ph-duotone ph-check-square"></i> דרישות המשרה:</strong>
           <span class="bubble-content">${companyReqs}</span>
         </div>
       </div>
 
-      <div class="job-boxes-grid" style="grid-template-columns: 1fr; gap: 10px;">
+      <!-- Categories 3, 4 & 5: Summary, AI Match Insight & Fit Gaps -->
+      <div class="job-boxes-grid" style="grid-template-columns: 1fr; gap: 8px;">
         <div class="job-box">
           <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
           <span>${jobSum}</span>
         </div>
-        <div class="job-box highlight">
+        <div class="job-box highlight-mint">
           <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
           <span>${quickInsight}</span>
         </div>
-        <div class="job-box highlight" style="border-color: rgba(251, 191, 36, 0.4); background: rgba(251, 191, 36, 0.04);">
-          <strong style="color: var(--dashboard-gold, #fbbf24); display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-            <i class="ph-duotone ph-warning-circle"></i> פערי התאמה:
-          </strong>
-          <span style="font-size: 12.5px; line-height: 1.5; color: #e2e8f0;">${fitGaps}</span>
+        <div class="job-box highlight-gold">
+          <strong><i class="ph-duotone ph-warning-circle"></i> פערי התאמה:</strong>
+          <span>${fitGaps}</span>
         </div>
       </div>
     `;
