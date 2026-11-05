@@ -23,11 +23,27 @@ class TemplateDocsSyncTests(unittest.TestCase):
         )
 
     def test_js_and_css_copies_identical(self):
-        for rel_src, rel_dst in (
+        pairs = [
             ("frontend/js/dashboard.js", "docs/dashboard.js"),
             ("frontend/css/dashboard.css", "docs/dashboard.css"),
-        ):
-            self.assertEqual((ROOT / rel_src).read_bytes(), (ROOT / rel_dst).read_bytes(), rel_dst)
+            ("frontend/js/app.js", "docs/js/app.js"),
+            ("frontend/data/cv/cv_he.html", "docs/career/cv/cv_he.html"),
+            ("frontend/data/cv/cv_en.html", "docs/career/cv/cv_en.html"),
+        ]
+        modules_dir = ROOT / "frontend/js/modules"
+        if modules_dir.exists():
+            for mod_file in modules_dir.glob("*.js"):
+                rel_src = f"frontend/js/modules/{mod_file.name}"
+                rel_dst = f"docs/js/modules/{mod_file.name}"
+                pairs.append((rel_src, rel_dst))
+
+        for rel_src, rel_dst in pairs:
+            src_p = ROOT / rel_src
+            dst_p = ROOT / rel_dst
+            if src_p.exists() or dst_p.exists():
+                self.assertTrue(src_p.exists(), f"Source must exist: {rel_src}")
+                self.assertTrue(dst_p.exists(), f"Destination must exist: {rel_dst}")
+                self.assertEqual(src_p.read_bytes(), dst_p.read_bytes(), f"Drift detected between {rel_src} and {rel_dst}")
 
 
 if __name__ == "__main__":

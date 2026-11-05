@@ -77,6 +77,25 @@ def ensure_dir(dir_path: str):
     """Ensure directory exists."""
     os.makedirs(dir_path, exist_ok=True)
 
+def load_prompt_template(filename: str) -> str:
+    """Load prompt template from project-level prompts directory."""
+    project_root = os.path.dirname(os.path.dirname(BASE_DIR))
+    p = os.path.join(project_root, "prompts", filename)
+    if os.path.exists(p):
+        with open(p, "r", encoding="utf-8") as f:
+            return f.read()
+    raise FileNotFoundError(f"Prompt not found: {p}")
+
+def get_gemini_pool():
+    """Load GeminiPool dynamically from project root src/gemini_runtime.py."""
+    import importlib.util
+    project_root = os.path.dirname(os.path.dirname(BASE_DIR))
+    runtime_path = os.path.join(project_root, "src", "gemini_runtime.py")
+    spec = importlib.util.spec_from_file_location("root_gemini_runtime", runtime_path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.GeminiPool()
+
 def save_file(content: str, filename: str, output_dir: str = None) -> str:
     """Save content to output directory and return full path."""
     target_dir = output_dir or DEFAULT_OUTPUT_DIR

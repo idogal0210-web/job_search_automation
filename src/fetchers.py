@@ -416,3 +416,45 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
         print(f"[COMEET_ERROR] Error fetching from {url}: {type(e).__name__}", flush=True)
         return []
 
+
+class JobFetcher:
+    """Base interface for all scrapers and ATS connectors."""
+    source_name: str = "generic"
+
+    def fetch(self, keywords, health_metrics: RunHealth, **kwargs) -> list:
+        raise NotImplementedError
+
+
+class LinkedInFetcher(JobFetcher):
+    source_name = "LinkedIn"
+
+    def fetch(self, keywords, health_metrics: RunHealth, **kwargs) -> list:
+        location = kwargs.get("location", "Israel")
+        max_pages = kwargs.get("max_pages", 1)
+        return fetch_linkedin_jobs(keywords, health_metrics, location=location, max_pages=max_pages)
+
+
+class DrushimFetcher(JobFetcher):
+    source_name = "Drushim"
+
+    def fetch(self, keywords, health_metrics: RunHealth, **kwargs) -> list:
+        max_pages = kwargs.get("max_pages", 1)
+        return fetch_drushim_jobs(keywords, health_metrics, max_pages=max_pages)
+
+
+class ComeetFetcher(JobFetcher):
+    source_name = "Comeet"
+
+    def fetch(self, keywords, health_metrics: RunHealth, **kwargs) -> list:
+        company_name = kwargs.get("company_name", "enlightenergy")
+        company_uid = kwargs.get("company_uid", "99.006")
+        display_name = kwargs.get("company_display_name", "Enlight Renewable Energy")
+        return fetch_comeet_jobs(company_name, company_uid, display_name, health_metrics)
+
+
+FETCHERS = {
+    "linkedin": LinkedInFetcher(),
+    "drushim": DrushimFetcher(),
+    "comeet": ComeetFetcher(),
+}
+

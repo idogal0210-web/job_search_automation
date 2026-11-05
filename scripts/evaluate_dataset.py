@@ -103,7 +103,7 @@ def sample_from_archive(output_path="data/benchmark_samples_to_label.json", coun
             "title": j.get("title", ""),
             "company": j.get("company", ""),
             "snippet": j.get("snippet", "")[:300],
-            "expected_label": "TODO: relevant / irrelevant / borderline",
+            "expected_label": "PENDING_LABEL: relevant / irrelevant / borderline",
             "user_notes": ""
         })
     result = {

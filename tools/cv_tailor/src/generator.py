@@ -10,12 +10,18 @@ try:
     from tools.cv_tailor.src.scraper import JobPosting
     from tools.cv_tailor.src.researcher import CompanyResearch
     from tools.cv_tailor.src.analyzer import ATSAnalysis
-    from tools.cv_tailor.src.utils import print_info, print_warning, print_success, save_file, create_html_wrapper
+    from tools.cv_tailor.src.utils import (
+        print_info, print_warning, print_success, save_file, create_html_wrapper,
+        load_prompt_template, get_gemini_pool
+    )
 except ModuleNotFoundError:
     from src.scraper import JobPosting
     from src.researcher import CompanyResearch
     from src.analyzer import ATSAnalysis
-    from src.utils import print_info, print_warning, print_success, save_file, create_html_wrapper
+    from src.utils import (
+        print_info, print_warning, print_success, save_file, create_html_wrapper,
+        load_prompt_template, get_gemini_pool
+    )
 
 @dataclass
 class TailoredPackage:
@@ -26,70 +32,7 @@ class TailoredPackage:
     interview_talking_points: List[str]
     saved_files: List[str]
 
-GENERATION_PROMPT = """אתה מומחה בכיר לכתיבת קורות חיים ומכתבי פנייה לשוק העבודה הישראלי (Executive CV Writer) בתחומי הנדסת מכונות, אנרגיה, בקרת תשתיות, חשמל וגז טבעי.
-
-משימתך:
-לייצר חבילת מועמדות מותאמת, מדויקת, אמיתית לחלוטין וללא שום ניפוח עבור עידו גל.
-
-=======================================================
- חוקי ברזל בלתי מתפשרים (Must-Follow Realism Rules):
-=======================================================
-
-1. נעילת שמות תפקידים מקוריים (Locked Role Titles):
-   - חובה להשתמש אך ורק בשמות התפקידים המקוריים מתוך פרופיל הבסיס:
-     * בקר גז │ Energean Israel Ltd.
-     * קצין ביטחון, מתקן אנרגיה אסטרטגי │ Vulcan / Energean Israel Ltd.
-     * ראש צוות ומדריך מכירות │ פעילות בינלאומית (ארה״ב וגרמניה)
-     * מתקין מערכות סולאריות PV │ Group MER
-   - אסור לשנות שם תפקיד מן העבר כדי ש"יישמע" כמו התפקיד המבוקש.
-
-2. אפס ניפוח ושמירה על ריאליזם מוחלט (Zero-Inflation):
-   - אין "להלביש" ניסיון ניהול פרויקטי בינוי כבדים על תפקיד מכירות או על עבודת התקנה בשטח.
-   - ניסיון ב-MER יוצג בכנות: עבודת שטח מעשית בהתקנה פיזית, חיווט והרכבה של פאנלים סולאריים.
-   - ניסיון המכירות בחו״ל יוצג בכנות: הובלה, הכשרה וגיוס צוותי מכירות, ועבודה שוטפת באנגלית בסביבה בינלאומית.
-   - ההתאמה נעשית ע״י שינוי סדרי עדיפויות והבלטת החוזקות הרלוונטיות האמיתיות (השכלה סולארית, פרויקט Bifacial, עבודה ב-24/7, Excel, אנגלית).
-
-3. עמידה בחוק שוויון הזדמנויות בעבודה התשמ"ח-1988:
-   - אין לכלול תאריך לידה, גיל, תמונה, מצב משפחתי, דת, תעודת זהות, או כתובת רחוב מלאה (עיר בלבד: "תל אביב" / "Tel Aviv").
-   - פרטי התקשרות (טלפון, אימייל): יש להשתמש בפרטי המועמד המדויקים המופיעים בפרופיל הבסיס.
-
-4. טון "דוגרי" ושורות הישג מונחות תוצאות ומספרים:
-   - כל שורת ניסיון תפתח בפועל פעיל (ניטרתי, ניהלתי, תיאמתי, התקנתי, ייעלתי, הדרכתי).
-   - ללא גוף ראשון ("אני"). שפה ישראלית ישירה, נקייה משיווקיות ריקה.
-
-5. תקן מכתב מקדים ישראלי (Cover Letter):
-   - מקסימום 3 פסקאות קצרות (עד 200 מילים בעברית / 250 באנגלית).
-   - פתיחה ישירה (למה הם -> למה אני -> צעד הבא לשיחה קצרה של 15-20 דק').
-
-פרופיל הבסיס המאומת של עידו גל:
-{base_profile}
-
-פרטי המשרה:
-כותרת: {job_title}
-חברה: {company}
-תיאור ודרישות:
-{job_description}
-
-ממצאי מחקר החברה:
-{company_research}
-
-מילות מפתח ATS להטמעה: {matched_keywords}
-שינויים מומלצים: {recommended_changes}
-
-דיוקים והבהרות שנמסרו ע״י עידו:
-{user_clarifications}
-
-החזר אך ורק אובייקט JSON במבנה הבא:
-{{
-  "cv_markdown": "# עידו גל\\n**בקר גז ותפעול מערכות אנרגיה | הנדסאי מכונות**\\n...",
-  "cover_letter_markdown": "# מכתב מקדים\\n...",
-  "interview_talking_points": [
-    "דגש 1 לשיחת סינון: ...",
-    "דגש 2 לשיחת סינון: ...",
-    "דגש 3 לשיחת סינון: ..."
-  ]
-}}
-"""
+GENERATION_PROMPT = load_prompt_template("cv_generation_v1.txt")
 
 def generate_tailored_package(
     job: JobPosting,
@@ -121,30 +64,31 @@ def generate_tailored_package(
         user_clarifications=clarifications_text
     )
 
-    models_to_try = ["gemini-3.7-flash", "gemini-3.6-flash", "gemini-2.5-pro", "gemini-2.5-flash-lite"]
-    response_text = ""
-
-    for model_name in models_to_try:
-        try:
-            response = client.models.generate_content(
-                model=model_name,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                    temperature=0.2
-                )
-            )
-            response_text = response.text
-            if response_text:
-                break
-        except Exception as e:
-            print_warning(f"מודל {model_name} נכשל בייצור, מנסה מודל חלופי... ({e})")
-            continue
-
-    if not response_text:
-        raise RuntimeError("כל קריאות הייצור ל-Gemini נכשלו.")
-
+    pool = get_gemini_pool()
     try:
+        data = pool.generate_json(client, prompt, temperature=0.2)
+    except Exception as e:
+        print_warning(f"קריאה דרך GeminiPool נכשלה ({e}), מנסה מודלי fallback ישירים...")
+        models_to_try = ["gemini-3.7-flash", "gemini-3.6-flash", "gemini-2.5-pro", "gemini-2.5-flash-lite"]
+        response_text = ""
+        for model_name in models_to_try:
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        temperature=0.2
+                    )
+                )
+                response_text = response.text
+                if response_text:
+                    break
+            except Exception as err:
+                print_warning(f"מודל {model_name} נכשל בייצור, מנסה מודל חלופי... ({err})")
+                continue
+        if not response_text:
+            raise RuntimeError("כל קריאות הייצור ל-Gemini נכשלו.")
         clean_json = response_text.strip()
         if clean_json.startswith("```json"):
             clean_json = clean_json[7:]
@@ -152,7 +96,9 @@ def generate_tailored_package(
             clean_json = clean_json[3:]
         if clean_json.endswith("```"):
             clean_json = clean_json[:-3]
-        clean_json = clean_json.strip()
+        data = json.loads(clean_json.strip())
+
+    try:
 
         data = json.loads(clean_json)
         cv_md = data.get("cv_markdown", "")

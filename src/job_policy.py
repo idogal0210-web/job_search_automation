@@ -32,12 +32,14 @@ TECHNICAL = (
     r"הנדסאי|מהנדס|טכנאי|טכני|בקרה|תפעול|משמרת|רשת|גז|אנרגיה|סולאר|אגירה|רנומינצי|נומינצי|מנייה|התחשבנות|סליקה|מתקנ"
 )
 
+from src.config import get_excluded_employers
+
 # Excluded employers: defaults with environment override via EXCLUDED_EMPLOYERS
 _env_blacklist = os.environ.get("EXCLUDED_EMPLOYERS", "")
 if _env_blacklist:
     BLACKLIST = [e.strip().lower() for e in _env_blacklist.split(",") if e.strip()]
 else:
-    BLACKLIST = ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון"]
+    BLACKLIST = get_excluded_employers()
 
 KNOWN_ENTERPRISE_EMPLOYERS = {
     "opc", "dalia", "דליה", "או פי סי", "enlight", "אנלייט", "energix", "אנרג'יקס", "אנרגיקס",
@@ -86,12 +88,17 @@ def rejection(reason, detail):
             "evaluation_source": "deterministic", "priority_bonus": 0}
 
 
-def advertised_high_salary(text):
-    """Conservative: explicit monthly ILS lower bound >= 18,000; never hourly/estimated/max-only."""
+def extract_advertised_monthly_ils_amounts(text, *, exclude_up_to=True):
+    """Extract explicit monthly ILS amount bounds from ad text."""
     number = r"(?:\d{1,2}[,.]\d{3}|\d{4,5}|\d{1,2}(?:\.\d+)?[kK])"
+    excluded_keywords = ["לשעה", "שעתי", "hour", "annual", "year", "שנתי", "לשנה", "נטו", "net", "$", "usd", "eur", "€"]
+    if exclude_up_to:
+        excluded_keywords.extend(["עד ", "up to"])
+
+    amounts_list = []
     for line in re.split(r"[\n;|]", text):
         lowtext = line.lower()
-        if any(k in lowtext for k in ("לשעה", "שעתי", "hour", "annual", "year", "שנתי", "לשנה", "נטו", "net", "עד ", "up to", "$", "usd", "eur", "€")):
+        if any(k in lowtext for k in excluded_keywords):
             continue
         if not re.search(r"שכר|משכורת|salary|compensation|comp:", lowtext):
             continue
@@ -104,54 +111,32 @@ def advertised_high_salary(text):
             def value(s):
                 return float(s[:-1]) * 1000 if s.lower().endswith("k") else int(s.replace(",", "").replace(".", ""))
             amounts = [value(s) for s in match.groups() if s]
-            if amounts and 18000 <= min(amounts) <= max(amounts) <= 60000:
-                return True
+            if amounts:
+                amounts_list.append(amounts)
+    return amounts_list
+
+
+def advertised_high_salary(text, min_lower_bound=18000, max_upper_bound=60000):
+    """Conservative: explicit monthly ILS lower bound >= min_lower_bound; never hourly/estimated/max-only."""
+    for amounts in extract_advertised_monthly_ils_amounts(text, exclude_up_to=True):
+        if min_lower_bound <= min(amounts) <= max(amounts) <= max_upper_bound:
+            return True
     return False
 
 
-def advertised_very_high_salary(text):
-    """Conservative: explicit monthly ILS lower bound >= 20,000."""
-    number = r"(?:\d{1,2}[,.]\d{3}|\d{4,5}|\d{1,2}(?:\.\d+)?[kK])"
-    for line in re.split(r"[\n;|]", text):
-        lowtext = line.lower()
-        if any(k in lowtext for k in ("לשעה", "שעתי", "hour", "annual", "year", "שנתי", "לשנה", "נטו", "net", "עד ", "up to", "$", "usd", "eur", "€")):
-            continue
-        if not re.search(r"שכר|משכורת|salary|compensation|comp:", lowtext):
-            continue
-        if not re.search(r"חודש|month", lowtext):
-            continue
-        if not re.search(r"₪|ש[״\"]ח|שקלים|\b(?:nis|ils)\b", lowtext):
-            continue
-        match = re.search(r"(" + number + r")(?:\s*[-–]\s*(" + number + r"))?", line)
-        if match:
-            def value(s):
-                return float(s[:-1]) * 1000 if s.lower().endswith("k") else int(s.replace(",", "").replace(".", ""))
-            amounts = [value(s) for s in match.groups() if s]
-            if amounts and 20000 <= min(amounts) <= max(amounts) <= 80000:
-                return True
+def advertised_very_high_salary(text, min_lower_bound=20000, max_upper_bound=80000):
+    """Conservative: explicit monthly ILS lower bound >= min_lower_bound."""
+    for amounts in extract_advertised_monthly_ils_amounts(text, exclude_up_to=True):
+        if min_lower_bound <= min(amounts) <= max(amounts) <= max_upper_bound:
+            return True
     return False
 
 
-def advertised_low_salary(text):
-    """Conservative: explicit monthly ILS upper bound strictly < 15,000."""
-    number = r"(?:\d{1,2}[,.]\d{3}|\d{4,5}|\d{1,2}(?:\.\d+)?[kK])"
-    for line in re.split(r"[\n;|]", text):
-        lowtext = line.lower()
-        if any(k in lowtext for k in ("לשעה", "שעתי", "hour", "annual", "year", "שנתי", "לשנה", "נטו", "net", "$", "usd", "eur", "€")):
-            continue
-        if not re.search(r"שכר|משכורת|salary|compensation|comp:", lowtext):
-            continue
-        if not re.search(r"חודש|month", lowtext):
-            continue
-        if not re.search(r"₪|ש[״\"]ח|שקלים|\b(?:nis|ils)\b", lowtext):
-            continue
-        match = re.search(r"(" + number + r")(?:\s*[-–]\s*(" + number + r"))?", line)
-        if match:
-            def value(s):
-                return float(s[:-1]) * 1000 if s.lower().endswith("k") else int(s.replace(",", "").replace(".", ""))
-            amounts = [value(s) for s in match.groups() if s]
-            if amounts and max(amounts) < 15000 and min(amounts) >= 5000:
-                return True
+def advertised_low_salary(text, max_upper_bound=15000, min_lower_bound=5000):
+    """Conservative: explicit monthly ILS upper bound strictly < max_upper_bound."""
+    for amounts in extract_advertised_monthly_ils_amounts(text, exclude_up_to=False):
+        if max(amounts) < max_upper_bound and min(amounts) >= min_lower_bound:
+            return True
     return False
 
 

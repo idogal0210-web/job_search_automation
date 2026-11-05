@@ -121,6 +121,10 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
     assets_src = os.path.join(frontend_dir, "assets")
     if os.path.exists(assets_src):
         shutil.copytree(assets_src, os.path.join(docs_dir, "assets"), dirs_exist_ok=True)
+    cv_src = os.path.join(frontend_dir, "data", "cv")
+    if os.path.exists(cv_src):
+        os.makedirs(os.path.join(docs_dir, "career", "cv"), exist_ok=True)
+        shutil.copytree(cv_src, os.path.join(docs_dir, "career", "cv"), dirs_exist_ok=True)
 
     build_id = datetime.now().strftime("%Y%m%d%H%M%S")
     now_str = datetime.now().strftime("%d.%m.%Y")

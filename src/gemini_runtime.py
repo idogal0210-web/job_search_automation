@@ -116,7 +116,7 @@ class GeminiPool:
         self.min_interval = min_interval
         self.last_request = None
 
-    def evaluate(self, client, prompt, health):
+    def generate_json(self, client, prompt, *, schema=None, temperature=None, health=None):
         reasons = {}
         for name in self.models:
             state = self.states[name]
@@ -128,19 +128,38 @@ class GeminiPool:
                 if self.last_request is not None:
                     self.sleep(max(0, self.min_interval - (self.clock() - self.last_request)))
                 self.last_request = self.clock()
-                health.gemini_attempts += 1
+                if health is not None:
+                    health.gemini_attempts += 1
                 try:
+                    cfg_kwargs = {"response_mime_type": "application/json"}
+                    if schema is not None:
+                        cfg_kwargs["response_schema"] = schema
+                    if temperature is not None:
+                        cfg_kwargs["temperature"] = temperature
+                    cfg_kwargs["http_options"] = types.HttpOptions(
+                        timeout=20000, retry_options=types.HttpRetryOptions(attempts=1)
+                    )
                     response = client.models.generate_content(
                         model=name, contents=prompt,
-                        config=types.GenerateContentConfig(
-                            response_mime_type="application/json", response_schema=Evaluation,
-                            http_options=types.HttpOptions(timeout=20000,
-                                retry_options=types.HttpRetryOptions(attempts=1))))
-                    data = Evaluation.model_validate_json(response.text or "").model_dump()
+                        config=types.GenerateContentConfig(**cfg_kwargs)
+                    )
+                    text = response.text or ""
+                    if schema is not None:
+                        data = schema.model_validate_json(text).model_dump()
+                    else:
+                        clean_text = text.strip()
+                        if clean_text.startswith("```json"):
+                            clean_text = clean_text[7:]
+                        if clean_text.startswith("```"):
+                            clean_text = clean_text[3:]
+                        if clean_text.endswith("```"):
+                            clean_text = clean_text[:-3]
+                        data = json.loads(clean_text.strip())
                 except Exception as error:
                     kind = classify_error(error)
                     reasons[name] = kind
-                    health.gemini_failures += 1
+                    if health is not None:
+                        health.gemini_failures += 1
                     print(f"[MODEL_ERROR] model={name} kind={kind} attempt={attempt+1}", flush=True)
                     delay = max(2 ** (attempt + 1) + self.jitter(), retry_after(error))
                     if (kind in {"invalid_response", "timeout", "unavailable", "rate_limit"}
@@ -157,9 +176,14 @@ class GeminiPool:
                     break
                 else:
                     state.failures, state.open_until, state.reason = 0, 0, ""
-                    health.gemini_successes += 1
-                    data["evaluation_source"] = "gemini"
+                    if health is not None:
+                        health.gemini_successes += 1
                     data["evaluation_model"] = name
-                    data["evaluation_complete"] = True
                     return data
         raise EvaluationUnavailable(reasons)
+
+    def evaluate(self, client, prompt, health):
+        data = self.generate_json(client, prompt, schema=Evaluation, health=health)
+        data["evaluation_source"] = "gemini"
+        data["evaluation_complete"] = True
+        return data

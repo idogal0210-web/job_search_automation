@@ -7,11 +7,15 @@ from google.genai import types
 try:
     from tools.cv_tailor.src.scraper import JobPosting
     from tools.cv_tailor.src.keywords import extract_keywords
-    from tools.cv_tailor.src.utils import print_info, print_warning, print_success, Colors
+    from tools.cv_tailor.src.utils import (
+        print_info, print_warning, print_success, Colors, load_prompt_template, get_gemini_pool
+    )
 except ModuleNotFoundError:
     from src.scraper import JobPosting
     from src.keywords import extract_keywords
-    from src.utils import print_info, print_warning, print_success, Colors
+    from src.utils import (
+        print_info, print_warning, print_success, Colors, load_prompt_template, get_gemini_pool
+    )
 
 @dataclass
 class ATSAnalysis:
@@ -24,49 +28,7 @@ class ATSAnalysis:
     clarification_questions: List[str]
     recommended_changes: List[str]
 
-ANALYSIS_PROMPT = """אתה מומחה בכיר למערכות סינון קורות חיים (ATS), גיוס טכנולוגי וניהול קריירה בתחומי האנרגיה, הנדסת מכונות, תפעול ובקרה בשוק העבודה הישראלי.
-
-תפקידך לנתח את מידת ההתאמה המדויקת בין תיאור המשרה לבין פרופיל הבסיס של המועמד עידו גל.
-
-חוקי ברזל:
-1. עיקרון האמת (Zero-Hallucination): אין להמציא ניסיון שאינו קיים בפרופיל הבסיס של עידו גל.
-2. אובייקטיביות ביקורתית: הערך ציונים מדויקים ומציאותיים ללא ניפוחים מלאכותיים.
-3. חוק שוויון הזדמנויות בעבודה התשמ"ח-1988: יש להתעלם מכל דרישה בלתי חוקית (גיל, מצב משפחתי, דת, תמונה, כתובת רחוב מלאה).
-4. פלט בפורמט JSON בלבד, תקין ומדויק.
-
-פרופיל הבסיס של עידו גל:
-{base_profile}
-
-פרטי המשרה לניתוח:
-כותרת: {job_title}
-חברה: {company}
-תיאור ודרישות:
-{job_description}
-
-מילות מפתח טכניות שזוהו בסריקה ראשונית:
-{pre_extracted_keywords}
-
-החזר אך ורק אובייקט JSON במבנה הבא:
-{{
-  "overall_score": 85,
-  "match_summary": "סיכום קצר וקולע ב-2-3 משפטים בעברית על רמת ההתאמה והיתרונות המרכזיים.",
-  "scorecard": {{
-    "השכלה והסמכות (הנדסאי מכונות, חשמל)": 90,
-    "ניסיון תפעולי ובקרה 24/7 (גז/אנרגיה)": 95,
-    "כלים טכניים, AI ואוטומציה (SAP, Excel)": 85,
-    "הובלה, ממשקים ועבודה תחת לחץ": 90
-  }},
-  "matched_keywords": ["מילת מפתח 1", "מילת מפתח 2", "מילת מפתח 3", "מילת מפתח 4"],
-  "missing_keywords": ["מילה חסרה 1 (אם יש)", "דרישה שלא מופיעה במפורש"],
-  "key_strengths": ["חוזקה מרכזית 1", "חוזקה מרכזית 2", "חוזקה מרכזית 3"],
-  "clarification_questions": ["שאלה לבירור מול עידו במידה ויש שטח אפור בדרישות"],
-  "recommended_changes": [
-    "התאמה 1: להדגיש את הניסיון ב-Nomination ובקרה מול נתג״ז",
-    "התאמה 2: לפתוח כל שורה בפועל פעיל ולשלב מספרים כמותיים",
-    "התאמה 3: לשלב מילות מפתח ATS בכותרת ובסעיפי הניסיון"
-  ]
-}}
-"""
+ANALYSIS_PROMPT = load_prompt_template("cv_analysis_v1.txt")
 
 def analyze_job_match(job: JobPosting, base_profile: str, gemini_key: str) -> ATSAnalysis:
     """Analyze job posting against candidate base profile using local keywords + Gemini."""
@@ -86,31 +48,31 @@ def analyze_job_match(job: JobPosting, base_profile: str, gemini_key: str) -> AT
         pre_extracted_keywords=pre_keywords_str
     )
 
-    models_to_try = ["gemini-3.7-flash", "gemini-3.6-flash", "gemini-2.5-pro", "gemini-2.5-flash-lite"]
-    response_text = ""
-
-    for model_name in models_to_try:
-        try:
-            response = client.models.generate_content(
-                model=model_name,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                    temperature=0.2
-                )
-            )
-            response_text = response.text
-            if response_text:
-                break
-        except Exception as e:
-            print_warning(f"מודל {model_name} נכשל, מנסה מודל חלופי... ({e})")
-            continue
-
-    if not response_text:
-        raise RuntimeError("כל קריאות הניתוח ל-Gemini נכשלו.")
-
+    pool = get_gemini_pool()
     try:
-        # Clean JSON if wrapped in markdown fences
+        data = pool.generate_json(client, prompt, temperature=0.2)
+    except Exception as e:
+        print_warning(f"קריאה דרך GeminiPool נכשלה ({e}), מנסה מודלי fallback ישירים...")
+        models_to_try = ["gemini-3.7-flash", "gemini-3.6-flash", "gemini-2.5-pro", "gemini-2.5-flash-lite"]
+        response_text = ""
+        for model_name in models_to_try:
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        temperature=0.2
+                    )
+                )
+                response_text = response.text
+                if response_text:
+                    break
+            except Exception as err:
+                print_warning(f"מודל {model_name} נכשל, מנסה מודל חלופי... ({err})")
+                continue
+        if not response_text:
+            raise RuntimeError("כל קריאות הניתוח ל-Gemini נכשלו.")
         clean_json = response_text.strip()
         if clean_json.startswith("```json"):
             clean_json = clean_json[7:]
@@ -118,9 +80,9 @@ def analyze_job_match(job: JobPosting, base_profile: str, gemini_key: str) -> AT
             clean_json = clean_json[3:]
         if clean_json.endswith("```"):
             clean_json = clean_json[:-3]
-        clean_json = clean_json.strip()
+        data = json.loads(clean_json.strip())
 
-        data = json.loads(clean_json)
+    try:
         print_success(f"ניתוח ה-ATS הושלם. ציון התאמה כולל: {data.get('overall_score', 85)}%")
         
         return ATSAnalysis(

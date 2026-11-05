@@ -92,6 +92,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
             </td>
           </tr>"""
 
+    cards_content = ""
     if not jobs:
         empty_card_html = f"""
           <tr>
@@ -195,85 +196,19 @@ def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
             cards_list.append(card_item)
         cards_content = "\n".join(cards_list)
 
-    html = f"""<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>דוח משרות יומי</title>
-  <style>
-    body {{
-      margin: 0;
-      padding: 0;
-      background-color: #0d1117;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-text-size-adjust: 100%;
-      -ms-text-size-adjust: 100%;
-    }}
-    table {{
-      border-spacing: 0;
-      mso-table-lspace: 0pt;
-      mso-table-rspace: 0pt;
-    }}
-    td {{
-      padding: 0;
-    }}
-    img {{
-      border: 0;
-      -ms-interpolation-mode: bicubic;
-    }}
-    .text-ltr {{
-      direction: ltr !important;
-      unicode-bidi: embed !important;
-      display: inline-block;
-    }}
-  </style>
-</head>
-<body style="margin: 0; padding: 12px; background-color: #0d1117;">
+    template_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "templates", "email_report.html")
+    if os.path.exists(template_path):
+        with open(template_path, "r", encoding="utf-8") as f:
+            tpl = f.read()
+    else:
+        tpl = "<!DOCTYPE html><html lang=\"he\" dir=\"rtl\"><body style=\"background-color: #0d1117;\">__DASHBOARD_BTN_HTML____NOTICE_ROW_HTML____CARDS_CONTENT__</body></html>"
 
-  <!-- מיכל ראשי ממורכז -->
-  <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" dir="rtl" style="background-color: #0d1117;">
-    <tr>
-      <td align="center">
-        
-        <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="max-width: 460px; width: 100%;">
-          
-          <!-- כותרת ראשית -->
-          <tr>
-            <td align="center" style="padding: 16px 8px 24px 8px;">
-              <h1 style="margin: 0; color: #f0f6fc; font-size: 20px; font-weight: 700; line-height: 1.3;">
-                🎯 דוח משרות יומי מאוחד
-              </h1>
-              <p style="margin: 6px 0 0 0; color: #8b949e; font-size: 13px;">
-                תאריך סריקה: <span class="text-ltr">{now_str}</span>
-              </p>
-            </td>
-          </tr>
-
-          <!-- כפתור דשבורד אינטראקטיבי -->{dashboard_btn_html}
-
-          <!-- הודעת סטטוס ריצה חלקי -->{notice_row_html}
-
-          <!-- כרטיסי משרות -->{cards_content}
-
-          <!-- פוטר -->
-          <tr>
-            <td align="center" style="padding: 16px 8px 24px 8px; border-top: 1px solid #30363d;">
-              <p style="margin: 0; color: #8b949e; font-size: 12px; line-height: 1.5;">
-                דוח זה הופק באופן אוטומטי ע&quot;י מערכת Job Search Automation עבור עידו גל.
-              </p>
-            </td>
-          </tr>
-
-        </table>
-
-      </td>
-    </tr>
-  </table>
-
-</body>
-</html>
-"""
+    html = (
+        tpl.replace("__NOW_STR__", now_str)
+           .replace("__DASHBOARD_BTN_HTML__", dashboard_btn_html)
+           .replace("__NOTICE_ROW_HTML__", notice_row_html)
+           .replace("__CARDS_CONTENT__", cards_content)
+    )
     return html
 
 def send_email_report(sender_email, sender_pwd, processed_jobs, curated_email_jobs, top_3, dashboard_url, health):
