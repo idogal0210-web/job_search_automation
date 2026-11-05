@@ -360,107 +360,126 @@
     <!-- Dedicated Full-Width Career Studio Workspace View -->
     <div id="careerStudioWorkspace" class="dashboard-view-container hidden" style="display: none;">
       
-      <!-- Studio Header / Meta Strip (Compact Step-by-Step Bar & Active CV Pill) -->
+      <!-- Studio Header / Meta Strip -->
       <div class="studio-header-strip">
         <div class="studio-title-box">
           <div class="studio-badge-pill">
             <i class="ph-duotone ph-sparkle"></i>
-            <span>סטודיו קריירה מתקדם • Split-Pane AI</span>
+            <span>סטודיו קריירה מתקדם</span>
           </div>
           <h2 class="studio-main-heading">עידו גל | בקר גז טבעי ותפעול מערכות אנרגיה • הנדסאי מכונות</h2>
         </div>
-
         <div class="studio-header-actions">
-          <!-- Compact Active CV Status Pill -->
-          <div id="studioCurrentCvStatus" class="studio-cv-status-box studio-cv-top-pill">
-            <i class="ph-duotone ph-check-circle" id="studioCvStatusIcon" style="color: var(--dashboard-lime); font-size: 18px;"></i>
-            <div class="studio-cv-meta">
-              <span id="studioCvFileName" class="studio-cv-filename">עידו גל - הנדסאי מכונות (גרסת מערכת)</span>
-              <span id="studioCvFileSub" class="studio-cv-filesub">פרופיל פעיל לניתוח ATS</span>
-            </div>
-            <button type="button" class="studio-upload-btn studio-compact-upload-btn" onclick="document.getElementById('manualCvFileInput').click()">
-              <i class="ph-duotone ph-upload-simple"></i>
-              <span>החלף קו״ח</span>
-            </button>
-            <button type="button" id="btnResetToBaselineCv" class="studio-reset-cv-btn studio-compact-reset-btn" onclick="resetToBaselineCv()" style="display: none;" title="חזרה לקורות החיים המובנים של עידו גל">
-              <i class="ph-duotone ph-arrow-counter-clockwise"></i>
-              <span>איפוס</span>
-            </button>
-          </div>
-
-          <div id="studioAiBridgeBadge" class="studio-status-indicator" role="status" aria-live="polite">
-            <span id="studioBridgeDot" class="studio-indicator-dot"></span>
-            <span id="studioBridgeStatusText">מנוע AI היברידי פעיל</span>
+          <div class="studio-status-indicator">
+            <span class="studio-indicator-dot"></span>
+            <span>מצב עבודה פעיל</span>
           </div>
         </div>
       </div>
 
-      <!-- Hidden/Compact Drag & Drop & Parse Feedback Hooks -->
-      <div id="studioCvDropZone" class="studio-cv-drop-area" style="display: none;" onclick="document.getElementById('manualCvFileInput').click()" role="button" tabindex="0">
-        <div class="studio-drop-content">
-          <i class="ph-duotone ph-cloud-arrow-up studio-drop-icon"></i>
-          <span class="studio-drop-title">גרור ושחרר קובץ לכאן</span>
-          <span class="studio-drop-subtitle">או לחץ לבחירת קובץ</span>
-          <span class="studio-drop-formats">PDF • DOCX • TXT</span>
-        </div>
-      </div>
-      <div id="studioCvParseFeedback" class="studio-cv-parse-feedback" style="display: none;" role="status" aria-live="polite">
-        <div class="studio-parse-spinner"></div>
-        <span id="studioCvParseMsg">מחלץ טקסט מהמסמך...</span>
-      </div>
-      <input type="file" id="manualCvFileInput" accept=".pdf,.docx,.txt" style="display: none;" onchange="handleManualCvUpload(event)">
-
-      <!-- Compact Top Horizontal Step Bar (4 Modular Stages) -->
-      <div class="studio-compact-stepbar-wrap">
-        <nav class="studio-subnav-pill studio-subnav-pipeline studio-top-horizontal-steps" role="tablist" aria-label="שלבי סטודיו קריירה">
-          <button type="button" role="tab" id="studioTabAts" class="studio-subnav-btn studio-step-btn active" aria-selected="true" aria-controls="studioModuleAts" onclick="switchStudioModule('ats')">
-            <div class="step-num-badge">1</div>
-            <div class="step-icon-wrap"><i class="ph-duotone ph-scales"></i></div>
-            <div class="step-content-meta">
-              <span class="step-title">התאמת ATS ושערי סף</span>
-              <span class="step-desc">דרישות סף וציונים</span>
+      <!-- Career Studio Layout: Right Sidebar (Pipeline & CV Upload) + Left Modules Container -->
+      <div class="studio-workspace-layout">
+        
+        <!-- Right-hand Pipeline Sidebar (RTL: right side of the screen) -->
+        <aside class="studio-pipeline-sidebar" aria-label="סרגל ניהול שלבי סטודיו קריירה">
+          
+          <!-- Card 1: Independent Manual CV Upload -->
+          <div class="studio-sidebar-card studio-cv-upload-panel">
+            <div class="studio-sidebar-card-header">
+              <i class="ph-duotone ph-file-arrow-up"></i>
+              <h3 class="studio-sidebar-subheading">מסמך קורות חיים</h3>
             </div>
-          </button>
-
-          <button type="button" role="tab" id="studioTabWriter" class="studio-subnav-btn studio-step-btn" aria-selected="false" aria-controls="studioModuleWriter" onclick="switchStudioModule('writer')">
-            <div class="step-num-badge">2</div>
-            <div class="step-icon-wrap"><i class="ph-duotone ph-pen-nib"></i></div>
-            <div class="step-content-meta">
-              <span class="step-title">עורך תוכן וגרסאות קו״ח</span>
-              <span class="step-desc">ניסוח הישגים, מילון וגרסאות</span>
+            
+            <div id="studioCurrentCvStatus" class="studio-cv-status-box">
+              <i class="ph-duotone ph-check-circle" id="studioCvStatusIcon" style="color: var(--dashboard-lime); font-size: 20px;"></i>
+              <div class="studio-cv-meta">
+                <span id="studioCvFileName" class="studio-cv-filename">עידו גל - הנדסאי מכונות (גרסת מערכת)</span>
+                <span id="studioCvFileSub" class="studio-cv-filesub">פרופיל פעיל לניתוח ATS</span>
+              </div>
             </div>
-          </button>
 
-          <button type="button" role="tab" id="studioTabInterview" class="studio-subnav-btn studio-step-btn" aria-selected="false" aria-controls="studioModuleInterview" onclick="switchStudioModule('interview')">
-            <div class="step-num-badge">3</div>
-            <div class="step-icon-wrap"><i class="ph-duotone ph-microphone"></i></div>
-            <div class="step-content-meta">
-              <span class="step-title">סימולטור ראיונות ו-LinkedIn</span>
-              <span class="step-desc">תרגול STAR והיסטוריה</span>
+            <!-- Drag & Drop Zone with Direct File Affordance -->
+            <div id="studioCvDropZone" class="studio-cv-drop-area" onclick="document.getElementById('manualCvFileInput').click()" role="button" tabindex="0">
+              <div class="studio-drop-content">
+                <i class="ph-duotone ph-cloud-arrow-up studio-drop-icon"></i>
+                <span class="studio-drop-title">גרור ושחרר קובץ לכאן</span>
+                <span class="studio-drop-subtitle">או לחץ לבחירת קובץ</span>
+                <span class="studio-drop-formats">PDF • DOCX • TXT (חילוץ טקסט מלא בדפדפן)</span>
+              </div>
             </div>
-          </button>
 
-          <button type="button" role="tab" id="studioTabSkills" class="studio-subnav-btn studio-step-btn" aria-selected="false" aria-controls="studioModuleSkills" onclick="switchStudioModule('skills')">
-            <div class="step-num-badge">4</div>
-            <div class="step-icon-wrap"><i class="ph-duotone ph-shield-check"></i></div>
-            <div class="step-content-meta">
-              <span class="step-title">מיומנויות ואנונימיזציה</span>
-              <span class="step-desc">פערים והסרת מזהים</span>
+            <!-- Real-time Parsing Status Feedback -->
+            <div id="studioCvParseFeedback" class="studio-cv-parse-feedback" style="display: none;" role="status" aria-live="polite">
+              <div class="studio-parse-spinner"></div>
+              <span id="studioCvParseMsg">מחלץ טקסט מהמסמך...</span>
             </div>
-          </button>
-        </nav>
-      </div>
 
-      <!-- Global AI Thinking Banner -->
-      <div id="studioAiThinkingBanner" class="studio-ai-thinking-banner" style="display: none;" role="status" aria-live="polite">
-        <div class="studio-parse-spinner"></div>
-        <span id="studioAiThinkingText">מנוע Gemini AI מנתח נתונים ומאמת סכמת Pydantic...</span>
-      </div>
+            <input type="file" id="manualCvFileInput" accept=".pdf,.docx,.txt" style="display: none;" onchange="handleManualCvUpload(event)">
+            
+            <div class="studio-cv-actions">
+              <button type="button" class="studio-upload-btn" onclick="document.getElementById('manualCvFileInput').click()">
+                <i class="ph-duotone ph-upload-simple"></i>
+                <span>בחר קובץ ידנית</span>
+              </button>
+              
+              <button type="button" id="btnResetToBaselineCv" class="studio-reset-cv-btn" onclick="resetToBaselineCv()" style="display: none;" title="חזרה לקורות החיים המובנים של עידו גל">
+                <i class="ph-duotone ph-arrow-counter-clockwise"></i>
+                <span>איפוס לקו״ח בסיס</span>
+              </button>
+            </div>
+          </div>
 
-      <!-- Career Studio Layout: Full-Width Split-Pane Modules Container -->
-      <div class="studio-workspace-layout studio-split-workspace">
+          <!-- Card 2: Schematic Sequential Workflow Pipeline (Steps 1 to 4) -->
+          <div class="studio-sidebar-card">
+            <div class="studio-sidebar-card-header">
+              <i class="ph-duotone ph-steps"></i>
+              <h3 class="studio-sidebar-subheading">שלבי עבודה מודולריים</h3>
+            </div>
+            
+            <nav class="studio-subnav-pill studio-subnav-pipeline" role="tablist" aria-label="שלבי סטודיו קריירה">
+              <button type="button" role="tab" id="studioTabAts" class="studio-subnav-btn studio-step-btn active" aria-selected="true" aria-controls="studioModuleAts" onclick="switchStudioModule('ats')">
+                <div class="step-num-badge">1</div>
+                <div class="step-icon-wrap"><i class="ph-duotone ph-scales"></i></div>
+                <div class="step-content-meta">
+                  <span class="step-title">התאמת ATS ושערי סף</span>
+                  <span class="step-desc">דרישות סף וציונים</span>
+                </div>
+              </button>
+              
+              <button type="button" role="tab" id="studioTabWriter" class="studio-subnav-btn studio-step-btn" aria-selected="false" aria-controls="studioModuleWriter" onclick="switchStudioModule('writer')">
+                <div class="step-num-badge">2</div>
+                <div class="step-icon-wrap"><i class="ph-duotone ph-pen-nib"></i></div>
+                <div class="step-content-meta">
+                  <span class="step-title">עורך תוכן וגרסאות קו״ח</span>
+                  <span class="step-desc">ניסוח הישגים, מילון וגרסאות</span>
+                </div>
+              </button>
+              
+              <button type="button" role="tab" id="studioTabInterview" class="studio-subnav-btn studio-step-btn" aria-selected="false" aria-controls="studioModuleInterview" onclick="switchStudioModule('interview')">
+                <div class="step-num-badge">3</div>
+                <div class="step-icon-wrap"><i class="ph-duotone ph-microphone"></i></div>
+                <div class="step-content-meta">
+                  <span class="step-title">סימולטור ראיונות ו-LinkedIn</span>
+                  <span class="step-desc">שאלות מראיין ורשת</span>
+                </div>
+              </button>
+              
+              <button type="button" role="tab" id="studioTabSkills" class="studio-subnav-btn studio-step-btn" aria-selected="false" aria-controls="studioModuleSkills" onclick="switchStudioModule('skills')">
+                <div class="step-num-badge">4</div>
+                <div class="step-icon-wrap"><i class="ph-duotone ph-shield-check"></i></div>
+                <div class="step-content-meta">
+                  <span class="step-title">מיומנויות ואנונימיזציה</span>
+                  <span class="step-desc">פערים והסרת מזהים</span>
+                </div>
+              </button>
+            </nav>
+          </div>
+
+        </aside>
+
+        <!-- Left-hand Content Area: Studio Modules Container -->
         <div class="studio-modules-container">
-        <!-- Module 1: ATS & Job Matcher with Hard Gates (Split-Pane) -->
+        <!-- Module 1: ATS & Job Matcher with Hard Gates (Milestone 2 mount point) -->
         <section id="studioModuleAts" class="studio-module-panel active" role="tabpanel" aria-labelledby="studioTabAts">
           <div class="studio-module-card">
             <div class="studio-module-header">
@@ -474,244 +493,228 @@
             </div>
 
             <nav class="studio-step-outline" aria-label="קפיצה מהירה בין צעדי השלב"><ol><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-ats-1')"><span class="studio-outline-num" aria-hidden="true">1</span><span>בחירת משרה והפעלת הניתוח</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-ats-2')"><span class="studio-outline-num" aria-hidden="true">2</span><span>קריאת ציון ההתאמה</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-ats-3')"><span class="studio-outline-num" aria-hidden="true">3</span><span>פירוט הממצאים</span></button></li></ol></nav>
-
-            <div id="atsModuleContent" class="ats-workspace-content studio-split-pane-grid">
-              <!-- Input Pane (45%): Step 1 Job Selector & Free Textarea -->
-              <div class="studio-split-pane studio-input-pane">
-                <div class="studio-step-head" id="step-ats-1"><span class="studio-step-num" aria-hidden="true">1</span><div class="studio-step-text"><h4 class="studio-step-title">בחירת משרה והפעלת הניתוח</h4><p class="studio-step-hint">בחר משרה מהמאגר או הדבק טקסט, ולחץ על הפעלת הניתוח.</p></div></div>
-                <div class="studio-card-glass ats-input-panel">
-                  <div class="ats-panel-header">
-                    <div class="ats-panel-title">
-                      <i class="ph-duotone ph-briefcase"></i>
-                      <span>הזנת משרה לניתוח התאמת ATS ושערי סף</span>
-                    </div>
-                    <div class="ats-sample-chips">
-                      <span class="ats-chips-label">בדיקה מהירה:</span>
-                      <button type="button" class="ats-chip-btn" onclick="loadSampleAtsJob('gas')">
-                        <i class="ph-duotone ph-flame"></i>
-                        <span>בקר גז טבעי</span>
-                      </button>
-                      <button type="button" class="ats-chip-btn" onclick="loadSampleAtsJob('solar')">
-                        <i class="ph-duotone ph-sun"></i>
-                        <span>פרויקטים סולאריים</span>
-                      </button>
-                      <button type="button" class="ats-chip-btn" onclick="loadSampleAtsJob('bsc_gap')">
-                        <i class="ph-duotone ph-warning"></i>
-                        <span>בדיקת פער B.Sc</span>
-                      </button>
-                    </div>
+            
+            <div id="atsModuleContent" class="ats-workspace-content">
+              <!-- Top Section: Job Selector & Free Textarea -->
+              <div class="studio-step-head" id="step-ats-1"><span class="studio-step-num" aria-hidden="true">1</span><div class="studio-step-text"><h4 class="studio-step-title">בחירת משרה והפעלת הניתוח</h4><p class="studio-step-hint">בחר משרה מהמאגר או הדבק טקסט, ולחץ על הפעלת הניתוח.</p></div></div>
+              <div class="studio-card-glass ats-input-panel">
+                <div class="ats-panel-header">
+                  <div class="ats-panel-title">
+                    <i class="ph-duotone ph-briefcase"></i>
+                    <span>הזנת משרה לניתוח התאמת ATS ושערי סף</span>
                   </div>
-
-                  <div class="ats-controls-row">
-                    <div class="ats-select-wrapper">
-                      <label for="atsJobSelector" class="ats-input-label">
-                        <i class="ph-duotone ph-list-magnifying-glass"></i>
-                        <span>טעינת משרה מלוח המשרות:</span>
-                      </label>
-                      <select id="atsJobSelector" class="ats-select" onchange="onAtsJobSelected(this.value)">
-                        <option value="">-- בחר משרה מתוך מאגר המשרות הפעיל --</option>
-                      </select>
-                    </div>
+                  <div class="ats-sample-chips">
+                    <span class="ats-chips-label">בדיקה מהירה:</span>
+                    <button type="button" class="ats-chip-btn" onclick="loadSampleAtsJob('gas')">
+                      <i class="ph-duotone ph-flame"></i>
+                      <span>בקר גז טבעי</span>
+                    </button>
+                    <button type="button" class="ats-chip-btn" onclick="loadSampleAtsJob('solar')">
+                      <i class="ph-duotone ph-sun"></i>
+                      <span>פרויקטים סולאריים</span>
+                    </button>
+                    <button type="button" class="ats-chip-btn" onclick="loadSampleAtsJob('bsc_gap')">
+                      <i class="ph-duotone ph-warning"></i>
+                      <span>בדיקת פער B.Sc</span>
+                    </button>
                   </div>
+                </div>
 
-                  <div class="ats-textarea-wrapper">
-                    <label for="atsJobInput" class="ats-input-label">
-                      <i class="ph-duotone ph-file-text"></i>
-                      <span>טקסט תיאור המשרה ודרישות התפקיד:</span>
+                <div class="ats-controls-row">
+                  <div class="ats-select-wrapper">
+                    <label for="atsJobSelector" class="ats-input-label">
+                      <i class="ph-duotone ph-list-magnifying-glass"></i>
+                      <span>טעינת משרה מלוח המשרות:</span>
                     </label>
-                    <textarea id="atsJobInput" class="ats-textarea" rows="8" placeholder="הדבק כאן תיאור משרה מלא, דרישות תפקיד והסמכות נדרשות, או בחר משרה מלוח המשרות למעלה..." oninput="onAtsInputChanged()"></textarea>
+                    <select id="atsJobSelector" class="ats-select" onchange="onAtsJobSelected(this.value)">
+                      <option value="">-- בחר משרה מתוך מאגר המשרות הפעיל --</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="ats-textarea-wrapper">
+                  <label for="atsJobInput" class="ats-input-label">
+                    <i class="ph-duotone ph-file-text"></i>
+                    <span>טקסט תיאור המשרה ודרישות התפקיד:</span>
+                  </label>
+                  <textarea id="atsJobInput" class="ats-textarea" rows="6" placeholder="הדבק כאן תיאור משרה מלא, דרישות תפקיד והסמכות נדרשות, או בחר משרה מלוח המשרות למעלה..." oninput="onAtsInputChanged()"></textarea>
+                </div>
+
+                <div class="ats-action-toolbar">
+                  <div class="ats-action-btns">
+                    <button type="button" id="btnRunAtsMatch" class="ats-primary-btn" onclick="triggerAtsMatching()">
+                      <i class="ph-duotone ph-scales"></i>
+                      <span>הפעל ניתוח התאמה (ATS Match)</span>
+                    </button>
+                    <button type="button" class="ats-secondary-btn" onclick="clearAtsInput()">
+                      <i class="ph-duotone ph-arrow-counter-clockwise"></i>
+                      <span>נקה טקסט</span>
+                    </button>
+                  </div>
+                  <div id="atsMatchStatusNote" class="ats-status-note">
+                    <i class="ph-duotone ph-info"></i>
+                    <span id="atsBaselineStatusText">מוכן לניתוח מול פרופיל הבסיס של עידו גל</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Middle Section: Score Gauge & Key Indicators -->
+              <div class="studio-step-head" id="step-ats-2"><span class="studio-step-num" aria-hidden="true">2</span><div class="studio-step-text"><h4 class="studio-step-title">קריאת ציון ההתאמה</h4><p class="studio-step-hint">הציון הכולל ושלושת המדדים המרכזיים.</p></div></div>
+              <div class="ats-kpi-row">
+                <!-- Circular Percentage Match Gauge -->
+                <div class="studio-card-glass ats-gauge-card">
+                  <div class="ats-gauge-wrapper">
+                    <div class="ats-gauge-svg-container">
+                      <svg class="ats-gauge-svg" viewBox="0 0 120 120">
+                        <circle class="ats-gauge-bg" cx="60" cy="60" r="50"></circle>
+                        <circle id="atsGaugeProgress" class="ats-gauge-val" cx="60" cy="60" r="50"></circle>
+                      </svg>
+                      <div class="ats-gauge-center">
+                        <span id="atsScoreValue" class="ats-gauge-num">0%</span>
+                        <span class="ats-gauge-sublabel">ציון ATS</span>
+                      </div>
+                    </div>
+                    <div class="ats-gauge-info">
+                      <div id="atsMatchBadge" class="ats-match-level-badge level-neutral">
+                        <i class="ph-duotone ph-scales"></i>
+                        <span id="atsMatchBadgeText">טרם נותחה משרה</span>
+                      </div>
+                      <p id="atsScoreDescription" class="ats-gauge-explanation">הזן תיאור משרה להפקת ציון התאמה משוקלל המבוסס על שערי סף סטטוטוריים, מילות מפתח ומבנה קו״ח.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Mini KPI Cards -->
+                <div class="ats-kpi-grid">
+                  <div class="studio-card-glass ats-kpi-box">
+                    <div class="ats-kpi-icon lime">
+                      <i class="ph-duotone ph-shield-check"></i>
+                    </div>
+                    <div class="ats-kpi-content">
+                      <div class="ats-kpi-number" id="atsKpiGates">0 / 7</div>
+                      <div class="ats-kpi-label">שערי סף שזוהו</div>
+                    </div>
                   </div>
 
-                  <div class="ats-action-toolbar">
-                    <div class="ats-action-btns">
-                      <button type="button" id="btnRunAtsMatch" class="ats-primary-btn" onclick="triggerAtsMatching()">
-                        <i class="ph-duotone ph-scales"></i>
-                        <span>הפעל ניתוח התאמה (ATS Match)</span>
-                      </button>
-                      <button type="button" class="ats-secondary-btn" onclick="clearAtsInput()">
-                        <i class="ph-duotone ph-arrow-counter-clockwise"></i>
-                        <span>נקה טקסט</span>
-                      </button>
+                  <div class="studio-card-glass ats-kpi-box">
+                    <div class="ats-kpi-icon cyan">
+                      <i class="ph-duotone ph-tree-structure"></i>
                     </div>
-                    <div id="atsMatchStatusNote" class="ats-status-note">
-                      <i class="ph-duotone ph-info"></i>
-                      <span id="atsBaselineStatusText">מוכן לניתוח מול פרופיל הבסיס של עידו גל</span>
+                    <div class="ats-kpi-content">
+                      <div class="ats-kpi-number" id="atsKpiKeywords">0</div>
+                      <div class="ats-kpi-label">פערי מילות מפתח</div>
+                    </div>
+                  </div>
+
+                  <div class="studio-card-glass ats-kpi-box">
+                    <div class="ats-kpi-icon gold">
+                      <i class="ph-duotone ph-file-text"></i>
+                    </div>
+                    <div class="ats-kpi-content">
+                      <div class="ats-kpi-number" id="atsKpiStructural">100%</div>
+                      <div class="ats-kpi-label">תאימות מבנה ATS</div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Output Pane (55%): Step 2 & Step 3 Live Results -->
-              <div class="studio-split-pane studio-output-pane">
-                <!-- Middle Section: Score Gauge & Key Indicators -->
-                <div class="studio-step-head" id="step-ats-2"><span class="studio-step-num" aria-hidden="true">2</span><div class="studio-step-text"><h4 class="studio-step-title">קריאת ציון ההתאמה</h4><p class="studio-step-hint">הציון הכולל ושלושת המדדים המרכזיים.</p></div></div>
-                <div class="ats-kpi-row">
-                  <!-- Circular Percentage Match Gauge -->
-                  <div class="studio-card-glass ats-gauge-card">
-                    <div class="ats-gauge-wrapper">
-                      <div class="ats-gauge-svg-container">
-                        <svg class="ats-gauge-svg" viewBox="0 0 120 120">
-                          <circle class="ats-gauge-bg" cx="60" cy="60" r="50"></circle>
-                          <circle id="atsGaugeProgress" class="ats-gauge-val" cx="60" cy="60" r="50"></circle>
-                        </svg>
-                        <div class="ats-gauge-center">
-                          <span id="atsScoreValue" class="ats-gauge-num">0%</span>
-                          <span class="ats-gauge-sublabel">ציון ATS</span>
-                        </div>
-                      </div>
-                      <div class="ats-gauge-info">
-                        <div id="atsMatchBadge" class="ats-match-level-badge level-neutral">
-                          <i class="ph-duotone ph-scales"></i>
-                          <span id="atsMatchBadgeText">טרם נותחה משרה</span>
-                        </div>
-                        <p id="atsScoreDescription" class="ats-gauge-explanation">הזן תיאור משרה להפקת ציון התאמה משוקלל המבוסס על שערי סף סטטוטוריים, מילות מפתח ומבנה קו״ח.</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Mini KPI Cards -->
-                  <div class="ats-kpi-grid">
-                    <div class="studio-card-glass ats-kpi-box">
-                      <div class="ats-kpi-icon lime">
-                        <i class="ph-duotone ph-shield-check"></i>
-                      </div>
-                      <div class="ats-kpi-content">
-                        <div class="ats-kpi-number" id="atsKpiGates">0 / 7</div>
-                        <div class="ats-kpi-label">שערי סף שזוהו</div>
-                      </div>
-                    </div>
-
-                    <div class="studio-card-glass ats-kpi-box">
-                      <div class="ats-kpi-icon cyan">
-                        <i class="ph-duotone ph-tree-structure"></i>
-                      </div>
-                      <div class="ats-kpi-content">
-                        <div class="ats-kpi-number" id="atsKpiKeywords">0</div>
-                        <div class="ats-kpi-label">פערי מילות מפתח</div>
-                      </div>
-                    </div>
-
-                    <div class="studio-card-glass ats-kpi-box">
-                      <div class="ats-kpi-icon gold">
-                        <i class="ph-duotone ph-file-text"></i>
-                      </div>
-                      <div class="ats-kpi-content">
-                        <div class="ats-kpi-number" id="atsKpiStructural">100%</div>
-                        <div class="ats-kpi-label">תאימות מבנה ATS</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- AI Semantic Insights Box -->
-                <div id="atsAiSemanticBox" class="studio-card-glass ats-ai-semantic-card" style="display: none;">
+              <!-- Bottom Section: Detailed Cards (Hard Gates, Keywords, Structural) -->
+              <div class="studio-step-head" id="step-ats-3"><span class="studio-step-num" aria-hidden="true">3</span><div class="studio-step-text"><h4 class="studio-step-title">פירוט הממצאים</h4><p class="studio-step-hint">שערי סף, מילות מפתח חסרות ותאימות מבנה.</p></div></div>
+              <div class="ats-details-grid">
+                
+                <!-- Card 1: Statutory Hard Gates Scanner -->
+                <div class="studio-card-glass ats-subcard">
                   <div class="ats-card-header">
                     <div class="ats-card-header-title">
-                      <i class="ph-duotone ph-sparkle" style="color: var(--dashboard-cyan);"></i>
-                      <span>תובנות עומק סמנטיות (Gemini AI Bridge)</span>
+                      <i class="ph-duotone ph-shield-check" style="color: var(--dashboard-lime);"></i>
+                      <span>שערי סף סטטוטוריים (Statutory Hard Gates)</span>
                     </div>
-                    <span class="ats-card-badge" id="atsAiSourceBadge">AI Verified</span>
+                    <span class="ats-card-badge" id="atsGatesSummaryBadge">7 שערים פעילים</span>
                   </div>
-                  <p id="atsAiSemanticSummary" class="ats-card-caption"></p>
-                  <ul id="atsAiTipsList" class="writer-suggestions-list"></ul>
+                  <p class="ats-card-caption">בדיקת רישיונות חובה סטטוטוריים מול תקנות משרד העבודה והמשק הישראלי:</p>
+                  
+                  <div id="atsHardGatesList" class="ats-gates-list">
+                    <!-- Populated dynamically by renderHardGates() -->
+                  </div>
                 </div>
 
-                <!-- Bottom Section: Detailed Cards (Hard Gates, Keywords, Structural) -->
-                <div class="studio-step-head" id="step-ats-3"><span class="studio-step-num" aria-hidden="true">3</span><div class="studio-step-text"><h4 class="studio-step-title">פירוט הממצאים</h4><p class="studio-step-hint">שערי סף, מילות מפתח חסרות ותאימות מבנה.</p></div></div>
-                <div class="ats-details-grid">
-                  <!-- Card 1: Statutory Hard Gates Scanner -->
-                  <div class="studio-card-glass ats-subcard">
-                    <div class="ats-card-header">
-                      <div class="ats-card-header-title">
-                        <i class="ph-duotone ph-shield-check" style="color: var(--dashboard-lime);"></i>
-                        <span>שערי סף סטטוטוריים (Statutory Hard Gates)</span>
-                      </div>
-                      <span class="ats-card-badge" id="atsGatesSummaryBadge">7 שערים פעילים</span>
+                <!-- Card 2: Missing Keywords Badges (4 Buckets) -->
+                <div class="studio-card-glass ats-subcard">
+                  <div class="ats-card-header">
+                    <div class="ats-card-header-title">
+                      <i class="ph-duotone ph-tree-structure" style="color: var(--dashboard-cyan);"></i>
+                      <span>פערי מילות מפתח לפי 4 קטגוריות תפעוליות</span>
                     </div>
-                    <p class="ats-card-caption">בדיקת רישיונות חובה סטטוטוריים מול תקנות משרד העבודה והמשק הישראלי:</p>
-
-                    <div id="atsHardGatesList" class="ats-gates-list">
-                      <!-- Populated dynamically by renderHardGates() -->
-                    </div>
+                    <span class="ats-card-badge" id="atsKeywordsCountBadge">0 פערים</span>
                   </div>
+                  <p class="ats-card-caption">מילות מפתח קריטיות שנדרשות במשרה ומומלץ להדגיש בגרסת קורות החיים:</p>
 
-                  <!-- Card 2: Missing Keywords Badges (4 Buckets) -->
-                  <div class="studio-card-glass ats-subcard">
-                    <div class="ats-card-header">
-                      <div class="ats-card-header-title">
-                        <i class="ph-duotone ph-tree-structure" style="color: var(--dashboard-cyan);"></i>
-                        <span>פערי מילות מפתח לפי 4 קטגוריות תפעוליות</span>
+                  <div class="ats-taxonomy-sections">
+                    <!-- Methodologies -->
+                    <div class="ats-taxonomy-group" id="groupMethodologies">
+                      <div class="ats-taxonomy-header" style="color: var(--dashboard-cyan);">
+                        <i class="ph-duotone ph-tree-structure"></i>
+                        <span>מתודולוגיות תפעוליות (Lean, Six Sigma, 5S, RCA)</span>
                       </div>
-                      <span class="ats-card-badge" id="atsKeywordsCountBadge">0 פערים</span>
-                    </div>
-                    <p class="ats-card-caption">מילות מפתח קריטיות שנדרשות במשרה ומומלץ להדגיש בגרסת קורות החיים:</p>
-
-                    <div class="ats-taxonomy-sections">
-                      <!-- Methodologies -->
-                      <div class="ats-taxonomy-group" id="groupMethodologies">
-                        <div class="ats-taxonomy-header" style="color: var(--dashboard-cyan);">
-                          <i class="ph-duotone ph-tree-structure"></i>
-                          <span>מתודולוגיות תפעוליות (Lean, Six Sigma, 5S, RCA)</span>
-                        </div>
-                        <div class="ats-badges-wrap" id="atsKeywordsMethodologies">
-                          <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
-                        </div>
-                      </div>
-
-                      <!-- Financials -->
-                      <div class="ats-taxonomy-group" id="groupFinancials">
-                        <div class="ats-taxonomy-header" style="color: var(--dashboard-gold);">
-                          <i class="ph-duotone ph-currency-circle-dollar"></i>
-                          <span>ניהול תקציב והנדסה כלכלית (CAPEX, OPEX, ROI)</span>
-                        </div>
-                        <div class="ats-badges-wrap" id="atsKeywordsFinancials">
-                          <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
-                        </div>
-                      </div>
-
-                      <!-- Systems & Automation -->
-                      <div class="ats-taxonomy-group" id="groupSystems">
-                        <div class="ats-taxonomy-header" style="color: var(--dashboard-lime);">
-                          <i class="ph-duotone ph-cpu"></i>
-                          <span>מערכות שליטה ואוטומציה (SCADA, PLC, PRMS, HMI, DCS)</span>
-                        </div>
-                        <div class="ats-badges-wrap" id="atsKeywordsSystems">
-                          <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
-                        </div>
-                      </div>
-
-                      <!-- Energy & Power -->
-                      <div class="ats-taxonomy-group" id="groupEnergy">
-                        <div class="ats-taxonomy-header" style="color: #a78bfa;">
-                          <i class="ph-duotone ph-lightning"></i>
-                          <span>תשתיות אנרגיה וחשמל (BESS, High Voltage, Bifacial PV)</span>
-                        </div>
-                        <div class="ats-badges-wrap" id="atsKeywordsEnergy">
-                          <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
-                        </div>
+                      <div class="ats-badges-wrap" id="atsKeywordsMethodologies">
+                        <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
                       </div>
                     </div>
-                  </div>
 
-                  <!-- Card 3: ATS Structural Compliance Checklist -->
-                  <div class="studio-card-glass ats-subcard ats-fullwidth-subcard">
-                    <div class="ats-card-header">
-                      <div class="ats-card-header-title">
-                        <i class="ph-duotone ph-file-text" style="color: var(--dashboard-gold);"></i>
-                        <span>בדיקת תאימות מבנה לקוראי ATS (ATS-Safe Structural Guard)</span>
+                    <!-- Financials -->
+                    <div class="ats-taxonomy-group" id="groupFinancials">
+                      <div class="ats-taxonomy-header" style="color: var(--dashboard-gold);">
+                        <i class="ph-duotone ph-currency-circle-dollar"></i>
+                        <span>ניהול תקציב והנדסה כלכלית (CAPEX, OPEX, ROI)</span>
                       </div>
-                      <span class="ats-card-badge status-pass" id="atsStructuralStatusBadge">
-                        <i class="ph-duotone ph-shield-check"></i>
-                        <span>תואם מלא (0 בעיות)</span>
-                      </span>
+                      <div class="ats-badges-wrap" id="atsKeywordsFinancials">
+                        <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
+                      </div>
                     </div>
-                    <p class="ats-card-caption">אימות עמידה בכללי מבנה נוקשים למניעת קריסה במערכות סינון ישראליות ובינלאומיות:</p>
 
-                    <div class="ats-rules-checklist" id="atsRulesChecklist">
-                      <!-- Populated dynamically by renderAtsStructuralChecklist() -->
+                    <!-- Systems & Automation -->
+                    <div class="ats-taxonomy-group" id="groupSystems">
+                      <div class="ats-taxonomy-header" style="color: var(--dashboard-lime);">
+                        <i class="ph-duotone ph-cpu"></i>
+                        <span>מערכות שליטה ואוטומציה (SCADA, PLC, PRMS, HMI, DCS)</span>
+                      </div>
+                      <div class="ats-badges-wrap" id="atsKeywordsSystems">
+                        <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
+                      </div>
+                    </div>
+
+                    <!-- Energy & Power -->
+                    <div class="ats-taxonomy-group" id="groupEnergy">
+                      <div class="ats-taxonomy-header" style="color: #a78bfa;">
+                        <i class="ph-duotone ph-lightning"></i>
+                        <span>תשתיות אנרגיה וחשמל (BESS, High Voltage, Bifacial PV)</span>
+                      </div>
+                      <div class="ats-badges-wrap" id="atsKeywordsEnergy">
+                        <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                <!-- Card 3: ATS Structural Compliance Checklist -->
+                <div class="studio-card-glass ats-subcard ats-fullwidth-subcard">
+                  <div class="ats-card-header">
+                    <div class="ats-card-header-title">
+                      <i class="ph-duotone ph-file-text" style="color: var(--dashboard-gold);"></i>
+                      <span>בדיקת תאימות מבנה לקוראי ATS (ATS-Safe Structural Guard)</span>
+                    </div>
+                    <span class="ats-card-badge status-pass" id="atsStructuralStatusBadge">
+                      <i class="ph-duotone ph-shield-check"></i>
+                      <span>תואם מלא (0 בעיות)</span>
+                    </span>
+                  </div>
+                  <p class="ats-card-caption">אימות עמידה בכללי מבנה נוקשים למניעת קריסה במערכות סינון ישראליות ובינלאומיות:</p>
+
+                  <div class="ats-rules-checklist" id="atsRulesChecklist">
+                    <!-- Populated dynamically by renderAtsStructuralChecklist() -->
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -1127,7 +1130,7 @@
                         <span class="score-label">ציון STAR כולל:</span>
                         <span class="score-number" id="starTotalScore">94 / 100</span>
                       </div>
-                      <span id="starVerdictBadge" class="star-verdict-badge">מבנה מצוין לתפקיד תפעולי בכיר</span>
+                      <span class="star-verdict-badge">מבנה מצוין לתפקיד תפעולי בכיר</span>
                     </div>
 
                     <div class="star-factors-grid">
@@ -1135,7 +1138,7 @@
                         <div class="factor-header">
                           <span class="factor-letter">S</span>
                           <span class="factor-name">Situation (רקע)</span>
-                          <span class="factor-status pass" id="starSituationBadge">מלא</span>
+                          <span class="factor-status pass">מלא</span>
                         </div>
                         <p class="factor-text" id="starSituationText">הגדרת זירה ברורה: משמרת לילה, מתקן PRMS, סיכון קבלנים סמוכים.</p>
                       </div>
@@ -1144,7 +1147,7 @@
                         <div class="factor-header">
                           <span class="factor-letter">T</span>
                           <span class="factor-name">Task (משימה)</span>
-                          <span class="factor-status pass" id="starTaskBadge">מלא</span>
+                          <span class="factor-status pass">מלא</span>
                         </div>
                         <p class="factor-text" id="starTaskText">הצבת יעד כפול: הצלת חיי אדם ובלימת דליפת הגז.</p>
                       </div>
@@ -1153,7 +1156,7 @@
                         <div class="factor-header">
                           <span class="factor-letter">A</span>
                           <span class="factor-name">Action (פעולה)</span>
-                          <span class="factor-status pass" id="starActionBadge">חזק</span>
+                          <span class="factor-status pass">חזק</span>
                         </div>
                         <p class="factor-text" id="starActionText">שימוש נכון בסמכות: הפעלת ESD, שימוש ב-SCADA, נהלי עבודה עם מנ״פ.</p>
                       </div>
@@ -1162,39 +1165,17 @@
                         <div class="factor-header">
                           <span class="factor-letter">R</span>
                           <span class="factor-name">Result (תוצאה)</span>
-                          <span class="factor-status pass" id="starResultBadge">מדיד</span>
+                          <span class="factor-status pass">מדיד</span>
                         </div>
                         <p class="factor-text" id="starResultText">שילוב מדד Zero LTI ובלימה תוך 7 דקות ללא נזק סביבתי.</p>
                       </div>
-                    </div>
-
-                    <!-- AI Improved Answer Suggestion -->
-                    <div id="starAiImprovedWrap" class="star-ai-improved-wrap" style="margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08);">
-                      <div style="font-size: 11.5px; font-weight: 700; color: var(--dashboard-cyan); margin-bottom: 4px;">
-                        <i class="ph-duotone ph-sparkle"></i> הצעת ניסוח משופרת (Gemini STAR Coach):
-                      </div>
-                      <p id="starAiImprovedText" style="font-size: 11.5px; color: #cbd5e1; margin: 0; line-height: 1.5;">במהלך משמרת לילה כבקר גז עצמאי זיהיתי ב-SCADA צניחת לחץ בתחנת PRMS. הפעלתי נוהל חירום, בודדתי את המקטע באמצעות מגוף ESD מרחוק והוריתי על פינוי רדיוס בטיחות. האירוע נבלם תוך 7 דקות עם 0 נפגעים (Zero LTI).</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <!-- Column 2: LinkedIn Profile Alignment & Practice History -->
+              <!-- Column 2: LinkedIn Profile Alignment -->
               <div class="interview-col-side">
-                <!-- Practice History & Progress Tracker Card -->
-                <div class="interview-section-box" id="interviewHistorySection">
-                  <div class="section-box-header">
-                    <div class="section-box-title">
-                      <i class="ph-duotone ph-chart-line-up" style="color: var(--dashboard-lime);"></i>
-                      <span>היסטוריית תרגולים קודמים ומעקב שיפור</span>
-                    </div>
-                    <span class="linkedin-sync-chip" id="interviewHistoryCountBadge">0 תרגולים שמורים</span>
-                  </div>
-                  <div id="interviewHistoryList" class="interview-history-list">
-                    <div class="ats-empty-tag">טרם נשמרו סימולציות ראיון. לחץ על "נתח תשובה ב-STAR" לשמירת תרגול ומעקב התקדמות.</div>
-                  </div>
-                </div>
-
                 <div class="studio-step-head" id="step-interview-3"><span class="studio-step-num" aria-hidden="true">3</span><div class="studio-step-text"><h4 class="studio-step-title">הלימה מול LinkedIn</h4><p class="studio-step-hint">בדוק שהפרופיל הציבורי עקבי עם קורות החיים.</p></div></div>
                 <div class="interview-section-box">
                   <div class="section-box-header">

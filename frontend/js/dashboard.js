@@ -5474,32 +5474,6 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     renderHardGates(report.hardGates, jobText);
     renderKeywordTaxonomy(report.missingKeywords, report.matchedKeywords, jobText);
     renderAtsStructuralChecklist(report.structuralCompliance);
-
-    // Optional Async AI Bridge Enrichment (with local fallback)
-    if (jobText.trim().length > 15 && typeof callStudioAi === 'function') {
-      callStudioAi('/api/ats/match', {
-        job_text: jobText,
-        cv_text: (getActiveCvProfile() && getActiveCvProfile().text) || ''
-      }).then(aiRes => {
-        const aiBox = document.getElementById('atsAiSemanticBox');
-        const aiSum = document.getElementById('atsAiSemanticSummary');
-        const aiTips = document.getElementById('atsAiTipsList');
-        const aiBadge = document.getElementById('atsAiSourceBadge');
-        if (aiRes && aiBox) {
-          aiBox.style.display = 'block';
-          if (aiBadge) {
-            aiBadge.textContent = aiRes.source === 'gemini_ai' ? 'Gemini AI Verified' : 'הערכה היברידית (Fallback)';
-          }
-          if (aiSum) aiSum.textContent = aiRes.summary || '';
-          if (aiTips && Array.isArray(aiRes.tailoring_tips)) {
-            aiTips.innerHTML = aiRes.tailoring_tips.map(t => `<li>${t}</li>`).join('');
-          }
-        }
-      }).catch(() => {});
-    } else {
-      const aiBox = document.getElementById('atsAiSemanticBox');
-      if (aiBox) aiBox.style.display = 'none';
-    }
   }
 
   function renderHardGates(triggeredGates, jobText) {
@@ -6242,25 +6216,6 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
 
     const analysis = validateBulletGrammar(transformed);
     renderGrammarAnalysis(analysis);
-
-    if (typeof callStudioAi === 'function') {
-      callStudioAi('/api/writer/tailor', {
-        raw_bullet: raw,
-        tone_mode: currentWriterTone
-      }).then(aiRes => {
-        if (aiRes && aiRes.transformed_bullet) {
-          outputEl.textContent = aiRes.transformed_bullet;
-          const aiAnalysis = validateBulletGrammar(aiRes.transformed_bullet);
-          if (typeof aiRes.quality_score === 'number') {
-            aiAnalysis.score = aiRes.quality_score;
-          }
-          if (Array.isArray(aiRes.suggestions) && aiRes.suggestions.length > 0) {
-            aiAnalysis.suggestions = aiRes.suggestions;
-          }
-          renderGrammarAnalysis(aiAnalysis);
-        }
-      }).catch(() => {});
-    }
   }
 
   function triggerGrammarValidation() {
@@ -6565,120 +6520,8 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
   let voiceTimerInterval = null;
   let voiceSecondsCount = 0;
 
-  const STUDIO_BRIDGE_DEFAULT_URL = 'http://127.0.0.1:8765';
-  const INTERVIEW_HISTORY_STORAGE_KEY = 'career_studio_interview_history_v1';
-
-  function setStudioAiThinkingState(isThinking, message) {
-    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
-    const banner = document.getElementById('studioAiThinkingBanner');
-    const txt = document.getElementById('studioAiThinkingText');
-    if (banner) {
-      banner.style.display = isThinking ? 'flex' : 'none';
-    }
-    if (txt && message) {
-      txt.textContent = message;
-    }
-  }
-
-  function updateBridgeStatusBadge(isOnline, sourceLabel) {
-    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
-    const dot = document.getElementById('studioBridgeDot');
-    const statusText = document.getElementById('studioBridgeStatusText');
-    if (dot) {
-      dot.style.background = isOnline ? 'var(--dashboard-lime)' : 'var(--dashboard-gold)';
-    }
-    if (statusText) {
-      statusText.textContent = sourceLabel || (isOnline ? 'Gemini AI Bridge מחובר' : 'מצב היברידי / מקומי (Fallback)');
-    }
-  }
-
-  async function callStudioAi(endpoint, payload) {
-    if (typeof fetch !== 'function') {
-      updateBridgeStatusBadge(false, 'מצב מקומי (Fallback)');
-      return null;
-    }
-    const baseUrl = (typeof window !== 'undefined' && window.STUDIO_BRIDGE_URL) || STUDIO_BRIDGE_DEFAULT_URL;
-    const cleanEndpoint = String(endpoint || '').startsWith('/') ? endpoint : `/${endpoint}`;
-    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-    const timer = controller ? setTimeout(() => controller.abort(), 6500) : null;
-
-    setStudioAiThinkingState(true, 'מנוע Gemini AI מעבד את הבקשה ומאמת סכמת Pydantic...');
-    try {
-      const resp = await fetch(`${baseUrl}${cleanEndpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload || {}),
-        signal: controller ? controller.signal : undefined
-      });
-      if (timer) clearTimeout(timer);
-      setStudioAiThinkingState(false);
-      if (!resp || !resp.ok) {
-        updateBridgeStatusBadge(false, 'מצב מקומי (Fallback)');
-        return null;
-      }
-      const data = await resp.json();
-      const isGemini = data && data.source === 'gemini_ai';
-      updateBridgeStatusBadge(true, isGemini ? 'Gemini AI מחובר ופעיל' : 'גשר מקומי פעיל (Fallback)');
-      return data;
-    } catch (err) {
-      if (timer) clearTimeout(timer);
-      setStudioAiThinkingState(false);
-      updateBridgeStatusBadge(false, 'מצב מקומי (Fallback)');
-      return null;
-    }
-  }
-
-  function loadInterviewPracticeHistory() {
-    try {
-      const raw = localStorage.getItem(INTERVIEW_HISTORY_STORAGE_KEY);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  function saveInterviewPracticeEntry(entry) {
-    try {
-      const history = loadInterviewPracticeHistory();
-      history.unshift(entry);
-      const trimmed = history.slice(0, 12);
-      localStorage.setItem(INTERVIEW_HISTORY_STORAGE_KEY, JSON.stringify(trimmed));
-      renderInterviewPracticeHistory();
-    } catch (e) {}
-  }
-
-  function renderInterviewPracticeHistory() {
-    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
-    const listEl = document.getElementById('interviewHistoryList');
-    const countBadge = document.getElementById('interviewHistoryCountBadge');
-    if (!listEl) return;
-
-    const history = loadInterviewPracticeHistory();
-    if (countBadge) {
-      countBadge.textContent = `${history.length} תרגולים שמורים`;
-    }
-
-    if (history.length === 0) {
-      listEl.innerHTML = '<div class="ats-empty-tag">טרם נשמרו סימולציות ראיון. לחץ על "נתח תשובה ב-STAR" לשמירת תרגול ומעקב התקדמות.</div>';
-      return;
-    }
-
-    listEl.innerHTML = history.slice(0, 6).map(item => `
-      <div class="interview-history-item">
-        <div class="interview-history-meta">
-          <span class="interview-history-q">${item.question || 'תרחיש ראיון תפעולי'}</span>
-          <span class="interview-history-date">${item.timestamp || ''} • ${item.source === 'gemini_ai' ? 'Gemini AI' : 'הערכה מקומית'}</span>
-        </div>
-        <span class="interview-history-score">${item.score} / 100</span>
-      </div>
-    `).join('');
-  }
-
   function initInterviewModule() {
     generateNextInterviewQuestion();
-    renderInterviewPracticeHistory();
   }
 
   function setInterviewCategory(cat, btn) {
@@ -6759,9 +6602,6 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
   function evaluateStarAnswer() {
     const input = document.getElementById('interviewAnswerInput');
     const txt = input ? input.value : '';
-    const qTitleEl = document.getElementById('interviewQuestionTitle');
-    const qDescEl = document.getElementById('interviewQuestionDesc');
-    const questionStr = qTitleEl ? `${qTitleEl.textContent} - ${qDescEl ? qDescEl.textContent : ''}` : 'תרחיש ראיון תפעולי';
 
     let sScore = 25, tScore = 25, aScore = 25, rScore = 25;
     let sDesc = 'הגדרת זירה ורקע תפעולי ברורים.',
@@ -6799,54 +6639,6 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     if (tEl) tEl.textContent = tDesc;
     if (aEl) aEl.textContent = aDesc;
     if (rEl) rEl.textContent = rDesc;
-
-    const nowTime = new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
-
-    if (typeof callStudioAi === 'function') {
-      callStudioAi('/api/interview/evaluate', {
-        question: questionStr,
-        answer: txt,
-        job_context: 'בקר גז טבעי / הנדסאי מכונות / תפעול מערכות אנרגיה 24/7'
-      }).then(aiRes => {
-        if (aiRes && typeof aiRes.total_score === 'number') {
-          if (scoreEl) scoreEl.textContent = `${aiRes.total_score} / 100`;
-          if (sEl && aiRes.situation_feedback) sEl.textContent = aiRes.situation_feedback;
-          if (tEl && aiRes.task_feedback) tEl.textContent = aiRes.task_feedback;
-          if (aEl && aiRes.action_feedback) aEl.textContent = aiRes.action_feedback;
-          if (rEl && aiRes.result_feedback) rEl.textContent = aiRes.result_feedback;
-
-          const verdictEl = document.getElementById('starVerdictBadge');
-          if (verdictEl && aiRes.verdict_badge) {
-            verdictEl.textContent = aiRes.verdict_badge;
-          }
-          const impEl = document.getElementById('starAiImprovedText');
-          if (impEl && aiRes.improved_answer) {
-            impEl.textContent = aiRes.improved_answer;
-          }
-          saveInterviewPracticeEntry({
-            question: qTitleEl ? qTitleEl.textContent : 'תרחיש ראיון תפעולי',
-            score: aiRes.total_score,
-            source: aiRes.source || 'gemini_ai',
-            timestamp: nowTime
-          });
-          showToast(`ניתוח STAR (AI) הושלם: ציון ${aiRes.total_score}/100`, 'success');
-        } else {
-          saveInterviewPracticeEntry({
-            question: qTitleEl ? qTitleEl.textContent : 'תרחיש ראיון תפעולי',
-            score: total,
-            source: 'fallback_local',
-            timestamp: nowTime
-          });
-        }
-      }).catch(() => {});
-    } else {
-      saveInterviewPracticeEntry({
-        question: qTitleEl ? qTitleEl.textContent : 'תרחיש ראיון תפעולי',
-        score: total,
-        source: 'fallback_local',
-        timestamp: nowTime
-      });
-    }
 
     showToast(`ניתוח STAR הושלם: ציון ${total}/100`, 'success');
   }
@@ -6939,10 +6731,6 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
   window.toggleVoiceRecording = toggleVoiceRecording;
   window.evaluateStarAnswer = evaluateStarAnswer;
   window.copyLinkedInOptimizedBio = copyLinkedInOptimizedBio;
-  window.callStudioAi = callStudioAi;
-  window.loadInterviewPracticeHistory = loadInterviewPracticeHistory;
-  window.saveInterviewPracticeEntry = saveInterviewPracticeEntry;
-  window.renderInterviewPracticeHistory = renderInterviewPracticeHistory;
 
   window.initSkillsModule = initSkillsModule;
   window.toggleAnonymizerMode = toggleAnonymizerMode;
