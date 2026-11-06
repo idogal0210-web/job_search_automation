@@ -1,9 +1,639 @@
 {
   "schema_version": "2.0.0",
-  "build_id": "20261105133217",
-  "generated_at": "2026-11-05T13:32:17.450699",
-  "total_jobs": 58,
+  "build_id": "20261106132132",
+  "generated_at": "2026-11-06T13:21:33.002790",
+  "total_jobs": 59,
   "jobs": [
+    {
+      "link": "https://www.drushim.co.il/job/38955190/6133cd0f/",
+      "title": "דרוש/ה טכנאי/ת מכונות וציוד",
+      "company": "חברה מובילה (דיסקרטי)",
+      "location": "קריית גת",
+      "date": "2026-11-06",
+      "source": "Drushim",
+      "match_score": 90,
+      "base_match_score": 90,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "operations",
+      "company_domain_product": "מפעל בינלאומי",
+      "company_summary": "",
+      "job_summary": "דרוש/ה טכנאי/ת ומפעיל/ת מכונות וציוד לרצפת הייצור במפעל בינלאומי בקרית גת, כולל הפעלה, תחזוקה ועבודה במשמרות.",
+      "company_requirements": "הנדסאי/ת או טכנאי/ת מכונות/אלקטרוניקה, ניסיון קודם במפעל תעשייתי, אנגלית ברמה טובה, הבנה טכנית וקריאת שרטוטים, נכונות למשמרות.",
+      "experience_strengths": "הנדסאי מכונות מוסמך, שליטה במערכות אלקטרו-מכניות, רקע בפתרון תקלות ופעילות בשטח.",
+      "reasoning": "המוועמד הינו הנדסאי מכונות מוסמך עם רקע מוצק בהפעלת מערכות אלקטרו-מכניות ותחזוקת ציוד, ועונה בדיוק על דרישות הסף של המשרה מבחינת השכלה ורקע תעשייתי.",
+      "key_highlights": "התאמה מלאה לדרישת ההשכלה (הנדסאי מכונות), ניסיון בהפעלת ציוד טכני, ויכולת עבודה במשמרות.",
+      "salary_range": "13,500 - 17,500 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • כולל משמרות",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+      "salary_source_url": "",
+      "p25": 13500,
+      "p75": 17500,
+      "logo": "",
+      "company_logo_url": "",
+      "snippet": "חסוי\nדרוש/ה טכנאי/ת מכונות וציוד\n- חסוי -\nקריית גת\n1-2 שנים\nמשרה מלאה\nועוד\nמשרה מלאה\nמשמרות\nלפני 1 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nדרוש/ה מפעיל וטכנאי/ת מכונות למפעל בינלאומי בדרום\nלמפעל בינלאומי בקרית גת דרוש/ה טכנאי/ת / מפעיל/ת מכונות .\nעבודה כוללת הפעלה ותחזוקה של מכונות וציוד  ברצפת הייצור.\nמשרה מלאה במשמרות עם אופציה לשעות נוספות\nעבודה קבועה לטווח ארוך עם תנאים מצוינים\nמיקום המשרה - קריית גת , קיים מערך הסעות מקריית גת ובאר שבע. למגיעים עצמאית משולם החזר נסיעות מלא\nדרישות התפקיד\nהשכלה : הנדסאי/ת / טכנאי/ת מכונות או אלקטרוניקה או אלקטרומכניקה\nניסיון קודם בתפקיד דומה במפעל תעשייתי\nאנגלית ברמה טובה\nהבנה טכנית כולל קריאת שרטוטים\nנכונות לעבודה במשמרות\nניידות - יתרון\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתעשיה / ייצור\nתחומים\nטכנאי/ת - תעשייה וייצור\nחשמל ואלקטרוניקה\nCNC\nהנדסאי/ת מכונות\nהנדסאי/ת אלקטרוניקה\nהנדסאים כללי",
+      "stable_job_id": "drushim_38955190",
+      "content_hash": "ch_02acde1004a2",
+      "requirement_assessments": [
+        {
+          "requirement": "השכלה: הנדסאי/ת / טכנאי/ת מכונות או אלקטרוניקה או אלקטרומכניקה",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "השכלה : הנדסאי/ת / טכנאי/ת מכונות או אלקטרוניקה או אלקטרומכניקה",
+            "source_field": "job_summary"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "המועמד מחזיק בתעודת הנדסאי מכונות מוסמך, בהתאם לדרישת המשרה."
+        },
+        {
+          "requirement": "ניסיון קודם בתפקיד דומה במפעל תעשייתי",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "ניסיון קודם בתפקיד דומה במפעל תעשייתי",
+            "source_field": "job_summary"
+          },
+          "profile_evidence": {
+            "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer with Deep Specialization in Energy Systems",
+            "source_field": "Core Profile"
+          },
+          "assessment": "match",
+          "explanation": "למועמד יש רקע מעשי רב במערכות אלקטרו-מכניות וציוד תעשייתי/אנרגטי."
+        },
+        {
+          "requirement": "הבנה טכנית כולל קריאת שרטוטים",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "הבנה טכנית כולל קריאת שרטוטים",
+            "source_field": "job_summary"
+          },
+          "profile_evidence": {
+            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+            "source_field": "Key Competencies"
+          },
+          "assessment": "match",
+          "explanation": "המועמד מתמחה במערכות אלקטרו-מכניות ופתרון תקלות בשטח."
+        },
+        {
+          "requirement": "נכונות לעבודה במשמרות",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "נכונות לעבודה במשמרות",
+            "source_field": "job_summary"
+          },
+          "profile_evidence": {
+            "quote": "24/7 mission-critical control room operations, crisis response",
+            "source_field": "Key Competencies"
+          },
+          "assessment": "match",
+          "explanation": "למועמד ניסיון ויכולת מוכחת בעבודה בסביבת משמרות מסביב שעון (24/7)."
+        }
+      ],
+      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "is_direct_ats": "",
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/customer-engineer-migdal-haemek-at-applied-materials-israel-4484383425",
+      "title": "Customer Engineer -Migdal Haemek",
+      "company": "Applied Materials - Israel",
+      "location": "מגדל העמק",
+      "date": "2026-11-06",
+      "source": "LinkedIn",
+      "match_score": 85,
+      "base_match_score": 85,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "operations",
+      "company_domain_product": "פתרונות מדעי החומרים והנדסה לייצור שבבים מוליכים למחצה",
+      "company_summary": "",
+      "job_summary": "משרת Customer Engineer / Field Service Engineer להתקנה, תחזוקה, ושדרוג ציוד מתקדם במתקני לקוחות, תוך ביצוע תחזוקה מונעת ומתקנת במערכות חשמל, מכניקה, ואלקטרו-מכניקה.",
+      "company_requirements": "B.Sc. או הנדסאי מכונות/חשמל, יכולת קריאת סכמות, ניסיון באבחון תקלות, ותקשורת בינאישית טובה.",
+      "experience_strengths": "הנדסאי מכונות מוסמך עם ניסיון במערכות אלקטרו-מכניות, שליטה בתוכנות אופיס ונתונים, ויכולות טכניות מעשיות חזקות.",
+      "reasoning": "המוועמד הינו הנדסאי מכונות מוסמך עם רקע מוצק במערכות אלקטרו-מכניות, התקנה, תחזוקה ואבחון תקלות, העונה היטב על דרישות התפקיד כמהנדס שטח.",
+      "key_highlights": "התאמה מלאה לדרישת ההשכלה כהנדסאי מכונות, רקע במערכות אלקטרו-מכניות ויכולת אבחון ותחזוקה.",
+      "salary_range": "13,500 - 17,500 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • כולל משמרות",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+      "salary_source_url": "",
+      "p25": 13500,
+      "p75": 17500,
+      "logo": "https://media.licdn.com/dms/image/v2/D560BAQGQXZFTM-P1aA/company-logo_100_100/B56ZfwYXZpHcAc-/0/1752084610051/applied_materials_israel_logo?e=2147483647&v=beta&t=fz8rsBbT4pfj6GzzcTEsa7d2ywsVnp60ejvaUFXISMc",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQGQXZFTM-P1aA/company-logo_100_100/B56ZfwYXZpHcAc-/0/1752084610051/applied_materials_israel_logo?e=2147483647&v=beta&t=fz8rsBbT4pfj6GzzcTEsa7d2ywsVnp60ejvaUFXISMc",
+      "snippet": "Who We Are\nApplied Materials is the global leader in materials science and engineering solutions that are at the foundation of virtually every new semiconductor chip and advanced display in the world. The equipment that we create and service is essential to advancing AI and accelerating the commercialization of next-generation semiconductor chips. Join us and push the boundaries of materials science and engineering in a company at the foundation of the electronics industry. The work we do together advances the world’s technology.\nWhat We Offer\nLocation:\nMig Ha'emek,ISR\nYou’ll benefit from a supportive work culture that encourages you to learn, develop, and grow your career as you take on challenges and drive innovative solutions for our customers. We empower our team to push the boundaries of what is possible—while learning every day in a supportive leading global company. Visit our Careers website to learn more.\nAt Applied Materials, we care about the health and wellbeing of our employees. We’re committed to providing programs and support that encourage personal and professional growth and care for you at work, at home, or wherever you may go. Learn more about our benefits.\nAs a Field Service Engineer [Customer Engineer] at Applied Materials, you serve as the direct liaison with customers, collaborating closely to install, maintain, and upgrade equipment. You'll use digital analytics for troubleshooting and apply basic diagnostic techniques to assess and address technical issues. Your responsibilities include performing preventative and corrective maintenance on various systems such as electrical, vacuum, mechanical, plasma, hydraulic, and gas systems. Additionally, you'll coordinate and communicate directly with customers to ensure smooth operations and exceptional service.\nJob Description\nWe are looking for a highly talented customer engineer to join our account team & integrate within our field support group in\nMigdal Haemek\nto provide a unique customer experience by demonstrating outstanding technical capabilities and inter-personal skills.\nWhat’s in it for you?\nAs a customer engineer at Applied Materials you’ll be working for a high growth international company, integrating into the heart of the manufacturing process of advanced digital devices. You’ll get the opportunity and practice to work on the most advanced semiconductor equipment while learning new skills or perfecting existing ones such as advanced trouble shooting and problem solving, project management, robotics, semiconductor device manufacturing processes and more. In addition, you’ll get advanced training on cutting edge hardware industry components.\nRole Responsibilities:\nCollaborate with Senior Field Service Engineers [Customer Engineers] in installing, maintaining, and upgrading customer equipment\nUse digital analytics for troubleshooting\nApply basic diagnostic techniques to assess equipment and address technical issues, with guidance from Senior Field Service Engineers [Customer Engineers]\nPerform preventative and corrective maintenance on electrical, vacuum, mechanical, plasma, hydraulic, and gas systems (training provided)\nCoordinate and communicate directly with customers\nFulfill additional duties, as assigned\nMinimum Qualifications:\nB.Sc. or Practical Engineer in Mechanical or Electrical Engineering , field service experience, or trade certification\nWilling to learn and interpret electrical and mechanical schematics\nExperience diagnosing and resolving basic technical challenges\nEffective written and verbal communication skills\nBasic knowledge of Microsoft Excel, Word, and PowerPoint\nPossession of a valid driver’s license and the ability to obtain a passport, if travel is required.\nPreferred Qualifications:\n1–2 years of work experience in customer/field service support, or a related technical field\nAssociate degree in electronics or engineering technologies\nKnowledge of pneumatics, hydraulics, electronics, vacuum, or thermodynamics\nFamiliarity with hand tools and their appropriate usage, including digital multimeters\nWork is located in Migdal Haemek in a cleanroom environment\nWork in shifts including nights and weekends\nPhysical Requirements:\nThis position often requires extensive walking, standing for extended periods of time, working in tight spaces, bending, squatting, twisting, kneeling, reaching, climbing stairs and ladders, working at height, lifting up to 35 lbs., the ability to distinguish between colors and working with electricity, the ability to work in an environment with noise that may be difficult for some individuals with sensitivity to noise, and the use of hand and power tools. Additionally, because this position generally involves working in a clean room, it requires the use of appropriate Personal Protective Equipment such as coveralls, hoods, booties, safety glasses, gloves, respirators, chemical aprons, and face shields.\nAdditional Information\nTime Type:\nFull time\nEmployee Type:\nAssignee / Regular\nTravel:\nYes, 20% of the Time\nRelocation Eligible:\nNo\nApplied Materials is an Equal Opportunity Employer. Qualified applicants will receive consideration for employment without regard to race, color, national origin, citizenship, ancestry, religion, creed, sex, sexual orientation, gender identity, age, disability, veteran or military status, or any other basis prohibited by law.",
+      "stable_job_id": "li_4484383425",
+      "content_hash": "ch_c150b62161fe",
+      "requirement_assessments": [
+        {
+          "requirement": "B.Sc. or Practical Engineer in Mechanical or Electrical Engineering",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "B.Sc. or Practical Engineer in Mechanical or Electrical Engineering , field service experience, or trade certification",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "המועמד מחזיק בתעודת הנדסאי מכונות מוסמך בהתאם לדרישת הסף."
+        },
+        {
+          "requirement": "Experience diagnosing and resolving basic technical challenges",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "Experience diagnosing and resolving basic technical challenges",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "troubleshooting, drone/UAV integration and flight operations.",
+            "source_field": "Key Competencies & Target Operational Focus"
+          },
+          "assessment": "match",
+          "explanation": "למועמד יש ניסיון מעשי באיתור ופתרון תקלות (troubleshooting) במערכות שונות."
+        },
+        {
+          "requirement": "Basic knowledge of Microsoft Excel, Word, and PowerPoint",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "Basic knowledge of Microsoft Excel, Word, and PowerPoint",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "SAP, Excel data modeling.",
+            "source_field": "Key Competencies & Target Operational Focus"
+          },
+          "assessment": "match",
+          "explanation": "למועמד שליטה ביישומי אופיס ובעבודה עם Excel."
+        },
+        {
+          "requirement": "Possession of a valid driver’s license",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "Possession of a valid driver’s license and the ability to obtain a passport",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "המועמד שירת בתפקיד שטח ומבצעי הדורש רישיון וניידות."
+        }
+      ],
+      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "is_direct_ats": "",
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
+    },
+    {
+      "link": "https://www.drushim.co.il/job/38935411/20de07c2/",
+      "title": "הנדסאי/ת לתפקיד שירות שטח טכני, רכב צמוד",
+      "company": "חברה מובילה (דיסקרטי)",
+      "location": "באר שבע, אשקלון, תל אביב, ראשון לציון",
+      "date": "2026-11-06",
+      "source": "Drushim",
+      "match_score": 85,
+      "base_match_score": 85,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "operations",
+      "company_domain_product": "שירותי שטח הנדסיים",
+      "company_summary": "",
+      "job_summary": "תפקיד שירות שטח טכני הכולל התקנות, תחזוקה ושירות ללקוחות תעשייתיים בכל הארץ, כולל ניהול צוות טכנאים.",
+      "company_requirements": "הנדסאי מכונות/בניין/מים, יכולת טכנית גבוהה, ניסיון בשטח, יכולת ניהולית, תעודת יושר, נכונות לעבודה פיזית.",
+      "experience_strengths": "הנדסאי מכונות מוסמך עם רקע מעשי במערכות אלקטרו-מכניות ועבודת שטח.",
+      "reasoning": "המוועמד הוא הנדסאי מכונות מוסמך עם רקע מוצק בהתקנות, תחזוקה ועבודה טכנית בשטח, ועונה במדויק על דרישות הסף של המשרה.",
+      "key_highlights": "הנדסאי מכונות, ניסיון בעבודות שטח טכניות, יכולת ניהולית.",
+      "salary_range": "11,500 - 15,000 ₪ + רכב צמוד",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+      "salary_source_url": "",
+      "p25": 11500,
+      "p75": 15000,
+      "logo": "",
+      "company_logo_url": "",
+      "snippet": "חסוי\nהנדסאי/ת לתפקיד שירות שטח טכני, רכב צמוד\n- חסוי -\nמספר מקומות\nבאר שבע\nאשקלון\nתל אביב\nראשון לציון\n1-2 שנים\nמשרה מלאה\nלפני 6 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nבוא/י והצטרף/י לצוות ותיק ומקצועי בחברה הנדסית,\nבתפקיד שטח להתקנות ותחזוקה ללקוחות תעשייתיים בכל הארץ.\nמתאים גם לבעל/ת נסיון בתפקיד שטח טכני שרוצה להתקדם לתפקיד ניהולי.\nביצוע התקנות של המערכת, שדרוגים, תיקונים, תחזוקה שוטפת ושירות לציוד החברה\nניהול צוות טכנאים ומתקינים\nעבודה מול לקוחות תעשייתיים.\nהעבודה במשרה מלאה, 5 ימים בשבוע, וכוללת רכב צמוד\nדרישות התפקיד\nהנדסאי/ת מכונות/בניין/מים או תחום רלוונטי אחר\nהבנה ויכולת טכנית ברמה גבוהה\nנסיון בעבודות שטח טכניות\nיכולת ניהולית- חובה, נסיון ניהולי- יתרון\nיכולת להציג תעודת יושר (המשרה כרוכה בכניסה לאתרים בטחוניים)\nנכונות לעבוד פיזית\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתעשיה / ייצור\nתחומים\nתחזוקה\nטכנאי/ת מכונות\nאחראי/ת משמרת\nהנדסאי/ת מים\nהנדסאי/ת מכונות\nהנדסאי/ת בניין",
+      "stable_job_id": "drushim_38935411",
+      "content_hash": "ch_3a77d2a4ec2c",
+      "requirement_assessments": [
+        {
+          "requirement": "הנדסאי/ת מכונות/בניין/מים או תחום רלוונטי אחר",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "הנדסאי/ת מכונות/בניין/מים או תחום רלוונטי אחר",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "המועמד מחזיק בדיפלומה של הנדסאי מכונות כמבוקש במשרה."
+        },
+        {
+          "requirement": "נסיון בעבודות שטח טכניות",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "נסיון בעבודות שטח טכניות",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Field, Integration & Hands-on: Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+            "source_field": "Key Competencies & Target Operational Focus"
+          },
+          "assessment": "match",
+          "explanation": "למועמד ניסיון מעשי בעבודות שטח טכניות ובמערכות אלקטרו-מכניות."
+        },
+        {
+          "requirement": "יכולת טכנית ברמה גבוהה",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "הבנה ויכולת טכנית ברמה גבוהה",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
+            "source_field": "Core Profile"
+          },
+          "assessment": "match",
+          "explanation": "המועמד בעל פרופיל טכני רב-תחומי ויכולות עמוקות במערכות הנדסיות."
+        }
+      ],
+      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "is_direct_ats": "",
+      "is_field_work": true,
+      "provides_company_car": true,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        },
+        {
+          "type": "tag-car",
+          "icon": "ph-bold ph-car",
+          "label": "רכב חברה"
+        }
+      ]
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/it-ot-infrastructure-project-manager-at-g-stat-4477264305",
+      "title": "IT/OT & Infrastructure Project Manager",
+      "company": "G-STAT",
+      "location": "פתח תקווה, ישראל",
+      "date": "2026-11-06",
+      "source": "LinkedIn",
+      "match_score": 85,
+      "base_match_score": 85,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "operations",
+      "company_domain_product": "ניהול פרויקטים של תשתיות IT/OT וטכנולוגיה למפעלים",
+      "company_summary": "",
+      "job_summary": "ניהול פרויקטי תשתית IT ו-OT ואינטגרציה של ציוד תעשייתי ברצפת הייצור, כולל עבודה עם מערכות SCADA ופרוטוקולים תעשייתיים.",
+      "company_requirements": "3+ שנות ניסיון בעבודה עם PLC, פרוטוקולים תעשייתיים ומערכות SCADA/HMI. ניסיון בתשתיות IT וסביבות ייצור.",
+      "experience_strengths": "ניסיון מעשי בהפעלת מערכות בקרה, SCADA, ותשתיות אלקטרו-מכניות במגזר האנרגיה והתעשייה.",
+      "reasoning": "לעידו רקע חזק במערכות שליטה ובקרה תעשייתיות (SCADA) ותשתיות אופרטיביות, המשתלבים היטב עם דרישות הניהול והאינטגרציה של סביבות IT/OT במשרה.",
+      "key_highlights": "התאמה גבוהה לרקע בבקרה תעשייתית, ניסיון באינטגרציה של מערכות ותשתיות אופרטיביות.",
+      "salary_range": "13,000 - 16,000 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • משרת יום",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות).",
+      "salary_source_url": "",
+      "p25": 13000,
+      "p75": 16000,
+      "logo": "https://media.licdn.com/dms/image/v2/C560BAQGhkQnDeBJzyg/company-logo_100_100/company-logo_100_100/0/1630602397534/g_stat_logo?e=2147483647&v=beta&t=QcGJvXQIRB4tnFezufH6GY_-jrhBMg8GgdpKgy47qWE",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQGhkQnDeBJzyg/company-logo_100_100/company-logo_100_100/0/1630602397534/g_stat_logo?e=2147483647&v=beta&t=QcGJvXQIRB4tnFezufH6GY_-jrhBMg8GgdpKgy47qWE",
+      "snippet": "Ready to bridge the gap between IT infrastructure and industrial operations?\nWe’re looking for an\nIT/OT & Infrastructure Project Manager\nto lead technology projects across manufacturing facilities for a leading nationwide organization.\nThis role combines hands-on technical understanding of IT and OT environments with project leadership, infrastructure planning, cybersecurity, and collaboration with diverse stakeholders.\nWhat will you do?\nLead IT/OT infrastructure projects across the company’s manufacturing facilities.\nIdentify and address infrastructure and cybersecurity gaps in production environments.\nSupport the implementation of new equipment and production lines.\nPlan infrastructure and integrate industrial equipment into OT networks.\nWork closely with maintenance managers, technical managers, suppliers, and internal stakeholders.\nCollaborate with international suppliers, leading technical discussions in English and driving alignment across teams.\nWhat are we looking for?\n3+ years of experience working with PLCs, industrial communication protocols, and HMI/SCADA systems.\nExperience with IT infrastructure, including networking, cybersecurity, systems administration, and operating systems.\nExperience working in a manufacturing environment or on a production floor within a large organization.\nExperience planning infrastructure and integrating equipment into OT networks.\nFluent English – mandatory.\nAdvantages\nFamiliarity with Siemens, Allen-Bradley, or Unitronics.\nExperience with System Platform and Cimplicity.\nKnowledge of industrial communication protocols such as Profinet, EtherNet/IP, Modbus, and BACnet.\n📍\nLocation:\nPetah Tikva, Israel\n🏠\nWork Model:\nHybrid, including travel to company manufacturing facilities.\nInterested in leading projects at the intersection of IT, OT, and industrial infrastructure? We’d love to hear from you!",
+      "stable_job_id": "li_4477264305",
+      "content_hash": "ch_50677bbd1d2e",
+      "requirement_assessments": [
+        {
+          "requirement": "3+ years of experience working with PLCs, industrial communication protocols, and HMI/SCADA systems.",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "3+ years of experience working with PLCs, industrial communication protocols, and HMI/SCADA systems.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Real-Time Operations Control (SCADA / AVEVA / 24/7 Control Rooms)",
+            "source_field": "Core Profile"
+          },
+          "assessment": "match",
+          "explanation": "לעידו ניסיון מעשי בעבודה עם מערכות SCADA ובקרה תעשייתית."
+        },
+        {
+          "requirement": "Experience working in a manufacturing environment or on a production floor within a large organization.",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "Experience working in a manufacturing environment or on a production floor within a large organization.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Field, Integration & Hands-on: Electro-mechanical systems, site supervision, equipment commissioning",
+            "source_field": "Key Competencies & Target Operational Focus"
+          },
+          "assessment": "match",
+          "explanation": "למועמד רקע בעבודה בשטח ואינטגרציה של מערכות אלקטרו-מכניות."
+        }
+      ],
+      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "is_direct_ats": "",
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%94-%E2%80%94-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%9E%D7%A9%D7%95%D7%9C%D7%91%D7%95%D7%AA-at-solar-solutions-%D7%A4%D7%AA%D7%A8%D7%95%D7%A0%D7%95%D7%AA-%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99%D7%99%D7%9D-4487740131",
+      "title": "טכנאי אינטגרציה — מערכות משולבות",
+      "company": "Solar Solutions | פתרונות סולאריים",
+      "location": "רשפון",
+      "date": "2026-11-06",
+      "source": "LinkedIn",
+      "match_score": 85,
+      "base_match_score": 85,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "solar",
+      "company_domain_product": "מערכות אוטונומיות המשלבות אנרגיה סולארית, אגירה ותקשורת אלחוטית",
+      "company_summary": "",
+      "job_summary": "הרכבה, אינטגרציה והפעלה של מערכות אוטונומיות משלב התכנון בסדנה ועד ההתקנה בשטח, כולל איתור ופתרון תקלות.",
+      "company_requirements": "הרכבה, אינטגרציה והפעלה של מערכות, איתור ופתרון תקלות בסדנה ובשטח, רקע בחשמל/אלקטרוניקה וניסיון בהתקנות שטח.",
+      "experience_strengths": "הנדסאי מכונות בהתמחות אנרגיה ירוקה וסולארית, ניסיון מעשי בהפעלת מערכות שטח ותשתיות אלקטרו-מכניות.",
+      "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם התמחות באנרגיה סולארית ואגירת אנרגיה, ובעל רקע חזק בעבודת שטח, הרכבה ואינטגרציה של מערכות אלקטרו-מכניות התואמות בדיוק את דרישות תפקיד טכנאי האינטגרציה.",
+      "key_highlights": "ניסיון מעשי בהקמת מתקנים סולאריים ואגירת אנרגיה, רקע טכני רב-תחומי ויכולת עבודה עצמאית בסדנה ובשטח.",
+      "salary_range": "14,500 - 18,500 ₪ (מקובל רכב ענפי)",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • כולל משמרות",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: סולארי ואגירת אנרגיה (PV / BESS).",
+      "salary_source_url": "",
+      "p25": 14500,
+      "p75": 18500,
+      "logo": "https://media.licdn.com/dms/image/v2/D560BAQEgnZgGoLwx8A/company-logo_100_100/B56aDT6HFAI4AI-/0/1790261621452?e=2147483647&v=beta&t=iUPZ7e20f9CAXOaQvuMdFOEYI3kkIrF4KN9lFBpJVYo",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQEgnZgGoLwx8A/company-logo_100_100/B56aDT6HFAI4AI-/0/1790261621452?e=2147483647&v=beta&t=iUPZ7e20f9CAXOaQvuMdFOEYI3kkIrF4KN9lFBpJVYo",
+      "snippet": "פתרונות סולאריים\nמתכננת ומייצרת מתקנים אוטונומיים המשלבים אנרגיה סולארית, אגירה ותקשורת אלחוטית — מערכות שעובדות 24/7 גם בלי תשתית חשמל או תקשורת. מעל 1,000 מערכות מקוונות ברחבי הארץ.\nאנחנו מחפשים טכנאי אינטגרציה לצוות שלנו ברשפון.\nהתפקיד\nהרכבה, אינטגרציה והפעלה של מערכות אוטונומיות — מהתכנון בסדנה ועד ההתקנה בשטח (עבודת ידיים של הרכבת מערכות). כולל איתור ופתרון תקלות, בסדנה ומול מערכות מרוחקות.\nיתרון\nרקע בתקשורת רדיו, סלולרית או קווית רקע בחשמל אלקטרוניקה ניסיון בהרכבה, הפעלה ותחזוקה — בסדנה ובשטח\nחשוב לדעת\nהתפקיד כולל יציאה להתקנות בשטח, ולעיתים עבודה בגובה.",
+      "stable_job_id": "li_4487740131",
+      "content_hash": "ch_bedd5c2ec769",
+      "requirement_assessments": [
+        {
+          "requirement": "ניסיון בהרכבה, הפעלה ותחזוקה — בסדנה ובשטח",
+          "importance": "preferred",
+          "ad_evidence": {
+            "quote": "ניסיון בהרכבה, הפעלה ותחזוקה — בסדנה ובשטח",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Field, Integration & Hands-on: Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+            "source_field": "Core Profile"
+          },
+          "assessment": "match",
+          "explanation": "למועמד ניסיון מעשי בהתקנה, אינטגרציה ופתרון תקלות בשטח ובסדנה במערכות אלקטרו-מכניות."
+        },
+        {
+          "requirement": "רקע בחשמל אלקטרוניקה",
+          "importance": "preferred",
+          "ad_evidence": {
+            "quote": "רקע בחשמל אלקטרוניקה",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Certified Electrician Studies (חשמלאי מוסמך - לקראת סיום ההסמכה).",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "המועמד נמצא לקראת סיום לימודי חשמלאי מוסמך ובעל הכשרה כהנדסאי מכונות עם התמחות באנרגיה."
+        }
+      ],
+      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "is_direct_ats": "",
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": true,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        },
+        {
+          "type": "tag-shifts",
+          "icon": "ph-bold ph-clock-countdown",
+          "label": "משמרות 24/7"
+        }
+      ]
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%9E%D7%9B%D7%A8%D7%96%D7%99%D7%9D-%D7%95%D7%94%D7%AA%D7%A7%D7%A9%D7%A8%D7%95%D7%99%D7%95%D7%AA-%E2%80%93-%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%D7%99-%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-pv-bess-at-avivim-consulting-placement-4485802550",
+      "title": "מנהל/ת מכרזים והתקשרויות – פרויקטי אנרגיה (PV & BESS)",
+      "company": "AVIVIM - Consulting & Placement",
+      "location": "לא צוין",
+      "date": "2026-11-06",
+      "source": "LinkedIn",
+      "match_score": 85,
+      "base_match_score": 85,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "solar",
+      "company_domain_product": "AVIVIM - Consulting & Placement",
+      "company_summary": "",
+      "job_summary": "ניהול מכרזים והתקשרויות לפרויקטי אנרגיה (PV & BESS), כולל הכנת הצעות מסחריות וטכניות, תמחור, תכנון קונספטואלי ראשוני, עבודה מול ספקים וקבלני משנה, וניתוח סיכונים.",
+      "company_requirements": "מהנדס/ת או הנדסאי מכונות/חשמל, 3 שנות ניסיון באנרגיה/תשתיות חשמל, ניסיון בפרויקטי PV ו/או BESS, יכולת קריאת תוכניות ו-SLD.",
+      "experience_strengths": "הנדסאי מכונות מוסמך בהתמחות אנרגיה ירוקה וגז טבעי, היכרות מעמיקה עם מערכות PV ו-BESS, הבנה של תשתיות חשמל, ושליטה בכלים כגון Excel ו-Python.",
+      "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם התמחות באנרגיה סולארית ואגירת אנרגיה BESS, ובעל רקע טכני חזק במערכות חשמל ואנרגיה, המתאים לדרישות הליבה של תפקיד הנדסי-מסחרי זה.",
+      "key_highlights": "הנדסאי מכונות מוסמך, רקע במערכות PV ו-BESS, יכולת ניתוח טכנית ומסחרית, ושליטה גבוהה ב-Excel.",
+      "salary_range": "13,000 - 16,000 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • משרת יום",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות).",
+      "salary_source_url": "",
+      "p25": 13000,
+      "p75": 16000,
+      "logo": "https://media.licdn.com/dms/image/v2/C560BAQFjL2zZxIU0HA/company-logo_100_100/company-logo_100_100/0/1630610018985/avivim___consulting__placement_logo?e=2147483647&v=beta&t=V5QuhXUq_Eis7P9Zn9DYRcOTnXH-ASmPhwYiyPxO-u8",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQFjL2zZxIU0HA/company-logo_100_100/company-logo_100_100/0/1630610018985/avivim___consulting__placement_logo?e=2147483647&v=beta&t=V5QuhXUq_Eis7P9Zn9DYRcOTnXH-ASmPhwYiyPxO-u8",
+      "snippet": "מהות התפקיד:\nאחריות על הכנת הצעות מסחריות וטכניות לפרויקטי אנרגיה, בדגש על PV, BESS ותשתיות חשמל, משלב קבלת ה־RFP/מכרז ועד להגשת הצעה מלאה.\nהתפקיד משלב הבנה הנדסית, תכנון קונספטואלי, תמחור, עבודה מול ספקים וקבלני משנה וניתוח סיכונים מסחריים וטכניים.\nתחומי אחריות מרכזיים:\n·        ניהול תהליך ה־Bid מקבלת המכרז/RFP ועד להגשת ההצעה.\n·        לימוד מסמכי המכרז, מפרטים, SLD, תוכניות, דרישות חיבור והגדרת Scope of Work.\n·        הכנת Concept / Preliminary Design לצורך תמחור – העמדת ציוד, Layout ראשוני, בחירת קונפיגורציה והגדרת פתרון הנדסי.\n·        הכנת BOQ / BOM ואומדן כמויות.\n·        תמחור CAPEX לפרויקט: ציוד עיקרי, עבודות חשמל ואזרחיות, MV/HV, כבלים, תחנות משנה, SCADA/EMS, תקשורת, הקמה, בדיקות ו־Commissioning.\n·        קבלת הצעות מחיר מספקים וקבלני משנה, השוואת הצעות וניהול הבהרות טכניות ומסחריות.\n·        היכרות שוטפת עם מחירי השוק, ספקים, קבלנים וטכנולוגיות בתחום האנרגיה.\n·       הכנת Cost Breakdown, תקציב בסיס ו־Tender Summary לאישור הנהלה.\n·        עבודה משותפת עם המחלקות השונות (משפטי, רכש, הנדסה, כספים).\n·        ביצוע Bid-to-Execution Handover מסודר למנהל הפרויקט לאחר זכייה, כולל העברת התקציב, ההנחות, ההתחייבויות והסיכונים שעל בסיסם הוגשה ההצעה.\n·        בנייה ועדכון של מאגר מחירים ו־Cost Database ארגוני המבוסס על הצעות ופרויקטים שבוצעו בפועל.\n·        ביצוע Post-Bid / Post-Project analysis – השוואת התמחור המקורי לעלות בפועל והפקת לקחים להצעות הבאות.\nדרישות התפקיד\nחובה:\n·        מהנדס/ת ו/או הנדסאי מכונות/חשמל מעולם האנרגיה.\n·        לפחות 3 שנות ניסיון בתחום האנרגיה/תשתיות חשמל.\n·        ניסיון בפרויקטי PV ו/או BESS – עדיפות משמעותית לניסיון בשניהם.\n·        ניסיון בתמחור, מכרזים, Engineering או Project Engineering בפרויקטי EPC.\n·        יכולת לקרוא ולהבין SLD, מפרטים טכניים, Layouts ותוכניות.\n·        יכולת לבצע תכנון קונספטואלי/ראשוני והעמדת ציוד לצורך בניית פתרון ותמחור.\n·        הבנה טובה של ציוד מרכזי: PV modules, inverters/PCS, BESS, transformers, MV/HV switchgear, cables, SCADA/EMS וכד'.\n·        היכרות עם ספקים, קבלנים ומחירי שוק.\n·        Excel ברמה גבוהה ואנגלית מקצועית טובה מאוד.\nיתרון משמעותי\n: ניסיון בחברת EPC, עבודה מול ספקים בינלאומיים, תמחור תחנות משנה/HV/MV, AutoCAD, PVsyst, ניסיון בחוזי EPC והבנת תנאים מסחריים כגון warranties, LDs, payment milestones ו־performance guarantees.",
+      "stable_job_id": "li_4485802550",
+      "content_hash": "ch_3140f48e4576",
+      "requirement_assessments": [
+        {
+          "requirement": "מהנדס/ת ו/או הנדסאי מכונות/חשמל מעולם האנרגיה.",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "מהנדס/ת ו/או הנדסאי מכונות/חשמל מעולם האנרגיה.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "המועמד הינו הנדסאי מכונות מוסמך עם התמחות בעולם האנרגיה."
+        },
+        {
+          "requirement": "ניסיון בפרויקטי PV ו/או BESS",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "ניסיון בפרויקטי PV ו/או BESS – עדיפות משמעותית לניסיון בשניהם.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Solar PV field systems, battery storage (BESS) operations, clean-tech integration.",
+            "source_field": "Key Competencies & Target Operational Focus"
+          },
+          "assessment": "match",
+          "explanation": "למועמד יש היכרות ומומחיות בתחום מערכות סולאריות PV ואגירת אנרגיה BESS."
+        },
+        {
+          "requirement": "יכולת לקרוא ולהבין SLD, מפרטים טכניים, Layouts ותוכניות.",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "יכולת לקרוא ולהבין SLD, מפרטים טכניים, Layouts ותוכניות.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Grid interconnection coordination, high voltage interfaces, substation and utility protocols.",
+            "source_field": "Key Competencies & Target Operational Focus"
+          },
+          "assessment": "match",
+          "explanation": "המועמד בעל רקע בהנדסת מערכות אנרגיה המאפשר לו הבנה של תשתיות וממשקים חשמליים."
+        }
+      ],
+      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "is_direct_ats": "",
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
+    },
+    {
+      "link": "https://www.drushim.co.il/job/38960301/934031db/",
+      "title": "מנהל.ת מדור מכונות",
+      "company": "אם.אר.סי תפעול בע\"מ",
+      "location": "עפולה / אלון תבור",
+      "date": "2026-11-06",
+      "source": "Drushim",
+      "match_score": 82,
+      "base_match_score": 82,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "energy",
+      "company_domain_product": "תפעול ותחזוקת מתקני אנרגיה ותחנות כוח",
+      "company_summary": "",
+      "job_summary": "אחריות על תחזוקת מתקנים וציוד תומך ייצור (BOP) בתחנת כוח, ניהול צוות המדור, ניהול תוכניות עבודה ותקציב במערכת SAP, ועבודה מול ספקים וקבלנים.",
+      "company_requirements": "הנדסאי/ת מכונות (חובה), ניסיון בתעשייה תהליכית/תחנות כוח, ידע בטורבינות וציוד סובב, ניסיון בניהול צוות ופרויקטי תחזוקה, שליטה ב-SAP ורישיון נהיגה בתוקף.",
+      "experience_strengths": "השכלה כהנדסאי מכונות בהתמחות גז טבעי, ניסיון בהובלת צוותים, שליטה במערכת SAP ורקע במתקני גז טבעי בלחץ גבוה ומערכות אלקטרו-מכניות.",
+      "reasoning": "עידו הוא הנדסאי מכונות מוסמך עם התמחות בגז טבעי, בעל ניסיון בניהול צוותים ורקע במערכות אלקטרו-מכאניות ו-SAP. מדובר בהתאמה טובה למשרת ניהול תחזוקת מכונות בחברת אנרגיה.",
+      "key_highlights": "עמידה בדרישת החובה של תואר הנדסאי מכונות, התאמה מגזרית לעולם האנרגיה והגז, ניסיון ניהולי וטכנולוגי.",
+      "salary_range": "15,000 - 19,500 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • כולל משמרות",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: אחזקת תחנות כוח וציוד סובב.",
+      "salary_source_url": "",
+      "p25": 15000,
+      "p75": 19500,
+      "logo": "",
+      "company_logo_url": "",
+      "snippet": "א\nמנהל.ת מדור מכונות\nאם.אר.סי תפעול בע\"מ\nעפולה\n1-2 שנים\nמשרה מלאה\nלפני 8 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nחברת MRC מתחום האנרגיה מגייסת מנהל.ת מדור מכונות\nתיאור תפקיד:\nאחריות על תחזוקת מתקנים בתחום המכונות כולל כל הציוד התומך בייצור BOP.\nתמיכה ועזרה לכלל המדורים באתר, חשמל, בקרה וסייבר בכל הקשור בנושא המכני.\nאחריות בגיבוש וביצוע מדיניות תחזוקה של הציוד שבאחריותו, לפי סוגי תחזוקה, מתוכננות, שבר, מונעות וחזויה במהלך השנה.\nהתחזוקה באחריותו תנוהל במערכת SAP - תזמון ביצוע, תיעדוף, דיווח.\nהבטחת יישום חוקים ממשלתיים, תקנות ונהלים כפי שהם מתייחסים לתחזוקת ציוד ומתקנים שבאחריותו.\nעבודה מול ספקים ונותן שרות עבור קבלת שירותי תחזוקה בתחומו.\nקביעת רמות מלאי מינימום לחלקי חילוף שבאחריותו.\nהגדרת תקציב שנתי לפעילות שבאחריותו ולעמוד בתקציב שאושר.\nחבר בוועדת הבטיחות של האתר\nניהול צוות המדור\nהכנת תוכנית עבודה חודשית/רבעונית/שנתית\nהכנת תקציב.\nביצוע מעקב ובקרה תקציבית.\nדרישות התפקיד\nהנדסאי/ת מכונות - חובה.\nניסיון בתעשייה במפעל תהליכי/תעשייה כבדה/ כימית\nניסיון בתחנות כוח- יתרון משמעותי.\nרמת ידע גבוה בציוד שטח כגון: טורבינות גז תעשייתיות, טורבינת קיטור מפוחים, מחליפי חום, ציוד סובב מכני וכ\"ו.\nידע בקריאת שרטוטי מכונות ועדכונם על פי הצורך.\nניסיון מוכח בניהול פרויקטים בתחום שיפוצי טורבינות, ציוד סובב וכדומה.\nשליטה בתוכנות אופיס - Word,Excel,Power Point,Visio.\nידיעת השפות עברית ברמה טובה מאוד ואנגלית טכנית ברמה טובה.\nיכולת ארגון והובלת צוות, ניהול מחלקה.\nיחסי אנוש טובים, תודעת שירות גבוהה.\nזמינות גבוהה ונכונות לעבודה מאומצת, לעיתים בשעות לא שגרתיות.\nרישיון נהיגה חובה\nמשרה מלאה עם נכונות לשעות נוספות והקפצות גם בסופי שבוע ולילות.\nמשרה באזור התעשייה אלון תבור\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתעשיה / ייצור\nתחומים\nהנדסאי/ת מכונות\nתעשיה / ייצור - ניהול",
+      "stable_job_id": "drushim_38960301",
+      "content_hash": "ch_4b507af3f997",
+      "requirement_assessments": [
+        {
+          "requirement": "הנדסאי/ת מכונות",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "הנדסאי/ת מכונות - חובה.",
+            "source_field": "דרישות התפקיד"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "עידו מחזיק בתואר הנדסאי מכונות מוסמך כנדרש בדרישת החובה."
+        },
+        {
+          "requirement": "ניסיון בתחנות כוח וטורבינות גז/קיטור",
+          "importance": "preferred",
+          "ad_evidence": {
+            "quote": "ניסיון בתחנות כוח- יתרון משמעותי.",
+            "source_field": "דרישות התפקיד"
+          },
+          "profile_evidence": {
+            "quote": "Natural gas transmission/distribution control, nomination and re-nomination allocations, gas metering, settlement and billing coordination, PRMS and high-pressure gas facilities",
+            "source_field": "Key Competencies & Target Operational Focus"
+          },
+          "assessment": "gap",
+          "explanation": "לעידו ניסיון במערכות גז טבעי ומתקני PRMS, אך חסר ניסיון ישיר בתחזוקת טורבינות גז וקיטור בתחנות כוח."
+        },
+        {
+          "requirement": "ניהול תחזוקה במערכת SAP",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "התחזוקה באחריותו תנוהל במערכת SAP - תזמון ביצוע, תיעדוף, דיווח.",
+            "source_field": "תיאור תפקיד"
+          },
+          "profile_evidence": {
+            "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
+            "source_field": "Tech & AI"
+          },
+          "assessment": "match",
+          "explanation": "לעידו שליטה מוצהרת במערכת SAP."
+        },
+        {
+          "requirement": "הובלת צוות וניהול",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "יכולת ארגון והובלת צוות, ניהול מחלקה.",
+            "source_field": "דרישות התפקיד"
+          },
+          "profile_evidence": {
+            "quote": "Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח\"ל).",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "לעידו ניסיון פיקודי מוכח בהובלת צוותים בשטח."
+        }
+      ],
+      "fit_gaps": "קיים פער מסוים בניסיון מעשי עמוק בתחזוקה ושיפוץ טורבינות גז/קיטור בתחנות כוח, אך המועמד עונה על דרישת הסף הליבתית (הנדסאי מכונות).",
+      "is_direct_ats": "",
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
+    },
     {
       "link": "https://www.drushim.co.il/job/38999156/3eb336fa/",
       "title": "לחברה ממשלתית דרוש/ה בוחן/ת איכות",
@@ -4507,514 +5137,6 @@
           "label": "Junior"
         }
       ]
-    },
-    {
-      "link": "https://www.drushim.co.il/job/38861881/12fcb777/",
-      "title": "מהנדס \\ הנדסאי מכונות לפיקוח ובקרת איכות בפרויקטים",
-      "company": "אדוונס הנדסה בע\"מ",
-      "location": "ראשון לציון",
-      "date": "2026-10-28",
-      "source": "Drushim",
-      "match_score": 90,
-      "base_match_score": 90,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "פיקוח ובקרת איכות בפרויקטים והקמת מפעלים תהליכיים",
-      "company_summary": "",
-      "job_summary": "משרת פיקוח ובקרת איכות על הקמת מפעלים תהליכיים, צנרת תהליכית וציוד אלקטרו-מכני, כולל בדיקות קבלת ציוד, מעקב ריתוכים, P&ID, וליווי הרצה ומסירות.",
-      "company_requirements": "תואר הנדסאי/מהנדס מכונות, ניסיון בפיקוח או בקרת איכות במערכות אלקטרו-מכאניות וצנרת, ניסיון בעבודה עם P&ID, שליטה ביישומי אופיס.",
-      "experience_strengths": "הנדסאי מכונות בהכשרתו עם ניסיון במערכות אלקטרו-מכניות, הבנה בתהליכים תעשייתיים ויכולת שילוב עבודת שטח ומשרד.",
-      "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מוצק במערכות אלקטרו-מכניות, צנרת תהליכית ופיקוח שטח, העונה במדויק על דרישות המשרה.",
-      "key_highlights": "הנדסאי מכונות, ניסיון במערכות אלקטרו-מכניות וצנרת תהליכית, עבודה מול תכניות P&ID.",
-      "salary_range": "11,500 - 15,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": "https://webapi.drushim.co.il/logos/1283833/page/637591767225899673.jpg",
-      "company_logo_url": "https://webapi.drushim.co.il/logos/1283833/page/637591767225899673.jpg",
-      "snippet": "מהנדס \\ הנדסאי מכונות לפיקוח ובקרת איכות בפרויקטים\nאדוונס הנדסה בע\"מ\nראשון לציון\n1-2 שנים\nמשרה מלאה\nלפני 21 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברת הנדסה מובילה דרוש מהנדס.ת\\הנדסאי.ת מכונות לעבודת פיקוח ובקרת איכות על הקמת מפעלים תהליכיים, הכוללים מכלולי צנרת תהליכית וציוד אלקטרו-מכני.\nבדיקות קבלת ציוד וצנרת, בדיקות טיב ביצוע מול התכנון עפ\"י P&ID ומפרטים, בקרה ומעקב על ריתוכי הצנרת, ליווי הרצה ומסירות.\nהשתתפות בישיבות פיקוח-ביצוע, קביעת נהלי עבודה, ניהול אי התאמות, הפקת לקחים.\nשילוב של עבודת שטח עם עבודה משרדית.\nמשרה מלאה בחברה מקצועית ומתגמלת.\nדרישות התפקיד\nתואר הנדסאי \\ מהנדס מכונות - חובה.\nניסיון בתכנון \\ פיקוח \\ בקרת איכות בתחום מערכות אלקטרו-מכאניות וצנרת בפרויקטים - חובה.\nניסיון בעבודה עם תכניות P&ID - חובה.\nיכולת ניסוח ברמה גבוהה, שליטה מלאה ביישומי אופיס - חובה.\nאסרטיביות, סדר וארגון, דיוק במשימות.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתחומים\nמהנדס/ת מכונות\nהנדסאי/ת מכונות\nסטודנט/ית - הנדסה",
-      "stable_job_id": "drushim_38861881",
-      "content_hash": "ch_9e4fb2eb44ef",
-      "requirement_assessments": [
-        {
-          "requirement": "תואר הנדסאי \\ מהנדס מכונות - חובה",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "תואר הנדסאי \\ מהנדס מכונות - חובה.",
-            "source_field": "דרישות התפקיד"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "למועמד יש דיפלומה של הנדסאי מכונות מרפין."
-        },
-        {
-          "requirement": "ניסיון בתכנון \\ פיקוח \\ בקרת איכות בתחום מערכות אלקטרו-מכאניות וצנרת בפרויקטים - חובה",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "ניסיון בתכנון \\ פיקוח \\ בקרת איכות בתחום מערכות אלקטרו-מכאניות וצנרת בפרויקטים - חובה.",
-            "source_field": "דרישות התפקיד"
-          },
-          "profile_evidence": {
-            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע בעבודה מעשית עם מערכות אלקטרו-מכניות ופיקוח אתרים."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": true,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": [
-        {
-          "type": "tag-field",
-          "icon": "ph-bold ph-wrench",
-          "label": "עבודת שטח"
-        }
-      ]
-    },
-    {
-      "link": "https://www.drushim.co.il/job/38856181/6d16d50b/",
-      "title": "מהנדס / הנדסאי מכונות",
-      "company": "דאטה וויי - Dataway",
-      "location": "פתח תקווה",
-      "date": "2026-10-28",
-      "source": "Drushim",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "דאטה וויי - Dataway - פיתוח מערכות ומארזים למערכות ביטחוניות",
-      "company_summary": "",
-      "job_summary": "משרה הנדסית הכוללת תכן מכני מרמת הקונספט ועד תיק ייצור, אינטגרציה, כתיבת ATP וניהול ספקי משנה עבור פרויקטים ביטחוניים מול רפאל.",
-      "company_requirements": "הנדסאי או מהנדס מכונות, תכן מכני מרעיון לייצור, בניית מודלי תלת מימד, כתיבת ATP ואינטגרציה.",
-      "experience_strengths": "הנדסאי מכונות מוסמך עם ניסיון במערכות אלקטרו-מכניות, אינטגרציה, עבודה עם תוכנות תלת מימד וניהול תהליכים טכניים.",
-      "reasoning": "המוועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוצק במערכות אלקטרו-מככניות ואינטגרציה, המתאים לדרישות התפקיד ההנדסיות מול רפאל.",
-      "key_highlights": "השכלה כהנדסאי מכונות, רקע באינטגרציה ובניית מערכות, יכולת כתיבת תיעוד הנדסי.",
-      "salary_range": "11,500 - 15,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico",
-      "company_logo_url": "https://icons.duckduckgo.com/ip3/dataway.co.il.ico",
-      "snippet": "ד\nמהנדס / הנדסאי מכונות\nדאטה וויי - Dataway\nפתח תקווה\n1-2 שנים\nמשרה מלאה\nלפני 7 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nעבודה הנדסית שוטפת להשלמת התכן החסר לפי דרישות רפאל.\nהעמדת כלל המסמכים הנדרשים בPDR,CDR,;PRR\nכתיבה וביצוע ATP מלא למערכת\nאינטגרציה של כלל המרכיבים, תסריטי ניטור ותפעול מערכות.\nהכנת תיעוד ברמה הנדרשת לביצוע הדרכות והעברת ידע בהתאם לSOW.\nניהול ספקי המשנה ופתרון בעיות המתגלות לאורך פיתוח המוצר.\nדרישות התפקיד\nמהנדס / הנדסאי מכונות\nביצוע תכנון מכני מרמת רעיון וקונספט ועד לתיק ייצור מלא לרכיבים מכאנים ומשולבי אלקטרוניקה וחשמל.\nבניית מודלי תלת מימד למוצרים ומערכות בטחוניות\nניתוח התכן, סימולציות שונות להוכחת עמידה בתקנים.\nקביעת חומרים ורכיבים לייצור\nליווי בניית אבטיפוס והכנת תיק ייצור לייצור סדרתי.\nדוגמאות לתכן: עמדות מטיס, מארז למחשב טקטי, קרון צבאי.\nניהול והובלת תהליכי בקרת תצורה חוצי חברה.\nמס' משרה 1322\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתחומים\nהנדסאי/ת מכונות\nמהנדס/ת מכונות",
-      "stable_job_id": "drushim_38856181",
-      "content_hash": "ch_a1e335f394c8",
-      "requirement_assessments": [
-        {
-          "requirement": "הנדסאי / מהנדס מכונות",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "מהנדס / הנדסאי מכונות",
-            "source_field": "job_summary"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד מחזיק בתעודת הנדסאי מכונות מוסמך בדיוק כנדרש."
-        },
-        {
-          "requirement": "ביצוע תכנון מכני מרמת רעיון וקונספט ועד לתיק ייצור מלא",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "ביצוע תכנון מכני מרמת רעיון וקונספט ועד לתיק ייצור מלא לרכיבים מכאנים ומשולבי אלקטרוניקה וחשמל.",
-            "source_field": "company_requirements"
-          },
-          "profile_evidence": {
-            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע בעבודה עם מערכות אלקטרו-מכניות."
-        },
-        {
-          "requirement": "כתיבה וביצוע ATP מלא למערכת",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "כתיבה וביצוע ATP מלא למערכת",
-            "source_field": "job_summary"
-          },
-          "profile_evidence": {
-            "quote": "24/7 mission-critical control room operations, crisis response, supply continuity, process automation.",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד ניסיון בבדיקות, תפעול ואוטומציה של תהליכים הנדסיים."
-        },
-        {
-          "requirement": "אינטגרציה של כלל המרכיבים, תסריטי ניטור ותפעול מערכות",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "אינטגרציה של כלל המרכיבים, תסריטי ניטור ותפעול מערכות.",
-            "source_field": "job_summary"
-          },
-          "profile_evidence": {
-            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting, drone/UAV integration and flight operations.",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "המועמד בעל ניסיון באינטגרציה של מערכות מורכבות."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד ההנדסיות.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/%D7%93%D7%A8%D7%95%D7%A9-%D7%94-%D7%9E%D7%AA%D7%9B%D7%A0%D7%9F-%D7%AA-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%AA%D7%A7%D7%A9%D7%95%D7%A8%D7%AA-%D7%95%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%95%D7%AA-at-octally-integration-4476664576",
-      "title": "דרוש/ה מתכנן/ת תשתיות תקשורת ומערכות טכנולוגיות",
-      "company": "Octally Integration",
-      "location": "ישראל",
-      "date": "2026-10-28",
-      "source": "LinkedIn",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "Octally Integration",
-      "company_summary": "",
-      "job_summary": "תכנון והקמה של תשתיות תקשורת ומערכות טכנולוגיות במבנים ובמתקנים מורכבים, משלב האפיון ועד למסירה.",
-      "company_requirements": "ניסיון בתכנון תשתיות תקשורת, שליטה ב-AutoCAD, ניסיון במערכות בקרה ואוטומציה, נכונות לעבודת שטח.",
-      "experience_strengths": "רקע מעשי בהנדסת מכונות, שליטה במערכות בקרה ואוטומציה, וניסיון בעבודה בשטח.",
-      "reasoning": "המועמד הוא הנדסאי מכונות עם רקע במערכות בקרה, אינטגרציה ועבודה בשטח, המתאים לתפקידי תכנון והקמת תשתיות טכנולוגיות.",
-      "key_highlights": "התאמה גבוהה לדרישות האינטגרציה, הבקרה והעבודה מול צוותי ביצוע.",
-      "salary_range": "13,000 - 16,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • משרת יום",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות).",
-      "salary_source_url": "",
-      "p25": 13000,
-      "p75": 16000,
-      "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQG8v90vqzvZrQ/company-logo_100_100/company-logo_100_100/0/1707033975909/octallyintegration_ltd_logo?e=2147483647&v=beta&t=u-EO8u3FdIxvWYVcN1w6psIf8u6E6t7xKiH03keQzW8",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQG8v90vqzvZrQ/company-logo_100_100/company-logo_100_100/0/1707033975909/octallyintegration_ltd_logo?e=2147483647&v=beta&t=u-EO8u3FdIxvWYVcN1w6psIf8u6E6t7xKiH03keQzW8",
-      "snippet": "לחברה מובילה דרוש/ה מתכנן/ת תשתיות תקשורת לתכנון והקמה של מערכות תקשורת במבנים, מפעלים ומתקנים מורכבים.\nתיאור התפקיד:\nתכנון והקמה של תשתיות תקשורת ומערכות טכנולוגיות, משלב האפיון ועד למסירה.\nהכנת תוכניות, שרטוטים וסכמות באמצעות AutoCAD ו-Visio.\nתכנון חדרי תקשורת, ארונות תקשורת, תעלות, נתיבי כבילה, סיבים אופטיים וכבלי נחושת.\nשילוב מערכות תקשורת עם מערכות בקרה, אוטומציה ותקשורת בין מכונות.\nקריאת תוכניות אדריכליות ותוכניות מערכות.\nהכנת מפרטים טכניים וכתבי כמויות.\nעבודה מול לקוחות, יועצים, ספקים וקבלנים.\nליווי ופיקוח על ההתקנות בשטח, ביצוע בדיקות והפעלת המערכות.\nתיאום בין מערכות התקשורת למערכות החשמל, הבינוי והתשתיות באתר.\nדרישות התפקיד:\nניסיון משמעותי בתכנון תשתיות ומערכות תקשורת פיזיות.\nניסיון בהובלת פרויקטים של הקמה, שדרוג או אינטגרציה של מערכות.\nניסיון בעבודה מול מערכות בקרה, אוטומציה או תקשורת בין מכונות.\nשליטה מעשית ב-AutoCAD וב-Visio.\nניסיון בתכנון תשתיות כבילה, סיבים אופטיים, ארונות וחדרי תקשורת.\nניסיון בליווי התקנות ובעבודה מול צוותי ביצוע בשטח.\nאנגלית ברמה גבוהה.\nנכונות לעבודת שטח ולנסיעות בין מתקנים.\nיתרון משמעותי:\nניסיון בסביבה תעשייתית, מפעלים או אתרי ייצור.\nהיכרות עם PLC, SCADA ופרוטוקולי תקשורת תעשייתיים כגון Modbus ו-RS-485.\nניסיון בתכנון מערכות מתח נמוך ותשתיות Data Center.\nניסיון בהכנת מפרטים טכניים וכתבי כמויות.\nמתאים במיוחד לבעלי/ות רקע בתקשורת, חשמל, אלקטרוניקה, בקרה או אינטגרציה, המשלבים יכולות תכנון ושרטוט עם הבנה מעשית של ביצוע והקמת מערכות בשטח.",
-      "stable_job_id": "li_4476664576",
-      "content_hash": "ch_79ebefcc6084",
-      "requirement_assessments": [
-        {
-          "requirement": "ניסיון בעבודה מול מערכות בקרה, אוטומציה או תקשורת בין מכונות",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "ניסיון בעבודה מול מערכות בקרה, אוטומציה או תקשורת בין מכונות.",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Operations, C2 & SCADA: 24/7 mission-critical control room operations, crisis response, supply continuity, process automation.",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "למועמד יש רקע רב במערכות בקרה, אוטומציה ותפעול חדר בקרה."
-        },
-        {
-          "requirement": "נכונות לעבודת שטח ולנסיעות בין מתקנים",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "נכונות לעבודת שטח ולנסיעות בין מתקנים.",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Field, Integration & Hands-on: Electro-mechanical systems, site supervision, equipment commissioning",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "המועמד בעל ניסיון בעבודה מעשית בשטח ופיקוח על אתרים."
-        },
-        {
-          "requirement": "היכרות עם PLC, SCADA ופרוטוקולי תקשורת תעשייתיים",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "היכרות עם PLC, SCADA ופרוטוקולי תקשורת תעשייתיים כגון Modbus ו-RS-485.",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Natural gas transmission/distribution control, nomination allocations, pressure/flow monitoring, solar PV field systems, battery storage (BESS)",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "למועמד היכרות עם מערכות SCADA ובקרה תעשייתית במסגרת עבודתו במערכות אנרגיה."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": true,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": [
-        {
-          "type": "tag-field",
-          "icon": "ph-bold ph-wrench",
-          "label": "עבודת שטח"
-        }
-      ]
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/qc-inspector-at-acs-motion-control-4483842593",
-      "title": "QC Inspector",
-      "company": "ACS Motion Control",
-      "location": "לא צוין",
-      "date": "2026-10-28",
-      "source": "LinkedIn",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "ACS Motion Control",
-      "company_summary": "",
-      "job_summary": "ביצוע ביקורות איכות למוצרי החברה, לרבות ביקורת סופית, ביקורת במהלך תהליך ייצור ובדיקות קבלה לחלקים.",
-      "company_requirements": "מוטיבציה גבוהה, דיוק, סבלנות וירידה לפרטים, יכולת עבודה עם צ'קליסטים ודוחות Excel, ניסיון קודם באיכות או ייצור מהווה יתרון.",
-      "experience_strengths": "רקע מעשי כמהנדס מכונות והיכרות עם תהליכי ייצור, מערכות אלקטרו-מכניות ועבודה עם כלי נתונים כמו Excel.",
-      "reasoning": "עידו הינו הנדסאי מכונות מוסמך בעל רקע בתפעול מערכות אלקטרו-מכניות ובקרת תהליכים, המשתלב היטב בדרישות לתפקיד בקרת איכות ובדיקות ייצור.",
-      "key_highlights": "היכולת לעבוד בצורה מסודרת, ירידה לפרטים ורקע בהנדסת מכונות.",
-      "salary_range": "11,500 - 15,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": "https://media.licdn.com/dms/image/v2/D560BAQHKW3Nw4MPLUQ/company-logo_100_100/B56ZxX0V7.G4AU-/0/1770999865432/acs_motion_control_logo?e=2147483647&v=beta&t=9sjtUDBAnmUjVA-R6XIk7dJAGgJdzuvAZCXL0W691Fg",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQHKW3Nw4MPLUQ/company-logo_100_100/B56ZxX0V7.G4AU-/0/1770999865432/acs_motion_control_logo?e=2147483647&v=beta&t=9sjtUDBAnmUjVA-R6XIk7dJAGgJdzuvAZCXL0W691Fg",
-      "snippet": "ACS Motion Control מגייסת QC Assistant בעל/ת מוטיבציה גבוהה לביצוע ביקורות איכות למוצרי החברה, לרבות ביקורת סופית וביקורת במהלך תהליך הייצור.\nבמסגרת התפקיד:\nביצוע ביקורות איכות למוצרים\nבדיקות ויזואליות ובקרת איכות בתהליך הייצור\nעבודה עם צ'קליסטים ודוחות Excel\nבדיקות קבלה לחלקים ומוצרים\nRequirements:\nמה חשוב לנו?\nמוטיבציה גבוהה ורצון ללמוד\nדיוק, סבלנות וירידה לפרטים\nיכולת עבודה מסודרת ועצמאית\nניסיון קודם באיכות / ייצור – יתרון, אך לא חובה",
-      "stable_job_id": "li_4483842593",
-      "content_hash": "ch_147754814e8e",
-      "requirement_assessments": [
-        {
-          "requirement": "דיוק, סבלנות וירידה לפרטים",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "דיוק, סבלנות וירידה לפרטים",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
-            "source_field": "Core Profile"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע מקצועי הדורש הקפדה על פרטים ודיוק הנדסי."
-        },
-        {
-          "requirement": "עבודה עם צ'קליסטים ודוחות Excel",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "עבודה עם צ'קליסטים ודוחות Excel",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Excel data modeling",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "המועמד שולט בעבודה עם נתוני Excel."
-        },
-        {
-          "requirement": "ניסיון קודם באיכות / ייצור",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "ניסיון קודם באיכות / ייצור – יתרון, אך לא חובה",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "למועמד השכלה רלוונטית בתחום הייצור והמכונות המהווה בסיס טוב לתפקיד איכות."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
-    },
-    {
-      "link": "https://www.drushim.co.il/job/38671330/524ae40a/",
-      "title": "חברת Elmo מגייסת מפעילי/ות מכונה",
-      "company": "Elmo Motion Control",
-      "location": "קרית אריה, פתח תקווה",
-      "date": "2026-10-28",
-      "source": "Drushim",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "פיתוח מערכות וייצור בקרי תנועה",
-      "company_summary": "",
-      "job_summary": "הפעלת מכונה ואחריות שוטפת לתפקודה, תתי הרכבות אלקטרוניות ועבודה מול מחשב במסגרת משמרות.",
-      "company_requirements": "ניסיון כמפעיל מכונה יתרון, נכונות לעבודה במשמרות, מוטיבציה גבוהה.",
-      "experience_strengths": "הנדסאי מכונות מוסמך, רקע בהפעלה ובקרה של מערכות טכניות מורכבות.",
-      "reasoning": "המוועמד בעל רקע מעשי מוצק בהנדסאי מכונות וניסיון במערכות אלקטרו-מכניות, ומתאים לתפקיד הפעלת מכונה וייצור במפעל תעשייתי.",
-      "key_highlights": "התאמה לעבודה תעשייתית, שליטה במחשב ונכונות למשמרות.",
-      "salary_range": "13,500 - 17,500 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • כולל משמרות",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 13500,
-      "p75": 17500,
-      "logo": "https://webapi.drushim.co.il/logos/15117/page/639134116604840087.png",
-      "company_logo_url": "https://webapi.drushim.co.il/logos/15117/page/639134116604840087.png",
-      "snippet": "חברת Elmo מגייסת מפעילי/ות מכונה\nElmo Motion Control\nפתח תקווה\nללא נסיון\nמשרה מלאה\nועוד\nמשרה מלאה\nמשמרות\nעבודה מועדפת\nלפני 1 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nההזדמנות שלך להיות חלק מחברת Bosch העולמית!\nאנחנו חברת Elmo Motion Control, חברת בת של Bosch, מתמחים בפיתוח מערכות וייצור בקרי תנועה מהמובילים בתעשיות בעולם.\nאנחנו מתרחבים ומגייסים מפעילי/ות מכונה למחלקת הייצור שלנו.\nהתפקיד כולל:\n* הפעלת המכונה ואחריות שוטפת לתפקודה התקני באופן רציף, כפי שמוגדר בהוראות העבודה\n* תתי הרכבות אלקטרוניות ברצפת הייצור\n* עבודה מול מחשב (מכונה ממוחשבת)\nדרישות התפקיד\n* ניסיון קודם כמפעיל/ת מכונה- יתרון\n* נכונות לעבודה במשמרות בוקר, צהריים ולילה- חובה\n* מוטיבציה גבוהה ויחסי אנוש טובים\nמיקום: קרית אריה, פתח תקווה\nתנאים מצויינים למתאימים/ות!\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nכללי\nתעשיה / ייצור\nתחומים\nמפעיל/ת מכונות\nעובד/ת ייצור\nפועל/ת\nעבודה מועדפת\nחייל/ת משוחרר/ת\nמשרות כלליות",
-      "stable_job_id": "drushim_38671330",
-      "content_hash": "ch_95fffdede255",
-      "requirement_assessments": [
-        {
-          "requirement": "נכונות לעבודה במשמרות בוקר, צהריים ולילה",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "נכונות לעבודה במשמרות בוקר, צהריים ולילה- חובה",
-            "source_field": "job_snippet"
-          },
-          "profile_evidence": {
-            "quote": "24/7 mission-critical control room operations, crisis response",
-            "source_field": "profile"
-          },
-          "assessment": "match",
-          "explanation": "המועמד בעל ניסיון בעבודה מסביב שעון ובמשמרות."
-        },
-        {
-          "requirement": "ניסיון קודם כמפעיל/ת מכונה",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "ניסיון קודם כמפעיל/ת מכונה- יתרון",
-            "source_field": "job_snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
-            "source_field": "profile"
-          },
-          "assessment": "match",
-          "explanation": "הכשרתו כהנדסאי מכונות מעניקה לו בסיס חזק להפעלת מכונות ייצור."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": true,
-      "curated_tags": [
-        {
-          "type": "tag-junior",
-          "icon": "ph-bold ph-graduation-cap",
-          "label": "Junior"
-        }
-      ]
-    },
-    {
-      "link": "https://www.drushim.co.il/job/38880425/7221a31a/",
-      "title": "מפעיל/ת תחנת כוח שורק (ראשון לציון)",
-      "company": "סימנס אנרגיה",
-      "location": "ראשון לציון",
-      "date": "2026-10-28",
-      "source": "Drushim",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "energy",
-      "company_domain_product": "תחנת כוח שורק, סימנס אנרגיה",
-      "company_summary": "",
-      "job_summary": "מפעיל/ת תחנת כוח האחראית על שילוב בין ישיבה בחדר בקרה ובחינת מדדים לבין סיורים באתר, ביצוע בדיקות, עבודות אחזקה בסיסיות ועבודה במשמרות.",
-      "company_requirements": "השכלה טכנולוגית במכונות/חשמל, ניסיון בעבודה במשמרות, אנגלית ברמה טובה, ידע טכני קודם.",
-      "experience_strengths": "הנדסאי מכונות מוסמך עם התמחות באנרגיה ירוקה וגז טבעי, רקע בשליטה ובקרה (SCADA), וניסיון רב בהפעלת מערכות אלקטרו-מכניות שדה.",
-      "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מוצק במערכות אנרגיה ובקרת תהליכים, מה שמתאים במדויק לתפקיד מפעיל תחנת כוח.",
-      "key_highlights": "הנדסאי מכונות מוסמך, רקע במערכות בקרה ואנרגיה, יכולת עבודה במשמרות וסביבה ממוחשבת.",
-      "salary_range": "15,000 - 19,500 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • כולל משמרות",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: אחזקת תחנות כוח וציוד סובב.",
-      "salary_source_url": "",
-      "p25": 15000,
-      "p75": 19500,
-      "logo": "https://webapi.drushim.co.il/logos/4072843/page/638593295897057226.jpg",
-      "company_logo_url": "https://webapi.drushim.co.il/logos/4072843/page/638593295897057226.jpg",
-      "snippet": "מפעיל/ת תחנת כוח שורק (ראשון לציון)\nסימנס אנרגיה\nראשון לציון\n1-2 שנים\nמשמרות\nלפני 3 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nתיאור התפקיד:\nאנו מחפשים מפעיל/ה לצוות תחנה המונה כ 20 עובדים שמחציתם מפעילים/ות.\nהמפעיל\\ה יחלק את יומו בין ישיבה בחדר הבקרה לבחינת מדדים במערכות השונות לבין יציאה לאתר עצמו, סיור בתחנה וביצוע משימות שונות.\nאנו מחפשים אדם שמחפש/ת עבודה לטווח ארוך, מוצא/ת שתחום האנרגיה מרתק, אוהב/ת לעבוד בצוות ובמשמרות, אדם שמחפש/ת את הבית השני שלו.\nהעבודה כוללת:\n* סיורים באתר עצמו לרבות עלייה במדרגות צפות וכמו כן ישיבה בחדר הבקרה לצפייה במסכים.\n* באחריות המפעיל/ה לעקוב על תהליכים שונים המתבטאים בחדר הבקרה\n* העבודה מחולקת באופן כללי ל- 30% שהות בחדר הבקרה ומעקב אחריי מדדים ובקרים במערכות השונות\n* וכן 70% סיורים באתר התחנה, מעקב אחר צ'ק ליסט למשימות השונות, ביצוע בדיקות ודגימות שונות ברחבי התחנה.\n* אחריות לביצוע פרוצדורות טכניות שונות, הכוללות ניתוח מידע ועריכת דוחות על בסיס המידע שנאסף.\n* יכולת לעבודת צוות הכוללת שיתוף מידע ועדכונים שוטפים. יודגש כי התפקיד תחת ראש צוות.\n* ביצוע עבודות אחזקה בסיסיות הקשורות למתקן עצמו.\n* משמרות: יום ולילה הכוללות עבודה בשבתות וחגים - חובה.\nהגעה עצמאית.\nדרישות התפקיד\n* השכלה טכנולוגית: לימודים טכנולוגיים בתחומים כמו חשמל, מכונות, מכנטרוניקה, מכשור, כימיה או אלקטרוניקה - יתרון.\n* ניסיון בעבודה במשמרות - חובה.\n* ניסיון קודם: ניסיון כמפעיל/ה או ראש/ת צוות הפעלה במפעלים תהליכיים או תחנות כוח - יתרון.\n* ניסיון בתחום טורבינות: ניסיון בטורבינות גז, קיטור, משאבות, גנראטורים או מדחסי אוויר - יתרון.\n* נדרש ידע טכני קודם, לרבות ניסיון אישי.\n* היכרות עם מערכות DCS : הכרות עם מערכות מחשוב ומידע תהליכי.\n* עבודה בסביבה ממוחשבת עם שליטה בסיסית בתוכנות Office ומערכות מידע טכניות.\n* אנגלית ברמה טובה- חובה\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתעשיה / ייצור\nתחומים\nחשמל ואלקטרוניקה\nאיש/ת מכשור ובקרה\nמפעיל/ת מכונות\nהנדסאי/ת חשמל\nהנדסאי/ת מכונות\nהנדסאי/ת אלקטרוניקה",
-      "stable_job_id": "drushim_38880425",
-      "content_hash": "ch_20df9c0ab29f",
-      "requirement_assessments": [
-        {
-          "requirement": "השכלה טכנולוגית בתחומים כמו חשמל, מכונות, מכטרוניקה, מכשור, כימיה או אלקטרוניקה",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "השכלה טכנולוגית: לימודים טכנולוגיים בתחומים כמו חשמל, מכונות, מכנטרוניקה, מכשור, כימיה או אלקטרוניקה - יתרון.",
-            "source_field": "job_snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "profile"
-          },
-          "assessment": "match",
-          "explanation": "המועמד הינו הנדסאי מכונות מוסמך, העונה בדיוק על דרישת ההשכלה הטכנולוגית המועדפת."
-        },
-        {
-          "requirement": "ניסיון בעבודה במשמרות",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "ניסיון בעבודה במשמרות - חובה.",
-            "source_field": "job_snippet"
-          },
-          "profile_evidence": {
-            "quote": "24/7 mission-critical control room operations, crisis response, supply continuity, process automation.",
-            "source_field": "profile"
-          },
-          "assessment": "match",
-          "explanation": "למועמד יש ניסיון בעבודה בסביבת חדר בקרה תפעולי במתכונת מסביב לשעון."
-        },
-        {
-          "requirement": "אנגלית ברמה טובה",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "אנגלית ברמה טובה- חובה",
-            "source_field": "job_snippet"
-          },
-          "profile_evidence": {
-            "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
-            "source_field": "profile"
-          },
-          "assessment": "match",
-          "explanation": "המועמד שולט בכלים מתקדמים ובעל אוריינטציה טכנולוגית גבוהה המעידה על יכולת עבודה באנגלית טכנית."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
     }
   ]
 }
