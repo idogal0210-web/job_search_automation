@@ -192,6 +192,7 @@ job_search_automation/
   - Client-side privacy-first CV ingestion: Browser-native file reading (PDF, DOCX, TXT via PDF.js and Mammoth.js) with zero server uploads and instant fallback to canonical baseline profile.
 - **GitOps Save & Sync protocol:** Unified zero-waste cleanup (purged obsolete `integration/` templates and caches), syntax validation, pre-commit secret scanning, zero-emoji verification, and two-way GitHub push.
 - **Streamlined header UI:** Complete removal of obsolete "about system" info button and modal dialog (`#aboutModal`), keeping brand header focused with profile title and cloud sync button only, maintaining 1:1 dual-template parity.
+- **Manual Cloud Job Search Trigger (GitHub Actions):** Dedicated header button (`#headerRunSearchBtn`) and execution modal (`#runSearchModal`) enabling on-demand job scraping via GitHub Actions `workflow_dispatch` API. Supports client-side GitHub PAT storage in LocalStorage, live run status retrieval, spinning progress indicator, automated polling, and page refresh on completion with 1:1 dual-template parity.
 
 ### 5.2 In Progress (WIP)
 - **Salary engine market calibration:** Fine-tuning compensation bands based on user feedback and emerging Israeli industrial salary data.

@@ -36,6 +36,10 @@
       <div class="brand-titles profile-info">
         <div class="brand-title-row">
           <h1 class="brand-title profile-title">עידו גל | בקרת משרות</h1>
+          <button type="button" id="headerRunSearchBtn" class="header-run-search-btn icon-button" onclick="triggerRunSearchModal()" title="הפעלת סריקת משרות בענן" aria-label="הפעלת סריקת משרות בענן">
+            <i class="ph-duotone ph-play" id="headerRunSearchIcon"></i>
+            <span class="sync-status-dot" id="headerRunSearchDot" role="status" aria-live="polite" style="display: none; background: var(--dashboard-cyan);"></span>
+          </button>
           <button type="button" id="headerSyncBtn" class="header-sync-btn icon-button" onclick="triggerSyncModal()" title="סנכרון נתונים עם הענן" aria-label="סנכרון נתונים עם הענן">
             <i class="ph-duotone ph-cloud-arrow-up" id="headerSyncIcon"></i>
             <span class="sync-status-dot" id="headerSyncDot" role="status" aria-live="polite"></span>
@@ -1398,6 +1402,85 @@
 
   </main>
 
+
+  <!-- Cloud Run Search Modal -->
+  <dialog id="runSearchModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeRunSearchModal()">
+    <div class="dashboard-card dashboard-modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 14px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="stat-icon-squircle cyan">
+            <i class="ph-duotone ph-rocket-launch"></i>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 18px; font-weight: 600;">הפעלת סריקת משרות בענן</h3>
+            <small style="color: var(--dashboard-muted);">ריצה יזומה ב-GitHub Actions (LinkedIn, Drushim, Indeed, Glassdoor)</small>
+          </div>
+        </div>
+        <button type="button" onclick="closeRunSearchModal()" class="tool-btn" style="min-height: 36px; padding: 6px 12px; font-size: 16px; cursor: pointer; border-radius: 999px;" aria-label="סגור"><i class="ph-bold ph-x"></i></button>
+      </div>
+
+      <!-- Cloud Status Box -->
+      <div id="runSearchStatusCard" style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--dashboard-edge); border-radius: 18px; padding: 16px; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600;">
+            <i class="ph-duotone ph-clock" style="color: var(--dashboard-cyan);"></i> סריקה אחרונה בענן:
+          </span>
+          <span id="runSearchLastRunTime" style="font-size: 13.5px; color: var(--dashboard-text);">בטעינה...</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600;">
+            <i class="ph-duotone ph-check-circle" style="color: var(--dashboard-lime);"></i> תוצאת ריצה אחרונה:
+          </span>
+          <span id="runSearchLastRunStatus" class="dashboard-chip" style="font-size: 12px; padding: 4px 10px;">בטעינה...</span>
+        </div>
+      </div>
+
+      <!-- Progress Banner (Shown when running) -->
+      <div id="runSearchProgressBanner" style="display: none; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <i class="ph-duotone ph-spinner ph-spin" style="font-size: 24px; color: var(--dashboard-cyan);"></i>
+          <div>
+            <div id="runSearchProgressTitle" style="font-size: 14px; font-weight: 600; color: #fff;">סריקת משרות פעילה כעת בענן</div>
+            <div id="runSearchProgressText" style="font-size: 12.5px; color: var(--dashboard-muted);">הריצה מתבצעת ב-GitHub Actions. הדשבורד יעדכן אוטומטית כשתסתיים.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GitHub PAT Token Section -->
+      <div style="margin-bottom: 18px;">
+        <div id="runSearchTokenDisplay" style="display: none; justify-content: space-between; align-items: center; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;">
+          <span style="font-size: 13px; color: var(--dashboard-muted); display: flex; align-items: center; gap: 6px;">
+            <i class="ph-duotone ph-key" style="color: var(--dashboard-gold);"></i>
+            טוקן GitHub מוגדר: <code id="runSearchTokenMasked" style="color: #fff; font-size: 12px;">ghp_****</code>
+          </span>
+          <button type="button" onclick="editRunSearchToken()" class="tool-btn" style="padding: 4px 10px; font-size: 12px; min-height: 28px;">החלף טוקן</button>
+        </div>
+
+        <div id="runSearchTokenInputWrapper" style="display: none; flex-direction: column; gap: 8px;">
+          <label for="runSearchPatInput" style="font-size: 13px; font-weight: 600; color: var(--dashboard-text);">
+            טוקן גישה אישי של GitHub (Personal Access Token):
+          </label>
+          <div style="display: flex; gap: 8px;">
+            <input type="password" id="runSearchPatInput" placeholder="הדבק ghp_... או github_pat_..." style="flex: 1; padding: 9px 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--dashboard-edge); border-radius: 12px; color: #fff; font-size: 13px; direction: ltr;" />
+            <button type="button" onclick="saveRunSearchToken()" class="tool-btn" style="padding: 8px 16px; font-size: 13px; min-height: 38px;">שמור</button>
+          </div>
+          <p style="font-size: 12px; color: var(--dashboard-muted); line-height: 1.5; margin: 0;">
+            הטוקן נשמר אך ורק בדפדפן שלך (ב-LocalStorage).
+            <a href="https://github.com/settings/tokens/new?scopes=workflow&description=Job+Search+Dashboard+Trigger" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); text-decoration: underline;">לחץ כאן ליצירת טוקן עם הרשאת workflow</a>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08);">
+        <button type="button" onclick="closeRunSearchModal()" class="tool-btn">סגור</button>
+        <button type="button" id="runSearchSubmitBtn" onclick="dispatchCloudJobSearch()" class="dashboard-primary" style="display: flex; align-items: center; gap: 8px;">
+          <i class="ph-duotone ph-play"></i>
+          <span>הפעל סריקה כעת</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
 
   <!-- Sync Modal -->
   <dialog id="syncModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeSyncModal()">

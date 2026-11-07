@@ -181,7 +181,8 @@
       white-space: nowrap;
     }
     .icon-button,
-    .header-sync-btn {
+    .header-sync-btn,
+    .header-run-search-btn {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -201,16 +202,26 @@
     }
     @media (hover: hover) {
   .icon-button:hover,
-    .header-sync-btn:hover {
+    .header-sync-btn:hover,
+    .header-run-search-btn:hover {
       background: rgba(255, 255, 255, 0.12);
       border-color: rgba(255, 255, 255, 0.3);
       transform: translateY(-1px);
     }
 }
     .icon-button:focus-visible,
-    .header-sync-btn:focus-visible {
+    .header-sync-btn:focus-visible,
+    .header-run-search-btn:focus-visible {
       outline: 3px solid #a8d573;
       outline-offset: 2px;
+    }
+    .header-run-search-btn.is-running {
+      border-color: rgba(56, 189, 248, 0.6);
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--dashboard-cyan);
+    }
+    .header-run-search-btn.is-running i {
+      animation: spin 1s linear infinite;
     }
     .sync-status-dot {
       position: absolute;

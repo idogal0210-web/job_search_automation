@@ -3392,6 +3392,242 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     closeDialogEl(document.getElementById('syncModal'));
   }
 
+  const GH_WORKFLOW_URL = 'https://api.github.com/repos/idogal0210-web/job_search_automation/actions/workflows/daily_job_search.yml';
+  let cloudSearchPollTimer = null;
+  let isCloudSearchActive = false;
+
+  function triggerRunSearchModal() {
+    updateRunSearchTokenUI();
+    fetchLatestCloudRunStatus();
+    openDialogEl(document.getElementById('runSearchModal'));
+  }
+
+  function closeRunSearchModal() {
+    closeDialogEl(document.getElementById('runSearchModal'));
+  }
+
+  function getStoredGitHubToken() {
+    try {
+      return (localStorage.getItem('gh_dispatch_token') || '').trim();
+    } catch (e) {
+      return '';
+    }
+  }
+
+  function updateRunSearchTokenUI() {
+    const token = getStoredGitHubToken();
+    const displayEl = document.getElementById('runSearchTokenDisplay');
+    const inputWrapper = document.getElementById('runSearchTokenInputWrapper');
+    const maskedEl = document.getElementById('runSearchTokenMasked');
+    const inputEl = document.getElementById('runSearchPatInput');
+
+    if (token) {
+      if (displayEl) displayEl.style.display = 'flex';
+      if (inputWrapper) inputWrapper.style.display = 'none';
+      if (maskedEl) {
+        const preview = token.length > 8 ? token.slice(0, 4) + '...' + token.slice(-4) : '••••••••';
+        maskedEl.textContent = preview;
+      }
+    } else {
+      if (displayEl) displayEl.style.display = 'none';
+      if (inputWrapper) inputWrapper.style.display = 'flex';
+      if (inputEl) inputEl.value = '';
+    }
+  }
+
+  function editRunSearchToken() {
+    const displayEl = document.getElementById('runSearchTokenDisplay');
+    const inputWrapper = document.getElementById('runSearchTokenInputWrapper');
+    const inputEl = document.getElementById('runSearchPatInput');
+    if (displayEl) displayEl.style.display = 'none';
+    if (inputWrapper) inputWrapper.style.display = 'flex';
+    if (inputEl) {
+      inputEl.value = getStoredGitHubToken();
+      inputEl.focus();
+    }
+  }
+
+  function saveRunSearchToken() {
+    const inputEl = document.getElementById('runSearchPatInput');
+    const val = inputEl ? inputEl.value.trim() : '';
+    if (!val) {
+      if (typeof showToast === 'function') showToast('נא להזין טוקן תקף');
+      return;
+    }
+    try {
+      localStorage.setItem('gh_dispatch_token', val);
+      updateRunSearchTokenUI();
+      if (typeof showToast === 'function') showToast('טוקן GitHub נשמר בהצלחה בדפדפן');
+    } catch (e) {
+      if (typeof showToast === 'function') showToast('שגיאה בשמירת הטוקן');
+    }
+  }
+
+  function setCloudSearchRunningUI(isRunning) {
+    isCloudSearchActive = isRunning;
+    const btn = document.getElementById('headerRunSearchBtn');
+    const icon = document.getElementById('headerRunSearchIcon');
+    const dot = document.getElementById('headerRunSearchDot');
+    const banner = document.getElementById('runSearchProgressBanner');
+    const submitBtn = document.getElementById('runSearchSubmitBtn');
+
+    if (btn) {
+      if (isRunning) {
+        btn.classList.add('is-running');
+        btn.setAttribute('title', 'סריקת משרות פעילה כעת בענן');
+      } else {
+        btn.classList.remove('is-running');
+        btn.setAttribute('title', 'הפעלת סריקת משרות בענן');
+      }
+    }
+    if (icon) {
+      icon.className = isRunning ? 'ph-duotone ph-spinner ph-spin' : 'ph-duotone ph-play';
+    }
+    if (dot) {
+      dot.style.display = isRunning ? 'inline-block' : 'none';
+    }
+    if (banner) {
+      banner.style.display = isRunning ? 'block' : 'none';
+    }
+    if (submitBtn) {
+      submitBtn.disabled = isRunning;
+      submitBtn.style.opacity = isRunning ? '0.6' : '1';
+      submitBtn.style.pointerEvents = isRunning ? 'none' : 'auto';
+      const textSpan = submitBtn.querySelector('span');
+      if (textSpan) textSpan.textContent = isRunning ? 'סריקה פעילה בענן...' : 'הפעל סריקה כעת';
+    }
+  }
+
+  async function fetchLatestCloudRunStatus() {
+    const timeEl = document.getElementById('runSearchLastRunTime');
+    const statusEl = document.getElementById('runSearchLastRunStatus');
+    try {
+      const headers = { 'Accept': 'application/vnd.github+json' };
+      const token = getStoredGitHubToken();
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      const res = await fetch(GH_WORKFLOW_URL + '/runs?per_page=1', { headers });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      if (data && data.workflow_runs && data.workflow_runs.length > 0) {
+        const run = data.workflow_runs[0];
+        const dateObj = new Date(run.created_at);
+        const timeFormatted = dateObj.toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        if (timeEl) timeEl.textContent = timeFormatted;
+
+        if (run.status === 'in_progress' || run.status === 'queued') {
+          if (statusEl) {
+            statusEl.textContent = 'פעיל כעת';
+            statusEl.className = 'dashboard-chip cyan';
+          }
+          setCloudSearchRunningUI(true);
+          startCloudSearchPolling();
+        } else if (run.status === 'completed') {
+          if (run.conclusion === 'success') {
+            if (statusEl) {
+              statusEl.textContent = 'הצלחה';
+              statusEl.className = 'dashboard-chip lime';
+            }
+          } else {
+            if (statusEl) {
+              statusEl.textContent = run.conclusion === 'failure' ? 'נכשלה' : (run.conclusion || 'הושלם');
+              statusEl.className = 'dashboard-chip rose';
+            }
+          }
+          if (isCloudSearchActive) {
+            setCloudSearchRunningUI(false);
+          }
+        }
+      }
+    } catch (e) {
+      if (timeEl) timeEl.textContent = 'לא זמין';
+      if (statusEl) {
+        statusEl.textContent = 'מצב לא ידוע';
+        statusEl.className = 'dashboard-chip';
+      }
+    }
+  }
+
+  function startCloudSearchPolling() {
+    if (cloudSearchPollTimer) clearInterval(cloudSearchPollTimer);
+    cloudSearchPollTimer = setInterval(async () => {
+      try {
+        const headers = { 'Accept': 'application/vnd.github+json' };
+        const token = getStoredGitHubToken();
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        const res = await fetch(GH_WORKFLOW_URL + '/runs?per_page=1', { headers });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.workflow_runs && data.workflow_runs.length > 0) {
+          const run = data.workflow_runs[0];
+          if (run.status === 'completed') {
+            clearInterval(cloudSearchPollTimer);
+            cloudSearchPollTimer = null;
+            setCloudSearchRunningUI(false);
+            fetchLatestCloudRunStatus();
+            if (run.conclusion === 'success') {
+              if (typeof showToast === 'function') showToast('סריקת המשרות בענן הסתיימה בהצלחה!');
+              setTimeout(() => {
+                window.location.reload();
+              }, 2500);
+            } else {
+              if (typeof showToast === 'function') showToast('ריצת הסריקה בענן הסתיימה בסטטוס: ' + (run.conclusion || 'הושלם'));
+            }
+          }
+        }
+      } catch (e) {
+        /* Ignore poll network errors */
+      }
+    }, 12000);
+  }
+
+  async function dispatchCloudJobSearch() {
+    const token = getStoredGitHubToken();
+    if (!token) {
+      editRunSearchToken();
+      if (typeof showToast === 'function') showToast('נא להגדיר טוקן GitHub להפעלת סריקה');
+      return;
+    }
+
+    const submitBtn = document.getElementById('runSearchSubmitBtn');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      const textSpan = submitBtn.querySelector('span');
+      if (textSpan) textSpan.textContent = 'שולח פקודה לענן...';
+    }
+
+    try {
+      const res = await fetch(GH_WORKFLOW_URL + '/dispatches', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/vnd.github+json',
+          'Authorization': 'Bearer ' + token,
+          'X-GitHub-Api-Version': '2022-11-28',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ref: 'main' })
+      });
+
+      if (res.status === 204) {
+        setCloudSearchRunningUI(true);
+        if (typeof showToast === 'function') showToast('סריקת המשרות הופעלה בהצלחה ב-GitHub Actions!');
+        setTimeout(() => {
+          fetchLatestCloudRunStatus();
+          startCloudSearchPolling();
+        }, 3000);
+      } else if (res.status === 401 || res.status === 403) {
+        if (typeof showToast === 'function') showToast('שגיאת הרשאה מול GitHub. ודא שהטוקן כולל הרשאת workflow');
+        editRunSearchToken();
+        setCloudSearchRunningUI(false);
+      } else {
+        if (typeof showToast === 'function') showToast('שגיאה בשיגור הסריקה: HTTP ' + res.status);
+        setCloudSearchRunningUI(false);
+      }
+    } catch (err) {
+      if (typeof showToast === 'function') showToast('שגיאת רשת בחיבור ל-GitHub: ' + (err.message || ''));
+      setCloudSearchRunningUI(false);
+    }
+  }
+
   function toggleMetricsExpand() {
     const content = document.getElementById('collapsibleMetricsContent');
     const btn = document.getElementById('metricsToggleBtn');
@@ -3409,6 +3645,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   if (typeof window !== 'undefined') {
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        closeRunSearchModal();
         closeSyncModal();
         closeDuplicatesModal();
         closeInactiveJobsModal();
@@ -6838,6 +7075,7 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     updateSortIconAndToast(currentSort, false);
     await fetchJobsData();
     await fetchCloudSync();
+    fetchLatestCloudRunStatus();
     setViewMode(currentViewMode);
     initAtsModule();
     initCvUploadState();
