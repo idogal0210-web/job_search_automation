@@ -46,6 +46,23 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
   - Success criteria: Monolithic `main()` decomposed to ~20 lines, embedded prompts moved to versioned text files under `prompts/`, search keywords & aliases centralized in `src/config.py`, deduplicated salary regex into `extract_advertised_monthly_ils_amounts`, `JobFetcher` abstract registry, `GeminiPool.generate_json` wired across tools, ephemeral intake patterns added to hygiene policy, 305/305 tests passing, zero emojis.
   - Evidence: Verified via 305/305 unit tests passing (`Ran 305 tests in 10.5s OK`), zero-emoji audit passed (0 emojis), hygiene validation clean, committed & pushed in `524ca08`, `cf807e8`, `90b4d2e`. Completed 2026-11-05.
 
+### Phase 6: Career Studio Workspace & Progressive Intelligence (November 2026)
+- [x] **TASK-10**: Career Studio Core Architecture & Multi-Module Workspace (Milestone 1).
+  - Target files: `frontend/templates/index.html`, `docs/index.html`, `frontend/js/dashboard.js`, `docs/dashboard.js`, `frontend/css/dashboard.css`, `docs/dashboard.css`, `tests/test_m1_challenger_stress.py`, `tests/stress_m1_harness.js`.
+  - Success criteria: Symmetrical App Switcher between Job Radar and Career Studio with bidirectional `#studio` hash sync, WCAG AA 44x44px touch targets, client-side CV file upload and parsing (PDF, DOCX, TXT), baseline profile fallback. Verified via 306 Python tests and Node.js stress harness. Completed 2026-11-05.
+- [x] **TASK-11**: ATS Matcher & Statutory Hard Gates Engine (Milestone 2).
+  - Target files: `frontend/js/dashboard.js`, `docs/dashboard.js`, `tests/test_m2_ats_spec.py`, `tests/stress_m2_harness.js`.
+  - Success criteria: Statutory hard gates scanner (Mechanical Practical Engineer, Certified Electrician progress, B.Sc. gap guard), 4-bucket keyword taxonomy (methodologies, financials, systems, energy), ATS structural compliance checklist. Verified via spec tests. Completed 2026-11-05.
+- [x] **TASK-12**: AI Writer, 3-Mode Tone Switcher & Industrial Terminology Engine (Milestone 3).
+  - Target files: `frontend/js/dashboard.js`, `docs/dashboard.js`, `tests/test_m3_writer_spec.py`, `tests/test_m3_grammar_dict_challenger.py`.
+  - Success criteria: 3 professional tone profiles (Technical/Field, Leadership/PM, Research/Innovation), STAR formula bullet transformer, active-verb grammar checker, and bilingual energy terminology search. Completed 2026-11-05.
+- [x] **TASK-13**: AI Interview Simulator, STAR Evaluation & LinkedIn Optimization (Milestones 4-6).
+  - Target files: `frontend/js/dashboard.js`, `docs/dashboard.js`, `tests/test_m456_studio_spec.py`.
+  - Success criteria: Scenario-based interview practice, STAR answer breakdown, LinkedIn headline/summary generator, professional skills gap matrix with anonymization export. Completed 2026-11-05.
+- [x] **TASK-14**: Career Studio Curated ATS Selector & Progressive Step Glow.
+  - Target files: `frontend/templates/index.html`, `docs/index.html`, `frontend/js/dashboard.js`, `docs/dashboard.js`, `frontend/css/dashboard.css`, `docs/dashboard.css`, `tests/test_m2_ats_spec.py`, `tests/stress_m2_harness.js`.
+  - Success criteria: Dropdown selector (`atsJobSelector`) strictly displays only Starred (`starred`) and Saved (`saved`) jobs, with clear status tags and match score; progressive focus glow (`studio-step-active-glow`) initializes on Step 1 and transfers automatically to Step 2 upon ATS execution (`triggerAtsMatching`), reverting to Step 1 on clear; verified via 17 ATS spec tests, 2,489 stress assertions, and 0 emojis. Completed 2026-11-06 (commit `262404b`).
+
 
 ---
 

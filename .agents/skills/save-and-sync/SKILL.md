@@ -24,6 +24,7 @@ Rules:
 - Disambiguate "שמור ועדכן" / "שמור וסנכרן" from context; if intended operation is unclear, ask one focused question.
 - Always refer to the remote platform as **GitHub** (never generic git).
 - Strictly enforce zero emojis in all output summaries and logs.
+- Living documentation requirement: Whenever any code, UI, or architecture change is made, `PROJECT_CONTEXT.md` and `TASKS.md` (and `README.md` if user-facing) MUST be updated in the same commit before pushing. If Python dependencies change, `requirements.txt` and `requirements-lock.txt` must also be kept in sync.
 
 ## 2. Preflight & Project Policy
 Policy configuration is strictly loaded from `.save-and-sync.yml` at the repository root.
@@ -46,7 +47,7 @@ Before staging or pushing, run:
 python3 scripts/project_hygiene.py --validate
 python3 -m unittest discover -s tests -p "test_*.py"
 ```
-Must verify: zero syntax errors, zero broken JSON datasets, zero failing tests.
+Must verify: zero syntax errors, zero broken JSON datasets, zero failing tests, and 100% synchronization of living documentation (`PROJECT_CONTEXT.md`, `TASKS.md`, `README.md`).
 
 ### Step 2: Pre-Commit Secret Scanning & Zero-Emoji Verification
 Run automated secret pattern detection:

@@ -11,3 +11,4 @@ Core invariants:
 - Never infer `CLEAN` from `SAVE` or `SYNC` unless explicitly requested.
 - Always refer to the remote platform as **GitHub** (never generic git).
 - Strictly enforce zero emojis in all commit messages, logs, and RTL executive summaries.
+- **Mandatory Living Documentation Synchronization:** Whenever ANY code, architecture, or UI change is made, `PROJECT_CONTEXT.md` and `TASKS.md` MUST be updated in the SAME turn and commit before declaring completion or pushing to GitHub. If the change alters user-facing capabilities or UI workflows, `README.md` MUST also be updated. If Python dependencies change, `requirements.txt` and `requirements-lock.txt` MUST also be updated.

@@ -302,14 +302,37 @@ def validate_integrity(repo_root=REPO_ROOT):
                 except Exception as e:
                     rel = os.path.relpath(full_path, repo_root)
                     errors.append(f"JSON syntax error in {rel}: {e}")
-                    
+
+    # Check Living Documentation and Dependency Parity
+    doc_files = ["PROJECT_CONTEXT.md", "TASKS.md", "README.md", "requirements.txt", "requirements-lock.txt"]
+    for df in doc_files:
+        df_path = Path(repo_root) / df
+        if not df_path.exists():
+            errors.append(f"Missing required living documentation file: {df}")
+        elif df_path.stat().st_size == 0:
+            errors.append(f"Living documentation file is empty: {df}")
+
+    req_file = Path(repo_root) / "requirements.txt"
+    lock_file = Path(repo_root) / "requirements-lock.txt"
+    if req_file.exists() and lock_file.exists():
+        try:
+            req_lines = [line.strip().split("==")[0].split(">=")[0].split("<")[0].strip().lower()
+                         for line in req_file.read_text(encoding="utf-8").splitlines()
+                         if line.strip() and not line.strip().startswith("#")]
+            lock_text = lock_file.read_text(encoding="utf-8").lower()
+            for pkg in req_lines:
+                if pkg and pkg not in lock_text:
+                    errors.append(f"Dependency '{pkg}' listed in requirements.txt is missing from requirements-lock.txt")
+        except Exception as e:
+            errors.append(f"Error checking dependency parity: {e}")
+
     if errors:
         print(f"[ERROR] Validation failed with {len(errors)} error(s):")
         for err in errors:
             print(f"  - {err}")
         return len(errors)
         
-    print(f"[OK] Integrity validated successfully: {len(py_files)} Python files and all JSON datasets passed check.")
+    print(f"[OK] Integrity validated successfully: {len(py_files)} Python files, all JSON datasets, and living documentation passed check.")
     return 0
 
 def main():

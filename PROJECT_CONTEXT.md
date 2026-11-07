@@ -84,7 +84,12 @@ job_search_automation/
 │   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
 ├── tools/                          # Standalone modular tooling
 │   └── cv_tailor/                  # Fact-based CV tailoring and interview prep engine
-├── tests/                          # Automated unit and integration test suite (305 passing tests)
+├── tests/                          # Automated unit and integration test suite (306 passing Python tests + 2,489 JS stress assertions)
+│   ├── test_template_docs_sync.py  # 1:1 dual-template synchronization guard between frontend/ and docs/
+│   ├── test_m1_challenger_stress.py# Milestone 1 app switcher & mobile workspace stress tests
+│   ├── test_m2_ats_spec.py         # Milestone 2 ATS matching, statutory hard gates & step glow tests
+│   ├── test_m3_writer_spec.py      # Milestone 3 AI Writer & 3-mode tone switcher tests
+│   ├── test_m456_studio_spec.py    # Milestones 4-6 Interview simulator, STAR & skills matrix tests
 │   ├── test_curated_tags.py        # Curated operational tags positive triggers & negative guards tests
 │   ├── test_recovery.py            # Degradation and error recovery tests
 │   ├── test_salary_intelligence.py # Salary prediction engine tests
@@ -96,7 +101,9 @@ job_search_automation/
 │   ├── test_cv_tailor.py           # CV Tailor engine verification tests
 │   ├── test_career_studio_spec.py  # Career Studio specifications tests
 │   ├── test_phase_b_precision.py   # AI evaluation precision and schema tests
-│   └── test_reliability_phase_a.py # Scraper and fallback reliability tests
+│   ├── test_reliability_phase_a.py # Scraper and fallback reliability tests
+│   ├── stress_m1_harness.js        # Node.js high-volume stress harness for Milestone 1
+│   └── stress_m2_harness.js        # Node.js high-volume stress harness (2,489 assertions) for Milestone 2
 └── scripts/
     ├── evaluate_dataset.py         # Confusion matrix, Precision/Recall/F1 and False Negatives evaluator
     └── requeue_jobs.py             # Utility script for re-evaluating pending or cached jobs
@@ -174,6 +181,15 @@ job_search_automation/
   - Dead code cleanup: 1,456 lines of dead chip DOM, helper functions (`getExperienceChip`, `getExplicitConditionChips`, `formatCompactSalary`, `getAiScoreDrivers`, `selectQuickChip`, `isJuniorFriendly`), and unused CSS completely purged.
   - 100% structural parity between Desktop and Mobile: Identical component hierarchy across viewports: topbar (star, share, match score badge), company logo + cyan company name + white title, 2 distinct content bubbles (Domain & Product, Job Requirements), progressive disclosure toggle ("הרחב ניתוח מלא" / "הסתר ניתוח מלא" enabled on both desktop and mobile), collapsible summary & AI insight (including full salary intelligence and benchmark links directly inline without popups), and a balanced 2-tier action structure (Row 1: Save + Reject triage buttons, Row 2: prominent full-width Apply link).
   - State integrity & self-healing: Automated remediation for browser LocalStorage starred state, preventing bulk injection while strictly safeguarding user-marked favorites (6-7 starred jobs).
+- **Career Studio Workspace & AI Modules (Milestones 1-6):**
+  - Unified app switcher: Seamless mode switching between Job Radar and Career Studio with bidirectional `#studio` hash sync and mobile navigation drawer integration.
+  - Curated ATS job selector: `atsJobSelector` strictly displays only jobs currently marked as **Starred** (`starred`) or **Saved** (`saved`) in the dashboard (excluding unstarred, rejected, or purged listings), with clear source badges (`[כוכב]`, `[שמורה]`, `[כוכב + שמורה]`) and match scores.
+  - Progressive step glow workflow: Elegant, non-intrusive focus guidance (`studio-step-active-glow`) initializing on Step 1 (Input & Selection) and transitioning automatically via CSS animations to Step 2 (Match Score Gauge & Statutory KPIs) upon execution (`triggerAtsMatching`), with immediate reset on clearing.
+  - Statutory hard gates engine: Automated evaluation against Israeli Ministry of Labor regulations (Certified Practical Mechanical Engineer, Certified Electrician progress, and B.Sc. engineer disqualification threshold penalty).
+  - 4-Bucket keyword taxonomy: Real-time gap mapping across methodologies, financials, technical systems, and energy sector standards.
+  - AI Writer & 3-mode tone switcher: Tailors bullet points to Technical/Field, Leadership/PM, or Research/Innovation tones using the STAR formula and an energy domain bilingual dictionary.
+  - AI Interview simulator & STAR evaluator: Simulates technical interviews, analyzes structured responses, optimizes LinkedIn bio headlines, and generates professional skill radar matrices.
+  - Client-side privacy-first CV ingestion: Browser-native file reading (PDF, DOCX, TXT via PDF.js and Mammoth.js) with zero server uploads and instant fallback to canonical baseline profile.
 - **GitOps Save & Sync protocol:** Unified zero-waste cleanup (purged obsolete `integration/` templates and caches), syntax validation, pre-commit secret scanning, zero-emoji verification, and two-way GitHub push.
 
 ### 5.2 In Progress (WIP)
