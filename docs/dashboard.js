@@ -33,7 +33,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const nextJobs = Array.isArray(data) ? data : data.jobs;
       if (!Array.isArray(nextJobs)) throw new Error('מבנה נתוני המשרות אינו תקין');
       if (!Array.isArray(data) && config.build_id && data.build_id && config.build_id !== data.build_id) {
-        throw new Error('נתוני המשרות והתצוגה מגרסאות שונות; יש לרענן את הדף');
+        console.warn('[JOBS_FETCH] Note: Display build (' + config.build_id + ') differs from jobs payload build (' + data.build_id + '). Proceeding with payload rendering.');
       }
       rawJobsData = nextJobs;
       window.jobsData = rawJobsData;
