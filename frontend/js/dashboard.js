@@ -3392,25 +3392,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     closeDialogEl(document.getElementById('syncModal'));
   }
 
-  let aboutModalPrevFocus = null;
-  function openAboutModal() {
-    aboutModalPrevFocus = document.activeElement;
-    const modal = document.getElementById('aboutModal');
-    if (!modal) return;
-    openDialogEl(modal);
-    const closeBtn = modal.querySelector('.modal-close-btn');
-    if (closeBtn) closeBtn.focus();
-  }
-
-  function closeAboutModal() {
-    const modal = document.getElementById('aboutModal');
-    if (!modal) return;
-    closeDialogEl(modal);
-    if (aboutModalPrevFocus && typeof aboutModalPrevFocus.focus === 'function') {
-      aboutModalPrevFocus.focus();
-    }
-  }
-
   function toggleMetricsExpand() {
     const content = document.getElementById('collapsibleMetricsContent');
     const btn = document.getElementById('metricsToggleBtn');
@@ -3428,7 +3409,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   if (typeof window !== 'undefined') {
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        closeAboutModal();
         closeSyncModal();
         closeDuplicatesModal();
         closeInactiveJobsModal();

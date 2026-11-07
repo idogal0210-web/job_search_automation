@@ -181,8 +181,7 @@
       white-space: nowrap;
     }
     .icon-button,
-    .header-sync-btn,
-    .header-about-btn {
+    .header-sync-btn {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -202,16 +201,14 @@
     }
     @media (hover: hover) {
   .icon-button:hover,
-    .header-sync-btn:hover,
-    .header-about-btn:hover {
+    .header-sync-btn:hover {
       background: rgba(255, 255, 255, 0.12);
       border-color: rgba(255, 255, 255, 0.3);
       transform: translateY(-1px);
     }
 }
     .icon-button:focus-visible,
-    .header-sync-btn:focus-visible,
-    .header-about-btn:focus-visible {
+    .header-sync-btn:focus-visible {
       outline: 3px solid #a8d573;
       outline-offset: 2px;
     }

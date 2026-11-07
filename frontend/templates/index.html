@@ -40,9 +40,6 @@
             <i class="ph-duotone ph-cloud-arrow-up" id="headerSyncIcon"></i>
             <span class="sync-status-dot" id="headerSyncDot" role="status" aria-live="polite"></span>
           </button>
-          <button type="button" class="header-about-btn icon-button" onclick="openAboutModal()" title="אודות המערכת" aria-label="אודות המערכת">
-            <i class="ph-duotone ph-info"></i>
-          </button>
         </div>
         <div class="brand-subtitle-row">
           <span class="brand-subtitle profile-subtitle">אנרגיה, גז טבעי ורחפנים</span>
@@ -1401,33 +1398,6 @@
 
   </main>
 
-
-  <!-- About System Modal -->
-  <dialog id="aboutModal" class="dashboard-modal-backdrop" aria-labelledby="aboutModalTitle" onclick="if(event.target===this)closeAboutModal()">
-    <div class="dashboard-card dashboard-modal-box">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
-        <h3 id="aboutModalTitle" style="margin: 0; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
-          <i class="ph-duotone ph-info" style="color: var(--dashboard-cyan); font-size: 22px;"></i>
-          <span>אודות מערכת בקרת המשרות</span>
-        </h3>
-        <button type="button" onclick="closeAboutModal()" class="modal-close-btn" aria-label="סגור חלון אודות">
-          <i class="ph-bold ph-x"></i>
-        </button>
-      </div>
-      <div style="font-size: 14px; line-height: 1.6; color: var(--dashboard-text);">
-        <p style="margin-bottom: 12px;">דשבורד משרות אינטראקטיבי אוטומטי מותאם אישית עבור <strong>עידו גל</strong>, במיקוד על הנדסת מכונות, אנרגיה, גז טבעי ומערכות רחפנים וכטב"ם.</p>
-        <p style="margin-bottom: 12px; color: var(--dashboard-muted);">שפת עיצוב ורכיבים: בהשראת <strong>So-Me Design System</strong>, חומרים שקופים (Glassmorphism) וטיפוגרפיית Google Sans.</p>
-        <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 12px 14px; margin-bottom: 16px; font-size: 12.5px;">
-          <div style="margin-bottom: 6px;"><strong>מקורות מידע:</strong> LinkedIn Jobs, דרושים (Drushim), ומערכות Comeet</div>
-          <div style="margin-bottom: 6px;"><strong>מנוע הערכה:</strong> מודלי Google Gemini עם ניתוח התאמה מדויק</div>
-          <div><strong>סנכרון ענן:</strong> Firebase Realtime Database לשימור משרות שמורות והסרת מנוטרלות</div>
-        </div>
-      </div>
-      <div style="display: flex; justify-content: flex-end; gap: 10px;">
-        <button type="button" onclick="closeAboutModal()" class="tool-btn" style="padding: 9px 22px; border-radius: 999px; min-height: 44px; min-width: 80px;">סגור</button>
-      </div>
-    </div>
-  </dialog>
 
   <!-- Sync Modal -->
   <dialog id="syncModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeSyncModal()">
