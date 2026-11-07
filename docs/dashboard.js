@@ -139,6 +139,55 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     return escapeHtml(domain || summary || 'מידע על תחום ומוצר החברה לא צוין.');
   }
 
+  function condenseMatchInsight(text) {
+    if (!text || text === 'אין ניתוח התאמה מאומת למשרה זו.') {
+      return 'התאמה טכנית ומקצועית גבוהה';
+    }
+    const t = text.trim();
+    const hasCommand = /פיקוד|ניהול\s+צוות|מפקד/.test(t);
+    const hasSolar = /סולאר|BESS|אגיר/.test(t);
+    const hasGas = /גז|לחץ|טורבינ/.test(t);
+    const hasUav = /רחפן|כטב|C-UAS/.test(t);
+    const hasScada = /SCADA|בקרה/.test(t);
+    const hasField = /שטח|אינטגרצי/.test(t);
+
+    if (hasCommand) return 'התאמה טכנית ופיקודית גבוהה';
+    if (hasSolar) return 'התאמה גבוהה (רקע סולארי ומכונות)';
+    if (hasGas) return 'התאמה גבוהה (רקע גז ומערכות לחץ)';
+    if (hasUav) return 'התאמה גבוהה (כטב"ם ומערכות שטח)';
+    if (hasScada) return 'התאמה גבוהה (בקרה ו-SCADA)';
+    if (hasField) return 'התאמה טכנית גבוהה (מכונות ושטח)';
+
+    let clean = t.replace(/^(?:המועמד\s+(?:הוא|הינו)|עידו\s+(?:הוא)?|לעידו|המוועמד\s+(?:הוא|הינו))\s*/i, '');
+    clean = clean.split(/,?\s*(?:המתאים|העונה|ועונה|התואם|המשתלבים|אשר|ומהווה)\s+/)[0];
+    clean = clean.replace(/^הנדסאי מכונות מוסמך\s+(?:עם|בעל)\s*/, '');
+    clean = clean.replace(/^(?:רקע\s+(?:מוצק|חזק|טוב)\s+ב?)/, '');
+    const words = clean.trim().split(/\s+/);
+    if (words.length > 5) {
+      clean = words.slice(0, 5).join(' ');
+    }
+    return clean ? ('התאמה טכנית גבוהה (' + clean.replace(/[,;]+$/, '') + ')') : 'התאמה טכנית ומקצועית גבוהה';
+  }
+
+  function condenseFitGap(text) {
+    if (!text) return 'עונה על דרישות הסף';
+    const t = text.trim();
+    if (/אין פערי סף|אין פער|עונה על דריש|ללא פער/.test(t)) {
+      return 'עונה על דרישות הסף';
+    }
+    let clean = t.split(/,?\s*(?:אך|אולם|עם זאת|כאשר|ויש לו)\s+/)[0];
+    clean = clean.replace(/^(?:למועמד\s+אין|אין\s+למועמד|היעדר|קיים\s+פער\s+(?:מסוים\s+)?ב?)\s*/, 'חסר ');
+    clean = clean.replace(/^חסר\s+ניסיון\s+(?:קודם\s+ספציפי|ספציפי\s+מוקדם|מעשי\s+עמוק|קודם)\s+ב?/, 'חסר ניסיון ב');
+    if (/ייצור בתעשייה כבדה|ניהול מחלקת ייצור/.test(clean)) {
+      return 'חסר ניסיון בניהול ייצור תעשייתי';
+    }
+    const words = clean.trim().split(/\s+/);
+    if (words.length > 7) {
+      clean = words.slice(0, 7).join(' ');
+    }
+    return clean.replace(/[,;.]+$/, '');
+  }
+
   function formatJobMatchAndGaps(job) {
     if (!job) {
       return {
@@ -151,11 +200,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const insightRaw = stripEmojis(job.reasoning || job.experience_strengths || '').trim();
     const gapsRaw = stripEmojis(job.fit_gaps || '').trim();
 
-    const isNoGap = !gapsRaw ||
-      gapsRaw.includes('אין פערי סף') ||
-      gapsRaw.includes('אין פער') ||
-      gapsRaw.includes('עונה על דרישות') ||
-      gapsRaw.includes('ללא פער');
+    const shortInsight = condenseMatchInsight(insightRaw);
+    const shortGap = condenseFitGap(gapsRaw);
+    const isNoGap = (shortGap === 'עונה על דרישות הסף');
 
     let badgeHtml = '';
     let statusHtml = '';
@@ -165,18 +212,14 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       statusHtml = '<span class="gap-text-ok">[OK] עונה על דרישות הסף</span>';
     } else {
       badgeHtml = '<span class="gap-status-pill gap-status-alert">[פער] קיים פער סף</span>';
-      statusHtml = `<span class="gap-text-alert">[פער] ${escapeHtml(gapsRaw)}</span>`;
+      statusHtml = `<span class="gap-text-alert">[פער] ${escapeHtml(shortGap)}</span>`;
     }
-
-    const cleanInsight = (insightRaw && insightRaw !== 'אין ניתוח התאמה מאומת למשרה זו.')
-      ? escapeHtml(insightRaw)
-      : 'התאמה טכנית ומקצועית לדרישות התפקיד';
 
     return {
       isNoGap,
       badgeHtml,
       statusHtml,
-      fullHtml: `${cleanInsight} | ${statusHtml}`
+      fullHtml: `${escapeHtml(shortInsight)} | ${statusHtml}`
     };
   }
 
