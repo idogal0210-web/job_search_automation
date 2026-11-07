@@ -214,7 +214,9 @@ class AuditRegressionTests(unittest.TestCase):
                  patch.object(main,'__file__',str(root/'main.py')),patch.object(main,'STATE_FILE',str(root/'data/jobs_state.json')), \
                  patch.object(main,'EvaluationLedger',return_value=ledger), \
                  patch.object(main,'fetch_linkedin_jobs',return_value=[]),patch.object(main,'fetch_drushim_jobs',return_value=[]), \
-                 patch.object(main,'fetch_comeet_jobs',return_value=[]),patch.object(main,'evaluate_candidates',return_value=(jobs,[])), \
+                 patch.object(main,'fetch_comeet_jobs',return_value=[]), \
+                 patch.object(main,'fetch_indeed_jobs',return_value=[]),patch.object(main,'fetch_glassdoor_jobs',return_value=[]), \
+                 patch.object(main,'evaluate_candidates',return_value=(jobs,[])), \
                  patch.object(main,'update_weekly_archive',return_value=jobs),patch.object(main,'build_and_save_docs_app'), \
                  patch.object(main,'send_email_report',side_effect=sent):
                 self.assertEqual(main.main(),0)

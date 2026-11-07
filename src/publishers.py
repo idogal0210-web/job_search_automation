@@ -62,7 +62,18 @@ def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
     now_str = datetime.now().strftime("%d.%m.%Y")
     
     pending = getattr(health, 'pending_evaluations', 0) if health else 0
-    incomplete = bool(health and (pending or health.linkedin_failures or health.drushim_failures or getattr(health, "comeet_failures", 0) or health.final_status.startswith('FAILED_')))
+    incomplete = bool(
+        health
+        and (
+            pending
+            or health.linkedin_failures
+            or health.drushim_failures
+            or getattr(health, "comeet_failures", 0)
+            or getattr(health, "indeed_failures", 0)
+            or getattr(health, "glassdoor_failures", 0)
+            or health.final_status.startswith("FAILED_")
+        )
+    )
     run_notice = (f'הריצה הושלמה חלקית. {pending} משרות ממתינות לבדיקה מלאה; ייתכנו תוצאות חסרות.'
                   if incomplete else 'בדיקת המשרות הושלמה.')
 
@@ -215,12 +226,20 @@ def send_email_report(sender_email, sender_pwd, processed_jobs, curated_email_jo
     email_html = build_unified_html_email(curated_email_jobs, top_3, dashboard_url, health)
 
     msg = MIMEMultipart()
-    if health.pending_evaluations or health.linkedin_failures or health.drushim_failures or getattr(health, "comeet_failures", 0) or health.final_status.startswith('FAILED_'):
-        msg['Subject'] = Header('⚠️ דוח משרות חלקי — נותרו בדיקות להשלמה | עידו גל', 'utf-8')
+    if (
+        health.pending_evaluations
+        or health.linkedin_failures
+        or health.drushim_failures
+        or getattr(health, "comeet_failures", 0)
+        or getattr(health, "indeed_failures", 0)
+        or getattr(health, "glassdoor_failures", 0)
+        or health.final_status.startswith("FAILED_")
+    ):
+        msg['Subject'] = Header('[חלקי] דוח משרות — נותרו בדיקות להשלמה | עידו גל', 'utf-8')
     elif not processed_jobs:
-        msg['Subject'] = Header(f"ℹ️ דוח משרות יומי - אין משרות חדשות שעברו סף | עידו גל", 'utf-8')
+        msg['Subject'] = Header(f"[יומי] דוח משרות - אין משרות חדשות שעברו סף | עידו גל", 'utf-8')
     else:
-        msg['Subject'] = Header(f"🎯 דוח משרות יומי מאוחד ({len(curated_email_jobs)} משרות נבחרות) | עידו גל", 'utf-8')
+        msg['Subject'] = Header(f"[יומי] דוח משרות מאוחד ({len(curated_email_jobs)} משרות נבחרות) | עידו גל", 'utf-8')
     
     msg['From'] = Header(f"Job Search Automation <{sender_email}>", 'utf-8')
     msg['To'] = Header("idogal0210@gmail.com", 'utf-8')

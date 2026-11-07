@@ -31,7 +31,7 @@ job_search_automation/
 │   └── data/cv/                    # תבניות קורות חיים מעודכנות (עברית ואנגלית)
 ├── src/
 │   ├── pipeline.py                 # תזמור תהליך הריצה, שלבים ומעקב מדדי בריאות
-│   ├── fetchers.py                 # סריקת משרות מפלטפורמות (LinkedIn, Drushim, Comeet ATS ישיר) עם Backoff
+│   ├── fetchers.py                 # סריקת משרות מפלטפורמות (LinkedIn, Drushim, Comeet ATS ישיר, Indeed, Glassdoor) עם Backoff
 │   ├── job_policy.py               # סינון מקדים דטרמיניסטי: מדרגי עדיפויות, רף שכר, סינון 24/7 והחרגת מעסיקים
 │   ├── gemini_runtime.py           # ניהול בריכת מודלי Gemini עם סכמת Pydantic מובנית וראיות התאמה
 │   ├── evaluators.py               # הערכת התאמה (ציון 0-100), בונוס חברות יעד ואימות ראיות מודעה

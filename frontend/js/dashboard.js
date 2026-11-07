@@ -2246,6 +2246,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (!sourceName) {
         if (link.includes('drushim.co.il')) sourceName = 'דרושים';
         else if (link.includes('comeet.com') || link.includes('comeet')) sourceName = 'Comeet';
+        else if (link.includes('indeed.com')) sourceName = 'Indeed';
+        else if (link.includes('glassdoor.com')) sourceName = 'Glassdoor';
         else if (link.includes('linkedin.com')) sourceName = 'LinkedIn';
         else sourceName = 'LinkedIn';
       }
@@ -2258,6 +2260,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       } else if (sourceName.toLowerCase().includes('comeet')) {
         sourceChipStyle = 'color: #c084fc; border-color: rgba(192, 132, 252, 0.4); background: rgba(192, 132, 252, 0.12);';
         sourceIcon = 'ph-buildings';
+      } else if (sourceName.toLowerCase().includes('indeed')) {
+        sourceChipStyle = 'color: #3b82f6; border-color: rgba(59, 130, 246, 0.4); background: rgba(59, 130, 246, 0.12);';
+        sourceIcon = 'ph-magnifying-glass';
+      } else if (sourceName.toLowerCase().includes('glassdoor')) {
+        sourceChipStyle = 'color: #10b981; border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.12);';
+        sourceIcon = 'ph-door';
       }
 
       const isStarred = Boolean(starredJobs[id]);
@@ -2429,6 +2437,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (!sourceName) {
       if (link.includes('drushim.co.il')) sourceName = 'דרושים';
       else if (link.includes('comeet.com') || link.includes('comeet')) sourceName = 'Comeet';
+      else if (link.includes('indeed.com')) sourceName = 'Indeed';
+      else if (link.includes('glassdoor.com')) sourceName = 'Glassdoor';
       else sourceName = 'LinkedIn';
     }
     let sourceIcon = 'ph-linkedin-logo';
@@ -2436,6 +2446,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       sourceIcon = 'ph-briefcase';
     } else if (sourceName.toLowerCase().includes('comeet')) {
       sourceIcon = 'ph-buildings';
+    } else if (sourceName.toLowerCase().includes('indeed')) {
+      sourceIcon = 'ph-magnifying-glass';
+    } else if (sourceName.toLowerCase().includes('glassdoor')) {
+      sourceIcon = 'ph-door';
     }
 
     let scoreClass = 'badge-score-high';

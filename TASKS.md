@@ -62,6 +62,9 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
 - [x] **TASK-14**: Career Studio Curated ATS Selector & Progressive Step Glow.
   - Target files: `frontend/templates/index.html`, `docs/index.html`, `frontend/js/dashboard.js`, `docs/dashboard.js`, `frontend/css/dashboard.css`, `docs/dashboard.css`, `tests/test_m2_ats_spec.py`, `tests/stress_m2_harness.js`.
   - Success criteria: Dropdown selector (`atsJobSelector`) strictly displays only Starred (`starred`) and Saved (`saved`) jobs, with clear status tags and match score; progressive focus glow (`studio-step-active-glow`) initializes on Step 1 and transfers automatically to Step 2 upon ATS execution (`triggerAtsMatching`), reverting to Step 1 on clear; verified via 17 ATS spec tests, 2,489 stress assertions, and 0 emojis. Completed 2026-11-06 (commit `262404b`).
+- [x] **TASK-15**: Indeed and Glassdoor Multi-Source Scrapers Integration.
+  - Target files: `src/fetchers.py`, `src/config.py`, `main.py`, `src/pipeline.py`, `src/publishers.py`, `frontend/js/dashboard.js`, `docs/dashboard.js`, `requirements.txt`, `requirements-lock.txt`, `.agents/skills/job-search-automation-state/references/search-preferences.json`, `tests/test_new_fetchers.py`.
+  - Success criteria: Added Indeed and Glassdoor scrapers with structured mosaic JSON & DOM extraction, RunHealth tracking, error handling and retry with backoff, UI source badges and styling, 313/313 unit tests passing, zero emojis. Completed 2026-11-07.
 
 
 ---

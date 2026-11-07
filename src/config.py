@@ -52,6 +52,8 @@ def get_search_keywords() -> Dict[str, List[str]]:
         "energy": list(keywords.get("energy", [])),
         "drones": list(keywords.get("drones", [])),
         "drushim": list(keywords.get("drushim", [])),
+        "indeed": list(keywords.get("indeed", [])),
+        "glassdoor": list(keywords.get("glassdoor", [])),
     }
 
 

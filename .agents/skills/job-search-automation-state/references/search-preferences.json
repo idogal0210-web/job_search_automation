@@ -353,6 +353,36 @@
       "טכנאי שירות",
       "רחפנים",
       "טכנאי כטב\"ם"
+    ],
+    "indeed": [
+      "SCADA",
+      "מפעיל חדר בקרה",
+      "טכנאי גז",
+      "טכנאי סולארי",
+      "Natural Gas",
+      "Solar",
+      "BESS",
+      "Energy Storage",
+      "טכנאי טורבינות",
+      "תחנת כוח",
+      "UAV",
+      "Drone",
+      "הנדסאי מכונות",
+      "מפעיל מערכות SCADA",
+      "Field Service Engineer"
+    ],
+    "glassdoor": [
+      "SCADA",
+      "Solar",
+      "Energy",
+      "Natural Gas",
+      "BESS",
+      "UAV",
+      "Drone",
+      "Control Room",
+      "Power Plant",
+      "טכנאי סולארי",
+      "גז טבעי"
     ]
   },
   "hebrew_company_aliases": {

@@ -1,3 +1,4 @@
+import json
 import re
 import time
 import requests
@@ -6,6 +7,11 @@ from bs4 import BeautifulSoup
 from dataclasses import dataclass
 from urllib.parse import urlsplit
 from src.url_utils import safe_http_url, canonical_job_url
+
+try:
+    from curl_cffi import requests as cffi_requests
+except ImportError:
+    cffi_requests = None
 
 def _get_with_retries(client, url, **kwargs):
     """Retry transient read failures only, with bounded exponential delay."""
@@ -55,6 +61,16 @@ class RunHealth:
     comeet_successes: int = 0
     comeet_failures: int = 0
     comeet_jobs_found: int = 0
+    
+    indeed_requests: int = 0
+    indeed_successes: int = 0
+    indeed_failures: int = 0
+    indeed_jobs_found: int = 0
+
+    glassdoor_requests: int = 0
+    glassdoor_successes: int = 0
+    glassdoor_failures: int = 0
+    glassdoor_jobs_found: int = 0
     
     gemini_attempts: int = 0
     gemini_successes: int = 0
@@ -417,6 +433,248 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
         return []
 
 
+def fetch_indeed_jobs(keywords, health_metrics, location="Israel", max_pages=1, session=None):
+    """Fetch energy, SCADA, gas, solar, and industrial operations jobs from Indeed (il.indeed.com)."""
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7",
+    }
+    jobs = []
+    seen_links = set()
+
+    for kw in dict.fromkeys(keywords):
+        for page in range(max_pages):
+            start = page * 10
+            url = f"https://il.indeed.com/jobs?q={requests.utils.quote(kw)}&l={requests.utils.quote(location)}&start={start}"
+            health_metrics.indeed_requests += 1
+
+            for attempt in range(3):
+                try:
+                    if session is not None:
+                        res = session.get(url, headers=headers, timeout=15)
+                    elif cffi_requests is not None:
+                        res = cffi_requests.get(url, headers=headers, impersonate="safari17_0", timeout=15)
+                    else:
+                        res = requests.get(url, headers=headers, timeout=15)
+
+                    if res.status_code == 200:
+                        soup = BeautifulSoup(res.text, "html.parser")
+                        parsed_jobs = []
+
+                        # Extraction strategy 1: Structured JSON in mosaic provider script
+                        target = 'window.mosaic.providerData["mosaic-provider-jobcards"]='
+                        if target in res.text:
+                            try:
+                                s_idx = res.text.find(target) + len(target)
+                                e_idx = res.text.find(";\n", s_idx)
+                                if e_idx == -1:
+                                    e_idx = res.text.find(";", s_idx)
+                                json_data = json.loads(res.text[s_idx:e_idx].strip())
+                                model = json_data.get("metaData", {}).get("mosaicProviderJobCardsModel", {})
+                                for item in model.get("results", []):
+                                    jk = item.get("jobkey")
+                                    title = item.get("title")
+                                    if not title or not jk:
+                                        continue
+                                    link = f"https://il.indeed.com/viewjob?jk={jk}"
+                                    if link in seen_links:
+                                        continue
+                                    seen_links.add(link)
+
+                                    company = item.get("company") or "חברה"
+                                    loc = item.get("formattedLocation") or location
+                                    raw_snippet = item.get("snippet") or ""
+                                    snippet = BeautifulSoup(raw_snippet, "html.parser").get_text(separator=" ", strip=True) if raw_snippet else title
+
+                                    parsed_jobs.append({
+                                        "title": title,
+                                        "company": company,
+                                        "link": link,
+                                        "snippet": snippet,
+                                        "location": loc,
+                                        "logo": "",
+                                        "company_logo_url": None,
+                                        "query": kw,
+                                        "source": "Indeed",
+                                    })
+                            except Exception as json_err:
+                                print(f"[SOURCE] Indeed JSON parse error: {json_err}", flush=True)
+
+                        # Extraction strategy 2: HTML DOM fallback
+                        if not parsed_jobs:
+                            cards = soup.select(".job_seen_beacon") or soup.select("div[data-jk]")
+                            for card in cards:
+                                jk = card.get("data-jk")
+                                title_el = card.select_one("h2.jobTitle span") or card.select_one("a[data-jk]") or card.select_one("h2.jobTitle")
+                                title = title_el.get_text(strip=True) if title_el else ""
+                                link_el = card.select_one("a[data-jk]") or card.select_one("h2.jobTitle a")
+                                if not jk and link_el and link_el.get("data-jk"):
+                                    jk = link_el.get("data-jk")
+                                link = f"https://il.indeed.com/viewjob?jk={jk}" if jk else ""
+                                if not link and link_el and link_el.get("href"):
+                                    href = link_el.get("href")
+                                    link = f"https://il.indeed.com{href}" if href.startswith("/") else href
+
+                                if not title or not link or link in seen_links:
+                                    continue
+                                seen_links.add(link)
+
+                                comp_el = card.select_one('[data-testid="company-name"]') or card.select_one(".companyName")
+                                company = comp_el.get_text(strip=True) if comp_el else "חברה"
+                                loc_el = card.select_one('[data-testid="text-location"]') or card.select_one(".companyLocation")
+                                loc = loc_el.get_text(strip=True) if loc_el else location
+                                snip_el = card.select_one(".job-snippet") or card.select_one('[data-testid="jobs-snippet"]')
+                                snippet = snip_el.get_text(strip=True) if snip_el else title
+
+                                parsed_jobs.append({
+                                    "title": title,
+                                    "company": company,
+                                    "link": link,
+                                    "snippet": snippet,
+                                    "location": loc,
+                                    "logo": "",
+                                    "company_logo_url": None,
+                                    "query": kw,
+                                    "source": "Indeed",
+                                })
+
+                        if not parsed_jobs and not soup.select(".jobsearch-NoResult"):
+                            health_metrics.indeed_failures += 1
+                            print("[SOURCE] Indeed no recognized job cards; extraction unverified", flush=True)
+                            break
+
+                        jobs.extend(parsed_jobs)
+                        health_metrics.indeed_successes += 1
+                        break
+                    elif res.status_code == 429:
+                        print(f"[SOURCE] Indeed 429 Rate Limit on {kw}, page {page}. Backing off.")
+                        delay = _retry_delay(res, attempt)
+                        if delay > 30:
+                            health_metrics.indeed_failures += 1
+                            break
+                        if attempt < 2:
+                            time.sleep(delay)
+                    elif res.status_code in {401, 403}:
+                        health_metrics.indeed_failures += 1
+                        break
+                    else:
+                        print(f"[SOURCE] Indeed returned {res.status_code} for {kw}. Attempt {attempt+1}")
+                        time.sleep(2 ** attempt)
+                except Exception as e:
+                    print(f"[ERROR] Indeed connection error: {type(e).__name__}. Attempt {attempt+1}")
+                    time.sleep(2 ** attempt)
+            else:
+                health_metrics.indeed_failures += 1
+            time.sleep(1 + random.uniform(0.5, 1.5))
+
+    health_metrics.indeed_jobs_found += len(jobs)
+    return jobs
+
+
+def fetch_glassdoor_jobs(keywords, health_metrics, location="Israel", max_pages=1, session=None):
+    """Fetch energy, SCADA, solar, and industrial operations jobs from Glassdoor (glassdoor.com)."""
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7",
+    }
+    jobs = []
+    seen_links = set()
+
+    for kw in dict.fromkeys(keywords):
+        for page in range(max_pages):
+            page_param = f"&p={page + 1}" if page > 0 else ""
+            url = f"https://www.glassdoor.com/Job/jobs.htm?sc.keyword={requests.utils.quote(kw)}&locT=N&locId=119{page_param}"
+            health_metrics.glassdoor_requests += 1
+
+            for attempt in range(3):
+                try:
+                    if session is not None:
+                        res = session.get(url, headers=headers, timeout=15)
+                    else:
+                        res = requests.get(url, headers=headers, timeout=15)
+
+                    if res.status_code == 200:
+                        soup = BeautifulSoup(res.text, "html.parser")
+                        cards = soup.select('li[data-test="jobListing"]')
+                        parsed_jobs = []
+
+                        for card in cards:
+                            title_el = card.select_one('a[data-test="job-title"]') or card.find("a", href=lambda h: h and ("/job-listing/" in h or "/partner/jobListing" in h))
+                            if not title_el:
+                                continue
+                            link = title_el.get("href", "")
+                            if link.startswith("/"):
+                                link = f"https://www.glassdoor.com{link}"
+                            link = link.split("?")[0] if link else ""
+                            if not link or link in seen_links:
+                                continue
+                            seen_links.add(link)
+
+                            title = title_el.get_text(strip=True)
+                            comp_el = (
+                                card.select_one('span[class*="compactEmployerName"]')
+                                or card.select_one('[data-test="employer-name"]')
+                                or card.select_one('div[class*="employerNameContainer"]')
+                            )
+                            company = comp_el.get_text(strip=True) if comp_el else "חברה"
+                            company = re.sub(r"\d\.\d$", "", company).strip() or company
+
+                            loc_el = card.select_one('[data-test="emp-location"]')
+                            loc = loc_el.get_text(strip=True) if loc_el else location
+
+                            snip_el = card.select_one('[data-test="descSnippet"]')
+                            snippet = snip_el.get_text(separator=" ", strip=True) if snip_el else title
+
+                            img_el = card.find("img")
+                            logo = img_el.get("src", "") if img_el else ""
+
+                            parsed_jobs.append({
+                                "title": title,
+                                "company": company,
+                                "link": link,
+                                "snippet": snippet,
+                                "location": loc,
+                                "logo": logo,
+                                "company_logo_url": logo or None,
+                                "query": kw,
+                                "source": "Glassdoor",
+                            })
+
+                        if not parsed_jobs and not soup.select(".no-results"):
+                            health_metrics.glassdoor_failures += 1
+                            print("[SOURCE] Glassdoor no recognized job cards; extraction unverified", flush=True)
+                            break
+
+                        jobs.extend(parsed_jobs)
+                        health_metrics.glassdoor_successes += 1
+                        break
+                    elif res.status_code == 429:
+                        print(f"[SOURCE] Glassdoor 429 Rate Limit on {kw}, page {page}. Backing off.")
+                        delay = _retry_delay(res, attempt)
+                        if delay > 30:
+                            health_metrics.glassdoor_failures += 1
+                            break
+                        if attempt < 2:
+                            time.sleep(delay)
+                    elif res.status_code in {401, 403}:
+                        health_metrics.glassdoor_failures += 1
+                        break
+                    else:
+                        print(f"[SOURCE] Glassdoor returned {res.status_code} for {kw}. Attempt {attempt+1}")
+                        time.sleep(2 ** attempt)
+                except Exception as e:
+                    print(f"[ERROR] Glassdoor connection error: {type(e).__name__}. Attempt {attempt+1}")
+                    time.sleep(2 ** attempt)
+            else:
+                health_metrics.glassdoor_failures += 1
+            time.sleep(1 + random.uniform(0.5, 1.5))
+
+    health_metrics.glassdoor_jobs_found += len(jobs)
+    return jobs
+
+
 class JobFetcher:
     """Base interface for all scrapers and ATS connectors."""
     source_name: str = "generic"
@@ -452,9 +710,31 @@ class ComeetFetcher(JobFetcher):
         return fetch_comeet_jobs(company_name, company_uid, display_name, health_metrics)
 
 
+class IndeedFetcher(JobFetcher):
+    source_name = "Indeed"
+
+    def fetch(self, keywords, health_metrics: RunHealth, **kwargs) -> list:
+        location = kwargs.get("location", "Israel")
+        max_pages = kwargs.get("max_pages", 1)
+        session = kwargs.get("session")
+        return fetch_indeed_jobs(keywords, health_metrics, location=location, max_pages=max_pages, session=session)
+
+
+class GlassdoorFetcher(JobFetcher):
+    source_name = "Glassdoor"
+
+    def fetch(self, keywords, health_metrics: RunHealth, **kwargs) -> list:
+        location = kwargs.get("location", "Israel")
+        max_pages = kwargs.get("max_pages", 1)
+        session = kwargs.get("session")
+        return fetch_glassdoor_jobs(keywords, health_metrics, location=location, max_pages=max_pages, session=session)
+
+
 FETCHERS = {
     "linkedin": LinkedInFetcher(),
     "drushim": DrushimFetcher(),
     "comeet": ComeetFetcher(),
+    "indeed": IndeedFetcher(),
+    "glassdoor": GlassdoorFetcher(),
 }
 
