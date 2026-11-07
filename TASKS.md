@@ -71,6 +71,9 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
 - [x] **TASK-17**: Implement Manual Cloud Job Search Trigger via GitHub Actions.
   - Target files: `frontend/templates/index.html`, `docs/index.html`, `frontend/js/dashboard.js`, `docs/dashboard.js`, `frontend/css/dashboard.css`, `docs/dashboard.css`, `PROJECT_CONTEXT.md`, `TASKS.md`.
   - Success criteria: Added manual play button `#headerRunSearchBtn` and `#runSearchModal` dialog connected to GitHub Actions `workflow_dispatch` API. Includes client-side token management (LocalStorage), live cloud run status detection, progress spinning state, automated polling, and automatic page reload on completion. Verified 1:1 dual-template parity, 313 tests passing, zero emojis. Completed 2026-11-07.
+- [x] **TASK-18**: Streamline Job Card Sub-Categories (Option 1: 3 Focused Anchors).
+  - Target files: `frontend/js/dashboard.js`, `docs/dashboard.js`, `frontend/css/dashboard.css`, `docs/dashboard.css`, `prompts/job_evaluation_v1.txt`, `PROJECT_CONTEXT.md`, `TASKS.md`.
+  - Success criteria: Streamline job card and modal details from 5 repetitive, verbose categories down to 3 concise, high-signal anchors: 1) תחום ותפקיד (merged domain and role scope), 2) דרישות סף (key threshold requirements), 3) התאמה ופערים (match insight with explicit `[OK]` / `[פער]` status). Updated prompt for concise 1-sentence evaluations. Verified 1:1 dual-template parity, 313/313 unit tests passing, zero emojis. Completed 2026-11-07.
 
 
 ---

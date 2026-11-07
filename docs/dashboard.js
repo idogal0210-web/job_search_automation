@@ -124,6 +124,62 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     return `<span class="job-salary-chip salary-chip-benchmark" title="טווח שכר ענפי מותאם לתפקיד"><i class="ph-duotone ph-coins"></i> ${escapeHtml(sal)}</span>`;
   }
 
+  function formatJobScopeAndRole(job) {
+    if (!job) return 'מידע על תחום ומוצר החברה לא צוין.';
+    const domainRaw = stripEmojis(job.company_domain_product || job.company_summary || '').trim();
+    const summaryRaw = stripEmojis(job.job_summary || '').trim();
+    const domain = (domainRaw && domainRaw !== 'לא צוין' && domainRaw !== 'מידע על החברה לא צוין') ? domainRaw : '';
+    const summary = (summaryRaw && summaryRaw !== 'לא צוין' && summaryRaw !== 'לא צוין תיאור מלא למשרה.') ? summaryRaw : '';
+
+    if (domain && summary) {
+      if (summary.includes(domain)) return escapeHtml(summary);
+      if (domain.includes(summary)) return escapeHtml(domain);
+      return `${escapeHtml(domain)} | ${escapeHtml(summary)}`;
+    }
+    return escapeHtml(domain || summary || 'מידע על תחום ומוצר החברה לא צוין.');
+  }
+
+  function formatJobMatchAndGaps(job) {
+    if (!job) {
+      return {
+        isNoGap: true,
+        badgeHtml: '<span class="gap-status-pill gap-status-ok">[OK] ללא פערי סף</span>',
+        statusHtml: '<span class="gap-text-ok">[OK] עונה על דרישות הסף</span>',
+        fullHtml: '<span class="gap-text-ok">[OK] ללא פערי סף מהותיים</span>'
+      };
+    }
+    const insightRaw = stripEmojis(job.reasoning || job.experience_strengths || '').trim();
+    const gapsRaw = stripEmojis(job.fit_gaps || '').trim();
+
+    const isNoGap = !gapsRaw ||
+      gapsRaw.includes('אין פערי סף') ||
+      gapsRaw.includes('אין פער') ||
+      gapsRaw.includes('עונה על דרישות') ||
+      gapsRaw.includes('ללא פער');
+
+    let badgeHtml = '';
+    let statusHtml = '';
+
+    if (isNoGap) {
+      badgeHtml = '<span class="gap-status-pill gap-status-ok">[OK] ללא פערי סף</span>';
+      statusHtml = '<span class="gap-text-ok">[OK] עונה על דרישות הסף</span>';
+    } else {
+      badgeHtml = '<span class="gap-status-pill gap-status-alert">[פער] קיים פער סף</span>';
+      statusHtml = `<span class="gap-text-alert">[פער] ${escapeHtml(gapsRaw)}</span>`;
+    }
+
+    const cleanInsight = (insightRaw && insightRaw !== 'אין ניתוח התאמה מאומת למשרה זו.')
+      ? escapeHtml(insightRaw)
+      : 'התאמה טכנית ומקצועית לדרישות התפקיד';
+
+    return {
+      isNoGap,
+      badgeHtml,
+      statusHtml,
+      fullHtml: `${cleanInsight} | ${statusHtml}`
+    };
+  }
+
   function renderEvaluationMetadata(job) {
     return '';
   }
@@ -2236,6 +2292,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'אין ניתוח התאמה מאומת למשרה זו.'));
       const fitGaps = escapeHtml(stripEmojis(job.fit_gaps || 'אין מספיק מידע לאימות פערי ההתאמה.'));
       const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).'));
+      const scopeAndRole = formatJobScopeAndRole(job);
+      const matchInfo = formatJobMatchAndGaps(job);
       const safeCompany = escapeHtml(company);
       const safeTitle = escapeHtml(title);
       const safeLink = sanitizeUrl(link);
@@ -2330,33 +2388,25 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <!-- Curated Tags (0 to 5 tags, flexible) -->
         ${tagsHtml}
 
-        <!-- Clean Key Requirements (Canva-inspired layout) -->
+        <!-- Clean Key Requirements (Anchor 2 of 3) -->
         <div class="job-key-requirements">
           <div class="job-key-requirements-header">
             <i class="ph-duotone ph-check-circle"></i>
-            <span>דרישות מפתח:</span>
+            <span>דרישות סף:</span>
           </div>
           <div class="job-key-requirements-content">${companyReqs}</div>
         </div>
 
-        <!-- Collapsible Full Information Panels -->
+        <!-- Collapsible Full Information Panels (Anchors 1 & 3 of 3) -->
         <div class="job-details-collapsible">
           <div class="job-boxes-grid" style="margin-top: 8px;">
             <div class="job-box">
-              <strong><i class="ph-duotone ph-buildings"></i> תחום ומוצר:</strong>
-              <span>${domain}</span>
+              <strong><i class="ph-duotone ph-buildings"></i> תחום ותפקיד:</strong>
+              <span>${scopeAndRole}</span>
             </div>
-            <div class="job-box">
-              <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
-              <span>${jobSum}</span>
-            </div>
-            <div class="job-box highlight-mint">
-              <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
-              <span>${quickInsight}</span>
-            </div>
-            <div class="job-box highlight-gold">
-              <strong><i class="ph-duotone ph-warning-circle"></i> פערי התאמה:</strong>
-              <span>${fitGaps}</span>
+            <div class="job-box ${matchInfo.isNoGap ? 'highlight-mint' : 'highlight-gold'}">
+              <strong><i class="ph-duotone ph-sparkle"></i> התאמה ופערים:</strong>
+              <span>${matchInfo.fullHtml}</span>
             </div>
           </div>
         </div>
@@ -2430,6 +2480,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה.'));
     const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'אין ניתוח התאמה מאומת למשרה זו.'));
     const fitGaps = escapeHtml(stripEmojis(job.fit_gaps || 'אין מספיק מידע לאימות פערי ההתאמה.'));
+    const scopeAndRole = formatJobScopeAndRole(job);
+    const matchInfo = formatJobMatchAndGaps(job);
     const logoHtml = getCompanyLogoHtml(company, job.logo);
     const companyBdi = `<bdi dir="auto">${safeCompany}</bdi>`;
 
@@ -2498,31 +2550,19 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
       ${tagsHtml}
 
-      <!-- 2 Distinct Bubbles: Domain & Requirements -->
-      <div class="job-bubbles-wrapper" style="margin: 4px 0 8px;">
-        <div class="job-bubble job-bubble-domain">
-          <strong class="bubble-title"><i class="ph-duotone ph-buildings"></i> תחום ומוצר:</strong>
-          <span class="bubble-content">${domain}</span>
-        </div>
-        <div class="job-bubble job-bubble-reqs">
-          <strong class="bubble-title"><i class="ph-duotone ph-check-square"></i> דרישות המשרה:</strong>
-          <span class="bubble-content">${companyReqs}</span>
-        </div>
-      </div>
-
-      <!-- Categories 3, 4 & 5: Summary, AI Match Insight & Fit Gaps -->
-      <div class="job-boxes-grid" style="grid-template-columns: 1fr; gap: 8px;">
+      <!-- 3 Focused Anchors (Option 1) -->
+      <div class="job-boxes-grid" style="grid-template-columns: 1fr; gap: 8px; margin: 4px 0 8px;">
         <div class="job-box">
-          <strong><i class="ph-duotone ph-article"></i> תקציר המשרה:</strong>
-          <span>${jobSum}</span>
+          <strong><i class="ph-duotone ph-buildings"></i> תחום ותפקיד:</strong>
+          <span>${scopeAndRole}</span>
         </div>
-        <div class="job-box highlight-mint">
-          <strong><i class="ph-duotone ph-sparkle"></i> תמצית התאמה ממוקדת:</strong>
-          <span>${quickInsight}</span>
+        <div class="job-box">
+          <strong><i class="ph-duotone ph-check-square"></i> דרישות סף:</strong>
+          <span>${companyReqs}</span>
         </div>
-        <div class="job-box highlight-gold">
-          <strong><i class="ph-duotone ph-warning-circle"></i> פערי התאמה:</strong>
-          <span>${fitGaps}</span>
+        <div class="job-box ${matchInfo.isNoGap ? 'highlight-mint' : 'highlight-gold'}">
+          <strong><i class="ph-duotone ph-sparkle"></i> התאמה ופערים:</strong>
+          <span>${matchInfo.fullHtml}</span>
         </div>
       </div>
     `;
