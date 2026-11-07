@@ -65,6 +65,9 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
 - [x] **TASK-15**: Indeed and Glassdoor Multi-Source Scrapers Integration.
   - Target files: `src/fetchers.py`, `src/config.py`, `main.py`, `src/pipeline.py`, `src/publishers.py`, `frontend/js/dashboard.js`, `docs/dashboard.js`, `requirements.txt`, `requirements-lock.txt`, `.agents/skills/job-search-automation-state/references/search-preferences.json`, `tests/test_new_fetchers.py`.
   - Success criteria: Added Indeed and Glassdoor scrapers with structured mosaic JSON & DOM extraction, RunHealth tracking, error handling and retry with backoff, UI source badges and styling, 313/313 unit tests passing, zero emojis. Completed 2026-11-07.
+- [x] **TASK-16**: Remove Obsolete About-System Modal and Header Info Trigger.
+  - Target files: `frontend/templates/index.html`, `docs/index.html`, `frontend/js/dashboard.js`, `docs/dashboard.js`, `frontend/css/dashboard.css`, `docs/dashboard.css`.
+  - Success criteria: Cleanly remove `.header-about-btn` button, `#aboutModal` dialog markup, `openAboutModal`/`closeAboutModal` JS handlers, and associated CSS. Verified 1:1 dual-template parity via `tests/test_template_docs_sync.py`, 313/313 tests passing, zero emojis. Completed 2026-11-07.
 
 
 ---
