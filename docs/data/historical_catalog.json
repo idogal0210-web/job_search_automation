@@ -22923,5 +22923,394 @@
     "is_shifts_24_7": false,
     "is_junior_friendly": false,
     "curated_tags": []
+  },
+  "https://www.drushim.co.il/job/38946222/613fed37/": {
+    "link": "https://www.drushim.co.il/job/38946222/613fed37/",
+    "title": "מפעיל.ה לחדר הפיקוד",
+    "company": "אם.אר.סי תפעול בע\"מ",
+    "location": "עפולה",
+    "date": "2026-11-08",
+    "source": "Drushim",
+    "match_score": 95,
+    "base_match_score": 95,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "incomplete",
+    "sector_key": "natural_gas",
+    "company_domain_product": "תחנת כח לייצור חשמל",
+    "company_summary": "",
+    "job_summary": "תפעול שוטף של יחידות ייצור חשמל, מערכות מכאניות ואלקטרוניות וגז טבעי במסגרת חדר בקרה ומשמרות 24/7.",
+    "company_requirements": "הנדסאי מכונות/חשמל/אלקטרוניקה חובה, יכולת הפעלה של מערכות ממוחשבות, אנגלית טובה, זמינות מיידית.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם התמחות בגז טבעי ואנרגיה ירוקה, ניסיון במערכות SCADA וחדרי בקרה.",
+    "reasoning": "המועמד הנדסאי מכונות עם רקע באנרגיה וגז טבעי, מתאים מאוד לתפקיד מפעיל חדר בקרה.",
+    "key_highlights": "התאמה מלאה לדרישת ההנדסאי, רקע במערכות גז טבעי ומערכות ממוחשבות.",
+    "salary_range": "16,000 - 21,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • כולל משמרות 24/7",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות).",
+    "salary_source_url": "",
+    "p25": 16000,
+    "p75": 21000,
+    "logo": "",
+    "company_logo_url": "",
+    "snippet": "א\nמפעיל.ה לחדר הפיקוד\nאם.אר.סי תפעול בע\"מ\nעפולה\nללא נסיון\nמשרה מלאה\nועוד\nמשרה מלאה\nמשמרות\nלפני 18 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nחברת MRC, מתחום האנרגיה מגייסת מפעיל.ה לחדר הפיקוד\nMRC operation חברה בתחום האנרגיה, מגייסת מועמדים מוכשרים לתפקיד של מפעיל /ה שטח וחדר בקרה.\nהתפקיד מאתגר ונמצא בליבה של תחנת כח לייצור חשמל.\nהתפקיד המפעיל הינו תפעול שוטף של יחידות הייצור באתר.\nתפעול היחידות כולל הנעות והפסקות יחידות ייצור חשמל, תפעול של מערכות מכאניות ואלקטרוניות, ביצוע פעולות במערכות גז טבעי, מעקב אחר פרמטרים של יחידות הייצור ועוד.\nקליטה כעובד/ת חברה מהיום הראשון, תנאים סוציאליים מצוינים, מערך רווחה מפנק הכולל: ארוחות, החזר נסיעות/הסעות, מתנות, הדרכות העשרה, ימי גיבוש ועוד.\nמתאים גם למועמד ללא ניסיון בתחום, הכשרה/לימוד וליווי מקצועי עלינו.\nאחוזי שכר למשמרות - אטרקטיבי מאוד!\nהעבודה במתכונת של משמרות 24/7 - תנאי הכרחי.\nדרישות התפקיד\nהנדסאי/ת מכונות/חשמל/אלקטרוניקה חובה!\nיכולת הפעלה של מערכות ממוחשבות- חובה.\nרקע ונסיון בתחום האנרגיה יתרון.\nנדרשת ידיעת השפה האנגלית ברמה טובה.\nזמינות מיידית.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתחומים\nהנדסאי/ת חשמל\nהנדסאים כללי\nהנדסאי/ת אלקטרוניקה",
+    "stable_job_id": "drushim_38946222",
+    "content_hash": "ch_4cfc26a6303c",
+    "requirement_assessments": [
+      {
+        "requirement": "הנדסאי/ת מכונות/חשמל/אלקטרוניקה חובה",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "הנדסאי/ת מכונות/חשמל/אלקטרוניקה חובה!",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בתואר הנדסאי מכונות בדיוק לפי הדרישה."
+      },
+      {
+        "requirement": "יכולת הפעלה של מערכות ממוחשבות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "יכולת הפעלה של מערכות ממוחשבות- חובה.",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "SCADA / AVEVA / 24/7 Control Rooms",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון רב במערכות SCADA ומערכות ממוחשבות לתפעול."
+      },
+      {
+        "requirement": "רקע ונסיון בתחום האנרגיה יתרון",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "רקע ונסיון בתחום האנרגיה יתרון.",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "",
+          "source_field": "unverified"
+        },
+        "assessment": "unknown",
+        "explanation": "ציטוט המודעה לא אומת או חסרה ראיה מאומתת בפרופיל; נדרשת בדיקה."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": true,
+    "is_junior_friendly": true,
+    "curated_tags": [
+      {
+        "type": "tag-shifts",
+        "icon": "ph-bold ph-clock-countdown",
+        "label": "משמרות 24/7"
+      },
+      {
+        "type": "tag-junior",
+        "icon": "ph-bold ph-graduation-cap",
+        "label": "Junior"
+      }
+    ]
+  },
+  "https://il.linkedin.com/jobs/view/plant-operations-specialist-at-naki-4486895054": {
+    "link": "https://il.linkedin.com/jobs/view/plant-operations-specialist-at-naki-4486895054",
+    "title": "Plant Operations Specialist",
+    "company": "Naki",
+    "location": "אופקים, ישראל",
+    "date": "2026-11-08",
+    "source": "LinkedIn",
+    "match_score": 90,
+    "base_match_score": 90,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "energy_tech",
+    "company_domain_product": "Transforming industrial waste into oil for Sustainable Aviation Fuel (SAF)",
+    "company_summary": "",
+    "job_summary": "Looking for a hands-on Plant Operations Technician to operate the facility, monitor production, and handle troubleshooting.",
+    "company_requirements": "Technical background, experience operating industrial facilities, practical engineering diploma, or strong interest in systems.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם התמחות במערכות אנרגיה, ניסיון בהפעלת מערכות אלקטרו-מכניות ופתרון תקלות.",
+    "reasoning": "המועמד הנדסאי מכונות עם רקע מוכח בהפעלת מערכות תעשייתיות ופתרון תקלות.",
+    "key_highlights": "התאמה מלאה לפרופיל הטכני, ניסיון מעשי בתפעול מתקנים והבנה הנדסית.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQHQbCSa1-60Mg/company-logo_100_100/B4EZ2Ge.YRJEAQ-/0/1776077761043/nakirenewable_logo?e=2147483647&v=beta&t=5hReXpPpzVN2xeg2ND8sFjFxJfYHpLJ4tuNJ9kqFgTk",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQHQbCSa1-60Mg/company-logo_100_100/B4EZ2Ge.YRJEAQ-/0/1776077761043/nakirenewable_logo?e=2147483647&v=beta&t=5hReXpPpzVN2xeg2ND8sFjFxJfYHpLJ4tuNJ9kqFgTk",
+    "snippet": "We’re Hiring: Plant Operations Technician\nLooking for a hands-on, technically minded person who is eager to learn and grow 🚀\nA growing startup transforming industrial waste into oil for Sustainable Aviation Fuel (SAF) production, looking for a Plant Operations Technician to join our team at our facility in Ofakim, Israel.\nThe role includes:\n* Operating the facility and its equipment.\n* Monitoring the production process.\n* Handling operational issues and troubleshooting.\n* Working closely with our engineering team.\nWho are we looking for?\nSomeone with a technical background, experience operating industrial facilities or wastewater treatment plants, a practical engineering diploma, or simply a strong interest in working with systems and equipment.\nWe value responsibility, initiative, curiosity, and above all, a willingness to learn and grow.\nThis is an opportunity to grow with the company and take on additional responsibilities based on your skills, initiative, and development.\nInterested? Know someone who might be a good fit?\nSend your CV to: Office@naki-v.com",
+    "stable_job_id": "li_4486895054",
+    "content_hash": "ch_198df121d92a",
+    "requirement_assessments": [
+      {
+        "requirement": "Practical engineering diploma",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "a practical engineering diploma",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש דיפלומה של הנדסאי מכונות בדיוק כנדרש."
+      },
+      {
+        "requirement": "Operating the facility and its equipment",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Operating the facility and its equipment.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש ניסיון בתפעול מערכות אלקטרו-מכניות וציוד תעשייתי."
+      },
+      {
+        "requirement": "Handling operational issues and troubleshooting",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Handling operational issues and troubleshooting.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "troubleshooting",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מציג ניסיון באיתור ופתרון תקלות במערכות."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://il.linkedin.com/jobs/view/%D7%97%D7%93%D7%A9-%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%95%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-at-sodastream-international-ltd-4488772416": {
+    "link": "https://il.linkedin.com/jobs/view/%D7%97%D7%93%D7%A9-%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%95%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-at-sodastream-international-ltd-4488772416",
+    "title": "חדש- טכנאי/ת תשתיות ואנרגיה",
+    "company": "SodaStream International, Ltd.",
+    "location": "לא צויין",
+    "date": "2026-11-08",
+    "source": "LinkedIn",
+    "match_score": 88,
+    "base_match_score": 88,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "energy",
+    "company_domain_product": "SodaStream International, Ltd.",
+    "company_summary": "",
+    "job_summary": "אחריות לתפקוד תשתיות קירור, לחץ אוויר, גז, מים וכיבוי אש, ביצוע אחזקה מונעת ואבחון תקלות.",
+    "company_requirements": "הנדסאי/טכנאי מכונות, ניסיון של 3 עד 5 שנים בתעשייה, הבנה בבקרה ויכולת קריאת שרטוטים.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם רקע במערכות גז, תשתיות ואחזקה טכנית.",
+    "reasoning": "מועמד בעל רקע בהנדסאי מכונות, תשתיות אנרגיה ואחזקת מערכות תעשייתיות.",
+    "key_highlights": "הנדסאי מכונות, ניסיון באחזקת תשתיות וקריאת שרטוטים.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHADywuu7o7Ew/company-logo_100_100/B4DZyP3GNxKQAQ-/0/1771940112201/sodastream_international_ltd__logo?e=2147483647&v=beta&t=Ujmm7RZi7sBmSsn9dRLRbK5pRFSAJ1ZuZUp6-hyhvE4",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQHADywuu7o7Ew/company-logo_100_100/B4DZyP3GNxKQAQ-/0/1771940112201/sodastream_international_ltd__logo?e=2147483647&v=beta&t=Ujmm7RZi7sBmSsn9dRLRbK5pRFSAJ1ZuZUp6-hyhvE4",
+    "snippet": "Description\nבמסגרת התפקיד:\nאחריות לתפקוד תשתיות קירור , לחץ אוויר, גז ,מים וכיבוי אש\nביצוע אחזקה מונעת ע\"פי תוכנית הטיפולים\nיכולת אבחון ופתרון תקלות טכניות\nעמידה ביעדי זמינות הציודים\nביצוע עבודות חיבור תשתיות למערכות וציודים חדשים באתר\nדרישות:\nניסיון עם מערכות לחץ אוויר , מחליפי חום ומערכות קירור\nיכולת קריאת שרטוטים\nטכנאי דרג 3-מיזוג וקירור אוייר-יתרון משמעותי\nיכולת עבודה עצמאית\nהבנה בעולמות הבקרה\nהשכלה הנדסאי מכונות /טכנאי מכונות\nיכולת עבודה עם תוכנות office\nניסיון של 3 עד 5 שנים בתעשיה-חובה",
+    "stable_job_id": "li_4488772416",
+    "content_hash": "ch_d634bf5c5308",
+    "requirement_assessments": [
+      {
+        "requirement": "השכלה הנדסאי מכונות /טכנאי מכונות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "השכלה הנדסאי מכונות /טכנאי מכונות",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש תעודת הנדסאי מכונות."
+      },
+      {
+        "requirement": "הבנה בעולמות הבקרה",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "הבנה בעולמות הבקרה",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Real-Time Operations Control (SCADA / AVEVA / 24/7 Control Rooms)",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון במערכות בקרה ו-SCADA."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://il.linkedin.com/jobs/view/customer-support-technician-at-applied-materials-israel-4484388316": {
+    "link": "https://il.linkedin.com/jobs/view/customer-support-technician-at-applied-materials-israel-4484388316",
+    "title": "Customer Support Technician",
+    "company": "Applied Materials - Israel",
+    "location": "מגדל העמק",
+    "date": "2026-11-08",
+    "source": "LinkedIn",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "operations",
+    "company_domain_product": "פתרונות הנדסיים וחומרים לתעשיית השבבים והאלקטרוניקה העולמית",
+    "company_summary": "",
+    "job_summary": "משרת טכנאי תמיכת לקוחות ואחזקת ציוד מתקדם במתקני החברה במגדל העמק.",
+    "company_requirements": "ביצוע פרוצדורות סטנדרטיות, תחזוקה מונעת ומתוקנת, שימוש בכלי עבודה, עבודה בחדר נקי.",
+    "experience_strengths": "רקע חזק בהנדסת מכונות, תחזוקה, פתרון תקלות ורוח צוות מבצעית.",
+    "reasoning": "מועמד מתאים לתפקיד טכנאי שירות בזכות ניסיונו המעשי במערכות אלקטרו-מכניות ואחזקה.",
+    "key_highlights": "התנסות בעבודה טכנית שטחית, ביצוע פעולות תחזוקה מונעת ומתן מענה לבעיות.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQGQXZFTM-P1aA/company-logo_100_100/B56ZfwYXZpHcAc-/0/1752084610051/applied_materials_israel_logo?e=2147483647&v=beta&t=fz8rsBbT4pfj6GzzcTEsa7d2ywsVnp60ejvaUFXISMc",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQGQXZFTM-P1aA/company-logo_100_100/B56ZfwYXZpHcAc-/0/1752084610051/applied_materials_israel_logo?e=2147483647&v=beta&t=fz8rsBbT4pfj6GzzcTEsa7d2ywsVnp60ejvaUFXISMc",
+    "snippet": "Who We Are\nApplied Materials is the global leader in materials science and engineering solutions that are at the foundation of virtually every new semiconductor chip and advanced display in the world. The equipment that we create and service is essential to advancing AI and accelerating the commercialization of next-generation semiconductor chips. Join us and push the boundaries of materials science and engineering in a company at the foundation of the electronics industry. The work we do together advances the world’s technology.\nWhat We Offer\nLocation:\nMig Ha'emek,ISR\nYou’ll benefit from a supportive work culture that encourages you to learn, develop, and grow your career as you take on challenges and drive innovative solutions for our customers. We empower our team to push the boundaries of what is possible—while learning every day in a supportive leading global company. Visit our Careers website to learn more.\nAt Applied Materials, we care about the health and wellbeing of our employees. We’re committed to providing programs and support that encourage personal and professional growth and care for you at work, at home, or wherever you may go. Learn more about our benefits.\nKey Responsibilities\nPerforms standard Tier I procedures including wafer measurement.\nPerforms preventative maintenance and wet cleans independently. Assists senior engineers with corrective maintenance as needed.\nDisassembles, cleans and rebuilds kits as part of kit management quality.\nLearns and applies diagnostic techniques and use of documentation and test equipment with assistance from senior engineers.\nAble to diagnose and resolve basic technical problems.\nStrives to perform BKM’s. Uses knowledge management systems. Follows all IP guidelines.\nHas the ability to represent Applied Materials to the customer. Uses good customer service skills at all times while maintaining a professional demeanor. Displays respect for the customer by maintaining a neat and orderly work area. Demonstrates a positive attitude in less than optimal customer situations.\nComplies with all safety procedures and consistently demonstrates safety as a value.\nOther Requirements\n: This is a physically demanding position that often requires extensive walking, standing for extended periods of time, working in tight spaces, bending, squatting, twisting, kneeling, reaching, climbing stairs and ladders, lifting up to 35 lbs., the ability to distinguish between colors, the ability to work in an environment with noise that may be difficult for some individuals with sensitivity to noise, and the use of hand and power tools. Additionally, because this position generally involves working in a clean room, it requires the use of appropriate Personal Protective Equipment such as coveralls, hoods, booties, safety glasses, gloves, respirators, chemical aprons, and face shields.\nFunctional Knowledge\nHas developed analytical skills and application of scientific methods to perform a variety of activities\nBusiness Expertise\nHas good understanding of how the team integrates with others\nLeadership\nHas no supervisory responsibilities\nProblem Solving\nRecognizes and solves typical problems that can occur in own work area without supervisory approval; evaluates and selects solutions from established operating procedures and/or scientific methods\nImpact\nImpacts the quality of own work\nInterpersonal Skills\nUses communication skills to exchange of information\nAdditional Information\nTime Type:\nFull time\nEmployee Type:\nAssignee / Regular\nTravel:\nYes, 10% of the Time\nRelocation Eligible:\nNo\nApplied Materials is an Equal Opportunity Employer. Qualified applicants will receive consideration for employment without regard to race, color, national origin, citizenship, ancestry, religion, creed, sex, sexual orientation, gender identity, age, disability, veteran or military status, or any other basis prohibited by law.",
+    "stable_job_id": "li_4484388316",
+    "content_hash": "ch_496b27a5d435",
+    "requirement_assessments": [
+      {
+        "requirement": "Performs preventative maintenance and wet cleans independently.",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Performs preventative maintenance and wet cleans independently.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המוועמד בעל השכלה והבנה מכנית המאפשרת לו ביצוע תחזוקה עצמאית."
+      },
+      {
+        "requirement": "Use of hand and power tools.",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "use of hand and power tools.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "ניסיון מעשי בעבודה עם מערכות אלקטרו-מכניות וכלים."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://www.drushim.co.il/job/39014470/0ebdc33d/": {
+    "link": "https://www.drushim.co.il/job/39014470/0ebdc33d/",
+    "title": "הנדסאי/ת / טכנאי/ת מכונות אחראי/ת משמרת (הסעות)",
+    "company": "סנו",
+    "location": "הוד השרון",
+    "date": "2026-11-08",
+    "source": "Drushim",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "operations",
+    "company_domain_product": "ייצור ושיווק מוצרי צריכה (סנו)",
+    "company_summary": "",
+    "job_summary": "ניהול משמרת בקווי הייצור במפעל סנו, כולל סט-אפ למכונות, טיפול בתקלות וניהול צוות עובדים.",
+    "company_requirements": "הנדסאי או טכנאי מכונות/בקרה/חשמל - חובה, רקע טכני, ניסיון באחזקת מכונות או הפעלת קווי ייצור, ניסיון בניהול צוות עובדים.",
+    "experience_strengths": "הנדסאי מכונות מוסמך, רקע מעשי במערכות אלקטרו-מכניות ויכולת ניהול תפעוליות.",
+    "reasoning": "המוועמד הינו הנדסאי מכונות מוסמך בעל רקע טכני מתאים לתפקידי ניהול משמרת ואחזקה במפעל תעשייתי.",
+    "key_highlights": "הנדסאי מכונות מוסמך, ניסיון במערכות אלקטרו-מכניות ויכולת עבודה תפעולית.",
+    "salary_range": "13,500 - 17,500 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • כולל משמרות",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 13500,
+    "p75": 17500,
+    "logo": "https://webapi.drushim.co.il/logos/21629/page/637799951445698562.png",
+    "company_logo_url": "https://webapi.drushim.co.il/logos/21629/page/637799951445698562.png",
+    "snippet": "הנדסאי/ת / טכנאי/ת מכונות אחראי/ת משמרת (הסעות)\nסנו\nמספר מקומות\nהוד השרון\nנתניה\nכפר קאסם\n1-2 שנים\nמשמרות\nלפני 4 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלמפעל סנו בהוד השרון, דרוש/ה הנדסאי/ת / טכנאי/ת מכונות אחראי/ת משמרת.\nהגדרות התפקיד:\nניהול צוות עובדים בקווי הייצור (8-15 עובדים במשמרת)\nמעקב אחר ביצוע תוכנית העבודה שנקבעה מראש ע\"י מנהל המחלקה\nביצוע SET UP בקווי הייצור\nטיפול בתקלות ומתן מענה מקצועי לצוות העובדים\nעבודה בתנאי לחץ ובלוחות זמנים מסודרים\nמשרה מלאה\nעבודה במשמרות\nהסעות מנתניה ומכפר קאסם\nרק פניות מתאימות תענינה.\nדרישות התפקיד\nהנדסאי או טכנאי מכונות/בקרה/חשמל - חובה\nרקע טכני - חובה\nניסיון באחזקת מכונות או הפעלת קווי יצור\nנסיון בניהול צוות עובדים\nידע בסיסי במחשב\nידע בסיסי באנגלית\nתקשורת טובה עם אנשים\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nבעלי מקצוע\nהנדסה\nתחומים\nאחזקה\nמתקינים\nטכנאי/ת\nהנדסאי/ת מכונות\nמהנדס/ת מכונות\nמהנדסים כללי",
+    "stable_job_id": "drushim_39014470",
+    "content_hash": "ch_92db4978a048",
+    "requirement_assessments": [
+      {
+        "requirement": "הנדסאי או טכנאי מכונות/בקרה/חשמל",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "הנדסאי או טכנאי מכונות/בקרה/חשמל - חובה",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד הינו הנדסאי מכונות מוסמך."
+      },
+      {
+        "requirement": "ניסיון באחזקת מכונות או הפעלת קווי יצור",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ניסיון באחזקת מכונות או הפעלת קווי יצור",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש רקע במערכות אלקטרו-מכניות ופתרון תקלות."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
   }
 }

@@ -21,7 +21,7 @@
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261107225749">
+  <link rel="stylesheet" href="dashboard.css?v=20261108121751">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -47,7 +47,7 @@
         </div>
         <div class="brand-subtitle-row">
           <span class="brand-subtitle profile-subtitle">אנרגיה, גז טבעי ורחפנים</span>
-          <span class="sync-time-chip" id="lastSyncTimeChip" title="מועד סנכרון אחרון">עודכן: 07.11.2026</span>
+          <span class="sync-time-chip" id="lastSyncTimeChip" title="מועד סנכרון אחרון">עודכן: 08.11.2026</span>
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@
       <!-- Mobile Collapsible Summary Toggle Button -->
       <button type="button" class="metrics-summary-toggle" id="metricsToggleBtn" onclick="toggleMetricsExpand()" aria-expanded="false" aria-controls="collapsibleMetricsContent" aria-label="הרחב או צמצם פירוט מטריקות">
         <div class="metrics-summary-inline">
-          <span class="metric-summary-pill lime active-pill" onclick="event.stopPropagation(); setFilter('all', document.getElementById('cube_all'));" role="button" tabindex="0" title="הצג משרות חדשות"><span id="summaryNewCount">55</span> חדשות</span>
+          <span class="metric-summary-pill lime active-pill" onclick="event.stopPropagation(); setFilter('all', document.getElementById('cube_all'));" role="button" tabindex="0" title="הצג משרות חדשות"><span id="summaryNewCount">56</span> חדשות</span>
           <span class="metric-summary-pill gold" onclick="event.stopPropagation(); setFilter('starred', document.getElementById('cube_starred'));" role="button" tabindex="0" title="הצג משרות בכוכב"><span id="summaryStarredCount">6</span> בכוכב</span>
           <span class="metric-summary-pill cyan" onclick="event.stopPropagation(); setFilter('saved', document.getElementById('cube_saved'));" role="button" tabindex="0" title="הצג משרות שמורות"><span id="summarySavedCount">52</span> שמורות</span>
           <span class="metric-summary-pill rose" onclick="event.stopPropagation(); setFilter('rejected', document.getElementById('cube_rejected'));" role="button" tabindex="0" title="הצג משרות שהוסרו"><span id="summaryRejectedCount">0</span> הוסרו</span>
@@ -117,7 +117,7 @@
             <div class="stat-cube-icon lime">
               <i class="ph-duotone ph-sparkle"></i>
             </div>
-            <div class="stat-cube-count" id="statNewCount">55</div>
+            <div class="stat-cube-count" id="statNewCount">56</div>
             <div class="stat-cube-label">משרות חדשות</div>
           </button>
 
@@ -161,7 +161,7 @@
         <span class="dashboard-local">סריקה יומית חכמה • התאמה לפרופיל הנדסאי מכונות, אנרגיה ורחפנים</span>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
-        <span>תאריך סריקה: <strong>07.11.2026</strong></span>
+        <span>תאריך סריקה: <strong>08.11.2026</strong></span>
         <span class="dashboard-divider">|</span>
         <span class="dashboard-chip" style="font-size: 11px; padding: 2px 10px;">סריקה יומית</span>
       </div>
@@ -317,7 +317,7 @@
     <div class="cards-view-header">
       <div class="cards-count-summary">
         <i class="ph-duotone ph-briefcase" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
-        <span id="visibleJobsCountText">סה״כ משרות חדשות: 55</span>
+        <span id="visibleJobsCountText">סה״כ משרות חדשות: 56</span>
       </div>
       <div class="view-mode-toggle" role="group" aria-label="מצב תצוגה">
         <button type="button" id="viewGridBtn" class="view-toggle-btn active" onclick="setViewMode('grid')" title="תצוגת קוביות (Grid)">
@@ -1640,15 +1640,15 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261107225749",
+      build_id: "20261108121751",
       schema_version: "2.0.0",
-      generated_at: "07.11.2026",
+      generated_at: "08.11.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261107225749",
-      catalog_data_url: "data/historical_catalog.json?v=20261107225749",
-      sync_data_url: "data/sync_state.json?v=20261107225749"
+      jobs_data_url: "data/jobs.json?v=20261108121751",
+      catalog_data_url: "data/historical_catalog.json?v=20261108121751",
+      sync_data_url: "data/sync_state.json?v=20261108121751"
     };
   </script>
-  <script src="dashboard.js?v=20261107225749" defer></script>
+  <script src="dashboard.js?v=20261108121751" defer></script>
 </body>
 </html>
