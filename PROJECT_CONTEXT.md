@@ -13,7 +13,7 @@
 - **AI & LLM Services:** Google Gemini API via official `google-genai` SDK (`GeminiPool` utilizing `gemini-3.8-flash`, `gemini-3.5-flash-lite`, and `gemini-3.5-flash` with strict Pydantic JSON schema enforcement; Groq API is completely decommissioned and removed).
 - **Client Libraries & Icons:** Phosphor Icons (vector SVG web font), Leaflet.js 1.9.4 with Leaflet.markercluster (geographic map view and coordinate clustering), Chart.js (sector distribution visualization).
 - **Scraping & Data Extraction:** BeautifulSoup4, Requests, Urllib (custom User-Agent spoofing, exponential backoff, rate limiting).
-- **Storage & State:** Flat atomic JSON files under `data/` (`jobs_state.json`, `weekly_archive.json`, `historical_catalog.json`, `evaluation_state.json`), Browser LocalStorage for client-side user triage state.
+- **Storage & State:** Flat atomic JSON files under `data/` (`jobs_state.json`, `weekly_archive.json`, `historical_catalog.json`, `evaluation_state.json`), Browser LocalStorage for client-side user triage state, and Supabase Cloud Database (PostgreSQL with RLS and REST API, project `dvmdbupifrltbvyyfrdk`) for real-time bi-directional triage sync between desktop and mobile devices.
 - **Hosting & Infrastructure:** GitHub Pages (static web app hosting from `docs/`), GitHub Actions (scheduled daily runs and CI/CD), internal `save-and-sync` protocol for atomic GitOps deployments.
 - **Critical Environment Variables:**
   - `GEMINI_API_KEY`: API authentication key for Google Gemini LLM evaluation.

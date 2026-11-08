@@ -668,8 +668,64 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     return state;
   }
 
-  // Authenticated per-user adapter must enforce authorization and conflict-safe writes.
-  const privateSync = window.__PRIVATE_SYNC__ || null;
+  // Authenticated per-user adapter: Supabase Cloud Sync
+  const appConfig = window.__APP_CONFIG__ || {};
+  const SUPABASE_SYNC_CONFIG = {
+    url: appConfig.supabase_url || 'https://dvmdbupifrltbvyyfrdk.supabase.co',
+    publishableKey: appConfig.supabase_anon_key || 'sb_publishable_2Rvr8ExE888FhqeI1VOt-w_aoyFxtDK',
+    table: 'sync_state',
+    rowId: 'default'
+  };
+
+  const supabaseSyncAdapter = {
+    async read() {
+      try {
+        const resp = await fetch(`${SUPABASE_SYNC_CONFIG.url}/rest/v1/${SUPABASE_SYNC_CONFIG.table}?id=eq.${SUPABASE_SYNC_CONFIG.rowId}&select=payload,updated_at`, {
+          headers: {
+            'apikey': SUPABASE_SYNC_CONFIG.publishableKey,
+            'Authorization': `Bearer ${SUPABASE_SYNC_CONFIG.publishableKey}`
+          },
+          cache: 'no-store'
+        });
+        if (!resp.ok) return { ok: false };
+        const rows = await resp.json();
+        if (!rows || rows.length === 0) return { ok: false };
+        const row = rows[0];
+        const data = row.payload || {};
+        data.updated_at = row.updated_at;
+        return {
+          ok: true,
+          json: async () => data
+        };
+      } catch (e) {
+        return { ok: false };
+      }
+    },
+
+    async compareAndSwap(payload, expectedTimestamp) {
+      try {
+        const resp = await fetch(`${SUPABASE_SYNC_CONFIG.url}/rest/v1/${SUPABASE_SYNC_CONFIG.table}`, {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_SYNC_CONFIG.publishableKey,
+            'Authorization': `Bearer ${SUPABASE_SYNC_CONFIG.publishableKey}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates'
+          },
+          body: JSON.stringify({
+            id: SUPABASE_SYNC_CONFIG.rowId,
+            payload: payload,
+            updated_at: new Date().toISOString()
+          })
+        });
+        return { ok: resp.ok };
+      } catch (e) {
+        return { ok: false };
+      }
+    }
+  };
+
+  const privateSync = window.__PRIVATE_SYNC__ || supabaseSyncAdapter;
   let cloudSyncTimeout = null;
   let cloudLastUpdated = 0;
   let isSyncInProgress = false;
@@ -784,7 +840,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         const storedTriage = localStorage.getItem(STORAGE_KEY);
         const storedStarred = localStorage.getItem(STARRED_STORAGE_KEY);
         const isClientVirgin = (lastLocalEdit === 0) && (!storedTriage || storedTriage === '{}') && (!storedStarred || storedStarred === '{}');
-        const shouldMirrorFromRemote = forceMirror || isClientVirgin;
+        const shouldMirrorFromRemote = forceMirror || isClientVirgin || (remoteTimestamp > (lastLocalEdit + 500));
 
         if (shouldMirrorFromRemote) {
           const newJobStates = {};
@@ -943,9 +999,27 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   }
 
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
     window.addEventListener('online', () => { fetchCloudSync(); });
     window.addEventListener('offline', () => { setCloudSyncStatus('offline'); });
+    if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          fetchCloudSync();
+        }
+      });
+    }
+    window.addEventListener('focus', () => {
+      fetchCloudSync();
+    });
+    // Background polling every 25 seconds when tab is active to keep desktop and phone in sync
+    if (typeof setInterval === 'function') {
+      setInterval(() => {
+        if (typeof document !== 'undefined' && document.visibilityState === 'visible' && !isSyncInProgress) {
+          fetchCloudSync();
+        }
+      }, 25000);
+    }
   }
 
   function extractJobId(link) {
