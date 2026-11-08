@@ -999,7 +999,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   }
 
-  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function' && typeof process === 'undefined') {
     window.addEventListener('online', () => { fetchCloudSync(); });
     window.addEventListener('offline', () => { setCloudSyncStatus('offline'); });
     if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
