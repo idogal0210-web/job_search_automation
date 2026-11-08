@@ -34,7 +34,7 @@ job_search_automation/
 ├── requirements-lock.txt           # Exact pinned dependencies for reproducible builds
 ├── .python-version                 # Target Python runtime anchor (Python 3.11 / 3.9+)
 ├── .agents/                        # Operational policies and domain skills
-│   ├── rules/                      # System rules (mcp-policy.md, hebrew-rtl.md, critical-thinking-quality.md)
+│   ├── rules/                      # System rules (mcp-policy.md: Tavily, Firecrawl, Supabase, GitHub; zero-emojis, token-efficiency)
 │   └── skills/                     # Specialized skills (salary-intelligence, cloud-sync, health-audit, etc.)
 ├── .github/
 │   └── workflows/

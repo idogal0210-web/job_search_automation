@@ -77,6 +77,9 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
 - [x] **TASK-19**: Supabase Cloud Live Sync Architecture for Desktop & Mobile Dashboard.
   - Target files: `frontend/templates/index.html`, `docs/index.html`, `frontend/js/dashboard.js`, `docs/dashboard.js`, `PROJECT_CONTEXT.md`, `TASKS.md`.
   - Success criteria: Created Supabase project `job-search-dashboard` (`dvmdbupifrltbvyyfrdk`) in `eu-central-1` with `sync_state` PostgreSQL table, Row-Level Security (RLS) enabled, Realtime enabled, and seeded with baseline state. Integrated dependency-free Supabase client adapter in `dashboard.js` with optimistic UI, `visibilitychange` / `focus` listeners, and 25-second background polling guarded for browser-only execution (`typeof process === 'undefined'`). Enables seamless, bi-directional sync of starred, saved, rejected, and purged jobs between desktop and mobile browsers. Verified 1:1 dual-template parity, 313/313 unit tests passing, zero emojis. Completed 2026-11-08.
+- [x] **TASK-20**: Formalize Supabase MCP Server Operational Policy in Agent Rules.
+  - Target files: `.agents/rules/mcp-policy.md`, `PROJECT_CONTEXT.md`, `TASKS.md`.
+  - Success criteria: Integrated `supabase` into `.agents/rules/mcp-policy.md` table of authorized MCP servers following `/antigravity-project-auditor` recommendation. Established precise operational triggers (cloud project health checks, table migrations, sync state verification) and safety restrictions (no unconfirmed destructive DDL, no redundant client querying). Verified zero emojis and complete policy alignment. Completed 2026-11-08.
 
 
 ---
