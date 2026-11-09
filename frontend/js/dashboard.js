@@ -671,22 +671,88 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   // Authenticated per-user adapter: Supabase Cloud Sync
   const appConfig = window.__APP_CONFIG__ || {};
   const SUPABASE_SYNC_CONFIG = {
-    url: appConfig.supabase_url || 'https://dvmdbupifrltbvyyfrdk.supabase.co',
-    publishableKey: appConfig.supabase_anon_key || 'sb_publishable_2Rvr8ExE888FhqeI1VOt-w_aoyFxtDK',
+    url: appConfig.supabase_url || 'https://wvwdxpttwsrdbvvtiyoh.supabase.co',
+    publishableKey: appConfig.supabase_anon_key || 'sb_publishable_U8BEszbgC7i76c1waY5Ceg_7JvCQKZ6',
     table: 'sync_state',
     rowId: 'default'
   };
 
+  const SUPABASE_AUTH_STORAGE_KEY = 'supabase_auth_session_v1';
+
+  function loadSupabaseSession() {
+    try { return JSON.parse(localStorage.getItem(SUPABASE_AUTH_STORAGE_KEY) || 'null'); } catch (e) { return null; }
+  }
+
+  function saveSupabaseSession(tokenResponse) {
+    if (!tokenResponse || !tokenResponse.access_token) return null;
+    const session = {
+      access_token: tokenResponse.access_token,
+      refresh_token: tokenResponse.refresh_token,
+      expires_at: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 3600)
+    };
+    try { localStorage.setItem(SUPABASE_AUTH_STORAGE_KEY, JSON.stringify(session)); } catch (e) {}
+    return session;
+  }
+
+  async function supabaseAuthRequest(path, body) {
+    const resp = await fetch(`${SUPABASE_SYNC_CONFIG.url}/auth/v1/${path}`, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_SYNC_CONFIG.publishableKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    let json = {};
+    try { json = await resp.json(); } catch (e) {}
+    return { ok: resp.ok, json };
+  }
+
+  async function getSupabaseAccessToken() {
+    let session = loadSupabaseSession();
+    if (!session) return null;
+    if (session.expires_at - 60 > Date.now() / 1000) return session.access_token;
+    if (!session.refresh_token) return null;
+    try {
+      const r = await supabaseAuthRequest('token?grant_type=refresh_token', { refresh_token: session.refresh_token });
+      if (r.ok) {
+        session = saveSupabaseSession(r.json);
+        return session ? session.access_token : null;
+      }
+      if (r.json && (r.json.error_code === 'refresh_token_not_found' || r.json.error_code === 'refresh_token_already_used')) {
+        localStorage.removeItem(SUPABASE_AUTH_STORAGE_KEY);
+      }
+    } catch (e) {}
+    return null;
+  }
+
+  async function supabaseSignIn(email, password) {
+    const r = await supabaseAuthRequest('token?grant_type=password', { email, password });
+    if (r.ok && saveSupabaseSession(r.json)) return { ok: true };
+    return { ok: false, message: (r.json && (r.json.msg || r.json.error_description)) || 'ההתחברות נכשלה' };
+  }
+
+  async function supabaseSignUp(email, password) {
+    const r = await supabaseAuthRequest('signup', { email, password });
+    if (!r.ok) return { ok: false, message: (r.json && (r.json.msg || r.json.error_description)) || 'ההרשמה נכשלה' };
+    if (r.json && r.json.access_token) { saveSupabaseSession(r.json); return { ok: true }; }
+    return { ok: true, confirmEmail: true };
+  }
+
+  function supabaseSignOut() {
+    try { localStorage.removeItem(SUPABASE_AUTH_STORAGE_KEY); } catch (e) {}
+  }
+
   const supabaseSyncAdapter = {
     async read() {
       try {
+        const token = await getSupabaseAccessToken();
+        if (!token) return { ok: false, authRequired: true };
         const resp = await fetch(`${SUPABASE_SYNC_CONFIG.url}/rest/v1/${SUPABASE_SYNC_CONFIG.table}?id=eq.${SUPABASE_SYNC_CONFIG.rowId}&select=payload,updated_at`, {
           headers: {
             'apikey': SUPABASE_SYNC_CONFIG.publishableKey,
-            'Authorization': `Bearer ${SUPABASE_SYNC_CONFIG.publishableKey}`
+            'Authorization': `Bearer ${token}`
           },
           cache: 'no-store'
         });
+        if (resp.status === 401 || resp.status === 403) return { ok: false, authRequired: true };
         if (!resp.ok) return { ok: false };
         const rows = await resp.json();
         if (!rows || rows.length === 0) return { ok: false };
@@ -704,11 +770,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     async compareAndSwap(payload, expectedTimestamp) {
       try {
+        const token = await getSupabaseAccessToken();
+        if (!token) return { ok: false, authRequired: true };
         const resp = await fetch(`${SUPABASE_SYNC_CONFIG.url}/rest/v1/${SUPABASE_SYNC_CONFIG.table}`, {
           method: 'POST',
           headers: {
             'apikey': SUPABASE_SYNC_CONFIG.publishableKey,
-            'Authorization': `Bearer ${SUPABASE_SYNC_CONFIG.publishableKey}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
             'Prefer': 'resolution=merge-duplicates'
           },
@@ -718,12 +786,60 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             updated_at: new Date().toISOString()
           })
         });
-        return { ok: resp.ok };
+        return { ok: resp.ok, authRequired: resp.status === 401 || resp.status === 403 };
       } catch (e) {
         return { ok: false };
       }
     }
   };
+
+  let cloudLoginPromptShown = false;
+
+  function promptCloudLogin(force = false) {
+    if (typeof document === 'undefined' || !document.body) return;
+    if (cloudLoginPromptShown && !force) return;
+    cloudLoginPromptShown = true;
+    let dlg = document.getElementById('cloudLoginModal');
+    if (!dlg) {
+      dlg = document.createElement('dialog');
+      dlg.id = 'cloudLoginModal';
+      dlg.className = 'dashboard-modal-backdrop';
+      dlg.setAttribute('dir', 'rtl');
+      dlg.innerHTML = `
+        <form method="dialog" class="dashboard-card dashboard-modal-box" id="cloudLoginForm" style="display:flex;flex-direction:column;gap:12px;max-width:380px;text-align:right;">
+          <h3 style="margin:0;">התחברות לסנכרון ענן</h3>
+          <input id="cloudLoginEmail" type="email" autocomplete="username" placeholder="אימייל" required style="padding:10px;border-radius:8px;">
+          <input id="cloudLoginPassword" type="password" autocomplete="current-password" placeholder="סיסמה (מינימום 8 תווים)" required minlength="8" style="padding:10px;border-radius:8px;">
+          <div id="cloudLoginMsg" role="status" style="min-height:1.2em;font-size:0.9em;"></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="submit" id="cloudLoginSubmit">התחברות</button>
+            <button type="button" id="cloudLoginSignup">הרשמה ראשונית</button>
+            <button type="button" id="cloudLoginCancel">המשך במצב מקומי</button>
+          </div>
+        </form>`;
+      document.body.appendChild(dlg);
+      const msg = (t) => { dlg.querySelector('#cloudLoginMsg').textContent = t; };
+      const creds = () => ({ email: dlg.querySelector('#cloudLoginEmail').value.trim(), password: dlg.querySelector('#cloudLoginPassword').value });
+      dlg.querySelector('#cloudLoginForm').addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        const { email, password } = creds();
+        msg('מתחבר...');
+        const r = await supabaseSignIn(email, password);
+        if (r.ok) { dlg.close(); fetchCloudSync(); } else { msg(r.message); }
+      });
+      dlg.querySelector('#cloudLoginSignup').addEventListener('click', async () => {
+        const { email, password } = creds();
+        if (!email || password.length < 8) { msg('נא להזין אימייל וסיסמה של 8 תווים לפחות'); return; }
+        msg('נרשם...');
+        const r = await supabaseSignUp(email, password);
+        if (!r.ok) msg(r.message);
+        else if (r.confirmEmail) msg('נשלח מייל אישור. אשר אותו ואז התחבר.');
+        else { dlg.close(); fetchCloudSync(); }
+      });
+      dlg.querySelector('#cloudLoginCancel').addEventListener('click', () => dlg.close());
+    }
+    if (!dlg.open && typeof dlg.showModal === 'function') dlg.showModal();
+  }
 
   const privateSync = window.__PRIVATE_SYNC__ || supabaseSyncAdapter;
   let cloudSyncTimeout = null;
@@ -817,6 +933,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           const resp = await privateSync.read();
           if (resp && resp.ok) {
             data = await resp.json();
+          } else if (resp && resp.authRequired) {
+            promptCloudLogin();
           }
         } catch(e) {}
       }
@@ -989,6 +1107,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (resp.ok) {
         cloudLastUpdated = Date.now();
         setCloudSyncStatus('synced', cloudLastUpdated);
+      } else if (resp.authRequired) {
+        setCloudSyncStatus('local');
+        promptCloudLogin();
       } else {
         setCloudSyncStatus('offline');
       }
@@ -1001,6 +1122,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   if (typeof window !== 'undefined' && typeof window.addEventListener === 'function' && typeof process === 'undefined') {
     window.addEventListener('online', () => { fetchCloudSync(); });
+    const syncDotEl = document.getElementById('headerSyncDot');
+    if (syncDotEl) { syncDotEl.style.cursor = 'pointer'; syncDotEl.addEventListener('click', () => promptCloudLogin(true)); }
     window.addEventListener('offline', () => { setCloudSyncStatus('offline'); });
     if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
       document.addEventListener('visibilitychange', () => {
