@@ -163,12 +163,11 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
     compact_catalog = {link: compact_job_for_ui(j) for link, j in catalog_data.items()}
     save_state_atomic(os.path.join(data_dir, "historical_catalog.json"), compact_catalog)
 
-    # 3. Output docs/data/sync_state.json
+    # 3. Triage state is synchronized via Supabase only; it is never published under docs/.
     sync_state_path = os.path.join(project_root, "data", "sync_state.json")
     sync_state = {}
     if os.path.exists(sync_state_path):
         sync_state = load_state(sync_state_path, {}, strict=False) or {}
-    save_state_atomic(os.path.join(data_dir, "sync_state.json"), sync_state)
 
     starred_set = set(sync_state.get("starred", []))
     saved_set = set(sync_state.get("saved", []))

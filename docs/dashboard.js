@@ -763,144 +763,81 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     try { localStorage.removeItem(SUPABASE_AUTH_STORAGE_KEY); } catch (e) {}
   }
 
-  function updateCloudAuthModalUI() {
-    const loggedInBox = document.getElementById('cloudAuthLoggedInBox');
-    const loggedOutBox = document.getElementById('cloudAuthLoggedOutBox');
-    const statusBadge = document.getElementById('cloudAuthBadge');
-    const userDisplay = document.getElementById('cloudAuthUserDisplay');
-    const authMsg = document.getElementById('cloudModalAuthMsg');
-    if (authMsg) authMsg.textContent = '';
+  function openCloudModal() {
+    updateCloudAuthModalUI();
+    openDialogEl(document.getElementById('cloudModal'));
+  }
 
+  function closeCloudModal() {
+    closeDialogEl(document.getElementById('cloudModal'));
+  }
+
+  function setCloudAuthMessage(text, tone) {
+    const el = document.getElementById('cloudAuthMsg');
+    if (!el) return;
+    el.textContent = text || '';
+    el.style.color = tone === 'error' ? '#f87171' : (tone === 'ok' ? 'var(--dashboard-lime)' : 'var(--dashboard-muted)');
+  }
+
+  function updateCloudAuthModalUI() {
     const session = loadSupabaseSession();
     const isAuthed = Boolean(session && session.access_token);
-
-    if (isAuthed) {
-      if (loggedInBox) loggedInBox.style.display = 'flex';
-      if (loggedOutBox) loggedOutBox.style.display = 'none';
-      if (userDisplay) userDisplay.textContent = session.user_email || 'idogal0210@gmail.com';
-      if (statusBadge) {
-        statusBadge.textContent = 'מחובר לסנכרון';
-        statusBadge.className = 'dashboard-chip';
-        statusBadge.style.color = 'var(--dashboard-lime)';
-        statusBadge.style.borderColor = 'rgba(190, 242, 100, 0.4)';
-      }
-    } else {
-      if (loggedInBox) loggedInBox.style.display = 'none';
-      if (loggedOutBox) loggedOutBox.style.display = 'flex';
-      if (statusBadge) {
-        statusBadge.textContent = 'דרושה התחברות';
-        statusBadge.className = 'dashboard-chip';
-        statusBadge.style.color = 'var(--dashboard-gold)';
-        statusBadge.style.borderColor = 'rgba(255, 211, 104, 0.4)';
-      }
+    const outBox = document.getElementById('cloudAuthSignedOut');
+    const inBox = document.getElementById('cloudAuthSignedIn');
+    if (outBox) outBox.style.display = isAuthed ? 'none' : 'flex';
+    if (inBox) inBox.style.display = isAuthed ? 'flex' : 'none';
+    const userEl = document.getElementById('cloudAuthUser');
+    if (userEl) userEl.textContent = (session && session.user_email) || '';
+    const emailInput = document.getElementById('cloudAuthEmail');
+    if (emailInput && !emailInput.value) {
+      try { emailInput.value = localStorage.getItem('supabase_last_email') || ''; } catch (e) {}
     }
+    setCloudAuthMessage('', '');
   }
 
-  async function handleCloudModalSignIn() {
-    const emailInput = document.getElementById('cloudModalEmail');
-    const passInput = document.getElementById('cloudModalPassword');
-    const msgEl = document.getElementById('cloudModalAuthMsg');
-    const btn = document.getElementById('cloudModalSignInBtn');
-
-    const email = (emailInput ? emailInput.value : '').trim();
-    const password = passInput ? passInput.value : '';
-
-    if (!email || !password) {
-      if (msgEl) {
-        msgEl.textContent = 'נא להזין דוא״ל וסיסמה';
-        msgEl.style.color = '#f87171';
-      }
-      return;
-    }
-
-    if (btn) btn.disabled = true;
-    if (msgEl) {
-      msgEl.textContent = 'מתחבר...';
-      msgEl.style.color = 'var(--dashboard-muted)';
-    }
-
-    try {
-      const res = await supabaseSignIn(email, password);
-      if (res.ok) {
-        if (msgEl) {
-          msgEl.textContent = 'התחברת בהצלחה!';
-          msgEl.style.color = 'var(--dashboard-lime)';
-        }
-        updateCloudAuthModalUI();
-        await fetchCloudSync(false);
-        showToast('ph-cloud-check', 'מחובר לסנכרון ענן (Supabase)');
-      } else {
-        if (msgEl) {
-          msgEl.textContent = res.message;
-          msgEl.style.color = '#f87171';
-        }
-      }
-    } finally {
-      if (btn) btn.disabled = false;
-    }
+  function readCloudAuthCredentials() {
+    const email = (document.getElementById('cloudAuthEmail') || {}).value || '';
+    const password = (document.getElementById('cloudAuthPassword') || {}).value || '';
+    return { email: email.trim(), password };
   }
 
-  async function handleCloudModalSignUp() {
-    const emailInput = document.getElementById('cloudModalEmail');
-    const passInput = document.getElementById('cloudModalPassword');
-    const msgEl = document.getElementById('cloudModalAuthMsg');
-    const btn = document.getElementById('cloudModalSignUpBtn');
-
-    const email = (emailInput ? emailInput.value : '').trim();
-    const password = passInput ? passInput.value : '';
-
+  async function runCloudAuthAction(kind) {
+    const { email, password } = readCloudAuthCredentials();
     if (!email || password.length < 8) {
-      if (msgEl) {
-        msgEl.textContent = 'נא להזין דוא״ל וסיסמה בת 8 תווים לפחות';
-        msgEl.style.color = '#f87171';
-      }
+      setCloudAuthMessage('נא להזין אימייל וסיסמה (לפחות 8 תווים)', 'error');
       return;
     }
-
-    if (btn) btn.disabled = true;
-    if (msgEl) {
-      msgEl.textContent = 'מבצע הרשמה ראשונית...';
-      msgEl.style.color = 'var(--dashboard-muted)';
-    }
-
+    const buttons = document.querySelectorAll('#cloudAuthSignedOut button');
+    buttons.forEach(b => { b.disabled = true; });
+    setCloudAuthMessage(kind === 'signup' ? 'נרשם...' : 'מתחבר...', '');
     try {
-      const res = await supabaseSignUp(email, password);
-      if (res.ok) {
-        if (res.confirmEmail) {
-          if (msgEl) {
-            msgEl.textContent = 'נשלח קישור אימות לדוא״ל שלך! אשר אותו ולאחר מכן לחץ "התחבר"';
-            msgEl.style.color = 'var(--dashboard-cyan)';
-          }
-          showToast('ph-envelope-simple', 'נשלח מייל אימות מ-Supabase');
-        } else {
-          if (msgEl) {
-            msgEl.textContent = 'ההרשמה וההתחברות הושלמו בהצלחה!';
-            msgEl.style.color = 'var(--dashboard-lime)';
-          }
-          updateCloudAuthModalUI();
-          await fetchCloudSync(false);
-          showToast('ph-cloud-check', 'נרשמת בהצלחה לסנכרון ענן');
-        }
-      } else {
-        if (msgEl) {
-          msgEl.textContent = res.message;
-          msgEl.style.color = '#f87171';
-        }
+      const res = kind === 'signup' ? await supabaseSignUp(email, password) : await supabaseSignIn(email, password);
+      if (!res.ok) {
+        setCloudAuthMessage(res.message || 'הפעולה נכשלה', 'error');
+        return;
       }
+      try { localStorage.setItem('supabase_last_email', email); } catch (e) {}
+      if (res.confirmEmail) {
+        setCloudAuthMessage('נשלח מייל אימות. אשר אותו ואז התחבר.', 'ok');
+        return;
+      }
+      const pw = document.getElementById('cloudAuthPassword');
+      if (pw) pw.value = '';
+      updateCloudAuthModalUI();
+      await fetchCloudSync(false);
+      await pushCloudSync();
+      closeCloudModal();
+    } catch (e) {
+      setCloudAuthMessage('שגיאת רשת. נסה שוב.', 'error');
     } finally {
-      if (btn) btn.disabled = false;
+      buttons.forEach(b => { b.disabled = false; });
     }
   }
 
-  function handleCloudModalSignOut() {
+  function handleCloudSignOut() {
     supabaseSignOut();
-    updateCloudAuthModalUI();
     setCloudSyncStatus('local');
-    showToast('ph-hard-drive', 'התנתקת מסנכרון ענן (מצב אחסון מקומי)');
-  }
-
-  function promptCloudLogin() {
-    triggerSyncModal();
+    updateCloudAuthModalUI();
   }
 
   const supabaseSyncAdapter = {
@@ -956,7 +893,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   };
 
-  const privateSync = window.__PRIVATE_SYNC__ || supabaseSyncAdapter;
+  const privateSync = supabaseSyncAdapter;
   let cloudSyncTimeout = null;
   let cloudLastUpdated = 0;
   let isSyncInProgress = false;
@@ -1043,23 +980,14 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     try {
       setCloudSyncStatus('syncing');
       let data = null;
+      let needsAuth = false;
       if (privateSync) {
         try {
           const resp = await privateSync.read();
           if (resp && resp.ok) {
             data = await resp.json();
           } else if (resp && resp.authRequired) {
-            promptCloudLogin();
-          }
-        } catch(e) {}
-      }
-      if (!data) {
-        const config = window.__APP_CONFIG__ || {};
-        const syncUrl = config.sync_data_url || 'data/sync_state.json';
-        try {
-          const resp = await fetch(syncUrl + (syncUrl.includes('?') ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store' });
-          if (resp && resp.ok) {
-            data = await resp.json();
+            needsAuth = true;
           }
         } catch(e) {}
       }
@@ -1179,7 +1107,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         }
         setCloudSyncStatus('synced', cloudLastUpdated || Date.now());
       } else {
-        setCloudSyncStatus('synced', Date.now());
+        setCloudSyncStatus(needsAuth ? 'local' : 'synced', Date.now());
       }
     } catch (e) {
       setCloudSyncStatus('offline');
@@ -1224,7 +1152,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         setCloudSyncStatus('synced', cloudLastUpdated);
       } else if (resp.authRequired) {
         setCloudSyncStatus('local');
-        promptCloudLogin();
       } else {
         setCloudSyncStatus('offline');
       }
@@ -1237,8 +1164,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   if (typeof window !== 'undefined' && typeof window.addEventListener === 'function' && typeof process === 'undefined') {
     window.addEventListener('online', () => { fetchCloudSync(); });
-    const syncDotEl = document.getElementById('headerSyncDot');
-    if (syncDotEl) { syncDotEl.style.cursor = 'pointer'; syncDotEl.addEventListener('click', () => promptCloudLogin(true)); }
     window.addEventListener('offline', () => { setCloudSyncStatus('offline'); });
     if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
       document.addEventListener('visibilitychange', () => {
@@ -1264,103 +1189,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (!link) return '';
     const match = link.match(/(\d{7,12})/);
     return match ? match[1] : link;
-  }
-
-  function getSyncDelta() {
-    const delta = {};
-    for (const [link, state] of Object.entries(jobStates)) {
-      if (state === 'saved') {
-        delta[extractJobId(link)] = 's';
-      } else if (state === 'rejected') {
-        delta[extractJobId(link)] = 'r';
-      }
-    }
-    for (const [link, isStar] of Object.entries(starredJobs)) {
-      if (isStar) {
-        delta[extractJobId(link)] = '*';
-      }
-    }
-    return delta;
-  }
-
-  function checkUrlSync() {
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      const syncData = urlParams.get('sync');
-      if (syncData) {
-        let incomingDelta = null;
-        try {
-          incomingDelta = JSON.parse(atob(decodeURIComponent(syncData)));
-        } catch(e) {
-          try {
-            incomingDelta = JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(syncData)))));
-          } catch(e2) {
-            incomingDelta = JSON.parse(decodeURIComponent(syncData));
-          }
-        }
-
-        if (incomingDelta && typeof incomingDelta === 'object') {
-          let count = 0;
-          for (const [idOrLink, val] of Object.entries(incomingDelta)) {
-            const match = (rawJobsData || []).find(j => j.link && (j.link === idOrLink || j.link.includes(idOrLink)));
-            const targetLink = match ? match.link : idOrLink;
-            if (val === '*' || val === 'starred') {
-              starredJobs[targetLink] = true;
-              if (jobStates[targetLink] === 'rejected' || jobStates[targetLink] === 'purged') {
-                delete jobStates[targetLink];
-              }
-            } else if (val === 's' || val === 'saved') {
-              jobStates[targetLink] = 'saved';
-            } else {
-              jobStates[targetLink] = 'rejected';
-            }
-            count++;
-          }
-          recordLocalEdit();
-          saveStarredJobs(starredJobs);
-          saveTriageState(jobStates);
-          window.history.replaceState({}, document.title, window.location.pathname);
-          setTimeout(() => {
-            showToast('ph-check-circle', count > 0 ? `סונכרנו בהצלחה ${count} משרות מהקישור!` : 'הדשבורד מסונכרן ומעודכן!');
-            updateCubeCountsImmediately();
-            renderCards();
-            updateUI();
-          }, 300);
-        }
-      }
-    } catch (e) {}
-  }
-
-  async function shareSyncLink() {
-    const delta = getSyncDelta();
-    const deltaKeys = Object.keys(delta);
-    let shareUrl = window.location.origin + window.location.pathname;
-    if (deltaKeys.length > 0) {
-      const payload = encodeURIComponent(btoa(JSON.stringify(delta)));
-      shareUrl += '?sync=' + payload;
-    }
-    
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'דשבורד משרות - עידו גל',
-          text: deltaKeys.length > 0 ? `סנכרון ${deltaKeys.length} משרות חדשות שסימנתי` : 'דשבורד משרות מעודכן',
-          url: shareUrl
-        });
-        showToast('ph-share-network', 'הקישור שותף בהצלחה!');
-        return;
-      } catch (err) {}
-    }
-    
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        showToast('ph-link', 'קישור סנכרון הועתק! פתח אותו במכשיר השני');
-      }).catch(() => {
-        prompt('פתח קישור זה במכשיר השני לסנכרון מיידי:', shareUrl);
-      });
-    } else {
-      prompt('פתח קישור זה במכשיר השני לסנכרון מיידי:', shareUrl);
-    }
   }
 
   function saveTriageState(state) {
@@ -3770,260 +3598,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }, 2800);
   }
 
-  function triggerSyncModal() {
-    const savedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !isJobStarred(id)).length;
-    const starredCount = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id]) && (jobStates[id] || 'pending') !== 'rejected' && (jobStates[id] || 'pending') !== 'purged').length;
-    const rejectedCount = Object.values(jobStates).filter(s => s === 'rejected').length;
-    const starredEl = document.getElementById('syncStarredCount');
-    if (starredEl) starredEl.textContent = starredCount;
-    const savedEl = document.getElementById('syncSavedCount');
-    if (savedEl) savedEl.textContent = savedCount;
-    const rejEl = document.getElementById('syncRejectedCount');
-    if (rejEl) rejEl.textContent = rejectedCount;
-    if (typeof updateCloudAuthModalUI === 'function') updateCloudAuthModalUI();
-    openDialogEl(document.getElementById('syncModal'));
-  }
-
-  function closeSyncModal() {
-    closeDialogEl(document.getElementById('syncModal'));
-  }
-
-  const GH_WORKFLOW_URL = 'https://api.github.com/repos/idogal0210-web/job_search_automation/actions/workflows/daily_job_search.yml';
-  let cloudSearchPollTimer = null;
-  let isCloudSearchActive = false;
-
-  function triggerRunSearchModal() {
-    updateRunSearchTokenUI();
-    fetchLatestCloudRunStatus();
-    openDialogEl(document.getElementById('runSearchModal'));
-  }
-
-  function closeRunSearchModal() {
-    closeDialogEl(document.getElementById('runSearchModal'));
-  }
-
-  function getStoredGitHubToken() {
-    try {
-      return (localStorage.getItem('gh_dispatch_token') || '').trim();
-    } catch (e) {
-      return '';
-    }
-  }
-
-  function updateRunSearchTokenUI() {
-    const token = getStoredGitHubToken();
-    const displayEl = document.getElementById('runSearchTokenDisplay');
-    const inputWrapper = document.getElementById('runSearchTokenInputWrapper');
-    const maskedEl = document.getElementById('runSearchTokenMasked');
-    const inputEl = document.getElementById('runSearchPatInput');
-
-    if (token) {
-      if (displayEl) displayEl.style.display = 'flex';
-      if (inputWrapper) inputWrapper.style.display = 'none';
-      if (maskedEl) {
-        const preview = token.length > 8 ? token.slice(0, 4) + '...' + token.slice(-4) : '••••••••';
-        maskedEl.textContent = preview;
-      }
-    } else {
-      if (displayEl) displayEl.style.display = 'none';
-      if (inputWrapper) inputWrapper.style.display = 'flex';
-      if (inputEl) inputEl.value = '';
-    }
-  }
-
-  function editRunSearchToken() {
-    const displayEl = document.getElementById('runSearchTokenDisplay');
-    const inputWrapper = document.getElementById('runSearchTokenInputWrapper');
-    const inputEl = document.getElementById('runSearchPatInput');
-    if (displayEl) displayEl.style.display = 'none';
-    if (inputWrapper) inputWrapper.style.display = 'flex';
-    if (inputEl) {
-      inputEl.value = getStoredGitHubToken();
-      inputEl.focus();
-    }
-  }
-
-  function saveRunSearchToken() {
-    const inputEl = document.getElementById('runSearchPatInput');
-    const val = inputEl ? inputEl.value.trim() : '';
-    if (!val) {
-      if (typeof showToast === 'function') showToast('נא להזין טוקן תקף');
-      return;
-    }
-    try {
-      localStorage.setItem('gh_dispatch_token', val);
-      updateRunSearchTokenUI();
-      if (typeof showToast === 'function') showToast('טוקן GitHub נשמר בהצלחה בדפדפן');
-    } catch (e) {
-      if (typeof showToast === 'function') showToast('שגיאה בשמירת הטוקן');
-    }
-  }
-
-  function setCloudSearchRunningUI(isRunning) {
-    isCloudSearchActive = isRunning;
-    const btn = document.getElementById('headerRunSearchBtn');
-    const icon = document.getElementById('headerRunSearchIcon');
-    const dot = document.getElementById('headerRunSearchDot');
-    const banner = document.getElementById('runSearchProgressBanner');
-    const submitBtn = document.getElementById('runSearchSubmitBtn');
-
-    if (btn) {
-      if (isRunning) {
-        btn.classList.add('is-running');
-        btn.setAttribute('title', 'סריקת משרות פעילה כעת בענן');
-      } else {
-        btn.classList.remove('is-running');
-        btn.setAttribute('title', 'הפעלת סריקת משרות בענן');
-      }
-    }
-    if (icon) {
-      icon.className = isRunning ? 'ph-duotone ph-spinner ph-spin' : 'ph-duotone ph-play';
-    }
-    if (dot) {
-      dot.style.display = isRunning ? 'inline-block' : 'none';
-    }
-    if (banner) {
-      banner.style.display = isRunning ? 'block' : 'none';
-    }
-    if (submitBtn) {
-      submitBtn.disabled = isRunning;
-      submitBtn.style.opacity = isRunning ? '0.6' : '1';
-      submitBtn.style.pointerEvents = isRunning ? 'none' : 'auto';
-      const textSpan = submitBtn.querySelector('span');
-      if (textSpan) textSpan.textContent = isRunning ? 'סריקה פעילה בענן...' : 'הפעל סריקה כעת';
-    }
-  }
-
-  async function fetchLatestCloudRunStatus() {
-    const timeEl = document.getElementById('runSearchLastRunTime');
-    const statusEl = document.getElementById('runSearchLastRunStatus');
-    try {
-      const headers = { 'Accept': 'application/vnd.github+json' };
-      const token = getStoredGitHubToken();
-      if (token) headers['Authorization'] = 'Bearer ' + token;
-      const res = await fetch(GH_WORKFLOW_URL + '/runs?per_page=1', { headers });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
-      if (data && data.workflow_runs && data.workflow_runs.length > 0) {
-        const run = data.workflow_runs[0];
-        const dateObj = new Date(run.created_at);
-        const timeFormatted = dateObj.toLocaleDateString('he-IL', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-        if (timeEl) timeEl.textContent = timeFormatted;
-
-        if (run.status === 'in_progress' || run.status === 'queued') {
-          if (statusEl) {
-            statusEl.textContent = 'פעיל כעת';
-            statusEl.className = 'dashboard-chip cyan';
-          }
-          setCloudSearchRunningUI(true);
-          startCloudSearchPolling();
-        } else if (run.status === 'completed') {
-          if (run.conclusion === 'success') {
-            if (statusEl) {
-              statusEl.textContent = 'הצלחה';
-              statusEl.className = 'dashboard-chip lime';
-            }
-          } else {
-            if (statusEl) {
-              statusEl.textContent = run.conclusion === 'failure' ? 'נכשלה' : (run.conclusion || 'הושלם');
-              statusEl.className = 'dashboard-chip rose';
-            }
-          }
-          if (isCloudSearchActive) {
-            setCloudSearchRunningUI(false);
-          }
-        }
-      }
-    } catch (e) {
-      if (timeEl) timeEl.textContent = 'לא זמין';
-      if (statusEl) {
-        statusEl.textContent = 'מצב לא ידוע';
-        statusEl.className = 'dashboard-chip';
-      }
-    }
-  }
-
-  function startCloudSearchPolling() {
-    if (cloudSearchPollTimer) clearInterval(cloudSearchPollTimer);
-    cloudSearchPollTimer = setInterval(async () => {
-      try {
-        const headers = { 'Accept': 'application/vnd.github+json' };
-        const token = getStoredGitHubToken();
-        if (token) headers['Authorization'] = 'Bearer ' + token;
-        const res = await fetch(GH_WORKFLOW_URL + '/runs?per_page=1', { headers });
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data && data.workflow_runs && data.workflow_runs.length > 0) {
-          const run = data.workflow_runs[0];
-          if (run.status === 'completed') {
-            clearInterval(cloudSearchPollTimer);
-            cloudSearchPollTimer = null;
-            setCloudSearchRunningUI(false);
-            fetchLatestCloudRunStatus();
-            if (run.conclusion === 'success') {
-              if (typeof showToast === 'function') showToast('סריקת המשרות בענן הסתיימה בהצלחה!');
-              setTimeout(() => {
-                window.location.reload();
-              }, 2500);
-            } else {
-              if (typeof showToast === 'function') showToast('ריצת הסריקה בענן הסתיימה בסטטוס: ' + (run.conclusion || 'הושלם'));
-            }
-          }
-        }
-      } catch (e) {
-        /* Ignore poll network errors */
-      }
-    }, 12000);
-  }
-
-  async function dispatchCloudJobSearch() {
-    const token = getStoredGitHubToken();
-    if (!token) {
-      editRunSearchToken();
-      if (typeof showToast === 'function') showToast('נא להגדיר טוקן GitHub להפעלת סריקה');
-      return;
-    }
-
-    const submitBtn = document.getElementById('runSearchSubmitBtn');
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      const textSpan = submitBtn.querySelector('span');
-      if (textSpan) textSpan.textContent = 'שולח פקודה לענן...';
-    }
-
-    try {
-      const res = await fetch(GH_WORKFLOW_URL + '/dispatches', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/vnd.github+json',
-          'Authorization': 'Bearer ' + token,
-          'X-GitHub-Api-Version': '2022-11-28',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ref: 'main' })
-      });
-
-      if (res.status === 204) {
-        setCloudSearchRunningUI(true);
-        if (typeof showToast === 'function') showToast('סריקת המשרות הופעלה בהצלחה ב-GitHub Actions!');
-        setTimeout(() => {
-          fetchLatestCloudRunStatus();
-          startCloudSearchPolling();
-        }, 3000);
-      } else if (res.status === 401 || res.status === 403) {
-        if (typeof showToast === 'function') showToast('שגיאת הרשאה מול GitHub. ודא שהטוקן כולל הרשאת workflow');
-        editRunSearchToken();
-        setCloudSearchRunningUI(false);
-      } else {
-        if (typeof showToast === 'function') showToast('שגיאה בשיגור הסריקה: HTTP ' + res.status);
-        setCloudSearchRunningUI(false);
-      }
-    } catch (err) {
-      if (typeof showToast === 'function') showToast('שגיאת רשת בחיבור ל-GitHub: ' + (err.message || ''));
-      setCloudSearchRunningUI(false);
-    }
-  }
-
   function toggleMetricsExpand() {
     const content = document.getElementById('collapsibleMetricsContent');
     const btn = document.getElementById('metricsToggleBtn');
@@ -4041,69 +3615,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   if (typeof window !== 'undefined') {
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        closeRunSearchModal();
-        closeSyncModal();
+        closeCloudModal();
         closeDuplicatesModal();
         closeInactiveJobsModal();
         if (typeof closeJobModal === 'function') closeJobModal();
       }
     });
-  }
-
-  async function pullLatestFromCloud() {
-    const pullBtn = document.getElementById('syncPullRemoteBtn');
-    if (pullBtn) {
-      pullBtn.disabled = true;
-      pullBtn.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> מושך נתונים מהענן...';
-    }
-
-    try {
-      localStorage.removeItem(LAST_LOCAL_EDIT_KEY);
-      await fetchCloudSync(true);
-      await loadHistoricalCatalogOnDemand();
-      renderCards();
-      updateUI();
-      const savedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !isJobStarred(id)).length;
-      const starredCount = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id]) && (jobStates[id] || 'pending') !== 'rejected' && (jobStates[id] || 'pending') !== 'purged').length;
-      const newCount = (rawJobsData || []).filter(j => !isJobStarred(j.link) && (jobStates[j.link] || 'pending') !== 'saved' && (jobStates[j.link] || 'pending') !== 'rejected' && (jobStates[j.link] || 'pending') !== 'purged').length;
-      closeSyncModal();
-      showToast('ph-cloud-arrow-down', `נתוני הענן נמשכו בהצלחה! (${savedCount} שמורות, ${starredCount} בכוכב, ${newCount} חדשות)`);
-    } catch (e) {
-      showToast('ph-warning', 'שגיאה במשיכת נתונים מהענן');
-    } finally {
-      if (pullBtn) {
-        pullBtn.disabled = false;
-        pullBtn.innerHTML = '<i class="ph-duotone ph-cloud-arrow-down"></i> משוך ושחזר נתונים מהענן לטלפון / מחשב';
-      }
-    }
-  }
-
-  async function confirmSync() {
-    const syncBtn = document.getElementById('syncConfirmBtn');
-    if (syncBtn) {
-      syncBtn.disabled = true;
-      syncBtn.textContent = "סנכרון מתבצע...";
-    }
-
-    try {
-      // 1. Force push existing local triage/starred state into cloud/backend state
-      await pushCloudSync();
-      // 2. Clear any stale edit flags and reconcile safely
-      localStorage.removeItem(LAST_LOCAL_EDIT_KEY);
-      await fetchCloudSync(false);
-    } catch(e) {}
-
-    const savedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !isJobStarred(id)).length;
-    const starredCount = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id]) && (jobStates[id] || 'pending') !== 'rejected' && (jobStates[id] || 'pending') !== 'purged').length;
-    const rejectedCount = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected').length;
-    const newCount = (rawJobsData || []).filter(j => !isJobStarred(j.link) && (jobStates[j.link] || 'pending') !== 'saved' && (jobStates[j.link] || 'pending') !== 'rejected' && (jobStates[j.link] || 'pending') !== 'purged').length;
-
-    closeSyncModal();
-    showToast('ph-cloud-check', `סונכרן בהצלחה מול המחשב! (${newCount} חדשות, ${starredCount} בכוכב, ${savedCount} שמורות, ${rejectedCount} הוסרו)`);
-    if (syncBtn) {
-      syncBtn.disabled = false;
-      syncBtn.textContent = "אשר וסנכרן עכשיו";
-    }
   }
 
   function openDuplicatesModal() {
@@ -7467,11 +6984,9 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
 
   window.onload = async () => {
     updateCubeCountsImmediately();
-    checkUrlSync();
     updateSortIconAndToast(currentSort, false);
     await fetchJobsData();
     await fetchCloudSync();
-    fetchLatestCloudRunStatus();
     setViewMode(currentViewMode);
     initAtsModule();
     initCvUploadState();

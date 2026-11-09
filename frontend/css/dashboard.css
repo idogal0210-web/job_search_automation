@@ -180,9 +180,7 @@
       line-height: 1.2;
       white-space: nowrap;
     }
-    .icon-button,
-    .header-sync-btn,
-    .header-run-search-btn {
+    .icon-button {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -201,27 +199,15 @@
       font-size: 18px;
     }
     @media (hover: hover) {
-  .icon-button:hover,
-    .header-sync-btn:hover,
-    .header-run-search-btn:hover {
+  .icon-button:hover {
       background: rgba(255, 255, 255, 0.12);
       border-color: rgba(255, 255, 255, 0.3);
       transform: translateY(-1px);
     }
 }
-    .icon-button:focus-visible,
-    .header-sync-btn:focus-visible,
-    .header-run-search-btn:focus-visible {
+    .icon-button:focus-visible {
       outline: 3px solid #a8d573;
       outline-offset: 2px;
-    }
-    .header-run-search-btn.is-running {
-      border-color: rgba(56, 189, 248, 0.6);
-      background: rgba(56, 189, 248, 0.15);
-      color: var(--dashboard-cyan);
-    }
-    .header-run-search-btn.is-running i {
-      animation: spin 1s linear infinite;
     }
     .sync-status-dot {
       position: absolute;
@@ -6369,3 +6355,37 @@ label,
     transition: none !important;
   }
 }
+
+/* Minimal cloud sync pill and account modal */
+.cloud-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  min-height: 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: var(--dashboard-muted);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.cloud-pill:hover { color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+.cloud-pill:focus-visible { outline: 3px solid #a8d573; outline-offset: 2px; }
+.cloud-pill .sync-status-dot { position: static; width: 7px; height: 7px; }
+.cloud-pill .sync-status-dot.local { background: var(--dashboard-muted); box-shadow: none; }
+.cloud-modal-box { max-width: 340px; }
+.cloud-modal-body { display: flex; flex-direction: column; gap: 12px; }
+.cloud-modal-title { margin: 0; font-size: 16px; font-weight: 600; }
+.cloud-input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--dashboard-edge);
+  background: rgba(0, 0, 0, 0.3);
+  color: inherit;
+  font: inherit;
+  font-size: 16px;
+}
+.cloud-modal-msg { min-height: 1.2em; font-size: 13px; color: var(--dashboard-muted); }
+.cloud-modal-actions { display: flex; gap: 8px; }

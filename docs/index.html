@@ -36,13 +36,9 @@
       <div class="brand-titles profile-info">
         <div class="brand-title-row">
           <h1 class="brand-title profile-title">עידו גל | בקרת משרות</h1>
-          <button type="button" id="headerRunSearchBtn" class="header-run-search-btn icon-button" onclick="triggerRunSearchModal()" title="הפעלת סריקת משרות בענן" aria-label="הפעלת סריקת משרות בענן">
-            <i class="ph-duotone ph-play" id="headerRunSearchIcon"></i>
-            <span class="sync-status-dot" id="headerRunSearchDot" role="status" aria-live="polite" style="display: none; background: var(--dashboard-cyan);"></span>
-          </button>
-          <button type="button" id="headerSyncBtn" class="header-sync-btn icon-button" onclick="triggerSyncModal()" title="סנכרון נתונים עם הענן" aria-label="סנכרון נתונים עם הענן">
-            <i class="ph-duotone ph-cloud-arrow-up" id="headerSyncIcon"></i>
+          <button type="button" id="headerCloudBtn" class="cloud-pill" onclick="openCloudModal()" title="חשבון וסנכרון ענן" aria-label="חשבון וסנכרון ענן">
             <span class="sync-status-dot" id="headerSyncDot" role="status" aria-live="polite"></span>
+            <span>ענן</span>
           </button>
         </div>
         <div class="brand-subtitle-row">
@@ -1364,7 +1360,7 @@
                     <span class="anon-masked">[מועמד מנוסה - הנדסאי מכונות]</span>
                   </div>
                   <div class="anon-rule-row">
-                    <span class="anon-orig">0526328886 / idogal0210@gmail.com</span>
+                    <span class="anon-orig">0526328886 / </span>
                     <i class="ph-duotone ph-arrow-left"></i>
                     <span class="anon-masked">[05X-XXXXXXX / candidate@confidential.il]</span>
                   </div>
@@ -1403,188 +1399,28 @@
   </main>
 
 
-  <!-- Cloud Run Search Modal -->
-  <dialog id="runSearchModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeRunSearchModal()">
-    <div class="dashboard-card dashboard-modal-box">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 14px;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <div class="stat-icon-squircle cyan">
-            <i class="ph-duotone ph-rocket-launch"></i>
+  <!-- Cloud Account Modal -->
+  <dialog id="cloudModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeCloudModal()">
+    <div class="dashboard-card dashboard-modal-box cloud-modal-box">
+      <div id="cloudAuthSignedOut" class="cloud-modal-body">
+        <h3 class="cloud-modal-title">חשבון סנכרון</h3>
+        <form class="cloud-modal-body" onsubmit="event.preventDefault(); runCloudAuthAction('signin');">
+          <input type="email" id="cloudAuthEmail" class="cloud-input" autocomplete="username" placeholder="אימייל" required>
+          <input type="password" id="cloudAuthPassword" class="cloud-input" autocomplete="current-password" placeholder="סיסמה (8 תווים לפחות)" required minlength="8">
+          <div id="cloudAuthMsg" class="cloud-modal-msg" role="status" aria-live="polite"></div>
+          <div class="cloud-modal-actions">
+            <button type="submit" class="dashboard-primary">התחברות</button>
+            <button type="button" class="tool-btn" onclick="runCloudAuthAction('signup')">הרשמה</button>
           </div>
-          <div>
-            <h3 style="margin: 0; font-size: 18px; font-weight: 600;">הפעלת סריקת משרות בענן</h3>
-            <small style="color: var(--dashboard-muted);">ריצה יזומה ב-GitHub Actions (LinkedIn, Drushim, Indeed, Glassdoor)</small>
-          </div>
-        </div>
-        <button type="button" onclick="closeRunSearchModal()" class="tool-btn" style="min-height: 36px; padding: 6px 12px; font-size: 16px; cursor: pointer; border-radius: 999px;" aria-label="סגור"><i class="ph-bold ph-x"></i></button>
+        </form>
       </div>
-
-      <!-- Cloud Status Box -->
-      <div id="runSearchStatusCard" style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--dashboard-edge); border-radius: 18px; padding: 16px; margin-bottom: 16px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600;">
-            <i class="ph-duotone ph-clock" style="color: var(--dashboard-cyan);"></i> סריקה אחרונה בענן:
-          </span>
-          <span id="runSearchLastRunTime" style="font-size: 13.5px; color: var(--dashboard-text);">בטעינה...</span>
+      <div id="cloudAuthSignedIn" class="cloud-modal-body" style="display: none;">
+        <h3 class="cloud-modal-title">מחובר</h3>
+        <div id="cloudAuthUser" class="cloud-modal-msg"></div>
+        <div class="cloud-modal-actions">
+          <button type="button" class="tool-btn" onclick="handleCloudSignOut()">התנתקות</button>
+          <button type="button" class="tool-btn" onclick="closeCloudModal()">סגור</button>
         </div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600;">
-            <i class="ph-duotone ph-check-circle" style="color: var(--dashboard-lime);"></i> תוצאת ריצה אחרונה:
-          </span>
-          <span id="runSearchLastRunStatus" class="dashboard-chip" style="font-size: 12px; padding: 4px 10px;">בטעינה...</span>
-        </div>
-      </div>
-
-      <!-- Progress Banner (Shown when running) -->
-      <div id="runSearchProgressBanner" style="display: none; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 14px 16px; margin-bottom: 16px;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <i class="ph-duotone ph-spinner ph-spin" style="font-size: 24px; color: var(--dashboard-cyan);"></i>
-          <div>
-            <div id="runSearchProgressTitle" style="font-size: 14px; font-weight: 600; color: #fff;">סריקת משרות פעילה כעת בענן</div>
-            <div id="runSearchProgressText" style="font-size: 12.5px; color: var(--dashboard-muted);">הריצה מתבצעת ב-GitHub Actions. הדשבורד יעדכן אוטומטית כשתסתיים.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- GitHub PAT Token Section -->
-      <div style="margin-bottom: 18px;">
-        <div id="runSearchTokenDisplay" style="display: none; justify-content: space-between; align-items: center; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;">
-          <span style="font-size: 13px; color: var(--dashboard-muted); display: flex; align-items: center; gap: 6px;">
-            <i class="ph-duotone ph-key" style="color: var(--dashboard-gold);"></i>
-            טוקן GitHub מוגדר: <code id="runSearchTokenMasked" style="color: #fff; font-size: 12px;">ghp_****</code>
-          </span>
-          <button type="button" onclick="editRunSearchToken()" class="tool-btn" style="padding: 4px 10px; font-size: 12px; min-height: 28px;">החלף טוקן</button>
-        </div>
-
-        <div id="runSearchTokenInputWrapper" style="display: none; flex-direction: column; gap: 8px;">
-          <label for="runSearchPatInput" style="font-size: 13px; font-weight: 600; color: var(--dashboard-text);">
-            טוקן גישה אישי של GitHub (Personal Access Token):
-          </label>
-          <div style="display: flex; gap: 8px;">
-            <input type="password" id="runSearchPatInput" placeholder="הדבק ghp_... או github_pat_..." style="flex: 1; padding: 9px 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--dashboard-edge); border-radius: 12px; color: #fff; font-size: 13px; direction: ltr;" />
-            <button type="button" onclick="saveRunSearchToken()" class="tool-btn" style="padding: 8px 16px; font-size: 13px; min-height: 38px;">שמור</button>
-          </div>
-          <p style="font-size: 12px; color: var(--dashboard-muted); line-height: 1.5; margin: 0;">
-            הטוקן נשמר אך ורק בדפדפן שלך (ב-LocalStorage).
-            <a href="https://github.com/settings/tokens/new?scopes=workflow&description=Job+Search+Dashboard+Trigger" target="_blank" rel="noopener noreferrer" style="color: var(--dashboard-cyan); text-decoration: underline;">לחץ כאן ליצירת טוקן עם הרשאת workflow</a>.
-          </p>
-        </div>
-      </div>
-
-      <!-- Action Buttons -->
-      <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08);">
-        <button type="button" onclick="closeRunSearchModal()" class="tool-btn">סגור</button>
-        <button type="button" id="runSearchSubmitBtn" onclick="dispatchCloudJobSearch()" class="dashboard-primary" style="display: flex; align-items: center; gap: 8px;">
-          <i class="ph-duotone ph-play"></i>
-          <span>הפעל סריקה כעת</span>
-        </button>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- Sync Modal -->
-  <dialog id="syncModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeSyncModal()">
-    <div class="dashboard-card dashboard-modal-box">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 14px;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <div class="stat-icon-squircle cyan">
-            <i class="ph-duotone ph-cloud-arrow-up"></i>
-          </div>
-          <div>
-            <h3 style="margin: 0; font-size: 18px; font-weight: 600;">סנכרון משרות למערכת</h3>
-            <small style="color: var(--dashboard-muted);">שמירת משרות שמורות והסרת משרות שנדחו</small>
-          </div>
-        </div>
-        <button onclick="closeSyncModal()" class="tool-btn" style="min-height: 36px; padding: 6px 12px; font-size: 16px; cursor: pointer; border-radius: 999px;" aria-label="סגור"><i class="ph-bold ph-x"></i></button>
-      </div>
-
-      <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--dashboard-edge); border-radius: 18px; padding: 16px; margin-bottom: 16px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <i class="ph-duotone ph-star" style="color: var(--dashboard-gold);"></i> משרות מסומנות בכוכב:
-          </span>
-          <span id="syncStarredCount" style="font-size: 18px; font-weight: 700; color: var(--dashboard-gold);">0</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08);">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <i class="ph-duotone ph-bookmark-simple" style="color: var(--dashboard-lime);"></i> משרות שמורות להגשה:
-          </span>
-          <span id="syncSavedCount" style="font-size: 18px; font-weight: 700; color: var(--dashboard-cyan);">0</span>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08);">
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <i class="ph-duotone ph-trash" style="color: #fca5a5;"></i> משרות שסומנו להסרה:
-          </span>
-          <span id="syncRejectedCount" style="font-size: 18px; font-weight: 700; color: #fca5a5;">0</span>
-        </div>
-      </div>
-
-      <!-- Cloud Sync & Auth Panel -->
-      <div class="cloud-auth-panel" style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--dashboard-edge); border-radius: 18px; padding: 16px; margin-bottom: 16px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <i class="ph-duotone ph-shield-check" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
-            <span style="font-weight: 600; font-size: 14px;">אימות וסנכרון ענן (Supabase RLS)</span>
-          </div>
-          <span id="cloudAuthBadge" class="dashboard-chip" style="font-size: 12px; padding: 4px 10px;">דרושה התחברות</span>
-        </div>
-
-        <!-- Authenticated View -->
-        <div id="cloudAuthLoggedInBox" style="display: none; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; background: rgba(137, 244, 231, 0.08); border: 1px solid rgba(137, 244, 231, 0.2); border-radius: 12px;">
-          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px;">
-            <i class="ph-duotone ph-user" style="color: var(--dashboard-cyan);"></i>
-            <span>מחובר כ- <strong id="cloudAuthUserDisplay" style="color: var(--dashboard-cyan);">idogal0210@gmail.com</strong></span>
-          </div>
-          <button type="button" onclick="handleCloudModalSignOut()" class="tool-btn" style="padding: 4px 12px; font-size: 12px; min-height: 28px;">
-            <i class="ph-duotone ph-sign-out"></i> התנתק
-          </button>
-        </div>
-
-        <!-- Unauthenticated View (Login / Signup Form) -->
-        <div id="cloudAuthLoggedOutBox" style="display: flex; flex-direction: column; gap: 10px;">
-          <div style="font-size: 12px; color: var(--dashboard-muted); line-height: 1.4;">
-            סנכרון הענן מאובטח ומוגבל לכתובת המורשית בלבד. אם טרם נרשמת, הזן סיסמה ולחץ על "הרשמה ראשונית".
-          </div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <input type="email" id="cloudModalEmail" placeholder="דוא״ל" value="idogal0210@gmail.com" style="flex: 1; min-width: 170px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--dashboard-edge); background: rgba(0,0,0,0.3); color: inherit; font-size: 13px;" required>
-            <input type="password" id="cloudModalPassword" placeholder="סיסמה (לפחות 8 תווים)" style="flex: 1; min-width: 150px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--dashboard-edge); background: rgba(0,0,0,0.3); color: inherit; font-size: 13px;" required minlength="8">
-          </div>
-          <div style="display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <button type="button" id="cloudModalSignInBtn" onclick="handleCloudModalSignIn()" class="dashboard-primary" style="padding: 6px 14px; font-size: 13px; min-height: 32px;">
-                <i class="ph-duotone ph-sign-in"></i> התחבר
-              </button>
-              <button type="button" id="cloudModalSignUpBtn" onclick="handleCloudModalSignUp()" class="tool-btn" style="padding: 6px 14px; font-size: 13px; min-height: 32px; border-color: rgba(137, 244, 231, 0.4); color: var(--dashboard-cyan);">
-                <i class="ph-duotone ph-user-plus"></i> הרשמה ראשונית
-              </button>
-            </div>
-            <div id="cloudModalAuthMsg" role="status" style="font-size: 12px; min-height: 1.2em; color: var(--dashboard-muted);"></div>
-          </div>
-        </div>
-      </div>
-
-      <p style="font-size: 14px; color: var(--dashboard-muted); line-height: 1.6; margin-bottom: 18px;">
-        הדשבורד שומר את כל הסימונים שלך בדפדפן המקומי. במידה ואתה פותח את הדשבורד במכשיר חדש או בטלפון, באפשרותך למשוך את המצב המעודכן מהענן בלחיצה אחת.
-      </p>
-
-      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
-        <button id="syncPullRemoteBtn" type="button" onclick="pullLatestFromCloud()" class="tool-btn" style="width: 100%; justify-content: center; gap: 8px; min-height: 42px; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.1); color: var(--dashboard-cyan); font-weight: 600;">
-          <i class="ph-duotone ph-cloud-arrow-down"></i> משוך ושחזר נתונים מהענן לטלפון / מחשב
-        </button>
-
-        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px; background: rgba(137,244,231,0.06); border: 1px solid rgba(137,244,231,0.2); border-radius: 16px;">
-          <span style="font-size: 13px; color: var(--dashboard-muted);">סנכרון ישיר בין מכשירים:</span>
-          <button type="button" onclick="shareSyncLink()" class="dashboard-chip" style="cursor: pointer; padding: 7px 16px; font-size: 13px;">
-            <i class="ph-duotone ph-share-network"></i> שיתוף קישור סנכרון
-          </button>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: flex-end; gap: 12px;">
-        <button type="button" onclick="closeSyncModal()" class="tool-btn">סגור</button>
-        <button type="button" id="syncConfirmBtn" onclick="confirmSync()" class="dashboard-primary">
-          שמור וסנכרן
-        </button>
       </div>
     </div>
   </dialog>
@@ -1690,7 +1526,6 @@
       report_type: "סריקה יומית",
       jobs_data_url: "data/jobs.json?v=20261109141511",
       catalog_data_url: "data/historical_catalog.json?v=20261109141511",
-      sync_data_url: "data/sync_state.json?v=20261109141511",
       supabase_url: "https://wvwdxpttwsrdbvvtiyoh.supabase.co",
       supabase_anon_key: "sb_publishable_U8BEszbgC7i76c1waY5Ceg_7JvCQKZ6"
     };
