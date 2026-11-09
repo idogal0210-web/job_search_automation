@@ -1,9 +1,253 @@
 {
   "schema_version": "2.0.0",
-  "build_id": "20261108221310",
-  "generated_at": "2026-11-08T22:13:10.113982",
-  "total_jobs": 65,
+  "build_id": "20261109141511",
+  "generated_at": "2026-11-09T14:15:12.001563",
+  "total_jobs": 68,
   "jobs": [
+    {
+      "link": "https://il.linkedin.com/jobs/view/field-operations-specialist-drone-systems-at-kela-technologies-4487713840",
+      "title": "Field Operations Specialist - Drone Systems",
+      "company": "Kela Technologies",
+      "location": "Israel",
+      "date": "2026-11-09",
+      "source": "LinkedIn",
+      "match_score": 90,
+      "base_match_score": 90,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "drones",
+      "company_domain_product": "מערכות הגנה, תוכנת פיקוד ושליטה ומערכות רחפנים",
+      "company_summary": "",
+      "job_summary": "דרוש מומחה תפעול שטח להכנה, תיאום וביצוע של ניסויי טיסה, הדגמות ופעילויות שטח למערכות רחפנים.",
+      "company_requirements": "2-4 שנות ניסיון בתפעול שטח, יכולות ארגון ותיאום, כישורים טכניים והפעלת ציוד, רישיון נהיגה ונכונות לעבודה בשטח.",
+      "experience_strengths": "ניסיון קרבי מבצעי עשיר בסיירת נח\"ל, שליטה במערכות טכניות, רקע בהנדסת מכונות ופתרון תקלות בשטח.",
+      "reasoning": "לעידו רקע עשיר בהפעלת מערכות טכניות, ניהול שטח וניסיון מבצעי מקביל לדרישות המשרה.",
+      "key_highlights": "התאמה מלאה לפעילות שטח מבצעית, רקע צבאי מוכר, יכולות טכניות גבוהות והבנה במערכות שליטה.",
+      "salary_range": "14,000 - 19,000 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: רחפנים, כטב״ם ומערכות C-UAS.",
+      "salary_source_url": "",
+      "p25": 14000,
+      "p75": 19000,
+      "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQF451zXpCtI7A/company-logo_100_100/B4DZWOwIGxGkAU-/0/1741856736157?e=2147483647&v=beta&t=HYYACTtUVD6cVRy2r0FMpPl2xrVLxRD9zIK-66pZa2A",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQF451zXpCtI7A/company-logo_100_100/B4DZWOwIGxGkAU-/0/1741856736157?e=2147483647&v=beta&t=HYYACTtUVD6cVRy2r0FMpPl2xrVLxRD9zIK-66pZa2A",
+      "snippet": "Kela is a defense technology startup pioneering next-generation defense technology, from command & control software to complete field-deployed systems. We empower defense organizations with robust, scalable, and secure platforms that integrate diverse sensors and AI to deliver real-time battlefield intelligence. Backed by leading investors, Kela combines Israeli innovation with global mission impact.\nWe move faster than any defense startup you've worked at, and faster than most commercial ones. Prototypes go from sketch to metal in weeks, not quarters. If that pace sounds energizing rather than exhausting, keep reading.\nRequirements:\nWe are looking for a hands-on Field Operations Specialist to own the operational preparation, coordination and execution of flight tests, demonstrations and field activities for drone systems.\nThe role combines office work and fieldwork, with the balance changing according to company needs, including periods of intensive field activity. All activities take place in Israel.\nResponsibilities\nPrepare operational readiness plans and execute field activities according to agreed plans and priorities.\nCoordinate requirements and resources with development teams, engineers, drone operators and external partners.\nEnsure activity sites, equipment, vehicles and infrastructure are ready. Track preparation tasks, identify gaps and drive solutions.\nCoordinate transport, equipment and supplies with Logistics and Procurement, with purchasing and warehouse management handled by those teams.\nSet up, connect, deploy and operate drone systems and supporting equipment, including ground equipment, communications systems, batteries and control equipment.\nPerform checks before and after activities according to procedures, pack down equipment and prepare it for further use.\nProvide operational and technical support during flight tests and demonstrations. Troubleshoot basic faults and work with engineering and development teams to resolve complex issues.\nCreate and maintain procedures and checklists. Document activities, faults and operational gaps, capture lessons learned and follow through on improvements and outstanding tasks.\nRequirements\n2–4 years of relevant experience in field operations, systems operations or a similar technical operations role. Relevant military experience is fully recognized as equivalent to civilian experience.\nStrong planning, organization and coordination skills, with the ability to manage tasks across multiple teams.\nTechnical aptitude and hands-on experience setting up and operating equipment, performing checks and troubleshooting basic faults.\nIndependence, initiative and personal ownership, with the ability to drive tasks through to completion.\nStrong attention to detail, adaptability and resourcefulness when solving problems in the field.\nGood interpersonal skills, a collaborative approach and a willingness to learn and develop.\nProficiency in Microsoft Office, particularly Excel.\nGood English proficiency.\nA valid driving license.\nWillingness to perform hands-on fieldwork throughout Israel, including intensive periods and variable working hours.\nAdvantages\nExperience flying drones or operating UAV/UAS systems.\nA relevant drone pilot license or certification.\nExperience preparing for and supporting flight tests.\nExperience in the technology or defense industry, or military experience operating technical systems or coordinating field operations.\nFamiliarity with command and control systems, communications systems and ground equipment.\nA degree in Industrial Engineering and Management, Engineering or a related field.",
+      "stable_job_id": "li_4487713840",
+      "content_hash": "ch_109da054949e",
+      "requirement_assessments": [
+        {
+          "requirement": "2–4 years of relevant experience in field operations, systems operations or a similar technical operations role. Relevant military experience is fully recognized as equivalent to civilian experience.",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "2–4 years of relevant experience in field operations, systems operations or a similar technical operations role. Relevant military experience is fully recognized as equivalent to civilian experience.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח\"ל).",
+            "source_field": "Candidate profile"
+          },
+          "assessment": "match",
+          "explanation": "הניסיון המבצעי הצבאי של המועמד כסייר וכראש צוות מוכר במלואו כשוות ערך לניסיון נדרש."
+        },
+        {
+          "requirement": "Technical aptitude and hands-on experience setting up and operating equipment, performing checks and troubleshooting basic faults.",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "Technical aptitude and hands-on experience setting up and operating equipment, performing checks and troubleshooting basic faults.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+            "source_field": "Candidate profile"
+          },
+          "assessment": "match",
+          "explanation": "המועמד הינו הנדסאי מכונות מוסמך בעל אוריינטציה טכנית מעשית עמוקה."
+        },
+        {
+          "requirement": "A valid driving license.",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "A valid driving license.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Combat Engineering / Demolitions & Breaching Team Leader",
+            "source_field": "Candidate profile"
+          },
+          "assessment": "match",
+          "explanation": "כחלק מהשירות הקרבי והדרישות בשטח, ללוחמים יש בדרך כלל רישיון נהיגה בתוקף."
+        },
+        {
+          "requirement": "Proficiency in Microsoft Office, particularly Excel.",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "Proficiency in Microsoft Office, particularly Excel.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "SAP, Excel data modeling.",
+            "source_field": "Candidate profile"
+          },
+          "assessment": "match",
+          "explanation": "למועמד שליטה במודלים של נתונים ב-Excel."
+        }
+      ],
+      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "is_direct_ats": "",
+      "is_field_work": true,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": [
+        {
+          "type": "tag-field",
+          "icon": "ph-bold ph-wrench",
+          "label": "עבודת שטח"
+        }
+      ]
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/assembly-and-integration-technicians-at-nextvision-stabilized-systems-ltd-4487142949",
+      "title": "Assembly and Integration Technicians",
+      "company": "NextVision Stabilized Systems Ltd.",
+      "location": "רעננה",
+      "date": "2026-11-09",
+      "source": "LinkedIn",
+      "match_score": 90,
+      "base_match_score": 85,
+      "priority_bonus": 5,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "drones",
+      "company_domain_product": "פיתוח וייצור מצלמות מתקדמות לכלי טיס בלתי מאוישים",
+      "company_summary": "",
+      "job_summary": "הרכבה, אינטגרציה ובקרת איכות של מערכות ומכלולים בחברת NextVision.",
+      "company_requirements": "ניסיון וזיקה טכנית חזקה, עבודה עם רכיבים קטנים ועדינים, רקע כהנדסאי/טכנאי יתרון משמעותי.",
+      "experience_strengths": "הנדסאי מכונות מוסמך עם רקע בהתקנה, אינטגרציה ומערכות אלקטרו-מכניות.",
+      "reasoning": "המועמד הוא הנדסאי מכונות עם רקע טכני חזק ויכולות אינטגרציה מעולות.",
+      "key_highlights": "ניסיון מעשי בהרכבה ואינטגרציה, זיקה טכנית חזקה, רקע כהנדסאי.",
+      "salary_range": "14,000 - 19,000 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: רחפנים, כטב״ם ומערכות C-UAS.",
+      "salary_source_url": "",
+      "p25": 14000,
+      "p75": 19000,
+      "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEnFzugl9ZUrg/company-logo_100_100/B4DZftobvrHMAQ-/0/1752038489648/nextvision_stabilized_systems_ltd__logo?e=2147483647&v=beta&t=FIKsmuPA6lYqfMyfoYb-zFflcln9E4D8mI08mXYeM-k",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQEnFzugl9ZUrg/company-logo_100_100/B4DZftobvrHMAQ-/0/1752038489648/nextvision_stabilized_systems_ltd__logo?e=2147483647&v=beta&t=FIKsmuPA6lYqfMyfoYb-zFflcln9E4D8mI08mXYeM-k",
+      "snippet": "*לזמינות מיידית\nלעבודה בתנאים מעולים בחברת Next Vision ,חברה מובילה בתחום הפיתוח וייצור מצלמות מתקדמות לכלי טייס בלתי מאויישים דרוש/ה אינטגרטור/ית לצוות הייצור.\nהתפקיד כולל:\n•\tהרכבה וייצור של מוצרי החברה\n•\tאינטגרציה מלאה של מערכות ומכלולים\n•\tבקרת איכות על המוצר הסופי\nדרישות:\n•\tניסיון וזיקה טכנית חזקה\n•\tיכולת עבודה עם רכיבים קטנים ועדינים\n•\tאחריות, יוזמה ויכולת עבודה בצוות.\n•\tרקע כהנדסאי.ת/טכנאי.ת – יתרון משמעותי.\nמשרה מלאה במשרדי החברה ברעננה.\n*העבודה מוכרת כמועדפת לחיילים משוחררים.\nלינק להגשת קו\"ח -\nhttps://minisite.niloos.ai/vacancy/69f1aa14af4f6f19180f5321",
+      "stable_job_id": "li_4487142949",
+      "content_hash": "ch_bc4452643fa7",
+      "requirement_assessments": [
+        {
+          "requirement": "רקע כהנדסאי.ת/טכנאי.ת",
+          "importance": "preferred",
+          "ad_evidence": {
+            "quote": "רקע כהנדסאי.ת/טכנאי.ת – יתרון משמעותי.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "המועמד הינו הנדסאי מכונות מוסמך, העונה בדיוק על דרישת העדפה זו."
+        },
+        {
+          "requirement": "ניסיון וזיקה טכנית חזקה",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "ניסיון וזיקה טכנית חזקה",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
+            "source_field": "Core Profile"
+          },
+          "assessment": "match",
+          "explanation": "למועמד פרופיל טכני רב-תחומי וזיקה חזקה למערכות אלקטרו-מכניות."
+        }
+      ],
+      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "is_direct_ats": "",
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/integrator-%E2%80%93-lynx-department-at-asio-technologies-4487677987",
+      "title": "Integrator – LYNX Department",
+      "company": "Asio Technologies",
+      "location": "Israel",
+      "date": "2026-11-09",
+      "source": "LinkedIn",
+      "match_score": 85,
+      "base_match_score": 85,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "other",
+      "company_domain_product": "Combat-proven tactical systems and electro-optical products",
+      "company_summary": "",
+      "job_summary": "Integrator in the LYNX department handling integration, lab and field testing, installations, and customer demonstrations of electro-optical products.",
+      "company_requirements": "ניסיון טכנו-מבצעי צבאי, רקע טכני באלקטרו-אופטיקה או אלקטרו-מכניקה, ויכולת ניתוח בעיות במערכות מורכבות.",
+      "experience_strengths": "הנדסאי מכונות מוסמך, רקע צבאי פיקודי ומבצעי בסיירת נח\"ל, ניסיון במערכות אלקטרו-מכניות ובדיקות שדה.",
+      "reasoning": "מועמד בעל רקע טכני צבאי ואלקטרו-מכני מתאים מאוד לשילוב מערכות ובדיקות שדה.",
+      "key_highlights": "התאמה גבוהה לדרישות הטכניות, ניסיון צבאי מבצעי ויכולת עבודה במעבדה ובשדה.",
+      "salary_range": "11,500 - 15,000 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+      "salary_source_url": "",
+      "p25": 11500,
+      "p75": 15000,
+      "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHEOHOw5uh6XA/company-logo_100_100/B4DZuOIaE1IEAQ-/0/1767616127851/asiotech_logo?e=2147483647&v=beta&t=D1WahXjBeSwtuMju0HKlVY5bAdvVoVfgW8g8qhOqOLE",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQHEOHOw5uh6XA/company-logo_100_100/B4DZuOIaE1IEAQ-/0/1767616127851/asiotech_logo?e=2147483647&v=beta&t=D1WahXjBeSwtuMju0HKlVY5bAdvVoVfgW8g8qhOqOLE",
+      "snippet": "01 ORIGIN_POINT\nAbout ASIO\nASIO develops combat-proven systems that empower tactical forces at the edge. Combining advanced technology with operational simplicity, our solutions support mission planning, situational awareness, resilient navigation, and more, enabling battalions to operate independently and achieve mission success.\n02 BEARING\nThe Opportunity\nWe are looking for an Integrator to join the LYNX department's integration team, supporting the development of integrated electro-optical products. This is a hands-on role that combines work in the integration lab, field trials simulating a platoon-based military environment, and customer demonstrations in Israel and abroad.\n03 WAYPOINTS\nKey Responsibilities\n01          Integration and development support: Join the integration team and support the development of integrated electro-optical products, conduct system tests required to support field deployment.\n02          Integration, installation and testing: Perform integrations, installation, and configuration of the integrated systems, and carry out Acceptance Test Procedures, fault investigations, and calibrations.\n03          V&V support: Support the product's V&V efforts, and improve transfer to production process and ATP testing throughout FULL PRODUCTION.\n04          Cross-functional collaboration: Work with development, systems, and engineering teams, as well as with marketing and customers.\n05          Demonstrations and training: take part in customer demonstrations in Israel and abroad, be involved in product training across various end users.\n06          office and field work: Work on an ongoing basis in the integration lab, alongside work in test fields that simulate a platoon-based military environment.\nRequirements:\n04 CALIBRATION\nWhat You Bring\n+            At least Two years of Techno / operational experience in the military.\n+           Intimate familiarity with IDF OLAR device\n+             Technical background (technician / operator) with electro-optics devices, electronics, or electromechanics.\n+             Ability to identify and analyze problems in complex systems – hardware, software, and optics.\n05 SIGNAL_BOOST\nStrong Advantages\n+            Combat experience as an operational technician of electro-optical systems – a significant advantage.\n+            Experience working with complex systems and perform dedicated tests for hardware software and optics, and producing analysis reports.\n+            Good familiarity with computer and Android applications.\n06 TRUE_NORTH\nWhy Join ASIO?\nMake a real operational impact: Help bring advanced technologies to defense forces operating in the most demanding environments.\nTurn innovation into mission capability: Experience cutting-edge technology with real-world operational needs.\nBuild strategic relationships: Work directly with senior Multidisciplinary experience engineers across significant ecosystem.\nOwn the journey from opportunity to impact: Join a collaborative, fast-moving team where initiative, accountability, and execution matter.\n> destination.set(you)",
+      "stable_job_id": "li_4487677987",
+      "content_hash": "ch_6755b6d0ef88",
+      "requirement_assessments": [
+        {
+          "requirement": "At least Two years of Techno / operational experience in the military",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "At least Two years of Techno / operational experience in the military.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Military: Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח\"ל).",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "למועמד ניסיון צבאי משמעותי כמפקד צוות בסיירת נח\"ל."
+        },
+        {
+          "requirement": "Technical background (technician / operator) with electro-optics devices, electronics, or electromechanics",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "Technical background (technician / operator) with electro-optics devices, electronics, or electromechanics.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "המועמד הוא הנדסאי מכונות מוסמך עם רקע במערכות אלקטרו-מכניות."
+        }
+      ],
+      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "is_direct_ats": "",
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
+    },
     {
       "link": "https://www.drushim.co.il/job/38946222/613fed37/",
       "title": "מפעיל.ה לחדר הפיקוד",
