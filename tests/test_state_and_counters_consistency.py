@@ -64,17 +64,19 @@ class TestDashboardStateAndCountersConsistency(unittest.TestCase):
             catalog_path = str(tmp_root / "data" / "historical_catalog.json")
             sync_state_path = str(tmp_root / "data" / "sync_state.json")
 
+            from datetime import datetime
+            today_str = datetime.now().strftime("%Y-%m-%d")
             existing_job = {
                 "link": "https://www.linkedin.com/jobs/view/1111111111",
                 "title": "Solar Tech",
                 "company": "Enlight",
-                "date": "2026-11-01"
+                "date": today_str
             }
             purged_job = {
                 "link": "https://www.linkedin.com/jobs/view/2222222222",
                 "title": "Deleted Tech",
                 "company": "Enlight",
-                "date": "2026-11-01"
+                "date": today_str
             }
 
             Path(archive_path).write_text(json.dumps([existing_job, purged_job]))

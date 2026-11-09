@@ -683,11 +683,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     try { return JSON.parse(localStorage.getItem(SUPABASE_AUTH_STORAGE_KEY) || 'null'); } catch (e) { return null; }
   }
 
-  function saveSupabaseSession(tokenResponse) {
+  function saveSupabaseSession(tokenResponse, emailFallback = '') {
     if (!tokenResponse || !tokenResponse.access_token) return null;
+    const userEmail = (tokenResponse.user && tokenResponse.user.email) || emailFallback || '';
     const session = {
       access_token: tokenResponse.access_token,
       refresh_token: tokenResponse.refresh_token,
+      user_email: userEmail,
       expires_at: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 3600)
     };
     try { localStorage.setItem(SUPABASE_AUTH_STORAGE_KEY, JSON.stringify(session)); } catch (e) {}
@@ -713,7 +715,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     try {
       const r = await supabaseAuthRequest('token?grant_type=refresh_token', { refresh_token: session.refresh_token });
       if (r.ok) {
-        session = saveSupabaseSession(r.json);
+        session = saveSupabaseSession(r.json, session.user_email);
         return session ? session.access_token : null;
       }
       if (r.json && (r.json.error_code === 'refresh_token_not_found' || r.json.error_code === 'refresh_token_already_used')) {
@@ -725,19 +727,180 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   async function supabaseSignIn(email, password) {
     const r = await supabaseAuthRequest('token?grant_type=password', { email, password });
-    if (r.ok && saveSupabaseSession(r.json)) return { ok: true };
-    return { ok: false, message: (r.json && (r.json.msg || r.json.error_description)) || 'ההתחברות נכשלה' };
+    if (r.ok && saveSupabaseSession(r.json, email)) return { ok: true };
+    const rawErr = (r.json && (r.json.error_description || r.json.msg || r.json.error)) || '';
+    let msg = 'ההתחברות נכשלה';
+    if (rawErr.includes('Invalid login credentials')) {
+      msg = 'פרטי התחברות שגויים (בדוק אימייל וסיסמה)';
+    } else if (rawErr.includes('Email not confirmed')) {
+      msg = 'כתובת האימייל טרם אושרה. בדוק את תיבת הדואר שלך';
+    } else if (rawErr) {
+      msg = rawErr;
+    }
+    return { ok: false, message: msg };
   }
 
   async function supabaseSignUp(email, password) {
     const r = await supabaseAuthRequest('signup', { email, password });
-    if (!r.ok) return { ok: false, message: (r.json && (r.json.msg || r.json.error_description)) || 'ההרשמה נכשלה' };
-    if (r.json && r.json.access_token) { saveSupabaseSession(r.json); return { ok: true }; }
+    if (!r.ok) {
+      const rawErr = (r.json && (r.json.msg || r.json.error_description || r.json.error)) || '';
+      let msg = 'ההרשמה נכשלה';
+      if (rawErr.includes('already registered')) {
+        msg = 'משתמש עם כתובת זו כבר קיים. נסה להתחבר';
+      } else if (rawErr) {
+        msg = rawErr;
+      }
+      return { ok: false, message: msg };
+    }
+    if (r.json && r.json.access_token) {
+      saveSupabaseSession(r.json, email);
+      return { ok: true, confirmed: true };
+    }
     return { ok: true, confirmEmail: true };
   }
 
   function supabaseSignOut() {
     try { localStorage.removeItem(SUPABASE_AUTH_STORAGE_KEY); } catch (e) {}
+  }
+
+  function updateCloudAuthModalUI() {
+    const loggedInBox = document.getElementById('cloudAuthLoggedInBox');
+    const loggedOutBox = document.getElementById('cloudAuthLoggedOutBox');
+    const statusBadge = document.getElementById('cloudAuthBadge');
+    const userDisplay = document.getElementById('cloudAuthUserDisplay');
+    const authMsg = document.getElementById('cloudModalAuthMsg');
+    if (authMsg) authMsg.textContent = '';
+
+    const session = loadSupabaseSession();
+    const isAuthed = Boolean(session && session.access_token);
+
+    if (isAuthed) {
+      if (loggedInBox) loggedInBox.style.display = 'flex';
+      if (loggedOutBox) loggedOutBox.style.display = 'none';
+      if (userDisplay) userDisplay.textContent = session.user_email || 'idogal0210@gmail.com';
+      if (statusBadge) {
+        statusBadge.textContent = 'מחובר לסנכרון';
+        statusBadge.className = 'dashboard-chip';
+        statusBadge.style.color = 'var(--dashboard-lime)';
+        statusBadge.style.borderColor = 'rgba(190, 242, 100, 0.4)';
+      }
+    } else {
+      if (loggedInBox) loggedInBox.style.display = 'none';
+      if (loggedOutBox) loggedOutBox.style.display = 'flex';
+      if (statusBadge) {
+        statusBadge.textContent = 'דרושה התחברות';
+        statusBadge.className = 'dashboard-chip';
+        statusBadge.style.color = 'var(--dashboard-gold)';
+        statusBadge.style.borderColor = 'rgba(255, 211, 104, 0.4)';
+      }
+    }
+  }
+
+  async function handleCloudModalSignIn() {
+    const emailInput = document.getElementById('cloudModalEmail');
+    const passInput = document.getElementById('cloudModalPassword');
+    const msgEl = document.getElementById('cloudModalAuthMsg');
+    const btn = document.getElementById('cloudModalSignInBtn');
+
+    const email = (emailInput ? emailInput.value : '').trim();
+    const password = passInput ? passInput.value : '';
+
+    if (!email || !password) {
+      if (msgEl) {
+        msgEl.textContent = 'נא להזין דוא״ל וסיסמה';
+        msgEl.style.color = '#f87171';
+      }
+      return;
+    }
+
+    if (btn) btn.disabled = true;
+    if (msgEl) {
+      msgEl.textContent = 'מתחבר...';
+      msgEl.style.color = 'var(--dashboard-muted)';
+    }
+
+    try {
+      const res = await supabaseSignIn(email, password);
+      if (res.ok) {
+        if (msgEl) {
+          msgEl.textContent = 'התחברת בהצלחה!';
+          msgEl.style.color = 'var(--dashboard-lime)';
+        }
+        updateCloudAuthModalUI();
+        await fetchCloudSync(false);
+        showToast('ph-cloud-check', 'מחובר לסנכרון ענן (Supabase)');
+      } else {
+        if (msgEl) {
+          msgEl.textContent = res.message;
+          msgEl.style.color = '#f87171';
+        }
+      }
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  async function handleCloudModalSignUp() {
+    const emailInput = document.getElementById('cloudModalEmail');
+    const passInput = document.getElementById('cloudModalPassword');
+    const msgEl = document.getElementById('cloudModalAuthMsg');
+    const btn = document.getElementById('cloudModalSignUpBtn');
+
+    const email = (emailInput ? emailInput.value : '').trim();
+    const password = passInput ? passInput.value : '';
+
+    if (!email || password.length < 8) {
+      if (msgEl) {
+        msgEl.textContent = 'נא להזין דוא״ל וסיסמה בת 8 תווים לפחות';
+        msgEl.style.color = '#f87171';
+      }
+      return;
+    }
+
+    if (btn) btn.disabled = true;
+    if (msgEl) {
+      msgEl.textContent = 'מבצע הרשמה ראשונית...';
+      msgEl.style.color = 'var(--dashboard-muted)';
+    }
+
+    try {
+      const res = await supabaseSignUp(email, password);
+      if (res.ok) {
+        if (res.confirmEmail) {
+          if (msgEl) {
+            msgEl.textContent = 'נשלח קישור אימות לדוא״ל שלך! אשר אותו ולאחר מכן לחץ "התחבר"';
+            msgEl.style.color = 'var(--dashboard-cyan)';
+          }
+          showToast('ph-envelope-simple', 'נשלח מייל אימות מ-Supabase');
+        } else {
+          if (msgEl) {
+            msgEl.textContent = 'ההרשמה וההתחברות הושלמו בהצלחה!';
+            msgEl.style.color = 'var(--dashboard-lime)';
+          }
+          updateCloudAuthModalUI();
+          await fetchCloudSync(false);
+          showToast('ph-cloud-check', 'נרשמת בהצלחה לסנכרון ענן');
+        }
+      } else {
+        if (msgEl) {
+          msgEl.textContent = res.message;
+          msgEl.style.color = '#f87171';
+        }
+      }
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function handleCloudModalSignOut() {
+    supabaseSignOut();
+    updateCloudAuthModalUI();
+    setCloudSyncStatus('local');
+    showToast('ph-hard-drive', 'התנתקת מסנכרון ענן (מצב אחסון מקומי)');
+  }
+
+  function promptCloudLogin() {
+    triggerSyncModal();
   }
 
   const supabaseSyncAdapter = {
@@ -792,54 +955,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       }
     }
   };
-
-  let cloudLoginPromptShown = false;
-
-  function promptCloudLogin(force = false) {
-    if (typeof document === 'undefined' || !document.body) return;
-    if (cloudLoginPromptShown && !force) return;
-    cloudLoginPromptShown = true;
-    let dlg = document.getElementById('cloudLoginModal');
-    if (!dlg) {
-      dlg = document.createElement('dialog');
-      dlg.id = 'cloudLoginModal';
-      dlg.className = 'dashboard-modal-backdrop';
-      dlg.setAttribute('dir', 'rtl');
-      dlg.innerHTML = `
-        <form method="dialog" class="dashboard-card dashboard-modal-box" id="cloudLoginForm" style="display:flex;flex-direction:column;gap:12px;max-width:380px;text-align:right;">
-          <h3 style="margin:0;">התחברות לסנכרון ענן</h3>
-          <input id="cloudLoginEmail" type="email" autocomplete="username" placeholder="אימייל" required style="padding:10px;border-radius:8px;">
-          <input id="cloudLoginPassword" type="password" autocomplete="current-password" placeholder="סיסמה (מינימום 8 תווים)" required minlength="8" style="padding:10px;border-radius:8px;">
-          <div id="cloudLoginMsg" role="status" style="min-height:1.2em;font-size:0.9em;"></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button type="submit" id="cloudLoginSubmit">התחברות</button>
-            <button type="button" id="cloudLoginSignup">הרשמה ראשונית</button>
-            <button type="button" id="cloudLoginCancel">המשך במצב מקומי</button>
-          </div>
-        </form>`;
-      document.body.appendChild(dlg);
-      const msg = (t) => { dlg.querySelector('#cloudLoginMsg').textContent = t; };
-      const creds = () => ({ email: dlg.querySelector('#cloudLoginEmail').value.trim(), password: dlg.querySelector('#cloudLoginPassword').value });
-      dlg.querySelector('#cloudLoginForm').addEventListener('submit', async (ev) => {
-        ev.preventDefault();
-        const { email, password } = creds();
-        msg('מתחבר...');
-        const r = await supabaseSignIn(email, password);
-        if (r.ok) { dlg.close(); fetchCloudSync(); } else { msg(r.message); }
-      });
-      dlg.querySelector('#cloudLoginSignup').addEventListener('click', async () => {
-        const { email, password } = creds();
-        if (!email || password.length < 8) { msg('נא להזין אימייל וסיסמה של 8 תווים לפחות'); return; }
-        msg('נרשם...');
-        const r = await supabaseSignUp(email, password);
-        if (!r.ok) msg(r.message);
-        else if (r.confirmEmail) msg('נשלח מייל אישור. אשר אותו ואז התחבר.');
-        else { dlg.close(); fetchCloudSync(); }
-      });
-      dlg.querySelector('#cloudLoginCancel').addEventListener('click', () => dlg.close());
-    }
-    if (!dlg.open && typeof dlg.showModal === 'function') dlg.showModal();
-  }
 
   const privateSync = window.__PRIVATE_SYNC__ || supabaseSyncAdapter;
   let cloudSyncTimeout = null;
@@ -3665,6 +3780,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (savedEl) savedEl.textContent = savedCount;
     const rejEl = document.getElementById('syncRejectedCount');
     if (rejEl) rejEl.textContent = rejectedCount;
+    if (typeof updateCloudAuthModalUI === 'function') updateCloudAuthModalUI();
     openDialogEl(document.getElementById('syncModal'));
   }
 

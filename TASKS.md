@@ -86,5 +86,5 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
 
 ## Completed Tasks Archive
 *(Completed tasks with verification hashes and test evidence will be archived here)*
-- [x] **TASK-21**: Re-provision Supabase project and add owner-only authentication.
-  - Success criteria: New project `wvwdxpttwsrdbvvtiyoh` with `sync_state` table; old project references removed; RLS policies restricted to `authenticated` role with owner email; verified anon read returns no rows and anon write returns 401 (RLS violation). Dashboard login dialog implemented in `frontend/js/dashboard.js` (mirrored to `docs/dashboard.js`).
+- [x] **TASK-21**: Re-provision Supabase project and add owner-only authentication with in-modal UI.
+  - Success criteria: New project `wvwdxpttwsrdbvvtiyoh` with `sync_state` table; old project references removed; RLS policies restricted to `authenticated` role with owner email (`idogal0210@gmail.com`); verified anon read returns no rows and anon write returns 401 (RLS violation). Native in-modal authentication panel integrated directly into `syncModal` across `frontend/templates/index.html` and `docs/index.html` with explicit email/password login, initial registration, session display, and sign out controls. Verified 1:1 dual-template parity, 313/313 unit tests passing, zero emojis. Completed 2026-11-10.

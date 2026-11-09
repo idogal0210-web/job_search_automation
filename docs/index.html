@@ -1519,6 +1519,50 @@
         </div>
       </div>
 
+      <!-- Cloud Sync & Auth Panel -->
+      <div class="cloud-auth-panel" style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--dashboard-edge); border-radius: 18px; padding: 16px; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <i class="ph-duotone ph-shield-check" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
+            <span style="font-weight: 600; font-size: 14px;">אימות וסנכרון ענן (Supabase RLS)</span>
+          </div>
+          <span id="cloudAuthBadge" class="dashboard-chip" style="font-size: 12px; padding: 4px 10px;">דרושה התחברות</span>
+        </div>
+
+        <!-- Authenticated View -->
+        <div id="cloudAuthLoggedInBox" style="display: none; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; background: rgba(137, 244, 231, 0.08); border: 1px solid rgba(137, 244, 231, 0.2); border-radius: 12px;">
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px;">
+            <i class="ph-duotone ph-user" style="color: var(--dashboard-cyan);"></i>
+            <span>מחובר כ- <strong id="cloudAuthUserDisplay" style="color: var(--dashboard-cyan);">idogal0210@gmail.com</strong></span>
+          </div>
+          <button type="button" onclick="handleCloudModalSignOut()" class="tool-btn" style="padding: 4px 12px; font-size: 12px; min-height: 28px;">
+            <i class="ph-duotone ph-sign-out"></i> התנתק
+          </button>
+        </div>
+
+        <!-- Unauthenticated View (Login / Signup Form) -->
+        <div id="cloudAuthLoggedOutBox" style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-size: 12px; color: var(--dashboard-muted); line-height: 1.4;">
+            סנכרון הענן מאובטח ומוגבל לכתובת המורשית בלבד. אם טרם נרשמת, הזן סיסמה ולחץ על "הרשמה ראשונית".
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="email" id="cloudModalEmail" placeholder="דוא״ל" value="idogal0210@gmail.com" style="flex: 1; min-width: 170px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--dashboard-edge); background: rgba(0,0,0,0.3); color: inherit; font-size: 13px;" required>
+            <input type="password" id="cloudModalPassword" placeholder="סיסמה (לפחות 8 תווים)" style="flex: 1; min-width: 150px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--dashboard-edge); background: rgba(0,0,0,0.3); color: inherit; font-size: 13px;" required minlength="8">
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" id="cloudModalSignInBtn" onclick="handleCloudModalSignIn()" class="dashboard-primary" style="padding: 6px 14px; font-size: 13px; min-height: 32px;">
+                <i class="ph-duotone ph-sign-in"></i> התחבר
+              </button>
+              <button type="button" id="cloudModalSignUpBtn" onclick="handleCloudModalSignUp()" class="tool-btn" style="padding: 6px 14px; font-size: 13px; min-height: 32px; border-color: rgba(137, 244, 231, 0.4); color: var(--dashboard-cyan);">
+                <i class="ph-duotone ph-user-plus"></i> הרשמה ראשונית
+              </button>
+            </div>
+            <div id="cloudModalAuthMsg" role="status" style="font-size: 12px; min-height: 1.2em; color: var(--dashboard-muted);"></div>
+          </div>
+        </div>
+      </div>
+
       <p style="font-size: 14px; color: var(--dashboard-muted); line-height: 1.6; margin-bottom: 18px;">
         הדשבורד שומר את כל הסימונים שלך בדפדפן המקומי. במידה ואתה פותח את הדשבורד במכשיר חדש או בטלפון, באפשרותך למשוך את המצב המעודכן מהענן בלחיצה אחת.
       </p>
