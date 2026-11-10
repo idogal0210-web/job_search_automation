@@ -1,8 +1,8 @@
 {
-  "scanned_at": "2026-11-09T23:59:23.804359+00:00",
-  "total_scanned": 68,
+  "scanned_at": "2026-11-10T03:44:51.630728+00:00",
+  "total_scanned": 67,
   "inactive_count": 13,
-  "unknown_count": 1,
+  "unknown_count": 8,
   "inactive_jobs": [
     {
       "link": "https://il.linkedin.com/jobs/view/maintenance-technician-2-at-alstom-4482288868",
@@ -10,7 +10,7 @@
       "company": "Alstom",
       "reason": "משרה סגורה בלינקדאין",
       "status_code": 200,
-      "detected_at": "2026-11-09T23:59:06.045950+00:00"
+      "detected_at": "2026-11-10T03:44:38.336522+00:00"
     },
     {
       "link": "https://il.linkedin.com/jobs/view/field-test-integration-engineer-at-starbird-ai-4486590427",
@@ -18,7 +18,7 @@
       "company": "Starbird AI",
       "reason": "משרה סגורה בלינקדאין",
       "status_code": 200,
-      "detected_at": "2026-11-09T23:59:06.745498+00:00"
+      "detected_at": "2026-11-10T03:44:39.154345+00:00"
     },
     {
       "link": "https://il.linkedin.com/jobs/view/it-ot-infrastructure-project-manager-at-g-stat-4477264305",
@@ -26,7 +26,7 @@
       "company": "G-STAT",
       "reason": "משרה סגורה בלינקדאין",
       "status_code": 200,
-      "detected_at": "2026-11-09T23:59:09.347329+00:00"
+      "detected_at": "2026-11-10T03:44:42.386785+00:00"
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%9E%D7%9B%D7%A8%D7%96%D7%99%D7%9D-%D7%95%D7%94%D7%AA%D7%A7%D7%A9%D7%A8%D7%95%D7%99%D7%95%D7%AA-%E2%80%93-%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%D7%99-%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-pv-bess-at-avivim-consulting-placement-4485802550",
@@ -34,7 +34,7 @@
       "company": "AVIVIM - Consulting & Placement",
       "reason": "משרה סגורה בלינקדאין",
       "status_code": 200,
-      "detected_at": "2026-11-09T23:59:09.580920+00:00"
+      "detected_at": "2026-11-10T03:44:42.903082+00:00"
     },
     {
       "link": "https://il.linkedin.com/jobs/view/optical-technician-at-jobsseek-4483738443",
@@ -42,7 +42,15 @@
       "company": "JobsSeek",
       "reason": "משרה סגורה בלינקדאין",
       "status_code": 200,
-      "detected_at": "2026-11-09T23:59:13.228922+00:00"
+      "detected_at": "2026-11-10T03:44:44.441714+00:00"
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/operations-team-member-at-airobotics-4486052282",
+      "title": "Operations Team Member",
+      "company": "Airobotics",
+      "reason": "משרה סגורה בלינקדאין",
+      "status_code": 200,
+      "detected_at": "2026-11-10T03:44:44.828879+00:00"
     },
     {
       "link": "https://www.drushim.co.il/job/38643495/08454b76/",
@@ -50,7 +58,7 @@
       "company": "Flex",
       "reason": "דף המשרה הוסר (HTTP 410)",
       "status_code": 410,
-      "detected_at": "2026-11-09T23:59:15.464235+00:00"
+      "detected_at": "2026-11-10T03:44:45.380336+00:00"
     },
     {
       "link": "https://www.drushim.co.il/job/38677581/c41706f7/",
@@ -58,15 +66,7 @@
       "company": "חברה מובילה (דיסקרטי)",
       "reason": "דף המשרה הוסר (HTTP 410)",
       "status_code": 410,
-      "detected_at": "2026-11-09T23:59:16.137523+00:00"
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/hardware-system-engineer-at-atom-4484646879",
-      "title": "Hardware System Engineer",
-      "company": "ATOM",
-      "reason": "משרה סגורה בלינקדאין",
-      "status_code": 200,
-      "detected_at": "2026-11-09T23:59:16.190290+00:00"
+      "detected_at": "2026-11-10T03:44:45.811625+00:00"
     },
     {
       "link": "https://www.drushim.co.il/job/38655427/cc2bbdfb/",
@@ -74,7 +74,15 @@
       "company": "דיפוכם",
       "reason": "דף המשרה הוסר (HTTP 410)",
       "status_code": 410,
-      "detected_at": "2026-11-09T23:59:17.365961+00:00"
+      "detected_at": "2026-11-10T03:44:46.755491+00:00"
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/hardware-system-engineer-at-atom-4484646879",
+      "title": "Hardware System Engineer",
+      "company": "ATOM",
+      "reason": "משרה סגורה בלינקדאין",
+      "status_code": 200,
+      "detected_at": "2026-11-10T03:44:46.773354+00:00"
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%94-%E2%80%94-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%90%D7%95%D7%98%D7%95%D7%A0%D7%95%D7%9E%D7%99%D7%95%D7%AA-at-solar-solutions-%D7%A4%D7%AA%D7%A8%D7%95%D7%A0%D7%95%D7%AA-%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99%D7%99%D7%9D-4486196109",
@@ -82,15 +90,7 @@
       "company": "Solar Solutions | פתרונות סולאריים",
       "reason": "משרה סגורה בלינקדאין",
       "status_code": 200,
-      "detected_at": "2026-11-09T23:59:17.579760+00:00"
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/it-operations-specialist-at-confidential-careers-4483056050",
-      "title": "IT Operations Specialist",
-      "company": "Confidential Careers",
-      "reason": "משרה סגורה בלינקדאין",
-      "status_code": 200,
-      "detected_at": "2026-11-09T23:59:18.338107+00:00"
+      "detected_at": "2026-11-10T03:44:48.602258+00:00"
     },
     {
       "link": "https://il.linkedin.com/jobs/view/r-d-ink-student-at-landa-4486872132",
@@ -98,87 +98,86 @@
       "company": "Landa",
       "reason": "משרה סגורה בלינקדאין",
       "status_code": 200,
-      "detected_at": "2026-11-09T23:59:19.542200+00:00"
+      "detected_at": "2026-11-10T03:44:49.845177+00:00"
     },
     {
-      "link": "https://il.linkedin.com/jobs/view/technician-for-elevator-and-escalator-modernization-at-linked-magic-4483985458",
-      "title": "Technician for Elevator and Escalator Modernization",
-      "company": "Linked Magic",
+      "link": "https://il.linkedin.com/jobs/view/it-operations-specialist-at-confidential-careers-4483056050",
+      "title": "IT Operations Specialist",
+      "company": "Confidential Careers",
       "reason": "משרה סגורה בלינקדאין",
       "status_code": 200,
-      "detected_at": "2026-11-09T23:59:21.710598+00:00"
+      "detected_at": "2026-11-10T03:44:49.930636+00:00"
     }
   ],
   "verified_links": [
+    "https://www.drushim.co.il/job/38958952/d65a2020/",
+    "https://www.drushim.co.il/job/39028055/6c3e8cd3/",
     "https://www.drushim.co.il/job/38946222/613fed37/",
-    "https://il.linkedin.com/jobs/view/field-operations-specialist-drone-systems-at-kela-technologies-4487713840",
+    "https://il.linkedin.com/jobs/view/construction-project-manager-at-bagira-4488872293",
+    "https://www.drushim.co.il/job/38840544/d7c9d9ab/",
     "https://il.linkedin.com/jobs/view/assembly-and-integration-technicians-at-nextvision-stabilized-systems-ltd-4487142949",
-    "https://il.linkedin.com/jobs/view/integrator-%E2%80%93-lynx-department-at-asio-technologies-4487677987",
+    "https://il.linkedin.com/jobs/view/field-operations-specialist-drone-systems-at-kela-technologies-4487713840",
     "https://il.linkedin.com/jobs/view/plant-operations-specialist-at-naki-4486895054",
-    "https://www.drushim.co.il/job/39014242/66f6781d/",
     "https://www.drushim.co.il/job/38758768/f0b89ba1/",
+    "https://il.linkedin.com/jobs/view/%D7%97%D7%93%D7%A9-%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%95%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-at-sodastream-international-ltd-4488772416",
     "https://www.drushim.co.il/job/39011506/55044a11/",
-    "https://www.drushim.co.il/job/39014470/0ebdc33d/",
-    "https://il.linkedin.com/jobs/view/customer-support-technician-at-applied-materials-israel-4484388316",
+    "https://www.drushim.co.il/job/39014242/66f6781d/",
     "https://www.comeet.com/jobs/enlightenergy/99.006/pmo--ai-data-center/AE.470",
-    "https://il.linkedin.com/jobs/view/hardware-manufacturing-integrator-at-hp-4487561763",
     "https://il.linkedin.com/jobs/view/maintenance-technician-2-at-alstom-4482288868",
+    "https://www.drushim.co.il/job/39014470/0ebdc33d/",
     "https://il.linkedin.com/jobs/view/electro-mechanical-assembler-at-uvision-group-4487667204",
+    "https://il.linkedin.com/jobs/view/customer-support-technician-at-applied-materials-israel-4484388316",
     "https://il.linkedin.com/jobs/view/technical-specialist-npi-field-support-at-kornit-digital-4483365929",
     "https://il.linkedin.com/jobs/view/field-test-integration-engineer-at-starbird-ai-4486590427",
     "https://il.linkedin.com/jobs/view/automation-logistics-systems-integrator-570-at-utron-4478568708",
     "https://www.drushim.co.il/job/38742979/d7396c51/",
-    "https://il.linkedin.com/jobs/view/field-application-engineer-at-stealth-startup-4482598452",
     "https://www.drushim.co.il/job/38986901/2b95f7ce/",
-    "https://il.linkedin.com/jobs/view/%D7%97%D7%93%D7%A9-%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%95%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-at-sodastream-international-ltd-4488772416",
     "https://www.drushim.co.il/job/38992316/231849a4/",
-    "https://il.linkedin.com/jobs/view/pos-t-c-technician-at-alstom-4485848048",
     "https://il.linkedin.com/jobs/view/engine-technician-at-lowental-hybrid-4486655269",
     "https://www.drushim.co.il/job/39006186/b0c1d9e7/",
-    "https://il.linkedin.com/jobs/view/adms-solution-integrator-at-ge-vernova-4454518083",
-    "https://www.drushim.co.il/job/38955190/6133cd0f/",
     "https://www.drushim.co.il/job/38935411/20de07c2/",
-    "https://il.linkedin.com/jobs/view/customer-engineer-migdal-haemek-at-applied-materials-israel-4484383425",
+    "https://www.drushim.co.il/job/38955190/6133cd0f/",
     "https://il.linkedin.com/jobs/view/it-ot-infrastructure-project-manager-at-g-stat-4477264305",
     "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%94-%E2%80%94-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%9E%D7%A9%D7%95%D7%9C%D7%91%D7%95%D7%AA-at-solar-solutions-%D7%A4%D7%AA%D7%A8%D7%95%D7%A0%D7%95%D7%AA-%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99%D7%99%D7%9D-4487740131",
     "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%9E%D7%9B%D7%A8%D7%96%D7%99%D7%9D-%D7%95%D7%94%D7%AA%D7%A7%D7%A9%D7%A8%D7%95%D7%99%D7%95%D7%AA-%E2%80%93-%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%D7%99-%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-pv-bess-at-avivim-consulting-placement-4485802550",
     "https://www.drushim.co.il/job/38960301/934031db/",
+    "https://www.drushim.co.il/job/38999156/3eb336fa/",
     "https://il.linkedin.com/jobs/view/systems-integration-engineer-at-ottopia-defense-4487739972",
-    "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%9E%D7%97%D7%9C%D7%A7%D7%AA-%D7%99%D7%99%D7%A6%D7%95%D7%A8-at-elbit-systems-israel-4395871261",
     "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%AA-%D7%91%D7%93%D7%99%D7%A7%D7%95%D7%AA-%D7%90%D7%9C-%D7%94%D7%A8%D7%A1-n-d-t-at-elbit-systems-israel-4399777310",
     "https://www.drushim.co.il/job/38899273/ab0e7ce8/",
-    "https://il.linkedin.com/jobs/view/customer-engineer-kiryat-gat-at-applied-materials-israel-4484393010",
+    "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%9E%D7%97%D7%9C%D7%A7%D7%AA-%D7%99%D7%99%D7%A6%D7%95%D7%A8-at-elbit-systems-israel-4395871261",
+    "https://www.drushim.co.il/job/38975406/dafa0b81/",
     "https://il.linkedin.com/jobs/view/optical-technician-at-jobsseek-4483738443",
+    "https://il.linkedin.com/jobs/view/operations-team-member-at-airobotics-4486052282",
     "https://www.drushim.co.il/job/38764886/2df5051d/",
     "https://www.drushim.co.il/job/38643495/08454b76/",
-    "https://www.drushim.co.il/job/38677581/c41706f7/",
-    "https://il.linkedin.com/jobs/view/hardware-system-engineer-at-atom-4484646879",
-    "https://www.drushim.co.il/job/38840544/d7c9d9ab/",
     "https://www.drushim.co.il/job/38698595/0ce09344/",
+    "https://www.drushim.co.il/job/38677581/c41706f7/",
     "https://www.drushim.co.il/job/38761599/21db75fb/",
     "https://il.linkedin.com/jobs/view/%D7%9E%D7%94%D7%A0%D7%93%D7%A1-%D7%AA-%D7%90%D7%95-%D7%94%D7%A0%D7%93%D7%A1%D7%90%D7%99-%D7%AA-%D7%91%D7%A7%D7%A8%D7%94-%D7%95%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%99%D7%AA-%D7%A9%D7%98%D7%97-at-blenergy-4485064595",
     "https://www.drushim.co.il/job/38655427/cc2bbdfb/",
-    "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%94-%E2%80%94-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%90%D7%95%D7%98%D7%95%D7%A0%D7%95%D7%9E%D7%99%D7%95%D7%AA-at-solar-solutions-%D7%A4%D7%AA%D7%A8%D7%95%D7%A0%D7%95%D7%AA-%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99%D7%99%D7%9D-4486196109",
+    "https://il.linkedin.com/jobs/view/hardware-system-engineer-at-atom-4484646879",
     "https://il.linkedin.com/jobs/view/customer-support-technician-kiryat-gat-at-applied-materials-israel-4484383437",
+    "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%94-%E2%80%94-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%90%D7%95%D7%98%D7%95%D7%A0%D7%95%D7%9E%D7%99%D7%95%D7%AA-at-solar-solutions-%D7%A4%D7%AA%D7%A8%D7%95%D7%A0%D7%95%D7%AA-%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99%D7%99%D7%9D-4486196109",
     "https://il.linkedin.com/jobs/view/advanced-drone-r-d-engineer-at-regulus-4485736429",
-    "https://il.linkedin.com/jobs/view/it-operations-specialist-at-confidential-careers-4483056050",
-    "https://il.linkedin.com/jobs/view/field-service-technician-at-xerox-4481151543",
     "https://www.drushim.co.il/job/38952359/928f610a/",
-    "https://il.linkedin.com/jobs/view/%D7%9E%D7%9B%D7%95%D7%A0%D7%90%D7%99-%D7%AA-%D7%9C%D7%9E%D7%A4%D7%A2%D7%9C-%D7%A6%D7%91%D7%A8-%D7%98%D7%91%D7%A2%D7%95%D7%9C-%D7%9E%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%90%D7%A1%D7%9D-%D7%A0%D7%A1%D7%98%D7%9C%D7%94-at-nestl%C3%A9-4486871086",
     "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%9E%D7%98-%D7%A9-wwtp-manager-wastewater-treatment-plant-at-electra-4484357606",
     "https://il.linkedin.com/jobs/view/r-d-ink-student-at-landa-4486872132",
+    "https://il.linkedin.com/jobs/view/it-operations-specialist-at-confidential-careers-4483056050",
     "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%90%D7%95%D7%98%D7%95%D7%9E%D7%A6%D7%99%D7%94-at-maytronics-4486025673",
-    "https://il.linkedin.com/jobs/view/%D7%90%D7%97%D7%A8%D7%90%D7%99-%D7%AA-%D7%9E%D7%97%D7%A1%D7%9F-%D7%9C%D7%A7%D7%95%D7%97-at-elbit-systems-israel-4484348486",
     "https://il.linkedin.com/jobs/view/module-equipment-operation-technician-at-intel-4485730644",
+    "https://il.linkedin.com/jobs/view/%D7%90%D7%97%D7%A8%D7%90%D7%99-%D7%AA-%D7%9E%D7%97%D7%A1%D7%9F-%D7%9C%D7%A7%D7%95%D7%97-at-elbit-systems-israel-4484348486",
     "https://il.linkedin.com/jobs/view/support-for-elevator-and-escalator-modernization-at-linked-magic-4484326410",
-    "https://il.linkedin.com/jobs/view/%D7%9E%D7%94%D7%A0%D7%93%D7%A1-%D7%AA-%D7%90%D7%97%D7%96%D7%A7%D7%94-%D7%9C%D7%9E%D7%97%D7%9C%D7%A7%D7%AA-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%91%D7%90%D7%AA%D7%A8-%D7%90%D7%A1%D7%9D-%D7%A0%D7%A1%D7%98%D7%9C%D7%94-%D7%91%D7%A9%D7%93%D7%A8%D7%95%D7%AA-at-nestl%C3%A9-4484941739",
-    "https://il.linkedin.com/jobs/view/machine-operator-%D7%9E%D7%A4%D7%A2%D7%99%D7%9C-%D7%AA-%D7%9E%D7%9B%D7%95%D7%A0%D7%94-%D7%A2%D7%A4%D7%95%D7%9C%D7%94-at-kimberly-clark-4485243967",
-    "https://il.linkedin.com/jobs/view/technician-for-elevator-and-escalator-modernization-at-linked-magic-4483985458",
-    "https://il.linkedin.com/jobs/view/engineering-technician-r-d-at-helios-4481457226",
-    "https://www.drushim.co.il/job/38999156/3eb336fa/",
-    "https://www.drushim.co.il/job/38975406/dafa0b81/"
+    "https://il.linkedin.com/jobs/view/%D7%9E%D7%9B%D7%95%D7%A0%D7%90%D7%99-%D7%AA-%D7%9C%D7%9E%D7%A4%D7%A2%D7%9C-%D7%A6%D7%91%D7%A8-%D7%98%D7%91%D7%A2%D7%95%D7%9C-%D7%9E%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%90%D7%A1%D7%9D-%D7%A0%D7%A1%D7%98%D7%9C%D7%94-at-nestl%C3%A9-4486871086"
   ],
   "unknown_links": [
-    "https://il.linkedin.com/jobs/view/operations-team-member-at-airobotics-4486052282"
+    "https://il.linkedin.com/jobs/view/integrator-%E2%80%93-lynx-department-at-asio-technologies-4487677987",
+    "https://il.linkedin.com/jobs/view/hardware-manufacturing-integrator-at-hp-4487561763",
+    "https://il.linkedin.com/jobs/view/field-application-engineer-at-stealth-startup-4482598452",
+    "https://il.linkedin.com/jobs/view/pos-t-c-technician-at-alstom-4485848048",
+    "https://il.linkedin.com/jobs/view/adms-solution-integrator-at-ge-vernova-4454518083",
+    "https://il.linkedin.com/jobs/view/customer-engineer-migdal-haemek-at-applied-materials-israel-4484383425",
+    "https://il.linkedin.com/jobs/view/customer-engineer-kiryat-gat-at-applied-materials-israel-4484393010",
+    "https://il.linkedin.com/jobs/view/field-service-technician-at-xerox-4481151543"
   ]
 }
