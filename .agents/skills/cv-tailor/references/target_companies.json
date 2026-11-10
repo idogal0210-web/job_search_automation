@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "last_updated": "2026-10-21",
+  "last_updated": "2026-11-10",
   "approved_by_user": true,
-  "source_file": "/Users/ido/.gemini/antigravity/scratch/התאמת קו״ח & הכנה לראיון/target_companies.json",
+  "source_file": "/Users/ido/.gemini/antigravity/scratch/job_search_automation/.agents/skills/job-search-automation-state/references/search-preferences.json",
   "hard_excluded_companies": [
     "Energean",
     "אנרג'יאן",

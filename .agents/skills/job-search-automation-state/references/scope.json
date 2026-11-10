@@ -6,8 +6,10 @@
   "project_identity": "job_search_automation",
   "approved_by_user": true,
   "evidence": [
-    "daily_job_search_unified.py",
+    "main.py",
+    "src/pipeline.py",
     "src/evaluators.py",
+    "src/job_policy.py",
     "docs/index.html"
   ]
 }

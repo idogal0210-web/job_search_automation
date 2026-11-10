@@ -1,105 +1,60 @@
 ---
 name: ai-ux-human-agent-interaction
-description: "Specialized Human-Agent Interaction (HAI) and UX engine for job_search_automation. Implements the global agent-experience-interaction-designer standard for the HTML dashboard (docs/index.html), zero-tag job cards, unified desktop dashboard architecture, high-res company logos, transparent AI scoring, and daily reporting."
+description: "Specialized Human-Agent Interaction (HAI) and UX engine for job_search_automation. Implements the global agent-experience-interaction-designer standard for the Dual-Template dashboard (frontend/ -> docs/), Split-Pane Career Studio, Supabase real-time cloud sync, zero-tag job cards, high-res company logos, and transparent AI scoring."
 ---
 
-# AI UX & Human-Agent Interaction Designer (Job Search Specialization)
+# AI UX & Human-Agent Interaction Designer (`job_search_automation`)
 
-> **Architectural Base:** This skill inherits and implements the master global standard:  
-> [`agent-experience-interaction-designer`](file:///Users/ido/.gemini/config/skills/agent-experience-interaction-designer/SKILL.md)  
-> customized specifically for the **`job_search_automation`** ecosystem.
+> **Architectural Base:** Inherits and specializes [`agent-experience-interaction-designer`](file:///Users/ido/.gemini/config/skills/agent-experience-interaction-designer/SKILL.md) for the **`job_search_automation`** ecosystem.
 
 ---
 
 ## 1. Role & Mission
-
-You are the Lead Human-Agent Interaction Architect and UX Engineer for **`job_search_automation`**.  
-Your mission is to ensure that the interface between Ido Gal and the autonomous job search pipeline is:
-- **Transparent:** Ido immediately understands *why* a job received a score (e.g. SCADA experience match, solar PV relevance, practical engineer vs. B.Sc flexibility).
-- **Predictable & Verifiable:** Scrape runs, filtered jobs, and error states reflect actual telemetry — never fabricated progress.
-- **Cognitively Lightweight (The 5-Second Rule):** Ido can open the daily dashboard or email digest and assess top matches in under 5 seconds.
-- **Zero-Tag Clean Aesthetics:** Symmetrical, clean metric cubes without visual clutter, tag chips, or pill noise.
-- **Accessible & RTL:** Flawless Hebrew typography (`dir="rtl"`), high contrast, and clean layout for desktop and modern browsers.
+Ensure the interface between Ido Gal and the autonomous job search and Career Studio platform is:
+- **Transparent:** Immediate visibility into *why* a job received its Match Score (requirement assessments, SCADA/PV/gas match, practical engineer vs. B.Sc flexibility, and salary provenance).
+- **Cognitively Lightweight (The 5-Second Rule):** Top matches, red flags, and salary estimates are scannable in under 5 seconds.
+- **Zero-Tag Clean Aesthetics:** Structured 4-pill metric grids without messy tag chips or visual clutter.
+- **Bi-Directionally Synced:** Seamless, non-destructive triage synchronization between desktop and mobile via `localStorage` and Supabase Cloud Database (`public.sync_state`).
+- **Accessible & RTL:** Flawless Hebrew RTL layout (`dir="rtl"`) with pure Vanilla HTML5, CSS3, and ES6+ JavaScript.
 
 ---
 
-## 2. Activation Triggers
-
-Activate this skill when:
-- Designing or refining the web dashboard (`docs/index.html`).
-- Modifying UI generation logic in `src/ui_builder.py`.
-- Improving job card layouts (e.g. responsive cube structure, metric pills, action buttons).
-- Designing category filters (Energy, Drones/UAV, All) and score thresholds.
-- Polishing daily email digest formatting and executive summaries.
-- Enhancing error reporting and telemetry visibility (e.g. Comeet/LinkedIn network timeouts, quota limits).
-- Ensuring unified desktop dashboard architecture and preventing divergent mobile-only clutter.
+## 2. Mandatory Dual-Template Build Protocol (`frontend/` -> `docs/`)
+- **Source of Truth:** Always edit modular source files in `frontend/templates/index.html`, `frontend/css/dashboard.css`, `frontend/js/dashboard.js`, and `frontend/templates/email_report.html`.
+- **Compilation & Parity:** Compile into `docs/` (`docs/index.html`, `docs/dashboard.css`, `docs/dashboard.js`) via `src/ui_builder.py` (or maintain strict 1:1 synchronization).
+- **CI Guard:** Every UI change must pass `tests/test_template_docs_sync.py` with zero drift between `frontend/` and `docs/`.
 
 ---
 
-## 3. Core Interaction & Design Standards
+## 3. Core Interaction & Architecture Standards
 
-### 3.1 Transparent AI Match Rationale
-Every job card must communicate:
+### 3.1 Transparent AI Match Rationale & Zero-Tag Cards
 1. **Match Score Badge:** Color-coded (Emerald 85+, Blue 70-84, Slate <70).
-2. **Deterministic Factors:** Explicitly mention why points were awarded (e.g., *"פתיחות להנדסאי מכונות מנוסה חלף B.Sc"*, *"ניסיון בבקרת SCADA וגז טבעי"*).
-3. **Salary & Work Model:** Clear indicators of shift/field expectations and compensation.
+2. **Structured 4-Pill Metric Grid:** Symmetrical grid (Location, Experience, Role Type, Salary/Field) directly beneath the card header. Strictly zero loose tag chips.
+3. **Evidence Breakdown:** Clear requirement assessments citing exact qualifications matched or missing.
 
-### 3.2 Responsive Cube Card Architecture
-- Maintain the responsive cube/card layout where key decision data is visible on the primary face, and secondary details are progressively disclosed via toggle/drawer.
-- Prevent vertical and horizontal bloat — ensure cards stack cleanly without horizontal scroll.
+### 3.2 Bi-Directional Triage State & Supabase Cloud Sync (`public.sync_state`)
+- **Non-Destructive Hydration:** User triage states (`starred`, `saved`, `rejected`, `purged`, and applied notes) must never be wiped during pipeline runs or UI refreshes.
+- **Real-Time Cloud Sync:** Maintain optimistic UI updates in `localStorage` paired with authenticated Supabase REST/Realtime sync (`public.sync_state` with RLS).
+- **Browser-Safe Guards:** Guard background polling (`25s`), `visibilitychange`, and `focus` listeners with `typeof process === 'undefined'` so Node.js stress harnesses execute cleanly without hanging timers.
 
-### 3.3 Zero-Tag Architecture (Strict Clean Design)
-- **Zero Tag Chips:** Completely eliminate tag chips, badges, and pill chips from job cards and generator logic.
-- **Structured Metric Grid:** Replace tags with structured, symmetrical 4-pill metric grids (Location, Experience, Role Type, Salary/Field) directly under the header.
-- **Pure AI Synthesis:** Keep categorization and fit explanation embedded directly inside the AI rationale paragraph rather than scattered across chips.
+### 3.3 Career Studio Split-Pane Architecture (`careerStudioWorkspace`)
+- **Split-Pane Workspace (Desktop):**
+  - **Input Pane (45% width):** Job selector from live/historical catalog, CV upload/status pill (`איפוס לקו״ח בסיס`), text editor, and STAR interview practice inputs.
+  - **Results Pane (55% width):** Live ATS match telemetry, statutory hard-gate warnings, 3-mode AI Writer output, STAR evaluation rubric scores, and longitudinal improvement chart.
+  - **Mobile Responsive Stacking:** Automatically stacks vertically (`flex-direction: column`) on narrow viewports with touch targets `>= 44px`.
+- **Compact Step Navigation:** Clean horizontal top step bar for switching across the 4 studio modules (ATS Match, AI Writer, Interview Simulator, Skills Matrix) without heavy vertical sidebar clutter.
+- **Local Python Bridge Integration:** Connect seamlessly to `scripts/studio_bridge.py` (`POST /api/ats/match`, `/api/writer/tailor`, `/api/interview/evaluate`) with automatic graceful client-side fallback when offline.
 
-### 3.4 Unified Desktop Dashboard Architecture
-- **Single Source of Truth:** A single, clean desktop-first dashboard layout. There are no separate mobile navigation bars (no bottom thumb-bars) or dedicated mobile-only modes.
-- **Natural Accessibility:** If viewed on a smaller screen or mobile device, the dashboard displays the unified desktop layout without separate divergent mobile subsystems.
-
-### 3.5 User Triage State & LocalStorage Integrity
-- **Non-Destructive Hydration:** User annotations (starred jobs, dismissed jobs, applied status, and seen markers) stored in `localStorage` must NEVER be wiped, overwritten, or reset during UI updates or new scrapings.
-- **Self-Healing Schema Migration:** Always validate and safely migrate triage data structures on page load without treating existing unreviewed jobs as newly injected alerts.
-
-### 3.6 Verified High-Resolution Company Logo Pipeline (Zero Synthetic Logos)
-To prevent broken, blurry, or fabricated corporate emblems:
-1. **Tier 1 - Direct Overrides:** Custom curated official vector/PNG assets in `docs/assets/logos/`.
-2. **Tier 2 - Verified Corporate Logo / Favicon:** Official company logo URL from LinkedIn or high-res official domain favicon.
-3. **Tier 3 - Clean Typography Fallback (Zero Monograms):** Never invent synthetic logos or generic letter monograms/avatars. If no verified official logo exists or if loading fails (`onerror`), hide the image element cleanly and render the company name in crisp typography.
-
-### 3.7 Zero-Waste UI Engineering
-- **Pure Vanilla Stack:** Pure HTML5, modern CSS3 (Flexbox/Grid, CSS custom properties), and lightweight JavaScript.
-- **Strictly No Heavy Frameworks:** Do not inject React, Vue, or bulky UI libraries that introduce build steps or slow down load times.
-
-### 3.8 Rigorous Execution Telemetry & Error UX
-- **Truthful Status Reporting:** Clearly display last scrape timestamp, total jobs evaluated, and count of disqualified jobs, as well as unverified job counts in the closed-jobs scanner.
-- **Graceful Error States:** If Gemini rate-limits or a network timeout occurs, present a clean fallback state without breaking the dashboard.
-- **Never Fabricate Progress:** Never display arbitrary percentage progress rings unless backed by real streaming execution events.
-
-### 3.9 Symmetrical Header Bar & Centered Mode Switcher
-- **Mathematical Centering:** In `.dashboard-sidebar` on desktop (`min-width: 1181px`), use symmetrical layout where Column 1 holds Brand tools (right), Column 2 centers the Mode Switcher (`לוח משרות` / `סטודיו קריירה`) at 50% screen width, and Column 3 holds category cubes (left).
-
-### 3.10 Right-Hand Vertical Pipeline Sidebar for RTL Workspaces
-- **Natural Reading Anchor:** In RTL Hebrew applications, workspace subnavigation and auxiliary action panels must sit on the right-hand side (`grid-template-columns: 310px minmax(0, 1fr)`).
-- **Sticky Accessibility:** The right-hand sidebar must be sticky (`position: sticky; top: 16px;`) so pipeline steps and active document status remain visible during vertical scrolling.
-
-### 3.11 Schematic Sequential Steps & Zero Cognitive Overload
-- **Uniform Visual Hierarchy:** All 4 sequential stage buttons (Stages 1 to 4) feature uniform heights, uniform typography, distinct icons, and circular number badges (1 to 4).
-- **Single-Column Numbered Flow:** Inside each stage, actions are organized vertically in a single column of numbered steps (`1, 2, 3...`) with a quick-jump step outline bar at the top of the stage.
-- **Clutter Elimination:** Avoid information overload, redundant percentage labels, or walls of text inside navigation hubs and sidebars.
-
-### 3.12 Independent Document Upload Architecture
-- **Manual CV Upload:** Support manual user resume uploads (PDF, DOCX, TXT) with clear status reflection, active filename display, and an instantaneous "איפוס לקו״ח בסיס" (Reset to baseline) option.
-- **Decoupled State:** Persist uploaded CV metadata safely in `localStorage` without disrupting baseline candidate profiles or automated scraping runs.
+### 3.4 Verified High-Resolution Company Logo Pipeline
+1. **Tier 1:** Curated vector/PNG overrides in `docs/assets/logos/`.
+2. **Tier 2:** Verified official corporate logo URL or domain favicon.
+3. **Tier 3:** Clean typography fallback on error (`onerror`) — strictly zero synthetic monograms or fake avatars.
 
 ---
 
 ## 4. Definition of Done
-
-A UI/UX change is complete only when:
-1. The dashboard is verified to render properly across mobile and desktop with 1:1 structural parity.
-2. Hebrew text direction (`dir="rtl"`) is strictly preserved across all cards and summaries.
-3. Zero-tag architecture is verified: zero tag chips or obsolete pills in HTML, CSS, or JS.
-4. User triage state (stars, dismissals, applied status) is safely preserved and resilient in LocalStorage.
-5. All interactive buttons (Apply, Save, Filter, Star, Dismiss) have active, focus, and hover states.
-6. Strictly zero emojis across all code, markup, styles, and generated outputs.
+1. `tests/test_template_docs_sync.py` and all Python/JS milestone tests pass.
+2. Strict `dir="rtl"` alignment and responsive layout verified on desktop and mobile viewports.
+3. Zero tag chips and zero emojis across all HTML, CSS, JS, and generated templates.
+4. `localStorage` and Supabase cloud sync states remain intact across reloads.

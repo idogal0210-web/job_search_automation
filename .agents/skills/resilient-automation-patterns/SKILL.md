@@ -1,53 +1,31 @@
 ---
 name: resilient-automation-patterns
-description: Ensures unattended automations (cron jobs, scrapers, scheduled pipelines) in job_search_automation are fault-tolerant, observable and safe to re-run. Covers retry with backoff, fallbacks, idempotency, circuit breakers, failure alerting and structured error context. Use when building, reviewing or debugging the daily job-search run, scrapers (LinkedIn, Drushim, Comeet), email dispatch or any unsupervised automation.
+description: "Ensures unattended automations (cron jobs, scrapers, GeminiPool LLM calls, Tavily/Firecrawl extraction, and Supabase cloud sync) in job_search_automation are fault-tolerant, credit-safe, observable, and idempotent."
 ---
 
-# Resilient Automation Patterns
+# Resilient Automation Patterns (`job_search_automation`)
 
-Make every unattended automation **observable, recoverable and safe to re-run**. A silent failure is worse than a loud one. Assume every external call (LinkedIn, Drushim, Comeet, Gemini, SMTP) will fail eventually.
+Make every unattended run (`main.py`, `src/pipeline.py`, `.github/workflows/daily_job_search.yml`) **observable, credit-safe, recoverable, and idempotent**. Assume every external dependency (LinkedIn, Drushim, Comeet, Gemini API, Tavily, Firecrawl, Supabase, SMTP) will eventually fail or rate-limit.
 
-## 1. Retry with exponential backoff
-- Never retry immediately or infinitely. Use `delay = min(base * 2**(attempt-1), max)` plus ~25% jitter.
-- **Max 3 attempts** for API and scraping calls. **Max 2** for SMTP sends. **Never retry** a side-effecting operation (email, DB write, webhook) unless it is idempotent. After an ambiguous email result, stop and report, never auto-resend.
-- Log each retry: attempt number, error type, delay, context.
+## 1. Multi-Model Gemini Fallback Pool (`src/gemini_runtime.py`)
+- **Ordered Model Rotation (`GeminiPool`):** Execute structured evaluations using the configured fallback chain:
+  `gemini-3.8-flash` -> `gemini-3.5-flash-lite` -> `gemini-3.5-flash`.
+- **Quota & Rate-Limit Recovery (`429 / 503`):** On transient API errors or quota exhaustion on the primary model, rotate immediately to the next model in the pool with exponential backoff (`base * 2**(attempt-1) + jitter`, max 3 attempts).
+- **Safe Degradation (`RETRY_PENDING`):** If all models in `GeminiPool` fail or a job listing lacks usable description text, persist the job as `RETRY_PENDING` in `data/evaluation_state.json` for `scripts/requeue_jobs.py`. Never assign a fabricated LLM score or silently drop a valid candidate job.
 
-## 2. Fallback chains
-Primary failed: try an alternative source, then cached data (mark `stale`), then partial data (mark `partial`). If nothing is available, fail loudly, alert and produce no output.
-- Log what failed, what replaced it and whether quality degraded.
-- Never substitute empty strings, zeros or placeholders for real data.
-- A job without a usable description stays `RETRY_PENDING`; it is never silently scored.
+## 2. Two-Tier Scraper & MCP Credit Protection (`src/fetchers.py` & MCP Policy)
+- **Tier 1 — Fast Static Fetchers & `Tavily` Discovery:** Use native Python fetchers (`src/fetchers.py`) and `Tavily` MCP for initial job discovery and domain verification.
+- **Tier 2 — Surgical `Firecrawl` Extraction:** Invoke `Firecrawl` MCP **only** when a specific job URL fails static HTML extraction or requires heavy JS/SPA rendering (e.g., Comeet, Workday, Greenhouse portals). Never run bulk/broad crawling on `Firecrawl` to prevent credit exhaustion.
+- **Per-Source Circuit Breaker:** Track consecutive failures per source in `src/fetchers.py`. After 3 consecutive failures, open the circuit for that source (`[CIRCUIT OPEN] <source>`), log the degradation, and continue the pipeline with remaining healthy sources.
 
-## 3. Idempotency
-Running twice must equal running once.
-- **Email:** check a last-sent marker (run ID, date or hash) before sending.
-- **Persistence:** upsert or check-before-write with deterministic job IDs. Never append to archives without deduplication, and never let a new run overwrite user actions (archive, star, delete) in `data/`.
-- **Git:** check `git diff --quiet` first; never create empty commits.
+## 3. Idempotency & Bi-Directional State Protection
+Running the pipeline twice must produce identical state without data loss:
+- **Deterministic Job Keys:** Deduplicate via canonical URL (`src/url_utils.py`) and normalized `(company, title, location)` in `src/state_manager.py`.
+- **User Triage Protection (`localStorage` + Supabase `public.sync_state`):** Pipeline runs and UI builds (`src/ui_builder.py`) must never overwrite or purge user triage actions (`starred`, `saved`, `rejected`, `purged`).
+- **Supabase Sync Resilience:** Client-side and sync adapters must handle offline/timeout states gracefully via optimistic local writes and retry on `visibilitychange` / `focus` without blocking UI rendering.
+- **Email & Git Idempotency:** Check last-dispatched run markers before sending SMTP alerts (max 2 retries; never auto-resend on ambiguous timeout). In GitHub Actions, verify `git diff --staged --quiet` before committing.
 
-## 4. Circuit breaker
-Track failures per external service. At 3 consecutive failures open the circuit and skip that service for a cooldown (e.g. 10 minutes), then allow one probe call. Log `[CIRCUIT OPEN] <service>`. One broken source must not fail a run that can still produce partial results.
-
-## 5. Failure alerting (dead man's switch)
-- **Success:** one-line summary.
-- **Failure:** full error details plus an alert (GitHub Actions: visible failed run; local: failure log and a separate failure email).
-- **Nothing found:** log explicitly `[INFO] Run completed - no new data to process`, to distinguish "nothing to do" from "silently broken". Final status values such as `SUCCESS_EMPTY_RUN` or `FAILED_DASHBOARD` must reflect reality.
-
-## 6. Structured error context
-Every error line answers: what failed, where, which attempt, what input, what happens next. Example: `[ERROR] scraper.py > fetch_comeet(url) | Attempt 2/3 | TimeoutError: ...`. No bare `except: pass`.
-
-## 7. Graceful degradation
-
-| Situation | Action |
-| :--- | :--- |
-| All sources succeeded | Normal output |
-| Some fallbacks used | Output with a visible degradation banner |
-| Critical source failed | Do not send a broken or empty report; log, alert, skip the run |
-| Infrastructure failure (SMTP, Git) | Retry once, then save output locally and alert |
-
-## Pre-deploy checklist
-- [ ] External calls have retry plus backoff (max 3).
-- [ ] Each data source has a documented fallback or explicit failure path.
-- [ ] A second run produces identical observable results.
-- [ ] Failures carry structured context and trigger alerts; success is one line.
-- [ ] "Nothing happened" is distinguishable from "silently broken".
-- [ ] Partial results are clearly marked as partial.
+## 4. Observability, Dead-Man's Switch & Pre-Deploy Checklist
+- **Distinguish Empty vs. Broken:** Log `[INFO] Run completed - no new data to process` (`SUCCESS_EMPTY_RUN`) when fetchers succeed with 0 new matches, versus explicit failure alerts when scrapers or APIs fail.
+- **Structured Error Context:** Every error log must include `[ERROR] <module>.<func> | Attempt X/Y | <ErrorType>: <context>`. Zero bare `except: pass` blocks.
+- **Zero Emojis:** Strictly zero emojis in logs, step summaries (`GITHUB_STEP_SUMMARY`), email alerts, and dashboard banners.
