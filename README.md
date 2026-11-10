@@ -55,6 +55,7 @@ job_search_automation/
 └── scripts/
     ├── project_hygiene.py          # מנוע היגיינת פרויקט, בדיקת סודות ואימות שלמות נתונים
     ├── validate_zero_emoji.py      # אימות מוחלט של מדיניות אפס אימוג'ים בקוד, בממשק ובדוחות
+    ├── scan_inactive_jobs.py       # סריקה וזיהוי אוטומטיים של משרות שנסגרו או הוסרו (404/410/Closed)
     └── inspect_state.py            # כלי CLI יעיל לבדיקת סטטוס נתונים ומשרות ללא עומס טוקנים
 ```
 

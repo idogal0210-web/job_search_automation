@@ -106,7 +106,8 @@ job_search_automation/
 │   └── stress_m2_harness.js        # Node.js high-volume stress harness (2,489 assertions) for Milestone 2
 └── scripts/
     ├── evaluate_dataset.py         # Confusion matrix, Precision/Recall/F1 and False Negatives evaluator
-    └── requeue_jobs.py             # Utility script for re-evaluating pending or cached jobs
+    ├── requeue_jobs.py             # Utility script for re-evaluating pending or cached jobs
+    └── scan_inactive_jobs.py       # Automated detection of closed/expired job postings (HTTP 404/410 and closed notices)
 ```
 
 ---
@@ -194,6 +195,7 @@ job_search_automation/
 - **Streamlined header UI:** Complete removal of obsolete "about system" info button and modal dialog (`#aboutModal`), keeping brand header focused with profile title and cloud sync button only, maintaining 1:1 dual-template parity.
 - **Cloud Sync (Supabase only):** The dashboard header holds a single minimal pill (`#headerCloudBtn`) opening `#cloudModal` (email/password sign-in or sign-up, sign-out). Triage state (starred, saved, rejected, purged) syncs between desktop and phone exclusively through the Supabase `sync_state` table under owner-only RLS. No GitHub tokens, share links or static `sync_state.json` fallback exist client-side; `docs/data/sync_state.json` is no longer published. The page embeds only the Supabase URL and publishable key. Manual job-search runs are triggered from GitHub Actions directly.
 - **Streamlined 3-Anchor Job Card Architecture (Option 1):** Replaced 5 repetitive and verbose sub-categories across job cards and full modal dialogs with 3 concise, high-signal information anchors: 1) `תחום ותפקיד` (intelligent unification of domain and role summary), 2) `דרישות סף` (concise core requirements), and 3) `התאמה ופערים` (punchy candidate strengths with explicit `[OK] ללא פערי סף` or `[פער]` status badge). Evaluation prompt sharpened to 1-sentence responses, eliminating ~65% of redundant text. Dual-template parity preserved.
+- **Automated Inactive Jobs Detection & Zero-Worker Architecture:** Integrated scheduled daily detection of expired/closed postings via `scripts/scan_inactive_jobs.py` running in `.github/workflows/daily_job_search.yml` and publishing to `docs/data/inactive_jobs.json`. Replaced unreliable external Cloudflare Worker proxy with direct static JSON consumption in `#inactiveJobsModal`. Enriched UI with header count badge `#inactiveJobsCountBadge`, closed warning chips on job cards in `renderCards()`, warning banners in job modals, and 1-click bulk removal (`handleRemoveAllInactiveJobs`) that syncs instantly to Supabase.
 
 ### 5.2 In Progress (WIP)
 - **Salary engine market calibration:** Fine-tuning compensation bands based on user feedback and emerging Israeli industrial salary data.

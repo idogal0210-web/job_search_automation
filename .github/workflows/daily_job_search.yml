@@ -88,13 +88,20 @@ jobs:
         run: |
           python -u main.py
 
+      - name: Scan Inactive and Closed Postings
+        id: inactive_scan
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          python scripts/scan_inactive_jobs.py --workers 5
+
       - name: Persist checkpoints even when search fails
         if: ${{ always() && (steps.search.outcome == 'success' || steps.search.outcome == 'failure') }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          for path in data/jobs_state.json data/evaluation_state.json data/weekly_archive.json data/historical_catalog.json docs/index.html docs/data/jobs.json docs/data/historical_catalog.json docs/dashboard.css docs/dashboard.js docs/assets; do
+          for path in data/jobs_state.json data/evaluation_state.json data/weekly_archive.json data/historical_catalog.json data/inactive_jobs.json docs/index.html docs/data/jobs.json docs/data/historical_catalog.json docs/data/inactive_jobs.json docs/dashboard.css docs/dashboard.js docs/assets; do
             if test -e "$path"; then git add -- "$path"; fi
           done
           

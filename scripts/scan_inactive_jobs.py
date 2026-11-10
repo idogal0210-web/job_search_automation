@@ -14,7 +14,7 @@ import re
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Optional, Tuple
 
 import requests
@@ -63,7 +63,7 @@ def _valid_through_expired(html: str) -> bool:
     """Returns True when a JSON-LD JobPosting declares a validThrough date in the past."""
     for match in re.finditer(r'"validThrough"\s*:\s*"(\d{4}-\d{2}-\d{2})', html):
         try:
-            if datetime.strptime(match.group(1), "%Y-%m-%d").date() < datetime.utcnow().date():
+            if datetime.strptime(match.group(1), "%Y-%m-%d").date() < datetime.now(timezone.utc).date():
                 return True
         except ValueError:
             continue
@@ -180,7 +180,7 @@ def run_scanner(limit: Optional[int] = None, max_workers: int = 5, dry_run: bool
                         "company": job.get("company", ""),
                         "reason": reason,
                         "status_code": status_code,
-                        "detected_at": datetime.utcnow().isoformat() + "Z",
+                        "detected_at": datetime.now(timezone.utc).isoformat(),
                     }
                     inactive_list.append(inactive_item)
                     logger.info(f"[INACTIVE] {job.get('title')} at {job.get('company')} -> {reason}")
@@ -188,7 +188,7 @@ def run_scanner(limit: Optional[int] = None, max_workers: int = 5, dry_run: bool
                 logger.warning(f"Error evaluating job {job.get('link')}: {exc}")
 
     report = {
-        "scanned_at": datetime.utcnow().isoformat() + "Z",
+        "scanned_at": datetime.now(timezone.utc).isoformat(),
         "total_scanned": scanned_count,
         "inactive_count": len(inactive_list),
         "unknown_count": len(unknown_links),

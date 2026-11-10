@@ -236,9 +236,10 @@
               <i class="ph-duotone ph-copy" style="font-size: 15px;"></i>
               <span>כפילויות</span>
             </button>
-            <button type="button" onclick="openInactiveJobsModal()" class="tool-btn-compact" style="height: 34px; min-height: 34px; padding: 0 10px; font-size: 12px; gap: 5px; border-radius: 8px; border-color: rgba(239, 68, 68, 0.35); color: #fca5a5;" title="סרוק משרות לא פעילות שנסגרו" aria-label="סריקת משרות לא פעילות">
+            <button type="button" id="btnOpenInactiveJobsModal" onclick="openInactiveJobsModal()" class="tool-btn-compact" style="height: 34px; min-height: 34px; padding: 0 10px; font-size: 12px; gap: 5px; border-radius: 8px; border-color: rgba(239, 68, 68, 0.35); color: #fca5a5;" title="סרוק משרות לא פעילות שנסגרו" aria-label="סריקת משרות לא פעילות">
               <i class="ph-duotone ph-link-break" style="font-size: 15px;"></i>
               <span>שנסגרו</span>
+              <span id="inactiveJobsCountBadge" style="display: none; background: rgba(239, 68, 68, 0.35); color: #fff; font-size: 11px; padding: 1px 6px; border-radius: 999px; font-weight: 600;"></span>
             </button>
           </div>
 
