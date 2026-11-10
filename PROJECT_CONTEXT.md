@@ -131,7 +131,7 @@ job_search_automation/
 7. Web Dashboard Generation (ui_builder.py)
    ↓ Generates docs/index.html from weekly_archive.json data
 8. Notification Publisher (publishers.py)
-   ↓ Dispatches HTML email digest if qualified jobs are found
+   ↓ Dispatches HTML email digest if qualified jobs are found (calibrated via is_incomplete_run: secondary 403 blocks on Indeed/Glassdoor or transient keyword retries do not trigger '[חלקי]' status)
 ```
 
 ### 4.2 Core Data Models (`Job` Schema)

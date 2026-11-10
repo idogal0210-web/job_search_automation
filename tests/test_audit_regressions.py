@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 from src.evaluators import validate_requirement_assessments, evaluate_and_enrich_job_with_gemini
 from src.fetchers import RunHealth, fetch_linkedin_jobs, fetch_drushim_jobs, fetch_drushim_full_job_description, _get_with_retries
 from src.pipeline import enrich, final_status, evaluate_candidates
-from src.publishers import build_unified_html_email, send_email_report
+from src.publishers import build_unified_html_email, send_email_report, is_incomplete_run
 from src.state_manager import EvaluationLedger
 from src.ui_builder import build_and_save_docs_app
 from src.url_utils import canonical_job_url, safe_http_url
@@ -50,6 +50,61 @@ class AuditRegressionTests(unittest.TestCase):
         with patch('src.publishers.smtplib.SMTP', return_value=server), patch('src.publishers.time.sleep'):
             self.assertFalse(send_email_report('fake','fake',[],[],[],'https://example.com',RunHealth()))
         server.sendmail.assert_called_once()
+
+    def test_is_incomplete_run_behavior(self):
+        # 1. Normal run with secondary scraper failures (Indeed/Glassdoor 403) must NOT be marked incomplete
+        health = RunHealth(
+            linkedin_requests=10, linkedin_successes=10, linkedin_failures=0,
+            drushim_requests=5, drushim_successes=5, drushim_failures=0,
+            indeed_requests=1, indeed_failures=1,
+            glassdoor_requests=1, glassdoor_failures=1,
+            jobs_evaluated=10, pending_evaluations=0,
+            final_status='SUCCESS'
+        )
+        self.assertFalse(is_incomplete_run(health))
+
+        # 2. Minor transient glitch on 1 keyword does NOT mark run incomplete
+        health_glitch = RunHealth(
+            linkedin_requests=10, linkedin_successes=9, linkedin_failures=1,
+            jobs_evaluated=15, pending_evaluations=1,
+            final_status='DEGRADED_NETWORK'
+        )
+        self.assertFalse(is_incomplete_run(health_glitch))
+
+        # 3. Core scraper total failure DOES mark run incomplete
+        health_core_fail = RunHealth(
+            linkedin_requests=5, linkedin_failures=5,
+            final_status='DEGRADED_NETWORK'
+        )
+        self.assertTrue(is_incomplete_run(health_core_fail))
+
+        # 4. Critical system failure DOES mark run incomplete
+        health_sys_fail = RunHealth(final_status='FAILED_SCRAPERS')
+        self.assertTrue(is_incomplete_run(health_sys_fail))
+
+        # 5. Substantial pending evaluations (>= 5) DOES mark run incomplete
+        health_pending = RunHealth(jobs_evaluated=10, pending_evaluations=6)
+        self.assertTrue(is_incomplete_run(health_pending))
+
+    def test_email_subject_clean_on_secondary_failures(self):
+        import email
+        server = MagicMock()
+        health = RunHealth(
+            linkedin_requests=5, linkedin_successes=5,
+            indeed_requests=1, indeed_failures=1,
+            glassdoor_requests=1, glassdoor_failures=1,
+            jobs_evaluated=5, pending_evaluations=0,
+            final_status='DEGRADED_NETWORK'
+        )
+        jobs = [{'title': 'Solar Tech', 'company': 'Co', 'link': 'https://example.com/1', 'salary_range': '20000'}]
+        with patch('src.publishers.smtplib.SMTP', return_value=server), patch('src.publishers.time.sleep'):
+            send_email_report('fake@example.com', 'pwd', jobs, jobs, jobs, 'https://example.com', health)
+        server.sendmail.assert_called_once()
+        raw_msg = server.sendmail.call_args[0][2]
+        parsed = email.message_from_string(raw_msg)
+        decoded_subject = str(email.header.make_header(email.header.decode_header(parsed['Subject'])))
+        self.assertIn('[יומי] דוח משרות מאוחד', decoded_subject)
+        self.assertNotIn('[חלקי]', decoded_subject)
 
     def test_url_normalization_preserves_requisition_query(self):
         self.assertEqual(canonical_job_url('https://EXAMPLE.com/job/?id=2&utm_source=a#top'), 'https://example.com/job?id=2')

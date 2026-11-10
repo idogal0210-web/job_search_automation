@@ -49,6 +49,41 @@ def wrap_ltr_tokens(text):
     return text_str
 
 
+def is_incomplete_run(health) -> bool:
+    """
+    Determine if a run should be flagged as partial/incomplete in user notifications.
+    Secondary aggregator scrapers (Indeed/Glassdoor) with expected 403 blocks in cloud runners
+    and minor transient network drops do not mark the entire run as incomplete.
+    A run is only marked incomplete if:
+      - System failure occurred (final_status starts with FAILED_)
+      - A primary core source (LinkedIn or Drushim) suffered a complete failure (100% failures)
+      - Substantial evaluations are pending (>= 5 pending or pending > 0 with 0 evaluated)
+    """
+    if not health:
+        return False
+
+    final_st = getattr(health, "final_status", "") or ""
+    if final_st.startswith("FAILED_"):
+        return True
+
+    pending = getattr(health, "pending_evaluations", 0)
+    jobs_evaluated = getattr(health, "jobs_evaluated", 0)
+    if pending >= 5 or (pending > 0 and jobs_evaluated == 0):
+        return True
+
+    linkedin_reqs = getattr(health, "linkedin_requests", 0)
+    linkedin_fails = getattr(health, "linkedin_failures", 0)
+    if linkedin_reqs > 0 and linkedin_fails >= linkedin_reqs:
+        return True
+
+    drushim_reqs = getattr(health, "drushim_requests", 0)
+    drushim_fails = getattr(health, "drushim_failures", 0)
+    if drushim_reqs > 0 and drushim_fails >= drushim_reqs:
+        return True
+
+    return False
+
+
 def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
     # Enforce strictly up to 5 jobs in daily email
     jobs = (jobs or [])[:5]
@@ -62,18 +97,7 @@ def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
     now_str = datetime.now().strftime("%d.%m.%Y")
     
     pending = getattr(health, 'pending_evaluations', 0) if health else 0
-    incomplete = bool(
-        health
-        and (
-            pending
-            or health.linkedin_failures
-            or health.drushim_failures
-            or getattr(health, "comeet_failures", 0)
-            or getattr(health, "indeed_failures", 0)
-            or getattr(health, "glassdoor_failures", 0)
-            or health.final_status.startswith("FAILED_")
-        )
-    )
+    incomplete = is_incomplete_run(health)
     run_notice = (f'הריצה הושלמה חלקית. {pending} משרות ממתינות לבדיקה מלאה; ייתכנו תוצאות חסרות.'
                   if incomplete else 'בדיקת המשרות הושלמה.')
 
@@ -226,15 +250,7 @@ def send_email_report(sender_email, sender_pwd, processed_jobs, curated_email_jo
     email_html = build_unified_html_email(curated_email_jobs, top_3, dashboard_url, health)
 
     msg = MIMEMultipart()
-    if (
-        health.pending_evaluations
-        or health.linkedin_failures
-        or health.drushim_failures
-        or getattr(health, "comeet_failures", 0)
-        or getattr(health, "indeed_failures", 0)
-        or getattr(health, "glassdoor_failures", 0)
-        or health.final_status.startswith("FAILED_")
-    ):
+    if is_incomplete_run(health):
         msg['Subject'] = Header('[חלקי] דוח משרות — נותרו בדיקות להשלמה | עידו גל', 'utf-8')
     elif not processed_jobs:
         msg['Subject'] = Header(f"[יומי] דוח משרות - אין משרות חדשות שעברו סף | עידו גל", 'utf-8')
