@@ -21,7 +21,7 @@
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261110034432">
+  <link rel="stylesheet" href="dashboard.css?v=20261110135107">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -68,7 +68,7 @@
       <!-- Mobile Collapsible Summary Toggle Button -->
       <button type="button" class="metrics-summary-toggle" id="metricsToggleBtn" onclick="toggleMetricsExpand()" aria-expanded="false" aria-controls="collapsibleMetricsContent" aria-label="הרחב או צמצם פירוט מטריקות">
         <div class="metrics-summary-inline">
-          <span class="metric-summary-pill lime active-pill" onclick="event.stopPropagation(); setFilter('all', document.getElementById('cube_all'));" role="button" tabindex="0" title="הצג משרות חדשות"><span id="summaryNewCount">67</span> חדשות</span>
+          <span class="metric-summary-pill lime active-pill" onclick="event.stopPropagation(); setFilter('all', document.getElementById('cube_all'));" role="button" tabindex="0" title="הצג משרות חדשות"><span id="summaryNewCount">69</span> חדשות</span>
           <span class="metric-summary-pill gold" onclick="event.stopPropagation(); setFilter('starred', document.getElementById('cube_starred'));" role="button" tabindex="0" title="הצג משרות בכוכב"><span id="summaryStarredCount">6</span> בכוכב</span>
           <span class="metric-summary-pill cyan" onclick="event.stopPropagation(); setFilter('saved', document.getElementById('cube_saved'));" role="button" tabindex="0" title="הצג משרות שמורות"><span id="summarySavedCount">52</span> שמורות</span>
           <span class="metric-summary-pill rose" onclick="event.stopPropagation(); setFilter('rejected', document.getElementById('cube_rejected'));" role="button" tabindex="0" title="הצג משרות שהוסרו"><span id="summaryRejectedCount">0</span> הוסרו</span>
@@ -113,7 +113,7 @@
             <div class="stat-cube-icon lime">
               <i class="ph-duotone ph-sparkle"></i>
             </div>
-            <div class="stat-cube-count" id="statNewCount">67</div>
+            <div class="stat-cube-count" id="statNewCount">69</div>
             <div class="stat-cube-label">משרות חדשות</div>
           </button>
 
@@ -314,7 +314,7 @@
     <div class="cards-view-header">
       <div class="cards-count-summary">
         <i class="ph-duotone ph-briefcase" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
-        <span id="visibleJobsCountText">סה״כ משרות חדשות: 67</span>
+        <span id="visibleJobsCountText">סה״כ משרות חדשות: 69</span>
       </div>
       <div class="view-mode-toggle" role="group" aria-label="מצב תצוגה">
         <button type="button" id="viewGridBtn" class="view-toggle-btn active" onclick="setViewMode('grid')" title="תצוגת קוביות (Grid)">
@@ -1521,16 +1521,16 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261110034432",
+      build_id: "20261110135107",
       schema_version: "2.0.0",
       generated_at: "10.11.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261110034432",
-      catalog_data_url: "data/historical_catalog.json?v=20261110034432",
+      jobs_data_url: "data/jobs.json?v=20261110135107",
+      catalog_data_url: "data/historical_catalog.json?v=20261110135107",
       supabase_url: "https://wvwdxpttwsrdbvvtiyoh.supabase.co",
       supabase_anon_key: "sb_publishable_U8BEszbgC7i76c1waY5Ceg_7JvCQKZ6"
     };
   </script>
-  <script src="dashboard.js?v=20261110034432" defer></script>
+  <script src="dashboard.js?v=20261110135107" defer></script>
 </body>
 </html>
