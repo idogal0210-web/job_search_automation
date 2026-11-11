@@ -21290,5 +21290,320 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000
+  },
+  "https://il.linkedin.com/jobs/view/debug-practical-engineer-at-solaredge-technologies-4401000393": {
+    "link": "https://il.linkedin.com/jobs/view/debug-practical-engineer-at-solaredge-technologies-4401000393",
+    "title": "Debug Practical Engineer",
+    "company": "SolarEdge Technologies",
+    "snippet": "SolarEdge (NASDAQ: SEDG), is a global leader in high-performance smart energy technology, and millions of products installed in over 133 countries. Our diverse product offering comprises intelligent solar inverters, battery storage, backup systems, EV charging, and complete home energy management ecosystems. By leveraging world-class engineering capabilities and with a relentless focus on innovation, we strive to create a world where clean, green energy from the sun is the primary source of power for our homes, businesses, and just about everywhere we thrive.\nWe are seeking a skilled and motivated\nPractical Engineer (Electronics/Electrical)\nor\nElectronics Technician\nto join our Quality & Reliability team, specializing in hands‑on failure analysis, product investigation, and testing. The ideal candidate will have solid practical experience working with electronic circuits, performing measurements, and supporting troubleshooting activities at both the board and system level. This role involves conducting detailed failure analysis, assisting in root‑cause investigations, and performing experiments and tests to recreate issues and identify underlying problems. The position plays an important role in improving product reliability and supporting engineering teams.\nKey Responsibilities\nConduct electrical measurements, functional tests, and perform experiments to isolate and characterize fault mechanisms, including building test stations\nPerform hands‑on failure analysis on electronic boards, components, and system‑level assemblies, including careful removal of potting material to enable component-level inspection and testing without damage\nDocument findings, test results, and root cause hypotheses in a clear and structured manner using log files, pictures, Excel, and PowerPoint\nSupport Q&R engineers in root cause investigations and the definition of corrective and preventive actions\nOperate lab equipment including oscilloscopes, power supplies, DMMs, LCR meters, and thermal chambers\nCollaborate with teams within Q&R and with teams outside Q&R to resolve technical issues\nRequirements:\nPractical Engineer (Electronics/Electrical) or Electronics Technician with strong lab skills\nHands-on skills with lab equipment (oscilloscope, DMM, LCR meter, power supply)\nAbility to read schematics and understand analog and digital circuit behavior\nGood technical English (reading and writing)\nOrganized, detail-oriented, and methodical approach to problem solving\nPreferred Qualifications\nExperience with soldering, rework, and component-level troubleshooting\nBackground in power electronics — power converters, MOSFET/IGBT/SiC stages\nUnderstanding of common electronic failure mechanisms\nPrior experience in manufacturing, quality, or reliability engineering environments\n1–3 years of experience in electronics lab work, testing, or failure analysis",
+    "query": "Solar QA Inspector",
+    "source": "LinkedIn",
+    "location": "לא צוין במפורש",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGbyZbX7V9zzg/company-logo_100_100/company-logo_100_100/0/1689147743960/solaredge_logo?e=2147483647&v=beta&t=6svQGAyGX4rPqxAtJex_eCP1aRxvyeSTLH7Bmx9sSjA",
+    "date": "2026-11-11",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "SolarEdge (NASDAQ: SEDG), is a global leader in high-performance smart energy technology, and millions of products installed in over 133 countries. Our diverse product offering comprises intelligent solar inverters, battery storage, backup systems, EV charging, and complete home energy management ecosystems. By leveraging world-class engineering capabilities and with a relentless focus on innovation, we strive to create a world where clean, green energy from the sun is the primary source of power for our homes, businesses, and just about everywhere we thrive.\nWe are seeking a skilled and motivated\nPractical Engineer (Electronics/Electrical)\nor\nElectronics Technician\nto join our Quality & Reliability team, specializing in hands‑on failure analysis, product investigation, and testing. The ideal candidate will have solid practical experience working with electronic circuits, performing measurements, and supporting troubleshooting activities at both the board and system level. This role involves conducting detailed failure analysis, assisting in root‑cause investigations, and performing experiments and tests to recreate issues and identify underlying problems. The position plays an important role in improving product reliability and supporting engineering teams.\nKey Responsibilities\nConduct electrical measurements, functional tests, and perform experiments to isolate and characterize fault mechanisms, including building test stations\nPerform hands‑on failure analysis on electronic boards, components, and system‑level assemblies, including careful removal of potting material to enable component-level inspection and testing without damage\nDocument findings, test results, and root cause hypotheses in a clear and structured manner using log files, pictures, Excel, and PowerPoint\nSupport Q&R engineers in root cause investigations and the definition of corrective and preventive actions\nOperate lab equipment including oscilloscopes, power supplies, DMMs, LCR meters, and thermal chambers\nCollaborate with teams within Q&R and with teams outside Q&R to resolve technical issues\nRequirements:\nPractical Engineer (Electronics/Electrical) or Electronics Technician with strong lab skills\nHands-on skills with lab equipment (oscilloscope, DMM, LCR meter, power supply)\nAbility to read schematics and understand analog and digital circuit behavior\nGood technical English (reading and writing)\nOrganized, detail-oriented, and methodical approach to problem solving\nPreferred Qualifications\nExperience with soldering, rework, and component-level troubleshooting\nBackground in power electronics — power converters, MOSFET/IGBT/SiC stages\nUnderstanding of common electronic failure mechanisms\nPrior experience in manufacturing, quality, or reliability engineering environments\n1–3 years of experience in electronics lab work, testing, or failure analysis",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 90,
+    "concrete_matches_count": 4,
+    "reasoning": "המוועמד הוא הנדסאי מכונות מוסמך עם רקע מוצק במערכות אנרגיה וניסיון מעשי המתאים בול לתפקידי מעבדה ובדיקות.",
+    "sector_key": "solar",
+    "sector": "סולארי ואנרגיה ירוקה",
+    "company_domain_product": "SolarEdge Technologies - טכנולוגיות אנרגיה חכמה, ממירים סולאריים ואגירת אנרגיה",
+    "job_summary": "דרוש הנדסאי מעשי או טכנאי אלקטרוניקה לצוות איכות ואמינות לביצוע אנליזת כשלים מעשית, בדיקות מעבדה ותמיכה בפתרון בעיות.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם הבנה טכנית עמוקה במערכות אנרגיה ותפעול, ניסיון בעבודה עם כלי מדידה ותיעוד נתונים באקסל.",
+    "key_highlights": "התאמה גבוהה לרקע כהנדסאי מעשי, שליטה טובה באנגלית טכנית, ניסיון מעשי במערכות אלקטרומכניות.",
+    "company_size": "חברה גלובלית מובילה",
+    "junior_openness": "פתוח למועמדים בעלי 1-3 שנות ניסיון במעבדה או בדיקות.",
+    "work_model": "לא צוין",
+    "company_requirements": "הנדסאי או טכנאי אלקטרוניקה/חשמל, שליטה בציוד מעבדה, יכולת קריאת סכמות, אנגלית טכנית טובה.",
+    "fit_gaps": "למועמד יש רקע כהנדסאי מכונות ולימודי חשמלאי מוסמך, אך התואר הרשמי הנדרש במודעה הוא באלקטרוניקה/חשמל; עם זאת, הרקע הטכני הרב-תחומי מפצה על כך.",
+    "requirement_assessments": [
+      {
+        "requirement": "Practical Engineer (Electronics/Electrical) or Electronics Technician with strong lab skills",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Practical Engineer (Electronics/Electrical) or Electronics Technician with strong lab skills",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד הינו הנדסאי מוסמך בעל רקע טכני חזק ויכולות מעבדה, הגם שההתמחות היא במכונות ואנרגיה."
+      },
+      {
+        "requirement": "Hands-on skills with lab equipment (oscilloscope, DMM, LCR meter, power supply)",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Hands-on skills with lab equipment (oscilloscope, DMM, LCR meter, power supply)",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש רקע מעשי מוכח במערכות אלקטרומכניות, פתרון תקלות ותפעול ציוד."
+      },
+      {
+        "requirement": "Good technical English (reading and writing)",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Good technical English (reading and writing)",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "היכרות עם כלי תוכנה ואוטומציה מתקדמים מעידה על שליטה באנגלית טכנית."
+      },
+      {
+        "requirement": "1–3 years of experience in electronics lab work, testing, or failure analysis",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "1–3 years of experience in electronics lab work, testing, or failure analysis",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד בעל ניסיון מאז סיום הלימודים ב-2022 בתחום האנרגיה והמערכות הטכניות."
+      }
+    ],
+    "evaluation_model": "gemini-3.5-flash-lite",
+    "evaluation_source": "gemini",
+    "evaluation_complete": true,
+    "base_match_score": 85,
+    "priority_bonus": 5,
+    "is_target_company": true,
+    "disqualification_reason": "",
+    "target_category": "energy_tech",
+    "evidence_status": "verified_quotes",
+    "salary_range": "12,500 - 16,500 ₪ (מקובל רכב ענפי)",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: סולארי ואגירת אנרגיה (PV / BESS).",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: סולארי ואגירת אנרגיה (PV / BESS)"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": false,
+    "has_company_car": false,
+    "is_normative_vehicle": true,
+    "has_on_call": false,
+    "p25": 12500,
+    "p50": 14500,
+    "p75": 16500
+  },
+  "https://il.linkedin.com/jobs/view/debug-engineer-at-solaredge-technologies-4467245080": {
+    "link": "https://il.linkedin.com/jobs/view/debug-engineer-at-solaredge-technologies-4467245080",
+    "title": "Debug Engineer",
+    "company": "SolarEdge Technologies",
+    "snippet": "As part of this role, you will be responsible for performing electronic failure analysis on SolarEdge’s complex products in both manufacturing and development environments. The position includes identifying root causes, leading corrective actions, and working closely with Engineering, Quality, and Production teams to ensure high product quality and reliability.\nResponsibilities:\nPerform failure analysis on electronic products, boards, and systems\nIdentify root causes and lead debug activities\nDefine and implement corrective and preventive actions\nWork with lab equipment and test systems\nCollaborate with Engineering, Quality, and Production teams\nSupport continuous quality and reliability improvement processes\nRequirements:\nRelevant technical education (Practical Electronics Engineer / Technician- advantage)\nExperience in electronics manufacturing, failure analysis, or lab environments\nStrong analytical and problem‑solving skills\nTechnical English proficiency\nAbility to work in a dynamic, team‑oriented environment",
+    "query": "Solar QA Inspector",
+    "source": "LinkedIn",
+    "location": "ישראל",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGbyZbX7V9zzg/company-logo_100_100/company-logo_100_100/0/1689147743960/solaredge_logo?e=2147483647&v=beta&t=6svQGAyGX4rPqxAtJex_eCP1aRxvyeSTLH7Bmx9sSjA",
+    "date": "2026-11-11",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "As part of this role, you will be responsible for performing electronic failure analysis on SolarEdge’s complex products in both manufacturing and development environments. The position includes identifying root causes, leading corrective actions, and working closely with Engineering, Quality, and Production teams to ensure high product quality and reliability.\nResponsibilities:\nPerform failure analysis on electronic products, boards, and systems\nIdentify root causes and lead debug activities\nDefine and implement corrective and preventive actions\nWork with lab equipment and test systems\nCollaborate with Engineering, Quality, and Production teams\nSupport continuous quality and reliability improvement processes\nRequirements:\nRelevant technical education (Practical Electronics Engineer / Technician- advantage)\nExperience in electronics manufacturing, failure analysis, or lab environments\nStrong analytical and problem‑solving skills\nTechnical English proficiency\nAbility to work in a dynamic, team‑oriented environment",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 90,
+    "concrete_matches_count": 4,
+    "reasoning": "התאמה טובה לתפקיד טכני בסולאראדג' המשלב ניתוח תקלות, מעבדה והבנה אלקטרו-מכנית.",
+    "sector_key": "solar",
+    "sector": "אנרגיה סולארית וטכנולוגיה",
+    "company_domain_product": "SolarEdge Technologies",
+    "job_summary": "משרת מהנדס ניפוי שגיאות ואנליזת תקלות באלקטרוניקה במוצרי החברה, עבודה בסביבת מעבדה וייצור.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם רקע מערכתי רחב, יכולות פתרון בעיות וניסיון בעבודה טכנית.",
+    "key_highlights": "התאמה לתחום הסולארי, דרישה להשכלה טכנית ויכולת עבודה בסביבת מעבדה.",
+    "company_size": "לא צוין",
+    "junior_openness": "לא צוין במפורש אך מתאים להנדסאים",
+    "work_model": "לא צוין",
+    "company_requirements": "השכלה טכנית רלוונטית, ניסיון באנליזת תקלות או סביבת מעבדה, אנגלית טכנית טובה.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "Relevant technical education (Practical Electronics Engineer / Technician- advantage)",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "Relevant technical education (Practical Electronics Engineer / Technician- advantage)",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Candidate profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש השכלה כהנדסאי מוסמך המהווה יתרון משמעותי."
+      },
+      {
+        "requirement": "Experience in electronics manufacturing, failure analysis, or lab environments",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Experience in electronics manufacturing, failure analysis, or lab environments",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+          "source_field": "Candidate profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון בפתרון תקלות מערכתיות ואבחון רכיבים אלקטרו-מכניים."
+      },
+      {
+        "requirement": "Technical English proficiency",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Technical English proficiency",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
+          "source_field": "Candidate profile"
+        },
+        "assessment": "match",
+        "explanation": "המועמד שולט בכלים טכנולוגיים מתקדמים המעידים על אנגלית טכנית ברמה גבוהה."
+      }
+    ],
+    "evaluation_model": "gemini-3.5-flash-lite",
+    "evaluation_source": "gemini",
+    "evaluation_complete": true,
+    "base_match_score": 85,
+    "priority_bonus": 5,
+    "is_target_company": true,
+    "disqualification_reason": "",
+    "target_category": "energy_tech",
+    "evidence_status": "verified_quotes",
+    "salary_range": "12,500 - 16,500 ₪ (מקובל רכב ענפי)",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: סולארי ואגירת אנרגיה (PV / BESS).",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: סולארי ואגירת אנרגיה (PV / BESS)"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": false,
+    "has_company_car": false,
+    "is_normative_vehicle": true,
+    "has_on_call": false,
+    "p25": 12500,
+    "p50": 14500,
+    "p75": 16500
+  },
+  "https://il.linkedin.com/jobs/view/pmo-%E2%80%93-ai-data-center-at-enlight-renewable-energy-ltd-enlt-4488802260": {
+    "link": "https://il.linkedin.com/jobs/view/pmo-%E2%80%93-ai-data-center-at-enlight-renewable-energy-ltd-enlt-4488802260",
+    "title": "PMO – AI Data Center",
+    "company": "Enlight Renewable Energy Ltd (ENLT)",
+    "snippet": "We are seeking a PMO to join this dedicated data center task force. The PMO will serve as a central function within the task force, acting as a key integrator across all project workstreams and stakeholders.\nIn this role, the PMO will hold the full project view of mega-scale data center projects, from site development, zoning and permitting, through design and engineering, to construction, commissioning and handover. The PMO will oversee integrated project schedules and deliverables control, and drive reporting, data management and performance visibility across all workstreams.\nThe PMO will work closely with a large, multidisciplinary group, including designers, team leaders, project managers, engineering teams, consultants, contractors, suppliers and senior management, to ensure alignment, transparency, and informed decision-making, supporting the successful delivery of projects in accordance with contractual milestones and strategic objectives.\nResponsibilities:\nDevelop, maintain, and oversee detailed project schedules from early development, zoning and permitting through design, construction, commissioning, and handover to client and O&M\nMonitor overall project and portfolio progress, identifying risks, delays, and mitigation strategies\nPerform schedule analysis, critical path analysis, and progress tracking across projects\nLead deliverables control across all workstreams, tracking design packages, permit and zoning submissions, contractor and supplier submittals, review cycles and approvals against project milestones\nLead the preparation of management reports, dashboards, deliverables status, and performance insights\nMaintain and enhance BI tools, ensuring data accuracy, consistency, and timely updates\nProvide structured updates and key insights to management to support decision-making\nordinate inputs across engineering, procurement, construction, and subcontractors to ensure alignment\nSupport change management and development of recovery plans when required\nCapture, document, and implement lessons learned across projects to drive continuous improvement\nSupport the development, standardization, and enforcing of data center specific company and departmental procedures, tools, and best practices\nDrive standardization of planning, reporting, and control processes within the department\nLead project deliverables planning and control across all workstreams, including establishing submission plans, defining milestones and target dates, assigning responsible stakeholders, monitoring progress of all project deliverables, identifying gaps and delays, and driving corrective actions to ensure timely completion and alignment with project objectives.\nRequirements:\nAcademic degree or professional certificate studies in Engineering, Construction Management, Industrial Engineering, or a related field, combined with solid hands-on experience\nProven experience in a PMO, Planning, or Project Controls role within construction projects (renewable energy – advantage)\nExperience with data center projects – advantage\nStrong knowledge with MS Project\nGood understanding of construction methodologies and the full project lifecycle, including design, permitting and zoning\nStrong analytical skills with the ability to translate data into insights\nAbility to work both independently and within a multidisciplinary team\nExcellent communication, coordination, and stakeholder management skills\nExperience with reporting tools and BI platforms (e.g., Power BI) – advantage\nExperience with deliverables or document control systems (e.g., Aconex, Procore) – advantage\nExperience with AI tools - advantage",
+    "query": "Solar Construction Coordinator",
+    "source": "LinkedIn",
+    "location": "ישראל",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY",
+    "date": "2026-11-11",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "We are seeking a PMO to join this dedicated data center task force. The PMO will serve as a central function within the task force, acting as a key integrator across all project workstreams and stakeholders.\nIn this role, the PMO will hold the full project view of mega-scale data center projects, from site development, zoning and permitting, through design and engineering, to construction, commissioning and handover. The PMO will oversee integrated project schedules and deliverables control, and drive reporting, data management and performance visibility across all workstreams.\nThe PMO will work closely with a large, multidisciplinary group, including designers, team leaders, project managers, engineering teams, consultants, contractors, suppliers and senior management, to ensure alignment, transparency, and informed decision-making, supporting the successful delivery of projects in accordance with contractual milestones and strategic objectives.\nResponsibilities:\nDevelop, maintain, and oversee detailed project schedules from early development, zoning and permitting through design, construction, commissioning, and handover to client and O&M\nMonitor overall project and portfolio progress, identifying risks, delays, and mitigation strategies\nPerform schedule analysis, critical path analysis, and progress tracking across projects\nLead deliverables control across all workstreams, tracking design packages, permit and zoning submissions, contractor and supplier submittals, review cycles and approvals against project milestones\nLead the preparation of management reports, dashboards, deliverables status, and performance insights\nMaintain and enhance BI tools, ensuring data accuracy, consistency, and timely updates\nProvide structured updates and key insights to management to support decision-making\nordinate inputs across engineering, procurement, construction, and subcontractors to ensure alignment\nSupport change management and development of recovery plans when required\nCapture, document, and implement lessons learned across projects to drive continuous improvement\nSupport the development, standardization, and enforcing of data center specific company and departmental procedures, tools, and best practices\nDrive standardization of planning, reporting, and control processes within the department\nLead project deliverables planning and control across all workstreams, including establishing submission plans, defining milestones and target dates, assigning responsible stakeholders, monitoring progress of all project deliverables, identifying gaps and delays, and driving corrective actions to ensure timely completion and alignment with project objectives.\nRequirements:\nAcademic degree or professional certificate studies in Engineering, Construction Management, Industrial Engineering, or a related field, combined with solid hands-on experience\nProven experience in a PMO, Planning, or Project Controls role within construction projects (renewable energy – advantage)\nExperience with data center projects – advantage\nStrong knowledge with MS Project\nGood understanding of construction methodologies and the full project lifecycle, including design, permitting and zoning\nStrong analytical skills with the ability to translate data into insights\nAbility to work both independently and within a multidisciplinary team\nExcellent communication, coordination, and stakeholder management skills\nExperience with reporting tools and BI platforms (e.g., Power BI) – advantage\nExperience with deliverables or document control systems (e.g., Aconex, Procore) – advantage\nExperience with AI tools - advantage",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 87,
+    "concrete_matches_count": 5,
+    "reasoning": "המועמד הוא הנדסאי מכונות עם רקע באנרגיה וניהול פרויקטים טכניים, המתאים לתפקיד PMO הנדסי.",
+    "sector_key": "energy",
+    "sector": "אנרגיה מתחדשת ומרכזי נתונים",
+    "company_domain_product": "אנרגיה מתחדשת ופרויקטי תשתית",
+    "job_summary": "דרוש/ה PMO להובלת בקרת לוחות זמנים, ניהול מסמכים ואינטגרציה בפרויקטי ענק של מרכזי נתונים ואנרגיה מתחדשת.",
+    "experience_strengths": "הנדסאי מכונות מוסמך, שליטה בכלים אנליטיים, רקע במערכות אנרגיה ותפעול רב-תחומי.",
+    "key_highlights": "ניסיון עבודה בסביבה הנדסית, היכרות עם כלי ניתוח נתונים, ויכולת תיאום מול גורמים רבים.",
+    "company_size": "חברה מובילה בתחום האנרגיה המתחדשת",
+    "junior_openness": "פתוח למועמדים בעלי רקע הנדסי מתאים",
+    "work_model": "משרה מלאה",
+    "company_requirements": "תואר אקדמי או תעודת הסמכה בהנדסה, ניסיון כ-PMO או בבקרת פרויקטי בנייה, ושליטה בכלי ניהול פרויקטים.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "תואר אקדמי או תעודת הסמכה בהנדסה, ניהול בנייה או תחום קשור",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Academic degree or professional certificate studies in Engineering, Construction Management, Industrial Engineering, or a related field",
+          "source_field": "Requirements"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "למועמד תעודת הנדסאי מכונות המוכרת כתעודת הסמכה הנדסית."
+      },
+      {
+        "requirement": "ניסיון קודם בתפקיד PMO, תכנון או בקרת פרויקטי בנייה",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "Proven experience in a PMO, Planning, or Project Controls role within construction projects",
+          "source_field": "Requirements"
+        },
+        "profile_evidence": {
+          "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer with Deep Specialization in Energy Systems",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע טכני מוצק והבנה בפרויקטי אנרגיה ותשתיות."
+      }
+    ],
+    "evaluation_model": "gemini-3.5-flash-lite",
+    "evaluation_source": "gemini",
+    "evaluation_complete": true,
+    "base_match_score": 82,
+    "priority_bonus": 5,
+    "is_target_company": true,
+    "disqualification_reason": "",
+    "target_category": "solar_pv_and_renewables",
+    "evidence_status": "verified_quotes",
+    "salary_range": "12,500 - 16,500 ₪ (מקובל רכב ענפי)",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: סולארי ואגירת אנרגיה (PV / BESS).",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: סולארי ואגירת אנרגיה (PV / BESS)"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": false,
+    "has_company_car": false,
+    "is_normative_vehicle": true,
+    "has_on_call": false,
+    "p25": 12500,
+    "p50": 14500,
+    "p75": 16500
   }
 }
