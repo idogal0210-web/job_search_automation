@@ -58,13 +58,16 @@ def is_known_enterprise(company_name):
     return any(has_term(c, term) for term in KNOWN_ENTERPRISE_EMPLOYERS)
 
 KEYWORD_GROUPS = {
+    "site_management": ["מנהל אתר", "site manager", "מנהל פרויקט", "רכז הקמות", "מפקח הקמה", "פיקוח הקמות", "הקמה סולארית", "מנהל עבודה", "construction coordinator", "qa inspector"],
+    "commissioning": ["commissioning", "מסירה והפעלה", "בדיקות קבלה", "אינטגרציה", "הפעלה ומסירה", "field service", "מהנדס שירות שטח"],
+    "cleantech": ["cleantech", "קלינטק", "startup", "סטארטאפ", "אנרגיה ירוקה", "climate tech"],
     "gas": ["natural gas", "גז טבעי", "מתקני גז", "מתקן גז", "prms"],
     "energy": ["energy", "אנרגיה", "תחנת כוח", "power plant", "תשתיות אנרגיה"],
     "mechanical": ["mechanical", "מכונות", "מכונאי", "ציוד סובב", "מתקני לחץ"],
     "control": ["scada", "plc", "hmi", "bms", "aveva", "בקרה", "אוטומציה"],
-    "solar": ["solar", "pv", "סולארי", "פוטו", "פוטו-וולטאי", "bifacial"],
+    "solar": ["solar", "pv", "סולארי", "פוטו", "פוטו-וולטאי", "bifacial", "utility scale", "c&i", "שדה סולארי", "גגות מסחריים"],
     "drones": ["drone", "drones", "uav", "uas", "רחפן", "רחפנים", "כטב", "מטיס"],
-    "storage": ["bess", "אגירה", "סוללות", "bess operator", "אנרגיה מתחדשת ואגירה"],
+    "storage": ["bess", "אגירה", "סוללות", "bess operator", "אנרגיה מתחדשת ואגירה", "אגירת אנרגיה", "מערכות סוללות", "storage integration"],
     "grid": ["grid interconnection", "חיבורי רשת", "רשת חשמל", "תחנת השנאה", "הסדרה"],
     "commercial": ["nominations", "renominations", "רנומינציות", "נומינציות", "תפעול מסחרי", "סליקה", "מנייה", "התחשבנות", "settlement", "billing"],
     "dispatch": ["dispatcher", "בקר אנרגיה", "מנהל משמרת", "בקר גז בכיר", "בקר בכיר", "gas dispatcher"]
@@ -132,10 +135,10 @@ def advertised_very_high_salary(text, min_lower_bound=20000, max_upper_bound=800
     return False
 
 
-def advertised_low_salary(text, max_upper_bound=15000, min_lower_bound=5000):
-    """Conservative: explicit monthly ILS upper bound strictly < max_upper_bound."""
+def advertised_low_salary(text, max_upper_bound=14000, min_lower_bound=5000):
+    """Conservative: explicit monthly ILS upper bound <= max_upper_bound."""
     for amounts in extract_advertised_monthly_ils_amounts(text, exclude_up_to=False):
-        if max(amounts) < max_upper_bound and min(amounts) >= min_lower_bound:
+        if max(amounts) <= max_upper_bound and min(amounts) >= min_lower_bound:
             return True
     return False
 
@@ -154,11 +157,29 @@ def deterministic_filter(job):
         if not re.search(r"מהנדס|הנדסאי|מנהל|lead|head|scada|plc", title, re.I):
             return rejection("manual_no_engineering_horizon", "עבודה ידנית או מוסכית ללא אופק הנדסי")
 
-    text = f"{title} {job.get('snippet', '')}"
+    text = f"{title} {company} {job.get('snippet', '')}"
 
-    # Explicit low salary rejection (< 15,000 ILS / month)
+    # Explicit low salary rejection (< 14,000 ILS / month)
     if advertised_low_salary(text):
-        return rejection("below_salary_floor", "שכר מפורסם נמוך מ-15,000 ₪ לחודש")
+        return rejection("below_salary_floor", "שכר מפורסם נמוך מ-14,000 ₪ לחודש")
+
+    # Unconditional 24/7 rotating shifts rejection (strict user policy)
+    is_24_7_shift = bool(re.search(
+        r"(?:משמרות\s+(?:24/7|סביב\s+השעון|כולל\s+לילות|לילות\s+וסופ[\"״]ש)|סבב\s+משמרות|עבודה\s+במשמרות\s+24/7|\b24/7\s+shifts?\b)",
+        text, re.I
+    ))
+    if is_24_7_shift:
+        return rejection("shifts_24_7_disqualified", "משרת משמרות 24/7 (לילות/סבב מלא) נפסלה לפי מדיניות המשתמש")
+
+    # Non-energy generic factory machine / packaging / production operator rejection
+    if re.search(r"מפעיל\s+מכונה|טכנאי\s+מכונות\s+במפעל|מפעיל\s+קו\s+(?:ייצור|אריזה)|מכונאי\s+אחזקה\s+במפעל", title, re.I):
+        if not re.search(r"אנרגיה|סולאר|חשמל|גז|תחנת\s+כוח|אגירה|\bbess\b|\bpv\b|טורבינ|תשתיות", text, re.I):
+            return rejection("non_energy_role", "תפקיד בקרה/מכונות תעשייתי ללא זיקה למגזר האנרגיה או התשתיות")
+
+    if re.search(r"\b(?:scada|plc|bms)\b|בקר\s+מבנה|חדר\s+בקרה|מוקד\s+בקרה", title, re.I):
+        non_energy_factory = re.search(r"מפעל\s+(?:מזון|פלסטיק|תרופות|נייר|אריזה|דפוס|טקסטיל|חטיפים|מתכת)|מחלבה|שטראוס|אסם|תנובה|קוקה\s+קולה|טמפו|יוניליוור", text, re.I)
+        if non_energy_factory:
+            return rejection("non_energy_role", "תפקיד בקרה/מכונות תעשייתי ללא זיקה למגזר האנרגיה או התשתיות")
 
     for term in NON_TECHNICAL_TITLES:
         if not has_term(title, term):
@@ -173,12 +194,6 @@ def deterministic_filter(job):
         if not industrial and not advertised_high_salary(text):
             return rejection("control_room_lacks_scada_or_high_salary",
                              "אין במודעה עדות לבקרה תעשייתית או לשכר חודשי מובטח של 18,000 ₪ ומעלה")
-
-        # 24/7 shifts check: requires industrial process control AND (advertised salary >= 20k OR known enterprise company)
-        is_24_7 = bool(re.search(r"24/7|משמרות\s+לילה|סבב\s+משמרות|משמרות\s+סביב\s+השעון", text, re.I))
-        if is_24_7 and not advertised_very_high_salary(text) and not is_known_enterprise(company):
-            return rejection("control_room_24_7_unverified_high_salary",
-                             "משרת משמרות 24/7 ללא עדות לשכר חודשי מובטח של 20,000 ₪ ומעלה או שיוך למעסיק מוביל")
 
     return None
 

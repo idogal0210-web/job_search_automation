@@ -58,31 +58,43 @@ class PolicyExpansionTests(unittest.TestCase):
                 self.assertEqual(res["disqualification_reason"], "manual_no_engineering_horizon")
 
     def test_control_room_24_7_policy(self):
-        # 1. 24/7 with SCADA in unknown company and no salary -> rejected
-        job_unknown = {
+        # 1. 24/7 rotating shifts are strictly disqualified unconditionally
+        job_24_7 = {
             "title": "בקר חדר בקרה SCADA",
-            "company": "חברה קטנה אנונימית",
+            "company": "חברה אנונימית",
             "snippet": "עבודה במשמרות 24/7 כולל לילות וסופ\"ש."
         }
-        res_unknown = deterministic_filter(job_unknown)
-        self.assertIsNotNone(res_unknown)
-        self.assertEqual(res_unknown["disqualification_reason"], "control_room_24_7_unverified_high_salary")
+        res_24_7 = deterministic_filter(job_24_7)
+        self.assertIsNotNone(res_24_7)
+        self.assertEqual(res_24_7["disqualification_reason"], "shifts_24_7_disqualified")
 
-        # 2. 24/7 with SCADA in known enterprise company -> passes deterministic check
-        job_known = {
+        # 2. 24/7 even in known enterprise is disqualified per strict user policy
+        job_known_24_7 = {
             "title": "בקר חדר בקרה SCADA",
             "company": "OPC Energy",
             "snippet": "עבודה במשמרות 24/7 כולל לילות וסופ\"ש."
         }
-        self.assertIsNone(deterministic_filter(job_known))
+        res_known_24_7 = deterministic_filter(job_known_24_7)
+        self.assertIsNotNone(res_known_24_7)
+        self.assertEqual(res_known_24_7["disqualification_reason"], "shifts_24_7_disqualified")
 
-        # 3. 24/7 with SCADA with very high advertised salary (>=20k) -> passes deterministic check
-        job_high_salary = {
+        # 3. Non-24/7 day work SCADA in known enterprise passes
+        job_day_scada = {
             "title": "בקר חדר בקרה SCADA",
-            "company": "חברה אנונימית",
-            "snippet": "עבודה במשמרות 24/7. שכר חודשי: 22,000 - 25,000 ₪ לחודש"
+            "company": "OPC Energy",
+            "snippet": "משרת יום א'-ה' בתחנת כוח, שעות נוספות לפי הצורך."
         }
-        self.assertIsNone(deterministic_filter(job_high_salary))
+        self.assertIsNone(deterministic_filter(job_day_scada))
+
+        # 4. Non-energy factory SCADA is disqualified
+        job_food_factory = {
+            "title": "מפעיל חדר בקרה SCADA",
+            "company": "מפעל מזון שער הנגב",
+            "snippet": "בקרה על קווי אריזה וייצור במפעל מזון."
+        }
+        res_food = deterministic_filter(job_food_factory)
+        self.assertIsNotNone(res_food)
+        self.assertEqual(res_food["disqualification_reason"], "non_energy_role")
 
     def test_salary_detection_helpers(self):
         self.assertTrue(advertised_very_high_salary("שכר חודשי: 21,000 - 24,000 ₪"))

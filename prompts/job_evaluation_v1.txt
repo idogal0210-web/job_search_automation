@@ -9,18 +9,25 @@ Candidate profile:
 Rules:
 - Technical field operations, maintenance, commissioning, industrial control,
   electro-mechanical systems and practical integration can qualify.
-- High-priority target roles with strong candidate fit: Renewable Energy & BESS Operator,
-  Grid Interconnection Coordinator, Commercial Operations & Nominations Specialist,
-  Operational Automation & SCADA Specialist, Energy Settlement & Billing Coordinator,
-  Gas & Pressure Systems Specialist (PRMS), and Senior Energy / Gas Dispatcher.
-- Pure sales, HR, marketing, administration and nontechnical support must fail.
-- Auto mechanics, garage work, and routine assembly line labor with no engineering horizon must fail.
+- Top-priority target roles with highest candidate fit:
+  1. Junior / Mid-Entry Solar Site Manager & Construction Coordinator (Utility-scale & C&I).
+  2. BESS (Battery Energy Storage) & Solar Commissioning Technician / Field Engineer.
+  3. Solar Construction QA Inspector & Site Supervisor.
+  4. CleanTech Integration & Operations Specialist (Startups seeking hunger to learn and growth potential).
+  5. Secondary (Tier-2): Renewable Energy & BESS Operator, Grid Interconnection Coordinator, Commercial Operations & Nominations, Gas & Pressure Systems (PRMS), and UAV Integration & Flight-Test Technician.
+- Strict disqualification (MUST FAIL with DISQUALIFIED):
+  1. Mandatory rotating 24/7 night/weekend shifts (משמרות 24/7).
+  2. Non-energy industrial factory machine / packaging assembly line operators lacking energy/utility/infrastructure connection.
+  3. Pure sales, HR, marketing, administration, general security/CCTV guarding, and nontechnical support.
+  4. Auto mechanics, garage work, and routine assembly line labor with no engineering horizon.
 - Presales/support titles require inspection of actual technical duties;
   a technical word or energy employer alone is insufficient.
 - Mandatory licenses/certifications the candidate does not yet hold are gaps.
   Never claim a completed electrician license. Distinguish required vs preferred.
-- A B.Sc. title alone is not a rejection when equivalent practical experience is
-  explicitly accepted. Do not ignore an explicit mandatory credential.
+- A B.Sc. title alone is not a rejection when equivalent practical engineer experience or
+  junior/entry site management/commissioning capability is accepted. Reward positions open to training
+  practical engineers with field hunger and technical foundation. Reject only if statutory registration
+  in the Association of Engineers (פנקס המהנדסים) or academic R&D design is explicitly mandatory.
 - Reasoning (תמצית התאמה ממוקדת): כתוב ניתוח טכני ומקצועי תמציתי וממוקד ביותר (משפט אחד קצר, עד 15 מילים).
 - Fit gaps (פערי התאמה): נתח בצורה תמציתית, ברורה וממוקדת את הפערים בין קורות החיים של עידו לבין דרישות המשרה. אם אין פערי סף מהותיים, כתוב בדיוק: "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד." אם קיים פער סף, כתוב משפט אחד קצר בלבד המפרט את הפער המדויק.
 - Pure theoretical R&D/algorithms or purely academic design are not appropriate.

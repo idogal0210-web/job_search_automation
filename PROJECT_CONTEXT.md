@@ -3,7 +3,7 @@
 ## 1. Project Overview & Goal
 - **Product Purpose:** Autonomous job search, evaluation, salary prediction, and triage platform developed for Ido Gal.
 - **Core Problem Solved:** Eliminates noise from non-technical, administrative, and irrelevant listings by executing deterministic pre-filtering followed by structured Gemini LLM evaluation and salary benchmarking.
-- **Target Audience & Profile:** Ido Gal, a certified practical mechanical engineer (הנדסאי מכונות מוסמך) specializing in solar energy (PV), natural gas, SCADA/PLC control systems, and UAV/drone operations across Israel.
+- **Target Audience & Profile:** Ido Gal, a certified practical mechanical engineer (הנדסאי מכונות מוסמך) specializing in solar energy (PV & BESS site management, commissioning, QA inspection), natural gas, SCADA/PLC control systems, and UAV/drone operations across Israel. Primary search target calibrated (Nov 2026): Junior/Mid-Entry Solar Site Management, BESS Commissioning, CleanTech startups with training potential, strict 24/7 shift disqualification, and non-energy SCADA filtering.
 
 ---
 

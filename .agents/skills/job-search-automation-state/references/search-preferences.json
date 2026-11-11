@@ -9,7 +9,24 @@
     "נתג״ז",
     "נתג\"ז",
     "Chevron",
-    "שברון"
+    "שברון",
+    "דנאל",
+    "תיגבור",
+    "מנפאואר",
+    "manpower",
+    "מעוף",
+    "עתיד",
+    "או אר אס",
+    "ors",
+    "חלמיש",
+    "מוקד אמון",
+    "מוקד 99",
+    "צוות 3",
+    "g4s",
+    "מודיעין אזרחי",
+    "ביטחון אזרחי",
+    "רשף ביטחון",
+    "מיקוד אבטחה"
   ],
   "excluded_role_families": [
     "HR",
@@ -21,14 +38,20 @@
     "security/CCTV monitoring",
     "customer-service call centers",
     "auto mechanics and garage labor",
-    "routine assembly line labor with no engineering horizon"
+    "routine assembly line labor with no engineering horizon",
+    "non-energy industrial factory machine operators",
+    "24/7 rotating shift operations"
   ],
   "salary_policy": {
-    "absolute_floor_ils": 15000,
+    "absolute_floor_ils": 14000,
     "shifts_24_7_floor_ils": 20000,
-    "target_compensation_range_ils": "16,000 - 25,000+"
+    "target_compensation_range_ils": "14,000 - 22,000+"
   },
   "specialized_target_roles": [
+    "Junior Solar Site Manager / Construction Coordinator",
+    "BESS & Solar Commissioning Technician / Engineer",
+    "Solar QA & Field Inspection Specialist",
+    "CleanTech Integration & Operations Specialist",
     "Renewable Energy & BESS Operator",
     "Grid Interconnection Coordinator",
     "Commercial Operations & Nominations Specialist",
@@ -75,8 +98,8 @@
     }
   },
   "control_room_rule": {
-    "require": "Explicit industrial SCADA/telemetry AND (explicitly advertised salary >= 20000 ILS per month OR recognized tier-1 enterprise employer)",
-    "precedence": "Excluded nontechnical/security/customer-service/manual roles remain excluded even if salary is high. Advertised salary < 15,000 ILS is strictly disqualified."
+    "require": "Explicit energy/power/utility SCADA. Non-energy factory machine/assembly SCADA is strictly disqualified. 24/7 rotating shifts are strictly disqualified unconditionally.",
+    "precedence": "Excluded nontechnical/security/customer-service/manual roles and 24/7 shifts remain excluded regardless of salary. Advertised salary < 14,000 ILS is strictly disqualified."
   },
   "minimum_distinct_matches": 3,
   "maximum_daily_picks": 5,
@@ -310,7 +333,19 @@
       "Senior Energy Dispatcher",
       "Senior Gas Dispatcher",
       "בקר אנרגיה בכיר",
-      "מנהל משמרת בקרה"
+      "מנהל משמרת בקרה",
+      "Solar Site Manager",
+      "מנהל אתר סולארי",
+      "רכז הקמות סולארי",
+      "Solar Construction Coordinator",
+      "BESS Commissioning Engineer",
+      "טכנאי הפעלה ומסירה אגירה",
+      "Solar QA Inspector",
+      "מפקח איכות סולארי",
+      "Junior Solar Project Coordinator",
+      "רכז פרויקטים סולאריים",
+      "CleanTech Operations Integrator",
+      "אינטגרטור קלינטק"
     ],
     "drones": [
       "Drone Integrator",
@@ -348,6 +383,12 @@
       "הנדסאי מכונות",
       "גז טבעי",
       "סולארי",
+      "מנהל אתר סולארי",
+      "פיקוח הקמות סולארי",
+      "רכז הקמות סולארי",
+      "הקמת מתקני אגירה",
+      "טכנאי הפעלה ומסירה BESS",
+      "רכז פרויקטים אנרגיה",
       "טכנאי מערכות BMS",
       "תחנת כוח",
       "טכנאי שירות",
