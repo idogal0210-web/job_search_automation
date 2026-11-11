@@ -45,7 +45,7 @@ job_search_automation/
 │   ├── templates/email_report.html # Externalized HTML email digest template
 │   ├── css/dashboard.css           # Modular dashboard CSS styles
 │   ├── js/dashboard.js             # Client-side SPA application logic and data fetcher
-│   ├── data/studio_profile.json    # Canonical profile & exclusions synced from base_profile.md
+│   ├── data/studio_profile.json    # Tracked non-PII excluded employers config synced to Career Studio UI
 │   └── assets/                     # Local static assets and company logos
 ├── prompts/                        # Versioned LLM prompts extracted from code
 │   ├── job_evaluation_v1.txt       # Core job evaluation structured prompt
@@ -85,7 +85,7 @@ job_search_automation/
 │   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
 ├── tools/                          # Standalone modular tooling
 │   └── cv_tailor/                  # Fact-based CV tailoring and interview prep engine
-├── tests/                          # Automated unit and integration test suite (325 passing Python tests + 2,489 JS stress assertions)
+├── tests/                          # Automated unit and integration test suite (326 passing Python tests + 2,489 JS stress assertions)
 │   ├── test_studio_bridge.py       # Unified Career Studio HTTP bridge, schema, SSRF, blacklist & generator tests
 │   ├── test_template_docs_sync.py  # 1:1 dual-template synchronization guard between frontend/ and docs/
 │   ├── test_m1_challenger_stress.py# Milestone 1 app switcher & mobile workspace stress tests
@@ -191,7 +191,7 @@ job_search_automation/
 - **Career Studio Split-Pane Workspace & Unified AI Bridge:**
   - Unified app switcher: Seamless mode switching between Job Radar and Career Studio with bidirectional `#studio` hash sync.
   - Responsive Split-Pane (`45%` input / `55%` results on desktop, stacked on mobile `>= 48px` touch targets): Compact top CV upload card + horizontal 4-step pipeline bar above side-by-side input/results panes.
-  - Unified Single-Source Profile & Blacklist Guard: `tools/cv_tailor/base_profile.md` and `src/config.py` excluded employers (`energean`, `ingl`, `chevron`) compile into `docs/career/studio_profile.json` and power both Python and client UI cleanly.
+  - Unified Single-Source Profile & Blacklist Guard: `tools/cv_tailor/base_profile.md` (with `base_profile.template.md` fallback) is parsed dynamically at runtime via `/api/profile`, while non-PII `excluded_employers` from `src/config.py` compile deterministically into `docs/career/studio_profile.json` for static GitHub Pages.
   - Loopback AI Bridge (`scripts/studio_bridge.py` on `127.0.0.1:8765`): Wraps `tools/cv_tailor/src/` (`scraper.py`, `researcher.py`, `analyzer.py`, `generator.py`) and Pydantic-validated `GeminiPool` schemas (`AtsStudioAnalysisSchema`, `TailoredCvPackageSchema`, `CvTailoredBulletSchema`, `StarInterviewEvaluationSchema`) with CORS/PNA and anti-SSRF guards, saving tailored packages to `tools/cv_tailor/output/` while falling back transparently to client-side local matching when offline.
   - Interactive Clarifications, Review & A4 PDF Export: Supports URL ingestion, interactive pre-generation clarification questions, safe DOM Markdown preview, unmatched requirements alerts, applied bullet carry-over, and A4 `@page` print/PDF export.
   - Honest Interview & Anonymizer Modules: Real browser `SpeechRecognition` guard (zero fabricated voice transcripts), Gemini STAR evaluation + `LocalStorage` practice history when connected, and `base_profile.md`-derived anonymization.

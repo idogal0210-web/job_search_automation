@@ -138,7 +138,9 @@ def check_employer_blacklist(company_name: str, job_text: str = "") -> Tuple[boo
 
 
 def load_candidate_profile_data(path: Optional[str] = None) -> Dict[str, Any]:
-    """Parse canonical base_profile.md into structured JSON-ready data for UI and AI grounding."""
+    """Parse canonical base_profile.md (or template fallback) into structured JSON-ready data."""
+    target_path = path or BASE_PROFILE_PATH
+    using_template = (not os.path.exists(target_path)) and os.path.exists(os.path.join(BASE_DIR, "base_profile.template.md"))
     markdown = load_base_profile(path)
 
     def _extract_field(label: str, default: str = "") -> str:
@@ -158,12 +160,15 @@ def load_candidate_profile_data(path: Optional[str] = None) -> Dict[str, Any]:
         lines = [ln.strip() for ln in m.group(1).splitlines() if ln.strip() and ln.strip() != "---"]
         return " ".join(lines)
 
-    raw_email = _extract_field("אימייל", "idogal0210@gmail.com")
-    raw_phone = _extract_field("טלפון", "0526328886 / +972-52-632-8886")
-    raw_linkedin = _extract_field("לינקדאין", "https://www.linkedin.com/in/ido-g/")
+    raw_email = _extract_field("אימייל", "")
+    raw_phone = _extract_field("טלפון", "")
+    raw_linkedin = _extract_field("לינקדאין", "")
     li_match = re.search(r"\((https?://[^)]+)\)", raw_linkedin)
     linkedin_url = li_match.group(1) if li_match else raw_linkedin
     summary_he = _sub_summary("עברית")
+    if not summary_he:
+        plain_summary = [ln for ln in _section_lines("תמצית מקצועית") if not ln.startswith("#")]
+        summary_he = " ".join(plain_summary)
     summary_en = _sub_summary("English")
     edu_lines = [re.sub(r"^\*\s*", "", ln).replace("**", "") for ln in _section_lines("השכלה והכשרה מקצועית")]
     exp_headings = [re.sub(r"^###\s+\d+\.\s*", "", ln) for ln in _section_lines("ניסיון מקצועי") if ln.startswith("### ")]
@@ -171,35 +176,50 @@ def load_candidate_profile_data(path: Optional[str] = None) -> Dict[str, Any]:
     mil_lines = [re.sub(r"^\*\s*", "", ln).replace("**", "") for ln in _section_lines("שירות צבאי")]
     tools_lines = [re.sub(r"^\*\s*", "", ln).replace("**", "") for ln in _section_lines("מערכות וכלים טכנולוגיים")]
 
-    title_he = _extract_field("כותרת מקצועית (עברית)", "הנדסאי מכונות | בקרת גז טבעי | תפעול מערכות אנרגיה")
-    title_en = _extract_field("כותרת מקצועית (אנגלית)", "Gas Controller | Natural Gas Operations | Practical Mechanical Engineer")
-    name = _extract_field("שם", "עידו גל (Ido Gal)")
-    location = _extract_field("מגורים", "תל אביב (Tel Aviv, Israel)")
+    title_he = _extract_field("כותרת מקצועית (עברית)", "") or _extract_field("כותרת מקצועית", "")
+    title_en = _extract_field("כותרת מקצועית (אנגלית)", "")
+    name = _extract_field("שם", "Candidate")
+    location = _extract_field("מגורים", "")
 
+    header_line = f"{name} — {title_he}" if title_he else name
+    contact_line = " | ".join([x for x in (location, raw_phone, raw_email, linkedin_url) if x])
     baseline_summary_he = "\n".join([
-        f"עידו גל — {title_he}",
-        f"{location} | {raw_phone} | {raw_email} | {linkedin_url}",
+        header_line,
+        contact_line,
         summary_he,
         *[f"ניסיון: {h}" for h in exp_headings[:2]],
         *[f"השכלה: {e}" for e in edu_lines[:2]],
     ]).strip()
 
     anonymized_text = baseline_summary_he
-    for secret_val, mask in [
-        ("עידו גל", "[מועמד מנוסה - הנדסאי מכונות]"),
-        ("Ido Gal", "[Candidate - Practical Mechanical Engineer]"),
-        ("0526328886", "05X-XXXXXXX"),
-        ("+972-52-632-8886", "+972-5X-XXXXXXX"),
-        (raw_email, "candidate@confidential.il"),
-        (linkedin_url, "[LinkedIn הוסתר]"),
+    name_variants = [name]
+    paren_match = re.match(r"^(.*?)\s*\(([^)]+)\)\s*$", name)
+    if paren_match:
+        name_variants.extend([paren_match.group(1).strip(), paren_match.group(2).strip()])
+    for nv in dict.fromkeys(v for v in name_variants if v):
+        anonymized_text = anonymized_text.replace(nv, "[מועמד מנוסה]")
+
+    for phone_tok in re.split(r"\s*/\s*", raw_phone or ""):
+        tok = phone_tok.strip()
+        if tok:
+            anonymized_text = anonymized_text.replace(tok, "05X-XXXXXXX")
+    if raw_phone:
+        anonymized_text = anonymized_text.replace(raw_phone, "05X-XXXXXXX")
+
+    if raw_email:
+        anonymized_text = anonymized_text.replace(raw_email, "candidate@confidential.il")
+    if linkedin_url:
+        anonymized_text = anonymized_text.replace(linkedin_url, "[LinkedIn הוסתר]")
+
+    for employer_mask, label in [
         ("Energean Israel Ltd.", "[חברת תשתיות ואנרגיה מובילה]"),
         ("Energean", "[חברת אנרגיה מובילה]"),
     ]:
-        if secret_val:
-            anonymized_text = anonymized_text.replace(secret_val, mask)
+        anonymized_text = anonymized_text.replace(employer_mask, label)
 
     return {
-        "source_path": "tools/cv_tailor/base_profile.md",
+        "source": "template" if using_template else "base_profile",
+        "source_path": "tools/cv_tailor/base_profile.template.md" if using_template else "tools/cv_tailor/base_profile.md",
         "name": name,
         "title_he": title_he,
         "title_en": title_en,

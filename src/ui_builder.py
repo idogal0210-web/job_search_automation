@@ -348,11 +348,13 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set=None):
 
 
 def sync_studio_profile_json(project_root=ROOT_DIR):
-    """Build studio_profile.json from canonical tools/cv_tailor/base_profile.md for Career Studio UI."""
-    from tools.cv_tailor.src.utils import load_candidate_profile_data
+    """Build deterministic non-PII studio_profile.json from tracked exclusions config for Career Studio UI."""
+    from tools.cv_tailor.src.utils import load_excluded_employers
 
-    profile_data = load_candidate_profile_data()
-    ui_payload = {k: v for k, v in profile_data.items() if k != "raw_markdown"}
+    ui_payload = {
+        "source": "policy_config",
+        "excluded_employers": load_excluded_employers(),
+    }
     docs_target = os.path.join(project_root, "docs", "career", "studio_profile.json")
     os.makedirs(os.path.dirname(docs_target), exist_ok=True)
     save_state_atomic(docs_target, ui_payload)

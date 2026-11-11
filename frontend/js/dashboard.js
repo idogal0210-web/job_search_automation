@@ -7139,8 +7139,8 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
 
   function applyStudioProfileSync(profile, savedOutputs) {
     if (profile && typeof profile === 'object') {
-      studioProfileCache = profile;
-      if (profile.title_he && !window.customUploadedCvText) {
+      studioProfileCache = Object.assign({}, studioProfileCache || {}, profile);
+      if (profile.source !== 'policy_config' && profile.source !== 'template' && profile.title_he && !window.customUploadedCvText) {
         const nameEl = document.getElementById('studioCvFileName');
         const subEl = document.getElementById('studioCvFileSub');
         if (nameEl) nameEl.textContent = 'עידו גל — פרופיל בסיס (base_profile.md)';

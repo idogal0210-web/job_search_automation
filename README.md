@@ -45,14 +45,14 @@ job_search_automation/
 │   ├── dashboard.css               # סגנונות הדשבורד וסטודיו קריירה
 │   ├── dashboard.js                # לוגיקת האפליקציה המאוחדת
 │   ├── career/cv/                  # גרסאות קורות החיים המעודכנות לצפייה ולהורדה
-│   ├── career/studio_profile.json  # פרופיל בסיס והחרגות מסונכרן מ-base_profile.md
+│   ├── career/studio_profile.json  # הגדרת מעסיקים מוחרגים מסונכרנת לסטודיו קריירה
 │   └── data/jobs.json              # נתוני משרות עדכניות (טעינה אסינכרונית)
 ├── data/
 │   ├── jobs_state.json             # מעקב משרות פעילות ומזהי URL
 │   ├── weekly_archive.json         # ארכיון שבועי מלא עם ציוני AI ונתוני שכר
 │   ├── historical_catalog.json     # קטלוג היסטורי למניעת כפילויות בין סבבים
 │   └── evaluation_state.json       # מטמון הערכות ותור משרות הממתינות לבדיקה חוזרת
-├── tests/                          # חבילת בדיקות אוטומטית מלאה (325 בדיקות יחידה ואינטגרציה)
+├── tests/                          # חבילת בדיקות אוטומטית מלאה (326 בדיקות יחידה ואינטגרציה)
 └── scripts/
     ├── studio_bridge.py            # שרת גשר מקומי המחבר את סטודיו קריירה ל-tools/cv_tailor ול-GeminiPool
     ├── project_hygiene.py          # מנוע היגיינת פרויקט, בדיקת סודות ואימות שלמות נתונים
@@ -144,7 +144,7 @@ pip install -r requirements.txt
 python3 -m unittest discover -s tests -p "test_*.py"
 node tests/stress_m2_harness.js
 ```
-325 בדיקות יחידה ואינטגרציה בפייתון ו-2,489 בדיקות הארנס JS עוברות בהצלחה מלאה.
+326 בדיקות יחידה ואינטגרציה בפייתון ו-2,489 בדיקות הארנס JS עוברות בהצלחה מלאה.
 
 ### 2. בדיקת היגיינה, סריקת סודות ואפס אימוג'ים
 ```bash

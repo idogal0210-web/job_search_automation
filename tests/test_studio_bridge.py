@@ -26,6 +26,8 @@ from scripts.studio_bridge import (
     validate_public_http_url,
 )
 from src.gemini_runtime import EvaluationUnavailable
+from src.ui_builder import sync_studio_profile_json
+import tools.cv_tailor.src.utils as cv_utils
 from tools.cv_tailor.src.analyzer import analyze_job_match
 from tools.cv_tailor.src.generator import generate_tailored_package
 from tools.cv_tailor.src.researcher import CompanyResearch
@@ -113,7 +115,30 @@ class TestCareerStudioBridgeAndEngine(unittest.TestCase):
     """End-to-end verification of Stage 1-5 Career Studio fixes."""
 
     def test_single_source_profile_parsing_and_anonymization(self):
-        data = load_candidate_profile_data()
+        sample_profile = """# פרופיל בסיס – עידו גל (Ido Gal)
+
+## פרטים אישיים
+* **שם:** עידו גל (Ido Gal)
+* **כותרת מקצועית (עברית):** הנדסאי מכונות | בקרת גז טבעי
+* **כותרת מקצועית (אנגלית):** Gas Controller | Practical Mechanical Engineer
+* **מגורים:** תל אביב
+* **טלפון:** 0526328886 / +972-52-632-8886
+* **אימייל:** idogal0210@gmail.com
+* **לינקדאין:** [linkedin.com/in/ido-g/](https://www.linkedin.com/in/ido-g/)
+
+## תמצית מקצועית (Professional Summary)
+### עברית
+הנדסאי מכונות עם ניסיון בבקרת גז 24/7 ב-Energean Israel Ltd.
+
+## ניסיון מקצועי (Professional Experience)
+### 1. בקר גז | Energean Israel Ltd. | 2022–2026
+* ניטור לחצים וספיקות בזמן אמת.
+"""
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            profile_path = Path(tmp_dir) / "base_profile.md"
+            profile_path.write_text(sample_profile, encoding="utf-8")
+            data = load_candidate_profile_data(path=str(profile_path))
+
         self.assertIn("עידו גל", data["name"])
         self.assertIn("energean", data["excluded_employers"])
         self.assertIn("ingl", data["excluded_employers"])
@@ -121,6 +146,22 @@ class TestCareerStudioBridgeAndEngine(unittest.TestCase):
         self.assertNotIn("0526328886", data["anonymized_summary_he"])
         self.assertNotIn("idogal0210@gmail.com", data["anonymized_summary_he"])
         self.assertNotIn("Energean", data["anonymized_summary_he"])
+
+    def test_profile_parsing_ci_template_fallback_when_private_profile_absent(self):
+        with tempfile.TemporaryDirectory() as tmp_dir, \
+             patch.object(cv_utils, "BASE_PROFILE_PATH", os.path.join(tmp_dir, "nonexistent_base_profile.md")):
+            data = load_candidate_profile_data()
+            sync_payload = sync_studio_profile_json(tmp_dir)
+
+        self.assertEqual(data["source"], "template")
+        self.assertIn("מועמד לדוגמה", data["name"])
+        self.assertIn("energean", data["excluded_employers"])
+        self.assertIn("ingl", data["excluded_employers"])
+        self.assertIn(data["contact"]["phone"], data["baseline_summary_he"])
+        self.assertNotIn(data["contact"]["phone"], data["anonymized_summary_he"])
+        self.assertNotIn(data["contact"]["email"], data["anonymized_summary_he"])
+        self.assertEqual(sync_payload["source"], "policy_config")
+        self.assertIn("energean", sync_payload["excluded_employers"])
 
     def test_employer_blacklist_gate(self):
         blocked, reason = check_employer_blacklist("Energean Israel Ltd.", "בקר גז")
