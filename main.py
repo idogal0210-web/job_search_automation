@@ -12,8 +12,6 @@ from src.fetchers import (
     fetch_linkedin_jobs,
     fetch_drushim_jobs,
     fetch_comeet_jobs,
-    fetch_indeed_jobs,
-    fetch_glassdoor_jobs,
 )
 from src.job_policy import apply_keyword_fallback
 from src.pipeline import evaluate_candidates, final_status, run_report
@@ -47,13 +45,11 @@ def load_context(root: Path, state_file: str):
 
 
 def collect_all_jobs(health: RunHealth) -> list:
-    """Fetch raw job postings across LinkedIn, Drushim, Comeet ATS, Indeed, and Glassdoor."""
+    """Fetch raw job postings across LinkedIn, Drushim, and Comeet ATS."""
     keywords_config = get_search_keywords()
     energy_keywords = keywords_config.get("energy", [])
     drone_keywords = keywords_config.get("drones", [])
     drushim_keywords = keywords_config.get("drushim", [])
-    indeed_keywords = keywords_config.get("indeed", [])
-    glassdoor_keywords = keywords_config.get("glassdoor", [])
 
     print("[FETCH] Scraping LinkedIn (Energy)...")
     linkedin_energy = fetch_linkedin_jobs(energy_keywords, health, max_pages=2)
@@ -66,13 +62,7 @@ def collect_all_jobs(health: RunHealth) -> list:
     print("[FETCH] Scraping Comeet ATS (Enlight Renewable Energy)...")
     comeet_jobs = fetch_comeet_jobs("enlightenergy", "99.006", "Enlight Renewable Energy", health)
 
-    print("[FETCH] Scraping Indeed (Israel Energy, SCADA, Gas & Operations)...")
-    indeed_jobs = fetch_indeed_jobs(indeed_keywords, health, max_pages=1)
-
-    print("[FETCH] Scraping Glassdoor (Israel Energy, SCADA, Gas & Operations)...")
-    glassdoor_jobs = fetch_glassdoor_jobs(glassdoor_keywords, health, max_pages=1)
-
-    all_raw_jobs = linkedin_energy + linkedin_drones + drushim_jobs + comeet_jobs + indeed_jobs + glassdoor_jobs
+    all_raw_jobs = linkedin_energy + linkedin_drones + drushim_jobs + comeet_jobs
     return all_raw_jobs
 
 
@@ -133,8 +123,6 @@ def dispatch_notifications(processed_jobs: list, dashboard_ok: bool, health: Run
             health.linkedin_failures
             + health.drushim_failures
             + getattr(health, "comeet_failures", 0)
-            + getattr(health, "indeed_failures", 0)
-            + getattr(health, "glassdoor_failures", 0)
         ) else
         "SUCCESS"
     )

@@ -54,7 +54,7 @@ job_search_automation/
 │   ├── pipeline.py                 # Core orchestration pipeline managing run health, stages, and metrics
 │   ├── config.py                   # Centralized configuration loader (keywords, aliases, thresholds)
 │   ├── prompts.py                  # Prompt template loader with caching
-│   ├── fetchers.py                 # Multi-source scrapers with JobFetcher registry (LinkedIn, Drushim, Comeet, Indeed, Glassdoor)
+│   ├── fetchers.py                 # Multi-source scrapers with JobFetcher registry (LinkedIn, Drushim, Comeet)
 │   ├── job_policy.py               # Deterministic blacklist filters, technical keyword sets, and title rules
 │   ├── gemini_runtime.py           # Multi-model Gemini fallback pool with structured output validation and retry
 │   ├── evaluators.py               # Match score evaluator (0-100), target company bonuses, and keyword fallback
@@ -131,7 +131,7 @@ job_search_automation/
 7. Web Dashboard Generation (ui_builder.py)
    ↓ Generates docs/index.html from weekly_archive.json data
 8. Notification Publisher (publishers.py)
-   ↓ Dispatches HTML email digest if qualified jobs are found (calibrated via is_incomplete_run: secondary 403 blocks on Indeed/Glassdoor or transient keyword retries do not trigger '[חלקי]' status)
+   ↓ Dispatches HTML email digest if qualified jobs are found (calibrated via is_incomplete_run: transient keyword retries do not trigger '[חלקי]' status)
 ```
 
 ### 4.2 Core Data Models (`Job` Schema)
@@ -160,7 +160,7 @@ job_search_automation/
 ## 5. Implementation Status
 
 ### 5.1 Functional Components (Done)
-- **Multi-source automated scrapers:** Working scrapers for LinkedIn (Energy, Drones), Drushim (Industry, Energy, Operations), Comeet ATS (Enlight Renewable Energy), Indeed (Israel Energy, SCADA, Gas, Solar, Operations), and Glassdoor (Israel Energy, SCADA, Solar, Operations).
+- **Multi-source automated scrapers:** Working scrapers for LinkedIn (Energy, Drones), Drushim (Industry, Energy, Operations), and Comeet ATS (Enlight Renewable Energy). Decommissioned Indeed and Glassdoor due to persistent anti-bot gating.
 - **Deterministic zero-token filter:** Instant regex-based rejection of non-technical roles (accounting, HR, sales, legal) and blacklisted operators (Chevron, Energean, INGL).
 - **Structured Gemini LLM evaluation:** Multi-model pool with Pydantic JSON schemas, automatic backoff, jitter, and quota error isolation.
 - **Evidence-based salary engine:** Predicts salary brackets and confidence scores based on sector benchmarks and role equivalencies.

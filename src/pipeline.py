@@ -94,11 +94,9 @@ def final_status(health, *, email_configured, dashboard_ok=True, state_ok=True):
         return "FAILED_EMAIL"
     attempts = (
         health.linkedin_requests + health.drushim_requests + getattr(health, "comeet_requests", 0)
-        + getattr(health, "indeed_requests", 0) + getattr(health, "glassdoor_requests", 0)
     )
     failures = (
         health.linkedin_failures + health.drushim_failures + getattr(health, "comeet_failures", 0)
-        + getattr(health, "indeed_failures", 0) + getattr(health, "glassdoor_failures", 0)
     )
     if attempts and failures >= attempts:
         return "FAILED_SCRAPERS"

@@ -12,7 +12,7 @@ description: "Maintains Ido Gal's job-search policy and evaluates energy, gas, s
 - **Core Pipeline Entrypoints:**
   - CLI & Orchestration: `main.py`, `src/pipeline.py`, `src/config.py`
   - Policy & Evaluation: `src/job_policy.py`, `src/evaluators.py`, `src/gemini_runtime.py` (`GeminiPool` via official `google-genai` SDK with Pydantic structured output validation), `prompts/job_evaluation_v1.txt`
-  - Multi-Source Fetchers: `src/fetchers.py` (LinkedIn, Drushim, Comeet, Indeed, Glassdoor) + MCP 2-tier discovery/extraction (`Tavily` for discovery, surgical `Firecrawl` for JS-heavy/SPA pages)
+  - Multi-Source Fetchers: `src/fetchers.py` (LinkedIn, Drushim, Comeet) + MCP 2-tier discovery/extraction (`Tavily` for discovery, surgical `Firecrawl` for JS-heavy/SPA pages)
   - Compensation & State: `src/salary_engine.py`, `src/state_manager.py`, `data/jobs_state.json`, `data/evaluation_state.json`, `data/historical_catalog.json`, and Supabase Cloud Sync (`public.sync_state`)
 
 ## 2. Vacancy Evaluation Rules (Iron Rules)

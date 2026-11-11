@@ -80,6 +80,9 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
 - [x] **TASK-20**: Formalize Supabase MCP Server Operational Policy in Agent Rules.
   - Target files: `.agents/rules/mcp-policy.md`, `PROJECT_CONTEXT.md`, `TASKS.md`.
   - Success criteria: Integrated `supabase` into `.agents/rules/mcp-policy.md` table of authorized MCP servers following `/antigravity-project-auditor` recommendation. Established precise operational triggers (cloud project health checks, table migrations, sync state verification) and safety restrictions (no unconfirmed destructive DDL, no redundant client querying). Verified zero emojis and complete policy alignment. Completed 2026-11-08.
+- [x] **TASK-21**: Decommission Indeed and Glassdoor Scrapers and Remove Platform Directives.
+  - Target files: `main.py`, `src/fetchers.py`, `src/config.py`, `src/pipeline.py`, `.agents/skills/job-search-automation-state/SKILL.md`, `.agents/skills/job-search-automation-state/references/search-preferences.json`, `tests/test_new_fetchers.py`, `tests/test_main_integration.py`, `tests/test_audit_regressions.py`, `PROJECT_CONTEXT.md`, `README.md`, `TASKS.md`.
+  - Success criteria: Removed directives and keyword profiles for Indeed and Glassdoor due to persistent anti-bot gating and 403 blocks. Removed scraper invocations from `main.py` and `src/pipeline.py`, removed sources from `FETCHERS` registry and `get_search_keywords()`, replaced active scrapers with safe no-op stubs returning empty lists. Updated integration tests, verified 311/311 unit tests passing, zero emojis. Completed 2026-11-11.
 
 
 ---
