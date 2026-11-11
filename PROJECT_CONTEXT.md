@@ -45,6 +45,7 @@ job_search_automation/
 │   ├── templates/email_report.html # Externalized HTML email digest template
 │   ├── css/dashboard.css           # Modular dashboard CSS styles
 │   ├── js/dashboard.js             # Client-side SPA application logic and data fetcher
+│   ├── data/studio_profile.json    # Canonical profile & exclusions synced from base_profile.md
 │   └── assets/                     # Local static assets and company logos
 ├── prompts/                        # Versioned LLM prompts extracted from code
 │   ├── job_evaluation_v1.txt       # Core job evaluation structured prompt
@@ -84,7 +85,8 @@ job_search_automation/
 │   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
 ├── tools/                          # Standalone modular tooling
 │   └── cv_tailor/                  # Fact-based CV tailoring and interview prep engine
-├── tests/                          # Automated unit and integration test suite (306 passing Python tests + 2,489 JS stress assertions)
+├── tests/                          # Automated unit and integration test suite (325 passing Python tests + 2,489 JS stress assertions)
+│   ├── test_studio_bridge.py       # Unified Career Studio HTTP bridge, schema, SSRF, blacklist & generator tests
 │   ├── test_template_docs_sync.py  # 1:1 dual-template synchronization guard between frontend/ and docs/
 │   ├── test_m1_challenger_stress.py# Milestone 1 app switcher & mobile workspace stress tests
 │   ├── test_m2_ats_spec.py         # Milestone 2 ATS matching, statutory hard gates & step glow tests
@@ -105,8 +107,12 @@ job_search_automation/
 │   ├── stress_m1_harness.js        # Node.js high-volume stress harness for Milestone 1
 │   └── stress_m2_harness.js        # Node.js high-volume stress harness (2,489 assertions) for Milestone 2
 └── scripts/
+    ├── studio_bridge.py            # Loopback HTTP bridge connecting Career Studio UI to tools/cv_tailor and GeminiPool
     ├── evaluate_dataset.py         # Confusion matrix, Precision/Recall/F1 and False Negatives evaluator
     ├── requeue_jobs.py             # Utility script for re-evaluating pending or cached jobs
+    ├── project_hygiene.py          # Project integrity, secret scanning, and deterministic hygiene cleanup
+    ├── validate_zero_emoji.py      # Zero-emoji enforcement scanner
+    ├── inspect_state.py            # Compact CLI state inspection utility
     └── scan_inactive_jobs.py       # Automated detection of closed/expired job postings (HTTP 404/410 and closed notices)
 ```
 
@@ -182,15 +188,13 @@ job_search_automation/
   - Dead code cleanup: 1,456 lines of dead chip DOM, helper functions (`getExperienceChip`, `getExplicitConditionChips`, `formatCompactSalary`, `getAiScoreDrivers`, `selectQuickChip`, `isJuniorFriendly`), and unused CSS completely purged.
   - 100% structural parity between Desktop and Mobile: Identical component hierarchy across viewports: topbar (star, share, match score badge), company logo + cyan company name + white title, 2 distinct content bubbles (Domain & Product, Job Requirements), progressive disclosure toggle ("הרחב ניתוח מלא" / "הסתר ניתוח מלא" enabled on both desktop and mobile), collapsible summary & AI insight (including full salary intelligence and benchmark links directly inline without popups), and a balanced 2-tier action structure (Row 1: Save + Reject triage buttons, Row 2: prominent full-width Apply link).
   - State integrity & self-healing: Automated remediation for browser LocalStorage starred state, preventing bulk injection while strictly safeguarding user-marked favorites (6-7 starred jobs).
-- **Career Studio Workspace & AI Modules (Milestones 1-6):**
-  - Unified app switcher: Seamless mode switching between Job Radar and Career Studio with bidirectional `#studio` hash sync and mobile navigation drawer integration.
-  - Curated ATS job selector: `atsJobSelector` strictly displays only jobs currently marked as **Starred** (`starred`) or **Saved** (`saved`) in the dashboard (excluding unstarred, rejected, or purged listings), with clear source badges (`[כוכב]`, `[שמורה]`, `[כוכב + שמורה]`) and match scores.
-  - Progressive step glow workflow: Elegant, non-intrusive focus guidance (`studio-step-active-glow`) initializing on Step 1 (Input & Selection) and transitioning automatically via CSS animations to Step 2 (Match Score Gauge & Statutory KPIs) upon execution (`triggerAtsMatching`), with immediate reset on clearing.
-  - Statutory hard gates engine: Automated evaluation against Israeli Ministry of Labor regulations (Certified Practical Mechanical Engineer, Certified Electrician progress, and B.Sc. engineer disqualification threshold penalty).
-  - 4-Bucket keyword taxonomy: Real-time gap mapping across methodologies, financials, technical systems, and energy sector standards.
-  - AI Writer & 3-mode tone switcher: Tailors bullet points to Technical/Field, Leadership/PM, or Research/Innovation tones using the STAR formula and an energy domain bilingual dictionary.
-  - AI Interview simulator & STAR evaluator: Simulates technical interviews, analyzes structured responses, optimizes LinkedIn bio headlines, and generates professional skill radar matrices.
-  - Client-side privacy-first CV ingestion: Browser-native file reading (PDF, DOCX, TXT via PDF.js and Mammoth.js) with zero server uploads and instant fallback to canonical baseline profile.
+- **Career Studio Split-Pane Workspace & Unified AI Bridge:**
+  - Unified app switcher: Seamless mode switching between Job Radar and Career Studio with bidirectional `#studio` hash sync.
+  - Responsive Split-Pane (`45%` input / `55%` results on desktop, stacked on mobile `>= 48px` touch targets): Compact top CV upload card + horizontal 4-step pipeline bar above side-by-side input/results panes.
+  - Unified Single-Source Profile & Blacklist Guard: `tools/cv_tailor/base_profile.md` and `src/config.py` excluded employers (`energean`, `ingl`, `chevron`) compile into `docs/career/studio_profile.json` and power both Python and client UI cleanly.
+  - Loopback AI Bridge (`scripts/studio_bridge.py` on `127.0.0.1:8765`): Wraps `tools/cv_tailor/src/` (`scraper.py`, `researcher.py`, `analyzer.py`, `generator.py`) and Pydantic-validated `GeminiPool` schemas (`AtsStudioAnalysisSchema`, `TailoredCvPackageSchema`, `CvTailoredBulletSchema`, `StarInterviewEvaluationSchema`) with CORS/PNA and anti-SSRF guards, saving tailored packages to `tools/cv_tailor/output/` while falling back transparently to client-side local matching when offline.
+  - Interactive Clarifications, Review & A4 PDF Export: Supports URL ingestion, interactive pre-generation clarification questions, safe DOM Markdown preview, unmatched requirements alerts, applied bullet carry-over, and A4 `@page` print/PDF export.
+  - Honest Interview & Anonymizer Modules: Real browser `SpeechRecognition` guard (zero fabricated voice transcripts), Gemini STAR evaluation + `LocalStorage` practice history when connected, and `base_profile.md`-derived anonymization.
 - **GitOps Save & Sync protocol:** Unified zero-waste cleanup (purged obsolete `integration/` templates and caches), syntax validation, pre-commit secret scanning, zero-emoji verification, and two-way GitHub push.
 - **Streamlined header UI:** Complete removal of obsolete "about system" info button and modal dialog (`#aboutModal`), keeping brand header focused with profile title and cloud sync button only, maintaining 1:1 dual-template parity.
 - **Cloud Sync (Supabase only):** The dashboard header holds a single minimal pill (`#headerCloudBtn`) opening `#cloudModal` (email/password sign-in or sign-up, sign-out). Triage state (starred, saved, rejected, purged) syncs between desktop and phone exclusively through the Supabase `sync_state` table under owner-only RLS. No GitHub tokens, share links or static `sync_state.json` fallback exist client-side; `docs/data/sync_state.json` is no longer published. The page embeds only the Supabase URL and publishable key. Manual job-search runs are triggered from GitHub Actions directly.

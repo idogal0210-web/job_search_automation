@@ -26,7 +26,8 @@ try:
         print_warning,
         print_error,
         load_config,
-        load_base_profile
+        load_base_profile,
+        check_employer_blacklist
     )
     from tools.cv_tailor.src.scraper import scrape_job, parse_job_text, JobPosting
     from tools.cv_tailor.src.researcher import research_company, CompanyResearch
@@ -42,7 +43,8 @@ except ModuleNotFoundError:
         print_warning,
         print_error,
         load_config,
-        load_base_profile
+        load_base_profile,
+        check_employer_blacklist
     )
     from src.scraper import scrape_job, parse_job_text, JobPosting
     from src.researcher import research_company, CompanyResearch
@@ -207,6 +209,11 @@ def main():
     if not job_posting or not job_posting.description:
         print_error("שגיאה בקריאת פרטי המשרה.")
         sys.exit(1)
+
+    is_blocked, block_reason = check_employer_blacklist(job_posting.company, job_posting.description)
+    if is_blocked:
+        print_error(f"המשרה נחסמה לפי מדיניות המועמד: {block_reason}")
+        sys.exit(2)
 
     print_success(f"נקלטה משרה: {job_posting.title} │ חברה: {job_posting.company}")
 

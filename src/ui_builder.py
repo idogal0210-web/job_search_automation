@@ -125,6 +125,7 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
     if os.path.exists(cv_src):
         os.makedirs(os.path.join(docs_dir, "career", "cv"), exist_ok=True)
         shutil.copytree(cv_src, os.path.join(docs_dir, "career", "cv"), dirs_exist_ok=True)
+    sync_studio_profile_json(project_root)
 
     build_id = datetime.now().strftime("%Y%m%d%H%M%S")
     now_str = datetime.now().strftime("%d.%m.%Y")
@@ -344,3 +345,94 @@ def update_weekly_archive(new_jobs, archive_file_path, rejected_set=None):
     save_state_atomic(catalog_path, catalog)
     save_state_atomic(archive_file_path, archive)
     return archive
+
+
+def sync_studio_profile_json(project_root=ROOT_DIR):
+    """Build studio_profile.json from canonical tools/cv_tailor/base_profile.md for Career Studio UI."""
+    from tools.cv_tailor.src.utils import load_candidate_profile_data
+
+    profile_data = load_candidate_profile_data()
+    ui_payload = {k: v for k, v in profile_data.items() if k != "raw_markdown"}
+    docs_target = os.path.join(project_root, "docs", "career", "studio_profile.json")
+    os.makedirs(os.path.dirname(docs_target), exist_ok=True)
+    save_state_atomic(docs_target, ui_payload)
+
+    fe_data_dir = os.path.join(project_root, "frontend", "data")
+    if os.path.isdir(os.path.join(project_root, "frontend")):
+        os.makedirs(fe_data_dir, exist_ok=True)
+        save_state_atomic(os.path.join(fe_data_dir, "studio_profile.json"), ui_payload)
+    return ui_payload
+
+
+def sync_frontend_to_docs(project_root=ROOT_DIR):
+    """Synchronize modular frontend/ templates, assets, and studio profile to docs/ without overwriting data/*.json."""
+    frontend_dir = os.path.join(project_root, "frontend")
+    docs_dir = os.path.join(project_root, "docs")
+    os.makedirs(docs_dir, exist_ok=True)
+
+    pairs = [
+        (os.path.join(frontend_dir, "css", "dashboard.css"), os.path.join(docs_dir, "dashboard.css")),
+        (os.path.join(frontend_dir, "js", "dashboard.js"), os.path.join(docs_dir, "dashboard.js")),
+        (os.path.join(frontend_dir, "js", "app.js"), os.path.join(docs_dir, "js", "app.js")),
+    ]
+    for src_p, dst_p in pairs:
+        if os.path.exists(src_p):
+            os.makedirs(os.path.dirname(dst_p), exist_ok=True)
+            shutil.copy2(src_p, dst_p)
+
+    js_modules_src = os.path.join(frontend_dir, "js", "modules")
+    if os.path.exists(js_modules_src):
+        shutil.copytree(js_modules_src, os.path.join(docs_dir, "js", "modules"), dirs_exist_ok=True)
+
+    cv_src = os.path.join(frontend_dir, "data", "cv")
+    if os.path.exists(cv_src):
+        os.makedirs(os.path.join(docs_dir, "career", "cv"), exist_ok=True)
+        shutil.copytree(cv_src, os.path.join(docs_dir, "career", "cv"), dirs_exist_ok=True)
+
+    sync_studio_profile_json(project_root)
+
+    # Read current docs/data/jobs.json + data/sync_state.json for non-destructive shell rendering
+    jobs_json_path = os.path.join(docs_dir, "data", "jobs.json")
+    compact_jobs = []
+    if os.path.exists(jobs_json_path):
+        payload = load_state(jobs_json_path, {}, strict=False) or {}
+        compact_jobs = payload.get("jobs", []) if isinstance(payload, dict) else []
+
+    sync_state_path = os.path.join(project_root, "data", "sync_state.json")
+    sync_state = load_state(sync_state_path, {}, strict=False) or {} if os.path.exists(sync_state_path) else {}
+    starred_set = set(sync_state.get("starred", []))
+    saved_set = set(sync_state.get("saved", []))
+    purged_set = set(sync_state.get("purged", []))
+    rejected_set_s = set(sync_state.get("rejected", []))
+
+    saved_count = len([s for s in sync_state.get("saved", []) if s not in starred_set])
+    starred_count = len(sync_state.get("starred", []))
+    rejected_count = len(sync_state.get("rejected", []))
+    total_new = len([
+        j for j in compact_jobs
+        if j.get("link") not in starred_set
+        and j.get("link") not in saved_set
+        and j.get("link") not in rejected_set_s
+        and j.get("link") not in purged_set
+    ])
+
+    tpl_src = os.path.join(frontend_dir, "templates", "index.html")
+    with open(tpl_src, "r", encoding="utf-8") as f:
+        html_out = f.read()
+
+    build_id = datetime.now().strftime("%Y%m%d%H%M%S")
+    now_str = datetime.now().strftime("%d.%m.%Y")
+    html_out = html_out.replace("__TITLE__", "לוח משרות טכנולוגיות — עידו גל")
+    html_out = html_out.replace("__REPORT_TYPE_LABEL__", "סריקה יומית")
+    html_out = html_out.replace("__NOW_STR__", now_str)
+    html_out = html_out.replace("__BUILD_ID__", build_id)
+    html_out = html_out.replace("__TOTAL_JOBS__", str(len(compact_jobs)))
+    html_out = html_out.replace("__TOTAL_NEW_JOBS__", str(total_new if total_new > 0 else len(compact_jobs)))
+    html_out = html_out.replace("__TOTAL_SAVED_JOBS__", str(saved_count))
+    html_out = html_out.replace("__TOTAL_STARRED_JOBS__", str(starred_count))
+    html_out = html_out.replace("__TOTAL_REJECTED_JOBS__", str(rejected_count))
+
+    out_file = os.path.join(docs_dir, "index.html")
+    with open(out_file, "w", encoding="utf-8") as f:
+        f.write(html_out)
+    return out_file

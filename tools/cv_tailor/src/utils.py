@@ -1,9 +1,12 @@
 import os
 import sys
+import html as html_lib
+import importlib.util
 import json
 import re
 import warnings
 from datetime import datetime
+from typing import Any, Dict, List, Optional, Tuple
 from dotenv import load_dotenv
 
 warnings.filterwarnings("ignore")
@@ -86,24 +89,168 @@ def load_prompt_template(filename: str) -> str:
             return f.read()
     raise FileNotFoundError(f"Prompt not found: {p}")
 
-def get_gemini_pool():
-    """Load GeminiPool dynamically from project root src/gemini_runtime.py."""
-    import importlib.util
+def get_gemini_runtime_module():
+    """Load root src/gemini_runtime.py module dynamically for shared pool and Pydantic schemas."""
     project_root = os.path.dirname(os.path.dirname(BASE_DIR))
     runtime_path = os.path.join(project_root, "src", "gemini_runtime.py")
     spec = importlib.util.spec_from_file_location("root_gemini_runtime", runtime_path)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
-    return mod.GeminiPool()
+    return mod
+
+
+def get_gemini_pool():
+    """Load GeminiPool dynamically from project root src/gemini_runtime.py."""
+    return get_gemini_runtime_module().GeminiPool()
+
+
+def load_excluded_employers() -> List[str]:
+    """Load canonical excluded employers list from root src.config with skill safety defaults."""
+    defaults = ["energean", "אנרג'יאן", "אנרגיאן", "ingl", "נתג\"ז", "נתג״ז", "chevron", "שברון"]
+    project_root = os.path.dirname(os.path.dirname(BASE_DIR))
+    config_path = os.path.join(project_root, "src", "config.py")
+    items: List[str] = []
+    if os.path.exists(config_path):
+        try:
+            spec = importlib.util.spec_from_file_location("root_config_mod", config_path)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            if hasattr(mod, "get_excluded_employers"):
+                items = [str(x).strip().lower() for x in (mod.get_excluded_employers() or []) if str(x).strip()]
+        except Exception:
+            items = []
+    merged = list(dict.fromkeys([*items, *defaults]))
+    return merged
+
+
+def check_employer_blacklist(company_name: str, job_text: str = "") -> Tuple[bool, str]:
+    """Check whether a target employer matches the mandatory CV tailoring exclusion list."""
+    haystack = f"{company_name or ''} {job_text[:300] if job_text else ''}".lower()
+    if not haystack.strip():
+        return False, ""
+    for employer in load_excluded_employers():
+        token = employer.strip().lower()
+        if not token:
+            continue
+        if re.search(r"(?:^|[\s|,./()'\"״׳\-])" + re.escape(token) + r"(?:$|[\s|,./()'\"״׳\-])", haystack):
+            return True, f"החברה מופיעה ברשימת ההחרגות של מדיניות המועמד ({employer})."
+    return False, ""
+
+
+def load_candidate_profile_data(path: Optional[str] = None) -> Dict[str, Any]:
+    """Parse canonical base_profile.md into structured JSON-ready data for UI and AI grounding."""
+    markdown = load_base_profile(path)
+
+    def _extract_field(label: str, default: str = "") -> str:
+        m = re.search(rf"\*\*{re.escape(label)}:\*\*\s*(.+)", markdown)
+        return m.group(1).strip() if m else default
+
+    def _section_lines(prefix: str) -> List[str]:
+        m = re.search(rf"^##\s+[^\n]*{re.escape(prefix)}[^\n]*\n([\s\S]*?)(?=^##\s+|\Z)", markdown, re.MULTILINE)
+        if not m:
+            return []
+        return [ln.strip() for ln in m.group(1).splitlines() if ln.strip() and ln.strip() != "---"]
+
+    def _sub_summary(lang_heading: str) -> str:
+        m = re.search(rf"^###\s+{re.escape(lang_heading)}\s*\n([\s\S]*?)(?=^###\s+|^##\s+|\Z)", markdown, re.MULTILINE)
+        if not m:
+            return ""
+        lines = [ln.strip() for ln in m.group(1).splitlines() if ln.strip() and ln.strip() != "---"]
+        return " ".join(lines)
+
+    raw_email = _extract_field("אימייל", "idogal0210@gmail.com")
+    raw_phone = _extract_field("טלפון", "0526328886 / +972-52-632-8886")
+    raw_linkedin = _extract_field("לינקדאין", "https://www.linkedin.com/in/ido-g/")
+    li_match = re.search(r"\((https?://[^)]+)\)", raw_linkedin)
+    linkedin_url = li_match.group(1) if li_match else raw_linkedin
+    summary_he = _sub_summary("עברית")
+    summary_en = _sub_summary("English")
+    edu_lines = [re.sub(r"^\*\s*", "", ln).replace("**", "") for ln in _section_lines("השכלה והכשרה מקצועית")]
+    exp_headings = [re.sub(r"^###\s+\d+\.\s*", "", ln) for ln in _section_lines("ניסיון מקצועי") if ln.startswith("### ")]
+    exp_bullets = [re.sub(r"^\*\s*", "", ln) for ln in _section_lines("ניסיון מקצועי") if ln.startswith("* ")]
+    mil_lines = [re.sub(r"^\*\s*", "", ln).replace("**", "") for ln in _section_lines("שירות צבאי")]
+    tools_lines = [re.sub(r"^\*\s*", "", ln).replace("**", "") for ln in _section_lines("מערכות וכלים טכנולוגיים")]
+
+    title_he = _extract_field("כותרת מקצועית (עברית)", "הנדסאי מכונות | בקרת גז טבעי | תפעול מערכות אנרגיה")
+    title_en = _extract_field("כותרת מקצועית (אנגלית)", "Gas Controller | Natural Gas Operations | Practical Mechanical Engineer")
+    name = _extract_field("שם", "עידו גל (Ido Gal)")
+    location = _extract_field("מגורים", "תל אביב (Tel Aviv, Israel)")
+
+    baseline_summary_he = "\n".join([
+        f"עידו גל — {title_he}",
+        f"{location} | {raw_phone} | {raw_email} | {linkedin_url}",
+        summary_he,
+        *[f"ניסיון: {h}" for h in exp_headings[:2]],
+        *[f"השכלה: {e}" for e in edu_lines[:2]],
+    ]).strip()
+
+    anonymized_text = baseline_summary_he
+    for secret_val, mask in [
+        ("עידו גל", "[מועמד מנוסה - הנדסאי מכונות]"),
+        ("Ido Gal", "[Candidate - Practical Mechanical Engineer]"),
+        ("0526328886", "05X-XXXXXXX"),
+        ("+972-52-632-8886", "+972-5X-XXXXXXX"),
+        (raw_email, "candidate@confidential.il"),
+        (linkedin_url, "[LinkedIn הוסתר]"),
+        ("Energean Israel Ltd.", "[חברת תשתיות ואנרגיה מובילה]"),
+        ("Energean", "[חברת אנרגיה מובילה]"),
+    ]:
+        if secret_val:
+            anonymized_text = anonymized_text.replace(secret_val, mask)
+
+    return {
+        "source_path": "tools/cv_tailor/base_profile.md",
+        "name": name,
+        "title_he": title_he,
+        "title_en": title_en,
+        "location": location,
+        "contact": {
+            "phone": raw_phone,
+            "email": raw_email,
+            "linkedin": linkedin_url,
+            "location": location,
+        },
+        "summary_he": summary_he,
+        "summary_en": summary_en,
+        "education": edu_lines,
+        "experience_titles": exp_headings,
+        "experience_highlights": exp_bullets,
+        "military": mil_lines,
+        "tools": tools_lines,
+        "baseline_summary_he": baseline_summary_he,
+        "anonymized_summary_he": anonymized_text,
+        "excluded_employers": load_excluded_employers(),
+        "raw_markdown": markdown,
+    }
 
 def save_file(content: str, filename: str, output_dir: str = None) -> str:
-    """Save content to output directory and return full path."""
+    """Save content atomically to output directory and return full path."""
     target_dir = output_dir or DEFAULT_OUTPUT_DIR
     ensure_dir(target_dir)
-    file_path = os.path.join(target_dir, filename)
-    with open(file_path, "w", encoding="utf-8") as f:
+    safe_name = os.path.basename(filename)
+    file_path = os.path.join(target_dir, safe_name)
+    tmp_path = f"{file_path}.tmp"
+    with open(tmp_path, "w", encoding="utf-8") as f:
         f.write(content)
+    os.replace(tmp_path, file_path)
     return file_path
+
+
+def _format_inline_markdown_safe(text: str) -> str:
+    """Escape raw HTML and render safe bold markers and verified web/email links."""
+    escaped = html_lib.escape(text, quote=True)
+    escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
+
+    def _safe_link(match: re.Match) -> str:
+        label = match.group(1)
+        href = html_lib.unescape(match.group(2)).strip()
+        if re.match(r"^(?:https?://|mailto:)", href, re.IGNORECASE):
+            safe_href = html_lib.escape(href, quote=True)
+            return f'<a href="{safe_href}" target="_blank" rel="noopener noreferrer">{label}</a>'
+        return label
+
+    return re.sub(r"\[([^\]]+)\]\(([^)]+)\)", _safe_link, escaped)
+
 
 def create_html_wrapper(title: str, body_markdown: str, lang: str = "he") -> str:
     """Wrap markdown content into a clean printable HTML document optimized to fit on exactly 1 single A4 page."""
@@ -111,56 +258,61 @@ def create_html_wrapper(title: str, body_markdown: str, lang: str = "he") -> str
     dir_attr = "rtl" if is_rtl else "ltr"
     lang_attr = "he" if is_rtl else "en"
     align_style = "right" if is_rtl else "left"
+    safe_title = html_lib.escape(title or "CV", quote=True)
 
     html_lines = []
     in_list = False
-    
-    for line in body_markdown.splitlines():
+
+    for line in (body_markdown or "").splitlines():
         line_str = line.strip()
         if not line_str:
             if in_list:
                 html_lines.append("</ul>")
                 in_list = False
             continue
-            
+
         if line_str.startswith("# "):
-            if in_list: html_lines.append("</ul>"); in_list = False
-            header_text = line_str[2:]
-            html_lines.append(f"<h1 class='main-title'>{header_text}</h1>")
+            if in_list:
+                html_lines.append("</ul>")
+                in_list = False
+            html_lines.append(f"<h1 class='main-title'>{_format_inline_markdown_safe(line_str[2:])}</h1>")
         elif line_str.startswith("## "):
-            if in_list: html_lines.append("</ul>"); in_list = False
-            header_text = line_str[3:]
-            html_lines.append(f"<h2 class='section-title'>{header_text}</h2>")
+            if in_list:
+                html_lines.append("</ul>")
+                in_list = False
+            html_lines.append(f"<h2 class='section-title'>{_format_inline_markdown_safe(line_str[3:])}</h2>")
         elif line_str.startswith("### "):
-            if in_list: html_lines.append("</ul>"); in_list = False
-            header_text = line_str[4:]
-            html_lines.append(f"<h3 class='item-title'>{header_text}</h3>")
+            if in_list:
+                html_lines.append("</ul>")
+                in_list = False
+            html_lines.append(f"<h3 class='item-title'>{_format_inline_markdown_safe(line_str[4:])}</h3>")
         elif line_str.startswith("* ") or line_str.startswith("- "):
             if not in_list:
                 html_lines.append("<ul class='cv-list'>")
                 in_list = True
-            item_text = line_str[2:]
-            html_lines.append(f"<li>{item_text}</li>")
+            html_lines.append(f"<li>{_format_inline_markdown_safe(line_str[2:])}</li>")
         elif line_str.startswith("---"):
-            if in_list: html_lines.append("</ul>"); in_list = False
+            if in_list:
+                html_lines.append("</ul>")
+                in_list = False
             html_lines.append("<hr class='divider'>")
         else:
-            if in_list: html_lines.append("</ul>"); in_list = False
-            html_lines.append(f"<p class='paragraph'>{line_str}</p>")
-            
+            if in_list:
+                html_lines.append("</ul>")
+                in_list = False
+            html_lines.append(f"<p class='paragraph'>{_format_inline_markdown_safe(line_str)}</p>")
+
     if in_list:
         html_lines.append("</ul>")
 
     body_content = "\n".join(html_lines)
-    body_content = re.sub(r"\*\*(.*?)\*\*", r"<strong>\1</strong>", body_content)
-    body_content = re.sub(r"\[(.*?)\]\((.*?)\)", r"<a href=\"\2\" target=\"_blank\">\1</a>", body_content)
 
     html = f"""<!DOCTYPE html>
 <html lang="{lang_attr}" dir="{dir_attr}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title}</title>
+    <title>{safe_title}</title>
     <style>
         :root {{
             --primary: #0284c7;

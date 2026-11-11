@@ -5486,10 +5486,20 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
       job.experience_strengths ? `התאמה נדרשת:\n${job.experience_strengths}` : ''
     ].filter(Boolean).join('\n\n');
 
+    const companyEl = document.getElementById('atsCompanyInput');
+    const titleEl = document.getElementById('atsTitleInput');
+    const urlEl = document.getElementById('atsJobUrlInput');
+    if (companyEl) companyEl.value = job.company || '';
+    if (titleEl) titleEl.value = job.title || '';
+    if (urlEl) urlEl.value = job.link || '';
+
     const inputEl = document.getElementById('atsJobInput');
     if (inputEl) {
       inputEl.value = parts;
       triggerAtsMatching();
+    }
+    if (typeof updateStudioBlacklistWarning === 'function') {
+      updateStudioBlacklistWarning();
     }
   }
 
@@ -5537,6 +5547,20 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     if (inputEl) inputEl.value = '';
     const sel = document.getElementById('atsJobSelector');
     if (sel) sel.value = '';
+    const urlEl = document.getElementById('atsJobUrlInput');
+    if (urlEl) urlEl.value = '';
+    const companyEl = document.getElementById('atsCompanyInput');
+    if (companyEl) companyEl.value = '';
+    const titleEl = document.getElementById('atsTitleInput');
+    if (titleEl) titleEl.value = '';
+    const insightsCard = document.getElementById('atsAiInsightsCard');
+    if (insightsCard) insightsCard.hidden = true;
+    const blAlert = document.getElementById('atsBlacklistAlert');
+    if (blAlert) blAlert.hidden = true;
+    if (typeof studioDeepAnalysisState !== 'undefined') {
+      studioDeepAnalysisState = null;
+      studioClarificationAnswers = [];
+    }
     triggerAtsMatching();
     setAtsActiveStep(1);
   }
@@ -6475,10 +6499,14 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     const txt = outputEl.textContent.trim();
     if (!txt || outputEl.querySelector('.writer-output-placeholder')) return;
 
+    if (typeof addStudioAppliedBullet === 'function') {
+      addStudioAppliedBullet(txt);
+    }
+
     const btn = document.getElementById('btnApplyToCv');
     if (btn) {
       const orig = btn.innerHTML;
-      btn.innerHTML = '<i class="ph-duotone ph-check-circle"></i> <span>הוחל בהצלחה!</span>';
+      btn.innerHTML = '<i class="ph-duotone ph-check-circle"></i> <span>הוחל והתווסף לחבילה!</span>';
       setTimeout(() => { btn.innerHTML = orig; }, 2000);
     }
   }
@@ -6713,14 +6741,61 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     if (badgeEl) badgeEl.textContent = q.category;
   }
 
+  let studioSpeechRecognition = null;
+
   function toggleVoiceRecording() {
     const btn = document.getElementById('btnRecordVoice');
     const label = document.getElementById('voiceRecLabel');
     const timer = document.getElementById('voiceRecTimer');
     const canvas = document.getElementById('voiceWaveCanvas');
+    const sourceBadge = document.getElementById('starEvaluationSourceBadge');
+    const SpeechRec = (typeof window !== 'undefined') && (window.SpeechRecognition || window.webkitSpeechRecognition);
+
+    if (!SpeechRec) {
+      isVoiceRecording = false;
+      if (btn) btn.classList.remove('recording');
+      if (label) label.textContent = 'התחל הקלטת תשובה';
+      drawSimulatedAudioWave(canvas, false);
+      if (sourceBadge) sourceBadge.textContent = 'הקלטת דיבור לא זמינה בדפדפן — הזן טקסט ידנית';
+      showToast('זיהוי דיבור דפדפני אינו זמין בסביבה זו — הקלד את תשובתך לניתוח STAR.', 'warning');
+      return;
+    }
 
     isVoiceRecording = !isVoiceRecording;
     if (isVoiceRecording) {
+      try {
+        studioSpeechRecognition = new SpeechRec();
+        studioSpeechRecognition.lang = 'he-IL';
+        studioSpeechRecognition.continuous = true;
+        studioSpeechRecognition.interimResults = false;
+        studioSpeechRecognition.onresult = (event) => {
+          const input = document.getElementById('interviewAnswerInput');
+          if (!input) return;
+          const parts = [];
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            if (event.results[i].isFinal && event.results[i][0]) {
+              parts.push(event.results[i][0].transcript.trim());
+            }
+          }
+          if (parts.length > 0) {
+            input.value = (input.value ? input.value.trim() + ' ' : '') + parts.join(' ');
+          }
+        };
+        studioSpeechRecognition.onerror = () => {
+          isVoiceRecording = false;
+          if (btn) btn.classList.remove('recording');
+          if (label) label.textContent = 'התחל הקלטת תשובה';
+          if (voiceTimerInterval) { clearInterval(voiceTimerInterval); voiceTimerInterval = null; }
+          drawSimulatedAudioWave(canvas, false);
+          showToast('הקלטת הדיבור הופסקה בדפדפן — ניתן להשלים טקסט ידנית.', 'warning');
+        };
+        studioSpeechRecognition.start();
+      } catch (err) {
+        isVoiceRecording = false;
+        showToast('לא ניתן להפעיל מיקרופון בדפדפן — הקלד תשובה ידנית.', 'warning');
+        return;
+      }
+
       if (btn) btn.classList.add('recording');
       if (label) label.textContent = 'עצור הקלטה';
       voiceSecondsCount = 0;
@@ -6734,8 +6809,11 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
       }, 1000);
 
       drawSimulatedAudioWave(canvas, true);
-      showToast('הקלטת מענה קולי החלה... דבר ברור', 'info');
+      showToast('האזנה למיקרופון פעילה...', 'info');
     } else {
+      if (studioSpeechRecognition && typeof studioSpeechRecognition.stop === 'function') {
+        try { studioSpeechRecognition.stop(); } catch (e) {}
+      }
       if (btn) btn.classList.remove('recording');
       if (label) label.textContent = 'התחל הקלטת תשובה';
       if (voiceTimerInterval) {
@@ -6743,7 +6821,6 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
         voiceTimerInterval = null;
       }
       drawSimulatedAudioWave(canvas, false);
-      showToast('ההקלטה נשמרה ותומללה בהצלחה!', 'success');
       evaluateStarAnswer();
     }
   }
@@ -6763,6 +6840,84 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
       const y = (canvas.height - height) / 2;
       ctx.fillStyle = isLive ? '#f43f5e' : '#334155';
       ctx.fillRect(x + 2, y, barWidth - 4, height);
+    }
+  }
+
+  const STAR_HISTORY_STORAGE_KEY = 'ido_studio_star_history_v1';
+
+  function loadStarHistory() {
+    try {
+      if (typeof localStorage === 'undefined') return [];
+      const raw = localStorage.getItem(STAR_HISTORY_STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function appendStarHistoryEntry(entry) {
+    try {
+      if (typeof localStorage === 'undefined') return [];
+      const items = [entry, ...loadStarHistory()].slice(0, 8);
+      localStorage.setItem(STAR_HISTORY_STORAGE_KEY, JSON.stringify(items));
+      return items;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function renderStarHistoryList(items) {
+    const card = document.getElementById('starHistoryCard');
+    const list = document.getElementById('starHistoryList');
+    if (!card || !list || typeof document.createElement !== 'function') return;
+    if (!Array.isArray(items) || items.length === 0) {
+      card.hidden = true;
+      return;
+    }
+    card.hidden = false;
+    const nodes = items.map(it => {
+      const li = document.createElement('li');
+      li.textContent = `${it.dateLabel || ''} • ${it.category || ''} — ציון ${it.totalScore}/100 (${it.sourceLabel || ''})`;
+      return li;
+    });
+    list.replaceChildren(...nodes);
+  }
+
+  function applyStarEvaluationToDom(payload) {
+    const scoreEl = document.getElementById('starTotalScore');
+    if (scoreEl) scoreEl.textContent = `${payload.totalScore} / 100`;
+
+    const sEl = document.getElementById('starSituationText');
+    const tEl = document.getElementById('starTaskText');
+    const aEl = document.getElementById('starActionText');
+    const rEl = document.getElementById('starResultText');
+    if (sEl) sEl.textContent = payload.sDesc || '';
+    if (tEl) tEl.textContent = payload.tDesc || '';
+    if (aEl) aEl.textContent = payload.aDesc || '';
+    if (rEl) rEl.textContent = payload.rDesc || '';
+
+    const sourceBadge = document.getElementById('starEvaluationSourceBadge');
+    if (sourceBadge) sourceBadge.textContent = payload.sourceLabel || '';
+
+    const goldenCard = document.getElementById('starGoldenAnswerCard');
+    const goldenText = document.getElementById('starGoldenAnswerText');
+    const tipsList = document.getElementById('starImprovementTipsList');
+    if (goldenCard && goldenText) {
+      if (payload.goldenAnswer) {
+        goldenCard.hidden = false;
+        goldenText.textContent = payload.goldenAnswer;
+        if (tipsList && typeof document.createElement === 'function') {
+          const tipNodes = (payload.tips || []).map(tip => {
+            const li = document.createElement('li');
+            li.textContent = tip;
+            return li;
+          });
+          tipsList.replaceChildren(...tipNodes);
+        }
+      } else {
+        goldenCard.hidden = true;
+      }
     }
   }
 
@@ -6794,20 +6949,62 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     }
 
     const total = sScore + tScore + aScore + rScore;
-    const scoreEl = document.getElementById('starTotalScore');
-    if (scoreEl) scoreEl.textContent = `${total} / 100`;
+    applyStarEvaluationToDom({
+      totalScore: total,
+      sDesc,
+      tDesc,
+      aDesc,
+      rDesc,
+      sourceLabel: studioBridgeConnected ? 'בדיקה ראשונית — מנתח עומק ב-Gemini...' : 'בדיקת מבנה מילולית מקומית (ללא שרת AI)',
+      goldenAnswer: '',
+      tips: []
+    });
 
-    const sEl = document.getElementById('starSituationText');
-    const tEl = document.getElementById('starTaskText');
-    const aEl = document.getElementById('starActionText');
-    const rEl = document.getElementById('starResultText');
-
-    if (sEl) sEl.textContent = sDesc;
-    if (tEl) tEl.textContent = tDesc;
-    if (aEl) aEl.textContent = aDesc;
-    if (rEl) rEl.textContent = rDesc;
-
-    showToast(`ניתוח STAR הושלם: ציון ${total}/100`, 'success');
+    if (studioBridgeConnected && typeof fetch === 'function' && txt.trim()) {
+      const qTitle = document.getElementById('interviewQuestionTitle')?.textContent || '';
+      const qDesc = document.getElementById('interviewQuestionDesc')?.textContent || '';
+      const jobContext = document.getElementById('atsJobInput')?.value || '';
+      callStudioBridge('/api/interview/evaluate', {
+        question: `${qTitle}\n${qDesc}`.trim(),
+        category: currentInterviewCategory,
+        answer: txt,
+        job_context: jobContext
+      }).then(res => {
+        if (res && res.ok && res.evaluation) {
+          const ev = res.evaluation;
+          applyStarEvaluationToDom({
+            totalScore: ev.total_score,
+            sDesc: `${ev.situation_feedback || ''} (${ev.situation_score}/20)`.trim(),
+            tDesc: `${ev.task_feedback || ''} (${ev.task_score}/20)`.trim(),
+            aDesc: `${ev.action_feedback || ''} (${ev.action_score}/40)`.trim(),
+            rDesc: `${ev.result_feedback || ''} (${ev.result_score}/20)`.trim(),
+            sourceLabel: 'הערכת AI מלאה (Gemini + base_profile.md)',
+            goldenAnswer: ev.golden_answer || '',
+            tips: ev.improvement_tips || []
+          });
+          const hist = appendStarHistoryEntry({
+            dateLabel: new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' }),
+            category: currentInterviewCategory,
+            totalScore: ev.total_score,
+            sourceLabel: 'Gemini AI'
+          });
+          renderStarHistoryList(hist);
+          showToast(`הערכת STAR ב-Gemini הושלמה: ${ev.total_score}/100`, 'success');
+        }
+      }).catch(() => {
+        const sourceBadge = document.getElementById('starEvaluationSourceBadge');
+        if (sourceBadge) sourceBadge.textContent = 'בדיקת מבנה מילולית מקומית (שגיאת גשר AI)';
+      });
+    } else {
+      const hist = appendStarHistoryEntry({
+        dateLabel: new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' }),
+        category: currentInterviewCategory,
+        totalScore: total,
+        sourceLabel: 'מקומי'
+      });
+      renderStarHistoryList(hist);
+      showToast(`ניתוח STAR מקומי הושלם: ציון ${total}/100`, 'success');
+    }
   }
 
   function copyLinkedInOptimizedBio() {
@@ -6854,18 +7051,22 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     const preview = document.getElementById('anonymizedPreviewArea');
     if (!preview) return;
 
+    const anonText = (studioProfileCache && studioProfileCache.anonymized_summary_he) || ANONYMIZED_CV_TEXT;
+    const origText = (studioProfileCache && studioProfileCache.baseline_summary_he) || ORIGINAL_CV_SUMMARY_TEXT;
+
     if (isChecked) {
-      preview.value = ANONYMIZED_CV_TEXT;
+      preview.value = anonText;
       showToast('מצב אנונימי פעיל: כל הפרטים המזהים הוסתרו', 'success');
     } else {
-      preview.value = ORIGINAL_CV_SUMMARY_TEXT;
+      preview.value = origText;
       showToast('מצב אנונימי כבוי: מוצגים פרטים מלאים', 'info');
     }
   }
 
   function copyAnonymizedCv() {
     const preview = document.getElementById('anonymizedPreviewArea');
-    const textToCopy = preview ? preview.value : ANONYMIZED_CV_TEXT;
+    const fallbackAnon = (studioProfileCache && studioProfileCache.anonymized_summary_he) || ANONYMIZED_CV_TEXT;
+    const textToCopy = preview ? preview.value : fallbackAnon;
 
     if (navigator.clipboard) {
       navigator.clipboard.writeText(textToCopy).then(() => {
@@ -6879,7 +7080,695 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     }
   }
 
-  // Window Exposures for Milestones 4, 5, 6
+  // ==========================================================================
+  // Career Studio Unified Bridge Client, Clarifications & A4 PDF Export
+  // ==========================================================================
+
+  let studioBridgeConnected = false;
+  let studioProfileCache = null;
+  let studioDeepAnalysisState = null;
+  let studioClarificationAnswers = [];
+  let studioAppliedBullets = [];
+  let studioTailoredPackage = null;
+  let studioActivePreviewTab = 'cv';
+
+  function getStudioBridgeBaseUrl() {
+    if (typeof window !== 'undefined' && window.__STUDIO_BRIDGE_URL__) {
+      return String(window.__STUDIO_BRIDGE_URL__).replace(/\/$/, '');
+    }
+    if (typeof window !== 'undefined' && window.location) {
+      const origin = window.location.origin || '';
+      if (/^https?:\/\/(?:127\.0\.0\.1|localhost):8765$/i.test(origin)) {
+        return '';
+      }
+    }
+    return 'http://127.0.0.1:8765';
+  }
+
+  async function callStudioBridge(endpoint, payload = null, method = 'POST', timeoutMs = 45000) {
+    if (typeof fetch !== 'function') {
+      throw new Error('fetch אינו זמין בסביבה זו');
+    }
+    const base = getStudioBridgeBaseUrl();
+    const url = `${base}${endpoint}`;
+    const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+    try {
+      const opts = {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        ...(controller ? { signal: controller.signal } : {})
+      };
+      if (method !== 'GET' && payload !== null) {
+        opts.body = JSON.stringify(payload);
+      }
+      const res = await fetch(url, opts);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const msg = data.error_message || `HTTP ${res.status}`;
+        const err = new Error(msg);
+        err.status = res.status;
+        err.payload = data;
+        throw err;
+      }
+      return data;
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  }
+
+  function applyStudioProfileSync(profile, savedOutputs) {
+    if (profile && typeof profile === 'object') {
+      studioProfileCache = profile;
+      if (profile.title_he && !window.customUploadedCvText) {
+        const nameEl = document.getElementById('studioCvFileName');
+        const subEl = document.getElementById('studioCvFileSub');
+        if (nameEl) nameEl.textContent = 'עידו גל — פרופיל בסיס (base_profile.md)';
+        if (subEl) subEl.textContent = profile.title_he;
+      }
+    }
+    if (Array.isArray(savedOutputs)) {
+      renderSavedOutputsList(savedOutputs);
+    }
+  }
+
+  function renderSavedOutputsList(files) {
+    const listEl = document.getElementById('studioSavedOutputsList');
+    if (!listEl || typeof document.createElement !== 'function') return;
+    if (!Array.isArray(files) || files.length === 0) {
+      const li = document.createElement('li');
+      li.className = 'studio-empty-item';
+      li.textContent = 'טרם נשמרו תוצרים בתיקיית output.';
+      listEl.replaceChildren(li);
+      return;
+    }
+    const nodes = files.map(item => {
+      const li = document.createElement('li');
+      const name = typeof item === 'string' ? item : (item.name || '');
+      const meta = (item && item.modified_at) ? ` (${item.modified_at})` : '';
+      li.textContent = `${name}${meta}`;
+      return li;
+    });
+    listEl.replaceChildren(...nodes);
+  }
+
+  function setBridgeUiState(isOnline) {
+    studioBridgeConnected = Boolean(isOnline);
+    const dotEl = document.getElementById('studioBridgeStatusDot');
+    const txtEl = document.getElementById('studioBridgeStatusText');
+    if (dotEl) {
+      dotEl.classList.remove('online', 'offline');
+      dotEl.classList.add(isOnline ? 'online' : 'offline');
+    }
+    if (txtEl) {
+      txtEl.textContent = isOnline
+        ? 'מחובר לגשר AI מקומי (Gemini + Tailor)'
+        : 'מצב אופליין מקומי (ללא שרת AI)';
+    }
+  }
+
+  async function loadStaticStudioProfileFallback() {
+    if (typeof fetch !== 'function' || studioProfileCache) return;
+    try {
+      const res = await fetch('career/studio_profile.json');
+      if (res.ok) {
+        const data = await res.json();
+        applyStudioProfileSync(data, null);
+      }
+    } catch (e) {}
+  }
+
+  async function checkStudioBridgeHealth(notifyUser = false) {
+    if (typeof fetch !== 'function') {
+      setBridgeUiState(false);
+      return false;
+    }
+    try {
+      const health = await callStudioBridge('/api/health', null, 'GET', 4000);
+      if (health && health.ok) {
+        setBridgeUiState(true);
+        try {
+          const prof = await callStudioBridge('/api/profile', null, 'GET', 4000);
+          if (prof && prof.ok) {
+            applyStudioProfileSync(prof.profile, prof.saved_outputs || health.saved_outputs);
+          }
+        } catch (e) {
+          applyStudioProfileSync(null, health.saved_outputs);
+        }
+        if (notifyUser) showToast('חיבור לשרת הגשר המקומי (Gemini + Tailor) פעיל!', 'success');
+        return true;
+      }
+    } catch (e) {
+      setBridgeUiState(false);
+      await loadStaticStudioProfileFallback();
+      if (notifyUser) {
+        showToast('שרת הגשר אינו פעיל כרגע — הפעל: python3 scripts/studio_bridge.py', 'warning');
+      }
+    }
+    return false;
+  }
+
+  function checkStudioEmployerBlacklist(companyName, jobText = '') {
+    const defaults = ['energean', "אנרג'יאן", 'אנרגיאן', 'ingl', 'נתג"ז', 'נתג״ז', 'chevron', 'שברון'];
+    const excluded = (studioProfileCache && Array.isArray(studioProfileCache.excluded_employers) && studioProfileCache.excluded_employers.length > 0)
+      ? studioProfileCache.excluded_employers
+      : defaults;
+    const haystack = `${companyName || ''} ${(jobText || '').slice(0, 300)}`.toLowerCase();
+    if (!haystack.trim()) return { blocked: false, reason: '' };
+    for (const emp of excluded) {
+      const token = String(emp || '').trim().toLowerCase();
+      if (!token) continue;
+      if (haystack.includes(token)) {
+        return {
+          blocked: true,
+          reason: `המשרה תואמת לרשימת ההחרגות (${emp}) ואינה מיועדת להתאמת קורות חיים.`
+        };
+      }
+    }
+    return { blocked: false, reason: '' };
+  }
+
+  function updateStudioBlacklistWarning() {
+    const company = document.getElementById('atsCompanyInput')?.value || '';
+    const jobText = document.getElementById('atsJobInput')?.value || '';
+    const alertEl = document.getElementById('atsBlacklistAlert');
+    const txtEl = document.getElementById('atsBlacklistAlertText');
+    if (!alertEl || !txtEl) return false;
+    const res = checkStudioEmployerBlacklist(company, jobText);
+    if (res.blocked) {
+      alertEl.hidden = false;
+      txtEl.textContent = res.reason;
+      return true;
+    }
+    alertEl.hidden = true;
+    txtEl.textContent = '';
+    return false;
+  }
+
+  function setStudioPackageState(label) {
+    const pill = document.getElementById('studioPackageStatePill');
+    if (pill) pill.textContent = label;
+  }
+
+  function addStudioAppliedBullet(bulletText) {
+    const clean = String(bulletText || '').trim();
+    if (!clean) return;
+    if (!studioAppliedBullets.includes(clean)) {
+      studioAppliedBullets.push(clean);
+    }
+    const countEl = document.getElementById('studioAppliedBulletsCount');
+    const listEl = document.getElementById('studioAppliedBulletsList');
+    if (countEl) countEl.textContent = String(studioAppliedBullets.length);
+    if (listEl && typeof document.createElement === 'function') {
+      const nodes = studioAppliedBullets.map(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        return li;
+      });
+      listEl.replaceChildren(...nodes);
+    }
+  }
+
+  function createSafeMarkdownNodes(markdownText, targetDir = 'rtl') {
+    if (typeof document === 'undefined' || typeof document.createElement !== 'function') return [];
+    const frag = [];
+    let currentList = null;
+
+    const appendInlineBold = (parent, text) => {
+      const parts = String(text || '').split(/(\*\*[^*]+\*\*)/g);
+      parts.forEach(part => {
+        if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+          const strong = document.createElement('strong');
+          strong.textContent = part.slice(2, -2);
+          parent.appendChild(strong);
+        } else if (part) {
+          parent.appendChild(document.createTextNode(part));
+        }
+      });
+    };
+
+    const lines = String(markdownText || '').split(/\r?\n/);
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (!line) {
+        currentList = null;
+        continue;
+      }
+      if (line.startsWith('# ')) {
+        currentList = null;
+        const h1 = document.createElement('h1');
+        h1.dir = targetDir;
+        appendInlineBold(h1, line.slice(2));
+        frag.push(h1);
+      } else if (line.startsWith('## ')) {
+        currentList = null;
+        const h2 = document.createElement('h2');
+        h2.dir = targetDir;
+        appendInlineBold(h2, line.slice(3));
+        frag.push(h2);
+      } else if (line.startsWith('### ')) {
+        currentList = null;
+        const h3 = document.createElement('h3');
+        h3.dir = targetDir;
+        appendInlineBold(h3, line.slice(4));
+        frag.push(h3);
+      } else if (line.startsWith('* ') || line.startsWith('- ')) {
+        if (!currentList) {
+          currentList = document.createElement('ul');
+          currentList.dir = targetDir;
+          frag.push(currentList);
+        }
+        const li = document.createElement('li');
+        appendInlineBold(li, line.slice(2));
+        currentList.appendChild(li);
+      } else if (line.startsWith('---')) {
+        currentList = null;
+        frag.push(document.createElement('hr'));
+      } else {
+        currentList = null;
+        const p = document.createElement('p');
+        p.dir = targetDir;
+        appendInlineBold(p, line);
+        frag.push(p);
+      }
+    }
+    return frag;
+  }
+
+  function renderStudioPackagePreview() {
+    const pane = document.getElementById('studioTailorPreviewPane');
+    if (!pane || typeof document.createElement !== 'function') return;
+    if (!studioTailoredPackage) return;
+
+    const pkg = studioTailoredPackage;
+    const dir = (pkg.lang === 'en') ? 'ltr' : 'rtl';
+    pane.setAttribute('dir', dir);
+
+    if (studioActivePreviewTab === 'cover') {
+      const nodes = createSafeMarkdownNodes(pkg.cover_letter_markdown || '', dir);
+      pane.replaceChildren(...nodes);
+    } else if (studioActivePreviewTab === 'tips') {
+      const h = document.createElement('h2');
+      h.dir = 'rtl';
+      h.textContent = 'דגשים לשיחת סינון ראשוני וראיון:';
+      const ul = document.createElement('ul');
+      ul.dir = 'rtl';
+      (pkg.interview_talking_points || []).forEach(tp => {
+        const li = document.createElement('li');
+        li.textContent = tp;
+        ul.appendChild(li);
+      });
+      pane.setAttribute('dir', 'rtl');
+      pane.replaceChildren(h, ul);
+    } else {
+      const nodes = createSafeMarkdownNodes(pkg.cv_markdown || '', dir);
+      pane.replaceChildren(...nodes);
+    }
+  }
+
+  function switchPackagePreviewTab(tabKey) {
+    studioActivePreviewTab = ['cv', 'cover', 'tips'].includes(tabKey) ? tabKey : 'cv';
+    const tabIds = { cv: 'pkgTabCv', cover: 'pkgTabCover', tips: 'pkgTabTips' };
+    Object.keys(tabIds).forEach(k => {
+      const btn = document.getElementById(tabIds[k]);
+      if (!btn) return;
+      const isSel = (k === studioActivePreviewTab);
+      btn.classList.toggle('active', isSel);
+      btn.setAttribute('aria-selected', isSel ? 'true' : 'false');
+    });
+    renderStudioPackagePreview();
+  }
+
+  async function fetchStudioJobFromUrl() {
+    const urlInput = document.getElementById('atsJobUrlInput');
+    const btn = document.getElementById('btnFetchJobUrl');
+    const url = urlInput ? urlInput.value.trim() : '';
+    if (!url || !/^https?:\/\//i.test(url)) {
+      if (urlInput) {
+        urlInput.setAttribute('aria-invalid', 'true');
+        urlInput.focus();
+      }
+      showToast('יש להזין כתובת http/https תקינה של המשרה.', 'warning');
+      return;
+    }
+    if (urlInput) urlInput.removeAttribute('aria-invalid');
+    if (btn) btn.disabled = true;
+    try {
+      const res = await callStudioBridge('/api/studio/ingest', {
+        url,
+        company: document.getElementById('atsCompanyInput')?.value || '',
+        title: document.getElementById('atsTitleInput')?.value || ''
+      }, 'POST', 35000);
+      if (res && res.ok && res.job) {
+        const companyEl = document.getElementById('atsCompanyInput');
+        const titleEl = document.getElementById('atsTitleInput');
+        const jobEl = document.getElementById('atsJobInput');
+        if (companyEl && res.job.company) companyEl.value = res.job.company;
+        if (titleEl && res.job.title) titleEl.value = res.job.title;
+        if (jobEl) jobEl.value = res.job.description || '';
+        triggerAtsMatching();
+        updateStudioBlacklistWarning();
+        setBridgeUiState(true);
+        showToast(res.degraded ? 'המשרה נשלפה בגיבוי מקומי (BS4)' : 'המשרה נשלפה בהצלחה!', 'success');
+      }
+    } catch (err) {
+      showToast(err.message || 'שליפת הקישור נכשלה — הדבק טקסט ידנית.', 'warning');
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function renderDeepAiInsights(res) {
+    const card = document.getElementById('atsAiInsightsCard');
+    const sourceBadge = document.getElementById('atsAiInsightsSourceBadge');
+    const summaryEl = document.getElementById('atsAiSummaryText');
+    const researchBox = document.getElementById('atsAiResearchBox');
+    const researchHeader = document.getElementById('atsAiResearchHeader');
+    const researchSummary = document.getElementById('atsAiResearchSummary');
+    const barsEl = document.getElementById('atsAiScorecardBars');
+    const clarSection = document.getElementById('atsClarificationsSection');
+    const clarFields = document.getElementById('atsClarificationsFields');
+    if (!card || typeof document.createElement !== 'function') return;
+
+    const an = res.analysis || {};
+    card.hidden = false;
+    if (sourceBadge) {
+      sourceBadge.textContent = res.degraded ? 'חילוץ מילולי חלקי (ללא ציון AI)' : `Gemini (${an.evaluation_model || 'active'})`;
+    }
+    if (summaryEl) summaryEl.textContent = an.match_summary || '';
+
+    if (researchBox && researchSummary && res.research && res.research.summary) {
+      researchBox.hidden = false;
+      if (researchHeader) {
+        researchHeader.textContent = res.research.is_live_data
+          ? `מחקר חברה חי (Tavily) — ${res.research.company_name}:`
+          : `הקשר תעשייתי (ללא מידע חי) — ${res.research.company_name}:`;
+      }
+      researchSummary.textContent = res.research.summary;
+    } else if (researchBox) {
+      researchBox.hidden = true;
+    }
+
+    if (barsEl) {
+      const entries = Object.entries(an.scorecard || {});
+      const rowNodes = entries.map(([cat, sc]) => {
+        const row = document.createElement('div');
+        row.className = 'studio-scorecard-row';
+        const left = document.createElement('span');
+        left.textContent = cat;
+        const right = document.createElement('strong');
+        right.textContent = `${sc}%`;
+        row.appendChild(left);
+        row.appendChild(right);
+        return row;
+      });
+      barsEl.replaceChildren(...rowNodes);
+    }
+
+    const qs = Array.isArray(an.clarification_questions) ? an.clarification_questions : [];
+    if (clarSection && clarFields) {
+      if (qs.length > 0) {
+        clarSection.hidden = false;
+        const fieldNodes = qs.map((qText, i) => {
+          const wrap = document.createElement('div');
+          wrap.className = 'studio-field-group';
+          const lbl = document.createElement('label');
+          lbl.setAttribute('for', `clarifyInput_${i}`);
+          lbl.className = 'ats-input-label';
+          lbl.textContent = `${i + 1}. ${qText}`;
+          const inp = document.createElement('input');
+          inp.type = 'text';
+          inp.id = `clarifyInput_${i}`;
+          inp.className = 'studio-clarification-input';
+          inp.dataset.question = qText;
+          inp.placeholder = 'הקלד מענה עובדתי קצר (אופציונלי — ללא המצאות)...';
+          wrap.appendChild(lbl);
+          wrap.appendChild(inp);
+          return wrap;
+        });
+        clarFields.replaceChildren(...fieldNodes);
+      } else {
+        clarSection.hidden = true;
+        clarFields.replaceChildren();
+      }
+    }
+  }
+
+  async function runDeepStudioAtsAnalysis() {
+    const jobText = document.getElementById('atsJobInput')?.value.trim() || '';
+    const company = document.getElementById('atsCompanyInput')?.value.trim() || '';
+    const title = document.getElementById('atsTitleInput')?.value.trim() || '';
+    const jobUrl = document.getElementById('atsJobUrlInput')?.value.trim() || '';
+    const runResearch = Boolean(document.getElementById('atsRunResearchToggle')?.checked);
+    const statusText = document.getElementById('atsBaselineStatusText');
+    const btn = document.getElementById('btnRunDeepAiAnalysis');
+
+    if (!jobText) {
+      showToast('הזן קודם תיאור משרה לניתוח.', 'warning');
+      return;
+    }
+    if (updateStudioBlacklistWarning()) {
+      showToast('המשרה נחסמה לפי רשימת ההחרגות.', 'error');
+      return;
+    }
+    if (btn) btn.disabled = true;
+    if (statusText) statusText.textContent = 'מריץ מחקר חברה וניתוח AI ב-GeminiPool...';
+
+    try {
+      const activeCv = (typeof getActiveCvProfile === 'function') ? getActiveCvProfile() : CANONICAL_CV_PROFILE;
+      const customText = (activeCv && activeCv !== CANONICAL_CV_PROFILE && activeCv.text) ? activeCv.text : '';
+      const res = await callStudioBridge('/api/ats/analyze', {
+        job_text: jobText,
+        job_url: jobUrl,
+        company,
+        title,
+        run_research: runResearch,
+        cv_text: customText
+      }, 'POST', 60000);
+
+      setBridgeUiState(true);
+      studioDeepAnalysisState = res;
+      if (res.job) {
+        const cEl = document.getElementById('atsCompanyInput');
+        const tEl = document.getElementById('atsTitleInput');
+        if (cEl && !cEl.value && res.job.company) cEl.value = res.job.company;
+        if (tEl && !tEl.value && res.job.title) tEl.value = res.job.title;
+      }
+      renderDeepAiInsights(res);
+      if (statusText) {
+        statusText.textContent = res.degraded
+          ? 'Gemini לא היה זמין — מוצג חילוץ מילולי חלקי'
+          : `ניתוח Gemini הושלם (${res.analysis?.overall_score ?? ''}%). בדוק הבהרות והמשך לעורך.`;
+      }
+      showToast('ניתוח AI עמוק הושלם!', 'success');
+    } catch (err) {
+      if (statusText) statusText.textContent = `ניתוח AI נכשל (${err.message}). מוצג ניתוח מקומי בלבד.`;
+      showToast(`לא ניתן להשלים ניתוח AI: ${err.message}`, 'warning');
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function proceedFromAtsToPackage() {
+    const inputs = document.querySelectorAll('.studio-clarification-input');
+    const collected = [];
+    inputs.forEach(inp => {
+      const ans = (inp.value || '').trim();
+      const q = (inp.dataset && inp.dataset.question) ? inp.dataset.question : '';
+      if (ans && q) collected.push(`שאלה: ${q} | מענה עידו: ${ans}`);
+    });
+    studioClarificationAnswers = collected;
+    switchStudioModule('writer');
+    if (typeof scrollToStudioStep === 'function') {
+      scrollToStudioStep('step-writer-5');
+    }
+    showToast(`נשמרו ${collected.length} הבהרות להפקת החבילה.`, 'info');
+  }
+
+  async function triggerAiBulletTransform() {
+    const inputEl = document.getElementById('writerRawInput');
+    const outputEl = document.getElementById('writerTransformedOutput');
+    const statusEl = document.getElementById('writerAiSourceStatus');
+    const btn = document.getElementById('btnAiBulletTransform');
+    const raw = inputEl ? inputEl.value.trim() : '';
+
+    if (!raw) {
+      showToast('הזן נקודת קורות חיים לשדרוג.', 'warning');
+      return;
+    }
+    if (btn) btn.disabled = true;
+    if (statusEl) statusEl.textContent = 'משכתב עם Gemini לפי base_profile.md...';
+
+    try {
+      const res = await callStudioBridge('/api/writer/tailor', {
+        raw_bullet: raw,
+        tone_mode: currentWriterTone || 'technical',
+        job_context: document.getElementById('atsJobInput')?.value || ''
+      }, 'POST', 35000);
+      if (res && res.ok && res.result && outputEl) {
+        outputEl.textContent = res.result.rewritten_bullet || '';
+        const analysis = validateBulletGrammar(outputEl.textContent);
+        renderGrammarAnalysis(analysis);
+        setBridgeUiState(true);
+        if (statusEl) statusEl.textContent = 'שודרג דרך Gemini (מאומת מול base_profile.md).';
+        showToast('הנקודה שודרגה בהצלחה באמצעות Gemini!', 'success');
+      }
+    } catch (err) {
+      triggerBulletTransform();
+      if (statusEl) statusEl.textContent = `שדרוג AI אינו זמין (${err.message}) — בוצע שדרוג חוקים מקומי.`;
+      showToast('בוצע שדרוג מילולי מקומי (שרת ה-AI אינו זמין).', 'warning');
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  async function generateTailoredPackageFromStudio() {
+    const jobText = document.getElementById('atsJobInput')?.value.trim() || '';
+    const company = document.getElementById('atsCompanyInput')?.value.trim() || '';
+    const title = document.getElementById('atsTitleInput')?.value.trim() || '';
+    const langRadio = document.querySelector('input[name="studioPackageLang"]:checked');
+    const lang = (langRadio && langRadio.value === 'en') ? 'en' : 'he';
+    const saveOutputs = Boolean(document.getElementById('pkgAutoSaveToggle')?.checked);
+    const btn = document.getElementById('btnGenerateTailoredPackage');
+
+    if (!jobText) {
+      showToast('בחר או הדבק משרה בטאב 1 (התאמת ATS) לפני ההפקה.', 'warning');
+      switchStudioModule('ats');
+      return;
+    }
+    if (updateStudioBlacklistWarning()) {
+      showToast('המשרה נחסמה לפי רשימת ההחרגות.', 'error');
+      return;
+    }
+
+    if (btn) btn.disabled = true;
+    setStudioPackageState('מעבד ב-Gemini...');
+    try {
+      const allClarifications = [...studioClarificationAnswers, ...studioAppliedBullets.map(b => `נקודה מאושרת לשילוב: ${b}`)];
+      const activeCv = (typeof getActiveCvProfile === 'function') ? getActiveCvProfile() : CANONICAL_CV_PROFILE;
+      const customText = (activeCv && activeCv !== CANONICAL_CV_PROFILE && activeCv.text) ? activeCv.text : '';
+      const res = await callStudioBridge('/api/studio/tailor', {
+        job_text: jobText,
+        company,
+        title,
+        lang,
+        tone_mode: currentWriterTone || 'technical',
+        clarifications: allClarifications,
+        analysis: studioDeepAnalysisState ? studioDeepAnalysisState.analysis : null,
+        research: studioDeepAnalysisState ? studioDeepAnalysisState.research : null,
+        save_outputs: saveOutputs,
+        cv_text: customText
+      }, 'POST', 60000);
+
+      if (res && res.ok && res.package) {
+        studioTailoredPackage = res.package;
+        setBridgeUiState(true);
+        const stageText = saveOutputs ? 'הופק ונשמר ל-output (אפס אמוג׳י)' : 'הופק ואומת (מוכן לייצוא)';
+        setStudioPackageState(stageText);
+
+        const unAlert = document.getElementById('studioUnmatchedAlert');
+        const unList = document.getElementById('studioUnmatchedList');
+        const unmatched = res.package.unmatched_requirements || [];
+        if (unAlert && unList && typeof document.createElement === 'function') {
+          if (unmatched.length > 0) {
+            unAlert.hidden = false;
+            const uNodes = unmatched.map(u => {
+              const li = document.createElement('li');
+              li.textContent = u;
+              return li;
+            });
+            unList.replaceChildren(...uNodes);
+          } else {
+            unAlert.hidden = true;
+            unList.replaceChildren();
+          }
+        }
+
+        switchPackagePreviewTab('cv');
+        if (Array.isArray(res.package.saved_files) && res.package.saved_files.length > 0) {
+          renderSavedOutputsList(res.package.saved_files);
+        }
+        showToast('חבילת המועמדות המותאמת הופקה בהצלחה!', 'success');
+      }
+    } catch (err) {
+      setStudioPackageState('נכשל — ניתן לנסות שוב');
+      showToast(`הפקת החבילה נכשלה: ${err.message}`, 'error');
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function printTailoredPackageA4() {
+    if (!studioTailoredPackage || !studioTailoredPackage.cv_markdown) {
+      showToast('הפק קודם חבילת קורות חיים כדי לייצא ל-PDF (A4).', 'warning');
+      return;
+    }
+    const win = window.open('', '_blank');
+    if (!win) {
+      showToast('הדפדפן חסם חלון הדפסה קופץ — אפשר חלונות קופצים עבור אתר זה.', 'warning');
+      return;
+    }
+    const isEn = (studioTailoredPackage.lang === 'en');
+    const doc = win.document;
+    doc.documentElement.lang = isEn ? 'en' : 'he';
+    doc.documentElement.dir = isEn ? 'ltr' : 'rtl';
+    doc.title = `CV - ${studioTailoredPackage.company || 'Ido Gal'}`;
+
+    const styleEl = doc.createElement('style');
+    styleEl.textContent = `
+      @page { size: A4 portrait; margin: 10mm 12mm; }
+      body { font-family: Arial, Rubik, sans-serif; color: #0f172a; line-height: 1.35; font-size: 10pt; margin: 0; }
+      h1 { font-size: 16pt; margin: 0 0 4px; }
+      h2 { font-size: 11pt; color: #0369a1; border-bottom: 1.5px solid #0284c7; margin: 8px 0 4px; padding-bottom: 2px; }
+      h3 { font-size: 10pt; margin: 5px 0 2px; }
+      p { margin: 2px 0; }
+      ul { margin: 2px 0 4px; padding-inline-start: 16px; }
+      li { margin-bottom: 2px; break-inside: avoid; }
+    `;
+    doc.head.appendChild(styleEl);
+
+    const nodes = createSafeMarkdownNodes(studioTailoredPackage.cv_markdown, isEn ? 'ltr' : 'rtl');
+    doc.body.replaceChildren(...nodes);
+    setStudioPackageState('נשלח לייצוא PDF (A4)');
+    setTimeout(() => {
+      win.focus();
+      win.print();
+    }, 150);
+  }
+
+  async function exportTailoredPackageToOutput() {
+    if (!studioTailoredPackage || !studioTailoredPackage.cv_markdown) {
+      showToast('הפק קודם חבילה מותאמת לפני השמירה.', 'warning');
+      return;
+    }
+    try {
+      const res = await callStudioBridge('/api/studio/export', {
+        company: studioTailoredPackage.company || document.getElementById('atsCompanyInput')?.value || 'Company',
+        lang: studioTailoredPackage.lang || 'he',
+        cv_markdown: studioTailoredPackage.cv_markdown,
+        cover_letter_markdown: studioTailoredPackage.cover_letter_markdown || ''
+      }, 'POST', 20000);
+      if (res && res.ok) {
+        setStudioPackageState('נשמר ל-tools/cv_tailor/output');
+        renderSavedOutputsList(res.saved_files || []);
+        showToast('הקבצים נשמרו ב-tools/cv_tailor/output!', 'success');
+      }
+    } catch (err) {
+      showToast(`שמירה לשרת נכשלה: ${err.message}`, 'error');
+    }
+  }
+
+  // Window Exposures for Milestones 4, 5, 6 and Studio Bridge
+  window.checkStudioBridgeHealth = checkStudioBridgeHealth;
+  window.fetchStudioJobFromUrl = fetchStudioJobFromUrl;
+  window.runDeepStudioAtsAnalysis = runDeepStudioAtsAnalysis;
+  window.proceedFromAtsToPackage = proceedFromAtsToPackage;
+  window.triggerAiBulletTransform = triggerAiBulletTransform;
+  window.generateTailoredPackageFromStudio = generateTailoredPackageFromStudio;
+  window.switchPackagePreviewTab = switchPackagePreviewTab;
+  window.printTailoredPackageA4 = printTailoredPackageA4;
+  window.exportTailoredPackageToOutput = exportTailoredPackageToOutput;
+  window.updateStudioBlacklistWarning = updateStudioBlacklistWarning;
 
 
   function scrollToStudioStep(stepId) {
@@ -6929,6 +7818,8 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     initWriterModule();
     initInterviewModule();
     initSkillsModule();
+    renderStarHistoryList(loadStarHistory());
+    await checkStudioBridgeHealth(false);
 
     const rawHash = (window.location.hash || '').replace('#', '').trim();
     let initialMode = 'radar';

@@ -29,6 +29,7 @@ class TemplateDocsSyncTests(unittest.TestCase):
             ("frontend/js/app.js", "docs/js/app.js"),
             ("frontend/data/cv/cv_he.html", "docs/career/cv/cv_he.html"),
             ("frontend/data/cv/cv_en.html", "docs/career/cv/cv_en.html"),
+            ("frontend/data/studio_profile.json", "docs/career/studio_profile.json"),
         ]
         modules_dir = ROOT / "frontend/js/modules"
         if modules_dir.exists():

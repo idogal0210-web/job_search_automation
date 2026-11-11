@@ -62,6 +62,59 @@ class EvaluationUnavailable(RuntimeError):
         super().__init__(json.dumps(reasons, sort_keys=True))
 
 
+class AtsScorecardCategory(BaseModel):
+    model_config = ConfigDict(strict=True)
+    category: str = Field(min_length=1)
+    score: int = Field(ge=0, le=100)
+
+
+class AtsStudioAnalysisSchema(BaseModel):
+    model_config = ConfigDict(strict=True)
+    overall_score: int = Field(ge=0, le=100)
+    match_summary: str = Field(min_length=1)
+    scorecard: list[AtsScorecardCategory] = Field(default_factory=list)
+    matched_keywords: list[str] = Field(default_factory=list)
+    missing_keywords: list[str] = Field(default_factory=list)
+    key_strengths: list[str] = Field(default_factory=list)
+    clarification_questions: list[str] = Field(default_factory=list)
+    recommended_changes: list[str] = Field(default_factory=list)
+    unmatched_requirements: list[str] = Field(default_factory=list)
+
+
+class TailoredCvPackageSchema(BaseModel):
+    model_config = ConfigDict(strict=True)
+    cv_markdown: str = Field(min_length=1)
+    cover_letter_markdown: str = Field(min_length=1)
+    interview_talking_points: list[str] = Field(default_factory=list)
+    unmatched_requirements: list[str] = Field(default_factory=list)
+
+
+class CvTailoredBulletSchema(BaseModel):
+    model_config = ConfigDict(strict=True)
+    rewritten_bullet: str = Field(min_length=1)
+    tone_mode: Literal["technical", "operational", "strategic"]
+    active_verb: str = ""
+    system_scope: str = ""
+    metric_or_hse: str = ""
+    grounded_in_profile: bool = True
+    note_he: str = ""
+
+
+class StarInterviewEvaluationSchema(BaseModel):
+    model_config = ConfigDict(strict=True)
+    total_score: int = Field(ge=0, le=100)
+    situation_score: int = Field(ge=0, le=20)
+    situation_feedback: str = ""
+    task_score: int = Field(ge=0, le=20)
+    task_feedback: str = ""
+    action_score: int = Field(ge=0, le=40)
+    action_feedback: str = ""
+    result_score: int = Field(ge=0, le=20)
+    result_feedback: str = ""
+    golden_answer: str = ""
+    improvement_tips: list[str] = Field(default_factory=list)
+
+
 def classify_error(error):
     if isinstance(error, (ValidationError, json.JSONDecodeError)):
         return "invalid_response"
