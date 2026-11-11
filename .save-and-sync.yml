@@ -21,6 +21,7 @@ protected_paths:
   - "frontend/**"
   - "scripts/**"
   - "PROJECT_CONTEXT.md"
+  - "TASKS.md"
   - "README.md"
 
 # Tier 2: Ephemeral & Disposable Patterns (Immediate safe removal on CLEAN / SYNC_AND_CLEAN)
