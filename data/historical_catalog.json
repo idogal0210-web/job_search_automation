@@ -22207,5 +22207,215 @@
     "p25": 13000,
     "p50": 14500,
     "p75": 16000
+  },
+  "https://il.linkedin.com/jobs/view/uav-station-technician-at-yael-korentec-technologies-4490340804": {
+    "link": "https://il.linkedin.com/jobs/view/uav-station-technician-at-yael-korentec-technologies-4490340804",
+    "title": "UAV Station Technician",
+    "company": "Yael Korentec Technologies",
+    "snippet": "Requirements\nEducation:\nPractical Engineer or Technician diploma in Electronics, Avionics, Mechatronics, or a related technical discipline.\nTechnical Experience:\nPractical hands-on experience in electronics assembly, wiring harness fabrication, system integration, and troubleshooting.\nInstrumentation & IT:\nProficiency with electronic measurement equipment (multimeters, oscilloscopes, signal generators) and strong computer/IT skills (hardware setup, software installation, networking basics).\nWork Ethic & Traits:\nHigh technical aptitude, strong problem-solving capabilities, ability to work independently under dynamic field conditions, and excellent teamwork.\nField Readiness:\nHigh willingness to participate in intensive outdoor field trials, including occasional irregular hours.\nLanguage:\nGood technical English skills (ability to read schematics, manuals, and technical specification sheets).\nPreferred Qualifications & Advantages (Highlight)\nIsraeli Air Force (IAF) Veterans:\nMajor Advantage!\nPrior military service as a technician or practical engineer in Israeli Air Force (IAF) technological units—specifically within UAV platforms, Ground Control Stations (GCS), avionics, RF/telemetry, or electronic warfare systems.\nExperience with UAV communication systems (Data Links, RF, SATCOM), payloads, or flight control systems.\nExperience operating Automated Test Equipment (ATE) or hardware simulator environments.",
+    "query": "UAV Technician",
+    "source": "LinkedIn",
+    "location": "ישראל",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFq2n4jjN5FiA/company-logo_100_100/B4DZ87.GThIEAU-/0/1783417562602/korentec_logo?e=2147483647&v=beta&t=trMbBadqYi9XWlNYf2ahMGW3z9uiAmC2W-6EweIhAeU",
+    "date": "2026-11-12",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "Requirements\nEducation:\nPractical Engineer or Technician diploma in Electronics, Avionics, Mechatronics, or a related technical discipline.\nTechnical Experience:\nPractical hands-on experience in electronics assembly, wiring harness fabrication, system integration, and troubleshooting.\nInstrumentation & IT:\nProficiency with electronic measurement equipment (multimeters, oscilloscopes, signal generators) and strong computer/IT skills (hardware setup, software installation, networking basics).\nWork Ethic & Traits:\nHigh technical aptitude, strong problem-solving capabilities, ability to work independently under dynamic field conditions, and excellent teamwork.\nField Readiness:\nHigh willingness to participate in intensive outdoor field trials, including occasional irregular hours.\nLanguage:\nGood technical English skills (ability to read schematics, manuals, and technical specification sheets).\nPreferred Qualifications & Advantages (Highlight)\nIsraeli Air Force (IAF) Veterans:\nMajor Advantage!\nPrior military service as a technician or practical engineer in Israeli Air Force (IAF) technological units—specifically within UAV platforms, Ground Control Stations (GCS), avionics, RF/telemetry, or electronic warfare systems.\nExperience with UAV communication systems (Data Links, RF, SATCOM), payloads, or flight control systems.\nExperience operating Automated Test Equipment (ATE) or hardware simulator environments.",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 85,
+    "concrete_matches_count": 5,
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע טכני רב-תחומי, ניסיון בשטח ומערכות בלתי מאוישות.",
+    "sector_key": "drones",
+    "sector": "רחפנים ומערכות בלתי מאוישות",
+    "company_domain_product": "Yael Korentec Technologies",
+    "job_summary": "דרוש טכנאי תחנת רחפנים להרכבה, אינטגרציה, פתרון תקלות וניסויי שדה במערכות בלתי מאוישות.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם רקע טכני מעשי, התנסות במערכות אלקטרו-מכניות ויכולת עבודה בשטח.",
+    "key_highlights": "התאמה מלאה לדרישת הנדסאי, רקע בבדיקות מערכות ויכולת עבודה תחת תנאי שדה דינמיים.",
+    "company_size": "לא צוין",
+    "junior_openness": "פתוח למשרת טכנאי המזמינה בוגרים וטכנאים מתאימים",
+    "work_model": "שטח ואינטגרציה",
+    "company_requirements": "הנדסאי/טכנאי אלקטרוניקה, אוויוניקה, מכטרוניקה או תחום קרוב; ניסיון מעשי באינטגרציה ופתרון תקלות; נכונות לניסויי שדה.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "Practical Engineer or Technician diploma in Electronics, Avionics, Mechatronics, or a related technical discipline.",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Practical Engineer or Technician diploma in Electronics, Avionics, Mechatronics, or a related technical discipline.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בתואר הנדסאי מוסמך, המתאים לדרישת ההשכלה הטכנית במשרה."
+      },
+      {
+        "requirement": "Practical hands-on experience in electronics assembly, wiring harness fabrication, system integration, and troubleshooting.",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Practical hands-on experience in electronics assembly, wiring harness fabrication, system integration, and troubleshooting.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting, drone/UAV integration and flight operations.",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון מעשי באבטחת אינטגרציה של מערכות אלקטרו-מכניות ורחפנים ופתרון תקלות."
+      },
+      {
+        "requirement": "High willingness to participate in intensive outdoor field trials, including occasional irregular hours.",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "High willingness to participate in intensive outdoor field trials, including occasional irregular hours.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח\"ל).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד בעל רקע קרבי ומבצעי מובהק, המעיד על יכולת גבוהה לעבודה שטח אינטנסיבית."
+      }
+    ],
+    "evaluation_model": "gemini-3.5-flash-lite",
+    "evaluation_source": "gemini",
+    "evaluation_complete": true,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "is_target_company": false,
+    "disqualification_reason": "",
+    "target_category": "",
+    "evidence_status": "verified_quotes",
+    "salary_range": "14,000 - 19,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: רחפנים, כטב״ם ומערכות C-UAS.",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: רחפנים, כטב״ם ומערכות C-UAS"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": false,
+    "has_company_car": false,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 14000,
+    "p50": 16500,
+    "p75": 19000
+  },
+  "https://www.drushim.co.il/job/38892870/a0fa7d86/": {
+    "link": "https://www.drushim.co.il/job/38892870/a0fa7d86/",
+    "title": "טכנאי/ת שטח למערכות פינוי אשפה פנאומטיות",
+    "company": "אלונטק",
+    "snippet": "א\nטכנאי/ת שטח למערכות פינוי אשפה פנאומטיות\nאלונטק\nפתח תקווה\nללא נסיון\nמשרה מלאה\nלפני 6 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nאלונטק מתמחה במערכות פינוי אשפה פנאומטיות בפרויקטי מגורים מובילים בישראל. אנחנו מגייסים טכנאי/ת שטח לצוות השירות והתחזוקה.\nתיאור התפקיד:\nתחזוקה שוטפת ומונעת של מערכות אשפה פנאומטיות באתרי לקוחות.\nאיתור ותיקון תקלות מכניות, חשמליות ופנאומטיות.\nטיפול בדחסניות, בוכנות, מנועים, חיישנים ומכלולים מכניים.\nמתן שירות מקצועי ואדיב ללקוחות בשטח.\nחשוב לנו לומר מראש: העבודה כוללת עבודה פיזית בחדרי אשפה ובסביבה שאינה תמיד נקייה. לצד זה תפגשו טכנולוגיה מתקדמת, אפשרויות להתקדמות ופיתוח אישי, אתגרים מקצועיים מגוונים וסיפוק אמיתי מפתרון תקלות בשטח.\nאנחנו מציעים:\nהכשרה מקצועית מלאה, ללא צורך בניסיון קודם בתחום\nרכב חברה צמוד\nמשרה מלאה ויציבה\nרכישת מקצוע ייחודי\nדרישות התפקיד\nרקע טכני (הנדסאי/טכנאי מכונות, חשמל או אחזקה – יתרון)\nניסיון בעבודה עם מערכות מכניות, חשמליות או פנאומטיות – יתרון משמעותי\nאחריות, יכולת עבודה עצמאית ושירותיות\nרישיון נהיגה ב' בתוקף\nנכונות לעבודת שטח וניידות בין אתרים\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nבעלי מקצוע\nתחומים\nאחזקה\nטכנאי/ת\nמתקינים",
+    "query": "טכנאי מערכות BMS",
+    "source": "Drushim",
+    "location": "פתח תקווה",
+    "logo": "",
+    "date": "2026-11-12",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "א\nטכנאי/ת שטח למערכות פינוי אשפה פנאומטיות\nאלונטק\nפתח תקווה\nללא נסיון\nמשרה מלאה\nלפני 6 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nאלונטק מתמחה במערכות פינוי אשפה פנאומטיות בפרויקטי מגורים מובילים בישראל. אנחנו מגייסים טכנאי/ת שטח לצוות השירות והתחזוקה.\nתיאור התפקיד:\nתחזוקה שוטפת ומונעת של מערכות אשפה פנאומטיות באתרי לקוחות.\nאיתור ותיקון תקלות מכניות, חשמליות ופנאומטיות.\nטיפול בדחסניות, בוכנות, מנועים, חיישנים ומכלולים מכניים.\nמתן שירות מקצועי ואדיב ללקוחות בשטח.\nחשוב לנו לומר מראש: העבודה כוללת עבודה פיזית בחדרי אשפה ובסביבה שאינה תמיד נקייה. לצד זה תפגשו טכנולוגיה מתקדמת, אפשרויות להתקדמות ופיתוח אישי, אתגרים מקצועיים מגוונים וסיפוק אמיתי מפתרון תקלות בשטח.\nאנחנו מציעים:\nהכשרה מקצועית מלאה, ללא צורך בניסיון קודם בתחום\nרכב חברה צמוד\nמשרה מלאה ויציבה\nרכישת מקצוע ייחודי\nדרישות התפקיד\nרקע טכני (הנדסאי/טכנאי מכונות, חשמל או אחזקה – יתרון)\nניסיון בעבודה עם מערכות מכניות, חשמליות או פנאומטיות – יתרון משמעותי\nאחריות, יכולת עבודה עצמאית ושירותיות\nרישיון נהיגה ב' בתוקף\nנכונות לעבודת שטח וניידות בין אתרים\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nבעלי מקצוע\nתחומים\nאחזקה\nטכנאי/ת\nמתקינים",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 65,
+    "concrete_matches_count": 3,
+    "reasoning": "הסמכת הנדסאי מכונות ורקע אלקטרו-מכני מתאימים לדרישות תחזוקת המערכות בשטח.",
+    "sector_key": "operations",
+    "sector": "תפעול ותחזוקת שטח",
+    "company_domain_product": "מערכות פינוי אשפה פנאומטיות",
+    "job_summary": "מתן שירות, איתור תקלות ותחזוקה מונעת ושוטפת למערכות פינוי אשפה פנאומטיות ומכלולים אלקטרו-מכניים באתרי לקוחות.",
+    "experience_strengths": "השכלה כהנדסאי מכונות, רקע במערכות אלקטרו-מכניות ומוכנות לעבודת שטח פיזית.",
+    "key_highlights": "הכשרה מקצועית מלאה על חשבון החברה, רכב חברה צמוד, משרה ללא צורך בניסיון קודם.",
+    "company_size": "unknown",
+    "junior_openness": "גבוהה מאוד (מפורט במפורש ללא צורך בניסיון קודם והכשרה מלאה)",
+    "work_model": "משרה מלאה, עבודת שטח וניידות",
+    "company_requirements": "רקע טכני (הנדסאי מכונות - יתרון), ניסיון במערכות מכניות/חשמליות/פנאומטיות (יתרון), רישיון נהיגה ב', נכונות לעבודה פיזית בשטח.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "רקע טכני (הנדסאי/טכנאי מכונות, חשמל או אחזקה – יתרון)",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "רקע טכני (הנדסאי/טכנאי מכונות, חשמל או אחזקה – יתרון)",
+          "source_field": "דרישות התפקיד"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "למועמד הסמכה רשמית כהנדסאי מכונות המתאימה בדיוק לדרישת היתרון."
+      },
+      {
+        "requirement": "ניסיון בעבודה עם מערכות מכניות, חשמליות או פנאומטיות – יתרון משמעותי",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "ניסיון בעבודה עם מערכות מכניות, חשמליות או פנאומטיות – יתרון משמעותי",
+          "source_field": "דרישות התפקיד"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ידע ורקע טכני בעבודה ואיתור תקלות במערכות אלקטרו-מכניות."
+      },
+      {
+        "requirement": "נכונות לעבודת שטח וניידות בין אתרים",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "נכונות לעבודת שטח וניידות בין אתרים",
+          "source_field": "דרישות התפקיד"
+        },
+        "profile_evidence": {
+          "quote": "Field, Integration & Hands-on: Electro-mechanical systems, site supervision",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע פיקודי וטכני נרחב בעבודת שטח."
+      }
+    ],
+    "evaluation_model": "gemini-3.5-flash",
+    "evaluation_source": "gemini",
+    "evaluation_complete": true,
+    "base_match_score": 65,
+    "priority_bonus": 0,
+    "is_target_company": false,
+    "disqualification_reason": "",
+    "target_category": "",
+    "evidence_status": "verified_quotes",
+    "salary_range": "11,500 - 15,000 ₪ + רכב צמוד",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": false,
+    "has_company_car": true,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 11500,
+    "p50": 13250,
+    "p75": 15000
   }
 }
