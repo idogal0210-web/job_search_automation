@@ -4417,6 +4417,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         }
       }
     });
+
+    if (typeof StudioState !== 'undefined' && StudioState) {
+      StudioState.activeModule = activeModule;
+    }
+    if (typeof renderStickyLivePreview === 'function') {
+      renderStickyLivePreview();
+    }
   }
 
   /**
@@ -5655,6 +5662,30 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     renderKeywordTaxonomy(report.missingKeywords, report.matchedKeywords, jobText);
     renderAtsStructuralChecklist(report.structuralCompliance);
 
+    if (typeof StudioState !== 'undefined' && StudioState) {
+      StudioState.matchScore = score;
+      StudioState.atsKeywordsMatched = [
+        ...(report.matchedKeywords.methodologies || []),
+        ...(report.matchedKeywords.financials || []),
+        ...(report.matchedKeywords.systems || []),
+        ...(report.matchedKeywords.energy || [])
+      ];
+      StudioState.atsKeywordsMissing = [
+        ...(report.missingKeywords.methodologies || []),
+        ...(report.missingKeywords.financials || []),
+        ...(report.missingKeywords.systems || []),
+        ...(report.missingKeywords.energy || [])
+      ];
+      const titleVal = (document.getElementById('atsJobTitleInput')?.value || '').trim();
+      const compVal = (document.getElementById('atsCompanyInput')?.value || '').trim();
+      if (titleVal || compVal) {
+        StudioState.lastSourceLabel = `יעד: ${[compVal, titleVal].filter(Boolean).join(' - ')}`;
+      }
+      if (typeof renderStickyLivePreview === 'function') {
+        renderStickyLivePreview();
+      }
+    }
+
     // Progressive step subtle glow transition
     if (jobText && jobText.trim()) {
       setAtsActiveStep(2);
@@ -5667,7 +5698,9 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     const listEl = document.getElementById('atsHardGatesList');
     if (!listEl) return;
 
-    let html = '';
+    const priorityRows = [];
+    const passedRows = [];
+
     STATUTORY_HARD_GATES.forEach(gate => {
       const activeMatch = (triggeredGates || []).find(g => g.id === gate.id);
       const isTriggered = Boolean(activeMatch);
@@ -5710,7 +5743,7 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
 
       const rowClass = `ats-gate-row ${isTriggered ? 'is-triggered' : ''} ${isTriggered && status === 'GAP' ? 'is-gap' : ''}`;
 
-      html += `
+      const rowHtml = `
         <div class="${rowClass}">
           <div class="ats-gate-main">
             <div class="ats-gate-name-wrap">
@@ -5736,7 +5769,30 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
           ${note ? `<div class="ats-gate-note"><i class="ph-duotone ph-warning"></i> ${note}</div>` : ''}
         </div>
       `;
+
+      const needsAttention = status === 'GAP' || status === 'IN_PROGRESS' || status === 'PASS_REFRESH_RECOMMENDED' || (isTriggered && status !== 'PASS');
+      if (needsAttention) {
+        priorityRows.push(rowHtml);
+      } else {
+        passedRows.push(rowHtml);
+      }
     });
+
+    let html = priorityRows.join('');
+    if (passedRows.length > 0) {
+      const openAttr = priorityRows.length === 0 ? ' open' : '';
+      html += `
+        <details class="studio-passed-gates-accordion"${openAttr}>
+          <summary class="studio-passed-gates-summary">
+            <span>שערי סף תואמים / לא פעילים במשרה זו (${passedRows.length})</span>
+            <i class="ph-bold ph-caret-down studio-accordion-chevron" aria-hidden="true"></i>
+          </summary>
+          <div class="studio-passed-gates-body">
+            ${passedRows.join('')}
+          </div>
+        </details>
+      `;
+    }
 
     listEl.innerHTML = html;
   }
@@ -6499,14 +6555,23 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     const txt = outputEl.textContent.trim();
     if (!txt || outputEl.querySelector('.writer-output-placeholder')) return;
 
+    if (typeof StudioState !== 'undefined' && StudioState) {
+      StudioState.highlightedLine = txt;
+      StudioState.selectedPreviewLine = '';
+    }
+
     if (typeof addStudioAppliedBullet === 'function') {
       addStudioAppliedBullet(txt);
+    }
+
+    if (typeof renderStickyLivePreview === 'function') {
+      renderStickyLivePreview();
     }
 
     const btn = document.getElementById('btnApplyToCv');
     if (btn) {
       const orig = btn.innerHTML;
-      btn.innerHTML = '<i class="ph-duotone ph-check-circle"></i> <span>הוחל והתווסף לחבילה!</span>';
+      btn.innerHTML = '<i class="ph-duotone ph-check-circle"></i> <span>הוחל והתווסף לתצוגה החיה!</span>';
       setTimeout(() => { btn.innerHTML = orig; }, 2000);
     }
   }
@@ -6601,8 +6666,15 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     } else {
       inputEl.value = snippet;
     }
+    const dlg = document.getElementById('studioGlossaryDialog');
+    if (dlg && dlg.open && typeof dlg.close === 'function') {
+      dlg.close();
+    }
     onWriterInputChanged();
     triggerBulletTransform();
+    if (typeof inputEl.focus === 'function') {
+      inputEl.focus();
+    }
   }
 
   function initWriterModule() {
@@ -7046,21 +7118,109 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     if (toggle) toggle.checked = false;
   }
 
+  function escapeRegExpTokens(str) {
+    return String(str || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function redactSensitiveText(rawText) {
+    let text = String(rawText || '');
+    if (!text) return '';
+
+    text = text.replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, 'candidate@confidential.il');
+    text = text.replace(/(?:\+972[-\s]?|0)5\d[-\s]?\d{3}[-\s]?\d{4}/g, '[טלפון מוסתר]');
+
+    const candidateNames = ['עידו גל', 'Ido Gal'];
+    if (studioProfileCache && studioProfileCache.candidate_name) {
+      candidateNames.push(studioProfileCache.candidate_name);
+    }
+    candidateNames
+      .filter(Boolean)
+      .sort((a, b) => b.length - a.length)
+      .forEach(name => {
+        text = text.replace(new RegExp(escapeRegExpTokens(name), 'gi'), '[מועמד בכיר בתחום האנרגיה]');
+      });
+
+    const baseEmployers = [
+      'Energean Israel Ltd.',
+      'Israel Natural Gas Lines',
+      'נתיבי הגז הטבעי לישראל',
+      'Energean',
+      'INGL',
+      'נתג״ז',
+      'נתג"ז'
+    ];
+    const cacheEmployers = (studioProfileCache && Array.isArray(studioProfileCache.excluded_employers))
+      ? studioProfileCache.excluded_employers
+      : [];
+    const allEmployers = Array.from(new Set([...baseEmployers, ...cacheEmployers].filter(Boolean)))
+      .sort((a, b) => b.length - a.length);
+
+    allEmployers.forEach(emp => {
+      text = text.replace(new RegExp(escapeRegExpTokens(emp), 'gi'), '[חברת תשתיות ואנרגיה מובילה]');
+    });
+
+    return text;
+  }
+
   function toggleAnonymizerMode(isChecked) {
     isAnonymizerActive = isChecked;
     const preview = document.getElementById('anonymizedPreviewArea');
     if (!preview) return;
 
-    const anonText = (studioProfileCache && studioProfileCache.anonymized_summary_he) || ANONYMIZED_CV_TEXT;
-    const origText = (studioProfileCache && studioProfileCache.baseline_summary_he) || ORIGINAL_CV_SUMMARY_TEXT;
+    const baseAnonText = (studioProfileCache && studioProfileCache.anonymized_summary_he) || ANONYMIZED_CV_TEXT;
+    const baseOrigText = (studioProfileCache && studioProfileCache.baseline_summary_he) || ORIGINAL_CV_SUMMARY_TEXT;
+    const customTailored = studioTailoredPackage && studioTailoredPackage.cv_markdown ? studioTailoredPackage.cv_markdown : '';
+    const extraBullets = Array.isArray(studioAppliedBullets) && studioAppliedBullets.length > 0
+      ? '\n\nתרומות ושדרוגים שהוחלו בעורך:\n' + studioAppliedBullets.map(b => '- ' + b).join('\n')
+      : '';
+
+    const fullDynamicSource = customTailored || `${baseOrigText}${extraBullets}`;
 
     if (isChecked) {
-      preview.value = anonText;
-      showToast('מצב אנונימי פעיל: כל הפרטים המזהים הוסתרו', 'success');
+      preview.value = (customTailored || extraBullets) ? redactSensitiveText(fullDynamicSource) : baseAnonText;
+      showToast('מצב אנונימי פעיל: כל הפרטים המזהים הוסתרו בזמן אמת', 'success');
     } else {
-      preview.value = origText;
+      preview.value = fullDynamicSource;
       showToast('מצב אנונימי כבוי: מוצגים פרטים מלאים', 'info');
     }
+  }
+
+  function printAnonymizedCvA4() {
+    const toggleEl = document.getElementById('anonToggleCheckbox');
+    if (toggleEl && !toggleEl.checked) {
+      toggleEl.checked = true;
+      toggleAnonymizerMode(true);
+    }
+    const preview = document.getElementById('anonymizedPreviewArea');
+    const rawContent = preview && preview.value ? preview.value : ANONYMIZED_CV_TEXT;
+    const safeAnonContent = redactSensitiveText(rawContent);
+
+    if (typeof window === 'undefined' || typeof window.open !== 'function') return;
+    const win = window.open('', '_blank');
+    if (!win) {
+      showToast('הדפדפן חסם חלון הדפסה קופץ — אפשר חלונות קופצים עבור אתר זה.', 'warning');
+      return;
+    }
+    const doc = win.document;
+    doc.documentElement.lang = 'he';
+    doc.documentElement.dir = 'rtl';
+    doc.title = 'Confidential Candidate Profile (A4)';
+
+    const styleEl = doc.createElement('style');
+    styleEl.textContent = `
+      @page { size: A4 portrait; margin: 12mm; }
+      body { font-family: Arial, Rubik, sans-serif; color: #0f172a; line-height: 1.45; font-size: 10.5pt; margin: 0; }
+      h1 { font-size: 15pt; border-bottom: 1.5px solid #0284c7; padding-bottom: 4px; margin: 0 0 10px; }
+      p, li { margin: 4px 0; }
+    `;
+    doc.head.appendChild(styleEl);
+
+    const nodes = createSafeMarkdownNodes('# פרופיל מועמד אנונימי (דיסקרטי)\n\n' + safeAnonContent, 'rtl');
+    doc.body.replaceChildren(...nodes);
+    setTimeout(() => {
+      win.focus();
+      win.print();
+    }, 150);
   }
 
   function copyAnonymizedCv() {
@@ -7090,6 +7250,30 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
   let studioClarificationAnswers = [];
   let studioAppliedBullets = [];
   let studioTailoredPackage = null;
+
+  const StudioState = {
+    activeJobId: null,
+    matchScore: 0,
+    atsKeywordsMatched: [],
+    atsKeywordsMissing: [],
+    activeModule: 'ats',
+    interviewSubMode: 'simulator',
+    appliedBullets: [],
+    selectedPreviewLine: '',
+    highlightedLine: '',
+    tailoredMarkdown: '',
+    lastSourceLabel: 'מקור: פרופיל בסיס'
+  };
+
+  function updateStudioState(patch) {
+    if (patch && typeof patch === 'object') {
+      Object.assign(StudioState, patch);
+    }
+    if (typeof renderStickyLivePreview === 'function') {
+      renderStickyLivePreview();
+    }
+    return StudioState;
+  }
   let studioActivePreviewTab = 'cv';
 
   function getStudioBridgeBaseUrl() {
@@ -7149,6 +7333,9 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     }
     if (Array.isArray(savedOutputs)) {
       renderSavedOutputsList(savedOutputs);
+    }
+    if (typeof renderStickyLivePreview === 'function') {
+      renderStickyLivePreview();
     }
   }
 
@@ -7276,6 +7463,9 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     if (!studioAppliedBullets.includes(clean)) {
       studioAppliedBullets.push(clean);
     }
+    if (typeof StudioState !== 'undefined' && StudioState) {
+      StudioState.appliedBullets = studioAppliedBullets.slice();
+    }
     const countEl = document.getElementById('studioAppliedBulletsCount');
     const listEl = document.getElementById('studioAppliedBulletsList');
     if (countEl) countEl.textContent = String(studioAppliedBullets.length);
@@ -7286,6 +7476,12 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
         return li;
       });
       listEl.replaceChildren(...nodes);
+    }
+    if (typeof renderStickyLivePreview === 'function') {
+      renderStickyLivePreview();
+    }
+    if (typeof isAnonymizerActive !== 'undefined' && isAnonymizerActive && typeof toggleAnonymizerMode === 'function') {
+      toggleAnonymizerMode(true);
     }
   }
 
@@ -7383,6 +7579,16 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     } else {
       const nodes = createSafeMarkdownNodes(pkg.cv_markdown || '', dir);
       pane.replaceChildren(...nodes);
+    }
+
+    if (typeof StudioState !== 'undefined' && StudioState) {
+      StudioState.tailoredMarkdown = pkg.cv_markdown || '';
+      if (pkg.company) {
+        StudioState.lastSourceLabel = `חבילה מותאמת: ${pkg.company}`;
+      }
+    }
+    if (typeof renderStickyLivePreview === 'function') {
+      renderStickyLivePreview();
     }
   }
 
@@ -7698,9 +7904,278 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     }
   }
 
+  function getLivePreviewMarkdown() {
+    if (studioTailoredPackage && studioTailoredPackage.cv_markdown) {
+      let md = String(studioTailoredPackage.cv_markdown);
+      const extra = (studioAppliedBullets || []).filter(b => b && !md.includes(b));
+      if (extra.length > 0) {
+        md += '\n\n## שדרוגים שהוחלו בעורך\n' + extra.map(b => `- ${b}`).join('\n');
+      }
+      return md;
+    }
+
+    const activeProfile = (typeof getActiveCvProfile === 'function') ? getActiveCvProfile() : null;
+    if (activeProfile && activeProfile.isCustom && activeProfile.rawText) {
+      let md = `# קורות חיים פעילים (${activeProfile.label || 'מותאם'})\n\n## תוכן מסמך מועמד\n${activeProfile.rawText}`;
+      if (Array.isArray(studioAppliedBullets) && studioAppliedBullets.length > 0) {
+        md += `\n\n## שדרוגים שהוחלו בעורך (${studioAppliedBullets.length})\n` + studioAppliedBullets.map(b => `- ${b}`).join('\n');
+      }
+      return md;
+    }
+
+    const baseSummary = (studioProfileCache && studioProfileCache.baseline_summary_he) || ORIGINAL_CV_SUMMARY_TEXT || '';
+    const candidateName = (studioProfileCache && studioProfileCache.candidate_name) || 'עידו גל';
+    let md = `# ${candidateName} - פרופיל בסיס מקומי\n\n## תקציר וניסיון תפעולי\n${baseSummary}`;
+    if (Array.isArray(studioAppliedBullets) && studioAppliedBullets.length > 0) {
+      md += `\n\n## שדרוגי AI Writer שהוחלו (${studioAppliedBullets.length})\n` + studioAppliedBullets.map(b => `- ${b}`).join('\n');
+    }
+    return md;
+  }
+
+  function selectPreviewLineForEditing(rawLineText) {
+    const clean = String(rawLineText || '').replace(/^[-*•]\s*/, '').trim();
+    if (!clean) return;
+
+    if (typeof StudioState !== 'undefined' && StudioState) {
+      StudioState.selectedPreviewLine = clean;
+    }
+
+    if (typeof switchStudioModule === 'function') {
+      switchStudioModule('writer');
+    }
+
+    if (typeof document !== 'undefined' && typeof document.getElementById === 'function') {
+      const mobileDlg = document.getElementById('studioMobilePreviewDialog');
+      if (mobileDlg && mobileDlg.open && typeof mobileDlg.close === 'function') {
+        mobileDlg.close();
+      }
+
+      const inputEl = document.getElementById('writerRawInput');
+      if (inputEl) {
+        inputEl.value = clean;
+        if (typeof onWriterInputChanged === 'function') onWriterInputChanged();
+        if (typeof triggerBulletTransform === 'function') triggerBulletTransform();
+        const stepEl = document.getElementById('step-writer-3') || inputEl;
+        const reduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (typeof stepEl.scrollIntoView === 'function') {
+          stepEl.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        }
+        if (typeof inputEl.focus === 'function') {
+          inputEl.focus({ preventScroll: true });
+        }
+      }
+    }
+
+    if (typeof renderStickyLivePreview === 'function') {
+      renderStickyLivePreview();
+    }
+  }
+
+  function buildInteractivePreviewNodes(markdownText, targetDir) {
+    if (typeof document === 'undefined' || typeof document.createElement !== 'function') return [];
+    const lines = String(markdownText || '').split('\n');
+    const nodes = [];
+    let isFirstHeading = true;
+
+    lines.forEach(rawLine => {
+      const line = rawLine.trim();
+      if (!line) return;
+
+      if (line.startsWith('# ') && isFirstHeading) {
+        isFirstHeading = false;
+        const headBox = document.createElement('div');
+        headBox.className = 'live-preview-doc-head';
+        headBox.dir = targetDir;
+        const nameEl = document.createElement('div');
+        nameEl.className = 'live-preview-doc-name';
+        nameEl.textContent = line.replace(/^#\s+/, '');
+        headBox.appendChild(nameEl);
+        if (StudioState && StudioState.lastSourceLabel) {
+          const roleEl = document.createElement('div');
+          roleEl.className = 'live-preview-doc-role';
+          roleEl.textContent = StudioState.lastSourceLabel;
+          headBox.appendChild(roleEl);
+        }
+        nodes.push(headBox);
+        return;
+      }
+
+      if (/^#{1,3}\s+/.test(line)) {
+        const secEl = document.createElement('div');
+        secEl.className = 'live-preview-section-label';
+        secEl.dir = targetDir;
+        secEl.textContent = line.replace(/^#{1,3}\s+/, '');
+        nodes.push(secEl);
+        return;
+      }
+
+      const cleanText = line.replace(/^[-*•]\s*/, '').replace(/\*\*/g, '').trim();
+      if (!cleanText) return;
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'live-preview-line';
+      btn.dir = targetDir;
+
+      const isApplied = Array.isArray(studioAppliedBullets) && studioAppliedBullets.includes(cleanText);
+      const isHighlighted = (StudioState && StudioState.highlightedLine === cleanText) || isApplied;
+      const isSelected = Boolean(StudioState && StudioState.selectedPreviewLine === cleanText);
+
+      if (isSelected) btn.classList.add('is-selected');
+      if (isHighlighted) btn.classList.add('is-highlighted');
+
+      const txtSpan = document.createElement('span');
+      txtSpan.textContent = cleanText;
+      btn.appendChild(txtSpan);
+
+      if (isHighlighted) {
+        const tag = document.createElement('span');
+        tag.className = 'live-preview-line-tag';
+        tag.textContent = 'שודרג מהעורך';
+        btn.appendChild(tag);
+      }
+
+      btn.addEventListener('click', () => selectPreviewLineForEditing(cleanText));
+      nodes.push(btn);
+    });
+
+    return nodes;
+  }
+
+  function renderStickyLivePreview() {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+
+    const scoreBadge = document.getElementById('stickyPreviewScoreBadge');
+    const sourceLabelEl = document.getElementById('studioPreviewSourceLabel');
+    const desktopViewer = document.getElementById('studioLiveDocViewer');
+    const mobileViewer = document.getElementById('studioMobilePreviewBody');
+
+    const md = getLivePreviewMarkdown();
+    const isEn = Boolean(studioTailoredPackage && studioTailoredPackage.lang === 'en');
+    const dir = isEn ? 'ltr' : 'rtl';
+
+    if (scoreBadge) {
+      const score = (StudioState && Number(StudioState.matchScore)) || 0;
+      scoreBadge.textContent = score > 0 ? `התאמה: ${score}%` : 'התאמה: ממתין';
+    }
+    if (sourceLabelEl) {
+      sourceLabelEl.textContent = (StudioState && StudioState.lastSourceLabel) || 'מקור: פרופיל בסיס';
+    }
+
+    if (desktopViewer) {
+      const desktopNodes = buildInteractivePreviewNodes(md, dir);
+      desktopViewer.setAttribute('dir', dir);
+      desktopViewer.replaceChildren(...desktopNodes);
+    }
+
+    if (mobileViewer) {
+      const mobileNodes = buildInteractivePreviewNodes(md, dir);
+      mobileViewer.setAttribute('dir', dir);
+      mobileViewer.replaceChildren(...mobileNodes);
+    }
+  }
+
+  function openStudioGlossaryDrawer() {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+    const dlg = document.getElementById('studioGlossaryDialog');
+    if (!dlg || typeof dlg.showModal !== 'function') return;
+    if (typeof renderEnergyDictionary === 'function') {
+      renderEnergyDictionary(ENERGY_DICTIONARY);
+    }
+    if (!dlg.open) {
+      dlg.showModal();
+    }
+    const searchEl = document.getElementById('dictSearchInput');
+    if (searchEl && typeof searchEl.focus === 'function') {
+      searchEl.focus();
+    }
+  }
+
+  function openMobilePreviewDialog() {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+    renderStickyLivePreview();
+    const dlg = document.getElementById('studioMobilePreviewDialog');
+    if (dlg && typeof dlg.showModal === 'function' && !dlg.open) {
+      dlg.showModal();
+    }
+  }
+
+  function openStudioExportModal() {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+    const dlg = document.getElementById('studioExportDialog');
+    const previewEl = document.getElementById('studioExportDialogPreview');
+    const roleEl = document.getElementById('studioExportRoleLabel');
+    const scoreEl = document.getElementById('studioExportScoreLabel');
+
+    const md = getLivePreviewMarkdown();
+    const isEn = Boolean(studioTailoredPackage && studioTailoredPackage.lang === 'en');
+    const dir = isEn ? 'ltr' : 'rtl';
+
+    if (roleEl) {
+      const comp = (document.getElementById('atsCompanyInput')?.value || '').trim();
+      const title = (document.getElementById('atsJobTitleInput')?.value || '').trim();
+      roleEl.textContent = (comp || title)
+        ? `יעד: ${[comp, title].filter(Boolean).join(' - ')}`
+        : ((StudioState && StudioState.lastSourceLabel) || 'יעד: פרופיל בסיס');
+    }
+    if (scoreEl) {
+      const score = (StudioState && Number(StudioState.matchScore)) || 0;
+      scoreEl.textContent = score > 0 ? `התאמה: ${score}%` : 'התאמה: טרם חושבה';
+    }
+    if (previewEl && typeof document.createElement === 'function') {
+      const nodes = createSafeMarkdownNodes(md, dir);
+      previewEl.setAttribute('dir', dir);
+      previewEl.replaceChildren(...nodes);
+    }
+    if (dlg && typeof dlg.showModal === 'function' && !dlg.open) {
+      dlg.showModal();
+    }
+  }
+
+  function copyExportDialogText() {
+    const md = getLivePreviewMarkdown();
+    if (!md) return;
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(md).then(() => {
+        showToast('תוכן המסמך הועתק בהצלחה ללוח!', 'success');
+      });
+    }
+  }
+
+  function setInterviewSubMode(mode) {
+    const nextMode = (mode === 'linkedin') ? 'linkedin' : 'simulator';
+    if (typeof StudioState !== 'undefined' && StudioState) {
+      StudioState.interviewSubMode = nextMode;
+    }
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+
+    const simBtn = document.getElementById('interviewSegSimBtn');
+    const liBtn = document.getElementById('interviewSegLiBtn');
+    const mainCol = document.getElementById('interviewColMain');
+    const sideCol = document.getElementById('interviewColSide');
+    const workbench = document.getElementById('interviewWorkbench');
+
+    const isSim = (nextMode === 'simulator');
+    if (simBtn) {
+      simBtn.classList.toggle('active', isSim);
+      simBtn.setAttribute('aria-selected', isSim ? 'true' : 'false');
+    }
+    if (liBtn) {
+      liBtn.classList.toggle('active', !isSim);
+      liBtn.setAttribute('aria-selected', !isSim ? 'true' : 'false');
+    }
+    if (mainCol) mainCol.hidden = !isSim;
+    if (sideCol) sideCol.hidden = isSim;
+    if (workbench) {
+      workbench.classList.toggle('is-sim-focus', isSim);
+      workbench.classList.toggle('is-li-focus', !isSim);
+    }
+  }
+
   function printTailoredPackageA4() {
-    if (!studioTailoredPackage || !studioTailoredPackage.cv_markdown) {
-      showToast('הפק קודם חבילת קורות חיים כדי לייצא ל-PDF (A4).', 'warning');
+    const md = getLivePreviewMarkdown();
+    if (!md) {
+      showToast('לא נמצא תוכן קורות חיים לייצוא A4.', 'warning');
       return;
     }
     const win = window.open('', '_blank');
@@ -7708,11 +8183,11 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
       showToast('הדפדפן חסם חלון הדפסה קופץ — אפשר חלונות קופצים עבור אתר זה.', 'warning');
       return;
     }
-    const isEn = (studioTailoredPackage.lang === 'en');
+    const isEn = Boolean(studioTailoredPackage && studioTailoredPackage.lang === 'en');
     const doc = win.document;
     doc.documentElement.lang = isEn ? 'en' : 'he';
     doc.documentElement.dir = isEn ? 'ltr' : 'rtl';
-    doc.title = `CV - ${studioTailoredPackage.company || 'Ido Gal'}`;
+    doc.title = `CV - ${(studioTailoredPackage && studioTailoredPackage.company) || 'Ido Gal'}`;
 
     const styleEl = doc.createElement('style');
     styleEl.textContent = `
@@ -7727,7 +8202,7 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     `;
     doc.head.appendChild(styleEl);
 
-    const nodes = createSafeMarkdownNodes(studioTailoredPackage.cv_markdown, isEn ? 'ltr' : 'rtl');
+    const nodes = createSafeMarkdownNodes(md, isEn ? 'ltr' : 'rtl');
     doc.body.replaceChildren(...nodes);
     setStudioPackageState('נשלח לייצוא PDF (A4)');
     setTimeout(() => {
@@ -7769,9 +8244,26 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
   window.printTailoredPackageA4 = printTailoredPackageA4;
   window.exportTailoredPackageToOutput = exportTailoredPackageToOutput;
   window.updateStudioBlacklistWarning = updateStudioBlacklistWarning;
+  window.StudioState = StudioState;
+  window.updateStudioState = updateStudioState;
+  window.renderStickyLivePreview = renderStickyLivePreview;
+  window.selectPreviewLineForEditing = selectPreviewLineForEditing;
+  window.openStudioGlossaryDrawer = openStudioGlossaryDrawer;
+  window.openMobilePreviewDialog = openMobilePreviewDialog;
+  window.openStudioExportModal = openStudioExportModal;
+  window.copyExportDialogText = copyExportDialogText;
+  window.setInterviewSubMode = setInterviewSubMode;
+  window.redactSensitiveText = redactSensitiveText;
+  window.printAnonymizedCvA4 = printAnonymizedCvA4;
+  window.renderHardGates = renderHardGates;
 
 
   function scrollToStudioStep(stepId) {
+    if (stepId === 'step-interview-3') {
+      setInterviewSubMode('linkedin');
+    } else if (stepId === 'step-interview-1' || stepId === 'step-interview-2') {
+      setInterviewSubMode('simulator');
+    }
     const el = document.getElementById(stepId);
     if (!el) return;
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -7817,9 +8309,11 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     initCvUploadState();
     initWriterModule();
     initInterviewModule();
+    setInterviewSubMode('simulator');
     initSkillsModule();
     renderStarHistoryList(loadStarHistory());
     await checkStudioBridgeHealth(false);
+    renderStickyLivePreview();
 
     const rawHash = (window.location.hash || '').replace('#', '').trim();
     let initialMode = 'radar';

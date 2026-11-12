@@ -19,6 +19,10 @@ from unittest.mock import patch
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
+from bs4 import BeautifulSoup
+from scripts.validate_zero_emoji import check_text
+from tests.js_runner import run_js, skip_if_no_js
+
 from scripts.studio_bridge import (
     BridgeServices,
     is_allowed_origin,
@@ -332,6 +336,161 @@ class TestCareerStudioBridgeAndEngine(unittest.TestCase):
             finally:
                 server.shutdown()
                 server.server_close()
+
+
+class TestCareerStudioV2SplitScreenAndDialogs(unittest.TestCase):
+    """Regression suite for Career Studio V2 split-screen, dialogs, accordions, and live sync."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.root = Path(__file__).resolve().parent.parent
+        cls.html_text = (cls.root / "frontend" / "templates" / "index.html").read_text(encoding="utf-8")
+        cls.docs_html_text = (cls.root / "docs" / "index.html").read_text(encoding="utf-8")
+        cls.css_text = (cls.root / "frontend" / "css" / "dashboard.css").read_text(encoding="utf-8")
+        cls.js_text = (cls.root / "frontend" / "js" / "dashboard.js").read_text(encoding="utf-8")
+        cls.spec_text = (cls.root / "docs" / "CAREER_STUDIO_V2_SPEC.md").read_text(encoding="utf-8")
+        cls.soup = BeautifulSoup(cls.html_text, "html.parser")
+        cls.docs_soup = BeautifulSoup(cls.docs_html_text, "html.parser")
+
+    def _run_v2_js(self, script_tail: str) -> str:
+        skip_if_no_js(self)
+        harness = f"""
+        var window = globalThis;
+        if (!globalThis.console) {{
+          globalThis.console = {{ log: print, warn: print, error: print, info: print }};
+        }}
+        window.addEventListener = function() {{}};
+        window.removeEventListener = function() {{}};
+        window.location = {{ hash: '' }};
+        window.matchMedia = function() {{ return {{ matches: false }}; }};
+        window.localStorage = {{
+          getItem: function() {{ return null; }},
+          setItem: function() {{}},
+          removeItem: function() {{}}
+        }};
+        var localStorage = window.localStorage;
+        var __domStore = {{}};
+        var document = {{
+          addEventListener: function() {{}},
+          removeEventListener: function() {{}},
+          getElementById: function(id) {{ return __domStore[id] || null; }},
+          querySelector: function() {{ return null; }},
+          querySelectorAll: function() {{ return []; }},
+          createElement: function(tag) {{
+            return {{
+              tagName: String(tag).toUpperCase(),
+              children: [],
+              classList: {{ _s: new Set(), add: function(c) {{ this._s.add(c); }}, toggle: function() {{}}, remove: function() {{}} }},
+              attributes: {{}},
+              setAttribute: function(k, v) {{ this.attributes[k] = v; }},
+              appendChild: function(c) {{ this.children.push(c); return c; }},
+              replaceChildren: function() {{ this.children = Array.prototype.slice.call(arguments); }},
+              addEventListener: function() {{}},
+              textContent: ''
+            }};
+          }}
+        }};
+        {self.js_text}
+        {script_tail}
+        """
+        proc = run_js(harness)
+        self.assertEqual(proc.returncode, 0, f"JS runtime failed: {proc.stderr}\n{proc.stdout}")
+        return proc.stdout.strip()
+
+    def test_v2_spec_and_zero_emoji_compliance(self):
+        self.assertIn("Career Studio v2", self.spec_text)
+        self.assertEqual(check_text(self.spec_text), [])
+        self.assertEqual(check_text(self.html_text), [])
+        self.assertEqual(check_text(self.css_text), [])
+        self.assertEqual(check_text(self.js_text), [])
+
+    def test_v2_split_screen_and_non_colliding_mobile_trigger(self):
+        for soup in (self.soup, self.docs_soup):
+            split = soup.select_one(".studio-master-split")
+            self.assertIsNotNone(split)
+            self.assertIsNotNone(split.select_one(".studio-modules-container"))
+            sticky = split.select_one("#studioStickyPreviewCol.studio-sticky-preview-col")
+            self.assertIsNotNone(sticky)
+            self.assertIsNotNone(sticky.select_one("#studioLiveDocViewer"))
+            self.assertIsNotNone(sticky.select_one("#stickyPreviewScoreBadge"))
+            header_actions = soup.select_one(".studio-header-actions")
+            self.assertIsNotNone(header_actions)
+            mobile_btn = header_actions.select_one("#btnMobileOpenPreview.studio-mobile-preview-trigger")
+            self.assertIsNotNone(mobile_btn)
+
+    def test_v2_native_dialogs_accessibility_and_close_forms(self):
+        for dlg_id in ("studioGlossaryDialog", "studioMobilePreviewDialog", "studioExportDialog"):
+            dlg = self.soup.find("dialog", id=dlg_id)
+            self.assertIsNotNone(dlg, f"Missing native <dialog id='{dlg_id}'>")
+            self.assertIsNone(dlg.get("role"), f"{dlg_id} must not override role='dialog'")
+            self.assertIsNone(dlg.get("aria-modal"), f"{dlg_id} must not set redundant aria-modal")
+            close_form = dlg.select_one('form[method="dialog"]')
+            self.assertIsNotNone(close_form, f"{dlg_id} must include <form method='dialog'> close control")
+        self.assertIsNotNone(self.soup.find(id="btnOpenGlossaryDrawer"))
+        self.assertIsNotNone(self.soup.find(id="btnPrintAnonymizedA4"))
+
+    def test_v2_interview_segmented_control_dom(self):
+        bar = self.soup.find(id="interviewSegmentedBar")
+        self.assertIsNotNone(bar)
+        self.assertEqual(bar.get("role"), "tablist")
+        sim_btn = bar.find(id="interviewSegSimBtn")
+        li_btn = bar.find(id="interviewSegLiBtn")
+        self.assertIsNotNone(sim_btn)
+        self.assertIsNotNone(li_btn)
+        self.assertEqual(sim_btn.get("aria-selected"), "true")
+        self.assertEqual(li_btn.get("aria-selected"), "false")
+        self.assertIsNotNone(self.soup.find(id="interviewColMain"))
+        side_col = self.soup.find(id="interviewColSide")
+        self.assertIsNotNone(side_col)
+        self.assertTrue(side_col.has_attr("hidden"))
+
+    def test_v2_css_layout_dialog_and_accordion_rules(self):
+        self.assertIn("grid-template-columns: minmax(0, 60fr) minmax(0, 40fr);", self.css_text)
+        self.assertIn("overscroll-behavior: contain;", self.css_text)
+        self.assertIn("dialog.studio-drawer-dialog[open]", self.css_text)
+        self.assertIn(".studio-passed-gates-accordion", self.css_text)
+        self.assertIn(".interview-segmented-bar", self.css_text)
+
+    def test_v2_js_state_redaction_and_hard_gates_accordion(self):
+        out = self._run_v2_js("""
+            const redacted = window.redactSensitiveText(
+              'עידו גל | 052-6328886 | ido@example.com | Energean Israel Ltd. | INGL | נתג״ז'
+            );
+            __domStore['atsHardGatesList'] = { innerHTML: '' };
+            window.renderHardGates([{ id: 'electric_license', status: 'IN_PROGRESS', evidence: 'לימודים', note: 'צפוי 2026' }], 'דרוש חשמלאי');
+            const gatesHtml = __domStore['atsHardGatesList'].innerHTML;
+
+            __domStore['interviewSegSimBtn'] = { classList: { _t: {}, toggle: function(c, v){ this._t[c]=v; } }, attrs: {}, setAttribute: function(k,v){ this.attrs[k]=v; } };
+            __domStore['interviewSegLiBtn'] = { classList: { _t: {}, toggle: function(c, v){ this._t[c]=v; } }, attrs: {}, setAttribute: function(k,v){ this.attrs[k]=v; } };
+            __domStore['interviewColMain'] = { hidden: false };
+            __domStore['interviewColSide'] = { hidden: true };
+            __domStore['interviewWorkbench'] = { classList: { _t: {}, toggle: function(c, v){ this._t[c]=v; } } };
+            window.setInterviewSubMode('linkedin');
+
+            window.updateStudioState({ matchScore: 91, highlightedLine: 'הובלת משמרות 24/7 במתקן PRMS' });
+
+            print(JSON.stringify({
+              redacted: redacted,
+              hasDetailsAccordion: gatesHtml.includes('<details class="studio-passed-gates-accordion"'),
+              hasHeadingInsideSummary: /<summary[^>]*>[\\s\\S]*<h[1-6]/i.test(gatesHtml),
+              mainHidden: __domStore['interviewColMain'].hidden,
+              sideHidden: __domStore['interviewColSide'].hidden,
+              stateScore: window.StudioState.matchScore,
+              subMode: window.StudioState.interviewSubMode
+            }));
+        """)
+        payload = json.loads(out)
+        self.assertNotIn("052-6328886", payload["redacted"])
+        self.assertNotIn("ido@example.com", payload["redacted"])
+        self.assertNotIn("עידו גל", payload["redacted"])
+        self.assertNotIn("Energean", payload["redacted"])
+        self.assertNotIn("INGL", payload["redacted"])
+        self.assertTrue(payload["hasDetailsAccordion"])
+        self.assertFalse(payload["hasHeadingInsideSummary"])
+        self.assertTrue(payload["mainHidden"])
+        self.assertFalse(payload["sideHidden"])
+        self.assertEqual(payload["stateScore"], 91)
+        self.assertEqual(payload["subMode"], "linkedin")
 
 
 if __name__ == "__main__":

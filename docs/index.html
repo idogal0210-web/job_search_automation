@@ -21,7 +21,7 @@
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261112005345">
+  <link rel="stylesheet" href="dashboard.css?v=20261112020531">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -376,6 +376,10 @@
             <i class="ph-duotone ph-plugs-connected"></i>
             <span>בדוק חיבור שרת</span>
           </button>
+          <button type="button" id="btnMobileOpenPreview" class="studio-mobile-preview-trigger" onclick="openMobilePreviewDialog()" aria-haspopup="dialog" aria-controls="studioMobilePreviewDialog">
+            <i class="ph-duotone ph-file-text"></i>
+            <span>תצוגת קו"ח חיה</span>
+          </button>
         </div>
       </div>
 
@@ -479,7 +483,8 @@
 
         </aside>
 
-        <!-- Left-hand Content Area: Studio Modules Container -->
+        <div class="studio-master-split">
+        <!-- Left/Start Content Area (60% Desktop): Studio Modules Container -->
         <div class="studio-modules-container">
         <!-- Module 1: ATS & Job Matcher with Hard Gates (Milestone 2 mount point) -->
         <section id="studioModuleAts" class="studio-module-panel active" role="tabpanel" aria-labelledby="studioTabAts">
@@ -1012,56 +1017,79 @@
                 </div>
               </div>
 
-              <div class="studio-step-head" id="step-writer-4"><span class="studio-step-num" aria-hidden="true">4</span><div class="studio-step-text"><h4 class="studio-step-title">מילון מונחים דו-לשוני</h4><p class="studio-step-hint">חפש מונח תעשייתי והעתק את התרגום.</p></div></div>
-              <!-- Lower Section: Bilingual Energy Terminology Dictionary Explorer -->
+              <div class="studio-step-head" id="step-writer-4"><span class="studio-step-num" aria-hidden="true">4</span><div class="studio-step-text"><h4 class="studio-step-title">מילון מונחים דו-לשוני</h4><p class="studio-step-hint">פתח את מגירת המילון התעשייתי, סנן לפי תחום והעתק לעורך.</p></div></div>
+              <!-- Lower Section: Bilingual Energy Terminology Dictionary Launcher + Drawer Dialog -->
               <div class="studio-card-glass writer-dictionary-section">
                 <div class="writer-dict-header">
                   <div class="writer-dict-title-wrap">
                     <i class="ph-duotone ph-book-bookmark" style="color: var(--dashboard-cyan);"></i>
                     <div>
                       <h4 class="writer-dict-title">מילון מונחים תעשייתי דו-לשוני (Bilingual Energy &amp; Industrial Dictionary)</h4>
-                      <p class="writer-dict-desc">מונחי מפתח בגז טבעי, מערכות סולאריות, חשמל, אוטומציה ובטיחות. לחיצה על כרטיס מונח משלבת אותו ישירות בעורך.</p>
+                      <p class="writer-dict-desc">20 מונחי מפתח בגז טבעי, מערכות סולאריות, חשמל, אוטומציה ובטיחות. נפתח כמגירה נקייה לשמירה על מרחב כתיבה ממוקד.</p>
                     </div>
                   </div>
-                  <span class="writer-dict-counter" id="dictTermsCount">20 מונחים</span>
-                </div>
-
-                <div class="writer-dict-toolbar">
-                  <div class="writer-dict-search-wrap">
-                    <i class="ph-duotone ph-magnifying-glass writer-dict-search-icon"></i>
-                    <input type="text" id="dictSearchInput" class="writer-dict-search-input" aria-label="חיפוש במילון המונחים הדו-לשוני" placeholder="חפש מונח באנגלית או בעברית (לדוגמה: PRMS, SCADA, Bifacial, נומינציה, LTI)..." oninput="onDictSearchInputChanged()">
-                    <button type="button" class="writer-dict-clear-btn" id="btnDictClearSearch" aria-label="נקה חיפוש במילון" onclick="clearDictSearch()" style="display: none;">
-                      <i class="ph-duotone ph-x"></i>
+                  <div class="writer-dict-launcher-actions">
+                    <span class="writer-dict-counter" id="dictTermsCount">20 מונחים</span>
+                    <button type="button" id="btnOpenGlossaryDrawer" class="ats-secondary-btn" onclick="openStudioGlossaryDrawer()" aria-haspopup="dialog" aria-controls="studioGlossaryDialog">
+                      <i class="ph-duotone ph-books"></i>
+                      <span>פתח מילון מונחים דו-לשוני</span>
                     </button>
                   </div>
-
-                  <div class="writer-dict-categories" role="tablist">
-                    <button type="button" class="writer-dict-cat-btn active" data-category="all" onclick="filterDictionaryCategory('all')">
-                      <i class="ph-duotone ph-squares-four"></i> <span>הכל</span>
-                    </button>
-                    <button type="button" class="writer-dict-cat-btn" data-category="gas" onclick="filterDictionaryCategory('gas')">
-                      <i class="ph-duotone ph-flame"></i> <span>גז טבעי</span>
-                    </button>
-                    <button type="button" class="writer-dict-cat-btn" data-category="renewables" onclick="filterDictionaryCategory('renewables')">
-                      <i class="ph-duotone ph-sun"></i> <span>אנרגיה מתחדשת</span>
-                    </button>
-                    <button type="button" class="writer-dict-cat-btn" data-category="electrical" onclick="filterDictionaryCategory('electrical')">
-                      <i class="ph-duotone ph-lightning"></i> <span>חשמל</span>
-                    </button>
-                    <button type="button" class="writer-dict-cat-btn" data-category="automation" onclick="filterDictionaryCategory('automation')">
-                      <i class="ph-duotone ph-cpu"></i> <span>אוטומציה</span>
-                    </button>
-                    <button type="button" class="writer-dict-cat-btn" data-category="safety" onclick="filterDictionaryCategory('safety')">
-                      <i class="ph-duotone ph-shield-check"></i> <span>בטיחות ו-HSE</span>
-                    </button>
-                  </div>
-                </div>
-
-                <!-- Dictionary Terms Grid -->
-                <div id="dictCardsGrid" class="writer-dict-grid">
-                  <!-- Populated dynamically by renderEnergyDictionary() -->
                 </div>
               </div>
+
+              <dialog id="studioGlossaryDialog" class="studio-drawer-dialog" aria-labelledby="glossaryDialogTitle" onclick="if(event.target===this)this.close()">
+                <div class="studio-drawer-inner">
+                  <div class="studio-drawer-head">
+                    <div>
+                      <span class="studio-sticky-kicker">מילון מונחים תעשייתי</span>
+                      <h3 id="glossaryDialogTitle" class="studio-drawer-title">מילון מונחים דו-לשוני (Bilingual Dictionary)</h3>
+                    </div>
+                    <form method="dialog">
+                      <button type="submit" class="studio-dialog-close-btn" aria-label="סגור מגירת מילון">
+                        <i class="ph-duotone ph-x"></i>
+                        <span>סגור</span>
+                      </button>
+                    </form>
+                  </div>
+
+                  <div class="writer-dict-toolbar">
+                    <div class="writer-dict-search-wrap">
+                      <i class="ph-duotone ph-magnifying-glass writer-dict-search-icon"></i>
+                      <input type="text" id="dictSearchInput" class="writer-dict-search-input" aria-label="חיפוש במילון המונחים הדו-לשוני" placeholder="חפש מונח באנגלית או בעברית (לדוגמה: PRMS, SCADA, Bifacial, נומינציה, LTI)..." oninput="onDictSearchInputChanged()">
+                      <button type="button" class="writer-dict-clear-btn" id="btnDictClearSearch" aria-label="נקה חיפוש במילון" onclick="clearDictSearch()" style="display: none;">
+                        <i class="ph-duotone ph-x"></i>
+                      </button>
+                    </div>
+
+                    <div class="writer-dict-categories" role="tablist" aria-label="קטגוריות מילון המונחים">
+                      <button type="button" class="writer-dict-cat-btn active" data-category="all" onclick="filterDictionaryCategory('all')">
+                        <i class="ph-duotone ph-squares-four"></i> <span>הכל</span>
+                      </button>
+                      <button type="button" class="writer-dict-cat-btn" data-category="gas" onclick="filterDictionaryCategory('gas')">
+                        <i class="ph-duotone ph-flame"></i> <span>גז טבעי</span>
+                      </button>
+                      <button type="button" class="writer-dict-cat-btn" data-category="renewables" onclick="filterDictionaryCategory('renewables')">
+                        <i class="ph-duotone ph-sun"></i> <span>אנרגיה מתחדשת</span>
+                      </button>
+                      <button type="button" class="writer-dict-cat-btn" data-category="electrical" onclick="filterDictionaryCategory('electrical')">
+                        <i class="ph-duotone ph-lightning"></i> <span>חשמל</span>
+                      </button>
+                      <button type="button" class="writer-dict-cat-btn" data-category="automation" onclick="filterDictionaryCategory('automation')">
+                        <i class="ph-duotone ph-cpu"></i> <span>אוטומציה</span>
+                      </button>
+                      <button type="button" class="writer-dict-cat-btn" data-category="safety" onclick="filterDictionaryCategory('safety')">
+                        <i class="ph-duotone ph-shield-check"></i> <span>בטיחות ו-HSE</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Dictionary Terms Grid -->
+                  <div id="dictCardsGrid" class="writer-dict-grid">
+                    <!-- Populated dynamically by renderEnergyDictionary() -->
+                  </div>
+                </div>
+              </dialog>
             </div>
 
             <div class="studio-step-head" id="step-writer-5"><span class="studio-step-num" aria-hidden="true">5</span><div class="studio-step-text"><h4 class="studio-step-title">בחירת גרסת קורות חיים</h4><p class="studio-step-hint">הפק חבילה מותאמת למשרה (A4 PDF ושמירה ל-output) או הורד גרסאות בסיס.</p></div></div>
@@ -1107,6 +1135,10 @@
                     <button type="button" id="btnGenerateTailoredPackage" class="ats-primary-btn" onclick="generateTailoredPackageFromStudio()">
                       <i class="ph-duotone ph-sparkle"></i>
                       <span>הפק חבילת מועמדות מותאמת (Gemini)</span>
+                    </button>
+                    <button type="button" id="btnOpenExportModalFromStep5" class="ats-secondary-btn" onclick="openStudioExportModal()" aria-haspopup="dialog" aria-controls="studioExportDialog">
+                      <i class="ph-duotone ph-export"></i>
+                      <span>ייצוא והדפסת A4</span>
                     </button>
                   </div>
 
@@ -1226,9 +1258,20 @@
 
             <nav class="studio-step-outline" aria-label="קפיצה מהירה בין צעדי השלב"><ol><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-interview-1')"><span class="studio-outline-num" aria-hidden="true">1</span><span>בחירת תרחיש ושאלה</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-interview-2')"><span class="studio-outline-num" aria-hidden="true">2</span><span>מענה והערכת STAR</span></button></li><li><button type="button" class="studio-outline-btn" onclick="scrollToStudioStep('step-interview-3')"><span class="studio-outline-num" aria-hidden="true">3</span><span>הלימה מול LinkedIn</span></button></li></ol></nav>
 
-            <div class="interview-workbench">
+            <div id="interviewSegmentedBar" class="interview-segmented-bar" role="tablist" aria-label="בחירת תת-מצב הכנה לראיון">
+              <button type="button" role="tab" id="interviewSegSimBtn" class="interview-seg-btn active" aria-selected="true" aria-controls="interviewColMain" onclick="setInterviewSubMode('simulator')">
+                <i class="ph-duotone ph-microphone-stage"></i>
+                <span>סימולטור ראיונות (STAR)</span>
+              </button>
+              <button type="button" role="tab" id="interviewSegLiBtn" class="interview-seg-btn" aria-selected="false" aria-controls="interviewColSide" onclick="setInterviewSubMode('linkedin')">
+                <i class="ph-duotone ph-linkedin-logo"></i>
+                <span>הלימה מול פרופיל LinkedIn</span>
+              </button>
+            </div>
+
+            <div id="interviewWorkbench" class="interview-workbench is-sim-focus">
               <!-- Column 1: Questions & STAR Simulator -->
-              <div class="interview-col-main">
+              <div id="interviewColMain" class="interview-col-main">
                 <!-- Question Generator Card -->
                 <div class="studio-step-head" id="step-interview-1"><span class="studio-step-num" aria-hidden="true">1</span><div class="studio-step-text"><h4 class="studio-step-title">בחירת תרחיש ושאלה</h4><p class="studio-step-hint">בחר קטגוריה וקבל שאלת ראיון.</p></div></div>
                 <div class="interview-section-box">
@@ -1355,7 +1398,7 @@
               </div>
 
               <!-- Column 2: LinkedIn Profile Alignment -->
-              <div class="interview-col-side">
+              <div id="interviewColSide" class="interview-col-side" hidden>
                 <div class="studio-step-head" id="step-interview-3"><span class="studio-step-num" aria-hidden="true">3</span><div class="studio-step-text"><h4 class="studio-step-title">הלימה מול LinkedIn</h4><p class="studio-step-hint">בדוק שהפרופיל הציבורי עקבי עם קורות החיים.</p></div></div>
                 <div class="interview-section-box">
                   <div class="section-box-header">
@@ -1564,9 +1607,13 @@
                 </div>
 
                 <div class="anon-action-btn-row">
-                  <button type="button" class="interview-btn primary w-full" onclick="copyAnonymizedCv()">
+                  <button type="button" class="interview-btn primary" onclick="copyAnonymizedCv()">
                     <i class="ph-duotone ph-copy"></i>
                     <span id="copyAnonBtnText">העתק נוסח אנונימי ללוח (Clipboard)</span>
+                  </button>
+                  <button type="button" id="btnPrintAnonymizedA4" class="interview-btn secondary" onclick="printAnonymizedCvA4()">
+                    <i class="ph-duotone ph-file-pdf"></i>
+                    <span>ייצוא / הדפסה אנונימית (A4 PDF)</span>
                   </button>
                 </div>
               </div>
@@ -1575,7 +1622,114 @@
           </div>
         </section>
         </div><!-- /.studio-modules-container -->
+
+        <!-- Left/End Sticky Live Preview Column (40% Desktop >= 1120px) -->
+        <aside id="studioStickyPreviewCol" class="studio-sticky-preview-col" aria-label="תצוגת קורות חיים חיה">
+          <div class="studio-sticky-preview-card">
+            <div class="studio-sticky-preview-header">
+              <div class="studio-sticky-title-wrap">
+                <span class="studio-sticky-kicker">תצוגה חיה מסונכרנת</span>
+                <h3 class="studio-sticky-title">קורות חיים בזמן אמת</h3>
+              </div>
+              <span id="stickyPreviewScoreBadge" class="ats-card-badge">התאמה: ממתין</span>
+            </div>
+
+            <div class="studio-sticky-meta-bar">
+              <span id="studioPreviewSourceLabel" class="studio-preview-source-pill">מקור: פרופיל בסיס</span>
+              <div class="studio-sticky-mini-actions">
+                <button type="button" id="btnStickyOpenExport" class="studio-mini-btn" onclick="openStudioExportModal()" aria-haspopup="dialog" aria-controls="studioExportDialog">
+                  <i class="ph-duotone ph-export"></i>
+                  <span>חלון ייצוא A4</span>
+                </button>
+                <button type="button" id="btnStickyQuickPrintA4" class="studio-mini-btn is-accent" onclick="printTailoredPackageA4()">
+                  <i class="ph-duotone ph-file-pdf"></i>
+                  <span>הדפס PDF</span>
+                </button>
+              </div>
+            </div>
+
+            <p class="studio-sticky-helper-hint">לחיצה על כל שורה תעביר אותה ישירות לניסוח מחדש ב-AI Writer ותסמן שינויים שהוחלו.</p>
+
+            <div id="studioLiveDocViewer" class="studio-live-doc-viewer" tabindex="0">
+              <p class="studio-preview-placeholder">טוען נתוני קורות חיים לתצוגה חיה...</p>
+            </div>
+          </div>
+        </aside>
+        </div><!-- /.studio-master-split -->
       </div><!-- /.studio-workspace-layout -->
+
+      <!-- Mobile/Tablet Live Preview Drawer Dialog (< 1120px) -->
+      <dialog id="studioMobilePreviewDialog" class="studio-drawer-dialog studio-mobile-preview-dialog" aria-labelledby="mobilePreviewDialogTitle" onclick="if(event.target===this)this.close()">
+        <div class="studio-drawer-inner">
+          <div class="studio-drawer-head">
+            <div>
+              <span class="studio-sticky-kicker">תצוגה מקדימה במובייל</span>
+              <h3 id="mobilePreviewDialogTitle" class="studio-drawer-title">קורות חיים בזמן אמת</h3>
+            </div>
+            <form method="dialog">
+              <button type="submit" class="studio-dialog-close-btn" aria-label="סגור תצוגת קורות חיים">
+                <i class="ph-duotone ph-x"></i>
+                <span>סגור</span>
+              </button>
+            </form>
+          </div>
+          <div class="studio-mobile-preview-actions">
+            <button type="button" class="studio-mini-btn" onclick="openStudioExportModal()">
+              <i class="ph-duotone ph-export"></i>
+              <span>חלון ייצוא A4</span>
+            </button>
+            <button type="button" class="studio-mini-btn is-accent" onclick="printTailoredPackageA4()">
+              <i class="ph-duotone ph-file-pdf"></i>
+              <span>הדפס PDF</span>
+            </button>
+          </div>
+          <div id="studioMobilePreviewBody" class="studio-live-doc-viewer" tabindex="0">
+            <p class="studio-preview-placeholder">טוען תצוגה מקדימה...</p>
+          </div>
+        </div>
+      </dialog>
+
+      <!-- Focused A4 Preview & Export Modal -->
+      <dialog id="studioExportDialog" class="studio-modal-dialog" aria-labelledby="exportDialogTitle" onclick="if(event.target===this)this.close()">
+        <div class="studio-modal-box">
+          <div class="studio-drawer-head">
+            <div>
+              <span class="studio-sticky-kicker">הפקה, אימות וייצוא מסמך</span>
+              <h3 id="exportDialogTitle" class="studio-drawer-title">ייצוא חבילת מועמדות ו-A4 PDF</h3>
+            </div>
+            <form method="dialog">
+              <button type="submit" class="studio-dialog-close-btn" aria-label="סגור חלון ייצוא">
+                <i class="ph-duotone ph-x"></i>
+                <span>סגור</span>
+              </button>
+            </form>
+          </div>
+
+          <div id="studioExportMetaBanner" class="studio-export-meta-banner">
+            <span id="studioExportRoleLabel">יעד: טרם נבחרה משרה</span>
+            <span id="studioExportScoreLabel" class="ats-card-badge">התאמה: ממתין</span>
+          </div>
+
+          <div id="studioExportDialogPreview" class="studio-export-dialog-preview" tabindex="0">
+            <p class="studio-preview-placeholder">בחר משרה והפק חבילה מותאמת או ערוך בולטים כדי לצפות במסמך ה-A4 המוכן.</p>
+          </div>
+
+          <div class="studio-modal-footer-actions">
+            <button type="button" id="btnExportModalPdfA4" class="ats-primary-btn" onclick="printTailoredPackageA4()">
+              <i class="ph-duotone ph-file-pdf"></i>
+              <span>הדפסה / ייצוא PDF (A4)</span>
+            </button>
+            <button type="button" id="btnExportModalSaveDisk" class="ats-secondary-btn" onclick="exportTailoredPackageToOutput()">
+              <i class="ph-duotone ph-floppy-disk"></i>
+              <span>שמור ל-tools/cv_tailor/output</span>
+            </button>
+            <button type="button" id="btnExportModalCopyText" class="ats-secondary-btn" onclick="copyExportDialogText()">
+              <i class="ph-duotone ph-copy"></i>
+              <span>העתק טקסט מסמך</span>
+            </button>
+          </div>
+        </div>
+      </dialog>
 
     </div><!-- /#careerStudioWorkspace -->
 
@@ -1703,16 +1857,16 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261112005345",
+      build_id: "20261112020531",
       schema_version: "2.0.0",
       generated_at: "12.11.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261112005345",
-      catalog_data_url: "data/historical_catalog.json?v=20261112005345",
+      jobs_data_url: "data/jobs.json?v=20261112020531",
+      catalog_data_url: "data/historical_catalog.json?v=20261112020531",
       supabase_url: "https://wvwdxpttwsrdbvvtiyoh.supabase.co",
       supabase_anon_key: "sb_publishable_U8BEszbgC7i76c1waY5Ceg_7JvCQKZ6"
     };
   </script>
-  <script src="dashboard.js?v=20261112005345" defer></script>
+  <script src="dashboard.js?v=20261112020531" defer></script>
 </body>
 </html>

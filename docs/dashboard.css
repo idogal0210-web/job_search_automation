@@ -6766,3 +6766,485 @@ label,
     font-size: max(1rem, 1em);
   }
 }
+
+/* ==========================================================================
+   Career Studio V2: 60/40 Split-Screen, Sticky Preview, Native Dialogs & Accordions
+   ========================================================================== */
+
+.studio-master-split {
+  display: grid;
+  grid-template-columns: minmax(0, 60fr) minmax(0, 40fr);
+  gap: 20px;
+  align-items: start;
+  inline-size: 100%;
+}
+
+.studio-master-split > * {
+  min-inline-size: 0;
+}
+
+/* Inside the 60% action lane, keep inner multi-column grids single-column for readability */
+@media (min-width: 1120px) {
+  .studio-master-split .writer-workbench,
+  .studio-master-split .studio-package-workbench,
+  .studio-master-split .skills-workbench,
+  .studio-master-split .studio-split-pane {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.dashboard-app .studio-header-actions {
+  flex-wrap: wrap;
+}
+
+.dashboard-app .studio-mobile-preview-trigger {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 189, 248, 0.38);
+  background: rgba(14, 165, 233, 0.14);
+  color: #e0f2fe;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+  min-block-size: 40px;
+}
+
+.studio-sticky-preview-col {
+  position: sticky;
+  inset-block-start: 16px;
+  max-block-size: calc(100dvh - 32px);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1119px) {
+  .studio-master-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .studio-sticky-preview-col {
+    display: none;
+  }
+  .dashboard-app .studio-mobile-preview-trigger {
+    display: inline-flex;
+  }
+}
+
+.studio-sticky-preview-card {
+  background: var(--bg-glass, rgba(15, 23, 42, 0.78));
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-block-size: calc(100dvh - 32px);
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.35);
+}
+
+.studio-sticky-preview-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.studio-sticky-kicker {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--dashboard-cyan, #38bdf8);
+  letter-spacing: 0.02em;
+  margin-block-end: 2px;
+}
+
+.studio-sticky-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+#stickyPreviewScoreBadge,
+#studioExportScoreLabel {
+  font-variant-numeric: tabular-nums;
+}
+
+.studio-sticky-meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-block-end: 10px;
+  border-block-end: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.studio-preview-source-pill {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.studio-sticky-mini-actions,
+.studio-mobile-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.studio-mini-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(30, 41, 59, 0.85);
+  color: #e2e8f0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-block-size: 36px;
+}
+
+.studio-mini-btn.is-accent {
+  border-color: rgba(132, 204, 22, 0.42);
+  background: rgba(132, 204, 22, 0.14);
+  color: #d9f99d;
+}
+
+.studio-sticky-helper-hint {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: #94a3b8;
+}
+
+.studio-live-doc-viewer {
+  flex: 1;
+  min-block-size: 260px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  background: rgba(9, 13, 22, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.live-preview-doc-head {
+  padding-block-end: 8px;
+  border-block-end: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.live-preview-doc-name {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.live-preview-doc-role {
+  font-size: 0.8rem;
+  color: #7dd3fc;
+  margin-block-start: 2px;
+}
+
+.live-preview-section-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-block-start: 6px;
+}
+
+.live-preview-line {
+  inline-size: 100%;
+  text-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 41, 59, 0.45);
+  color: #e2e8f0;
+  font-size: 0.83rem;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+
+.live-preview-line:hover,
+.live-preview-line:focus-visible {
+  border-color: rgba(56, 189, 248, 0.65);
+  background: rgba(14, 165, 233, 0.12);
+}
+
+.live-preview-line.is-selected {
+  border-color: var(--dashboard-cyan, #38bdf8);
+  background: rgba(14, 165, 233, 0.18);
+}
+
+.live-preview-line.is-highlighted {
+  border-color: rgba(132, 204, 22, 0.75);
+  background: rgba(132, 204, 22, 0.14);
+}
+
+.live-preview-line-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #a3e635;
+}
+
+/* Native <dialog> Modals & Side Drawers (modern-web-guidance compliant) */
+dialog.studio-drawer-dialog,
+dialog.studio-modal-dialog {
+  padding: 0;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  background: #0b1120;
+  color: #f8fafc;
+  box-shadow: 0 24px 60px rgba(2, 6, 23, 0.65);
+}
+
+dialog.studio-drawer-dialog {
+  margin: 0;
+  margin-inline-start: auto;
+  inline-size: min(560px, 100vw);
+  max-inline-size: 100vw;
+  block-size: 100dvh;
+  max-block-size: 100dvh;
+  border-radius: 0;
+  border-inline-start: 1px solid rgba(56, 189, 248, 0.28);
+}
+
+dialog.studio-modal-dialog {
+  margin: auto;
+  inline-size: min(760px, calc(100vw - 24px));
+  max-block-size: calc(100dvh - 32px);
+  border-radius: 18px;
+}
+
+dialog.studio-drawer-dialog[open],
+dialog.studio-modal-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+dialog.studio-drawer-dialog:modal,
+dialog.studio-modal-dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog.studio-drawer-dialog::backdrop,
+dialog.studio-modal-dialog::backdrop {
+  background: rgba(2, 6, 23, 0.76);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.studio-drawer-inner,
+.studio-modal-box {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  block-size: 100%;
+  overflow: hidden;
+  min-block-size: 0;
+}
+
+.studio-drawer-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block-end: 12px;
+  border-block-end: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.studio-drawer-title {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: #f8fafc;
+}
+
+.studio-dialog-close-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(30, 41, 59, 0.9);
+  color: #f8fafc;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-block-size: 40px;
+}
+
+#studioGlossaryDialog .writer-dict-grid {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-block-end: 8px;
+}
+
+.writer-dict-launcher-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.studio-export-meta-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.86rem;
+}
+
+.studio-export-dialog-preview {
+  flex: 1;
+  min-block-size: 220px;
+  max-block-size: 52dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(9, 13, 22, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  line-height: 1.6;
+}
+
+.studio-modal-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-block-start: 6px;
+}
+
+/* Native <details> Passed Hard Gates Accordion */
+.studio-passed-gates-accordion {
+  margin-block-start: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.52);
+  overflow: hidden;
+}
+
+.studio-passed-gates-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 14px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  min-block-size: 44px;
+}
+
+.studio-passed-gates-summary::-webkit-details-marker {
+  display: none;
+}
+
+.studio-passed-gates-summary:focus-visible {
+  outline: 2px solid var(--dashboard-cyan, #38bdf8);
+  outline-offset: -2px;
+}
+
+.studio-accordion-chevron {
+  transition: transform 0.2s ease;
+  font-size: 1rem;
+  color: var(--dashboard-cyan, #38bdf8);
+}
+
+.studio-passed-gates-accordion[open] .studio-accordion-chevron {
+  transform: rotate(180deg);
+}
+
+.studio-passed-gates-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 12px 12px;
+}
+
+/* Tab 3: Interview vs LinkedIn Segmented Control */
+.interview-segmented-bar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-block-end: 16px;
+}
+
+.interview-seg-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-block-size: 44px;
+}
+
+.interview-seg-btn.active {
+  background: rgba(14, 165, 233, 0.18);
+  border-color: rgba(56, 189, 248, 0.48);
+  color: #f0f9ff;
+}
+
+#interviewWorkbench.is-sim-focus,
+#interviewWorkbench.is-li-focus {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+#interviewColMain[hidden],
+#interviewColSide[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .dashboard-app .studio-mobile-preview-trigger,
+  .studio-dialog-close-btn,
+  .interview-seg-btn,
+  .studio-mini-btn {
+    min-block-size: 48px;
+    font-size: max(1rem, 1em);
+  }
+}
+
