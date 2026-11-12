@@ -155,7 +155,7 @@ job_search_automation/
 - `status`: String (`QUALIFIED`, `DISQUALIFIED`, `RETRY_PENDING`).
 - `match_score`: Integer (overall weighted fit score, 0 to 100).
 - `base_match_score`: Integer (raw AI evaluation score).
-- `priority_bonus`: Integer (+5 bonus for verified target employers).
+- `priority_bonus`: Integer (+10 bonus for Tier 1 target employers ranks 1-5, +5 bonus for Tier 2 target employers ranks 6-15, capped at 100, applied when base_match_score >= 65).
 - `concrete_matches_count`: Integer (count of confirmed technical requirement matches).
 - `reasoning`: String (concise Hebrew explanation of evaluation rationale).
 - `salary_min`: Integer (predicted minimum monthly gross compensation in ILS).
@@ -163,6 +163,21 @@ job_search_automation/
 - `salary_confidence`: String (`HIGH`, `MEDIUM`, `LOW`, `NONE`).
 - `salary_benchmark_source`: String (reference market evidence or role comparable).
 - `coordinates`: Object (optional `lat`, `lng` for Leaflet map markers).
+
+### 4.3 Target Employers Strategy (75 Companies & Tiered Priority Bonus Model)
+- **Sector Coverage (75 Companies Across 5 Key Domains, 15 per Sector):**
+  1. *Solar & CleanTech (סולאר וקלינטק):* Enlight Renewable Energy, SolarEdge Technologies, Doral Group, Energix Renewable Energies, Nofar Energy, Shikun & Binui Energy, EDF Renewables Israel, Meshulam Levinstein, Afcon Solar, Brenmiller Energy, Baran Group, Electra Energy, Ormat Technologies, Solegreen, GenCell.
+  2. *Natural Gas & Energy Systems (גז טבעי ומערכות אנרגיה):* Supergas Energy, Paz Oil Company, Delek Israel, Sonol Israel, Dor Alon Energy, Israel Natural Gas Lines (INGL), OPC Energy, Dorad Energy, Dalia Power Energies, Rapac Energy, Shapir Energy, Ashtrom Energy, Shafir Engineering, Ludan Group, Meptagon.
+  3. *SCADA/PLC & Industrial Automation (בקרה תעשייתית, SCADA ו-PLC):* mPrest Systems, Afcon Control & Automation, Contel Technologies, Baran Automation, Elspec Engineering, Unitronics, Tadiran Holdings, Schneider Electric Israel, Siemens Israel, ABB Israel, YSB Group, Danel Group, Galil Engineering, Agan Engineering, Mashav.
+  4. *Drones & Defense Operations (רחפנים, כטב"ם ומערכות ביטחוניות):* Percepto, XTEND, D-Fend Solutions, Aerostar / Aeronautics, Elbit Systems, Israel Aerospace Industries (IAI), Rafael Advanced Defense Systems, BlueBird Aero Systems, Heven Drones, Steadicopter, High Lander, FlyTech, CopterPIX, Airobotics / Ondas, SpearUAV.
+  5. *High-Tech Energy & Mobility (הייטק אנרגיה, אגירה ותחבורה חכמה):* Augury, Driivz, StoreDot, Electreon Wireless, Chakratec, Phinergy, EV-Edge, Zooz Power, BladeRanger, Brenmiller, RayZone Group, Thermal Energy Systems, Nostromo Energy, Apollo Power, SolarPaint.
+- **Tiered Priority Bonus Architecture:**
+  - *Tier 1 Target Employers (Ranks 1-5 per sector, 25 companies total):* Granted `+10` priority bonus points when AI base score evaluates at `base_match_score >= 65`.
+  - *Tier 2 Target Employers (Ranks 6-15 per sector, 50 companies total):* Granted `+5` priority bonus points when AI base score evaluates at `base_match_score >= 65`.
+  - *Cap & Ceiling:* Match score is strictly capped at `100`. Ineligible roles (`< 65`) receive `+0` bonus.
+- **Batched Company-Centric Querying (`main.get_target_company_queries`):**
+  - Formulates 5-company Boolean batches `("CompA" OR "CompB" OR ...)` generating 15 LinkedIn queries covering all 75 companies.
+  - Mitigates rate limiting and request overhead compared to querying 75 single company URLs while ensuring complete employer coverage.
 
 ---
 
@@ -207,6 +222,7 @@ job_search_automation/
 - **Automated Inactive Jobs Detection & Zero-Worker Architecture:** Integrated scheduled daily detection of expired/closed postings via `scripts/scan_inactive_jobs.py` running in `.github/workflows/daily_job_search.yml` and publishing to `docs/data/inactive_jobs.json`, enhanced with direct ATS API verification (`src/ats_client.py`) alongside HTML/JSON-LD checks. Replaced unreliable external Cloudflare Worker proxy with direct static JSON consumption in `#inactiveJobsModal`. Enriched UI with header count badge `#inactiveJobsCountBadge`, closed warning chips on job cards in `renderCards()`, warning banners in job modals, and 1-click bulk removal (`handleRemoveAllInactiveJobs`) that syncs instantly to Supabase.
 - **API-First ATS Integration (`src/ats_client.py` & `api-anything`):** Unified direct ATS URL parsing and JSON extraction across `tools/cv_tailor/src/scraper.py` (Tier 1 API-first before Firecrawl credits), `src/pipeline.py` (`enrich`), and `scripts/scan_inactive_jobs.py`, plus deterministic `gh_`/`lever_`/`ashby_` job IDs in `src/url_utils.py`.
 - **Modern Web Platform Standards (Modern Web Guidance):** 1) Native scrollbar standardization: applied standard CSS `scrollbar-color` and `scrollbar-width` (`thin` and `none`) with WebKit `@supports not` fallbacks in `dashboard.css`, fully eliminating legacy vendor warnings; 2) Subresource Integrity (SRI) & CORS: added `integrity="sha384-..."`, `crossorigin="anonymous"`, and `referrerpolicy="no-referrer"` across all version-pinned external CDN assets (Phosphor Icons, Leaflet MarkerCluster, Chart.js, PDF.js, Mammoth.js) in `frontend/templates/index.html` and `docs/index.html`; 3) Native `<dialog>` light-dismiss: implemented universal backdrop click dismissal across modal dialogs (`#cloudModal`, `#studioGlossaryDialog`, `#studioExportDialog`, `#studioMobilePreviewDialog`); verified via `modern-web-guidance legacy-scan` (0 findings across 35 rules).
+- **Target Companies 75 Expansion & Batched Collection:** Expanded target employers from 50 to 75 companies across 5 technical sectors (Solar, Natural Gas, SCADA, Drones, High-Tech Energy & Mobility, 15 per sector) ranked by growth and recruitment velocity. Calibrated tiered priority bonus (+10 for Tier 1 ranks 1-5, +5 for Tier 2 ranks 6-15, capped at 100, applied when base match >= 65). Implemented batched LinkedIn collection via 5-company Boolean queries `("CompA" OR "CompB" ...)` reducing 75 queries to 15 network requests with zero rate-limit collisions.
 
 ### 5.2 In Progress (WIP)
 - **Salary engine market calibration:** Fine-tuning compensation bands based on user feedback and emerging Israeli industrial salary data.

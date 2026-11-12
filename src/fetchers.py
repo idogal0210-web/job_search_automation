@@ -193,6 +193,20 @@ def fetch_linkedin_jobs(keywords, health_metrics, location="Israel", max_pages=1
     return jobs
 
 
+def fetch_target_companies_linkedin_jobs(target_companies, health_metrics, location="Israel", max_pages=1, batch_size=5):
+    """Fetch jobs from target companies on LinkedIn using batched OR queries to minimize HTTP calls."""
+    if not target_companies:
+        return []
+    queries = []
+    unique_comps = list(dict.fromkeys(target_companies))
+    for i in range(0, len(unique_comps), batch_size):
+        chunk = unique_comps[i:i + batch_size]
+        or_query = " OR ".join(f'"{c}"' for c in chunk)
+        queries.append(f"({or_query})")
+    
+    return fetch_linkedin_jobs(queries, health_metrics, location=location, max_pages=max_pages)
+
+
 
 def fetch_linkedin_full_job_description(link: str) -> str:
     """Attempt to extract full job description from LinkedIn guest API endpoint."""

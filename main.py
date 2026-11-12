@@ -6,11 +6,12 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-from src.config import get_search_keywords, get_ats_boards
+from src.config import get_search_keywords, get_ats_boards, get_target_companies
 from src.fetchers import (
     CircuitBreaker,
     RunHealth,
     fetch_linkedin_jobs,
+    fetch_target_companies_linkedin_jobs,
     fetch_drushim_jobs,
     fetch_comeet_jobs,
     fetch_greenhouse_jobs,
@@ -47,12 +48,28 @@ def load_context(root: Path, state_file: str):
     return health, handled_links, ledger, sync_state_path
 
 
+def get_target_company_queries(target_companies: list, batch_size: int = 5) -> list:
+    """Generate batched OR queries for target companies."""
+    queries = []
+    unique_comps = list(dict.fromkeys(target_companies))
+    for i in range(0, len(unique_comps), batch_size):
+        chunk = unique_comps[i:i + batch_size]
+        or_query = " OR ".join(f'"{c}"' for c in chunk)
+        queries.append(f"({or_query})")
+    return queries
+
+
 def collect_all_jobs(health: RunHealth) -> list:
     """Fetch raw job postings across LinkedIn, Drushim, and direct ATS portals."""
+    target_companies, _ = get_target_companies()
     keywords_config = get_search_keywords()
     energy_keywords = keywords_config.get("energy", [])
     drone_keywords = keywords_config.get("drones", [])
     drushim_keywords = keywords_config.get("drushim", [])
+
+    target_queries = get_target_company_queries(target_companies)
+    print(f"[FETCH] Scraping LinkedIn ({len(target_companies)} Target Companies in {len(target_queries)} batched queries)...")
+    linkedin_targets = fetch_linkedin_jobs(target_queries, health, max_pages=1)
 
     print("[FETCH] Scraping LinkedIn (Energy)...")
     linkedin_energy = fetch_linkedin_jobs(energy_keywords, health, max_pages=2)
@@ -105,7 +122,7 @@ def collect_all_jobs(health: RunHealth) -> list:
             breaker.record_success("lever")
         ats_jobs.extend(batch)
 
-    all_raw_jobs = linkedin_energy + linkedin_drones + drushim_jobs + ats_jobs
+    all_raw_jobs = linkedin_targets + linkedin_energy + linkedin_drones + drushim_jobs + ats_jobs
     return all_raw_jobs
 
 

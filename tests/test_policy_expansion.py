@@ -106,7 +106,46 @@ class PolicyExpansionTests(unittest.TestCase):
         self.assertTrue(is_known_enterprise("OPC Energy Ltd"))
         self.assertTrue(is_known_enterprise("אנלייט אנרגיה"))
         self.assertTrue(is_known_enterprise("אלביט מערכות"))
+        self.assertTrue(is_known_enterprise("אפולו פאוור"))
+        self.assertTrue(is_known_enterprise("Aeronautics"))
+        self.assertTrue(is_known_enterprise("בז\"ן"))
+        self.assertTrue(is_known_enterprise("נטפים"))
         self.assertFalse(is_known_enterprise("חברה בלתי מוכרת בע\"מ"))
+
+    def test_target_companies_75_count_and_categories(self):
+        from src.config import get_target_companies, get_target_company_tiers
+        targets, categories = get_target_companies()
+        self.assertEqual(len(targets), 75)
+        self.assertEqual(len(categories), 5)
+        for cat, comps in categories.items():
+            self.assertEqual(len(comps), 15, f"Category {cat} does not contain 15 companies")
+        tiers = get_target_company_tiers()
+        self.assertEqual(len(tiers.get("tier1_companies", [])), 25)
+        self.assertEqual(len(tiers.get("tier2_companies", [])), 50)
+
+    def test_tiered_priority_bonus_calculation(self):
+        from src.evaluators import is_target_company, get_target_company_tier
+        # Tier 1 checks (Ranks 1-5, bonus 10)
+        t1_samples = ["Enlight", "Doral", "SolarEdge", "Apollo Power", "OPC Energy", "Elbit", "Rafael", "Augury", "נטפים"]
+        for comp in t1_samples:
+            is_tgt, _ = is_target_company(comp)
+            tier = get_target_company_tier(comp)
+            self.assertTrue(is_tgt, f"{comp} should be target company")
+            self.assertEqual(tier, 1, f"{comp} should be Tier 1")
+
+        # Tier 2 checks (Ranks 6-15, bonus 5)
+        t2_samples = ["Econergy", "Teralight", "Solgreen", "Paz Solar", "H2Pro", "Rimon Group", "XTEND", "Maytronics"]
+        for comp in t2_samples:
+            is_tgt, _ = is_target_company(comp)
+            tier = get_target_company_tier(comp)
+            self.assertTrue(is_tgt, f"{comp} should be target company")
+            self.assertEqual(tier, 2, f"{comp} should be Tier 2")
+
+        # Non-target
+        is_tgt, _ = is_target_company("חברה גנרית כלשהי")
+        tier = get_target_company_tier("חברה גנרית כלשהי")
+        self.assertFalse(is_tgt)
+        self.assertEqual(tier, 0)
 
 
 if __name__ == "__main__":

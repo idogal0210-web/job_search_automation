@@ -33,9 +33,9 @@ job_search_automation/
 │   ├── pipeline.py                 # תזמור תהליך הריצה, שלבים ומעקב מדדי בריאות
 │   ├── fetchers.py                 # סריקת משרות מפלטפורמות (LinkedIn, Drushim, Comeet, Greenhouse, Lever ATS ישיר) עם Backoff ו-CircuitBreaker
 │   ├── ats_client.py               # שכבת API-First אחודה לחילוץ ואימות משרות מ-Greenhouse, Lever, Ashby ו-Comeet
-│   ├── job_policy.py               # סינון מקדים דטרמיניסטי: מדרגי עדיפויות, רף שכר, סינון 24/7 והחרגת מעסיקים
+│   ├── job_policy.py               # סינון מקדים דטרמיניסטי: מדרגי עדיפויות, 75 חברות יעד ב-5 מגזרים, רף שכר והחרגת מעסיקים
 │   ├── gemini_runtime.py           # ניהול בריכת מודלי Gemini עם סכמת Pydantic מובנית וראיות התאמה
-│   ├── evaluators.py               # הערכת התאמה (ציון 0-100), בונוס חברות יעד ואימות ראיות מודעה
+│   ├── evaluators.py               # הערכת התאמה (ציון 0-100), בונוס חברות יעד מדורג (Tier 1/2) ואימות ראיות מודעה
 │   ├── salary_engine.py            # מנוע שכר מבוסס ראיות: חילוץ ממודעה וכיול שכר השוואתי
 │   ├── state_manager.py            # ניהול מצב אטומי, מניעת כפילויות ומעקב סטטוסים
 │   ├── ui_builder.py               # מנוע בניית נתוני הדשבורד לתיקיית docs/
@@ -53,7 +53,7 @@ job_search_automation/
 │   ├── weekly_archive.json         # ארכיון שבועי מלא עם ציוני AI ונתוני שכר
 │   ├── historical_catalog.json     # קטלוג היסטורי למניעת כפילויות בין סבבים
 │   └── evaluation_state.json       # מטמון הערכות ותור משרות הממתינות לבדיקה חוזרת
-├── tests/                          # חבילת בדיקות אוטומטית מלאה (326 בדיקות יחידה ואינטגרציה)
+├── tests/                          # חבילת בדיקות אוטומטית מלאה (342 בדיקות יחידה ואינטגרציה)
 └── scripts/
     ├── studio_bridge.py            # שרת גשר מקומי המחבר את סטודיו קריירה ל-tools/cv_tailor ול-GeminiPool
     ├── project_hygiene.py          # מנוע היגיינת פרויקט, בדיקת סודות ואימות שלמות נתונים

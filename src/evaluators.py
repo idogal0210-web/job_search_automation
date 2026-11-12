@@ -5,7 +5,7 @@ import time
 from src.gemini_runtime import GeminiPool, EvaluationUnavailable
 from src.job_policy import NON_TECHNICAL_TITLES, deterministic_filter
 from src.salary_engine import evaluate_job_salary
-from src.config import get_target_companies, get_hebrew_company_aliases
+from src.config import get_target_companies, get_hebrew_company_aliases, get_target_company_tiers
 from src.prompts import get_prompt_template
 
 def load_target_companies():
@@ -14,6 +14,7 @@ def load_target_companies():
 
 TARGET_COMPANIES, TARGET_COMPANIES_BY_CATEGORY = load_target_companies()
 HEBREW_COMPANY_ALIASES = get_hebrew_company_aliases()
+TARGET_COMPANY_TIERS = get_target_company_tiers()
 
 def _normalize_company_name(name: str) -> str:
     """Normalize company name by stripping legal suffixes and excess punctuation."""
@@ -67,6 +68,40 @@ def is_target_company(company_name: str) -> tuple[bool, str]:
             return True, "general_target"
 
     return False, ""
+
+
+def get_target_company_tier(company_name: str) -> int:
+    """Return 1 for Tier 1 companies (ranks 1-5, +10 bonus),
+    2 for Tier 2 companies (ranks 6-15, +5 bonus),
+    or 0 if not a target company."""
+    if not company_name:
+        return 0
+    tier1_comps = TARGET_COMPANY_TIERS.get("tier1_companies", [])
+    tier2_comps = TARGET_COMPANY_TIERS.get("tier2_companies", [])
+
+    canonical = None
+    for heb_name, eng_name in HEBREW_COMPANY_ALIASES.items():
+        if _matches_company_target(company_name, heb_name):
+            canonical = eng_name
+            break
+
+    target_to_check = canonical or company_name
+    for c in tier1_comps:
+        if _matches_company_target(target_to_check, c) or (canonical and _matches_company_target(company_name, c)):
+            return 1
+    for c in tier2_comps:
+        if _matches_company_target(target_to_check, c) or (canonical and _matches_company_target(company_name, c)):
+            return 2
+
+    # Category positional fallback (ranks 1-5 vs 6-15)
+    for cat, comps in TARGET_COMPANIES_BY_CATEGORY.items():
+        if any(_matches_company_target(target_to_check, c) for c in comps[:5]):
+            return 1
+        if any(_matches_company_target(target_to_check, c) for c in comps[5:]):
+            return 2
+
+    is_tgt, _ = is_target_company(company_name)
+    return 2 if is_tgt else 0
 
 CV_CONTEXT = """
 Candidate: Ido Gal (עידו גל)
@@ -148,9 +183,11 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
         data.update(status="DISQUALIFIED", match_score=0, disqualification_reason=reason)
     else:
         target, category = is_target_company(company)
-        data.update(is_target_company=target, target_category=category)
+        tier = get_target_company_tier(company)
+        data.update(is_target_company=target, target_category=category, target_tier=tier)
         if target and base >= 65:
-            data["priority_bonus"] = min(5, 100 - base)
+            max_bonus = 10 if tier == 1 else 5
+            data["priority_bonus"] = min(max_bonus, 100 - base)
         data["match_score"] = base + data["priority_bonus"]
         data["status"] = "QUALIFIED"
     assessments = data.get("requirement_assessments", [])

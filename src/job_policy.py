@@ -48,7 +48,12 @@ KNOWN_ENTERPRISE_EMPLOYERS = {
     "סולאראדג", "supergas", "סופרגז", "rimon", "רימון", "newmed", "ניו-מד", "ניומד", "isramco",
     "ישראמקו", "edeltech", "אדלטק", "ecoppia", "אקופיה", "robotican", "רובוטיקאן", "percepto",
     "פרספטו", "xtend", "אקסטנד", "elbit", "אלביט", "rafael", "רפאל", "iai", "תעשייה אווירית",
-    "תעשיה אווירית", "תע\"א", "חברת החשמל", "חח\"י", "iec", "מקורות", "mekorot", "בזן", "bazan"
+    "תעשיה אווירית", "תע\"א", "חברת החשמל", "חח\"י", "iec", "מקורות", "mekorot", "בזן", "bazan",
+    "בז\"ן", "apollo power", "אפולו פאוור", "ev-edge", "אי.וי אדג'", "אי וי אדג'", "aeronautics",
+    "אירונאוטיקס", "bluebird", "בלובריד", "netafim", "נטפים", "unitronics", "יוניטרוניקס",
+    "maytronics", "מיטרוניקס", "solgreen", "סולגרין", "paz solar", "פז סולאר", "solarpower",
+    "סולארפאוור", "baran", "ברן", "lesico", "לסיקו", "dor chemicals", "דור כימיקלים",
+    "copterpix", "קופטרפיקס", "afimilk", "אפימילק", "clariter", "קלריטר"
 }
 
 def is_known_enterprise(company_name):

@@ -69,6 +69,21 @@ def get_target_companies() -> Tuple[List[str], Dict[str, List[str]]]:
     return list(targets), dict(categories)
 
 
+def get_target_company_tiers() -> Dict[str, Any]:
+    """Return tiered configuration for target companies (tier1 ranks 1-5 vs tier2 ranks 6-15)."""
+    cfg = load_raw_config()
+    tiers = cfg.get("target_company_tiers", {})
+    if not tiers:
+        # Fallback defaults if not present in config
+        return {
+            "tier1_priority_bonus": 10,
+            "tier2_priority_bonus": 5,
+            "tier1_companies": [],
+            "tier2_companies": []
+        }
+    return dict(tiers)
+
+
 def get_excluded_employers() -> List[str]:
     """Return list of excluded employers from environment or configuration."""
     env_blacklist = os.environ.get("EXCLUDED_EMPLOYERS", "")

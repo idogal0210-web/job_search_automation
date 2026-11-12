@@ -169,7 +169,8 @@ class PolicyTests(unittest.TestCase):
 
     def test_bonus_once_after_eligibility(self):
         result, client = self.evaluate(match_score=86)
-        self.assertEqual((result['base_match_score'], result['priority_bonus'], result['match_score']), (86, 5, 91))
+        # SolarEdge is Tier 1 target company, awarded +10 priority bonus
+        self.assertEqual((result['base_match_score'], result['priority_bonus'], result['match_score']), (86, 10, 96))
         prompt = client.models.generate_content.call_args.kwargs['contents']
         self.assertIn('without any employer preference bonus', prompt)
 
