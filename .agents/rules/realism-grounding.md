@@ -1,7 +1,7 @@
 ---
 trigger: glob
 description: "Enforce strict candidate realism, locked original job titles, and zero inflation across all tailored CV and cover letter outputs."
-globs: ".agents/skills/cv-tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**"
+globs: ".agents/skills/cv-tailor/**, tools/cv_tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**"
 ---
 
 # Candidate Realism, Locked Titles & Anti-Fluff Policy

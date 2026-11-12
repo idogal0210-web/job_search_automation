@@ -1,7 +1,7 @@
 ---
 trigger: glob
 description: "Always generate tailored CV in Hebrew only by default. Generate English version only when explicitly requested by the user."
-globs: ".agents/skills/cv-tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**"
+globs: ".agents/skills/cv-tailor/**, tools/cv_tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**"
 ---
 
 # Language Generation Policy

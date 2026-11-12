@@ -1,7 +1,7 @@
 ---
 trigger: glob
 description: "Always ask the user explicitly before generating a cover letter, rather than generating it automatically."
-globs: ".agents/skills/cv-tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**"
+globs: ".agents/skills/cv-tailor/**, tools/cv_tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**"
 ---
 
 # Cover Letter Generation Policy

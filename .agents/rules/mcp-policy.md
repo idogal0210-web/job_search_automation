@@ -1,6 +1,6 @@
 ---
-trigger: always_on
-description: "MCP server policies, restrictions, and explicit triggers for job_search_automation."
+trigger: model_decision
+description: "MCP server policies, triggers, credit conservation, and safety restrictions whenever using or configuring tavily, firecrawl, api-anything, chrome-devtools, github, supabase, gemini-api-docs, or sequential-thinking in job_search_automation."
 ---
 
 # מדיניות והנחיות שימוש בשרתי MCP — פרויקט job_search_automation

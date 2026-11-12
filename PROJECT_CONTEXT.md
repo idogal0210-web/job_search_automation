@@ -35,7 +35,7 @@ job_search_automation/
 ├── .python-version                 # Target Python runtime anchor (Python 3.11 / 3.9+)
 ├── .agents/                        # Operational policies, workspace plugins, and domain skills
 │   ├── plugins/                    # Project-scoped MCP plugins (api-anything)
-│   ├── rules/                      # System rules (mcp-policy.md: Tavily, Firecrawl, Supabase, GitHub, api-anything; zero-emojis, token-efficiency)
+│   ├── rules/                      # System rules (mcp-denylist.md always_on + mcp-policy.md model_decision: Tavily, Firecrawl, Supabase, GitHub, api-anything; scoped CV globs; zero-emojis, token-efficiency)
 │   └── skills/                     # Specialized skills (api-anything, salary-intelligence, cloud-sync, health-audit, etc.)
 ├── .github/
 │   └── workflows/

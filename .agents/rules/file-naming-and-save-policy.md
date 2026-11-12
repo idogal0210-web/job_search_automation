@@ -1,7 +1,7 @@
 ---
 trigger: glob
 description: "Always ask user confirmation before saving files at the end of research, and use short, clear, simple file names."
-globs: ".agents/skills/cv-tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**"
+globs: ".agents/skills/cv-tailor/**, tools/cv_tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**"
 ---
 
 # File Naming & Save Confirmation Policy
