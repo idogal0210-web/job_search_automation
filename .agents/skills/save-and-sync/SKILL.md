@@ -64,16 +64,51 @@ python3 scripts/project_hygiene.py --clean
 ```
 Captures exact count of items removed and total disk space freed.
 
-### Step 4: GitHub Cloud Synchronization (When SYNC or SYNC_AND_CLEAN requested)
-1. Inspect working tree: `git status --porcelain`.
-2. Fetch remote and check divergence: `git fetch origin main`.
-3. If remote is ahead, integrate cleanly per policy before pushing. Never rebase over uncommitted changes; never force-push.
-4. Stage verified files: `git add <paths>`. Ensure temporary review/intake snapshots (`*-intake*.md`, `*review-snapshot*.md`) are excluded or purged.
-5. Create semantic commit: `feat(...)`, `fix(...)`, `chore(...)`, `refactor(...)`.
-6. Push to GitHub: `git push origin main` (retry up to 3 times on transient transport failures with backoff).
-7. Verify remote branch tip matches local commit.
+### Step 4: GitHub Cloud Synchronization & GitOps Guardian (When SYNC or SYNC_AND_CLEAN requested)
+1. **Preflight Divergence & Status Check**:
+   ```bash
+   BRANCH=$(git branch --show-current)
+   git fetch origin --prune
+   BEHIND=$(git rev-list --count HEAD..origin/$BRANCH)
+   AHEAD=$(git rev-list --count origin/$BRANCH..HEAD)
+   DIRTY=$(git status --porcelain | wc -l | tr -d ' ')
+   echo "Branch: $BRANCH | Behind: $BEHIND | Ahead: $AHEAD | Dirty: $DIRTY"
+   ```
+   - If `BEHIND > 0` and `DIRTY == 0`: safe to `git pull --rebase origin $BRANCH`.
+   - If `BEHIND > 0` and `DIRTY > 0`: stop and report. Never perform automatic stash or rebase over uncommitted local work.
+   - If `BEHIND > 0` and `AHEAD > 0`: report divergence. Never `--force` push.
+   - Detached `HEAD`: return to main branch before proceeding.
+2. Inspect working tree: `git status --porcelain`.
+3. Stage verified files: `git add <paths>`. Ensure temporary review/intake snapshots (`*-intake*.md`, `*review-snapshot*.md`) and secrets (`.env`, `token.json`, `*.key`) are never staged.
+4. Create semantic commit: `feat(...)`, `fix(...)`, `chore(...)`, `refactor(...)`.
+5. Push to GitHub: `git push origin main` (retry up to 3 times on transient transport failures with backoff: 2s, 4s, 8s).
+6. Verify remote branch tip matches local commit.
 
-## 4. Completion Report Format (Hebrew, RTL, Zero Emojis)
+## 4. GitOps Invariants for GitHub Actions Workflows (`.github/workflows/`)
+When writing, editing, or inspecting workflow files:
+1. **Runner-Side Auto-Commit Pattern**:
+   ```bash
+   git add -A
+   if ! git diff --staged --quiet; then
+     git commit -m "chore: automated update [skip ci]"
+     git pull --rebase origin main
+     git push origin main
+   else
+     echo "No changes to commit or push."
+   fi
+   ```
+2. **Explicit conditionals**: Avoid brittle chaining (`cmd1 && cmd2 || cmd3`); use explicit `if / then / else / fi`.
+3. **Resilience**: Scripts must not crash silently on transient network blips; wrap with proper retry and exit code handling.
+
+## 5. Troubleshooting & Failure Recovery
+| שגיאה | פתרון |
+| :--- | :--- |
+| `Merge conflict in rebase` | לעצור, `git rebase --abort`, ליצור ענף גיבוי `git branch backup-$(date +%s)`, לפתור ממוקד |
+| `Everything up-to-date` אך קבצים חסרים | `git status --ignored` לבדיקה אם `.gitignore` חסם אותם |
+| `Failed to connect to github.com` | Retry עם backoff: 2, 4 ו-8 שניות, לכל היותר 2 ניסיונות נוספים |
+| `[rejected - non-fast-forward]` | התפצלות מול ה-Runner: fetch ובדיקה מחדש לפי סעיף 4 |
+
+## 6. Completion Report Format (Hebrew, RTL, Zero Emojis)
 Always produce a clean, structured RTL summary without emojis:
 
 - פעולה שבוצעה: [שמירה / התאמה / סנכרון / סנכרון ונקה]
