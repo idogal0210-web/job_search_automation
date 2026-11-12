@@ -450,6 +450,8 @@ class TestCareerStudioV2SplitScreenAndDialogs(unittest.TestCase):
         self.assertIn("dialog.studio-drawer-dialog[open]", self.css_text)
         self.assertIn(".studio-passed-gates-accordion", self.css_text)
         self.assertIn(".interview-segmented-bar", self.css_text)
+        self.assertIn(".dashboard-app .studio-live-doc-viewer .live-preview-line", self.css_text)
+        self.assertIn("flex: 0 0 auto;", self.css_text)
 
     def test_v2_js_state_redaction_and_hard_gates_accordion(self):
         out = self._run_v2_js("""

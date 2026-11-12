@@ -6902,22 +6902,25 @@ label,
   gap: 8px;
 }
 
-.studio-mini-btn {
+.dashboard-app .studio-mini-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 6px 11px;
+  padding: 6px 12px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(30, 41, 59, 0.85);
   color: #e2e8f0;
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 700;
+  white-space: nowrap;
   cursor: pointer;
-  min-block-size: 36px;
+  min-block-size: 40px;
+  box-shadow: none;
 }
 
-.studio-mini-btn.is-accent {
+.dashboard-app .studio-mini-btn.is-accent {
   border-color: rgba(132, 204, 22, 0.42);
   background: rgba(132, 204, 22, 0.14);
   color: #d9f99d;
@@ -6931,7 +6934,7 @@ label,
 }
 
 .studio-live-doc-viewer {
-  flex: 1;
+  flex: 1 1 auto;
   min-block-size: 260px;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -6946,6 +6949,7 @@ label,
 }
 
 .live-preview-doc-head {
+  flex: 0 0 auto;
   padding-block-end: 8px;
   border-block-end: 1px solid rgba(56, 189, 248, 0.2);
 }
@@ -6963,47 +6967,56 @@ label,
 }
 
 .live-preview-section-label {
-  font-size: 0.74rem;
+  flex: 0 0 auto;
+  font-size: 0.76rem;
   font-weight: 700;
   color: #94a3b8;
   margin-block-start: 6px;
 }
 
-.live-preview-line {
+.dashboard-app .studio-live-doc-viewer .live-preview-line {
+  flex: 0 0 auto;
   inline-size: 100%;
+  block-size: auto;
+  min-block-size: 44px;
   text-align: start;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 9px 11px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 5px;
+  padding: 10px 13px;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(30, 41, 59, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.52);
   color: #e2e8f0;
-  font-size: 0.83rem;
-  line-height: 1.5;
+  font: 400 0.86rem/1.55 Google Sans, Arial, sans-serif;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  box-shadow: none;
   cursor: pointer;
   transition: border-color 0.16s ease, background-color 0.16s ease;
 }
 
-.live-preview-line:hover,
-.live-preview-line:focus-visible {
+.dashboard-app .studio-live-doc-viewer .live-preview-line:hover,
+.dashboard-app .studio-live-doc-viewer .live-preview-line:focus-visible {
   border-color: rgba(56, 189, 248, 0.65);
-  background: rgba(14, 165, 233, 0.12);
+  background: rgba(14, 165, 233, 0.14);
 }
 
-.live-preview-line.is-selected {
+.dashboard-app .studio-live-doc-viewer .live-preview-line.is-selected {
   border-color: var(--dashboard-cyan, #38bdf8);
-  background: rgba(14, 165, 233, 0.18);
+  background: rgba(14, 165, 233, 0.2);
 }
 
-.live-preview-line.is-highlighted {
+.dashboard-app .studio-live-doc-viewer .live-preview-line.is-highlighted {
   border-color: rgba(132, 204, 22, 0.75);
   background: rgba(132, 204, 22, 0.14);
 }
 
 .live-preview-line-tag {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: #a3e635;
 }
@@ -7207,7 +7220,7 @@ dialog.studio-modal-dialog::backdrop {
   margin-block-end: 16px;
 }
 
-.interview-seg-btn {
+.dashboard-app .interview-segmented-bar .interview-seg-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -7218,11 +7231,12 @@ dialog.studio-modal-dialog::backdrop {
   color: #94a3b8;
   font-size: 0.88rem;
   font-weight: 700;
+  box-shadow: none;
   cursor: pointer;
   min-block-size: 44px;
 }
 
-.interview-seg-btn.active {
+.dashboard-app .interview-segmented-bar .interview-seg-btn.active {
   background: rgba(14, 165, 233, 0.18);
   border-color: rgba(56, 189, 248, 0.48);
   color: #f0f9ff;
@@ -7240,9 +7254,9 @@ dialog.studio-modal-dialog::backdrop {
 
 @media (max-width: 767px) {
   .dashboard-app .studio-mobile-preview-trigger,
-  .studio-dialog-close-btn,
-  .interview-seg-btn,
-  .studio-mini-btn {
+  .dashboard-app .studio-dialog-close-btn,
+  .dashboard-app .interview-segmented-bar .interview-seg-btn,
+  .dashboard-app .studio-mini-btn {
     min-block-size: 48px;
     font-size: max(1rem, 1em);
   }
