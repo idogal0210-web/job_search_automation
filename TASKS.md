@@ -7,7 +7,7 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
 
 ## Active Backlog
 
-*(No open backlog tasks. All milestones TASK-01 through TASK-26 are verified complete and archived below.)*
+*(No open backlog tasks. All milestones TASK-01 through TASK-30 are verified complete and archived below.)*
 
 ---
 
@@ -111,3 +111,6 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
 - [x] **TASK-29**: Dashboard Visual, Specificity & Responsive UI/UX Audit Remediation.
   - Target files: `frontend/css/dashboard.css`, `frontend/js/dashboard.js`, `frontend/templates/index.html`, `docs/dashboard.css`, `docs/dashboard.js`, `docs/index.html`, `tests/test_studio_bridge.py`, `PROJECT_CONTEXT.md`, `TASKS.md`
   - Evidence: Resolved `theme.css` specificity collisions against `.profile-title` (mobile `#headerCloudBtn` overlap), `.btn-clear-search` (hidden properly on empty search), `.mode-switch-btn` (`white-space: nowrap`), `.cloud-pill`, `.tool-btn-compact`, `.btn-reset-filters`, and `.live-preview-line` (`flex: 0 0 auto`, `10px` radius, zero vertical text overlap); restored `.studio-subnav-pipeline` 2x2 horizontal grid above Career Studio Split-Screen; added `dir="auto"` to mixed-language requirement/anchor text, `naturalWidth === 0` company logo fallback, `.job-card-topbar-badges` wrapping, and `>= 44px` mobile touch targets across Job Radar & Career Studio (`0` small touch targets and `0` horizontal overflow in Chrome DevTools desktop `1440x900` & mobile `500px`); verified 332/332 Python tests, 2,489/2,489 JS assertions, 1:1 `frontend/` -> `docs/` sync, zero-emoji, and hygiene/secret validation. Completed 2026-11-12.
+- [x] **TASK-30**: Configure `api-anything` Project MCP Plugin & Dedicated API-First Skill.
+  - Target files: `.agents/plugins/api-anything/plugin.json`, `.agents/plugins/api-anything/mcp_config.json`, `.agents/skills/api-anything/SKILL.md`, `.agents/skills/api-anything/references/authoring.md`, `.agents/skills/api-anything/references/writes.md`, `.agents/rules/mcp-policy.md`, `PROJECT_CONTEXT.md`, `TASKS.md`
+  - Evidence: Configured project-scoped MCP plugin (`api-anything@0.4.0` via `/usr/local/bin/npx -y api-anything mcp`), authored `.agents/skills/api-anything/SKILL.md` with authoring/writes references instructing API-first querying over browser launching, registered `api-anything` governance in `.agents/rules/mcp-policy.md` and `PROJECT_CONTEXT.md`; verified JSON validity, live MCP stdio handshake (`10` tools discovered), YAML frontmatter, and zero-emoji compliance. Completed 2026-11-12.

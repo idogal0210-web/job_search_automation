@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "api-anything": {
+      "command": "/usr/local/bin/npx",
+      "args": [
+        "-y",
+        "api-anything",
+        "mcp"
+      ],
+      "env": {
+        "PATH": "/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+      }
+    }
+  }
+}

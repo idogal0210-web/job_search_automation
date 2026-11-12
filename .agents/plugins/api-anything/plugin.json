@@ -1,0 +1,15 @@
+{
+  "name": "api-anything",
+  "displayName": "api-anything",
+  "version": "0.4.0",
+  "description": "Turn websites without public APIs into reusable, callable HTTP/JSON operations via MCP instead of browser automation.",
+  "repository": "https://github.com/goodnight000/api-anything",
+  "license": "MIT",
+  "keywords": [
+    "api-anything",
+    "mcp",
+    "api",
+    "scraping",
+    "reverse-engineering"
+  ]
+}
