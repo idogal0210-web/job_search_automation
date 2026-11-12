@@ -2360,6 +2360,22 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   }, true);
 
+  // Modern Web Guidance: light-dismiss on backdrop click for native modal dialogs
+  document.addEventListener('click', (e) => {
+    if (!e.target || e.target.nodeName !== 'DIALOG') return;
+    const dlg = e.target;
+    if (!dlg.open) return;
+    if (typeof dlg.getBoundingClientRect !== 'function') return;
+    const rect = dlg.getBoundingClientRect();
+    const isInside = (
+      rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+      rect.left <= e.clientX && e.clientX <= rect.left + rect.width
+    );
+    if (!isInside) {
+      closeDialogEl(dlg);
+    }
+  });
+
   function toggleCardDetails(btn, evt) {
     if (evt) {
       evt.stopPropagation();

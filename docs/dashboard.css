@@ -66,23 +66,30 @@
       box-sizing: border-box;
     }
 
-    /* Scrollbars */
-    ::-webkit-scrollbar {
-      width: 7px;
-      height: 7px;
+    /* Scrollbars: standard CSS + WebKit fallback */
+    html, body, :root {
+      scrollbar-color: rgba(255, 255, 255, 0.25) rgba(0, 0, 0, 0.2);
+      scrollbar-width: thin;
     }
-    ::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.2);
+
+    @supports not (scrollbar-color: auto) {
+      ::-webkit-scrollbar {
+        width: 7px;
+        height: 7px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.18);
+        border-radius: 999px;
+      }
+      @media (hover: hover) {
+        ::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 255, 255, 0.32);
+        }
+      }
     }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.18);
-      border-radius: 999px;
-    }
-    @media (hover: hover) {
-  ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.32);
-    }
-}
 
     /* --- קונטיינר ראשי --- */
     .dashboard-header,
@@ -3498,8 +3505,14 @@
   }
 }
 
-.studio-subnav-pill::-webkit-scrollbar {
-  display: none;
+.studio-subnav-pill {
+  scrollbar-width: none;
+}
+
+@supports not (scrollbar-width: none) {
+  .studio-subnav-pill::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .studio-subnav-btn,
