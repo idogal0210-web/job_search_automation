@@ -6,6 +6,7 @@ import random
 from bs4 import BeautifulSoup
 from dataclasses import dataclass
 from urllib.parse import urlsplit
+from src.ats_client import format_lever_description, html_to_clean_text, parse_comeet_positions
 from src.url_utils import safe_http_url, canonical_job_url
 
 try:
@@ -61,7 +62,17 @@ class RunHealth:
     comeet_successes: int = 0
     comeet_failures: int = 0
     comeet_jobs_found: int = 0
-    
+
+    greenhouse_requests: int = 0
+    greenhouse_successes: int = 0
+    greenhouse_failures: int = 0
+    greenhouse_jobs_found: int = 0
+
+    lever_requests: int = 0
+    lever_successes: int = 0
+    lever_failures: int = 0
+    lever_jobs_found: int = 0
+
     indeed_requests: int = 0
     indeed_successes: int = 0
     indeed_failures: int = 0
@@ -368,14 +379,12 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
             print(f"[COMEET] Failed to fetch {url}: HTTP {res.status_code}", flush=True)
             return []
 
-        match = re.search(r'COMPANY_POSITIONS_DATA\s*=\s*(\[.*?\]);\s*(?:COMPANY|POSITION|\n|</script>)', res.text, re.DOTALL)
-        if not match:
+        positions = parse_comeet_positions(res.text)
+        if positions is None:
             if health_metrics is not None:
                 health_metrics.comeet_failures += 1
             print(f"[COMEET] Could not parse positions payload from {url}", flush=True)
             return []
-
-        positions = json.loads(match.group(1))
         jobs = []
         for pos in positions:
             title = (pos.get("name") or "").strip()
@@ -391,9 +400,7 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
             details_list = (pos.get("custom_fields") or {}).get("details", [])
             desc_parts = []
             for d in details_list:
-                raw_val = d.get("value") or ""
-                val = re.sub(r"<[^>]+>", " ", raw_val)
-                val = re.sub(r"\s+", " ", val).strip()
+                val = html_to_clean_text(d.get("value") or "")
                 if val:
                     desc_parts.append(f"{d.get('name', 'Details')}: {val}")
             snippet = " | ".join(desc_parts) if desc_parts else title
@@ -430,6 +437,183 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
         if health_metrics is not None:
             health_metrics.comeet_failures += 1
         print(f"[COMEET_ERROR] Error fetching from {url}: {type(e).__name__}", flush=True)
+        return []
+
+
+class CircuitBreaker:
+    """Per-source circuit breaker opening after consecutive failures."""
+
+    def __init__(self, threshold: int = 3):
+        self.threshold = max(1, int(threshold))
+        self._failures: dict = {}
+        self._opened: set = set()
+
+    def is_open(self, source: str) -> bool:
+        return source in self._opened
+
+    def record_success(self, source: str) -> None:
+        self._failures[source] = 0
+        self._opened.discard(source)
+
+    def record_failure(self, source: str) -> bool:
+        count = self._failures.get(source, 0) + 1
+        self._failures[source] = count
+        if count >= self.threshold and source not in self._opened:
+            self._opened.add(source)
+            print(f"[CIRCUIT OPEN] {source}", flush=True)
+            return True
+        return False
+
+
+def fetch_greenhouse_jobs(
+    company_slug: str,
+    company_display_name: str = "",
+    health_metrics: RunHealth = None,
+    timeout: int = 10,
+    session=None,
+) -> list:
+    """Direct ATS connector for Greenhouse boards API."""
+    if health_metrics is not None:
+        health_metrics.greenhouse_requests += 1
+
+    display_name = (company_display_name or company_slug).strip()
+    url = f"https://boards-api.greenhouse.io/v1/boards/{company_slug}/jobs?content=true"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        "Accept": "application/json",
+    }
+
+    client = session or requests
+    try:
+        res = _get_with_retries(client, url, headers=headers, timeout=timeout)
+        if res.status_code != 200:
+            if health_metrics is not None:
+                health_metrics.greenhouse_failures += 1
+            print(f"[GREENHOUSE] Failed to fetch {url}: HTTP {res.status_code}", flush=True)
+            return []
+
+        payload = res.json()
+        raw_jobs = payload.get("jobs") if isinstance(payload, dict) else None
+        if not isinstance(raw_jobs, list):
+            if health_metrics is not None:
+                health_metrics.greenhouse_failures += 1
+            print(f"[GREENHOUSE] Unexpected payload structure from {url}", flush=True)
+            return []
+
+        jobs = []
+        for item in raw_jobs:
+            if not isinstance(item, dict):
+                continue
+            title = (item.get("title") or "").strip()
+            link = (item.get("absolute_url") or "").strip()
+            if not title or not safe_http_url(link):
+                continue
+
+            loc_name = ((item.get("location") or {}).get("name") or "").strip()
+            desc_text = html_to_clean_text(item.get("content") or "")
+            updated_at = str(item.get("updated_at") or "")[:10]
+
+            jobs.append({
+                "title": title,
+                "company": (item.get("company_name") or display_name).strip(),
+                "link": link,
+                "location": loc_name,
+                "date": updated_at,
+                "snippet": desc_text or title,
+                "logo": None,
+                "company_logo_url": None,
+                "source": "Greenhouse",
+                "source_id": str(item.get("id") or ""),
+                "description": desc_text,
+                "description_complete": bool(desc_text),
+                "is_direct_ats": True,
+            })
+
+        if health_metrics is not None:
+            health_metrics.greenhouse_successes += 1
+            health_metrics.greenhouse_jobs_found += len(jobs)
+        print(f"[GREENHOUSE] Successfully collected {len(jobs)} positions from {display_name}", flush=True)
+        return jobs
+
+    except Exception as e:
+        if health_metrics is not None:
+            health_metrics.greenhouse_failures += 1
+        print(f"[GREENHOUSE_ERROR] Error fetching from {url}: {type(e).__name__}", flush=True)
+        return []
+
+
+def fetch_lever_jobs(
+    company_slug: str,
+    company_display_name: str = "",
+    health_metrics: RunHealth = None,
+    timeout: int = 10,
+    session=None,
+) -> list:
+    """Direct ATS connector for Lever postings API."""
+    if health_metrics is not None:
+        health_metrics.lever_requests += 1
+
+    display_name = (company_display_name or company_slug).strip()
+    url = f"https://api.lever.co/v0/postings/{company_slug}?mode=json"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+        "Accept": "application/json",
+    }
+
+    client = session or requests
+    try:
+        res = _get_with_retries(client, url, headers=headers, timeout=timeout)
+        if res.status_code != 200:
+            if health_metrics is not None:
+                health_metrics.lever_failures += 1
+            print(f"[LEVER] Failed to fetch {url}: HTTP {res.status_code}", flush=True)
+            return []
+
+        raw_jobs = res.json()
+        if not isinstance(raw_jobs, list):
+            if health_metrics is not None:
+                health_metrics.lever_failures += 1
+            print(f"[LEVER] Unexpected payload structure from {url}", flush=True)
+            return []
+
+        jobs = []
+        for item in raw_jobs:
+            if not isinstance(item, dict):
+                continue
+            title = (item.get("text") or "").strip()
+            link = (item.get("hostedUrl") or "").strip()
+            if not title or not safe_http_url(link):
+                continue
+
+            cats = item.get("categories") or {}
+            loc_name = (cats.get("location") or "").strip()
+            desc_text = format_lever_description(item)
+
+            jobs.append({
+                "title": title,
+                "company": display_name,
+                "link": link,
+                "location": loc_name,
+                "snippet": desc_text or title,
+                "logo": None,
+                "company_logo_url": None,
+                "source": "Lever",
+                "source_id": str(item.get("id") or ""),
+                "description": desc_text,
+                "description_complete": bool(desc_text),
+                "is_direct_ats": True,
+            })
+
+        if health_metrics is not None:
+            health_metrics.lever_successes += 1
+            health_metrics.lever_jobs_found += len(jobs)
+        print(f"[LEVER] Successfully collected {len(jobs)} positions from {display_name}", flush=True)
+        return jobs
+
+    except Exception as e:
+        if health_metrics is not None:
+            health_metrics.lever_failures += 1
+        print(f"[LEVER_ERROR] Error fetching from {url}: {type(e).__name__}", flush=True)
         return []
 
 
@@ -478,6 +662,24 @@ class ComeetFetcher(JobFetcher):
         return fetch_comeet_jobs(company_name, company_uid, display_name, health_metrics)
 
 
+class GreenhouseFetcher(JobFetcher):
+    source_name = "Greenhouse"
+
+    def fetch(self, keywords, health_metrics: RunHealth, **kwargs) -> list:
+        company_slug = kwargs.get("company_slug") or kwargs.get("company_name", "")
+        display_name = kwargs.get("company_display_name", company_slug)
+        return fetch_greenhouse_jobs(company_slug, display_name, health_metrics=health_metrics)
+
+
+class LeverFetcher(JobFetcher):
+    source_name = "Lever"
+
+    def fetch(self, keywords, health_metrics: RunHealth, **kwargs) -> list:
+        company_slug = kwargs.get("company_slug") or kwargs.get("company_name", "")
+        display_name = kwargs.get("company_display_name", company_slug)
+        return fetch_lever_jobs(company_slug, display_name, health_metrics=health_metrics)
+
+
 class IndeedFetcher(JobFetcher):
     source_name = "Indeed"
 
@@ -502,5 +704,7 @@ FETCHERS = {
     "linkedin": LinkedInFetcher(),
     "drushim": DrushimFetcher(),
     "comeet": ComeetFetcher(),
+    "greenhouse": GreenhouseFetcher(),
+    "lever": LeverFetcher(),
 }
 

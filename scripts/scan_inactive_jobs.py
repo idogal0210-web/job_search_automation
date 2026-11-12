@@ -15,9 +15,16 @@ import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import requests
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from src.ats_client import fetch_ats_job_detail
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 logger = logging.getLogger("scan_inactive_jobs")
@@ -80,6 +87,10 @@ def check_job_url(job: Dict, timeout: int = 12) -> Tuple[str, str, int]:
     link = job.get("link", "").strip()
     if not link or not link.startswith("http"):
         return "inactive", "קישור לא תקין או חסר", 0
+
+    ats_res = fetch_ats_job_detail(link, timeout=timeout)
+    if ats_res is not None:
+        return ats_res["state"], ats_res["reason"], int(ats_res.get("status_code") or 0)
 
     headers = {
         "User-Agent": USER_AGENT,

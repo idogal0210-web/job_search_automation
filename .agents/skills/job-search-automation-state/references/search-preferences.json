@@ -103,6 +103,51 @@
   },
   "minimum_distinct_matches": 3,
   "maximum_daily_picks": 5,
+  "ats_boards": {
+    "comeet": [
+      {
+        "slug": "enlightenergy",
+        "uid": "99.006",
+        "company": "Enlight Renewable Energy"
+      },
+      {
+        "slug": "driivz",
+        "uid": "C4.00B",
+        "company": "Driivz"
+      },
+      {
+        "slug": "percepto",
+        "uid": "44.000",
+        "company": "Percepto"
+      },
+      {
+        "slug": "xtend",
+        "uid": "85.00A",
+        "company": "XTEND"
+      },
+      {
+        "slug": "mprest",
+        "uid": "38.005",
+        "company": "mPrest"
+      }
+    ],
+    "greenhouse": [
+      {
+        "slug": "augury",
+        "company": "Augury"
+      },
+      {
+        "slug": "electreon",
+        "company": "Electreon"
+      }
+    ],
+    "lever": [
+      {
+        "slug": "d-fendsolutions",
+        "company": "D-Fend Solutions"
+      }
+    ]
+  },
   "target_companies": [
     "Enlight",
     "Energix",

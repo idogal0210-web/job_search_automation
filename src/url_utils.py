@@ -97,6 +97,18 @@ def stable_job_id(job_or_link):
     if m_drushim:
         return f"drushim_{m_drushim.group(1)}"
 
+    m_gh = re.search(r"(?:job-boards|boards)(?:\.eu)?\.greenhouse\.io/[^/]+/jobs/(\d+)", raw, re.IGNORECASE)
+    if m_gh:
+        return f"gh_{m_gh.group(1)}"
+
+    m_lever = re.search(r"jobs\.(?:eu\.)?lever\.co/[^/]+/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})", raw, re.IGNORECASE)
+    if m_lever:
+        return f"lever_{m_lever.group(1).lower()}"
+
+    m_ashby = re.search(r"jobs\.ashbyhq\.com/[^/]+/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})", raw, re.IGNORECASE)
+    if m_ashby:
+        return f"ashby_{m_ashby.group(1).lower()}"
+
     # Content-based hash fallback if company and title exist
     ch = content_job_hash(job)
     if ch:

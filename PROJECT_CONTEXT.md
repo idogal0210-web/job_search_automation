@@ -54,9 +54,10 @@ job_search_automation/
 │   └── cv_generation_v1.txt        # CV tailoring generator prompt
 ├── src/
 │   ├── pipeline.py                 # Core orchestration pipeline managing run health, stages, and metrics
-│   ├── config.py                   # Centralized configuration loader (keywords, aliases, thresholds)
+│   ├── config.py                   # Centralized configuration loader (keywords, aliases, thresholds, ats_boards)
 │   ├── prompts.py                  # Prompt template loader with caching
-│   ├── fetchers.py                 # Multi-source scrapers with JobFetcher registry (LinkedIn, Drushim, Comeet)
+│   ├── ats_client.py               # Shared direct ATS API client (Greenhouse, Lever, Ashby, Comeet) for API-first lookup & inactive checks
+│   ├── fetchers.py                 # Multi-source scrapers with JobFetcher registry & CircuitBreaker (LinkedIn, Drushim, Comeet, Greenhouse, Lever)
 │   ├── job_policy.py               # Deterministic blacklist filters, technical keyword sets, and title rules
 │   ├── gemini_runtime.py           # Multi-model Gemini fallback pool with structured output validation and retry
 │   ├── evaluators.py               # Match score evaluator (0-100), target company bonuses, and keyword fallback
@@ -101,6 +102,7 @@ job_search_automation/
 │   ├── test_evidence_assessments.py# Requirement assessments & evidence validation tests
 │   ├── test_benchmark_metrics.py   # Benchmark dataset evaluation tests
 │   ├── test_comeet_connector.py    # Direct Comeet ATS connector tests
+│   ├── test_ats_connectors.py      # Multi-provider ATS connectors, CircuitBreaker, API-first Career Studio scraper & inactive check tests
 │   ├── test_cv_tailor.py           # CV Tailor engine verification tests
 │   ├── test_career_studio_spec.py  # Career Studio specifications tests
 │   ├── test_phase_b_precision.py   # AI evaluation precision and schema tests
@@ -167,7 +169,7 @@ job_search_automation/
 ## 5. Implementation Status
 
 ### 5.1 Functional Components (Done)
-- **Multi-source automated scrapers:** Working scrapers for LinkedIn (Energy, Drones), Drushim (Industry, Energy, Operations), and Comeet ATS (Enlight Renewable Energy). Decommissioned Indeed and Glassdoor due to persistent anti-bot gating.
+- **Multi-source automated scrapers:** Working scrapers for LinkedIn (Energy, Drones), Drushim (Industry, Energy, Operations), and config-driven direct ATS connectors (`Comeet`: Enlight, Driivz, Percepto, XTEND, mPrest; `Greenhouse`: Augury, Electreon; `Lever`: D-Fend Solutions) guarded by `CircuitBreaker`. Decommissioned Indeed and Glassdoor due to persistent anti-bot gating.
 - **Deterministic zero-token filter:** Instant regex-based rejection of non-technical roles (accounting, HR, sales, legal) and blacklisted operators (Chevron, Energean, INGL).
 - **Structured Gemini LLM evaluation:** Multi-model pool with Pydantic JSON schemas, automatic backoff, jitter, and quota error isolation.
 - **Evidence-based salary engine:** Predicts salary brackets and confidence scores based on sector benchmarks and role equivalencies.
@@ -202,7 +204,8 @@ job_search_automation/
 - **Streamlined header UI:** Complete removal of obsolete "about system" info button and modal dialog (`#aboutModal`), keeping brand header focused with profile title and cloud sync button only, maintaining 1:1 dual-template parity.
 - **Cloud Sync (Supabase only):** The dashboard header holds a single minimal pill (`#headerCloudBtn`) opening `#cloudModal` (email/password sign-in or sign-up, sign-out). Triage state (starred, saved, rejected, purged) syncs between desktop and phone exclusively through the Supabase `sync_state` table under owner-only RLS. No GitHub tokens, share links or static `sync_state.json` fallback exist client-side; `docs/data/sync_state.json` is no longer published. The page embeds only the Supabase URL and publishable key. Manual job-search runs are triggered from GitHub Actions directly.
 - **Streamlined 3-Anchor Job Card Architecture (Option 1):** Replaced 5 repetitive and verbose sub-categories across job cards and full modal dialogs with 3 concise, high-signal information anchors: 1) `תחום ותפקיד` (intelligent unification of domain and role summary), 2) `דרישות סף` (concise core requirements), and 3) `התאמה ופערים` (punchy candidate strengths with explicit `[OK] ללא פערי סף` or `[פער]` status badge). Evaluation prompt sharpened to 1-sentence responses, eliminating ~65% of redundant text. Dual-template parity preserved.
-- **Automated Inactive Jobs Detection & Zero-Worker Architecture:** Integrated scheduled daily detection of expired/closed postings via `scripts/scan_inactive_jobs.py` running in `.github/workflows/daily_job_search.yml` and publishing to `docs/data/inactive_jobs.json`. Replaced unreliable external Cloudflare Worker proxy with direct static JSON consumption in `#inactiveJobsModal`. Enriched UI with header count badge `#inactiveJobsCountBadge`, closed warning chips on job cards in `renderCards()`, warning banners in job modals, and 1-click bulk removal (`handleRemoveAllInactiveJobs`) that syncs instantly to Supabase.
+- **Automated Inactive Jobs Detection & Zero-Worker Architecture:** Integrated scheduled daily detection of expired/closed postings via `scripts/scan_inactive_jobs.py` running in `.github/workflows/daily_job_search.yml` and publishing to `docs/data/inactive_jobs.json`, enhanced with direct ATS API verification (`src/ats_client.py`) alongside HTML/JSON-LD checks. Replaced unreliable external Cloudflare Worker proxy with direct static JSON consumption in `#inactiveJobsModal`. Enriched UI with header count badge `#inactiveJobsCountBadge`, closed warning chips on job cards in `renderCards()`, warning banners in job modals, and 1-click bulk removal (`handleRemoveAllInactiveJobs`) that syncs instantly to Supabase.
+- **API-First ATS Integration (`src/ats_client.py` & `api-anything`):** Unified direct ATS URL parsing and JSON extraction across `tools/cv_tailor/src/scraper.py` (Tier 1 API-first before Firecrawl credits), `src/pipeline.py` (`enrich`), and `scripts/scan_inactive_jobs.py`, plus deterministic `gh_`/`lever_`/`ashby_` job IDs in `src/url_utils.py`.
 
 ### 5.2 In Progress (WIP)
 - **Salary engine market calibration:** Fine-tuning compensation bands based on user feedback and emerging Israeli industrial salary data.

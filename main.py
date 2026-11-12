@@ -6,12 +6,15 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-from src.config import get_search_keywords
+from src.config import get_search_keywords, get_ats_boards
 from src.fetchers import (
+    CircuitBreaker,
     RunHealth,
     fetch_linkedin_jobs,
     fetch_drushim_jobs,
     fetch_comeet_jobs,
+    fetch_greenhouse_jobs,
+    fetch_lever_jobs,
 )
 from src.job_policy import apply_keyword_fallback
 from src.pipeline import evaluate_candidates, final_status, run_report
@@ -45,7 +48,7 @@ def load_context(root: Path, state_file: str):
 
 
 def collect_all_jobs(health: RunHealth) -> list:
-    """Fetch raw job postings across LinkedIn, Drushim, and Comeet ATS."""
+    """Fetch raw job postings across LinkedIn, Drushim, and direct ATS portals."""
     keywords_config = get_search_keywords()
     energy_keywords = keywords_config.get("energy", [])
     drone_keywords = keywords_config.get("drones", [])
@@ -59,10 +62,50 @@ def collect_all_jobs(health: RunHealth) -> list:
     print("[FETCH] Scraping Drushim (Israeli Industry, Energy & Operations)...")
     drushim_jobs = fetch_drushim_jobs(drushim_keywords, health, max_pages=1)
 
-    print("[FETCH] Scraping Comeet ATS (Enlight Renewable Energy)...")
-    comeet_jobs = fetch_comeet_jobs("enlightenergy", "99.006", "Enlight Renewable Energy", health)
+    breaker = CircuitBreaker(threshold=3)
+    ats_boards = get_ats_boards()
+    comeet_boards = ats_boards.get("comeet") or [
+        {"slug": "enlightenergy", "uid": "99.006", "company": "Enlight Renewable Energy"}
+    ]
 
-    all_raw_jobs = linkedin_energy + linkedin_drones + drushim_jobs + comeet_jobs
+    ats_jobs = []
+    for board in comeet_boards:
+        if breaker.is_open("comeet"):
+            break
+        prev_fail = health.comeet_failures
+        print(f"[FETCH] Scraping Comeet ATS ({board.get('company', board['slug'])})...")
+        batch = fetch_comeet_jobs(board["slug"], board["uid"], board.get("company", board["slug"]), health)
+        if health.comeet_failures > prev_fail:
+            breaker.record_failure("comeet")
+        else:
+            breaker.record_success("comeet")
+        ats_jobs.extend(batch)
+
+    for board in ats_boards.get("greenhouse", []):
+        if breaker.is_open("greenhouse"):
+            break
+        prev_fail = health.greenhouse_failures
+        print(f"[FETCH] Scraping Greenhouse ATS ({board.get('company', board['slug'])})...")
+        batch = fetch_greenhouse_jobs(board["slug"], board.get("company", board["slug"]), health_metrics=health)
+        if health.greenhouse_failures > prev_fail:
+            breaker.record_failure("greenhouse")
+        else:
+            breaker.record_success("greenhouse")
+        ats_jobs.extend(batch)
+
+    for board in ats_boards.get("lever", []):
+        if breaker.is_open("lever"):
+            break
+        prev_fail = health.lever_failures
+        print(f"[FETCH] Scraping Lever ATS ({board.get('company', board['slug'])})...")
+        batch = fetch_lever_jobs(board["slug"], board.get("company", board["slug"]), health_metrics=health)
+        if health.lever_failures > prev_fail:
+            breaker.record_failure("lever")
+        else:
+            breaker.record_success("lever")
+        ats_jobs.extend(batch)
+
+    all_raw_jobs = linkedin_energy + linkedin_drones + drushim_jobs + ats_jobs
     return all_raw_jobs
 
 

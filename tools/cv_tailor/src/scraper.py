@@ -5,8 +5,10 @@ from dataclasses import dataclass
 from typing import Optional
 try:
     from tools.cv_tailor.src.utils import print_info, print_warning, print_success
+    from src.ats_client import fetch_ats_job_detail
 except ModuleNotFoundError:
     from src.utils import print_info, print_warning, print_success
+    fetch_ats_job_detail = None
 
 @dataclass
 class JobPosting:
@@ -61,8 +63,27 @@ def scrape_with_bs4(url: str) -> str:
     return clean_text
 
 def scrape_job(url: str, firecrawl_key: str = None, company_hint: str = "", title_hint: str = "") -> JobPosting:
-    """Scrape a job posting from a URL using Firecrawl or BeautifulSoup."""
+    """Scrape a job posting using API-first ATS extraction, then Firecrawl or BeautifulSoup."""
     print_info(f"סורק משרה מהכתובת: {url}")
+
+    if fetch_ats_job_detail is not None:
+        ats_res = fetch_ats_job_detail(url)
+        if ats_res and ats_res.get("ok") and ats_res.get("job"):
+            ats_job = ats_res["job"]
+            desc = (ats_job.get("description") or "").strip()
+            if desc:
+                print_success(f"שליפת API ישירה הושלמה ({ats_res.get('provider')}) ללא צורך ב-Firecrawl.")
+                return JobPosting(
+                    url=ats_job.get("url") or url,
+                    title=title_hint.strip() or ats_job.get("title") or "משרה ללא כותרת",
+                    company=company_hint.strip() or ats_job.get("company") or "חברה לא צוינה",
+                    location=ats_job.get("location") or "",
+                    raw_text=desc,
+                    description=desc,
+                    requirements=desc,
+                    source=ats_job.get("source") or "ats_direct",
+                )
+
     raw_content = ""
     source = "bs4_fallback"
     

@@ -270,6 +270,8 @@ class AuditRegressionTests(unittest.TestCase):
                  patch.object(main,'EvaluationLedger',return_value=ledger), \
                  patch.object(main,'fetch_linkedin_jobs',return_value=[]),patch.object(main,'fetch_drushim_jobs',return_value=[]), \
                  patch.object(main,'fetch_comeet_jobs',return_value=[]), \
+                 patch.object(main,'fetch_greenhouse_jobs',return_value=[]), \
+                 patch.object(main,'fetch_lever_jobs',return_value=[]), \
                  patch.object(main,'evaluate_candidates',return_value=(jobs,[])), \
                  patch.object(main,'update_weekly_archive',return_value=jobs),patch.object(main,'build_and_save_docs_app'), \
                  patch.object(main,'send_email_report',side_effect=sent):

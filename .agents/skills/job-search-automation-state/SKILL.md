@@ -12,7 +12,7 @@ description: "Maintains Ido Gal's job-search policy and evaluates energy, gas, s
 - **Core Pipeline Entrypoints:**
   - CLI & Orchestration: `main.py`, `src/pipeline.py`, `src/config.py`
   - Policy & Evaluation: `src/job_policy.py`, `src/evaluators.py`, `src/gemini_runtime.py` (`GeminiPool` via official `google-genai` SDK with Pydantic structured output validation), `prompts/job_evaluation_v1.txt`
-  - Multi-Source Fetchers: `src/fetchers.py` (LinkedIn, Drushim, Comeet) + MCP 2-tier discovery/extraction (`Tavily` for discovery, surgical `Firecrawl` for JS-heavy/SPA pages)
+  - Multi-Source Fetchers: `src/fetchers.py` + `src/ats_client.py` (LinkedIn, Drushim, multi-company Direct ATS for Comeet, Greenhouse, Lever configured in `search-preferences.json` `ats_boards`) + MCP 3-tier discovery/extraction (`Tavily` for discovery, `api-anything` for API-first ATS querying / `call_batch` / `changes` delta checks / `learn_site`, and surgical `Firecrawl` only as JS/SPA fallback)
   - Compensation & State: `src/salary_engine.py`, `src/state_manager.py`, `data/jobs_state.json`, `data/evaluation_state.json`, `data/historical_catalog.json`, and Supabase Cloud Sync (`public.sync_state`)
 
 ## 2. Vacancy Evaluation Rules (Iron Rules)
@@ -20,7 +20,7 @@ description: "Maintains Ido Gal's job-search policy and evaluates energy, gas, s
 2. **Hard Exclusions First (`Score = 0`):**
    - **Blacklisted Employers:** `Energean` (אנרג'יאן), `INGL` (נתג"ז / נתיבי הגז הטבעי לישראל), `Chevron` (שברון).
    - **Excluded Role Families:** HR, finance, marketing, sales, cleaning, non-technical admin, security/CCTV monitoring, customer-service call centers, auto mechanics/garage labor, and routine assembly-line labor without engineering horizon.
-   - **Control Room Rule:** Control-room/NOC roles require **explicit industrial SCADA/telemetry** AND (**advertised salary >= 20,000 ILS/month** OR recognized Tier-1 enterprise employer). Advertised salary `< 15,000 ILS` is strictly disqualified.
+   - **Control Room Rule:** Control-room/NOC roles require **explicit industrial SCADA/telemetry** AND (**advertised salary >= 20,000 ILS/month** OR recognized Tier-1 enterprise employer). Advertised salary `< 14,000 ILS` is strictly disqualified.
 3. **B.Sc vs. Practical Engineer (הנדסאי מכונות מוסמך):**
    - Treat B.Sc requirements as flexible **only** if the posting permits equivalent practical engineering diploma / hands-on experience. Mark ambiguous cases `NEEDS_REVIEW`.
 4. **Unified Score Thresholds & Evidence Count:**

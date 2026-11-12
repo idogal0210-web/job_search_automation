@@ -10,7 +10,7 @@ description: "Tailors Ido Gal's CV or requested cover letter to a specific vacan
 - **Canonical Candidate Profile:** Read [profile-source.json](references/profile-source.json) -> `/Users/ido/.gemini/antigravity/scratch/job_search_automation/tools/cv_tailor/base_profile.md` (`Ido Gal`).
 - **Target & Exclusion Reference:** Read [target_companies.json](references/target_companies.json) and `/Users/ido/.gemini/antigravity/scratch/job_search_automation/.agents/skills/job-search-automation-state/references/search-preferences.json`. Never tailor CVs for blacklisted employers (`Energean`, `INGL`, `Chevron`).
 - **Engine & Prompt Assets:**
-  - Codebase module: `tools/cv_tailor/`
+  - Codebase module: `tools/cv_tailor/` (`src/scraper.py` uses API-first ATS extraction via `src/ats_client.py` for Greenhouse, Lever, Ashby, and Comeet before Firecrawl/BS4 fallback)
   - Structured Prompts: `prompts/cv_analysis_v1.txt` (ATS gap analysis) and `prompts/cv_generation_v1.txt` (factual tailoring)
   - Career Studio API Bridge: `scripts/studio_bridge.py` (`POST /api/ats/match`, `POST /api/writer/tailor`) validated via Pydantic schemas in `src/gemini_runtime.py`.
 

@@ -3,6 +3,7 @@ import json
 from dataclasses import asdict
 from urllib.parse import urlparse
 
+from src.ats_client import fetch_ats_job_detail
 from src.evaluators import evaluate_and_enrich_job_with_gemini
 from src.gemini_runtime import EvaluationUnavailable, GeminiPool
 from src.job_policy import apply_keyword_fallback, deterministic_filter, is_drone_job
@@ -22,6 +23,13 @@ def enrich(job):
         full = fetch_linkedin_full_job_description(job["link"])
     elif host == "drushim.co.il" or host.endswith(".drushim.co.il"):
         full = fetch_drushim_full_job_description(job["link"])
+    else:
+        ats_res = fetch_ats_job_detail(job["link"])
+        if ats_res and ats_res.get("ok") and ats_res.get("job"):
+            ats_job = ats_res["job"]
+            full = ats_job.get("description") or ""
+            if ats_job.get("location") and not job.get("location"):
+                job["location"] = ats_job["location"]
     if full:
         job["snippet"] = full
         job["description"] = full
@@ -93,10 +101,18 @@ def final_status(health, *, email_configured, dashboard_ok=True, state_ok=True):
     if email_configured and not health.email_success:
         return "FAILED_EMAIL"
     attempts = (
-        health.linkedin_requests + health.drushim_requests + getattr(health, "comeet_requests", 0)
+        health.linkedin_requests
+        + health.drushim_requests
+        + getattr(health, "comeet_requests", 0)
+        + getattr(health, "greenhouse_requests", 0)
+        + getattr(health, "lever_requests", 0)
     )
     failures = (
-        health.linkedin_failures + health.drushim_failures + getattr(health, "comeet_failures", 0)
+        health.linkedin_failures
+        + health.drushim_failures
+        + getattr(health, "comeet_failures", 0)
+        + getattr(health, "greenhouse_failures", 0)
+        + getattr(health, "lever_failures", 0)
     )
     if attempts and failures >= attempts:
         return "FAILED_SCRAPERS"

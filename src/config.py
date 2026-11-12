@@ -88,7 +88,25 @@ def get_salary_policy() -> Dict[str, int]:
     cfg = load_raw_config()
     policy = cfg.get("salary_policy", {})
     return {
-        "absolute_floor": policy.get("absolute_floor_ils", 15000),
+        "absolute_floor": policy.get("absolute_floor_ils", 14000),
         "high_threshold": policy.get("high_salary_threshold_ils", 18000),
         "shifts_24_7_floor": policy.get("shifts_24_7_floor_ils", 20000),
+    }
+
+
+def get_ats_boards() -> Dict[str, List[Dict[str, str]]]:
+    """Return verified direct ATS board configurations grouped by provider."""
+    cfg = load_raw_config()
+    boards = cfg.get("ats_boards")
+    if not isinstance(boards, dict) and DEFAULT_PREFERENCES_PATH.exists():
+        try:
+            with open(DEFAULT_PREFERENCES_PATH, "r", encoding="utf-8") as f:
+                boards = json.load(f).get("ats_boards", {})
+        except Exception:
+            boards = {}
+    boards = boards if isinstance(boards, dict) else {}
+    return {
+        "comeet": [dict(item) for item in boards.get("comeet", []) if isinstance(item, dict) and item.get("slug") and item.get("uid")],
+        "greenhouse": [dict(item) for item in boards.get("greenhouse", []) if isinstance(item, dict) and item.get("slug")],
+        "lever": [dict(item) for item in boards.get("lever", []) if isinstance(item, dict) and item.get("slug")],
     }
