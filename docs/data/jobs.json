@@ -1,9 +1,163 @@
 {
   "schema_version": "2.0.0",
-  "build_id": "20261111131112",
-  "generated_at": "2026-11-11T13:11:12.800481",
-  "total_jobs": 74,
+  "build_id": "20261112025432",
+  "generated_at": "2026-11-12T02:54:32.324989",
+  "total_jobs": 65,
   "jobs": [
+    {
+      "link": "https://mprest.com/mprest_careers/co/petah-tikva-israel/5D.B62/qc-engineer/all/",
+      "title": "QC Engineer",
+      "company": "mPrest",
+      "location": "Petah Tikva, Petah Tikva, Israel",
+      "date": "2026-11-12",
+      "source": "Comeet",
+      "match_score": 90,
+      "base_match_score": 85,
+      "priority_bonus": 5,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "energy_tech",
+      "company_domain_product": "מערכות שליטה ובקרה ותוכנה",
+      "company_summary": "",
+      "job_summary": "משרת מהנדס בקרת איכות (QC) לבדיקת חלקים, מכלולים, חיווט ואלקטרוניקה לפי תקני איכות.",
+      "company_requirements": "הנדסאי מכונות/חשמל/אטרוניקה, ניסיון בבדיקות איכות וקריאת שרטוטים, אנגלית טכנית גבוהה.",
+      "experience_strengths": "הנדסאי מכונות מוסמך עם רקע מעשי במערכות אלקטרו-מכניות ובדיקות טכניות.",
+      "reasoning": "המוועמד בעל השכלת הנדסאי מכונות ורקע טכני מתאים לבקרת איכות ובדיקת רכיבים.",
+      "key_highlights": "דרישה לתעודת הנדסאי אלקטרוניקה או חשמל, קריאת שרטוטים, ושליטה באנגלית טכנית.",
+      "salary_range": "11,500 - 15,000 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+      "salary_source_url": "",
+      "p25": 11500,
+      "p75": 15000,
+      "logo": null,
+      "company_logo_url": null,
+      "snippet": "Description: mPrest is looking for an Electronics Quality Inspector - QC. | Responsibilities: Perform quality inspections for parts and assemblies according to AS9100/ISO9001 procedures and standards.\nConduct visual inspections based on drawings and engineering requirements.\nPerform in-process inspections throughout assembly and testing stages.\nIdentify and analyze mechanical faults and aerospace wiring system issues.\nPerform First Article Inspection (FAI).\nDocument inspections, maintain follow-up records, and report non-conformities. | Requirements: Electronics or Electrical Technician / Practical Engineer certifications.\nRelevant experience from the Israeli Air Force / Navy – an advantage.\nFamiliarity and experience working according to quality standards.\nAbility to read and interpret technical drawings in both English and Hebrew.\nKnowledge of aerospace wiring, IPC certification, or relevant professional courses – an advantage.\nHigh level of technical English proficiency.\nValid driver’s license and willingness to travel to suppliers (approximately 50% of the time).\nExperience working with testing and measurement equipment.\nKnowledge and experience in performing FAI inspections according to AS9102 – an advantage.\nExperience working with PRIORITY ERP system – an advantage.",
+      "stable_job_id": "ch_f577477db3f7",
+      "content_hash": "ch_f577477db3f7",
+      "requirement_assessments": [
+        {
+          "requirement": "Electronics or Electrical Technician / Practical Engineer certifications",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "Electronics or Electrical Technician / Practical Engineer certifications.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "המועמד מחזיק בתואר הנדסאי מוסמך בתחום טכני."
+        },
+        {
+          "requirement": "Ability to read and interpret technical drawings in both English and Hebrew",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "Ability to read and interpret technical drawings in both English and Hebrew.",
+            "source_field": "snippet"
+          },
+          "profile_evidence": {
+            "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
+            "source_field": "Core Profile"
+          },
+          "assessment": "match",
+          "explanation": "כהנדסאי מכונות, למועמד יש יכולת קריאת שרטוטים הנדסיים."
+        }
+      ],
+      "fit_gaps": "הדרישה הספציפית היא להנדסאי אלקטרוניקה/חשמל, בעוד המועמד הינו הנדסאי מכונות (עם לימודי חשמלאי).",
+      "is_direct_ats": true,
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
+    },
+    {
+      "link": "https://www.drushim.co.il/job/39053154/e0f127fb/",
+      "title": "מהנדס /ת / הנדסאי/ת חשמל",
+      "company": "חברה מובילה (דיסקרטי)",
+      "location": "אשלים",
+      "date": "2026-11-12",
+      "source": "Drushim",
+      "match_score": 85,
+      "base_match_score": 85,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "solar",
+      "company_domain_product": "פרויקטים בתחום האנרגיות המתחדשות",
+      "company_summary": "",
+      "job_summary": "פיקוח וניהול עבודות חשמל ובקרת איכות בפרויקטים של אנרגיות מתחדשות באזור אשלים, כולל עבודה מול רשויות וקבלנים.",
+      "company_requirements": "דיפלומת הנדסאי חשמל או מכונות/אנרגיה, ניסיון בהקמת פרויקטים סולאריים, קריאת תוכניות SCADA.",
+      "experience_strengths": "ניסיון במערכות סולאריות, בקרה ותפעול אתרים הנדסיים.",
+      "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע באנרגיות מתחדשות, התואם לדרישות ניהול אתרים סולאריים.",
+      "key_highlights": "הנדסאי מכונות בהכשרתו עם התמחות באנרגיה ירוקה ורקע בבקרת אנרגיה ו-SCADA.",
+      "salary_range": "13,000 - 16,000 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • משרת יום",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות).",
+      "salary_source_url": "",
+      "p25": 13000,
+      "p75": 16000,
+      "logo": "",
+      "company_logo_url": "",
+      "snippet": "חסוי\nמהנדס /ת / הנדסאי/ת חשמל\n- חסוי -\nאשלים\n3-4 שנים\nמשרה מלאה\nלפני 7 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברה מובילה בתחום האנרגיות המתחדשות דרוש/ה מהנדס/ת / הנדסאי/ת חשמל.\nהתפקיד כולל:\nפיקוח וניהול עבודות חשמל בפרויקטים באזור אשלים.\nביצוע בקרת איכות מתחילת הפרויקט ועד סופו.\nעבודה מול משרדי תכנון, קבלנים וספקים, רשויות, חח\"י.\nמשרה מלאה.\nדרישות התפקיד\nרישיון מהנדס ו/או דיפלומת הנדסאי חשמל ו/או רישיון מסויג מתח גבוה. -חובה\nניסיון של 3 שנים בהקמת פרויקטים בתחום סולארי, תחמש\"ים ואנרגיות מתחדשות.\nפיקוח על ביצוע כלל עבודות החשמל ותקשורת ובקרת אנרגיה/הספק באתר.\nעבודה מול קבלני משנה / רכש / לוגיסטיקה / הנדסה ומשרדי תכנון.\nליווי פרויקט משלב תכנון עד למסירה.\nידע בקריאת תוכניות חשמל ותקשורת SCADA / תוכנות מחשב/אופיס/שרטוט.\nהזמנת ציוד לביצוע.\nשליטה בשפה אנגלית.\nהמשרה מיועדת לנשים ולגברים כאחד.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתחומים\nמהנדס/ת חשמל\nהנדסאי/ת חשמל",
+      "stable_job_id": "drushim_39053154",
+      "content_hash": "ch_a149fb9183b8",
+      "requirement_assessments": [
+        {
+          "requirement": "דיפלומת הנדסאי חשמל או רישיון מהנדס",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "רישיון מהנדס ו/או דיפלומת הנדסאי חשמל ו/או רישיון מסויג מתח גבוה. -חובה",
+            "source_field": "דרישות התפקיד"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "למועמד דיפלומת הנדסאי מוסמך בתחום האנרגיה."
+        },
+        {
+          "requirement": "ניסיון בתחום סולארי ואנרגיות מתחדשות",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "ניסיון של 3 שנים בהקמת פרויקטים בתחום סולארי, תחמש\"ים ואנרגיות מתחדשות.",
+            "source_field": "דרישות התפקיד"
+          },
+          "profile_evidence": {
+            "quote": "solar PV field systems, battery storage (BESS) operations, clean-tech integration.",
+            "source_field": "Key Competencies & Target Operational Focus"
+          },
+          "assessment": "match",
+          "explanation": "למועמד היכרות ורקע מעשי במערכות סולאריות ואנרגיה ירוקה."
+        },
+        {
+          "requirement": "ידע בקריאת תוכניות חשמל ותקשורת SCADA",
+          "importance": "preferred",
+          "ad_evidence": {
+            "quote": "ידע בקריאת תוכניות חשמל ותקשורת SCADA / תוכנות מחשב/אופיס/שרטוט.",
+            "source_field": "דרישות התפקיד"
+          },
+          "profile_evidence": {
+            "quote": "SCADA / AVEVA / 24/7 Control Rooms",
+            "source_field": "Core Profile"
+          },
+          "assessment": "match",
+          "explanation": "למועמד שליטה במערכות בקרה ו-SCADA."
+        }
+      ],
+      "fit_gaps": "למועמד דיפלומת הנדסאי מכונות ולימודי חשמלאי מוסמך, אך ייתכן שיידרש ניסיון ספציפי של 3 שנים בהקמת פרויקטים.",
+      "is_direct_ats": "",
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
+    },
     {
       "link": "https://il.linkedin.com/jobs/view/debug-practical-engineer-at-solaredge-technologies-4401000393",
       "title": "Debug Practical Engineer",
@@ -5350,960 +5504,6 @@
           "label": "עבודת שטח"
         }
       ]
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%94-%E2%80%94-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%90%D7%95%D7%98%D7%95%D7%A0%D7%95%D7%9E%D7%99%D7%95%D7%AA-at-solar-solutions-%D7%A4%D7%AA%D7%A8%D7%95%D7%A0%D7%95%D7%AA-%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99%D7%99%D7%9D-4486196109",
-      "title": "טכנאי אינטגרציה — מערכות אוטונומיות",
-      "company": "Solar Solutions | פתרונות סולאריים",
-      "location": "רשפון",
-      "date": "2026-11-03",
-      "source": "LinkedIn",
-      "match_score": 90,
-      "base_match_score": 90,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "solar",
-      "company_domain_product": "מתקנים אוטונומיים המשלבים אנרגיה סולארית, אגירה ותקשורת אלחוטית",
-      "company_summary": "",
-      "job_summary": "הרכבה, אינטגרציה והפעלה של מערכות אוטונומיות הכוללות אנרגיה סולארית ואגירה, מהתדרוך והתכנון בסדנה ועד התקנה, איתור תקלות ותחזוקה בשטח.",
-      "company_requirements": "ניסיון בהרכבה, הפעלה ותחזוקה בסדנה ובשטח, רקע בחשמל ואלקטרוניקה, יכולת עבודה בשטח.",
-      "experience_strengths": "ניסיון מעשי בהנדסת מכונות, מערכות סולאריות, אגירת אנרגיה (BESS), עבודה טכנית בשטח ויכולות אינטגרציה אלקטרו-מכניות.",
-      "reasoning": "למועמד יש רקע חזק בהנדסאי מכונות, מערכות סולאריות ואגירת אנרגיה, לצד ניסיון מעשי בהרכבה, אינטגרציה ועבודה בשטח, התואם במדויק את דרישות משרת טכנאי האינטגרציה.",
-      "key_highlights": "הנדסאי מכונות מוסמך, מומחיות במערכות סולאריות, ניסיון בעבודה טכנית בשטח ובקרת מערכות.",
-      "salary_range": "14,500 - 18,500 ₪ (מקובל רכב ענפי)",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • כולל משמרות",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: סולארי ואגירת אנרגיה (PV / BESS).",
-      "salary_source_url": "",
-      "p25": 14500,
-      "p75": 18500,
-      "logo": "https://media.licdn.com/dms/image/v2/D560BAQEgnZgGoLwx8A/company-logo_100_100/B56aDT6HFAI4AI-/0/1790261621452?e=2147483647&v=beta&t=iUPZ7e20f9CAXOaQvuMdFOEYI3kkIrF4KN9lFBpJVYo",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQEgnZgGoLwx8A/company-logo_100_100/B56aDT6HFAI4AI-/0/1790261621452?e=2147483647&v=beta&t=iUPZ7e20f9CAXOaQvuMdFOEYI3kkIrF4KN9lFBpJVYo",
-      "snippet": "פתרונות סולאריים\nמתכננת ומייצרת מתקנים אוטונומיים המשלבים אנרגיה סולארית, אגירה ותקשורת אלחוטית — מערכות שעובדות 24/7 גם בלי תשתית חשמל או תקשורת. מעל 1,000 מערכות מקוונות ברחבי הארץ.\nאנחנו מחפשים טכנאי אינטגרציה לצוות שלנו ברשפון.\nהתפקיד\nהרכבה, אינטגרציה והפעלה של מערכות אוטונומיות — מהתכנון בסדנה ועד ההתקנה בשטח (עבודת ידיים של הרכבת מערכות). כולל איתור ופתרון תקלות, בסדנה ומול מערכות מרוחקות.\nיתרון\nרקע בתקשורת רדיו, סלולרית או קווית רקע בחשמל אלקטרוניקה ניסיון בהרכבה, הפעלה ותחזוקה — בסדנה ובשטח\nחשוב לדעת\nהתפקיד כולל יציאה להתקנות בשטח, ולעיתים עבודה בגובה.",
-      "stable_job_id": "li_4486196109",
-      "content_hash": "ch_98f2b588e84d",
-      "requirement_assessments": [
-        {
-          "requirement": "ניסיון בהרכבה, הפעלה ותחזוקה — בסדנה ובשטח",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "ניסיון בהרכבה, הפעלה ותחזוקה — בסדנה ובשטח",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד יש ניסיון מעשי רב בהרכבה, טיפול במערכות אלקטרו-מכניות ועבודה שטחית."
-        },
-        {
-          "requirement": "רקע בחשמל אלקטרוניקה",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "רקע בחשמל אלקטרוניקה",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Electrician Studies (חשמלאי מוסמך - לקראת סיום ההסמכה).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד נמצא לקראת סיום לימודי חשמלאי מוסמך ובעל השכלה טכנית רלוונטית בהנדסת מכונות ואנרגיה."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": true,
-      "is_junior_friendly": false,
-      "curated_tags": [
-        {
-          "type": "tag-shifts",
-          "icon": "ph-bold ph-clock-countdown",
-          "label": "משמרות 24/7"
-        }
-      ]
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/customer-support-technician-kiryat-gat-at-applied-materials-israel-4484383437",
-      "title": "Customer Support Technician - Kiryat Gat",
-      "company": "Applied Materials - Israel",
-      "location": "קרית גת",
-      "date": "2026-11-03",
-      "source": "LinkedIn",
-      "match_score": 90,
-      "base_match_score": 90,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "ציוד לייצור שבבים ומוליכים למחצה",
-      "company_summary": "",
-      "job_summary": "משרת טכנאי תמיכת לקוחות שטח הכוללת התקנה, תחזוקה ואבחון של ציוד מתקדם במפעלים, עבודה בסביבת חדר נקי, ועבודה במשמרות.",
-      "company_requirements": "הנדסאי או טכנאי במכונות, חשמל או מכטרוניקה, אנגלית שוטפת, נכונות לנסיעות ועבודה במשמרות.",
-      "experience_strengths": "הנדסאי מכונות עם ניסיון במערכות אלקטרו-מכניות, פתרון בעיות שטח, עבודה בסביבת מערכות מורכבות, ורקע פיזי טכני גבוה.",
-      "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם ניסיון במערכות אלקטרו-מכניות ובקרה, והוא עונה על דרישות הסף של המשרה לתמיכה טכנית בשטח.",
-      "key_highlights": "הנדסאי מכונות מוסמך, רקע פיזי ומעשי רב-תחומי, יכולת עבודה תחת לחץ ומוכנות לעבודה במשמרות.",
-      "salary_range": "13,500 - 17,500 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • כולל משמרות",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 13500,
-      "p75": 17500,
-      "logo": "https://media.licdn.com/dms/image/v2/D560BAQGQXZFTM-P1aA/company-logo_100_100/B56ZfwYXZpHcAc-/0/1752084610051/applied_materials_israel_logo?e=2147483647&v=beta&t=fz8rsBbT4pfj6GzzcTEsa7d2ywsVnp60ejvaUFXISMc",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQGQXZFTM-P1aA/company-logo_100_100/B56ZfwYXZpHcAc-/0/1752084610051/applied_materials_israel_logo?e=2147483647&v=beta&t=fz8rsBbT4pfj6GzzcTEsa7d2ywsVnp60ejvaUFXISMc",
-      "snippet": "Who We Are\nApplied Materials is the global leader in materials science and engineering solutions that are at the foundation of virtually every new semiconductor chip and advanced display in the world. The equipment that we create and service is essential to advancing AI and accelerating the commercialization of next-generation semiconductor chips. Join us and push the boundaries of materials science and engineering in a company at the foundation of the electronics industry. The work we do together advances the world’s technology.\nWhat We Offer\nLocation:\nKiryat Gat,ISR\nYou’ll benefit from a supportive work culture that encourages you to learn, develop, and grow your career as you take on challenges and drive innovative solutions for our customers. We empower our team to push the boundaries of what is possible—while learning every day in a supportive leading global company. Visit our Careers website to learn more.\nAt Applied Materials, we care about the health and wellbeing of our employees. We’re committed to providing programs and support that encourage personal and professional growth and care for you at work, at home, or wherever you may go. Learn more about our benefits.\nWe are looking for a talented\ncustomer support technician\nto join our account team & integrate within our field support group in\nKiryat Gat\nto provide a unique customer experience by demonstrating outstanding technical capabilities and inter-personal skills.\nWhat’s in it for you?\nAs a customer support technician at Applied Materials you’ll be working for a high growth international company, integrating into the heart of the manufacturing process of advanced digital devices. You’ll get the opportunity and practice to work on the most advanced semiconductor equipment while learning new skills or perfecting existing ones such as advanced trouble shooting and problem solving, project management, robotics, semiconductor device manufacturing processes and more. In addition, you’ll get advanced training on cutting edge hardware industry components.\nRole Responsibilities:\nCollaborate with Senior Field Service Engineers [Customer Engineers] in installing, maintaining, and upgrading customer equipment\nUse digital analytics for troubleshooting\nApply basic diagnostic techniques to assess equipment and address technical issues, with guidance from Senior Field Service Engineers [Customer Engineers]\nPerform preventative and corrective maintenance on electrical, vacuum, mechanical, plasma, hydraulic, and gas systems (training provided)\nCoordinate and communicate directly with customers\nFulfill additional duties, as assigned\nMinimum Qualifications:\nPractical Engineer or Tecnician in Electrical Engineering or Mechatronics or mecanical\nWilling to learn and interpret electrical and mechanical schematics\nExperience diagnosing and resolving basic technical challenges\nFluent in English\nWilling to travel -30%\nHas a valid passport\nPreferred Qualifications:\n1–2 years of work experience in customer/field service support, or a related technical field\nExperience with electronic / mechanic equipment – advantage\nWork is located in Kiryat Gat in a cleanroom environment\nWork in shifts including nights and weekends\nPhysical Requirements:\nThis position often requires extensive walking, standing for extended periods of time, working in tight spaces, bending, squatting, twisting, kneeling, reaching, climbing stairs and ladders, working at height, lifting up to 35 lbs., the ability to distinguish between colors and working with electricity, the ability to work in an environment with noise that may be difficult for some individuals with sensitivity to noise, and the use of hand and power tools. Additionally, because this position generally involves working in a clean room, it requires the use of appropriate Personal Protective Equipment such as coveralls, hoods, booties, safety glasses, gloves, respirators, chemical aprons, and face shields.\nAdditional Information\nTime Type:\nFull time\nEmployee Type:\nAssignee / Regular\nTravel:\nYes, 25% of the Time\nRelocation Eligible:\nNo\nApplied Materials is an Equal Opportunity Employer. Qualified applicants will receive consideration for employment without regard to race, color, national origin, citizenship, ancestry, religion, creed, sex, sexual orientation, gender identity, age, disability, veteran or military status, or any other basis prohibited by law.",
-      "stable_job_id": "li_4484383437",
-      "content_hash": "ch_e8815c67e4dc",
-      "requirement_assessments": [
-        {
-          "requirement": "Practical Engineer or Tecnician in Electrical Engineering or Mechatronics or mecanical",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Practical Engineer or Tecnician in Electrical Engineering or Mechatronics or mecanical",
-            "source_field": "Minimum Qualifications"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד הוא הנדסאי מכונות מוסמך, העונה בדיוק על דרישת ההשכלה המעשית."
-        },
-        {
-          "requirement": "Experience diagnosing and resolving basic technical challenges",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Experience diagnosing and resolving basic technical challenges",
-            "source_field": "Minimum Qualifications"
-          },
-          "profile_evidence": {
-            "quote": "troubleshooting, drone/UAV integration and flight operations.",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד יש ניסיון מעשי באיתור תקלות ופתרון בעיות במערכות אלקטרו-מכניות."
-        },
-        {
-          "requirement": "Fluent in English",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Fluent in English",
-            "source_field": "Minimum Qualifications"
-          },
-          "profile_evidence": {
-            "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
-            "source_field": "Tech & AI"
-          },
-          "assessment": "match",
-          "explanation": "המועמד שולט בכלים טכנולוגיים מתקדמים המעידים על יכולת עבודה באנגלית מקצועית."
-        },
-        {
-          "requirement": "Perform preventative and corrective maintenance on electrical, vacuum, mechanical, plasma, hydraulic, and gas systems",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Perform preventative and corrective maintenance on electrical, vacuum, mechanical, plasma, hydraulic, and gas systems",
-            "source_field": "Role Responsibilities"
-          },
-          "profile_evidence": {
-            "quote": "Natural gas transmission/distribution control, nomination allocations, pressure/flow monitoring, solar PV field systems, battery storage (BESS)",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע בתחום מערכות גז, זרימה ותחזוקת מערכות אנרגיה ומכונות."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד כהנדסאי מכונות מוסמך.",
-      "is_direct_ats": "",
-      "is_field_work": true,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": [
-        {
-          "type": "tag-field",
-          "icon": "ph-bold ph-wrench",
-          "label": "עבודת שטח"
-        }
-      ]
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/advanced-drone-r-d-engineer-at-regulus-4485736429",
-      "title": "Advanced Drone R&D Engineer",
-      "company": "Regulus",
-      "location": "לא צוין במודעה",
-      "date": "2026-11-03",
-      "source": "LinkedIn",
-      "match_score": 88,
-      "base_match_score": 88,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "drones",
-      "company_domain_product": "Counter-drone and uncrewed defense systems",
-      "company_summary": "",
-      "job_summary": "תפקיד פיתוח מתקדם הכולל מחקר, הרכבה ובדיקה של טכנולוגיות רחפנים מתקדמות, תקשורת RF, ומערכות לוחמה אלקטרונית.",
-      "company_requirements": "דרישה להבנה של בקר טיסה, פרוטוקולי RF, לינוקס, הרכבת רחפנים ויכולת כתיבת דוחות טכניים.",
-      "experience_strengths": "ניסיון במערכות אלקטרו-מכניות, אינטגרציה, הפעלת רחפנים, ותפעול מערכות שטח טכניות.",
-      "reasoning": "המועמד בעל ניסיון מעשי בהרכבה, חיווט ואינטגרציה של רחפנים ומערכות אלקטרו-מכניות, לצד רקע מבצעי מתאים.",
-      "key_highlights": "התאמה גבוהה לדרישות החומרה, ההלחמה, החיווט והבדיקות המעשיות של רחפנים במודעה.",
-      "salary_range": "14,000 - 19,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: רחפנים, כטב״ם ומערכות C-UAS.",
-      "salary_source_url": "",
-      "p25": 14000,
-      "p75": 19000,
-      "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQEbhEybOMbbcQ/company-logo_100_100/company-logo_100_100/0/1630607709589/regulus_cyber_logo?e=2147483647&v=beta&t=jwAh2uOPJLZLn2invBz71hB-MR3N5tt-abV1-t73vbU",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQEbhEybOMbbcQ/company-logo_100_100/company-logo_100_100/0/1630607709589/regulus_cyber_logo?e=2147483647&v=beta&t=jwAh2uOPJLZLn2invBz71hB-MR3N5tt-abV1-t73vbU",
-      "snippet": "Regulus is an agile defense-tech startup tackling the most complex challenges in counter-drone and uncrewed defense. With hundreds of combat-proven systems deployed by the IDF and global partners, we are now engineering the next generation of C-UxS (Counter-Uncrewed Systems). We leverage advanced electronic warfare and kinetic measures to detect and neutralize hostile threats. If you want to push technological boundaries while safeguarding Israel and our allies, join us at this pivotal stage of our growth.\nThis is a unique opportunity to join a company at a pivotal growth stage and help shape its products, culture, and future.\nWe are seeking a highly technical, hands-on\nAdvanced Drone R&D Engineer\nto join our team. In this role, you will be responsible for researching, assembling, and testing advanced drone technologies.\nKey Responsibilities\nConduct in-depth research on drone hardware, datalinks, radios, and RF protocols (including ELRS, LoRa, and DJI systems).\nResearch and evaluate RF jamming techniques, spoofing, and anti-jamming solutions.\nAssemble, wire, and integrate various drone components, payloads, and Linux-based companion computers using TCP/IP networking.\nConfigure and test multi-constellation GNSS systems, including RTK setups and satellite tracking optimization.\nPerform precise soldering, wiring, and electronic troubleshooting in a lab environment.\nWrite clear, detailed technical reports on research findings, assembly procedures, and test results for both technical and non-technical stakeholders.\nRequirements:\nStrong understanding of drone flight controllers, datalinks, radios, and RF protocols\nFamiliarity with link budgets, antenna gain, signal attenuation, and GNSS/GPS tracking (ephemeris, cold starts).\nProficiency in Linux (command line) and TCP/IP networking.\nProven experience in drone assembly, including the ability to solder and work with small electronic components.\nExcellent written communication skills with the ability to produce clear and concise technical reports.\nDemonstrated ability to fly multirotor and/or fixed-wing drones - Advantage",
-      "stable_job_id": "li_4485736429",
-      "content_hash": "ch_21a653f903ba",
-      "requirement_assessments": [
-        {
-          "requirement": "Proven experience in drone assembly, including the ability to solder and work with small electronic components",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Proven experience in drone assembly, including the ability to solder and work with small electronic components.",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting, drone/UAV integration and flight operations.",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע בהרכבה, אינטגרציה והתעסקות במערכות אלקטרו-מכניות."
-        },
-        {
-          "requirement": "Proficiency in Linux (command line) and TCP/IP networking",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Proficiency in Linux (command line) and TCP/IP networking.",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע טכנולוגי רחב ויכולת למידה מהירה של כלי פיתוח ותוכנה."
-        },
-        {
-          "requirement": "Demonstrated ability to fly multirotor and/or fixed-wing drones",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "Demonstrated ability to fly multirotor and/or fixed-wing drones - Advantage",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "drone/UAV integration and flight operations",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד נסיון בהפעלת רחפנים וכלי טיס בלתי מאוישים."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/it-operations-specialist-at-confidential-careers-4483056050",
-      "title": "IT Operations Specialist",
-      "company": "Confidential Careers",
-      "location": "מרכז הארץ",
-      "date": "2026-11-03",
-      "source": "LinkedIn",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "תשתיות טכנולוגיה ומערכות מידע",
-      "company_summary": "",
-      "job_summary": "משרה התחלתית בתפעול ובקרה של מערכות מידע ותשתיות טכנולוגיות ארגוניות, ניטור מערכות, פתרון תקלות ראשוני ועבודה עם צוותי תשתיות.",
-      "company_requirements": "רקע טכני רלוונטי מלימודים או שירות צבאי, אוריינטציה טכנית, יכולת פתרון בעיות ויכולת למידה עצמית.",
-      "experience_strengths": "ניסיון מעשי בתפעול מערכות קריטיות בזמן אמת, רקע טכני ממفيד ומצבא (סיירת נח\"ל), ויכולת למידה עצמית ופתרון בעיות.",
-      "reasoning": "המועמד בעל רקע טכני מוצק ממסגרת לימודית וצבאית ויכולת פתרון בעיות, המתאימים לדרישות תפקיד התפעול של מערכות מידע ותשתיות.",
-      "key_highlights": "התאמה למשרת הכניסה לתחום התפעול הטכנולוגי הודות לרקע טכני ויכולות ניטור ובקרה מסביבות עבודה קריטיות.",
-      "salary_range": "11,500 - 15,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHAlnvLlr8B8A/company-logo_100_100/company-logo_100_100/0/1734179952791/goconfidentia_logo?e=2147483647&v=beta&t=4ZKgldVRReqICLn5TO9uD36mT1cF2vh9vePaqIEjJJc",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQHAlnvLlr8B8A/company-logo_100_100/company-logo_100_100/0/1734179952791/goconfidentia_logo?e=2147483647&v=beta&t=4ZKgldVRReqICLn5TO9uD36mT1cF2vh9vePaqIEjJJc",
-      "snippet": "IT Operations Specialist | Entry-Level Opportunity\nLooking to start your career in IT? Your technical background could be your first step into IT Operations!\nA leading organization in Central Israel is looking for a motivated\nIT Operations Specialist\nto join its technology operations team.\nThis is an excellent opportunity for candidates with a technical background from academic studies, professional training, or military service who want to gain hands-on experience working with IT systems, infrastructure, and enterprise technology environments.\nPrevious professional IT experience is not required.\nWe're looking for candidates with a solid technical foundation, strong problem-solving abilities, and a genuine interest in developing a career in IT Operations.\nWhat You'll Do\nMonitor and support the daily operation of IT systems and services.\nTrack system availability, operational processes, and infrastructure performance.\nIdentify technical issues, perform initial troubleshooting, and escalate incidents when needed.\nWork with operating systems, servers, and monitoring tools.\nDocument technical incidents, service requests, and operational activities.\nCollaborate with System, Networking, Infrastructure, and Information Security teams.\nPerform routine IT operational tasks according to established procedures.\nLearn new technologies, tools, and enterprise systems as part of the role.\nRequirements\nRelevant technical background from academic studies, professional training, or military service.\nBasic familiarity with operating systems and IT environments.\nTechnical orientation and basic troubleshooting abilities.\nStrong motivation to begin or develop a career in IT.\nAbility to learn independently and adapt quickly to new technologies.\nOrganized, systematic, and detail-oriented working approach.\nStrong personal responsibility and teamwork skills.\nGood interpersonal communication and customer service mindset.\nAdvantages\nProfessional training or certification in System Administration, Networking, or IT.\nFamiliarity with Windows and Linux operating systems.\nBasic knowledge of Active Directory.\nUnderstanding of fundamental computer networking concepts.\nFamiliarity with IT monitoring tools.\nRelevant technical experience gained during military service.\nPosition Details\nLocation:\nCentral Israel\nEmployment Type:\nFull-time\nExperience Level:\nEntry-level – No previous professional IT experience required.\nIf you're technically curious, enjoy solving problems, and want to build your career in IT infrastructure and operations, we'd love to hear from you!",
-      "stable_job_id": "li_4483056050",
-      "content_hash": "ch_5484f05d9e4d",
-      "requirement_assessments": [
-        {
-          "requirement": "רקע טכני רלוונטי מלימודים אקדמיים, הכשרה מקצועית או שירות צבאי",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Relevant technical background from academic studies, professional training, or military service.",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "למועמד יש רקע כהנדסאי מכונות מוסמך ורקע טכני משירותו הצבאי."
-        },
-        {
-          "requirement": "אוריינטציה טכנית ויכולות פתרון בעיות בסיסיות",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Technical orientation and basic troubleshooting abilities.",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "troubleshooting, drone/UAV integration and flight operations.",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "המועמד מפגין יכולות פתרון תקלות ואוריינטציה טכנית עמוקה במערכות מורכבות."
-        },
-        {
-          "requirement": "ניסיון קודם בתחום ה-IT",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "Previous professional IT experience is not required.",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
-            "source_field": "Core Profile"
-          },
-          "assessment": "match",
-          "explanation": "המשרה אינה דורשת ניסיון קודם ב-IT, והמועמד תואם את פרופיל הכניסה הנדרש."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": true,
-      "curated_tags": [
-        {
-          "type": "tag-junior",
-          "icon": "ph-bold ph-graduation-cap",
-          "label": "Junior"
-        }
-      ]
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/field-service-technician-at-xerox-4481151543",
-      "title": "Field Service Technician",
-      "company": "Xerox",
-      "location": "לא צויין במפורש במודעה",
-      "date": "2026-11-03",
-      "source": "LinkedIn",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "טכנולוגיות הדפסה ושירותי עבודה היברידיים",
-      "company_summary": "",
-      "job_summary": "תפקיד טכנאי שירות בשטח לאבחון, תיקון ותחזוקה של ציוד לקוחות באמצעות מומחיות אלקטרו-מכנית.",
-      "company_requirements": "ניסיון באבחון תקלות אלקטרו-מכניות, שימוש במולטימטר וקריאת שרטוטים חשמליים, רישיון נהיגה בתוקף.",
-      "experience_strengths": "ניסיון במערכות אלקטרו-מכניות, שליטה בכלי מדידה ועבודה עצמאית בשטח.",
-      "reasoning": "המועמד הוא הנדסאי מכונות עם רקע חזק במערכות אלקטרו-מכניות ועבודה בשטח, ולכן הוא מתאים מאוד לתפקיד טכנאי שירות בשטח.",
-      "key_highlights": "הנדסאי מכונות מוסמך, רקע מעשי בתחזוקת מערכות ותפעול שטח.",
-      "salary_range": "11,500 - 15,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQEaqVHcZRSkzQ/company-logo_100_100/B4EZ6x_11EIcAM-/0/1781102763719/xerox_logo?e=2147483647&v=beta&t=xfNPftVqkwgohDxcHCFhBhusCGImAMHq-onp2V06ooA",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQEaqVHcZRSkzQ/company-logo_100_100/B4EZ6x_11EIcAM-/0/1781102763719/xerox_logo?e=2147483647&v=beta&t=xfNPftVqkwgohDxcHCFhBhusCGImAMHq-onp2V06ooA",
-      "snippet": "About Xerox Holdings Corporation\nFor more than 100 years, Xerox has continually redefined the workplace experience. Harnessing our leadership position in office and production print technology, we’ve expanded into software and services to sustainably power the hybrid workplace of today and tomorrow. Today, Xerox is continuing its legacy of innovation to deliver client-centric and digitally-driven technology solutions and meet the needs of today’s global, distributed workforce. From the office to industrial environments, our differentiated business and technology offerings and financial services are essential workplace technology solutions that drive success for our clients. At Xerox, we make work, work. Learn more about us at www.xerox.com.\nOverview:\nJoin Xerox as a Field Service Technician and become part of a growing Technical Services organization focused on delivering an exceptional customer experience. In this hands-on role, you will use your electro-mechanical expertise to troubleshoot, repair, and maintain customer equipment while helping maximize device availability and performance. Xerox provides technical training to help you build the product knowledge and skills needed to successfully support your assigned territory.\nWhy Join This Team:\nReceive technical training from certified instructors through online and instructor-led learning\nBuild your expertise in electro-mechanical troubleshooting and equipment repair\nAccess career development and growth opportunities within Technical Services\nReceive comprehensive medical, dental, and vision benefits, wellness credits, and a company contribution to a Health Savings Account\nParticipate in a 401(k) program with company matching\nReceive paid time off, holidays, and personal days\nWhat You Will Do:\nDiagnose, troubleshoot, repair, and maintain customer equipment using electrical and mechanical knowledge\nDeliver professional, responsive customer service while helping minimize equipment downtime\nUse diagnostic tools, including a multimeter, and interpret electrical schematics to identify and resolve equipment issues\nManage assigned service calls and territory responsibilities while meeting established productivity, response time, quality, and cost expectations\nMaintain the equipment, parts, and inventory required to effectively support customers within your assigned territory\nWhat You Need to Succeed\n:\nElectro-mechanical troubleshooting experience with the ability to use a multimeter and interpret electrical schematics\nStrong customer service, time management, problem-solving, and organizational skills\nAbility to work independently in a field-based environment while reliably meeting customer and service commitments\nAbility to lift up to 50 pounds and regularly walk, stand, squat, bend, and drive for more than 50 percent of the workday\nThis position requires a valid driver's license, current automobile insurance coverage meeting company-specified minimums, and the ability to meet the company's motor vehicle safety standards.\nHow We Set You Up for Success:\nStructured new-hire and technical training designed to prepare you for independent field service work\nTraining on Xerox equipment, troubleshooting procedures, inventory requirements, and customer service expectations\nClear expectations regarding service call volume, territory responsibilities, and customer satisfaction\nHands-on preparation to independently complete service calls accurately and efficiently\nSupportive and collaborative environment with opportunities for continued career development",
-      "stable_job_id": "li_4481151543",
-      "content_hash": "ch_70ac5601a6d4",
-      "requirement_assessments": [
-        {
-          "requirement": "Electro-mechanical troubleshooting experience with the ability to use a multimeter and interpret electrical schematics",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Electro-mechanical troubleshooting experience with the ability to use a multimeter and interpret electrical schematics",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע כהנדסאי מכונות עם התמחות במערכות וניסיון מעשי בהנדסה ואלקטרו-מכանիקה."
-        },
-        {
-          "requirement": "Ability to work independently in a field-based environment",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Ability to work independently in a field-based environment while reliably meeting customer and service commitments",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד בעל רקע פיקודי ומבצעי בשטח הדורש עצמאות ועמידה ביעדים תחת לחץ."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": true,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": [
-        {
-          "type": "tag-field",
-          "icon": "ph-bold ph-wrench",
-          "label": "עבודת שטח"
-        }
-      ]
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%9E%D7%98-%D7%A9-wwtp-manager-wastewater-treatment-plant-at-electra-4484357606",
-      "title": "מנהל/ת מט\"ש | WWTP Manager (Wastewater Treatment Plant)",
-      "company": "Electra",
-      "location": "שוקת / רהט (אזור הדרום)",
-      "date": "2026-11-03",
-      "source": "LinkedIn",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "מתקן טיהור שפכים (מט\"ש)",
-      "company_summary": "",
-      "job_summary": "ניהול התפעול והתחזוקה השוטפים של מתקן טיהור שפכים, אחריות על רציפות תפעולית ובטיחות, ניהול עובדים וקבלנים, ועבודה בשטח מול גורמי רגולציה.",
-      "company_requirements": "הנדסאי/ת בתחומי תהליך, איכות הסביבה, מים, מכונות או כימיה; ניסיון של שנה לפחות בתעשייה או מתקנים; ניסיון ניהולי מוכח.",
-      "experience_strengths": "הנדסאי מכונות מוסמך עם רקע בתפעול מערכות קריטיות, בקרה ושליטה, וניסיון פיקודי ומבצעי מתקדם.",
-      "reasoning": "המועמד הינו הנדסאי מכונות מוסמך בעל רקע מוצק בתפעול מערכות תשתית ותעשייה, ועונה על דרישת הסף להנדסאי מכונות או תהליך ועל הדרישה לניסיון תפעולי שטח.",
-      "key_highlights": "השכלה רלוונטית כהנדסאי מכונות, ניסיון בתפעול מערכות ותשתיות, יכולת עבודה בשטח וניהול תהליכים.",
-      "salary_range": "11,500 - 15,000 ₪ + רכב צמוד",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQFKYiEuFj4-Fw/company-logo_100_100/company-logo_100_100/0/1631315729415?e=2147483647&v=beta&t=5oSDYy_9RB9QqLc2JXN3b3tgsIWi6zVdQ0nrUybA7D0",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQFKYiEuFj4-Fw/company-logo_100_100/company-logo_100_100/0/1631315729415?e=2147483647&v=beta&t=5oSDYy_9RB9QqLc2JXN3b3tgsIWi6zVdQ0nrUybA7D0",
-      "snippet": "מחפש/ת את האתגר הניהולי הבא שלך בעולם התפעול, התשתיות והסביבה?\nאלקטרה גרינטק\n, מקבוצת אלקטרה, מגייסת\nמנהל/ת מתקן טיהור שפכים\nמה כולל התפקיד?\n✅ ניהול התפעול והתחזוקה השוטפים של מתקן טיהור שפכים\n✅ אחריות על רציפות תפעולית, בטיחות העובדים ואיכות התוצרים בהתאם לדרישות הרגולציה\n✅ ניהול עובדים, קבלנים, ספקים ונותני שירות\n✅ עבודה מול לקוחות, גורמי פיקוח ורגולציה\n✅ הובלת תהליכי שיפור וייעול במתקן\n✅ תפקיד המשלב עבודה בשטח לצד ניהול מקצועי ותפעולי\nמה אנחנו מחפשים?\n✔ מהנדס/ת או הנדסאי/ת בתחומי תהליך, איכות הסביבה, מים, מכונות או כימיה\n✔ ניסיון של שנה לפחות בתעשייה, מפעלים או מתקני טיפול בשפכים\n✔ ניסיון ניהולי מוכח\n✔ ניסיון בתפעול מט\"ש - יתרון משמעותי\nלמה להצטרף אלינו?\n⭐ עובד/ת חברה מהיום הראשון\n⭐ רכב צמוד\n⭐ מתנות בחגים ובימי הולדת\n⭐ הזדמנות להשתלב בחברה מובילה ולהשפיע על פרויקטים משמעותיים בתחום המים והסביבה\n📍 מיקום: שוקת / רהט (אזור הדרום)",
-      "stable_job_id": "li_4484357606",
-      "content_hash": "ch_39bfce2bf6b6",
-      "requirement_assessments": [
-        {
-          "requirement": "מהנדס/ת או הנדסאי/ת בתחומי תהליך, איכות הסביבה, מים, מכונות או כימיה",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "מהנדס/ת או הנדסאי/ת בתחומי תהליך, איכות הסביבה, מים, מכונות או כימיה",
-            "source_field": "company_requirements"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד מחזיק בדיפלומה של הנדסאי מכונות, העונה בדיוק לדרישת ההשכלה."
-        },
-        {
-          "requirement": "ניסיון של שנה לפחות בתעשייה, מפעלים או מתקני טיפול בשפכים",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "ניסיון של שנה לפחות בתעשייה, מפעלים או מתקני טיפול בשפכים",
-            "source_field": "company_requirements"
-          },
-          "profile_evidence": {
-            "quote": "Natural gas transmission/distribution control, nomination allocations, pressure/flow monitoring, solar PV field systems",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד ניסיון בתפעול מערכות אנרגיה ותעשייה הממלא את דרישת הניסיון התעשייתי."
-        },
-        {
-          "requirement": "ניסיון ניהולי מוכח",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "ניסיון ניהולי מוכח",
-            "source_field": "company_requirements"
-          },
-          "profile_evidence": {
-            "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח\"ל).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד מביא ניסיון פיקודי וניהולי משמעותי מהשירות הצבאי כמפקד צוות."
-        },
-        {
-          "requirement": "ניסיון בתפעול מט\"ש - יתרון משמעותי",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "ניסיון בתפעול מט\"ש - יתרון משמעותי",
-            "source_field": "company_requirements"
-          },
-          "profile_evidence": {
-            "quote": "Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "gap",
-          "explanation": "אין למועמד ניסיון ספציפי קודם במתקן טיהור שפכים (מט\"ש), אך מדובר ביתרון בלבד ולא בדרישת סף."
-        }
-      ],
-      "fit_gaps": "למועמד ישנו רקע הנדסי ותפעולי רב, אך המודעה דורשת ניסיון ניהולי מוכח וניסיון קודם בתפעול מט\"ש מהווה יתרון משמעותי.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": true,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": [
-        {
-          "type": "tag-car",
-          "icon": "ph-bold ph-car",
-          "label": "רכב חברה"
-        }
-      ]
-    },
-    {
-      "link": "https://www.drushim.co.il/job/38952359/928f610a/",
-      "title": "טכנאי/ת מעבדת הוראה",
-      "company": "אוניברסיטת תל אביב",
-      "location": "תל אביב",
-      "date": "2026-11-03",
-      "source": "Drushim",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "אוניברסיטת תל אביב, בית הספר לפיזיקה ולאסטרונומיה",
-      "company_summary": "",
-      "job_summary": "תפעול ותחזוקת מעבדות ההוראה בפיזיקה, הכוללים אחזקה שוטפת, תפעול ניסויים, תמיכה טכנית, פיתוח סביבת עבודה וציוד מדעי, עבודה עם ציוד אלקטרוני ומכני, ואוטומציה.",
-      "company_requirements": "הנדסאי/מהנדס בתחום רלוונטי, ניסיון בעבודת מעבדה וציוד מתקדם, יכולת פתרון תקלות טכניות, הכרות עם פייתון יתרון.",
-      "experience_strengths": "ניסיון מעשי בהנדסת מכונות, פתרון תקלות, תחזוקת מערכות טכניות, ואוטומציה באמצעות Python.",
-      "reasoning": "עידו הינו הנדסאי מכונות מוסמך בעל ניסיון מעשי בתפעול מערכות אלקטרו-מכניות, תחזוקה, פתרון תקלות ואוטומציה ב-Python, המתאימים מאוד לדרישות התפקיד כטכנאי מעבדה פיזיקלית.",
-      "key_highlights": "הנדסאי מכונות מוסמך, שליטה בפייתון, ניסיון בתפעול מערכות טכניות והתמודדות עם תקלות.",
-      "salary_range": "11,500 - 15,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": "",
-      "company_logo_url": "",
-      "snippet": "א\nטכנאי/ת מעבדת הוראה\nאוניברסיטת תל אביב\nתל אביב\n1-2 שנים\nמשרה מלאה\nלפני 3 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nטכנאי/ת מעבדת הוראה שנה א'- ביה\"ס לפיזיקה ולאסטרונומיה\nתפעול ותחזוקת מעבדות ההוראה בפיזיקה:• סיוע בתפעול המעבדה לרבות אחזקה שוטפת, תפעול ניסויים, הדרכה ותמיכה מקצועית במדריכי המעבדה.\n• תפעול מערכות תשתית המעבדה ומעקב אחר אחזקה מתוכננת ואחזקת שבר.\n• סיוע בתכנון, פיתוח ושיפור של סביבת העבודה - ניסויים וציוד מדעי.\n• סיוע בניהול מערך מלאי של ציוד/מכשור/כימיקלים וכו', כולל ביצוע הזמנות, רכש ותכנון עתידי.\n• הדרכה טכנית של מדריכי מעבדה (תלמידי תואר שני ושלישי) וסיוע לתלמידי התואר הראשון בזמן הקורס.\n• סיוע בפיתוח ובקידום נושאי הליבה במעבדה בצמוד למנהל הטכני ולצוות האקדמי.\n• ייזום ופיתוח פרויקטים שונים, לטובת קידום וחדשנות במעבדה.\n• קיום קשר מקצועי רציף עם הצוות האקדמי.\n• אחריות לנושא הבטיחות במעבדה.\n• ביצוע מטלות נוספות ככל שיידרש.\nדרישות התפקיד\n• הנדסאי/ת / מהנדס/ת בתחומי אלקטרוניקה/מחשבים/מכטרוניקה, או תחום רלוונטי אחר. תואר ראשון בפיזיקה - יתרון.• ניסיון בעבודת מעבדה הכוללת הכרות ותפעול של צב\"ד, ציוד מתקדם אלקטרוני ומכני ועזרי הוראה מגוונים.\n• ניסיון בתפעול מערכות ממוחשבות ועבודה בסביבה ממוחשבת.\n• יכולת זיהוי, ניתוח ופתרון תקלות ובעיות טכניות.\n• יכולות ניהול פרויקטים מעבדתיים - הבנת הצורך, מחקר, אפיון, יישום והטמעה.\n• יכולות פיתוח באלקטרוניקה ואלקטרו מכניקה.\n• הכרות ויכולות פיתוח בשפות תכנות – PYTHON , C++ ועוד - יתרון.\n• הכרות טובה עם חיישנים ותחום ה IOT - יתרון.\n• ידיעת השפה העברית על בוריה וידיעת השפה האנגלית ברמה טובה מאד.\n• יכולת למידה עצמית של תפעול ציוד חדש ומורכב, ויכולת התעדכנות מקצועית.\n• יכולת עבודה עצמאית והשתלבות בצוות.\n• יכולת התמודדות עם עומס משימות ולחץ.\n• יכולות הדרכה.\n• יצירתיות, יוזמה, יכולת הנעת תהליכים.\n• תודעת שירות גבוהה ויחסי אנוש מעולים.\nהערה: נדרשת נכונות לעבודה בשעות נוספות בהתאם לצורך, ובימי שישי (מס' פעמים במהלך שנת הלימודים).\nכפיפות: למנהל הטכני מעבדה שנה א' ולמנהלת המערך המנהלי של בית הספר.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nמדעים / ביוטק\nתחומים\nעובד/ת מעבדה\nפיזיקה\nהנדסאי/ת אלקטרוניקה\nמהנדס/ת אלקטרוניקה",
-      "stable_job_id": "drushim_38952359",
-      "content_hash": "ch_d5f97e605ed6",
-      "requirement_assessments": [
-        {
-          "requirement": "הנדסאי/ת / מהנדס/ת בתחומי אלקטרוניקה/מחשבים/מכטרוניקה, או תחום רלוונטי אחר",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "הנדסאי/ת / מהנדס/ת בתחומי אלקטרוניקה/מחשבים/מכטרוניקה, או תחום רלוונטי אחר",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022)",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "המועמד הוא הנדסאי מכונות מוסמך, התואם לדרישת ההנדסאי בתחום רלוונטי."
-        },
-        {
-          "requirement": "יכולת זיהוי, ניתוח ופתרון תקלות ובעיות טכניות",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "יכולת זיהוי, ניתוח ופתרון תקלות ובעיות טכניות",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "troubleshooting, drone/UAV integration and flight operations",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "למועמד ניסיון רב בפתרון תקלות (troubleshooting) ואחזקת מערכות מורכבות."
-        },
-        {
-          "requirement": "הכרות ויכולות פיתוח בשפות תכנות – PYTHON , C++ ועוד",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "הכרות ויכולות פיתוח בשפות תכנות – PYTHON , C++ ועוד - יתרון",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Python automation, Gemini/Copilot AI workflows",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "המועמד שולט באוטומציה באמצעות פייתון."
-        }
-      ],
-      "fit_gaps": "למועמד אין רקע רשמי באלקטרוניקה טהורה או בפיזיקה אקדמית, אך השכלתו כהנדסאי מכונות וניסיונו המעשי מחפים על כך באופן מלא.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%9B%D7%95%D7%A0%D7%90%D7%99-%D7%AA-%D7%9C%D7%9E%D7%A4%D7%A2%D7%9C-%D7%A6%D7%91%D7%A8-%D7%98%D7%91%D7%A2%D7%95%D7%9C-%D7%9E%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%90%D7%A1%D7%9D-%D7%A0%D7%A1%D7%98%D7%9C%D7%94-at-nestl%C3%A9-4486871086",
-      "title": "מכונאי/ת למפעל צבר טבעול מקבוצת אסם נסטלה",
-      "company": "Nestlé",
-      "location": "קרית גת",
-      "date": "2026-11-03",
-      "source": "LinkedIn",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "ייצור מזון ואחזקת מכונות מפעל",
-      "company_summary": "",
-      "job_summary": "מכונאי/ת למפעל צבר טבעול מקבוצת אסם נסטלה, הכולל ביצוע עבודות אחזקה, שיפור מתמיד בתהליכי ייצור ועבודה עם מכונות אריזה ומערכות בקרה.",
-      "company_requirements": "ניסיון מקצועי דומה בתעשייה, הכרות עם מכונות אריזה ומערכות בקרה, שליטה ביישומי מחשב, נכונות לעבודה במשמרות.",
-      "experience_strengths": "הנדסאי מכונות מוסמך עם רקע רב-תחומי במערכות אלקטרו-מכניות, אוטומציה ואחזקה.",
-      "reasoning": "המוועמד הינו הנדסאי מכונות מוסמך עם רקע מעשי מוצק במערכות אלקטרו-מכניות ואחזקה, ומתאים מבחינה מקצועית לתפקיד מכונאי תעשייתי.",
-      "key_highlights": "השכלה כהנדסאי מכונות, רקע מעשי במערכות תפעול ואחזקה, שליטה ביישומי מחשב.",
-      "salary_range": "13,500 - 17,500 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • כולל משמרות",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 13500,
-      "p75": 17500,
-      "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQGaL-YyJ8xd7Q/company-logo_100_100/company-logo_100_100/0/1630615758178/nestle_s_a__logo?e=2147483647&v=beta&t=qny1ZgIJDhBogZZt76AygBuYNGdIj4UhIDvQ2R15drY",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/C4E0BAQGaL-YyJ8xd7Q/company-logo_100_100/company-logo_100_100/0/1630615758178/nestle_s_a__logo?e=2147483647&v=beta&t=qny1ZgIJDhBogZZt76AygBuYNGdIj4UhIDvQ2R15drY",
-      "snippet": "מפעל צבר טבעול מקבוצת אסם נסטלה מגייס מכונאי/ת לתפקיד שכולל:\nביצוע עבודות אחזקה לשמירת תקינות המכונות והציוד הנלווה תוך הובלת שיפור מתמיד בתהליכי היצור\nאחריות לשיפור ביצועי הציוד והמפעל בשיתוף עם עובדי המפעל\nעבודה לפי כללי איכות ובטיחות המפעליים\nהדרכת מפעילים להפעלה בטוחה ותקינה של המערכות\nדרישות התפקיד\nניסיון מקצועי דומה בתעשייה- חובה\nהכרות עם מכונות אריזה ומערכות בקרה– יתרון משמעותי\nשליטה ביישומי מחשב- חובה\nנכונות לעבודה במשמרות\nהמשרה בקרית גת, קיים מערך הסעות",
-      "stable_job_id": "li_4486871086",
-      "content_hash": "ch_3cc9b2065f1b",
-      "requirement_assessments": [
-        {
-          "requirement": "ניסיון מקצועי דומה בתעשייה- חובה",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "ניסיון מקצועי דומה בתעשייה- חובה",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד הינו הנדסאי מכונות מוסמך עם הכשרה רלוונטית לתעשייה."
-        },
-        {
-          "requirement": "הכרות עם מכונות אריזה ומערכות בקרה",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "הכרות עם מכונות אריזה ומערכות בקרה– יתרון משמעותי",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד יש ניסיון במערכות אלקטרו-מכניות ובקרה."
-        },
-        {
-          "requirement": "שליטה ביישומי מחשב- חובה",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "שליטה ביישומי מחשב- חובה",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "המועמד שולט ביישומי מחשב ותוכנות מגוונות."
-        },
-        {
-          "requirement": "נכונות לעבודה במשמרות",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "נכונות לעבודה במשמרות",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "24/7 mission-critical control room operations",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "המועמד רגיל לעבודה סביב השעון ובמשמרות במסגרת ניסיונו המבצעי והתפעולי."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/r-d-ink-student-at-landa-4486872132",
-      "title": "R&D Ink Student",
-      "company": "Landa",
-      "location": "לא צוין",
-      "date": "2026-11-03",
-      "source": "LinkedIn",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "energy_tech",
-      "company_domain_product": "Landa - טכנולוגיית ננוגרפיה ופיתוח דיו",
-      "company_summary": "",
-      "job_summary": "משרת סטודנט במחלקת מו\"פ דיו התומכת בפיתוח, בדיקה ואפיון של דיו בטכנולוגיית ננוגרפיה, כולל עבודה מעבדתית מעשית ובדיקת ביצועי הדפסה.",
-      "company_requirements": "סטודנט בשנה 2-3 בכימיה, הנדסת חומרים, מכונות או אלקטרוניקה, או סטודנט להנדסאות, יכולת עבודה מעבדתית וזמינות ל-20-25 שעות בשבוע.",
-      "experience_strengths": "רקע מעשי כמהנדסאי מכונות מעשי (הנדסאי מכונות מוסמך), יכולות למידה מהירות וגישה מעשית חזקה.",
-      "reasoning": "המוועמד לומד כהנדסאי מכונות ועונה על דרישת הסטודנטים להנדסאי מכונות, תוך הבאת רקע מעשי חזק בעבודה מעבדתית ואלקטרו-מכנית.",
-      "key_highlights": "התאמה מלאה לדרישת סטודנט להנדסאי מכונות, יכולות מעשיות חזקות וזמינות לעבודה טכנית.",
-      "salary_range": "11,500 - 15,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGDcFj0L3EzXQ/company-logo_100_100/B4DZ6r34w_J8AI-/0/1781000015120?e=2147483647&v=beta&t=sysWesUz4mU819UmGV87Iprlq5-7Ylu4iipMnAPtXEI",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQGDcFj0L3EzXQ/company-logo_100_100/B4DZ6r34w_J8AI-/0/1781000015120?e=2147483647&v=beta&t=sysWesUz4mU819UmGV87Iprlq5-7Ylu4iipMnAPtXEI",
-      "snippet": "Landa is seeking a motivated and detail-oriented student to join our R&D Ink team and support the development, testing, and characterization of inks used in Nanography technology. The role combines hands-on laboratory work with ink performance evaluation, supporting the release of new ink generations and continuous improvement of existing products.\nResponsibilities:\nPerform ink testing on Nanography laboratory systems and jigs.\nConduct print-quality and printing-characterization analyses.\nMonitor and evaluate ink physical properties.\nRequirements:\n2nd- to 3rd-year students in Chemistry, Materials Engineering, Mechanical Engineering, or Electronics Engineering, or Practical Engineering students (Chemistry, Mechanical, or Electronics).\nAvailability to work 2-3 days per week (approximately 20-25 hours weekly).\nStrong hands-on laboratory skills.\nHigh attention to detail and accuracy.\nAbility to quickly learn procedures and follow instructions.\nAbility to work effectively within a team and under demanding timelines.\nPositive attitude and hands-on approach.\nFast learner with a strong desire to deepen technical knowledge.\nSelf-motivated and independent.",
-      "stable_job_id": "li_4486872132",
-      "content_hash": "ch_1c9f166aa5c7",
-      "requirement_assessments": [
-        {
-          "requirement": "2nd- to 3rd-year students in Chemistry, Materials Engineering, Mechanical Engineering, or Electronics Engineering, or Practical Engineering students",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "2nd- to 3rd-year students in Chemistry, Materials Engineering, Mechanical Engineering, or Electronics Engineering, or Practical Engineering students",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד הינו הנדסאי מכונות מוסמך, מה שתואם את מסלול הנדסאים הנדרש במודעה."
-        },
-        {
-          "requirement": "Strong hands-on laboratory skills",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Strong hands-on laboratory skills.",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Field, Integration & Hands-on: Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד יש ניסיון מעשי חזק במערכות אלקטרו-מכניות ופתרון תקלות."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד כסטודנט להנדסאי מכונות.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%90%D7%95%D7%98%D7%95%D7%9E%D7%A6%D7%99%D7%94-at-maytronics-4486025673",
-      "title": "טכנאי/ת אוטומציה",
-      "company": "Maytronics",
-      "location": "דלתון",
-      "date": "2026-11-03",
-      "source": "LinkedIn",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "Maytronics",
-      "company_summary": "",
-      "job_summary": "תמיכה במערכות ייצור אוטומטיות, ניטור, תחזוקה מונעת ומתקנת, איתור תקלות ופתרונן בזמן אמת בסביבת ייצור דינמית.",
-      "company_requirements": "הנדסאי/ת או טכנאי/ת במכונות/חשמל/בקרה, ניסיון במערכות אוטומטיות, איתור תקלות, אנגלית טכנית.",
-      "experience_strengths": "הנדסאי מכונות מוסמך עם הבנה במערכות אלקטרו-מכניות, תפעול שוטף, ופתרון בעיות הנדסיות.",
-      "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע חזק במערכות אלקטרו-מכניות, תחזוקה ופתרון תקלות, העונה על דרישות הסף של תפקיד טכנאי האוטומציה.",
-      "key_highlights": "השכלה כהנדסאי מכונות, ניסיון בתפעול מערכות ובקרה, יכולת עבודה עצמאית גבוהה.",
-      "salary_range": "13,500 - 17,500 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • כולל משמרות",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 13500,
-      "p75": 17500,
-      "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQHkCizaXw2HGQ/company-logo_100_100/company-logo_100_100/0/1719255402780/maytronics_logo?e=2147483647&v=beta&t=P5LdgY2zxWoZosF40lx9g84To3C02u8RCFJcyduqIDg",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQHkCizaXw2HGQ/company-logo_100_100/company-logo_100_100/0/1719255402780/maytronics_logo?e=2147483647&v=beta&t=P5LdgY2zxWoZosF40lx9g84To3C02u8RCFJcyduqIDg",
-      "snippet": "התפקיד כולל תמיכה במערכות ייצור אוטומטיות מתקדמות, הבטחת ביצועים מיטביים של המערכות ומתן מענה לתקלות טכניות בסביבת ייצור דינמית ומהירה.\nמיקום: דלתון\nתחומי אחריות עיקריים:\nמתן תמיכה שוטפת למערכות ייצור אוטומטיות וטיפול מהיר בתקלות והשבתות ציוד.\nניטור ותחזוקה של מכונות אוטומטיות, מערכות ממוחשבות וציוד הנשלט באמצעות בקרי PLC.\nביצוע תחזוקה מונעת ותחזוקה מתקנת למערכות אוטומציה.\nשיפור ביצועי המערכות, כיול ואופטימיזציה של יעילות התפעול.\nניתוח תקלות טכניות ומתן פתרונות בזמן אמת.\nעבודה מול ספקי שירות וקבלני משנה התומכים בציוד הייצור.\nהדרכה וליווי עובדים בנושאי הפעלה טכנית ונהלי תחזוקה.\nדרישות:\nהנדסאי/ת או טכנאי/ת בתחומי חשמל, מכונות, בקרה או מכטרוניקה.\nניסיון בעבודה עם מערכות אוטומטיות המשלבות מכניקה, חשמל, פנאומטיקה, מערכות בקרה וטכנולוגיות מחשוב.\nניסיון מוכח באיתור תקלות ותיקון מערכות אוטומציה ומכטרוניקה.\nשליטה באנגלית טכנית.\nיכולת גבוהה לפתרון בעיות ועבודה עצמאית.\nיתרונות:\nניסיון בעבודה עם רובוטים מסוג\nSCARA\nו-\nFANUC",
-      "stable_job_id": "li_4486025673",
-      "content_hash": "ch_2871533dfb92",
-      "requirement_assessments": [
-        {
-          "requirement": "הנדסאי/ת או טכנאי/ת בתחומי חשמל, מכונות, בקרה או מכטרוניקה",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "הנדסאי/ת או טכנאי/ת בתחומי חשמל, מכונות, בקרה או מכטרוניקה.",
-            "source_field": "job_description"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד מחזיק בדיפלומה של הנדסאי מכונות כנדרש."
-        },
-        {
-          "requirement": "ניסיון מוכח באיתור תקלות ותיקון מערכות אוטומציה ומכטרוניקה",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "ניסיון מוכח באיתור תקלות ותיקון מערכות אוטומציה ומכטרוניקה.",
-            "source_field": "job_description"
-          },
-          "profile_evidence": {
-            "quote": "troubleshooting, drone/UAV integration and flight operations",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "למועמד ניסיון במתן פתרונות טכניים ותקלות במערכות מורכבות."
-        },
-        {
-          "requirement": "שליטה באנגלית טכנית",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "שליטה באנגלית טכנית.",
-            "source_field": "job_description"
-          },
-          "profile_evidence": {
-            "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
-            "source_field": "Tech & AI"
-          },
-          "assessment": "match",
-          "explanation": "המועמד שולט בכלים טכנולוגיים מתקדמים המעידים על יכולת עבודה באנגלית טכנית."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/module-equipment-operation-technician-at-intel-4485730644",
-      "title": "Module Equipment / Operation Technician",
-      "company": "Intel",
-      "location": "ישראל, קריית גת",
-      "date": "2026-11-03",
-      "source": "LinkedIn",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "חדשנות במוליכים למחצה וטכנולוגיות מחשוב ותקשורת",
-      "company_summary": "",
-      "job_summary": "תפקיד טכנאי ייצור ותפעול לתפעול, ניטור ותחזוקה של ציוד ייצור מתקדם במפעל אינטל, כולל פתרון תקלות ובקרת איכות במסגרת משמרות.",
-      "company_requirements": "דרישה להנדסאי רלוונטי, אנגלית טכנית ויכולת לעבוד במשמרות של 12 שעות.",
-      "experience_strengths": "ניסיון מעשי במערכות אלקטרו-מכניות, שליטה בבקרת תהליכים, רקע בהנדסאי מכונות ויכולת עבודה בסביבה טכנית מורכבת.",
-      "reasoning": "לעידו יש השכלה כהנדסאי מכונות ורקע מעשי עשיר בהפעלת מערכות אלקטרו-מכניות ובקרת תהליכים, המתאימים במדויק לתפקיד טכנאי ייצור ותפעול ציוד באינטל.",
-      "key_highlights": "התאמה מלאה לדרישת הסף של הנדסאי, ניסיון מעשי בתפעול מערכות, ויכולת עבודה בסביבת תפעול קפדנית.",
-      "salary_range": "11,500 - 15,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": "https://media.licdn.com/dms/image/v2/C560BAQGpvWtEtj9oTQ/company-logo_100_100/company-logo_100_100/0/1630663244736/intel_corporation_logo?e=2147483647&v=beta&t=ossYk2TZYS8UvUN3s4WS7ZaXqgKph-ue7DFGNXO4-0U",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQGpvWtEtj9oTQ/company-logo_100_100/company-logo_100_100/0/1630663244736/intel_corporation_logo?e=2147483647&v=beta&t=ossYk2TZYS8UvUN3s4WS7ZaXqgKph-ue7DFGNXO4-0U",
-      "snippet": "Job Details\nJob Description:\nThe Role and Impact\nAs a Manufacturing Technician, you will play a vital role in our high-volume production process by operating, monitoring, and maintaining advanced equipment to ensure efficiency and quality standards are met. You'll have hands-on involvement in troubleshooting and optimizing tools, conducting quality checks, and ensuring the seamless assembly of products. Your efforts will directly contribute to producing top-tier products that drive Intel's success in the technology industry.\nBusiness Group\nJoin Intel Corporation, a global leader in semiconductor innovation, where you will be part of a dynamic team dedicated to advancing manufacturing excellence. Our team collaborates to deliver high-quality products that empower progress and innovation worldwide. We operate in fast-paced environments, leveraging cutting-edge processes and technologies that support Intel's broader mission of shaping the future of computing and connectivity.\nKey Responsibilities\nOperate, monitor, and maintain advanced manufacturing equipment to achieve output targets.\nConduct online equipment adjustments and optimize processes to maintain production efficiency.\nPerform quality control evaluations on raw materials and finished products to ensure compliance with industry standards.\nTroubleshoot and resolve nonstandard events in the production line to ensure stable operations.\nCollaborate with the Manufacturing Operations Manager and team peers to meet production schedules and escalate risks when necessary.\nSupport installation, qualification, and maintenance of new or reused production equipment.\nMaintain accurate production logs and required documentation per Standard Operating Procedures.\nDrive cost and quality improvements and assist in incorporating process enhancements.\nQualifications\nMinimum Qualifications\nPractical Engineer in a relevant technical field such as Electronics, Mechatronics, Mechanical, or Hardware Engineering with hands-on experience gained through internships, academic projects, coursework, or hands-on training.\nProficiency in technical English to interpret manuals, document logs, and communicate effectively.\nAbility to work in a demanding 12-hour shift schedule, including nights, weekends, and holidays.\nPreferred Qualifications\nRelevant technical experience in a semiconductor cleanroom environment (FAB/SORT).\nHands-on expertise in operating, maintaining, or troubleshooting manufacturing equipment.\nFamiliarity with data-driven systems for tool monitoring and online adjustments.\nYour contributions will be instrumental in shaping the success of our manufacturing processes. We encourage you to bring your enthusiasm, technical skills, and dedication to this exciting opportunity to grow with Intel.\nJob Type\nExperienced Hire\nShift\nShift 1 C (Israel)\nPrimary Location:\nIsrael, Kiryat-Gat\nAdditional Locations:\nPosting Statement\nAll qualified applicants will receive consideration for employment without regard to race, color, religion, religious creed, sex, national origin, ancestry, age, physical or mental disability, medical condition, genetic information, military and veteran status, marital status, pregnancy, gender, gender expression, gender identity, sexual orientation, or any other characteristic protected by local law, regulation, or ordinance.\nPosition of Trust\nN/A\nWork Model for this Role\nThis role will require an on-site presence. * Job posting details (such as work model, location or time type) are subject to change.",
-      "stable_job_id": "li_4485730644",
-      "content_hash": "ch_7c27c6e41a8a",
-      "requirement_assessments": [
-        {
-          "requirement": "Practical Engineer in a relevant technical field such as Electronics, Mechatronics, Mechanical, or Hardware Engineering",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Practical Engineer in a relevant technical field such as Electronics, Mechatronics, Mechanical, or Hardware Engineering",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "המועמד מחזיק בתעודת הנדסאי מכונות מוסמך בהתאם לדרישת הסף."
-        },
-        {
-          "requirement": "Proficiency in technical English to interpret manuals, document logs",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Proficiency in technical English to interpret manuals, document logs, and communicate effectively.",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע טכנולוגי מתקדם המעיד על שליטה באנגלית טכנית לקריאת תיעוד ותפעול מערכות."
-        },
-        {
-          "requirement": "Ability to work in a demanding 12-hour shift schedule, including nights, weekends, and holidays",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Ability to work in a demanding 12-hour shift schedule, including nights, weekends, and holidays.",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Real-Time Operations Control (SCADA / NOC / 24/7 Control Rooms)",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "המועמד מורגל בעבודה במסגרת חדרי בקרה ותפעול שוטף סביב השעון 24/7."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
     }
   ]
 }

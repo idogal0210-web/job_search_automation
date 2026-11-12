@@ -25344,5 +25344,159 @@
     "is_shifts_24_7": false,
     "is_junior_friendly": false,
     "curated_tags": []
+  },
+  "https://mprest.com/mprest_careers/co/petah-tikva-israel/5D.B62/qc-engineer/all/": {
+    "link": "https://mprest.com/mprest_careers/co/petah-tikva-israel/5D.B62/qc-engineer/all/",
+    "title": "QC Engineer",
+    "company": "mPrest",
+    "location": "Petah Tikva, Petah Tikva, Israel",
+    "date": "2026-11-12",
+    "source": "Comeet",
+    "match_score": 90,
+    "base_match_score": 85,
+    "priority_bonus": 5,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "energy_tech",
+    "company_domain_product": "מערכות שליטה ובקרה ותוכנה",
+    "company_summary": "",
+    "job_summary": "משרת מהנדס בקרת איכות (QC) לבדיקת חלקים, מכלולים, חיווט ואלקטרוניקה לפי תקני איכות.",
+    "company_requirements": "הנדסאי מכונות/חשמל/אטרוניקה, ניסיון בבדיקות איכות וקריאת שרטוטים, אנגלית טכנית גבוהה.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם רקע מעשי במערכות אלקטרו-מכניות ובדיקות טכניות.",
+    "reasoning": "המוועמד בעל השכלת הנדסאי מכונות ורקע טכני מתאים לבקרת איכות ובדיקת רכיבים.",
+    "key_highlights": "דרישה לתעודת הנדסאי אלקטרוניקה או חשמל, קריאת שרטוטים, ושליטה באנגלית טכנית.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": null,
+    "company_logo_url": null,
+    "snippet": "Description: mPrest is looking for an Electronics Quality Inspector - QC. | Responsibilities: Perform quality inspections for parts and assemblies according to AS9100/ISO9001 procedures and standards.\nConduct visual inspections based on drawings and engineering requirements.\nPerform in-process inspections throughout assembly and testing stages.\nIdentify and analyze mechanical faults and aerospace wiring system issues.\nPerform First Article Inspection (FAI).\nDocument inspections, maintain follow-up records, and report non-conformities. | Requirements: Electronics or Electrical Technician / Practical Engineer certifications.\nRelevant experience from the Israeli Air Force / Navy – an advantage.\nFamiliarity and experience working according to quality standards.\nAbility to read and interpret technical drawings in both English and Hebrew.\nKnowledge of aerospace wiring, IPC certification, or relevant professional courses – an advantage.\nHigh level of technical English proficiency.\nValid driver’s license and willingness to travel to suppliers (approximately 50% of the time).\nExperience working with testing and measurement equipment.\nKnowledge and experience in performing FAI inspections according to AS9102 – an advantage.\nExperience working with PRIORITY ERP system – an advantage.",
+    "stable_job_id": "ch_f577477db3f7",
+    "content_hash": "ch_f577477db3f7",
+    "requirement_assessments": [
+      {
+        "requirement": "Electronics or Electrical Technician / Practical Engineer certifications",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Electronics or Electrical Technician / Practical Engineer certifications.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בתואר הנדסאי מוסמך בתחום טכני."
+      },
+      {
+        "requirement": "Ability to read and interpret technical drawings in both English and Hebrew",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Ability to read and interpret technical drawings in both English and Hebrew.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "כהנדסאי מכונות, למועמד יש יכולת קריאת שרטוטים הנדסיים."
+      }
+    ],
+    "fit_gaps": "הדרישה הספציפית היא להנדסאי אלקטרוניקה/חשמל, בעוד המועמד הינו הנדסאי מכונות (עם לימודי חשמלאי).",
+    "is_direct_ats": true,
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://www.drushim.co.il/job/39053154/e0f127fb/": {
+    "link": "https://www.drushim.co.il/job/39053154/e0f127fb/",
+    "title": "מהנדס /ת / הנדסאי/ת חשמל",
+    "company": "חברה מובילה (דיסקרטי)",
+    "location": "אשלים",
+    "date": "2026-11-12",
+    "source": "Drushim",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "solar",
+    "company_domain_product": "פרויקטים בתחום האנרגיות המתחדשות",
+    "company_summary": "",
+    "job_summary": "פיקוח וניהול עבודות חשמל ובקרת איכות בפרויקטים של אנרגיות מתחדשות באזור אשלים, כולל עבודה מול רשויות וקבלנים.",
+    "company_requirements": "דיפלומת הנדסאי חשמל או מכונות/אנרגיה, ניסיון בהקמת פרויקטים סולאריים, קריאת תוכניות SCADA.",
+    "experience_strengths": "ניסיון במערכות סולאריות, בקרה ותפעול אתרים הנדסיים.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע באנרגיות מתחדשות, התואם לדרישות ניהול אתרים סולאריים.",
+    "key_highlights": "הנדסאי מכונות בהכשרתו עם התמחות באנרגיה ירוקה ורקע בבקרת אנרגיה ו-SCADA.",
+    "salary_range": "13,000 - 16,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • משרת יום",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות).",
+    "salary_source_url": "",
+    "p25": 13000,
+    "p75": 16000,
+    "logo": "",
+    "company_logo_url": "",
+    "snippet": "חסוי\nמהנדס /ת / הנדסאי/ת חשמל\n- חסוי -\nאשלים\n3-4 שנים\nמשרה מלאה\nלפני 7 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברה מובילה בתחום האנרגיות המתחדשות דרוש/ה מהנדס/ת / הנדסאי/ת חשמל.\nהתפקיד כולל:\nפיקוח וניהול עבודות חשמל בפרויקטים באזור אשלים.\nביצוע בקרת איכות מתחילת הפרויקט ועד סופו.\nעבודה מול משרדי תכנון, קבלנים וספקים, רשויות, חח\"י.\nמשרה מלאה.\nדרישות התפקיד\nרישיון מהנדס ו/או דיפלומת הנדסאי חשמל ו/או רישיון מסויג מתח גבוה. -חובה\nניסיון של 3 שנים בהקמת פרויקטים בתחום סולארי, תחמש\"ים ואנרגיות מתחדשות.\nפיקוח על ביצוע כלל עבודות החשמל ותקשורת ובקרת אנרגיה/הספק באתר.\nעבודה מול קבלני משנה / רכש / לוגיסטיקה / הנדסה ומשרדי תכנון.\nליווי פרויקט משלב תכנון עד למסירה.\nידע בקריאת תוכניות חשמל ותקשורת SCADA / תוכנות מחשב/אופיס/שרטוט.\nהזמנת ציוד לביצוע.\nשליטה בשפה אנגלית.\nהמשרה מיועדת לנשים ולגברים כאחד.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתחומים\nמהנדס/ת חשמל\nהנדסאי/ת חשמל",
+    "stable_job_id": "drushim_39053154",
+    "content_hash": "ch_a149fb9183b8",
+    "requirement_assessments": [
+      {
+        "requirement": "דיפלומת הנדסאי חשמל או רישיון מהנדס",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "רישיון מהנדס ו/או דיפלומת הנדסאי חשמל ו/או רישיון מסויג מתח גבוה. -חובה",
+          "source_field": "דרישות התפקיד"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "למועמד דיפלומת הנדסאי מוסמך בתחום האנרגיה."
+      },
+      {
+        "requirement": "ניסיון בתחום סולארי ואנרגיות מתחדשות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ניסיון של 3 שנים בהקמת פרויקטים בתחום סולארי, תחמש\"ים ואנרגיות מתחדשות.",
+          "source_field": "דרישות התפקיד"
+        },
+        "profile_evidence": {
+          "quote": "solar PV field systems, battery storage (BESS) operations, clean-tech integration.",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "למועמד היכרות ורקע מעשי במערכות סולאריות ואנרגיה ירוקה."
+      },
+      {
+        "requirement": "ידע בקריאת תוכניות חשמל ותקשורת SCADA",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "ידע בקריאת תוכניות חשמל ותקשורת SCADA / תוכנות מחשב/אופיס/שרטוט.",
+          "source_field": "דרישות התפקיד"
+        },
+        "profile_evidence": {
+          "quote": "SCADA / AVEVA / 24/7 Control Rooms",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד שליטה במערכות בקרה ו-SCADA."
+      }
+    ],
+    "fit_gaps": "למועמד דיפלומת הנדסאי מכונות ולימודי חשמלאי מוסמך, אך ייתכן שיידרש ניסיון ספציפי של 3 שנים בהקמת פרויקטים.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
   }
 }
