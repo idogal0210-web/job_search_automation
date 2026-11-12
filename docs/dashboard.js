@@ -1648,6 +1648,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function handleCompanyLogoLoad(img, domain) {
     const step = parseInt(img.dataset.step || '0', 10);
+    if (img.naturalWidth === 0) {
+      handleCompanyLogoError(img, domain);
+      return;
+    }
     if (img.naturalWidth <= 16 && img.naturalHeight <= 16 && step === 1 && domain) {
       handleCompanyLogoError(img, domain);
     }
@@ -2545,7 +2549,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
                 <i class="ph-bold ph-share-network"></i>
               </button>
             </div>
-            <div class="job-card-topbar-badges" style="display: flex; align-items: center; gap: 6px; min-width: 0; flex: 1; overflow: hidden;">
+            <div class="job-card-topbar-badges">
               ${inactiveBadgeHtml}
               ${salaryTagHtml}
               <div class="badge-score ${scoreClass}">
@@ -2580,7 +2584,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             <i class="ph-duotone ph-check-circle"></i>
             <span>דרישות סף:</span>
           </div>
-          <div class="job-key-requirements-content">${companyReqs}</div>
+          <div class="job-key-requirements-content" dir="auto">${companyReqs}</div>
         </div>
 
         <!-- Collapsible Full Information Panels (Anchors 1 & 3 of 3) -->
@@ -2588,11 +2592,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           <div class="job-boxes-grid" style="margin-top: 8px;">
             <div class="job-box">
               <strong><i class="ph-duotone ph-buildings"></i> תחום ותפקיד:</strong>
-              <span>${scopeAndRole}</span>
+              <span dir="auto">${scopeAndRole}</span>
             </div>
             <div class="job-box ${matchInfo.isNoGap ? 'highlight-mint' : 'highlight-gold'}">
               <strong><i class="ph-duotone ph-sparkle"></i> התאמה ופערים:</strong>
-              <span>${matchInfo.fullHtml}</span>
+              <span dir="auto">${matchInfo.fullHtml}</span>
             </div>
           </div>
         </div>
