@@ -25988,5 +25988,75 @@
     "is_shifts_24_7": false,
     "is_junior_friendly": false,
     "curated_tags": []
+  },
+  "https://www.drushim.co.il/job/38866916/e9d0014c/": {
+    "link": "https://www.drushim.co.il/job/38866916/e9d0014c/",
+    "title": "דרוש/ה מהנדס מכונות/ מהנדס חשמל",
+    "company": "ה.ב. איכות ויזמות",
+    "location": "קריית גת",
+    "date": "2026-11-13",
+    "source": "Drushim",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "operations",
+    "company_domain_product": "תכנון וייצור מיקרו-מעבדים, מעגלים משולבים ומוצרי טכנולוגיה ומוליכים למחצה",
+    "company_summary": "",
+    "job_summary": "דרוש/ה הנדסאי מכונות או מהנדס חשמל לתאגיד בינלאומי בקריית גת עם ניסיון של 3-4 שנים.",
+    "company_requirements": "הנדסאי מכונות או מהנדס חשמל, מגורים באזור השפלה/דרום, אנגלית ברמה טובה, 3-4 שנות ניסיון.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם רקע במערכות אלקטרו-מכניות ובקרה.",
+    "reasoning": "המוועמד הינו הנדסאי מכונות מוסמך המתאים לדרישות ההנדסאי במשרה בתחום התעשייה והטכנולוגיה.",
+    "key_highlights": "התאמה ישירה להשכלת הנדסאי מכונות, ניסיון בעבודה טכנית ויכולת עבודה עצמאית.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "",
+    "company_logo_url": "",
+    "snippet": "ה\nדרוש/ה הנדסאי מכונות/ מהנדס חשמל\nה.ב. איכות ויזמות\nקריית גת\n3-4 שנים\nמשרה מלאה\nלפני 5 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nל תאגיד בינ\"ל, מהמובילים בעולם בתחום של תכנון וייצור מיקרו-מעבדים, מעגלים משולבים ומוצרי טכנולוגיה ומוליכים למחצה דרוש הנדסאי מכונות/ חשמל\nמשרה מלאה- 5 ימים בשבוע\nתחילת עבודה: 01/12\nדרישות התפקיד\nמגורים באיזור שפלה/ דרום\nאתרי הפרוייקט- קריית גת\nאנגלית ברמה טובה- חובה\nניסיון של 3-4 שנים בתחום לפחות\nבעל יכולת הובלת תהליכים\nפונקציה עצמאית\nיכולת מתן פתרונות\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nהנדסה\nתחומים\nהנדסאי/ת חשמל\nהנדסאי/ת מכונות\nהנדסאי/ת אלקטרוניקה",
+    "stable_job_id": "drushim_38866916",
+    "content_hash": "ch_924213a2ff0c",
+    "requirement_assessments": [
+      {
+        "requirement": "הנדסאי מכונות/ חשמל",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "דרוש/ה הנדסאי מכונות/ מהנדס חשמל",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בתואר הנדסאי מכונות כמבוקש במשרה."
+      },
+      {
+        "requirement": "אנגלית ברמה טובה",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "אנגלית ברמה טובה- חובה",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "המועמד שולט בכלים טכנולוגיים מתקדמים המעידים על יכולת עבודה באנגלית."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
   }
 }
