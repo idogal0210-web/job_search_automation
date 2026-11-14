@@ -7,13 +7,14 @@ Zero emojis strictly enforced.
 
 import argparse
 import json
-import sys
 from pathlib import Path
+from typing import Any, Dict
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "data"
 
-def get_json_data(filename):
+
+def get_json_data(filename: str) -> Any:
     path = DATA_DIR / filename
     if not path.exists():
         return None
@@ -23,23 +24,50 @@ def get_json_data(filename):
     except Exception as e:
         return {"error": str(e)}
 
-def show_summary():
+
+def _infer_tier_for_job(job: Dict[str, Any]) -> str:
+    if not isinstance(job, dict):
+        return "unclassified"
+    if job.get("tier"):
+        return str(job["tier"])
+    bonus = int(job.get("priority_bonus") or 0)
+    if bonus >= 10:
+        return "tier1"
+    if bonus >= 5:
+        return "tier2"
+    if job.get("is_target_company"):
+        return "target"
+    return "standard"
+
+
+def show_summary() -> None:
     jobs_state = get_json_data("jobs_state.json")
     sync_data = get_json_data("sync_state.json")
     historical = get_json_data("historical_catalog.json")
     inactive = get_json_data("inactive_jobs.json")
     evaluation = get_json_data("evaluation_state.json")
 
+    catalog_map = historical if isinstance(historical, dict) else {}
+    eval_jobs = evaluation.get("jobs", {}) if isinstance(evaluation, dict) and isinstance(evaluation.get("jobs"), dict) else {}
+
     print("=== WORKSPACE DATA SUMMARY ===")
-    
-    # 1. jobs_state.json
+
+    # 1. jobs_state.json (canonical list of seen URL strings)
     if isinstance(jobs_state, list):
-        print(f"data/jobs_state.json total records: {len(jobs_state)}")
-        tiers = {}
-        for j in jobs_state:
-            if isinstance(j, dict):
-                t = j.get("tier", "unknown")
-                tiers[t] = tiers.get(t, 0) + 1
+        print(f"data/jobs_state.json total seen URLs: {len(jobs_state)}")
+        tiers: Dict[str, int] = {}
+        for item in jobs_state:
+            if isinstance(item, dict):
+                t = _infer_tier_for_job(item)
+            elif isinstance(item, str):
+                job_obj = catalog_map.get(item)
+                if not isinstance(job_obj, dict) and item in eval_jobs:
+                    entry = eval_jobs.get(item)
+                    job_obj = entry.get("job") if isinstance(entry, dict) else None
+                t = _infer_tier_for_job(job_obj) if isinstance(job_obj, dict) else "unindexed_url"
+            else:
+                t = "unknown"
+            tiers[t] = tiers.get(t, 0) + 1
         print(f"  Tier breakdown: {tiers}")
     else:
         print("data/jobs_state.json: Not found or empty")
@@ -58,18 +86,27 @@ def show_summary():
     # 3. historical_catalog.json
     if isinstance(historical, dict):
         print(f"data/historical_catalog.json total cataloged jobs: {len(historical)}")
+        cat_tiers: Dict[str, int] = {}
+        for j in historical.values():
+            if isinstance(j, dict):
+                t = _infer_tier_for_job(j)
+                cat_tiers[t] = cat_tiers.get(t, 0) + 1
+        if cat_tiers:
+            print(f"  Catalog tier breakdown: {cat_tiers}")
 
     # 4. inactive_jobs.json
     if isinstance(inactive, dict):
         total_scanned = inactive.get("total_scanned", "N/A")
         inactive_count = inactive.get("inactive_count", "N/A")
-        print(f"data/inactive_jobs.json inactive/scanned: {inactive_count}/{total_scanned}")
+        unknown_count = inactive.get("unknown_count", 0)
+        print(f"data/inactive_jobs.json inactive/scanned: {inactive_count}/{total_scanned} (unknown: {unknown_count})")
 
     # 5. evaluation_state.json
-    if isinstance(evaluation, dict) and "jobs" in evaluation:
-        print(f"data/evaluation_state.json evaluated jobs: {len(evaluation['jobs'])}")
+    if eval_jobs:
+        print(f"data/evaluation_state.json evaluated jobs: {len(eval_jobs)}")
 
-def show_keys(filename):
+
+def show_keys(filename: str) -> None:
     data = get_json_data(filename)
     print(f"=== SCHEMA KEYS: data/{filename} ===")
     if data is None:
@@ -84,11 +121,10 @@ def show_keys(filename):
                 v_type = type(val).__name__
                 print(f"  - {k} ({v_type})")
         else:
-            print(f"List contains non-dict elements of type: {type(sample)}")
+            print(f"List of {len(data)} elements of type: {type(sample).__name__}")
     elif isinstance(data, dict):
-        # Check if values are dicts (catalog format)
         first_val = next(iter(data.values())) if len(data) > 0 else None
-        if isinstance(first_val, dict):
+        if isinstance(first_val, dict) and filename == "historical_catalog.json":
             print(f"Top-level catalog with {len(data)} job URLs. Schema keys of catalog entry:")
             for k in sorted(first_val.keys()):
                 val = first_val[k]
@@ -105,17 +141,15 @@ def show_keys(filename):
     else:
         print("Unsupported data structure.")
 
-def show_single_job(query_str):
+
+def show_single_job(query_str: str) -> None:
     query = str(query_str).strip()
-    # Check historical_catalog.json
     historical = get_json_data("historical_catalog.json")
     if isinstance(historical, dict):
-        # Direct URL match
         if query in historical:
             print(f"=== JOB RECORD FROM CATALOG: {query} ===")
             print(json.dumps(historical[query], indent=2, ensure_ascii=False))
             return
-        # Partial URL or title match
         for url, job in historical.items():
             if isinstance(job, dict):
                 if query in url or query.lower() in job.get("title", "").lower() or query.lower() in job.get("company", "").lower():
@@ -123,7 +157,6 @@ def show_single_job(query_str):
                     print(json.dumps(job, indent=2, ensure_ascii=False))
                     return
 
-    # Check evaluation_state.json
     evaluation = get_json_data("evaluation_state.json")
     if isinstance(evaluation, dict) and "jobs" in evaluation:
         jobs = evaluation["jobs"]
@@ -134,12 +167,13 @@ def show_single_job(query_str):
 
     print(f"Job matching '{query}' not found in catalog or state.")
 
-def main():
+
+def main() -> None:
     parser = argparse.ArgumentParser(description="Inspect workspace state files efficiently without token bloat.")
     parser.add_argument("--summary", action="store_true", help="Print concise counts and tier distributions across data/.")
     parser.add_argument("--keys", type=str, metavar="FILENAME", help="Print schema keys of a json file in data/ (e.g. jobs_state.json).")
     parser.add_argument("--job", type=str, metavar="ID_OR_URL", help="Inspect a single job by its ID or URL.")
-    
+
     args = parser.parse_args()
     if args.summary:
         show_summary()
@@ -149,6 +183,7 @@ def main():
         show_single_job(args.job)
     else:
         show_summary()
+
 
 if __name__ == "__main__":
     main()

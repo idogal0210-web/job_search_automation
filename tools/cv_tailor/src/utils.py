@@ -104,37 +104,45 @@ def get_gemini_pool():
     return get_gemini_runtime_module().GeminiPool()
 
 
+def _get_company_matcher_module():
+    """Load root src/company_matcher.py module dynamically."""
+    project_root = os.path.dirname(os.path.dirname(BASE_DIR))
+    matcher_path = os.path.join(project_root, "src", "company_matcher.py")
+    spec = importlib.util.spec_from_file_location("root_company_matcher", matcher_path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def load_excluded_employers() -> List[str]:
-    """Load canonical excluded employers list from root src.config with skill safety defaults."""
-    defaults = ["energean", "אנרג'יאן", "אנרגיאן", "ingl", "נתג\"ז", "נתג״ז", "chevron", "שברון"]
+    """Load canonical excluded employers list from root src.config with normalized deduplication."""
+    defaults = ["energean", "אנרג'יאן", "ingl", "נתג\"ז", "chevron", "שברון"]
     project_root = os.path.dirname(os.path.dirname(BASE_DIR))
     config_path = os.path.join(project_root, "src", "config.py")
     items: List[str] = []
     if os.path.exists(config_path):
         try:
+            if project_root not in sys.path:
+                sys.path.insert(0, project_root)
             spec = importlib.util.spec_from_file_location("root_config_mod", config_path)
             mod = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(mod)
             if hasattr(mod, "get_excluded_employers"):
-                items = [str(x).strip().lower() for x in (mod.get_excluded_employers() or []) if str(x).strip()]
+                items = [str(x).strip() for x in (mod.get_excluded_employers() or []) if str(x).strip()]
         except Exception:
             items = []
-    merged = list(dict.fromkeys([*items, *defaults]))
-    return merged
+    matcher = _get_company_matcher_module()
+    return matcher.deduplicate_employer_list([*items, *defaults])
 
 
 def check_employer_blacklist(company_name: str, job_text: str = "") -> Tuple[bool, str]:
     """Check whether a target employer matches the mandatory CV tailoring exclusion list."""
-    haystack = f"{company_name or ''} {job_text[:300] if job_text else ''}".lower()
-    if not haystack.strip():
-        return False, ""
-    for employer in load_excluded_employers():
-        token = employer.strip().lower()
-        if not token:
-            continue
-        if re.search(r"(?:^|[\s|,./()'\"״׳\-])" + re.escape(token) + r"(?:$|[\s|,./()'\"״׳\-])", haystack):
-            return True, f"החברה מופיעה ברשימת ההחרגות של מדיניות המועמד ({employer})."
-    return False, ""
+    matcher = _get_company_matcher_module()
+    return matcher.match_excluded_employer(
+        company_name=company_name,
+        job_text=job_text,
+        excluded_employers=load_excluded_employers(),
+    )
 
 
 def load_candidate_profile_data(path: Optional[str] = None) -> Dict[str, Any]:

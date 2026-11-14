@@ -16,15 +16,18 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
+from urllib.parse import urlsplit
 
 import requests
+from bs4 import BeautifulSoup
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from src.ats_client import fetch_ats_job_detail
+from src.state_manager import save_state_atomic
 
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 logger = logging.getLogger("scan_inactive_jobs")
@@ -34,47 +37,318 @@ USER_AGENT = (
     "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 )
 
-INACTIVE_SIGNATURES = [
-    # English indicators - LinkedIn & International
-    (r"not currently accepting applications", "הגשת המועמדות נסגרה (Not currently accepting applications)"),
-    (r"no longer accepting applications", "הגשת המועמדות נסגרה (No longer accepting applications)"),
-    (r"(?:not|no longer|not currently)\s+accepting\s+applications", "הגשת המועמדות נסגרה"),
-    (r"this job is no longer available", "המשרה אינה זמינה עוד"),
-    (r"this position is closed", "המשרה נסגרה"),
-    (r"position is no longer open", "המשרה אינה פתוחה עוד"),
-    (r"job posting has expired", "תוקף פרסום המשרה פג"),
-    (r"applications are no longer being accepted", "הגשת המועמדות נסגרה"),
-    (r"closed-job__flavor", "משרה סגורה בלינקדאין"),
-    (r"topcard__flavor--closed", "משרה סגורה בלינקדאין"),
-    (r"page not found", "דף המשרה לא נמצא"),
-    (r"job (?:has been|was) (?:filled|closed|removed)", "המשרה נסגרה"),
-    (r"no longer (?:available|open|active)", "המשרה אינה זמינה עוד"),
-    (r"this (?:job|position|role) (?:is|has been) (?:closed|filled|expired)", "המשרה נסגרה"),
-    (r"posting (?:is )?(?:closed|expired)", "תוקף פרסום המשרה פג"),
-    (r"position (?:has been )?filled", "המשרה אויישה"),
-    (r"המשרה אוישה", "המשרה אוישה"),
-    (r"המשרה הוסרה", "המשרה הוסרה מהאתר"),
-    (r"פג תוקף", "תוקף פרסום המשרה פג"),
-    # Hebrew indicators
-    (r"המשרה (?:אינה|איננה) פעילה", "המשרה אינה פעילה באתר"),
-    (r"המשרה נסגרה", "המשרה נסגרה לקבלת מועמדויות"),
-    (r"דף המשרה לא נמצא", "דף המשרה לא נמצא באתר"),
-    (r"לא אותרה משרה", "לא אותרה משרה פעילה"),
-    (r"מודעה זו אינה רלוונטית", "המודעה אינה רלוונטית עוד"),
-    (r"הגשת מועמדות למשרה זו הסתיימה", "הגשת מועמדות הסתיימה"),
-    (r"(?:אינה|איננה|לא) מקבלת מועמדויות", "הגשת המועמדות נסגרה"),
+CLOSURE_SIGNATURES_PATH = ROOT_DIR / "src" / "closure_signatures.json"
+
+
+def load_closure_config() -> Dict[str, Any]:
+    """Load canonical closure signature configuration from src/closure_signatures.json."""
+    with open(CLOSURE_SIGNATURES_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+CLOSURE_CONFIG = load_closure_config()
+
+# Backward-compatible flat tuple list for callers inspecting INACTIVE_SIGNATURES
+INACTIVE_SIGNATURES: List[Tuple[str, str]] = [
+    (item["pattern"], item["reason"])
+    for section in ("structural_markers", "strong_signatures", "weak_signatures")
+    for item in CLOSURE_CONFIG.get(section, [])
 ]
 
+_NON_VISIBLE_TAGS = ("script", "style", "noscript", "template", "svg")
+_BOILERPLATE_TAGS = ("nav", "footer", "header", "aside")
+_SIDEBAR_CLASS_RE = re.compile(
+    r"(?:related|recommended|similar|sidebar|other|more)[-_\s]?(?:jobs|positions|postings|roles|items)"
+    r"|cookie[-_\s]?(?:banner|consent|notice)",
+    re.IGNORECASE,
+)
+_PROMINENT_CONTAINER_RE = re.compile(
+    r"(?:^|[\s_-])(?:alert|closed|expired|inactive|error|not-found|empty-state|status-banner|job-closed)(?:$|[\s_-])",
+    re.IGNORECASE,
+)
+_ACTIVE_APPLY_TEXT_RE = re.compile(
+    r"(?:\bapply\s+now\b|\bsubmit\s+application\b|\bapply\s+for\s+this\s+job\b"
+    r"|הגש(?:ו|י)?\s+מועמדות|הגשת\s+מועמדות|שלח(?:ו|י)?\s+קורות\s+חיים)",
+    re.IGNORECASE,
+)
 
-def _valid_through_expired(html: str) -> bool:
-    """Returns True when a JSON-LD JobPosting declares a validThrough date in the past."""
-    for match in re.finditer(r'"validThrough"\s*:\s*"(\d{4}-\d{2}-\d{2})', html):
-        try:
-            if datetime.strptime(match.group(1), "%Y-%m-%d").date() < datetime.now(timezone.utc).date():
-                return True
-        except ValueError:
-            continue
+
+def _is_known_ats_url(url: str) -> bool:
+    if not url:
+        return False
+    try:
+        host = (urlsplit(url).hostname or "").lower()
+    except ValueError:
+        return False
+    if not host:
+        return False
+    for domain in CLOSURE_CONFIG.get("known_ats_hosts", []):
+        d = domain.lower()
+        if host == d or host.endswith("." + d):
+            return True
     return False
+
+
+def _collect_jsonld_job_postings(node: Any, out: List[Dict[str, Any]], in_item_list: bool = False) -> None:
+    """Recursively collect JobPosting objects while ignoring ItemList / related job carousels."""
+    if isinstance(node, list):
+        for item in node:
+            _collect_jsonld_job_postings(item, out, in_item_list=in_item_list)
+        return
+    if not isinstance(node, dict):
+        return
+
+    raw_type = node.get("@type")
+    types = [raw_type] if isinstance(raw_type, str) else (raw_type if isinstance(raw_type, list) else [])
+    type_set = {str(t).split("/")[-1] for t in types if t}
+
+    if "ItemList" in type_set:
+        return
+
+    if "JobPosting" in type_set and not in_item_list:
+        out.append(node)
+        return
+
+    if "@graph" in node:
+        _collect_jsonld_job_postings(node["@graph"], out, in_item_list=in_item_list)
+
+    for key in ("mainEntity", "about"):
+        if key in node:
+            _collect_jsonld_job_postings(node[key], out, in_item_list=in_item_list)
+
+
+def _evaluate_jsonld_job_posting(html: str, page_url: str = "") -> Tuple[bool, bool]:
+    """
+    Evaluate primary JSON-LD JobPosting validThrough date.
+    Returns (is_expired, has_active_posting).
+    Ignores non-JSON-LD script strings and secondary/recommended job postings.
+    """
+    if not html:
+        return False, False
+
+    raw_blocks = re.findall(
+        r"<script[^>]*type=[\"']application/ld\+json[\"'][^>]*>([\s\S]*?)</script>",
+        html,
+        flags=re.IGNORECASE,
+    )
+    if not raw_blocks:
+        stripped = html.strip()
+        if "<script" not in html.lower() and (stripped.startswith("{") or stripped.startswith("[")):
+            raw_blocks = [stripped]
+
+    postings: List[Dict[str, Any]] = []
+    for block in raw_blocks:
+        try:
+            parsed = json.loads(block.strip())
+        except Exception:
+            continue
+        _collect_jsonld_job_postings(parsed, postings)
+
+    if not postings:
+        return False, False
+
+    target_postings = postings
+    if len(postings) > 1 and page_url:
+        norm_url = page_url.split("?")[0].rstrip("/").lower()
+        norm_path = (urlsplit(page_url).path or "").rstrip("/").lower()
+        matched = []
+        for p in postings:
+            for candidate_key in ("url", "sameAs", "@id"):
+                val = str(p.get(candidate_key) or "").split("?")[0].rstrip("/").lower()
+                if val and (val == norm_url or (norm_path and len(norm_path) > 4 and val.endswith(norm_path))):
+                    matched.append(p)
+                    break
+        if matched:
+            target_postings = matched
+
+    today = datetime.now(timezone.utc).date()
+    expired_count = 0
+    active_count = 0
+
+    for posting in target_postings:
+        valid_through = str(posting.get("validThrough") or "").strip()
+        m = re.match(r"^(\d{4}-\d{2}-\d{2})", valid_through)
+        if not m:
+            active_count += 1
+            continue
+        try:
+            dt = datetime.strptime(m.group(1), "%Y-%m-%d").date()
+            if dt < today:
+                expired_count += 1
+            else:
+                active_count += 1
+        except ValueError:
+            active_count += 1
+
+    is_expired = expired_count > 0 and active_count == 0
+    has_active = active_count > 0
+    return is_expired, has_active
+
+
+def _valid_through_expired(html: str, page_url: str = "") -> bool:
+    """Returns True when the primary JSON-LD JobPosting declares a validThrough date in the past."""
+    expired, _ = _evaluate_jsonld_job_posting(html, page_url=page_url)
+    return expired
+
+
+def _extract_dom_views(html: str) -> Dict[str, Any]:
+    """
+    Extract sanitized DOM views from raw HTML:
+    - dom_without_scripts: markup with script/style/template/noscript/svg removed
+    - visible_text: main visible text with nav/footer/header/aside/related-jobs removed
+    - prominent_text: text from title, h1-h3, and alert/closed/error containers
+    - has_active_apply: whether an active apply button/form exists in main content
+    """
+    soup = BeautifulSoup(html or "", "html.parser")
+
+    title_text = soup.title.get_text(" ", strip=True) if soup.title else ""
+
+    for tag in soup.find_all(_NON_VISIBLE_TAGS):
+        tag.decompose()
+
+    dom_without_scripts = str(soup)
+
+    for tag in soup.find_all(_BOILERPLATE_TAGS):
+        tag.decompose()
+
+    for el in list(soup.find_all(True)):
+        if getattr(el, "attrs", None) is None:
+            continue
+        cls_list = el.get("class") or []
+        cls_str = " ".join(cls_list) if isinstance(cls_list, list) else str(cls_list)
+        id_str = str(el.get("id") or "")
+        combined_attr = f"{cls_str} {id_str}".strip()
+        if combined_attr and _SIDEBAR_CLASS_RE.search(combined_attr):
+            el.decompose()
+
+    prominent_parts: List[str] = []
+    if title_text:
+        prominent_parts.append(title_text)
+    for heading in soup.find_all(["h1", "h2", "h3"]):
+        txt = heading.get_text(" ", strip=True)
+        if txt:
+            prominent_parts.append(txt)
+    for el in soup.find_all(True):
+        if getattr(el, "attrs", None) is None:
+            continue
+        role = str(el.get("role") or "")
+        cls_list = el.get("class") or []
+        cls_str = " ".join(cls_list) if isinstance(cls_list, list) else str(cls_list)
+        id_str = str(el.get("id") or "")
+        if role.lower() == "alert" or _PROMINENT_CONTAINER_RE.search(f"{cls_str} {id_str}"):
+            txt = el.get_text(" ", strip=True)
+            if txt:
+                prominent_parts.append(txt)
+
+    has_active_apply = False
+    for control in soup.find_all(["button", "a", "input"]):
+        if getattr(control, "attrs", None) is None:
+            continue
+        if control.has_attr("disabled") or str(control.get("aria-disabled") or "").lower() == "true":
+            continue
+        label = " ".join([
+            control.get_text(" ", strip=True),
+            str(control.get("value") or ""),
+            str(control.get("aria-label") or ""),
+        ])
+        if _ACTIVE_APPLY_TEXT_RE.search(label):
+            has_active_apply = True
+            break
+    if not has_active_apply:
+        for form in soup.find_all("form"):
+            if form.find("input", attrs={"type": re.compile(r"^(?:file|email)$", re.I)}):
+                has_active_apply = True
+                break
+
+    visible_text = " ".join(soup.get_text(" ", strip=True).split())
+    prominent_text = " ".join(prominent_parts)
+
+    return {
+        "dom_without_scripts": dom_without_scripts,
+        "visible_text": visible_text,
+        "prominent_text": prominent_text,
+        "has_active_apply": has_active_apply,
+    }
+
+
+def _match_signature_group(entries: List[Dict[str, str]], text: str) -> List[Dict[str, str]]:
+    """Return matched signatures deduplicated by their semantic group."""
+    if not text:
+        return []
+    matched: List[Dict[str, str]] = []
+    seen_groups = set()
+    for entry in entries:
+        flags = re.IGNORECASE if "i" in entry.get("flags", "") else 0
+        if re.search(entry["pattern"], text, flags):
+            grp = entry.get("group") or entry.get("id") or entry["pattern"]
+            if grp not in seen_groups:
+                seen_groups.add(grp)
+                matched.append(entry)
+    return matched
+
+
+def classify_job_html(html: str, page_url: str = "") -> Tuple[str, str]:
+    """
+    Classify an HTML document into ('inactive' | 'active', reason).
+    - Evaluates text only on visible main content (stripping scripts, styles, nav, footer, related jobs).
+    - Evaluates validThrough only on the primary JSON-LD JobPosting.
+    - Requires 2 independent closure signals on non-ATS websites before reporting 'inactive'.
+    """
+    views = _extract_dom_views(html or "")
+    dom_without_scripts = views["dom_without_scripts"]
+    visible_text = views["visible_text"]
+    prominent_text = views["prominent_text"]
+    has_active_apply = views["has_active_apply"]
+
+    structural = _match_signature_group(CLOSURE_CONFIG.get("structural_markers", []), dom_without_scripts)
+    if structural:
+        return "inactive", structural[0]["reason"]
+
+    strong_matches = _match_signature_group(CLOSURE_CONFIG.get("strong_signatures", []), visible_text)
+    weak_matches = _match_signature_group(CLOSURE_CONFIG.get("weak_signatures", []), visible_text)
+    strong_groups = {m.get("group") for m in strong_matches}
+    weak_matches = [m for m in weak_matches if m.get("group") not in strong_groups]
+
+    prominent_strong = _match_signature_group(CLOSURE_CONFIG.get("strong_signatures", []), prominent_text)
+    prominent_weak = _match_signature_group(CLOSURE_CONFIG.get("weak_signatures", []), prominent_text)
+    prominent_matches = prominent_strong or prominent_weak
+
+    jsonld_expired, jsonld_active = _evaluate_jsonld_job_posting(html or "", page_url=page_url)
+    is_known_ats = _is_known_ats_url(page_url)
+
+    if is_known_ats:
+        if strong_matches:
+            return "inactive", strong_matches[0]["reason"]
+        if jsonld_expired:
+            return "inactive", "תוקף פרסום המשרה פג (validThrough)"
+        if weak_matches and (prominent_matches or len(weak_matches) >= 2 or not has_active_apply):
+            return "inactive", weak_matches[0]["reason"]
+        return "active", "משרה פעילה ומאומתת"
+
+    # Non-ATS site: require at least 2 independent closure signals
+    signals: List[Tuple[str, str]] = []
+    for m in strong_matches:
+        signals.append((f"strong:{m.get('group')}", m["reason"]))
+
+    if jsonld_expired:
+        signals.append(("jsonld_expired", "תוקף פרסום המשרה פג (validThrough)"))
+
+    if prominent_matches:
+        signals.append(("prominent_dom", prominent_matches[0]["reason"]))
+
+    if not has_active_apply or prominent_matches or strong_matches or jsonld_expired:
+        for m in weak_matches:
+            signals.append((f"weak:{m.get('group')}", m["reason"]))
+
+    if (strong_matches or jsonld_expired) and not has_active_apply and not jsonld_active:
+        if len(visible_text) < 260 or jsonld_expired:
+            primary_reason = strong_matches[0]["reason"] if strong_matches else "תוקף פרסום המשרה פג (validThrough)"
+            signals.append(("no_active_apply_cta", primary_reason))
+
+    if len(signals) >= 2:
+        return "inactive", signals[0][1]
+
+    return "active", "משרה פעילה ומאומתת"
 
 
 def check_job_url(job: Dict, timeout: int = 12) -> Tuple[str, str, int]:
@@ -123,19 +397,12 @@ def check_job_url(job: Dict, timeout: int = 12) -> Tuple[str, str, int]:
     if status in (401, 403, 429) or status >= 500:
         return "unknown", f"האתר חסם או לא ענה (HTTP {status}), לא ניתן לאמת", status
 
-    final_url = resp.url.lower()
+    final_url = (resp.url or link).lower()
     if "jobs/view" in link.lower() and "jobs/view" not in final_url and "linkedin.com" in final_url:
         return "inactive", "הפניה לדף ראשי - המשרה הוסרה", status
 
-    html = resp.text
-    text = html.lower()
-    for pattern, reason in INACTIVE_SIGNATURES:
-        if re.search(pattern, text, re.IGNORECASE):
-            return "inactive", reason, status
-    if _valid_through_expired(html):
-        return "inactive", "תוקף פרסום המשרה פג (validThrough)", status
-
-    return "active", "משרה פעילה ומאומתת", status
+    state, reason = classify_job_html(resp.text, page_url=resp.url or link)
+    return state, reason, status
 
 
 def load_target_jobs(jobs_path: str) -> List[Dict]:
@@ -216,9 +483,8 @@ def run_scanner(limit: Optional[int] = None, max_workers: int = 5, dry_run: bool
         for out_dir in out_dirs:
             os.makedirs(out_dir, exist_ok=True)
             out_file = os.path.join(out_dir, "inactive_jobs.json")
-            with open(out_file, "w", encoding="utf-8") as f:
-                json.dump(report, f, ensure_ascii=False, indent=2)
-            logger.info(f"Report saved to {out_file}")
+            save_state_atomic(out_file, report)
+            logger.info(f"Report saved atomically to {out_file}")
 
     return report
 

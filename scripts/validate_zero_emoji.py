@@ -29,8 +29,10 @@ from typing import List, NamedTuple, Optional, Sequence, Tuple
 
 # Unicode emoji categories per specifications:
 EMOJI_CATEGORIES = [
-    ("Emoticons", 0x1F600, 0x1F64F),
+    ("Mahjong and Playing Cards", 0x1F000, 0x1F0FF),
+    ("Enclosed Alphanumeric and Flags", 0x1F100, 0x1F1FF),
     ("Miscellaneous Symbols and Pictographs", 0x1F300, 0x1F5FF),
+    ("Emoticons", 0x1F600, 0x1F64F),
     ("Transport and Map Symbols", 0x1F680, 0x1F6FF),
     ("Alchemical Symbols", 0x1F700, 0x1F77F),
     ("Geometric Shapes Extended", 0x1F780, 0x1F7FF),
@@ -40,8 +42,11 @@ EMOJI_CATEGORIES = [
     ("Symbols and Pictographs Extended-B", 0x1FA70, 0x1FAFF),
     ("Miscellaneous Symbols", 0x2600, 0x26FF),
     ("Dingbats", 0x2700, 0x27BF),
-    ("Enclosed Alphanumeric and Flags", 0x1F100, 0x1F1FF),
     ("Miscellaneous Technical", 0x2300, 0x23FF),
+    ("Miscellaneous Symbols and Arrows (incl. U+2B50 Star)", 0x2B00, 0x2BFF),
+    ("Trade Mark Sign", 0x2122, 0x2122),
+    ("Information Source", 0x2139, 0x2139),
+    ("Zero Width Joiner (ZWJ)", 0x200D, 0x200D),
     ("Variation Selectors (VS-16)", 0xFE0F, 0xFE0F),
     ("Combining Enclosing Keycap", 0x20E3, 0x20E3),
 ]
@@ -201,21 +206,38 @@ def run_zero_emoji_audit(
     Execute standard zero-emoji audit.
     Returns (status_code, violations).
     """
+    use_default_targets = targets is None
     if targets is None:
-        targets = DEFAULT_TARGET_DIRS
+        targets = list(DEFAULT_TARGET_DIRS) + list(TARGET_FILES)
 
     violations: List[EmojiViolation] = []
+    scanned_files = set()
 
     for target in targets:
         target_path = base_dir / target if not os.path.isabs(target) else Path(target)
         if not target_path.exists():
             continue
         if target_path.is_file():
-            v = scan_file(target_path)
-            violations.extend(v)
+            resolved = target_path.resolve()
+            if resolved not in scanned_files:
+                scanned_files.add(resolved)
+                violations.extend(scan_file(target_path))
         else:
-            v = scan_directory(target_path, extensions=extensions)
-            violations.extend(v)
+            for v in scan_directory(target_path, extensions=extensions):
+                resolved = Path(v.file_path).resolve()
+                scanned_files.add(resolved)
+                violations.append(v)
+
+    if use_default_targets and violations:
+        # Deduplicate violations by (resolved file_path, line_number, char_code)
+        deduped: List[EmojiViolation] = []
+        seen = set()
+        for v in violations:
+            key = ( str(Path(v.file_path).resolve()), v.line_number, v.char_code, v.snippet )
+            if key not in seen:
+                seen.add(key)
+                deduped.append(v)
+        violations = deduped
 
     status_code = 1 if violations else 0
     return status_code, violations

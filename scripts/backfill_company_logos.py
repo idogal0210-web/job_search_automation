@@ -13,9 +13,15 @@ Zero emojis in all code and outputs.
 import json
 import os
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from src.company_matcher import company_tokens_match, normalize_company_name
+from src.state_manager import save_state_atomic
 
 # Verified company domain mappings
 KNOWN_DOMAINS = {
@@ -149,9 +155,8 @@ LOCAL_LOGOS = {
 def find_domain_for_company(company_name: str):
     if not company_name:
         return None
-    c = company_name.casefold().strip()
-    for key, dom in KNOWN_DOMAINS.items():
-        if key in c:
+    for key, dom in sorted(KNOWN_DOMAINS.items(), key=lambda kv: len(kv[0]), reverse=True):
+        if company_tokens_match(company_name, key):
             return dom
     return None
 
@@ -159,9 +164,8 @@ def find_domain_for_company(company_name: str):
 def find_local_logo_for_company(company_name: str):
     if not company_name:
         return None
-    c = company_name.casefold().strip()
-    for key, path in LOCAL_LOGOS.items():
-        if key in c:
+    for key, path in sorted(LOCAL_LOGOS.items(), key=lambda kv: len(kv[0]), reverse=True):
+        if company_tokens_match(company_name, key):
             return path
     return None
 
@@ -182,8 +186,8 @@ def resolve_logo(job: dict, sibling_logos: dict):
         return local_path
 
     # 3. Check sibling logos
-    comp_norm = re.sub(r"[^\w\s]", "", company.casefold()).strip()
-    if comp_norm in sibling_logos:
+    comp_norm = normalize_company_name(company, strip_quotes=True)
+    if comp_norm and comp_norm in sibling_logos:
         return sibling_logos[comp_norm]
 
     # 4. Check known domain
@@ -208,7 +212,7 @@ def backfill_all():
     sibling_logos = {}
     for j in catalog.values():
         comp = j.get("company", "") or ""
-        norm = re.sub(r"[^\w\s]", "", comp.casefold()).strip()
+        norm = normalize_company_name(comp, strip_quotes=True)
         logo = j.get("company_logo_url") or j.get("logo")
         if norm and logo and ("media.licdn.com" in str(logo) or "drushim.co.il" in str(logo) or str(logo).startswith("assets/logos/")):
             sibling_logos[norm] = logo
@@ -237,12 +241,9 @@ def backfill_all():
             job["company_logo_url"] = resolved
             job["logo"] = resolved
 
-    # Save data/
-    with open(catalog_path, "w", encoding="utf-8") as f:
-        json.dump(catalog, f, ensure_ascii=False, indent=2)
-
-    with open(archive_path, "w", encoding="utf-8") as f:
-        json.dump(archive, f, ensure_ascii=False, indent=2)
+    # Save data/ atomically
+    save_state_atomic(str(catalog_path), catalog)
+    save_state_atomic(str(archive_path), archive)
 
     print(f"[BACKFILL] Updated {updated_catalog_count} catalog jobs and {updated_archive_count} archive jobs.")
     total_with_logo = len([j for j in catalog.values() if j.get("company_logo_url")])

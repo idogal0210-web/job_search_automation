@@ -1,6 +1,8 @@
+import hashlib
 import json
 import os
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from dotenv import load_dotenv
 from google import genai
@@ -26,6 +28,15 @@ from src.state_manager import load_state, save_state_atomic, EvaluationLedger
 load_dotenv()
 STATE_FILE = os.path.join(os.path.dirname(__file__), "data", "jobs_state.json")
 DEFAULT_DASHBOARD_URL = "https://idogal0210-web.github.io/job_search_automation/"
+
+
+def _outbox_path_for_state(state_file: str) -> Path:
+    return Path(state_file).resolve().parent / "email_outbox.json"
+
+
+def _batch_digest(links: list) -> str:
+    payload = "|".join(sorted(str(x) for x in (links or [])))
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
 
 def load_context(root: Path, state_file: str):
@@ -171,31 +182,74 @@ def publish_dashboard(processed_jobs: list, root: Path) -> bool:
     return dashboard_ok
 
 
-def dispatch_notifications(processed_jobs: list, dashboard_ok: bool, health: RunHealth):
-    """Send daily email notifications with top qualified jobs."""
+def dispatch_notifications(
+    processed_jobs: list,
+    dashboard_ok: bool,
+    health: RunHealth,
+    outbox_path: Path = None,
+):
+    """
+    Send daily email notifications with top qualified jobs using an atomic Outbox
+    pattern so a crash in persist_state after SMTP delivery never re-sends duplicates.
+    """
     sender_email = os.getenv("SENDER_EMAIL")
     sender_pwd = os.getenv("SENDER_APP_PASSWORD") or os.getenv("SENDER_PASSWORD")
     email_configured = bool(sender_email and sender_pwd)
 
-    health.final_status = (
-        "DEGRADED_PENDING" if health.pending_evaluations else
-        "DEGRADED_NETWORK" if (
-            health.linkedin_failures
-            + health.drushim_failures
-            + getattr(health, "comeet_failures", 0)
-        ) else
-        "SUCCESS"
+    # Single unified status calculation before email dispatch
+    health.final_status = final_status(
+        health,
+        email_configured=email_configured,
+        dashboard_ok=dashboard_ok,
+        state_ok=True,
+        check_email_result=False,
     )
-    if not dashboard_ok:
-        health.final_status = "FAILED_DASHBOARD"
 
     daily_top_picks = processed_jobs[:5]
+    batch_links = [job.get("link", "") for job in daily_top_picks if job.get("link")]
+    digest = _batch_digest(batch_links)
+    resolved_outbox = outbox_path or _outbox_path_for_state(STATE_FILE)
+
     if email_configured:
+        existing_outbox = load_state(str(resolved_outbox), default={}, strict=False) or {}
+        if (
+            batch_links
+            and isinstance(existing_outbox, dict)
+            and existing_outbox.get("status") == "SENT"
+            and existing_outbox.get("digest") == digest
+        ):
+            print("[EMAIL_OUTBOX] Batch already SENT in unacknowledged outbox; skipping duplicate email send", flush=True)
+            health.email_success = True
+            return email_configured, daily_top_picks
+
+        try:
+            save_state_atomic(
+                str(resolved_outbox),
+                {
+                    "status": "SENDING",
+                    "links": batch_links,
+                    "digest": digest,
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                },
+            )
+        except Exception:
+            pass
+
         dashboard_url = os.getenv("DASHBOARD_URL", DEFAULT_DASHBOARD_URL)
-        send_email_report(
-            sender_email, sender_pwd, daily_top_picks, daily_top_picks,
-            daily_top_picks[:3], dashboard_url, health
-        )
+        send_email_report(sender_email, sender_pwd, daily_top_picks, dashboard_url, health)
+
+        try:
+            save_state_atomic(
+                str(resolved_outbox),
+                {
+                    "status": "SENT" if health.email_success else "FAILED",
+                    "links": batch_links,
+                    "digest": digest,
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                },
+            )
+        except Exception:
+            pass
     else:
         print("[EMAIL] Not configured; qualified jobs remain READY for future delivery", flush=True)
 
@@ -207,17 +261,30 @@ def persist_state(
     state_file: str, sync_state_path: Path, dashboard_ok: bool,
     email_configured: bool, health: RunHealth
 ) -> bool:
-    """Commit delivery and atomically save handled links."""
+    """Commit delivery, acknowledge outbox, and atomically save handled links."""
     state_ok = True
     try:
+        batch_links = [job["link"] for job in daily_top_picks if job.get("link")]
         if dashboard_ok and email_configured and health.email_success:
-            ledger.commit_delivery([job["link"] for job in daily_top_picks])
+            ledger.commit_delivery(batch_links)
         handled_links.update(ledger.completed_links())
         if sync_state_path.exists():
             sync_state = load_state(str(sync_state_path), default={}, strict=False) or {}
             handled_links.update(sync_state.get("purged", []))
             handled_links.update(sync_state.get("rejected", []))
         save_state_atomic(state_file, sorted(handled_links))
+
+        if dashboard_ok and email_configured and health.email_success:
+            outbox_file = _outbox_path_for_state(state_file)
+            save_state_atomic(
+                str(outbox_file),
+                {
+                    "status": "ACKED",
+                    "links": batch_links,
+                    "digest": _batch_digest(batch_links),
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                },
+            )
     except Exception as error:
         state_ok = False
         print(f"[STATE_ERROR] {type(error).__name__}: {error}", flush=True)
@@ -228,12 +295,14 @@ def report_results(
     health: RunHealth, audit: dict, root: Path,
     dashboard_ok: bool, email_configured: bool, state_ok: bool
 ) -> int:
-    """Compute final status, write run reports, and determine exit code."""
+    """Compute final status, write run reports with quality metrics, and determine exit code."""
     health.final_status = final_status(
         health, email_configured=email_configured,
         dashboard_ok=dashboard_ok, state_ok=state_ok
     )
-    report = run_report(health, audit)
+    inactive_report_path = root / "data" / "inactive_jobs.json"
+    inactive_report = load_state(str(inactive_report_path), default=None, strict=False) if inactive_report_path.exists() else None
+    report = run_report(health, audit, inactive_report=inactive_report)
     save_state_atomic(root / "reports" / "latest_run.json", report)
     print("[SUMMARY] " + json.dumps(report["health"], ensure_ascii=False), flush=True)
 
@@ -245,6 +314,8 @@ def report_results(
                 f"- Candidates: {health.candidates_found}\n"
                 f"- Qualified: {health.jobs_passed}\n"
                 f"- Pending complete evaluation: {health.pending_evaluations}\n"
+                f"- Gate rejection rate: {report['quality_metrics']['gate_rejection_rate']:.1%}\n"
+                f"- Estimated Gemini cost: ${report['quality_metrics']['estimated_gemini_cost_usd']:.4f}\n"
             )
     print(f"[DONE] Final Status: {health.final_status}", flush=True)
     return 1 if health.final_status.startswith("FAILED_") else 0
@@ -256,7 +327,9 @@ def main():
     all_raw_jobs = collect_all_jobs(health)
     processed_jobs, audit = evaluate_all_jobs(all_raw_jobs, handled_links, health, ledger)
     dashboard_ok = publish_dashboard(processed_jobs, root)
-    email_configured, daily_top_picks = dispatch_notifications(processed_jobs, dashboard_ok, health)
+    email_configured, daily_top_picks = dispatch_notifications(
+        processed_jobs, dashboard_ok, health, outbox_path=_outbox_path_for_state(STATE_FILE)
+    )
     state_ok = persist_state(
         ledger, daily_top_picks, handled_links, STATE_FILE,
         sync_state_path, dashboard_ok, email_configured, health

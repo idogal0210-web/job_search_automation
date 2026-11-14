@@ -246,7 +246,24 @@ def build_unified_html_email(jobs, top_3, dashboard_url, health=None):
     )
     return html
 
-def send_email_report(sender_email, sender_pwd, processed_jobs, curated_email_jobs, top_3, dashboard_url, health):
+def send_email_report(sender_email, sender_pwd, processed_jobs, *compat_args, dashboard_url="", health=None):
+    """
+    Send the unified daily email report.
+    Supports both the clean 5-arg signature:
+        send_email_report(sender_email, sender_pwd, daily_top_picks, dashboard_url, health)
+    and the legacy 7-arg signature:
+        send_email_report(sender_email, sender_pwd, processed_jobs, curated_email_jobs, top_3, dashboard_url, health)
+    """
+    if len(compat_args) == 2:
+        dashboard_url, health = compat_args
+        curated_email_jobs = (processed_jobs or [])[:5]
+        top_3 = curated_email_jobs[:3]
+    elif len(compat_args) >= 4:
+        curated_email_jobs, top_3, dashboard_url, health = compat_args[:4]
+    else:
+        curated_email_jobs = (processed_jobs or [])[:5]
+        top_3 = curated_email_jobs[:3]
+
     email_html = build_unified_html_email(curated_email_jobs, top_3, dashboard_url, health)
 
     msg = MIMEMultipart()

@@ -93,12 +93,19 @@ def evaluate_candidates(jobs, client, health, ledger, *, pool=None, enrich_job=e
     return sorted(passed, key=lambda job: job["match_score"], reverse=True), audit
 
 
-def final_status(health, *, email_configured, dashboard_ok=True, state_ok=True):
+def final_status(
+    health,
+    *,
+    email_configured,
+    dashboard_ok=True,
+    state_ok=True,
+    check_email_result=True,
+):
     if not state_ok:
         return "FAILED_STATE"
     if not dashboard_ok:
         return "FAILED_DASHBOARD"
-    if email_configured and not health.email_success:
+    if check_email_result and email_configured and not health.email_success:
         return "FAILED_EMAIL"
     attempts = (
         health.linkedin_requests
@@ -125,5 +132,50 @@ def final_status(health, *, email_configured, dashboard_ok=True, state_ok=True):
     return "SUCCESS_EMPTY_RUN" if health.candidates_found == 0 else "SUCCESS"
 
 
-def run_report(health, audit):
-    return {"health": asdict(health), "jobs": audit}
+# Approximate blended cost per Gemini Flash job evaluation call (~1.2k input + ~350 output tokens)
+ESTIMATED_COST_PER_GEMINI_CALL_USD = 0.00035
+
+
+def compute_quality_metrics(health, audit, inactive_report=None):
+    """Compute observability quality metrics for latest_run.json."""
+    audit_list = audit or []
+    total_eval = len(audit_list) or getattr(health, "jobs_evaluated", 0) or 0
+    det_rejections = sum(
+        1 for j in audit_list
+        if isinstance(j, dict)
+        and j.get("status") == "DISQUALIFIED"
+        and j.get("evaluation_source") == "deterministic"
+    )
+    gate_rejection_rate = round(det_rejections / total_eval, 4) if total_eval > 0 else 0.0
+
+    gemini_calls = getattr(health, "gemini_attempts", 0) or sum(
+        1 for j in audit_list
+        if isinstance(j, dict) and j.get("evaluation_source") == "gemini"
+    )
+    estimated_gemini_cost_usd = round(gemini_calls * ESTIMATED_COST_PER_GEMINI_CALL_USD, 6)
+
+    unknown_scan_rate = 0.0
+    if isinstance(inactive_report, dict):
+        total_scanned = int(inactive_report.get("total_scanned") or 0)
+        unknown_count = int(inactive_report.get("unknown_count") or 0)
+        if total_scanned > 0:
+            unknown_scan_rate = round(unknown_count / total_scanned, 4)
+
+    return {
+        "gate_rejection_rate": gate_rejection_rate,
+        "deterministic_rejections": det_rejections,
+        "gemini_evaluations": gemini_calls,
+        "estimated_gemini_cost_usd": estimated_gemini_cost_usd,
+        "unknown_scan_rate": unknown_scan_rate,
+    }
+
+
+def run_report(health, audit, inactive_report=None):
+    health_dict = asdict(health)
+    quality = compute_quality_metrics(health, audit, inactive_report=inactive_report)
+    health_dict.update(quality)
+    return {
+        "health": health_dict,
+        "quality_metrics": quality,
+        "jobs": audit,
+    }

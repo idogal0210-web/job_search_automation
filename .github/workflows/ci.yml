@@ -43,6 +43,10 @@ jobs:
         run: |
           python scripts/validate_zero_emoji.py
 
+      - name: Validate Project Hygiene, Schemas & Secret Scan
+        run: |
+          python scripts/project_hygiene.py --check-secrets --validate
+
       - name: Run Unit Tests
         run: |
           python -m unittest discover tests/ -v

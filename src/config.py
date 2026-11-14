@@ -84,18 +84,21 @@ def get_target_company_tiers() -> Dict[str, Any]:
     return dict(tiers)
 
 
+from src.company_matcher import deduplicate_employer_list
+
+
 def get_excluded_employers() -> List[str]:
-    """Return list of excluded employers from environment or configuration."""
+    """Return normalized, deduplicated list of excluded employers from environment or configuration."""
     env_blacklist = os.environ.get("EXCLUDED_EMPLOYERS", "")
     if env_blacklist:
-        return [e.strip().lower() for e in env_blacklist.split(",") if e.strip()]
+        return deduplicate_employer_list([e.strip() for e in env_blacklist.split(",") if e.strip()])
 
     cfg = load_raw_config()
     excluded = cfg.get("excluded_employers", [])
     if excluded:
-        return [e.strip().lower() for e in excluded if e.strip()]
+        return deduplicate_employer_list([str(e).strip() for e in excluded if str(e).strip()])
 
-    return ["energean", "אנרג'יאן", "אנרג'ין", "ingl", "נתג", "chevron", "שברון"]
+    return deduplicate_employer_list(["energean", "אנרג'יאן", "ingl", "נתג\"ז", "chevron", "שברון"])
 
 
 def get_salary_policy() -> Dict[str, int]:

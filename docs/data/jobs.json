@@ -66,7 +66,7 @@
           "explanation": "למועמד רקע בשליטה, בבקרה ובמערכות SCADA."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
@@ -78,7 +78,8 @@
           "icon": "ph-bold ph-graduation-cap",
           "label": "Junior"
         }
-      ]
+      ],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע חזק במערכות אלקטרו-מכניות ובקרה, ומתאים לתפקיד טכנאי חשמל ובקרה."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%95%D7%9E%D7%97%D7%94-%D7%98%D7%9B%D7%A0%D7%99-%D7%91%D7%AA%D7%97%D7%95%D7%9D-%D7%94%D7%9E%D7%AA%D7%97-%D7%94%D7%A0%D7%9E%D7%95%D7%9A-at-deeplan-4488207994",
@@ -142,13 +143,14 @@
           "explanation": "המועמד בעל יכולת אוריינות טכנית גבוהה ומתמודד היטב עם מערכות מורכבות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע בחשמל, העונה על דרישת ההנדסאי והניסיון במתח נמוך."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/field-integrator-at-allpha-innovation-4488699886",
@@ -226,7 +228,7 @@
           "explanation": "ניסיון קרבי מבצעי מבטיח יכולת תפקוד גבוהה תחת לחץ ופתרון בעיות בשטח."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": false,
@@ -238,7 +240,8 @@
           "icon": "ph-bold ph-wrench",
           "label": "עבודת שטח"
         }
-      ]
+      ],
+      "full_reasoning": "התאמה גבוהה לתפקיד אינטגרציית שטח ומערכות מכניות-אלקטרוניות המבוססת על רקע צבאי והנדסאי מכונות."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/production-quality-specialist-at-pixel-sight-4487249927",
@@ -302,13 +305,14 @@
           "explanation": "כהנדסאי מכונות, למועמד יש רקע בקריאת שרטוטים ומערכות טכניות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המוועמד הנדסאי מכונות מוסמך עם רקע מוצק במערכות אלקטרו-מכניות ובקרת איכות."
     },
     {
       "link": "https://www.drushim.co.il/job/38866916/e9d0014c/",
@@ -372,13 +376,14 @@
           "explanation": "המועמד שולט בכלים טכנולוגיים מתקדמים המעידים על יכולת עבודה באנגלית."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המוועמד הינו הנדסאי מכונות מוסמך המתאים לדרישות ההנדסאי במשרה בתחום התעשייה והטכנולוגיה."
     },
     {
       "link": "https://mprest.com/mprest_careers/co/petah-tikva-israel/5D.B62/qc-engineer/all/",
@@ -442,13 +447,14 @@
           "explanation": "כהנדסאי מכונות, למועמד יש יכולת קריאת שרטוטים הנדסיים."
         }
       ],
-      "fit_gaps": "הדרישה הספציפית היא להנדסאי אלקטרוניקה/חשמל, בעוד המועמד הינו הנדסאי מכונות (עם לימודי חשמלאי).",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": true,
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המוועמד בעל השכלת הנדסאי מכונות ורקע טכני מתאים לבקרת איכות ובדיקת רכיבים."
     },
     {
       "link": "https://www.drushim.co.il/job/39053154/e0f127fb/",
@@ -526,13 +532,14 @@
           "explanation": "למועמד שליטה במערכות בקרה ו-SCADA."
         }
       ],
-      "fit_gaps": "למועמד דיפלומת הנדסאי מכונות ולימודי חשמלאי מוסמך, אך ייתכן שיידרש ניסיון ספציפי של 3 שנים בהקמת פרויקטים.",
+      "fit_gaps": "נדרש רישיון מתח גבוה ייעודי.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע באנרגיות מתחדשות, התואם לדרישות ניהול אתרים סולאריים."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/uav-station-technician-at-yael-korentec-technologies-4490340804",
@@ -610,13 +617,14 @@
           "explanation": "המועמד בעל רקע קרבי ומבצעי מובהק, המעיד על יכולת גבוהה לעבודה שטח אינטנסיבית."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע טכני רב-תחומי, ניסיון בשטח ומערכות בלתי מאוישות."
     },
     {
       "link": "https://www.drushim.co.il/job/38892870/a0fa7d86/",
@@ -694,7 +702,7 @@
           "explanation": "למועמד רקע פיקודי וטכני נרחב בעבודת שטח."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": true,
@@ -716,7 +724,8 @@
           "icon": "ph-bold ph-graduation-cap",
           "label": "Junior"
         }
-      ]
+      ],
+      "full_reasoning": "הסמכת הנדסאי מכונות ורקע אלקטרו-מכני מתאימים לדרישות תחזוקת המערכות בשטח."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/debug-practical-engineer-at-solaredge-technologies-4401000393",
@@ -808,13 +817,14 @@
           "explanation": "המועמד בעל ניסיון מאז סיום הלימודים ב-2022 בתחום האנרגיה והמערכות הטכניות."
         }
       ],
-      "fit_gaps": "למועמד יש רקע כהנדסאי מכונות ולימודי חשמלאי מוסמך, אך התואר הרשמי הנדרש במודעה הוא באלקטרוניקה/חשמל; עם זאת, הרקע הטכני הרב-תחומי מפצה על כך.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המוועמד הוא הנדסאי מכונות מוסמך עם רקע מוצק במערכות אנרגיה וניסיון מעשי המתאים בול לתפקידי מעבדה ובדיקות."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/debug-engineer-at-solaredge-technologies-4467245080",
@@ -892,13 +902,14 @@
           "explanation": "המועמד שולט בכלים טכנולוגיים מתקדמים המעידים על אנגלית טכנית ברמה גבוהה."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "התאמה טובה לתפקיד טכני בסולאראדג' המשלב ניתוח תקלות, מעבדה והבנה אלקטרו-מכנית."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/pmo-%E2%80%93-ai-data-center-at-enlight-renewable-energy-ltd-enlt-4488802260",
@@ -962,13 +973,14 @@
           "explanation": "למועמד רקע טכני מוצק והבנה בפרויקטי אנרגיה ותשתיות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות עם רקע באנרגיה וניהול פרויקטים טכניים, המתאים לתפקיד PMO הנדסי."
     },
     {
       "link": "https://www.drushim.co.il/job/39056251/0c22fe89/",
@@ -1032,13 +1044,14 @@
           "explanation": "למועמד רקע מוצק במערכות אלקטרו-מכניות ועבודה טכנית מעשית."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המוועמד הינו הנדסאי מכונות עם ניסיון במערכות מולטידיסציפלינריות, קריאת שרטוטים והרכבות מכניות."
     },
     {
       "link": "https://www.drushim.co.il/job/38794906/e35ceddf/",
@@ -1102,7 +1115,7 @@
           "explanation": "המוועמד בעל התמחות ספציפית בגז טבעי ומערכות אנרגיה."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
@@ -1114,7 +1127,8 @@
           "icon": "ph-bold ph-graduation-cap",
           "label": "Junior"
         }
-      ]
+      ],
+      "full_reasoning": "התאמה טובה לתפקיד טכנאי בדיקות איכות למערכות גזים ואחזקה, בהתאם לרקע של המועמד בהנדסת מכונות."
     },
     {
       "link": "https://www.drushim.co.il/job/38818751/774e6899/",
@@ -1206,7 +1220,7 @@
           "explanation": "למועמד רקע מבצעי עשיר המעיד על יכולת השתלבות בכוננויות ומסגרות תובעניות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
@@ -1218,7 +1232,8 @@
           "icon": "ph-bold ph-graduation-cap",
           "label": "Junior"
         }
-      ]
+      ],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות מוסמך בעל ניסיון טכני ומכני המותאם לתפקידי תפעול ואחזקה מתקדמים."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/system-integration-engineer-at-applied-materials-israel-4487814341",
@@ -1296,13 +1311,14 @@
           "explanation": "למועמד רקע מעשי בדיאגנוסטיקה ואיתור תקלות במערכות אלקטרו-מכניות."
         }
       ],
-      "fit_gaps": "התפקיד בתעשיית המוליכים למחצה ואינו מתמקד במערכות אנרגיה, תשתיות או SCADA.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "תפקיד אינטגרציה אלקטרו-מכנית המתאים להנדסאי מכונות בתחילת הדרך, מחוץ לתחום האנרגיה."
     },
     {
       "link": "https://www.drushim.co.il/job/38958952/d65a2020/",
@@ -1394,7 +1410,7 @@
           "explanation": "המועמד דובר עברית ויכולת התמודדות עם מפרטים באנגלית."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": true,
@@ -1411,7 +1427,8 @@
           "icon": "ph-bold ph-car",
           "label": "רכב חברה"
         }
-      ]
+      ],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות מוסמך בעל רקע טכני איתן המתאים לתפקיד שטח ומערכות זרימה."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/construction-project-manager-at-bagira-4488872293",
@@ -1475,13 +1492,14 @@
           "explanation": "כמהנדס מעשי המועמד שולט בקריאה והכנה של שרטוטים הנדסיים ומערכות אלקטרו-מכניות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "לעידו ניסיון הנדסי מעשי, פיקוח ותיאום תשתיות המתאימים לניהול פרויקטי בנייה ותשתיות טכנולוגיות."
     },
     {
       "link": "https://www.drushim.co.il/job/39032387/cad85713/",
@@ -1587,13 +1605,14 @@
           "explanation": "היכרות עם מערכות מתקדמות וכלים טכנולוגיים מעידה על שליטה באנגלית טכנית."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "ניסיון טכני רב-תחומי במערכות אלקטרו-מכניות ובכטב\"מ תואם לדרישות תפקיד האינטגרטור."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/field-services-engineer-at-scanmaster-systems-irt-4487458653",
@@ -1671,7 +1690,7 @@
           "explanation": "הכשרתו של המועמד כהנדסאי מכונות וניסיונו בשטח כוללים קריאת תוכניות ואבחון תקלות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": false,
@@ -1683,7 +1702,8 @@
           "icon": "ph-bold ph-wrench",
           "label": "עבודת שטח"
         }
-      ]
+      ],
+      "full_reasoning": "התאמה טובה לתפקיד מהנדס שירות שטח אלקטרו-מכאני על בסיס רקע הנדסאי מכונות וניסיון טכני."
     },
     {
       "link": "https://www.drushim.co.il/job/39028055/6c3e8cd3/",
@@ -1747,7 +1767,7 @@
           "explanation": "למועמד ניסיון מוכח בעבודה במשמרות ומענה קריטי 24/7."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": false,
@@ -1764,7 +1784,8 @@
           "icon": "ph-bold ph-clock-countdown",
           "label": "משמרות 24/7"
         }
-      ]
+      ],
+      "full_reasoning": "עידו בעל רקע כהנדסאי מכונות וניסיון בתפעול ואחזקת מערכות אלקטרו-מכניות."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/field-operations-specialist-drone-systems-at-kela-technologies-4487713840",
@@ -1856,7 +1877,7 @@
           "explanation": "למועמד שליטה במודלים של נתונים ב-Excel."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": false,
@@ -1868,7 +1889,8 @@
           "icon": "ph-bold ph-wrench",
           "label": "עבודת שטח"
         }
-      ]
+      ],
+      "full_reasoning": "לעידו רקע עשיר בהפעלת מערכות טכניות, ניהול שטח וניסיון מבצעי מקביל לדרישות המשרה."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/assembly-and-integration-technicians-at-nextvision-stabilized-systems-ltd-4487142949",
@@ -1932,13 +1954,14 @@
           "explanation": "למועמד פרופיל טכני רב-תחומי וזיקה חזקה למערכות אלקטרו-מכניות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות עם רקע טכני חזק ויכולות אינטגרציה מעולות."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/integrator-%E2%80%93-lynx-department-at-asio-technologies-4487677987",
@@ -2002,13 +2025,14 @@
           "explanation": "המועמד הוא הנדסאי מכונות מוסמך עם רקע במערכות אלקטרו-מכניות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "מועמד בעל רקע טכני צבאי ואלקטרו-מכני מתאים מאוד לשילוב מערכות ובדיקות שדה."
     },
     {
       "link": "https://www.drushim.co.il/job/38946222/613fed37/",
@@ -2086,7 +2110,7 @@
           "explanation": "ציטוט המודעה לא אומת או חסרה ראיה מאומתת בפרופיל; נדרשת בדיקה."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
@@ -2103,7 +2127,8 @@
           "icon": "ph-bold ph-graduation-cap",
           "label": "Junior"
         }
-      ]
+      ],
+      "full_reasoning": "המועמד הנדסאי מכונות עם רקע באנרגיה וגז טבעי, מתאים מאוד לתפקיד מפעיל חדר בקרה."
     },
     {
       "link": "https://www.drushim.co.il/job/38840544/d7c9d9ab/",
@@ -2195,7 +2220,7 @@
           "explanation": "למועמד ניסיון במידול נתונים ועבודה מתקדמת עם Excel."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
@@ -2207,7 +2232,8 @@
           "icon": "ph-bold ph-clock-countdown",
           "label": "משמרות 24/7"
         }
-      ]
+      ],
+      "full_reasoning": "התאמה גבוהה לתפקיד מפעיל חדר בקרה במערכות סולאריות ואגירה אנרגיה."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/plant-operations-specialist-at-naki-4486895054",
@@ -2285,13 +2311,14 @@
           "explanation": "המועמד מציג ניסיון באיתור ופתרון תקלות במערכות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המועמד הנדסאי מכונות עם רקע מוכח בהפעלת מערכות תעשייתיות ופתרון תקלות."
     },
     {
       "link": "https://www.drushim.co.il/job/38758768/f0b89ba1/",
@@ -2369,13 +2396,14 @@
           "explanation": "כהנדסאי מכונות עם התמחות במערכות אנרגיה, למועמד יש רקע חזק בקריאת תוכניות ושרטוטים הנדסיים."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "נדרש רישיון מתח גבוה ייעודי.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם ניסיון מוכח באוטומציה, מערכות אלקטרומכניות וכיול שטח."
     },
     {
       "link": "https://www.drushim.co.il/job/39011506/55044a11/",
@@ -2453,13 +2481,14 @@
           "explanation": "למועמד ניסיון מעשי במערכות אלקטרומכניות וקריאת תוכניות עבודה."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות עם רקע חזק במערכות אלקטרומכניות ובקרה."
     },
     {
       "link": "https://www.drushim.co.il/job/39014242/66f6781d/",
@@ -2537,13 +2566,14 @@
           "explanation": "למועמד ניסיון מעשי והנדסי ברמת השטח והמערכת."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "לעידו רקע חזק כמהנדס מכונות מעשי וכאיש מערכות רב-תחומיות מתאימות."
     },
     {
       "link": "https://www.comeet.com/jobs/enlightenergy/99.006/pmo--ai-data-center/AE.470",
@@ -2607,13 +2637,14 @@
           "explanation": "למועמד רקע הנדסי ותפעולי רחב בהובלת מערכות ופרויקטים באנרגיה."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": true,
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "מועמד בעל רקע בהנדסה, ניהול פרויקטים ותשתיות אנרגיה, המתאים לתפקיד PMO."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%97%D7%93%D7%A9-%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%AA-%D7%AA%D7%A9%D7%AA%D7%99%D7%95%D7%AA-%D7%95%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-at-sodastream-international-ltd-4488772416",
@@ -2677,13 +2708,14 @@
           "explanation": "למועמד ניסיון במערכות בקרה ו-SCADA."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "מועמד בעל רקע בהנדסאי מכונות, תשתיות אנרגיה ואחזקת מערכות תעשייתיות."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/customer-support-technician-at-applied-materials-israel-4484388316",
@@ -2747,13 +2779,14 @@
           "explanation": "ניסיון מעשי בעבודה עם מערכות אלקטרו-מכניות וכלים."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "מועמד מתאים לתפקיד טכנאי שירות בזכות ניסיונו המעשי במערכות אלקטרו-מכניות ואחזקה."
     },
     {
       "link": "https://www.drushim.co.il/job/39014470/0ebdc33d/",
@@ -2817,13 +2850,14 @@
           "explanation": "למועמד יש רקע במערכות אלקטרו-מכניות ופתרון תקלות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המוועמד הינו הנדסאי מכונות מוסמך בעל רקע טכני מתאים לתפקידי ניהול משמרת ואחזקה במפעל תעשייתי."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/maintenance-technician-2-at-alstom-4482288868",
@@ -2901,13 +2935,14 @@
           "explanation": "למועמד ניסיון מעשי באיתור תקלות ועבודה עם מערכות אלקטרו-מכניות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "התאמה גבוהה לתפקיד תחזוקה אלקטרו-מכנית בזכות רקע בהנדסאי מכונות ומערכות חשמל."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/hardware-manufacturing-integrator-at-hp-4487561763",
@@ -2971,13 +3006,14 @@
           "explanation": "למועמד ניסיון מעשי רב במערכות אלקטרו-מכניות ובפתרון תקלות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "לעידו רקע חזק בהנדסאי מכונות ומערכות אלקטרו-מכניות, המתאים לדרישות האינטגרציה והתחזוקה."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/electro-mechanical-assembler-at-uvision-group-4487667204",
@@ -3041,13 +3077,14 @@
           "explanation": "למועמד רקע פיקודי ומבצעי ביחידת עילית קרבית, המשתלב עם אוריינטציה טכנית ושדה."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "ניסיון מעשי בהרכבה אלקטרו-מכנית, אינטגרציה ופעילות שדה התואם לדרישות התפקיד."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/technical-specialist-npi-field-support-at-kornit-digital-4483365929",
@@ -3125,7 +3162,7 @@
           "explanation": "ציטוט המודעה לא אומת או חסרה ראיה מאומתת בפרופיל; נדרשת בדיקה."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": false,
@@ -3137,7 +3174,8 @@
           "icon": "ph-bold ph-wrench",
           "label": "עבודת שטח"
         }
-      ]
+      ],
+      "full_reasoning": "הנדסאי מכונות בעל רקע מעשי טכני מעולה במערכות אלקטרו-מכניות, אחזקה ואיתור תקלות שטח."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/field-test-integration-engineer-at-starbird-ai-4486590427",
@@ -3215,13 +3253,14 @@
           "explanation": "המועמד שולט באוטומציה מבוססת Python."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המועמד בעל רקע טכני מעשי, ניסיון צבאי בשטח וזיקה מובהקת למערכות וניסויי שדה."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/automation-logistics-systems-integrator-570-at-utron-4478568708",
@@ -3299,7 +3338,7 @@
           "explanation": "למועמד ניסיון בעבודה עם מערכות בקרה תעשייתיות, SCADA ואוטומציה תפעולית."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": false,
@@ -3311,7 +3350,8 @@
           "icon": "ph-bold ph-wrench",
           "label": "עבודת שטח"
         }
-      ]
+      ],
+      "full_reasoning": "אינטגרטור מערכות אוטומציה ובקרה בעל רקע מעשי במערכות אלקטרו-מכניות ו-SCADA."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/field-application-engineer-at-stealth-startup-4482598452",
@@ -3389,13 +3429,14 @@
           "explanation": "למועמד תואר הנדסאי מכונות ולא תואר ראשון BSc, אך מדובר ביתרון בלבד ולא בדרישת סף."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "דרישת סף לתואר B.Sc בהנדסה (ללא חלופת הנדסאי מכונות במודעה).",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המועמד מביא ניסיון מעשי מוכק בהטמעת מערכות אלקטרו-מכניות ובדיקות שטח מתקדמות."
     },
     {
       "link": "https://www.drushim.co.il/job/38742979/d7396c51/",
@@ -3501,13 +3542,14 @@
           "explanation": "המועמד יוצא יחידה קרבית (סיירת נח\"ל) ובעל ניסיון בעבודה פיזית תחת תנאי שטח קשים."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "נדרש רישיון חשמלאי מוסמך בתוקף.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "עידו הוא הנדסאי מכונות עם ניסיון במערכות אלקטרו-מכניות ובקרה, והוא מתאים לתפקיד."
     },
     {
       "link": "https://www.drushim.co.il/job/38986901/2b95f7ce/",
@@ -3599,13 +3641,14 @@
           "explanation": "מועמד עם רקע פיזי וצבאי המאפשר התניידות ועמידה בדרישות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "מועמד בעל ניסיון רב במערכות בקרה, SCADA ותפעול מתקני אנרגיה ותהליך."
     },
     {
       "link": "https://www.drushim.co.il/job/38992316/231849a4/",
@@ -3683,13 +3726,14 @@
           "explanation": "למועמד רקע בהתמודדות עם מערכות אלקטרו-מכניות, בקרה ותשתיות שטח."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המוועמד הוא הנדסאי מכונות מוסמך בעל רקע טכני חזק במערכות אלקטרו-מכניות התואם את דרישות האחזקה במפעל."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/pos-t-c-technician-at-alstom-4485848048",
@@ -3767,7 +3811,7 @@
           "explanation": "המועמד בעל רקע בהנדסת אלקטרו-מכանիקה ויכולת קריאת תכניות עבודה."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "נדרש רישיון חשמלאי מוסמך בתוקף.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": false,
@@ -3779,7 +3823,8 @@
           "icon": "ph-bold ph-wrench",
           "label": "עבודת שטח"
         }
-      ]
+      ],
+      "full_reasoning": "מועמד בעל ניסיון רב במערכות חשמל, בדיקות והפעלה, מתאים מאוד לתפקיד."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/engine-technician-at-lowental-hybrid-4486655269",
@@ -3857,13 +3902,14 @@
           "explanation": "למועמד רקע נרחב בחשמל במסגרת לימודי חשמלאי מוסמך."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "דרישת רישיון טכנאי תעופה מוסמך / מבנאי מורשה.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "ניסיון מעשי כהנדסאי מכונות במערכות אלקטרו-מכניות ובדיקות מתאים לתפעול ותחזוקת מנועי כלי טיס בלתי מאוישים."
     },
     {
       "link": "https://www.drushim.co.il/job/39006186/b0c1d9e7/",
@@ -3941,13 +3987,14 @@
           "explanation": "למועמד ניסיון בעבודה עם כלי נתונים ואקסל כנדרש."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "למועמד רקע חזק באנרגיה סולארית, חשמל והדרכה, המשתלב היטב בדרישות התפקיד."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/adms-solution-integrator-at-ge-vernova-4454518083",
@@ -4025,13 +4072,14 @@
           "explanation": "למועמד ניסיון ב-commissioning ופתרון תקלות במערכות אלקטרו-מכאניות ותשתיות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "ניסיון בהטמעת מערכות SCADA ואוטומציה תעשייתית מתאים להטמעת פתרונות ADMS באנרגיה."
     },
     {
       "link": "https://www.drushim.co.il/job/38955190/6133cd0f/",
@@ -4123,13 +4171,14 @@
           "explanation": "למועמד ניסיון ויכולת מוכחת בעבודה בסביבת משמרות מסביב שעון (24/7)."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המוועמד הינו הנדסאי מכונות מוסמך עם רקע מוצק בהפעלת מערכות אלקטרו-מכניות ותחזוקת ציוד, ועונה בדיוק על דרישות הסף של המשרה מבחינת השכלה ורקע תעשייתי."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/customer-engineer-migdal-haemek-at-applied-materials-israel-4484383425",
@@ -4221,7 +4270,7 @@
           "explanation": "המועמד שירת בתפקיד שטח ומבצעי הדורש רישיון וניידות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": false,
@@ -4233,7 +4282,8 @@
           "icon": "ph-bold ph-wrench",
           "label": "עבודת שטח"
         }
-      ]
+      ],
+      "full_reasoning": "המוועמד הינו הנדסאי מכונות מוסמך עם רקע מוצק במערכות אלקטרו-מכניות, התקנה, תחזוקה ואבחון תקלות, העונה היטב על דרישות התפקיד כמהנדס שטח."
     },
     {
       "link": "https://www.drushim.co.il/job/38935411/20de07c2/",
@@ -4311,7 +4361,7 @@
           "explanation": "המועמד בעל פרופיל טכני רב-תחומי ויכולות עמוקות במערכות הנדסיות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": true,
@@ -4328,7 +4378,8 @@
           "icon": "ph-bold ph-car",
           "label": "רכב חברה"
         }
-      ]
+      ],
+      "full_reasoning": "המוועמד הוא הנדסאי מכונות מוסמך עם רקע מוצק בהתקנות, תחזוקה ועבודה טכנית בשטח, ועונה במדויק על דרישות הסף של המשרה."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/it-ot-infrastructure-project-manager-at-g-stat-4477264305",
@@ -4392,13 +4443,14 @@
           "explanation": "למועמד רקע בעבודה בשטח ואינטגרציה של מערכות אלקטרו-מכניות."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "לעידו רקע חזק במערכות שליטה ובקרה תעשייתיות (SCADA) ותשתיות אופרטיביות, המשתלבים היטב עם דרישות הניהול והאינטגרציה של סביבות IT/OT במשרה."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%98%D7%9B%D7%A0%D7%90%D7%99-%D7%90%D7%99%D7%A0%D7%98%D7%92%D7%A8%D7%A6%D7%99%D7%94-%E2%80%94-%D7%9E%D7%A2%D7%A8%D7%9B%D7%95%D7%AA-%D7%9E%D7%A9%D7%95%D7%9C%D7%91%D7%95%D7%AA-at-solar-solutions-%D7%A4%D7%AA%D7%A8%D7%95%D7%A0%D7%95%D7%AA-%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99%D7%99%D7%9D-4487740131",
@@ -4462,7 +4514,7 @@
           "explanation": "המועמד נמצא לקראת סיום לימודי חשמלאי מוסמך ובעל הכשרה כהנדסאי מכונות עם התמחות באנרגיה."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": true,
       "provides_company_car": false,
@@ -4479,7 +4531,8 @@
           "icon": "ph-bold ph-clock-countdown",
           "label": "משמרות 24/7"
         }
-      ]
+      ],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם התמחות באנרגיה סולארית ואגירת אנרגיה, ובעל רקע חזק בעבודת שטח, הרכבה ואינטגרציה של מערכות אלקטרו-מכניות התואמות בדיוק את דרישות תפקיד טכנאי האינטגרציה."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%AA-%D7%9E%D7%9B%D7%A8%D7%96%D7%99%D7%9D-%D7%95%D7%94%D7%AA%D7%A7%D7%A9%D7%A8%D7%95%D7%99%D7%95%D7%AA-%E2%80%93-%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%D7%99-%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-pv-bess-at-avivim-consulting-placement-4485802550",
@@ -4557,13 +4610,14 @@
           "explanation": "המועמד בעל רקע בהנדסת מערכות אנרגיה המאפשר לו הבנה של תשתיות וממשקים חשמליים."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם התמחות באנרגיה סולארית ואגירת אנרגיה BESS, ובעל רקע טכני חזק במערכות חשמל ואנרגיה, המתאים לדרישות הליבה של תפקיד הנדסי-מסחרי זה."
     },
     {
       "link": "https://www.drushim.co.il/job/38960301/934031db/",
@@ -4583,7 +4637,7 @@
       "job_summary": "אחריות על תחזוקת מתקנים וציוד תומך ייצור (BOP) בתחנת כוח, ניהול צוות המדור, ניהול תוכניות עבודה ותקציב במערכת SAP, ועבודה מול ספקים וקבלנים.",
       "company_requirements": "הנדסאי/ת מכונות (חובה), ניסיון בתעשייה תהליכית/תחנות כוח, ידע בטורבינות וציוד סובב, ניסיון בניהול צוות ופרויקטי תחזוקה, שליטה ב-SAP ורישיון נהיגה בתוקף.",
       "experience_strengths": "השכלה כהנדסאי מכונות בהתמחות גז טבעי, ניסיון בהובלת צוותים, שליטה במערכת SAP ורקע במתקני גז טבעי בלחץ גבוה ומערכות אלקטרו-מכניות.",
-      "reasoning": "עידו הוא הנדסאי מכונות מוסמך עם התמחות בגז טבעי, בעל ניסיון בניהול צוותים ורקע במערכות אלקטרו-מכאניות ו-SAP. מדובר בהתאמה טובה למשרת ניהול תחזוקת מכונות בחברת אנרגיה.",
+      "reasoning": "עידו הוא הנדסאי מכונות מוסמך עם התמחות בגז טבעי, בעל ניסיון בניהול צוותים ורקע במערכות אלקטרו-מכאניות ו-SAP.",
       "key_highlights": "עמידה בדרישת החובה של תואר הנדסאי מכונות, התאמה מגזרית לעולם האנרגיה והגז, ניסיון ניהולי וטכנולוגי.",
       "salary_range": "15,000 - 19,500 ₪",
       "salary_source_type": "sector_benchmark",
@@ -4655,13 +4709,14 @@
           "explanation": "לעידו ניסיון פיקודי מוכח בהובלת צוותים בשטח."
         }
       ],
-      "fit_gaps": "קיים פער מסוים בניסיון מעשי עמוק בתחזוקה ושיפוץ טורבינות גז/קיטור בתחנות כוח, אך המועמד עונה על דרישת הסף הליבתית (הנדסאי מכונות).",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "עידו הוא הנדסאי מכונות מוסמך עם התמחות בגז טבעי, בעל ניסיון בניהול צוותים ורקע במערכות אלקטרו-מכאניות ו-SAP. מדובר בהתאמה טובה למשרת ניהול תחזוקת מכונות בחברת אנרגיה."
     },
     {
       "link": "https://www.drushim.co.il/job/38999156/3eb336fa/",
@@ -4739,7 +4794,7 @@
           "explanation": "המועמד מחזיק בדיוק בתואר הנדסאי מכונות המבוקש כיתרון משמעותי."
         }
       ],
-      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד ויש לו רקע כהנדסאי מכונות.",
+      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
@@ -4751,7 +4806,8 @@
           "icon": "ph-bold ph-graduation-cap",
           "label": "Junior"
         }
-      ]
+      ],
+      "full_reasoning": "המוועמד הוא הנדסאי מכונות מוסמך בעל רקע מוצק במערכות אלקטרו-מכניות, קריאת שרטוטים ותהליכים תעשייתיים, והוא מתאים לתפקיד בוחן איכות בחברה ממשלתית."
     },
     {
       "link": "https://il.linkedin.com/jobs/view/systems-integration-engineer-at-ottopia-defense-4487739972",
@@ -4857,13 +4913,14 @@
           "explanation": "לעידו ניסיון באינטגרציית שטח ואינטגרציית רחפנים/UAV, התואם חלקית לניסיון הנדרש במערכות שטח/רובוטיקה."
         }
       ],
-      "fit_gaps": "היעדר ניסיון ספציפי מוקדם ברובוטיקה, רכבים יבשתיים ממונעים או מערכות Teleoperation יבשתיות.",
+      "fit_gaps": "דרישה לפיתוח תוכנה או תכנות בקרים מעמיק.",
       "is_direct_ats": "",
       "is_field_work": false,
       "provides_company_car": false,
       "is_shifts_24_7": false,
       "is_junior_friendly": false,
-      "curated_tags": []
+      "curated_tags": [],
+      "full_reasoning": "התאמה טובה לתפקיד אינטגרציית מערכות חומרה-תוכנה בשטח ובמעבדה. עידו בעל דיפלומת הנדסאי מכונות, רקע באלקטרו-מכאניקה וחשמל, וניסיון מעשי בבדיקות ואינטגרציה בשטח."
     }
   ]
 }

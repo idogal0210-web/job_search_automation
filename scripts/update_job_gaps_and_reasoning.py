@@ -1,22 +1,66 @@
-import json
-import re
-import os
+#!/usr/bin/env python3
+"""
+Update job fit_gaps and condensed reasoning across datasets.
+- Uses word-boundary token matching (preventing 'subscription' -> 'bsc' false positives).
+- Preserves original reasoning in 'full_reasoning' so condensing is non-destructive.
+- Uses public-safe professional gap descriptions without personal/military PII in published JSON.
+- Anchors all paths to ROOT_DIR and writes via save_state_atomic with backup.
+"""
 
-def clean_sentence(s):
-    s = s.strip()
+import json
+import os
+import re
+import shutil
+import sys
+from pathlib import Path
+from typing import Any, Dict, List
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from src.state_manager import save_state_atomic
+
+_BSC_RE = re.compile(
+    r"(?<![a-z0-9])b\.?sc(?:\.)?(?![a-z0-9])|תואר ראשון בהנדסת מכונות|תואר ראשון בהנדסת חשמל|תואר ראשון בהנדסה",
+    re.IGNORECASE,
+)
+_PRACTICAL_ENG_RE = re.compile(
+    r"הנדסאי(?:/ת)?|practical\s+engineer|או\s+הנדסאי",
+    re.IGNORECASE,
+)
+_CIVIL_LRT_RE = re.compile(
+    r"הנדסה אזרחית|הנדסאי בניין|מהנדס בניין|עבודות מול נת[\"״]ע|רכבת קלה|תשתיות מסילה|(?<![a-z0-9])lrt(?![a-z0-9])",
+    re.IGNORECASE,
+)
+_AVIATION_AP_RE = re.compile(
+    r"aircraft\s+mechanic|מבנאי[./]?ת מטוסים|רישיון רת[\"״]א|(?<![a-z0-9])a\s*&\s*p(?![a-z0-9])|רישיון תעופתי",
+    re.IGNORECASE,
+)
+_SW_EMBEDDED_RE = re.compile(
+    r"(?<![a-z0-9])c\+\+(?![a-z0-9])|(?<![a-z0-9])c#(?![a-z0-9])|\bembedded\b|תכנות בקרים מתקדם|פיתוח אלגוריתמים",
+    re.IGNORECASE,
+)
+_SENIOR_MGMT_TITLE_RE = re.compile(
+    r"\bsite\s+operations\s+manager\b|\bteam\s+lead\b|\bopex\s+leader\b|מנהל(?:/ת)?\s+פרויקטים",
+    re.IGNORECASE,
+)
+
+
+def clean_sentence(s: str) -> str:
+    s = (s or "").strip()
     s = re.sub(r"[,;:\-]\s*$", "", s).strip()
-    if not s.endswith("."):
+    if s and not s.endswith("."):
         s += "."
     return s
 
-def condense_reasoning(text, title="", company=""):
+
+def condense_reasoning(text: str, title: str = "", company: str = "") -> str:
     text = (text or "").strip()
     if not text:
-        return "התאמה טכנית גבוהה כהנדסאי מכונות בעל ניסיון בבקרה, מערכות אנרגיה ותפעול שטח."
+        return "התאמה טכנית גבוהה לתחומי הנדסת מכונות, בקרה, מערכות אנרגיה ותפעול שטח."
 
-    s = text
-    s = re.sub(r"^(המשרה הינה|המשרה דורשת|התפקיד כולל|התפקיד עוסק ב|מדובר ב)\s+", "", s)
-
+    s = re.sub(r"^(המשרה הינה|המשרה דורשת|התפקיד כולל|התפקיד עוסק ב|מדובר ב)\s+", "", text)
     sentences = [part.strip() for part in re.split(r"[.!?]\s+", s) if part.strip()]
     if not sentences:
         return clean_sentence(text)
@@ -25,61 +69,94 @@ def condense_reasoning(text, title="", company=""):
     if len(res) < 70 and len(sentences) > 1:
         res = f"{res}. {sentences[1]}"
 
-    res = res.strip()
-    return clean_sentence(res)
+    return clean_sentence(res.strip())
 
-def analyze_fit_gaps(job):
+
+def analyze_fit_gaps(job: Dict[str, Any]) -> str:
+    """
+    Compute objective, public-safe requirement gaps for a job posting.
+    Never embeds private personal/military/academic-timeline details into public datasets.
+    """
     title = (job.get("title") or "").lower()
-    company = (job.get("company") or "").lower()
     reqs = (job.get("company_requirements") or "").lower()
     summary = (job.get("job_summary") or "").lower()
     snippet = (job.get("snippet") or "").lower()
     combined = f"{title} {reqs} {summary} {snippet}"
 
-    gaps = []
+    gaps: List[str] = []
 
     # 1. Electrician License Requirement
     if any(k in combined for k in ["חשמלאי מוסמך", "רישיון חשמלאי", "רישיון חשמל", "חשמלאי/ת מוסמך"]):
-        gaps.append("נדרש רישיון חשמלאי מוסמך בתוקף (המועמד בלימודים לקראת סיום ההסמכה)")
+        gaps.append("נדרש רישיון חשמלאי מוסמך בתוקף")
     elif "מתח גבוה" in combined:
-        gaps.append("נדרש רישיון מתח גבוה (למועמד אין רישיון מתח גבוה)")
+        gaps.append("נדרש רישיון מתח גבוה ייעודי")
 
-    # 2. B.Sc. / Academic Degree requirement
-    if any(k in combined for k in ["b.sc", "bsc", "תואר ראשון בהנדסת מכונות", "תואר ראשון בהנדסת חשמל", "תואר ראשון בהנדסה"]):
-        if not any(k in combined for k in ["הנדסאי/ת", "הנדסאי", "practical engineer", "או הנדסאי"]):
-            gaps.append("דרישת סף לתואר B.Sc בהנדסה (המועמד הינו הנדסאי מכונות מוסמך)")
+    # 2. B.Sc. / Academic Degree requirement (word-boundary checked)
+    if _BSC_RE.search(combined) and not _PRACTICAL_ENG_RE.search(combined):
+        gaps.append("דרישת סף לתואר B.Sc בהנדסה (ללא חלופת הנדסאי מכונות במודעה)")
 
     # 3. Civil / Railway / Infrastructure specific
-    if any(k in combined for k in ["הנדסה אזרחית", "הנדסאי בניין", "מהנדס בניין", "עבודות מול נת\"ע", "רכבת קלה", "תשתיות מסילה", "lrt"]):
-        gaps.append("דרישת רקע ייעודי בהנדסה אזרחית ותשתיות מסילתיות (למועמד התמחות במערכות אלקטרו-מכניות ואנרגיה)")
+    if _CIVIL_LRT_RE.search(combined):
+        gaps.append("דרישת רקע ייעודי בהנדסה אזרחית ותשתיות מסילתיות")
 
     # 4. Aviation / A&P License
-    if any(k in combined for k in ["aircraft mechanic", "מבנאי.ת מטוסים", "רישיון רת\"א", "a&p", "רישיון תעופתי"]):
-        gaps.append("דרישת רישיון טכנאי תעופה מוסמך / מבנאי מורשה (למועמד רקע מכני כללי ללא רישוי תעופתי ייעודי)")
+    if _AVIATION_AP_RE.search(combined):
+        gaps.append("דרישת רישיון טכנאי תעופה מוסמך / מבנאי מורשה")
 
     # 5. Deep Software / Embedded / Senior PLC programming
-    if any(k in combined for k in ["c++", "c#", "embedded", "תכנות בקרים מתקדם", "פיתוח אלגוריתמים"]):
-        gaps.append("דרישה לפיתוח תוכנה או תכנות בקרים מעמיק (למועמד רקע בתפעול ובקרה ואוטומציה בסיסית בפייתון)")
+    if _SW_EMBEDDED_RE.search(combined):
+        gaps.append("דרישה לפיתוח תוכנה או תכנות בקרים מעמיק")
 
     # 6. Senior / Multi-year Management
-    if any(k in title for k in ["site operations manager", "team lead", "opex leader", "מנהל/ת פרויקטים"]):
-        gaps.append("דרישת שנות ניסיון רבות בניהול בכיר בתעשייה (למועמד ניסיון פיקודי קרבי וניהול תפעולי מוקדם)")
+    if _SENIOR_MGMT_TITLE_RE.search(title):
+        gaps.append("דרישת שנות ניסיון רבות בניהול בכיר בתעשייה")
 
     if not gaps:
-        return "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד."
-    elif len(gaps) == 1:
+        return "אין פערי סף מהותיים מול דרישות התפקיד."
+    if len(gaps) == 1:
         return gaps[0] + "."
-    else:
-        return "; ".join(gaps) + "."
+    return "; ".join(gaps) + "."
 
-def main():
+
+def update_job_record_in_place(job: Dict[str, Any]) -> None:
+    """Update fit_gaps and reasoning on a job dict while preserving full_reasoning."""
+    if not isinstance(job, dict):
+        return
+    raw_reasoning = (job.get("full_reasoning") or job.get("reasoning") or "").strip()
+    if raw_reasoning and not job.get("full_reasoning"):
+        job["full_reasoning"] = raw_reasoning
+    job["fit_gaps"] = analyze_fit_gaps(job)
+    job["reasoning"] = condense_reasoning(
+        raw_reasoning,
+        job.get("title", ""),
+        job.get("company", ""),
+    )
+
+
+def _backup_to_recovery(file_path: Path) -> None:
+    """Save a pre-update backup inside .recovery/ (never inside data/ or docs/)."""
+    if not file_path.exists():
+        return
+    recovery_dir = ROOT_DIR / ".recovery" / "backups"
+    recovery_dir.mkdir(parents=True, exist_ok=True)
+    rel_slug = str(file_path.relative_to(ROOT_DIR)).replace(os.sep, "__")
+    shutil.copy2(file_path, recovery_dir / f"{rel_slug}.bak")
+
+
+def main(base_dir: Path = ROOT_DIR) -> int:
     paths = [
-        "docs/data/jobs.json",
-        "data/weekly_archive.json"
+        base_dir / "docs" / "data" / "jobs.json",
+        base_dir / "data" / "weekly_archive.json",
+    ]
+    cat_paths = [
+        base_dir / "data" / "historical_catalog.json",
+        base_dir / "docs" / "data" / "historical_catalog.json",
     ]
 
+    updated_files = 0
+
     for p in paths:
-        if not os.path.exists(p):
+        if not p.exists():
             continue
         with open(p, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -89,29 +166,31 @@ def main():
 
         print(f"Updating {len(jobs_list)} jobs in {p}...")
         for j in jobs_list:
-            j["fit_gaps"] = analyze_fit_gaps(j)
-            j["reasoning"] = condense_reasoning(j.get("reasoning", ""), j.get("title", ""), j.get("company", ""))
+            update_job_record_in_place(j)
 
-        with open(p, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        _backup_to_recovery(p)
+        save_state_atomic(str(p), data)
+        updated_files += 1
 
-    cat_paths = [
-        "data/historical_catalog.json",
-        "docs/data/historical_catalog.json"
-    ]
     for cp in cat_paths:
-        if not os.path.exists(cp):
+        if not cp.exists():
             continue
         with open(cp, "r", encoding="utf-8") as f:
             cat = json.load(f)
         print(f"Updating {len(cat)} catalog jobs in {cp}...")
-        for link, j in cat.items():
-            j["fit_gaps"] = analyze_fit_gaps(j)
-            j["reasoning"] = condense_reasoning(j.get("reasoning", ""), j.get("title", ""), j.get("company", ""))
-        with open(cp, "w", encoding="utf-8") as f:
-            json.dump(cat, f, ensure_ascii=False, indent=2)
+        for j in cat.values():
+            update_job_record_in_place(j)
 
-    print("All jobs updated successfully!")
+        _backup_to_recovery(cp)
+        save_state_atomic(str(cp), cat)
+        updated_files += 1
+
+    if updated_files == 0:
+        raise FileNotFoundError(f"No target job dataset files found under {base_dir}")
+
+    print(f"Updated {updated_files} dataset files successfully.")
+    return updated_files
+
 
 if __name__ == "__main__":
     main()

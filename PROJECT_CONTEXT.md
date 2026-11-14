@@ -65,6 +65,8 @@ job_search_automation/
 │   ├── state_manager.py            # Job deduplication, status tracking (QUALIFIED/DISQUALIFIED/RETRY_PENDING), storage
 │   ├── ui_builder.py               # Build orchestrator compiling frontend/ assets and data into docs/
 │   ├── url_guard.py                # Shared anti-SSRF guard (is_global IP check, redirect re-validation, peer verification)
+│   ├── company_matcher.py          # Normalized quote-unified word-boundary company & employer blacklist matcher
+│   ├── closure_signatures.json     # Canonical job closure signature definitions shared by Python scanner and Cloudflare Worker
 │   ├── url_utils.py                # URL validation, normalization, and sanitization
 │   └── publishers.py               # Email dispatch and notification services
 ├── docs/
@@ -88,10 +90,11 @@ job_search_automation/
 │   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
 ├── tools/                          # Standalone modular tooling
 │   └── cv_tailor/                  # Fact-based CV tailoring and interview prep engine
-├── tests/                          # Automated unit and integration test suite (368 passing Python tests + 2,489 JS stress assertions)
+├── tests/                          # Automated unit and integration test suite (382 passing Python tests + 2,489 JS stress assertions)
 │   ├── test_studio_bridge.py       # Unified Career Studio HTTP bridge, schema, SSRF, blacklist & generator tests
 │   ├── test_studio_bridge_security.py # Bridge Origin/Host/Token/Content-Length & URL guard SSRF/redirect tests
 │   ├── test_phase0_phase2_security.py # Client PII redaction, Supabase CAS/RLS, XSS onclick & SRI verification tests
+│   ├── test_phase3_to_5_regressions.py # 30-page HTML closure corpus, company word-boundary matching, hygiene, stratified eval & email outbox tests
 │   ├── test_template_docs_sync.py  # 1:1 dual-template synchronization guard between frontend/ and docs/
 │   ├── test_m1_challenger_stress.py# Milestone 1 app switcher & mobile workspace stress tests
 │   ├── test_m2_ats_spec.py         # Milestone 2 ATS matching, statutory hard gates & step glow tests

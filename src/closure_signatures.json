@@ -1,0 +1,217 @@
+{
+  "version": "2.0.0",
+  "known_ats_hosts": [
+    "linkedin.com",
+    "comeet.com",
+    "comeet.co",
+    "greenhouse.io",
+    "lever.co",
+    "ashbyhq.com",
+    "myworkdayjobs.com",
+    "workday.com",
+    "smartrecruiters.com",
+    "bamboohr.com",
+    "drushim.co.il",
+    "alljobs.co.il",
+    "jobmaster.co.il",
+    "gotfriends.co.il",
+    "sqlink.com",
+    "ethosia.co.il",
+    "nisha.co.il"
+  ],
+  "structural_markers": [
+    {
+      "id": "linkedin_closed_flavor",
+      "group": "dom_linkedin_closed",
+      "pattern": "closed-job__flavor",
+      "flags": "i",
+      "reason": "משרה סגורה בלינקדאין"
+    },
+    {
+      "id": "linkedin_topcard_closed",
+      "group": "dom_linkedin_closed",
+      "pattern": "topcard__flavor--closed",
+      "flags": "i",
+      "reason": "משרה סגורה בלינקדאין"
+    },
+    {
+      "id": "data_job_closed_attr",
+      "group": "dom_data_closed",
+      "pattern": "data-job-(?:closed|expired)=[\"']true[\"']",
+      "flags": "i",
+      "reason": "המשרה סומנה כסגורה באתר"
+    }
+  ],
+  "strong_signatures": [
+    {
+      "id": "en_not_currently_accepting",
+      "group": "en_not_accepting",
+      "pattern": "not currently accepting applications",
+      "flags": "i",
+      "reason": "הגשת המועמדות נסגרה (Not currently accepting applications)"
+    },
+    {
+      "id": "en_no_longer_accepting",
+      "group": "en_not_accepting",
+      "pattern": "no longer accepting applications",
+      "flags": "i",
+      "reason": "הגשת המועמדות נסגרה (No longer accepting applications)"
+    },
+    {
+      "id": "en_not_accepting_variants",
+      "group": "en_not_accepting",
+      "pattern": "(?:not|no longer|not currently)\\s+accepting\\s+applications",
+      "flags": "i",
+      "reason": "הגשת המועמדות נסגרה"
+    },
+    {
+      "id": "en_applications_no_longer_accepted",
+      "group": "en_not_accepting",
+      "pattern": "applications are no longer being accepted",
+      "flags": "i",
+      "reason": "הגשת המועמדות נסגרה"
+    },
+    {
+      "id": "en_this_job_no_longer_available",
+      "group": "en_no_longer_available",
+      "pattern": "this job is no longer available",
+      "flags": "i",
+      "reason": "המשרה אינה זמינה עוד"
+    },
+    {
+      "id": "en_this_position_closed_filled_expired",
+      "group": "en_position_closed",
+      "pattern": "this (?:job|position|role) (?:is|has been) (?:closed|filled|expired)",
+      "flags": "i",
+      "reason": "המשרה נסגרה"
+    },
+    {
+      "id": "en_this_position_is_closed",
+      "group": "en_position_closed",
+      "pattern": "this position is closed",
+      "flags": "i",
+      "reason": "המשרה נסגרה"
+    },
+    {
+      "id": "en_position_no_longer_open",
+      "group": "en_no_longer_available",
+      "pattern": "position is no longer open",
+      "flags": "i",
+      "reason": "המשרה אינה פתוחה עוד"
+    },
+    {
+      "id": "en_job_posting_expired",
+      "group": "en_posting_expired",
+      "pattern": "job posting has expired",
+      "flags": "i",
+      "reason": "תוקף פרסום המשרה פג"
+    },
+    {
+      "id": "en_job_filled_closed_removed",
+      "group": "en_job_closed_removed",
+      "pattern": "job (?:has been|was) (?:filled|closed|removed)",
+      "flags": "i",
+      "reason": "המשרה נסגרה"
+    },
+    {
+      "id": "en_position_has_been_filled",
+      "group": "en_position_filled",
+      "pattern": "position (?:has been )?filled",
+      "flags": "i",
+      "reason": "המשרה אויישה"
+    },
+    {
+      "id": "he_job_inactive",
+      "group": "he_job_inactive",
+      "pattern": "המשרה (?:אינה|איננה) פעילה",
+      "flags": "",
+      "reason": "המשרה אינה פעילה באתר"
+    },
+    {
+      "id": "he_job_closed",
+      "group": "he_job_closed",
+      "pattern": "המשרה נסגרה",
+      "flags": "",
+      "reason": "המשרה נסגרה לקבלת מועמדויות"
+    },
+    {
+      "id": "he_job_filled",
+      "group": "he_job_filled",
+      "pattern": "המשרה אוישה",
+      "flags": "",
+      "reason": "המשרה אוישה"
+    },
+    {
+      "id": "he_job_removed",
+      "group": "he_job_removed",
+      "pattern": "המשרה הוסרה",
+      "flags": "",
+      "reason": "המשרה הוסרה מהאתר"
+    },
+    {
+      "id": "he_job_page_not_found",
+      "group": "he_page_not_found",
+      "pattern": "דף המשרה לא נמצא",
+      "flags": "",
+      "reason": "דף המשרה לא נמצא באתר"
+    },
+    {
+      "id": "he_job_not_located",
+      "group": "he_job_not_located",
+      "pattern": "לא אותרה משרה",
+      "flags": "",
+      "reason": "לא אותרה משרה פעילה"
+    },
+    {
+      "id": "he_ad_not_relevant",
+      "group": "he_ad_not_relevant",
+      "pattern": "מודעה זו אינה רלוונטית",
+      "flags": "",
+      "reason": "המודעה אינה רלוונטית עוד"
+    },
+    {
+      "id": "he_applications_ended",
+      "group": "he_not_accepting",
+      "pattern": "הגשת מועמדות למשרה זו הסתיימה",
+      "flags": "",
+      "reason": "הגשת מועמדות הסתיימה"
+    },
+    {
+      "id": "he_not_accepting_applications",
+      "group": "he_not_accepting",
+      "pattern": "(?:אינה|איננה|לא) מקבלת מועמדויות",
+      "flags": "",
+      "reason": "הגשת המועמדות נסגרה"
+    }
+  ],
+  "weak_signatures": [
+    {
+      "id": "en_page_not_found",
+      "group": "en_page_not_found",
+      "pattern": "\\bpage not found\\b",
+      "flags": "i",
+      "reason": "דף המשרה לא נמצא"
+    },
+    {
+      "id": "en_no_longer_available_open_active",
+      "group": "en_no_longer_available",
+      "pattern": "\\bno longer (?:available|open|active)\\b",
+      "flags": "i",
+      "reason": "המשרה אינה זמינה עוד"
+    },
+    {
+      "id": "en_posting_closed_expired",
+      "group": "en_posting_expired",
+      "pattern": "\\bposting (?:is )?(?:closed|expired)\\b",
+      "flags": "i",
+      "reason": "תוקף פרסום המשרה פג"
+    },
+    {
+      "id": "he_expired_generic",
+      "group": "he_expired_generic",
+      "pattern": "פג תוקף(?:ה של המשרה| המשרה| המודעה)?",
+      "flags": "",
+      "reason": "תוקף פרסום המשרה פג"
+    }
+  ]
+}
