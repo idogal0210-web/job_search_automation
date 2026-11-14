@@ -2644,6 +2644,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant" style="flex: 1;" onclick="event.stopPropagation()">
               <span>הגש מועמדות</span> <i class="ph-duotone ph-arrow-up-right"></i>
             </a>
+            <button type="button" class="btn-triage btn-open-in-studio" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}, event)" title="התאם קו״ח ונתח בסטודיו קריירה">
+              <i class="ph-duotone ph-magic-wand"></i> <span>התאם קו״ח</span>
+            </button>
             ${Array.isArray(altLinksStore[id]) && altLinksStore[id].length > 0 ? `
               <a href="${sanitizeUrl(altLinksStore[id][0])}" target="_blank" rel="noopener noreferrer" class="btn-triage" style="padding: 10px 14px; font-size: 13px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" onclick="event.stopPropagation()" title="מקור נוסף להגשת מועמדות (מוזג מכפילות)">
                 <i class="ph-duotone ph-link"></i> <span>מקור נוסף (${altLinksStore[id].length})</span>
@@ -2804,6 +2807,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant" style="flex: 1;">
           <span>הגש מועמדות באתר המשרה</span> <i class="ph-duotone ph-arrow-up-right"></i>
         </a>
+        <button type="button" class="btn-triage btn-open-in-studio" onclick="closeJobModal(); openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}, event)" title="התאם קו״ח ונתח בסטודיו קריירה">
+          <i class="ph-duotone ph-magic-wand"></i> <span>התאם קו״ח בסטודיו</span>
+        </button>
         ${Array.isArray(altLinksStore[id]) && altLinksStore[id].length > 0 ? `
           <a href="${sanitizeUrl(altLinksStore[id][0])}" target="_blank" rel="noopener noreferrer" class="btn-triage" style="padding: 10px 14px; font-size: 13px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="מקור נוסף להגשת מועמדות (מוזג מכפילות)">
             <i class="ph-duotone ph-link"></i> <span>מקור נוסף (${altLinksStore[id].length})</span>
@@ -4385,25 +4391,23 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   /**
-   * Switches the active module inside Career Studio workspace.
-   * @param {string} moduleId - 'ats', 'writer', 'interview', 'skills'
+   * Switches the active module inside Career Studio 3.0 workspace (3 core tools).
+   * @param {string} moduleId - 'ats', 'writer', 'interview'
    */
   function switchStudioModule(moduleId) {
-    const modules = ['ats', 'writer', 'interview', 'skills'];
+    const modules = ['ats', 'writer', 'interview'];
     const activeModule = modules.includes(moduleId) ? moduleId : 'ats';
 
     const tabMap = {
       ats: 'studioTabAts',
       writer: 'studioTabWriter',
-      interview: 'studioTabInterview',
-      skills: 'studioTabSkills'
+      interview: 'studioTabInterview'
     };
 
     const panelMap = {
       ats: 'studioModuleAts',
       writer: 'studioModuleWriter',
-      interview: 'studioModuleInterview',
-      skills: 'studioModuleSkills'
+      interview: 'studioModuleInterview'
     };
 
     modules.forEach(m => {
@@ -4415,14 +4419,29 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         if (isTarget) {
           tabEl.classList.add('active');
           tabEl.setAttribute('aria-selected', 'true');
+          if (typeof tabEl.toggleAttribute === 'function') {
+            tabEl.toggleAttribute('focusgroupstart', true);
+          }
+          if (typeof tabEl.scrollIntoView === 'function') {
+            try {
+              tabEl.scrollIntoView({ block: 'nearest', inline: 'nearest', container: 'nearest' });
+            } catch (e) {}
+          }
         } else {
           tabEl.classList.remove('active');
           tabEl.setAttribute('aria-selected', 'false');
+          if (typeof tabEl.toggleAttribute === 'function') {
+            tabEl.toggleAttribute('focusgroupstart', false);
+          }
         }
       }
 
       if (panelEl) {
         if (isTarget) {
+          if (typeof panelEl.removeAttribute === 'function') {
+            panelEl.removeAttribute('hidden');
+          }
+          panelEl.hidden = false;
           panelEl.style.display = 'block';
           panelEl.classList.add('active');
           if (m === 'ats' && typeof initAtsModule === 'function') {
@@ -4430,8 +4449,21 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             initCvUploadState();
           } else if (m === 'writer' && typeof initWriterModule === 'function') {
             initWriterModule();
+            if (typeof renderBulletImpactAuditor === 'function') {
+              renderBulletImpactAuditor();
+            }
+          } else if (m === 'interview') {
+            if (typeof initInterviewModule === 'function') {
+              initInterviewModule();
+            }
+            if (typeof renderLinkedInOptimizer === 'function') {
+              renderLinkedInOptimizer();
+            }
           }
         } else {
+          if (typeof panelEl.setAttribute === 'function') {
+            panelEl.setAttribute('hidden', 'until-found');
+          }
           panelEl.style.display = 'none';
           panelEl.classList.remove('active');
         }
@@ -4443,6 +4475,70 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
     if (typeof renderStickyLivePreview === 'function') {
       renderStickyLivePreview();
+    }
+  }
+
+  /**
+   * Opens a job directly from Job Radar inside Career Studio 3.0 and runs immediate ATS & LinkedIn analysis.
+   * @param {string} jobId
+   * @param {Event} [event]
+   */
+  function openJobInCareerStudio(jobId, event) {
+    if (event && typeof event.stopPropagation === 'function') {
+      event.stopPropagation();
+    }
+    const id = String(jobId || '').trim();
+    if (!id) return;
+
+    const allJobs = (typeof getAllAvailableJobs === 'function')
+      ? getAllAvailableJobs()
+      : (Array.isArray(rawJobsData) ? rawJobsData : (window.jobsData || []));
+    const job = (typeof allJobsMap !== 'undefined' && allJobsMap && allJobsMap[id])
+      || (allJobs || []).find(j => j && (String(j.id) === id || String(j.link) === id));
+
+    switchDashboardAppMode('studio', true);
+    switchStudioModule('ats');
+
+    if (!job) return;
+
+    const parts = [
+      job.title ? `כותרת משרה: ${job.title}` : '',
+      job.company ? `חברה: ${job.company}` : '',
+      job.company_requirements ? `דרישות התפקיד:\n${job.company_requirements}` : '',
+      job.job_summary ? `תיאור התפקיד:\n${job.job_summary}` : '',
+      job.snippet ? `פירוט נוסף:\n${job.snippet}` : '',
+      job.experience_strengths ? `התאמה נדרשת:\n${job.experience_strengths}` : ''
+    ].filter(Boolean).join('\n\n');
+
+    const companyEl = document.getElementById('atsCompanyInput');
+    const titleEl = document.getElementById('atsTitleInput');
+    const urlEl = document.getElementById('atsJobUrlInput');
+    const inputEl = document.getElementById('atsJobInput');
+
+    if (companyEl) companyEl.value = job.company || '';
+    if (titleEl) titleEl.value = job.title || '';
+    if (urlEl) urlEl.value = job.link || '';
+    if (inputEl) inputEl.value = parts;
+
+    if (typeof StudioState !== 'undefined' && StudioState) {
+      StudioState.activeJobId = id;
+      StudioState.lastSourceLabel = `יעד: ${[job.company, job.title].filter(Boolean).join(' - ')}`;
+    }
+
+    if (typeof triggerAtsMatching === 'function') {
+      triggerAtsMatching();
+    }
+    if (typeof updateStudioBlacklistWarning === 'function') {
+      updateStudioBlacklistWarning();
+    }
+    if (typeof renderBulletImpactAuditor === 'function') {
+      renderBulletImpactAuditor();
+    }
+    if (typeof renderLinkedInOptimizer === 'function') {
+      renderLinkedInOptimizer();
+    }
+    if (typeof showToast === 'function') {
+      showToast(`המשרה ב-${job.company || 'חברה'} נטענה לסטודיו קריירה ונותחה!`, 'success');
     }
   }
 
@@ -5696,13 +5792,19 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
         ...(report.missingKeywords.systems || []),
         ...(report.missingKeywords.energy || [])
       ];
-      const titleVal = (document.getElementById('atsJobTitleInput')?.value || '').trim();
+      const titleVal = (document.getElementById('atsTitleInput')?.value || document.getElementById('atsJobTitleInput')?.value || '').trim();
       const compVal = (document.getElementById('atsCompanyInput')?.value || '').trim();
       if (titleVal || compVal) {
         StudioState.lastSourceLabel = `יעד: ${[compVal, titleVal].filter(Boolean).join(' - ')}`;
       }
       if (typeof renderStickyLivePreview === 'function') {
         renderStickyLivePreview();
+      }
+      if (typeof renderLinkedInOptimizer === 'function') {
+        renderLinkedInOptimizer();
+      }
+      if (typeof renderBulletImpactAuditor === 'function') {
+        renderBulletImpactAuditor();
       }
     }
 
@@ -5817,6 +5919,28 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     listEl.innerHTML = html;
   }
 
+  function injectKeywordToWriter(term) {
+    const clean = String(term || '').trim();
+    if (!clean) return;
+    const comp = (document.getElementById('atsCompanyInput')?.value || '').trim();
+    const actionItem = generateCvBulletActionItem(clean, comp);
+    const draft = (actionItem && actionItem.bulletHe) ? actionItem.bulletHe : `שילוב ותפעול מערכות ${clean} במסגרת בקרה ותפעול מתקני אנרגיה.`;
+
+    switchStudioModule('writer');
+    const inputEl = document.getElementById('writerRawInput');
+    if (inputEl) {
+      inputEl.value = draft;
+      if (typeof onWriterInputChanged === 'function') onWriterInputChanged();
+      if (typeof triggerBulletTransform === 'function') triggerBulletTransform();
+      if (typeof inputEl.focus === 'function') {
+        try { inputEl.focus(); } catch (e) {}
+      }
+    }
+    if (typeof showToast === 'function') {
+      showToast(`המונח "${clean}" הועבר לעורך קורות החיים לשדרוג והטמעה.`, 'info');
+    }
+  }
+
   function renderKeywordTaxonomy(missing, matched, jobText) {
     const cats = ['methodologies', 'financials', 'systems', 'energy'];
     cats.forEach(cat => {
@@ -5834,18 +5958,20 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
 
       let html = '';
       missingList.forEach(term => {
+        const safeTerm = String(term || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
         html += `
-          <span class="ats-keyword-tag missing" title="מונח חסר בקו״ח - מומלץ להוסיף">
-            <i class="ph-bold ph-warning-circle"></i>
+          <button type="button" class="ats-keyword-tag missing is-actionable" onclick="injectKeywordToWriter('${safeTerm}')" title="לחץ לשילוב המונח בעורך קורות החיים">
+            <i class="ph-bold ph-plus-circle" aria-hidden="true"></i>
             <span>${term}</span>
-          </span>
+            <span class="keyword-inject-cta">שלב בקו״ח</span>
+          </button>
         `;
       });
 
       matchedList.forEach(term => {
         html += `
           <span class="ats-keyword-tag matched" title="מונח קיים ומתועד בקו״ח של עידו גל">
-            <i class="ph-bold ph-check"></i>
+            <i class="ph-bold ph-check" aria-hidden="true"></i>
             <span>${term}</span>
           </span>
         `;
@@ -6396,6 +6522,11 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
         const isTarget = (id === `btnTone${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
         btn.classList.toggle('active', isTarget);
         btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+        if (isTarget) {
+          btn.setAttribute('focusgroupstart', '');
+        } else if (typeof btn.removeAttribute === 'function') {
+          btn.removeAttribute('focusgroupstart');
+        }
       }
     });
 
@@ -6587,6 +6718,9 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     if (typeof renderStickyLivePreview === 'function') {
       renderStickyLivePreview();
     }
+    if (typeof renderBulletImpactAuditor === 'function') {
+      renderBulletImpactAuditor();
+    }
 
     const btn = document.getElementById('btnApplyToCv');
     if (btn) {
@@ -6594,6 +6728,74 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
       btn.innerHTML = '<i class="ph-duotone ph-check-circle"></i> <span>הוחל והתווסף לתצוגה החיה!</span>';
       setTimeout(() => { btn.innerHTML = orig; }, 2000);
     }
+  }
+
+  function getActiveCvExperienceBullets() {
+    if (typeof studioTailoredPackage !== 'undefined' && studioTailoredPackage && studioTailoredPackage.cv_markdown) {
+      const lines = String(studioTailoredPackage.cv_markdown).split(/\r?\n/);
+      const mdBullets = lines
+        .map(l => l.trim())
+        .filter(l => /^[-*•]\s+/.test(l))
+        .map(l => l.replace(/^[-*•]\s+/, '').replace(/\*\*/g, '').trim())
+        .filter(Boolean);
+      if (mdBullets.length > 0) return mdBullets;
+    }
+
+    const defaultBullets = [
+      'ניטרתי באופן רציף לחצי צנרת וספיקות גז בזמן אמת באמצעות מערכות SCADA ו-AVEVA System Platform במשמרות 24/7 ב-Energean Israel.',
+      'ניהלתי בקשות Nomination ו-Re-nomination יומיות ותיאום אספקת גז מול אסדת הפקה ימית (FPSO), נתג״ז ומעל 10 לקוחות תעשייתיים.',
+      'פיתחתי והטמעתי סוכני Microsoft 365 Copilot וכלי אוטומציה ב-Excel וב-SAP לחישוב כמויות גז וייעול דיווחי העברת משמרת.',
+      'ביצעתי התקנות שטח של מערכות אנרגיה סולארית (Solar PV) ועבודות תשתית וחשמל בגובה בחברת MER לפי תקני בטיחות מחמירים.'
+    ];
+
+    if (typeof studioAppliedBullets !== 'undefined' && Array.isArray(studioAppliedBullets) && studioAppliedBullets.length > 0) {
+      return [...studioAppliedBullets, ...defaultBullets].slice(0, 6);
+    }
+    return defaultBullets;
+  }
+
+  function renderBulletImpactAuditor() {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+    const listEl = document.getElementById('writerBulletAuditList');
+    const badgeEl = document.getElementById('writerAuditorSummaryBadge');
+    if (!listEl) return;
+
+    const bullets = getActiveCvExperienceBullets();
+    if (!bullets.length) {
+      listEl.innerHTML = '';
+      return;
+    }
+
+    let totalScore = 0;
+    const rowsHtml = bullets.map((bullet, idx) => {
+      const audit = validateBulletGrammar(bullet);
+      totalScore += audit.score;
+      const scoreClass = audit.score >= 80 ? 'score-high' : (audit.score >= 55 ? 'score-mid' : 'score-low');
+      const safeBullet = String(bullet || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      return `
+        <div class="writer-audit-row">
+          <div class="writer-audit-main">
+            <span class="writer-score-badge ${scoreClass}">${audit.score}/100</span>
+            <p class="writer-audit-text" dir="auto">${bullet}</p>
+          </div>
+          <div class="writer-audit-meta">
+            <span class="audit-mini-pill ${audit.hasActiveVerb ? 'pass' : 'warn'}">${audit.hasActiveVerb ? 'פועל פעיל' : 'חסר פועל'}</span>
+            <span class="audit-mini-pill ${audit.hasScope ? 'pass' : 'warn'}">${audit.hasScope ? 'מערכת מוגדרת' : 'חסרה מערכת'}</span>
+            <span class="audit-mini-pill ${audit.hasMetric ? 'pass' : 'warn'}">${audit.hasMetric ? 'מדד כמותי' : 'חסר מדד'}</span>
+            <button type="button" class="studio-mini-btn is-accent" onclick="selectPreviewLineForEditing('${safeBullet}')">
+              <i class="ph-duotone ph-magic-wand" aria-hidden="true"></i>
+              <span>טען לשדרוג</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const avg = Math.round(totalScore / bullets.length);
+    if (badgeEl) {
+      badgeEl.textContent = `ציון ממוצע לשורות: ${avg}/100`;
+    }
+    listEl.innerHTML = rowsHtml;
   }
 
   function renderEnergyDictionary(terms) {
@@ -6707,6 +6909,7 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
       renderGrammarAnalysis(validateBulletGrammar(''));
       writerInitialized = true;
     }
+    renderBulletImpactAuditor();
   }
 
   // Expose global functions to window
@@ -6735,6 +6938,8 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
   window.loadSampleAtsJob = loadSampleAtsJob;
   window.clearAtsInput = clearAtsInput;
   window.generateCvBulletActionItem = generateCvBulletActionItem;
+  window.openJobInCareerStudio = openJobInCareerStudio;
+  window.injectKeywordToWriter = injectKeywordToWriter;
 
   // Milestone 3 AI Writer & Tone Switcher Exposures
   window.TONE_SWITCHER_PROFILES = TONE_SWITCHER_PROFILES;
@@ -6743,6 +6948,8 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
   window.validateBulletGrammar = validateBulletGrammar;
   window.searchEnergyDictionary = searchEnergyDictionary;
   window.initWriterModule = initWriterModule;
+  window.renderBulletImpactAuditor = renderBulletImpactAuditor;
+  window.getActiveCvExperienceBullets = getActiveCvExperienceBullets;
   window.setWriterToneMode = setWriterToneMode;
   window.triggerBulletTransform = triggerBulletTransform;
   window.triggerGrammarValidation = triggerGrammarValidation;
@@ -6762,6 +6969,18 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
   // ==========================================================================
 
   const INTERVIEW_QUESTIONS_BANK = {
+    role_fit: [
+      {
+        title: "תרחיש התאמה למשרה: מעבר מבקרת גז טבעי 24/7 לניהול ותפעול מערכות אנרגיה ירוקה (Solar PV / BESS)",
+        desc: "מגייס שואל: 'ניסיונך המרכזי הוא בבקרת גז טבעי בזמן אמת מול אסדה ימית ונתג״ז. כיצד הניסיון ב-AVEVA System Platform, Nomination וניהול משמרות 24/7 מתרגם לערך מיידי בתפעול שדות סולאריים ומתקני אגירה?'",
+        category: "מותאם למשרה הפעילה"
+      },
+      {
+        title: "תרחיש התאמה למשרה: אוטומציה תפעולית ושיפור תהליכי העברת משמרת",
+        desc: "מגייס שואל: 'ספר על יוזמה שבה זיהית צוואר בקבוק תפעולי בחדר הבקרה או מול לקוחות, וכיצד פיתחת כלי או תהליך (כגון סוכני Copilot או אוטומציה ב-Excel/SAP) ששיפר את אמינות הנתונים.'",
+        category: "מותאם למשרה הפעילה"
+      }
+    ],
     crisis: [
       {
         title: "תרחיש: זיהוי נפילת לחץ פתאומית במתקן הפחתת לחץ (PRMS) ראשי",
@@ -6802,13 +7021,14 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     ]
   };
 
-  let currentInterviewCategory = 'crisis';
+  let currentInterviewCategory = 'role_fit';
   let isVoiceRecording = false;
   let voiceTimerInterval = null;
   let voiceSecondsCount = 0;
 
   function initInterviewModule() {
     generateNextInterviewQuestion();
+    renderLinkedInOptimizer();
   }
 
   function setInterviewCategory(cat, btn) {
@@ -6820,13 +7040,31 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
   }
 
   function generateNextInterviewQuestion() {
-    const list = INTERVIEW_QUESTIONS_BANK[currentInterviewCategory] || INTERVIEW_QUESTIONS_BANK.crisis;
-    const q = list[Math.floor(Math.random() * list.length)];
-    if (!q) return;
-
     const titleEl = document.getElementById('interviewQuestionTitle');
     const descEl = document.getElementById('interviewQuestionDesc');
     const badgeEl = document.getElementById('interviewQuestionCategoryBadge');
+
+    if (currentInterviewCategory === 'role_fit') {
+      const comp = (typeof document !== 'undefined' && document.getElementById('atsCompanyInput')?.value || '').trim();
+      const roleTitle = (typeof document !== 'undefined' && document.getElementById('atsTitleInput')?.value || '').trim();
+      const missing = (typeof StudioState !== 'undefined' && Array.isArray(StudioState.atsKeywordsMissing))
+        ? StudioState.atsKeywordsMissing.slice(0, 3)
+        : [];
+      if (comp || roleTitle) {
+        const targetLabel = [roleTitle, comp].filter(Boolean).join(' ב-');
+        const gapFocus = missing.length > 0 ? ` ודרישות כגון ${missing.join(', ')}` : '';
+        if (titleEl) titleEl.textContent = `שאלת התאמה ממוקדת: ${targetLabel}`;
+        if (descEl) {
+          descEl.textContent = `במסגרת הראיון לתפקיד ${targetLabel}${gapFocus}, כיצד תציג את ניסיונך בבקרת גז טבעי 24/7 (AVEVA System Platform, Nomination, SAP) ואת לימודי החשמלאי המוסמך כיתרון תפעולי ישיר כבר בחודש הראשון בתפקיד?`;
+        }
+        if (badgeEl) badgeEl.textContent = `מותאם למשרה: ${comp || roleTitle}`;
+        return;
+      }
+    }
+
+    const list = INTERVIEW_QUESTIONS_BANK[currentInterviewCategory] || INTERVIEW_QUESTIONS_BANK.crisis;
+    const q = list[Math.floor(Math.random() * list.length)];
+    if (!q) return;
 
     if (titleEl) titleEl.textContent = q.title;
     if (descEl) descEl.textContent = q.desc;
@@ -7099,8 +7337,87 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
     }
   }
 
+  function renderLinkedInOptimizer() {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+    const company = (document.getElementById('atsCompanyInput')?.value || '').trim();
+    const title = (document.getElementById('atsTitleInput')?.value || '').trim();
+    const jobText = (document.getElementById('atsJobInput')?.value || '').trim();
+
+    const headlineEl = document.getElementById('linkedinHeadlineOutput');
+    const aboutEl = document.getElementById('linkedinAboutOutput');
+    const contextDescEl = document.getElementById('linkedinTargetContextDesc');
+    const scoreBadgeEl = document.getElementById('linkedinSeoScoreBadge');
+    const skillsChipsEl = document.getElementById('linkedinSkillsChips');
+
+    const matched = (typeof StudioState !== 'undefined' && Array.isArray(StudioState.atsKeywordsMatched))
+      ? StudioState.atsKeywordsMatched
+      : [];
+    const missing = (typeof StudioState !== 'undefined' && Array.isArray(StudioState.atsKeywordsMissing))
+      ? StudioState.atsKeywordsMissing
+      : [];
+
+    const isSolarOrBess = /solar|pv|bess|סולאר|אגירה|מתחדשת|renewables/i.test(`${title} ${jobText}`);
+    const roleTagEn = isSolarOrBess
+      ? 'Energy & Control Room Operations | Natural Gas, SCADA & Renewable Energy Transition'
+      : 'Gas Controller | Natural Gas Operations | Practical Mechanical Engineer';
+
+    const headlineText = `${roleTagEn} | AVEVA System Platform, Nomination & 24/7 Operations | SAP & Copilot AI`;
+    const aboutText = `${headlineText}
+Practical Mechanical Engineer with experience in 24/7 natural gas operations, real-time supply monitoring (AVEVA System Platform), Nomination and Re-nomination management, and offshore production coordination at Energean Israel. Collaborated with commercial teams and strategic customers, making independent operational decisions. Improved operational reporting and shift handovers using Excel, SAP, Microsoft 365 Copilot, and AI tools; currently completing Certified Electrician studies (Expected Dec 2026).`;
+
+    if (headlineEl) headlineEl.textContent = headlineText;
+    if (aboutEl) aboutEl.textContent = aboutText;
+
+    if (contextDescEl) {
+      if (company || title) {
+        contextDescEl.textContent = `מותאם דינמית למשרת היעד: ${[title, company].filter(Boolean).join(' ב-')} — כולל מילות מפתח לחיפוש מגייסים (LinkedIn Recruiter SEO).`;
+      } else {
+        contextDescEl.textContent = 'מותאם אוטומטית לפרופיל הבסיס ולמילות המפתח של משרת היעד הפעילה (Headline, About ו-Skills).';
+      }
+    }
+
+    if (scoreBadgeEl) {
+      const seoScore = (StudioState && StudioState.matchScore > 0)
+        ? Math.min(98, Math.max(76, Math.round(StudioState.matchScore * 0.9 + 15)))
+        : 92;
+      scoreBadgeEl.textContent = `ציון SEO: ${seoScore}%`;
+    }
+
+    if (skillsChipsEl) {
+      const baseSkills = [
+        'Natural Gas Operations',
+        'AVEVA System Platform (SCADA)',
+        'Nomination & Re-nomination',
+        'Energy Control Room 24/7',
+        'Practical Mechanical Engineering',
+        'SAP & Operational Excel',
+        'Microsoft 365 Copilot'
+      ];
+      const extraSkills = [...matched, ...missing].filter(k => k && !baseSkills.includes(k)).slice(0, 4);
+      const allSkills = [...baseSkills, ...extraSkills];
+      skillsChipsEl.innerHTML = allSkills
+        .map(s => `<span class="writer-verb-chip">${s}</span>`)
+        .join('');
+    }
+  }
+
+  function copyLinkedInHeadline() {
+    const headlineEl = document.getElementById('linkedinHeadlineOutput');
+    const text = (headlineEl && headlineEl.textContent)
+      ? headlineEl.textContent.trim()
+      : 'Gas Controller | Natural Gas Operations | Practical Mechanical Engineer | AVEVA System Platform & Copilot AI';
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('כותרת ה-Headline ללינקדאין הועתקה ללוח!', 'success');
+      });
+    }
+  }
+
   function copyLinkedInOptimizedBio() {
-    const bioText = `Gas Controller | Natural Gas Operations | Practical Mechanical Engineer
+    const aboutEl = document.getElementById('linkedinAboutOutput');
+    const bioText = (aboutEl && aboutEl.textContent && aboutEl.textContent.trim())
+      ? aboutEl.textContent.trim()
+      : `Gas Controller | Natural Gas Operations | Practical Mechanical Engineer
 Practical Mechanical Engineer with experience in 24/7 natural gas operations, real-time supply monitoring, Nomination and Re-nomination management, and offshore production coordination at Energean Israel. Collaborated with commercial teams and strategic customers, making independent operational decisions. Improved operational reporting and shift handovers using Excel, SAP, Microsoft 365 Copilot, and AI tools; brings international team leadership and commercial experience.`;
 
     if (navigator.clipboard) {
@@ -7621,8 +7938,16 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
       const isSel = (k === studioActivePreviewTab);
       btn.classList.toggle('active', isSel);
       btn.setAttribute('aria-selected', isSel ? 'true' : 'false');
+      if (isSel) {
+        btn.setAttribute('focusgroupstart', '');
+      } else if (typeof btn.removeAttribute === 'function') {
+        btn.removeAttribute('focusgroupstart');
+      }
     });
     renderStudioPackagePreview();
+    if (typeof renderStickyLivePreview === 'function') {
+      renderStickyLivePreview();
+    }
   }
 
   async function fetchStudioJobFromUrl() {
@@ -7925,6 +8250,23 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
   }
 
   function getLivePreviewMarkdown() {
+    if (studioActivePreviewTab === 'cover') {
+      if (studioTailoredPackage && studioTailoredPackage.cover_letter_markdown) {
+        return String(studioTailoredPackage.cover_letter_markdown);
+      }
+      const comp = (typeof document !== 'undefined' && document.getElementById('atsCompanyInput')?.value || '').trim() || 'החברה המגייסת';
+      const role = (typeof document !== 'undefined' && document.getElementById('atsTitleInput')?.value || '').trim() || 'תפקיד תפעול והנדסת אנרגיה';
+      return `# מכתב פנייה מקדים — עידו גל\n\n## לכבוד צוות הגיוס ב-${comp} (${role})\n- הנדסאי מכונות (בהתמחות בגז טבעי ואנרגיה ירוקה) עם ניסיון מוכח בבקרה תפעולית 24/7 ב-Energean Israel.\n- שליטה מעשית ב-AVEVA System Platform, ניהול Nomination ו-Re-nomination ותיאום אספקה מול אסדת הפקה ימית ונתג״ז.\n- שילוב ייחודי של תפעול קריטי בזמן אמת עם פיתוח סוכני Microsoft 365 Copilot וכלי Excel/SAP לשיפור תהליכי העברת משמרת.\n- לימודי חשמלאי מוסמך פעילים (צפי סיום: דצמבר 2026) לתמיכה במערכות אנרגיה, PV ומתקני אגירה.`;
+    }
+
+    if (studioActivePreviewTab === 'tips') {
+      if (studioTailoredPackage && Array.isArray(studioTailoredPackage.interview_talking_points) && studioTailoredPackage.interview_talking_points.length > 0) {
+        return `# דגשים לראיון ושיחת סינון\n\n## נקודות מפתח להצגה עצמית\n` + studioTailoredPackage.interview_talking_points.map(tp => `- ${tp}`).join('\n');
+      }
+      const comp = (typeof document !== 'undefined' && document.getElementById('atsCompanyInput')?.value || '').trim() || 'משרת היעד';
+      return `# דגשים לראיון ושיחת סינון (${comp})\n\n## 3 נקודות מפתח להצגה בראיון\n- ניסיון 24/7 בחדר בקרה לאומי (Energean Israel): קבלת החלטות בזמן אמת מול אסדה ימית, נתג״ז ולקוחות אסטרטגיים.\n- גישור הנדסי ומסחרי: ניהול Nomination ו-Re-nomination תחת הסכמי GSPA לצד עבודה עם AVEVA System Platform ו-SAP.\n- ערך מוסף טכנולוגי וחשמלי: פיתוח סוכני Microsoft 365 Copilot לחישוב כמויות גז ולימודי חשמלאי מוסמך (סיום דצמבר 2026).`;
+    }
+
     if (studioTailoredPackage && studioTailoredPackage.cv_markdown) {
       let md = String(studioTailoredPackage.cv_markdown);
       const extra = (studioAppliedBullets || []).filter(b => b && !md.includes(b));
@@ -8179,16 +8521,29 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     if (simBtn) {
       simBtn.classList.toggle('active', isSim);
       simBtn.setAttribute('aria-selected', isSim ? 'true' : 'false');
+      if (isSim) {
+        simBtn.setAttribute('focusgroupstart', '');
+      } else if (typeof simBtn.removeAttribute === 'function') {
+        simBtn.removeAttribute('focusgroupstart');
+      }
     }
     if (liBtn) {
       liBtn.classList.toggle('active', !isSim);
       liBtn.setAttribute('aria-selected', !isSim ? 'true' : 'false');
+      if (!isSim) {
+        liBtn.setAttribute('focusgroupstart', '');
+      } else if (typeof liBtn.removeAttribute === 'function') {
+        liBtn.removeAttribute('focusgroupstart');
+      }
     }
     if (mainCol) mainCol.hidden = !isSim;
     if (sideCol) sideCol.hidden = isSim;
     if (workbench) {
       workbench.classList.toggle('is-sim-focus', isSim);
       workbench.classList.toggle('is-li-focus', !isSim);
+    }
+    if (!isSim && typeof renderLinkedInOptimizer === 'function') {
+      renderLinkedInOptimizer();
     }
   }
 
@@ -8299,6 +8654,8 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
   window.toggleVoiceRecording = toggleVoiceRecording;
   window.evaluateStarAnswer = evaluateStarAnswer;
   window.copyLinkedInOptimizedBio = copyLinkedInOptimizedBio;
+  window.copyLinkedInHeadline = copyLinkedInHeadline;
+  window.renderLinkedInOptimizer = renderLinkedInOptimizer;
 
   window.initSkillsModule = initSkillsModule;
   window.toggleAnonymizerMode = toggleAnonymizerMode;
@@ -8329,11 +8686,27 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     initCvUploadState();
     initWriterModule();
     initInterviewModule();
-    setInterviewSubMode('simulator');
+    setInterviewSubMode('linkedin');
     initSkillsModule();
     renderStarHistoryList(loadStarHistory());
     await checkStudioBridgeHealth(false);
     renderStickyLivePreview();
+
+    if (typeof document !== 'undefined' && typeof document.querySelectorAll === 'function') {
+      const moduleMap = {
+        studioModuleAts: 'ats',
+        studioModuleWriter: 'writer',
+        studioModuleInterview: 'interview'
+      };
+      document.querySelectorAll('.studio-module-panel').forEach(panel => {
+        if (typeof panel.addEventListener === 'function') {
+          panel.addEventListener('beforematch', () => {
+            const modKey = moduleMap[panel.id];
+            if (modKey) switchStudioModule(modKey);
+          });
+        }
+      });
+    }
 
     const rawHash = (window.location.hash || '').replace('#', '').trim();
     let initialMode = 'radar';

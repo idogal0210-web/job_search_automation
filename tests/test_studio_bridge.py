@@ -398,7 +398,7 @@ class TestCareerStudioV2SplitScreenAndDialogs(unittest.TestCase):
         return proc.stdout.strip()
 
     def test_v2_spec_and_zero_emoji_compliance(self):
-        self.assertIn("Career Studio v2", self.spec_text)
+        self.assertIn("Career Studio 3.0", self.spec_text)
         self.assertEqual(check_text(self.spec_text), [])
         self.assertEqual(check_text(self.html_text), [])
         self.assertEqual(check_text(self.css_text), [])
@@ -419,15 +419,15 @@ class TestCareerStudioV2SplitScreenAndDialogs(unittest.TestCase):
             self.assertIsNotNone(mobile_btn)
 
     def test_v2_native_dialogs_accessibility_and_close_forms(self):
-        for dlg_id in ("studioGlossaryDialog", "studioMobilePreviewDialog", "studioExportDialog"):
+        for dlg_id in ("studioMobilePreviewDialog", "studioExportDialog"):
             dlg = self.soup.find("dialog", id=dlg_id)
             self.assertIsNotNone(dlg, f"Missing native <dialog id='{dlg_id}'>")
             self.assertIsNone(dlg.get("role"), f"{dlg_id} must not override role='dialog'")
             self.assertIsNone(dlg.get("aria-modal"), f"{dlg_id} must not set redundant aria-modal")
             close_form = dlg.select_one('form[method="dialog"]')
             self.assertIsNotNone(close_form, f"{dlg_id} must include <form method='dialog'> close control")
-        self.assertIsNotNone(self.soup.find(id="btnOpenGlossaryDrawer"))
-        self.assertIsNotNone(self.soup.find(id="btnPrintAnonymizedA4"))
+        self.assertIsNotNone(self.soup.find(id="btnStickyOpenExport"))
+        self.assertIsNotNone(self.soup.find(id="btnStickyQuickPrintA4"))
 
     def test_v2_interview_segmented_control_dom(self):
         bar = self.soup.find(id="interviewSegmentedBar")
@@ -437,15 +437,15 @@ class TestCareerStudioV2SplitScreenAndDialogs(unittest.TestCase):
         li_btn = bar.find(id="interviewSegLiBtn")
         self.assertIsNotNone(sim_btn)
         self.assertIsNotNone(li_btn)
-        self.assertEqual(sim_btn.get("aria-selected"), "true")
-        self.assertEqual(li_btn.get("aria-selected"), "false")
-        self.assertIsNotNone(self.soup.find(id="interviewColMain"))
-        side_col = self.soup.find(id="interviewColSide")
-        self.assertIsNotNone(side_col)
-        self.assertTrue(side_col.has_attr("hidden"))
+        self.assertEqual(li_btn.get("aria-selected"), "true")
+        self.assertEqual(sim_btn.get("aria-selected"), "false")
+        self.assertIsNotNone(self.soup.find(id="interviewColSide"))
+        main_col = self.soup.find(id="interviewColMain")
+        self.assertIsNotNone(main_col)
+        self.assertTrue(main_col.has_attr("hidden"))
 
     def test_v2_css_layout_dialog_and_accordion_rules(self):
-        self.assertIn("grid-template-columns: minmax(0, 60fr) minmax(0, 40fr);", self.css_text)
+        self.assertIn("grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);", self.css_text)
         self.assertIn("overscroll-behavior: contain;", self.css_text)
         self.assertIn("dialog.studio-drawer-dialog[open]", self.css_text)
         self.assertIn(".studio-passed-gates-accordion", self.css_text)

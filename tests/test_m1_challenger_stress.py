@@ -97,7 +97,7 @@ class TestMilestone1ChallengerStress(unittest.TestCase):
         self.assertGreater(studio_pos, radar_pos, "careerStudioWorkspace must follow radarWorkspace")
 
     def test_studio_modules_semantic_scaffolding(self):
-        """TC-CHALLENGER-M1-04: Verify all 4 semantic module containers are present in Studio."""
+        """TC-CHALLENGER-M1-04: Verify all 3 core semantic module containers are present in Studio 3.0."""
         content = (PROJECT_ROOT / "frontend" / "templates" / "index.html").read_text(
             encoding="utf-8"
         )
@@ -105,10 +105,10 @@ class TestMilestone1ChallengerStress(unittest.TestCase):
             "studioModuleAts",
             "studioModuleWriter",
             "studioModuleInterview",
-            "studioModuleSkills",
         ]
         for mod in modules:
             self.assertIn(f'id="{mod}"', content, f"Missing container {mod}")
+        self.assertNotIn('id="studioModuleSkills"', content)
 
     def test_zero_emoji_in_challenger_artifacts(self):
         """TC-CHALLENGER-M1-05: Challenger test files strictly follow Zero-Emoji policy."""

@@ -404,22 +404,23 @@ class TestMilestone3WriterSpec(unittest.TestCase):
         self.assertIn('id="indMetric"', html)
         self.assertIn('id="indScope"', html)
         self.assertIn('id="indTone"', html)
-        self.assertIn('id="dictSearchInput"', html)
-        self.assertIn('id="dictCardsGrid"', html)
+        self.assertIn('id="writerBulletAuditList"', html)
+        self.assertIn('id="writerAuditorSummaryBadge"', html)
+        self.assertIn('id="studioPackageWorkbench"', html)
 
     def test_m3_24_css_has_writer_glassmorphism_rules(self):
-        """TC-M3-24: dashboard.css defines all required AI Writer and Tone styling classes."""
+        """TC-M3-24: dashboard.css defines all required AI Writer, Bullet Impact Auditor and Tone styling classes."""
         css = self.css_file.read_text(encoding="utf-8")
         self.assertIn('.writer-workspace-content', css)
         self.assertIn('.writer-tone-btn', css)
-        self.assertIn('.writer-formula-banner', css)
+        self.assertIn('.writer-auditor-section', css)
         self.assertIn('.writer-workbench', css)
         self.assertIn('.writer-card-column', css)
         self.assertIn('.writer-output-box', css)
         self.assertIn('.writer-analysis-card', css)
         self.assertIn('.writer-score-badge', css)
-        self.assertIn('.writer-dictionary-section', css)
-        self.assertIn('.writer-dict-card', css)
+        self.assertIn('.writer-audit-row', css)
+        self.assertIn('.audit-mini-pill', css)
 
     def test_m3_25_zero_emoji_compliance(self):
         """TC-M3-25: Static scan confirms 0 emojis in modified source files."""

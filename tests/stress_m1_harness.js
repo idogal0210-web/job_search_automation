@@ -184,11 +184,9 @@
       studioTabAts: createMockElement('studioTabAts', ['studio-subnav-btn', 'active']),
       studioTabWriter: createMockElement('studioTabWriter', ['studio-subnav-btn']),
       studioTabInterview: createMockElement('studioTabInterview', ['studio-subnav-btn']),
-      studioTabSkills: createMockElement('studioTabSkills', ['studio-subnav-btn']),
       studioModuleAts: createMockElement('studioModuleAts', ['studio-module-panel', 'active'], 'block'),
       studioModuleWriter: createMockElement('studioModuleWriter', ['studio-module-panel'], 'none'),
-      studioModuleInterview: createMockElement('studioModuleInterview', ['studio-module-panel'], 'none'),
-      studioModuleSkills: createMockElement('studioModuleSkills', ['studio-module-panel'], 'none')
+      studioModuleInterview: createMockElement('studioModuleInterview', ['studio-module-panel'], 'none')
     };
     elements.modeSwitchRadar.setAttribute('aria-selected', 'true');
     elements.modeSwitchStudio.setAttribute('aria-selected', 'false');
@@ -780,7 +778,7 @@
     globalThis.window = env.window;
     globalThis.document = env.document;
 
-    const validModules = ['ats', 'writer', 'interview', 'skills'];
+    const validModules = ['ats', 'writer', 'interview'];
 
     validModules.forEach(function (mod) {
       switchStudioModule(mod);

@@ -45,13 +45,14 @@ class TestCareerStudioMilestones456(unittest.TestCase):
         for token in ("kanban-", "heatmap-", "visual-toolbar"):
             self.assertNotIn(token, self.dashboard_css)
 
-    def test_studio_has_exactly_four_stages(self):
+    def test_studio_has_exactly_three_core_tools(self):
         tabs = [t for t in self.soup.find_all(id=True) if t["id"].startswith("studioTab")]
-        self.assertEqual(len(tabs), 4)
+        self.assertEqual(len(tabs), 3)
         badge_nums = [int(t.find(class_="step-num-badge").get_text().strip()) for t in tabs]
-        self.assertEqual(badge_nums, [1, 2, 3, 4])
+        self.assertEqual(badge_nums, [1, 2, 3])
         panels = [t for t in self.soup.find_all("section", id=True) if t["id"].startswith("studioModule")]
-        self.assertEqual(len(panels), 4)
+        self.assertEqual(len(panels), 3)
+        self.assertIsNone(self.soup.find(id="studioModuleSkills"))
 
     def test_a11y_main_landmark_h1_and_live_job_check_exposed(self):
         mains = self.soup.find_all("main")
@@ -63,18 +64,12 @@ class TestCareerStudioMilestones456(unittest.TestCase):
         self.assertIn("function computeInactiveState", self.dashboard_js)
         self.assertIn("window.runLiveJobCheck =", self.dashboard_js)
 
-    def test_each_stage_has_sequential_numbered_steps(self):
-        expected = {"studioModuleAts": 3, "studioModuleWriter": 5,
-                    "studioModuleInterview": 3, "studioModuleSkills": 2}
-        for pid, count in expected.items():
-            panel = self.soup.find(id=pid)
-            nums = [int(n.get_text()) for n in panel.find_all(class_="studio-step-num")]
-            self.assertEqual(nums, list(range(1, count + 1)), pid)
-            outline = panel.find(class_="studio-step-outline")
-            self.assertIsNotNone(outline, pid)
-            self.assertEqual(len(outline.find_all("button")), count, pid)
-            for i in range(1, count + 1):
-                self.assertIsNotNone(panel.find(id=f"step-{pid[len('studioModule'):].lower()}-{i}"))
+    def test_studio_v3_flat_architecture_without_nested_step_outlines(self):
+        self.assertIsNone(self.soup.find(class_="studio-step-outline"))
+        self.assertIsNone(self.soup.find(class_="studio-pipeline-sidebar"))
+        self.assertIsNotNone(self.soup.find(class_="studio-context-bar"))
+        self.assertIsNotNone(self.soup.find(id="atsStep1Panel"))
+        self.assertIsNotNone(self.soup.find(id="studioJobDetailsAccordion"))
 
     def test_m4_04_cv_html_files_exist_in_frontend_and_docs(self):
         required_files = [
@@ -140,26 +135,23 @@ class TestCareerStudioMilestones456(unittest.TestCase):
         self.assertTrue(any("Licenses" in t or "הסמכות" in t for t in row_titles))
         self.assertTrue(any("תפקיד" in t or "תעסוקתי" in t for t in row_titles))
 
-    def test_m6_04_skills_and_anonymizer_container_exists(self):
-        panel = self.soup.find(id="studioModuleSkills")
-        self.assertIsNotNone(panel, "studioModuleSkills must exist")
-        self.assertEqual(panel.get("role"), "tabpanel")
-        self.assertEqual(panel.get("aria-labelledby"), "studioTabSkills")
+    def test_m6_04_linkedin_seo_optimizer_elements_exist(self):
+        self.assertIsNotNone(self.soup.find(id="linkedinSeoScoreBadge"))
+        self.assertIsNotNone(self.soup.find(id="linkedinHeadlineOutput"))
+        self.assertIsNotNone(self.soup.find(id="btnCopyLinkedInHeadline"))
+        self.assertIsNotNone(self.soup.find(id="linkedinAboutOutput"))
+        self.assertIsNotNone(self.soup.find(id="linkedinSkillsChips"))
 
-    def test_m6_05_skill_gap_cards_exist(self):
-        skill_cards = self.soup.find_all(class_="skill-rec-card")
-        self.assertGreaterEqual(len(skill_cards), 4, "Must offer at least 4 in-demand skill recommendations")
-        titles = [c.find(class_="skill-title").get_text() for c in skill_cards]
-        self.assertTrue(any("PMP" in t for t in titles))
-        self.assertTrue(any("PLC" in t or "SCADA" in t for t in titles))
-        self.assertTrue(any("BMS" in t or "CEM" in t for t in titles))
-        self.assertTrue(any("Six Sigma" in t for t in titles))
+    def test_m6_05_bullet_impact_auditor_and_job_bridge_exist(self):
+        self.assertIsNotNone(self.soup.find(id="writerBulletAuditList"))
+        self.assertIn("function openJobInCareerStudio", self.dashboard_js)
+        self.assertIn("function injectKeywordToWriter", self.dashboard_js)
+        self.assertIn("function renderBulletImpactAuditor", self.dashboard_js)
+        self.assertIn("function renderLinkedInOptimizer", self.dashboard_js)
 
-    def test_m6_06_anonymizer_elements_exist(self):
-        self.assertIsNotNone(self.soup.find(id="anonToggleCheckbox"))
-        self.assertIsNotNone(self.soup.find(id="anonymizedPreviewArea"))
-        rules = self.soup.find_all(class_="anon-rule-row")
-        self.assertGreaterEqual(len(rules), 3)
+    def test_m6_06_role_fit_interview_category_exists(self):
+        self.assertIn("role_fit:", self.dashboard_js)
+        self.assertIn("setInterviewCategory('role_fit'", self.template_html)
 
     def test_m6_07_interview_and_skills_js_exposed(self):
         self.assertIn("function initInterviewModule", self.dashboard_js)

@@ -16,11 +16,10 @@ globs: "*.html, *.css, *.js, frontend/**, docs/**, src/ui_builder.py"
 - יש להשתמש ב-CSS Grid בתצורת `1fr auto 1fr` (עמודה ימנית: מיתוג וכלי מערכת; עמודה מרכזית: כפתורי מצב ממורכזים; עמודה שמאלית: קוביות משרות).
 - יש לשמור על שולי מרווח (Buffer) המונעים גלישה או חפיפה בין אזורי הצד לכפתורי המרכז.
 
-## 3. סטודיו קריירה סכמתי (Schematic Step-by-Step Pipeline)
-- בעמוד סטודיו קריירה, סרגל האפשרויות יוצג מימין (RTL) כסרגל צד אנכי (`studio-pipeline-sidebar`) דביק (`position: sticky`).
-- שלבי העבודה המודולריים (שלבים 1 עד 4) יוצגו במבנה סכמתי עוקב (Pipeline), ללא עומס מידע וטקסט, עם גדלי גופן אחידים, אייקונים מובחנים ותגי מספור מעגליים (1 עד 4).
-- בתוך כל שלב, הפעולות מסודרות בעמודה אנכית אחת של צעדים ממוספרים (`studio-step-head`) עם סרגל קפיצה מהירה בראש השלב (`studio-step-outline`).
-- שמירה מלאה על נגישות ותאימות בדיקות: `role="tab"`, `role="tabpanel"`, `aria-selected`, `aria-controls`.
+## 3. סטודיו קריירה 3.0 — ארכיטקטורת 3 כלים במסך מפוצל (`55/45` Split-Screen)
+- בעמוד סטודיו קריירה (`#careerStudioWorkspace`), הניווט מתבצע דרך סרגל הקשר עליון אחוד (`.studio-context-bar`) הכולל בורר משרת יעד (`#atsJobSelector`), קליטת URL (`#atsJobUrlInput`), חיווי קו״ח פעיל (`#studioCurrentCvStatus`) וסרגל אופקי של **3 כלי ליבה בלבד** (`#studioTabAts`, `#studioTabWriter`, `#studioTabInterview`) עם `focusgroup="tablist nomemory" role="tablist"` וללא סרגל צד ימני או ניווט צעדים ממוספר כפול.
+- מתחת לסרגל העליון, פריסת העבודה בדסקטופ היא **2 עמודות בלבד (`55fr / 45fr`)**: עמודת כלי הפעולה (`55%`) לצד עמודת תצוגת המסמך החיה והדביקה (`45%`, `#studioStickyPreviewCol` / `#studioLiveDocViewer`).
+- שמירה מלאה על נגישות ותאימות בדיקות: `role="tab"`, `role="tabpanel"`, `aria-selected`, `aria-controls`, `hidden="until-found"`, ואירוע `beforematch`.
 
 ## 4. עצמאות וגמישות ניהול קו״ח (Decoupled CV Upload)
 - הממשק יכלול אפשרות עצמאית להעלאת קובץ קו״ח (PDF, DOCX, TXT) ישירות מהדפדפן, עם חיווי סטטוס ברור ואפשרות איפוס מהיר לקורות החיים המובנים של עידו גל ("איפוס לקו״ח בסיס").

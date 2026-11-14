@@ -38,13 +38,13 @@ Ensure the interface between Ido Gal and the autonomous job search and Career St
 - **Real-Time Cloud Sync:** Maintain optimistic UI updates in `localStorage` paired with authenticated Supabase REST/Realtime sync (`public.sync_state` with RLS).
 - **Browser-Safe Guards:** Guard background polling (`25s`), `visibilitychange`, and `focus` listeners with `typeof process === 'undefined'` so Node.js stress harnesses execute cleanly without hanging timers.
 
-### 3.3 Career Studio Split-Pane Architecture (`careerStudioWorkspace`)
-- **Split-Pane Workspace (Desktop):**
-  - **Input Pane (45% width):** Job selector from live/historical catalog, CV upload/status pill (`איפוס לקו״ח בסיס`), text editor, and STAR interview practice inputs.
-  - **Results Pane (55% width):** Live ATS match telemetry, statutory hard-gate warnings, 3-mode AI Writer output, STAR evaluation rubric scores, and longitudinal improvement chart.
-  - **Mobile Responsive Stacking:** Automatically stacks vertically (`flex-direction: column`) on narrow viewports with touch targets `>= 44px`.
-- **Compact Step Navigation:** Clean horizontal top step bar for switching across the 4 studio modules (ATS Match, AI Writer, Interview Simulator, Skills Matrix) without heavy vertical sidebar clutter.
-- **Local Python Bridge Integration:** Connect seamlessly to `scripts/studio_bridge.py` (`POST /api/ats/match`, `/api/writer/tailor`, `/api/interview/evaluate`) with automatic graceful client-side fallback when offline.
+### 3.3 Career Studio 3.0 Split-Pane Architecture (`careerStudioWorkspace`)
+- **2-Column Split-Pane Workspace (`55fr / 45fr` on Desktop):**
+  - **Active Tool Lane (55% width, `.studio-modules-container`):** Houses the 3 core tools (`#studioModuleAts` Jobscan Matcher, `#studioModuleWriter` Teal A4 Package Builder & Resume Worded Bullet Impact Auditor, `#studioModuleInterview` Dynamic LinkedIn SEO Optimizer & Role Interview Prep).
+  - **Sticky Live Document Preview (45% width, `#studioStickyPreviewCol`):** Interactive live document viewer (`#studioLiveDocViewer`) with instant tab switching between CV (`#pkgTabCv`), Cover Letter (`#pkgTabCover`), and Interview Talking Points (`#pkgTabTips`), plus 1-click A4 PDF print and click-to-edit synchronization.
+  - **Mobile Responsive Stacking:** Automatically collapses to 100% width on `<1120px` with `#btnMobileOpenPreview` opening `<dialog id="studioMobilePreviewDialog">` and touch targets `>= 48px`.
+- **Flat 3-Tool Top Context Bar:** Unified `.studio-context-bar` combining job selection (`#atsJobSelector`), direct 1-click handoff from Job Radar cards (`openJobInCareerStudio`), URL ingestion, compact CV status/upload, and the 3-tab horizontal segmented bar (`#studioTabAts`, `#studioTabWriter`, `#studioTabInterview`) — zero right-sidebar or triple-nested step outlines.
+- **Local Python Bridge Integration:** Connect seamlessly to `scripts/studio_bridge.py` (`POST /api/ats/analyze`, `/api/studio/tailor`, `/api/writer/tailor`, `/api/interview/evaluate`) with automatic graceful client-side fallback when offline.
 
 ### 3.4 Verified High-Resolution Company Logo Pipeline
 1. **Tier 1:** Curated vector/PNG overrides in `docs/assets/logos/`.

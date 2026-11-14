@@ -3484,11 +3484,11 @@
 }
 }
 
-/* Studio Sub-Navigation Pipeline (2x2 Grid on Tablet/Desktop, 1-col Mobile) */
+/* Studio Sub-Navigation Pipeline (3-Tool Horizontal Tablist on Desktop, Scrollable on Mobile) */
 .studio-subnav-pill,
 .studio-subnav-pipeline {
   display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   gap: 10px !important;
   background: transparent !important;
   border: none !important;
@@ -3498,10 +3498,18 @@
   overflow: visible !important;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 760px) {
   .studio-subnav-pill,
   .studio-subnav-pipeline {
-    grid-template-columns: minmax(0, 1fr) !important;
+    display: flex !important;
+    overflow-x: auto !important;
+    overscroll-behavior-x: contain !important;
+    scroll-snap-type: x mandatory !important;
+    scrollbar-width: none !important;
+  }
+  .studio-subnav-pipeline .studio-step-btn {
+    flex: 1 0 240px !important;
+    scroll-snap-align: start !important;
   }
 }
 
@@ -6786,15 +6794,20 @@ label,
 }
 
 /* ==========================================================================
-   Career Studio V2: 60/40 Split-Screen, Sticky Preview, Native Dialogs & Accordions
+   Career Studio 3.0: 55/45 Two-Column Split-Screen, Sticky Preview & 3-Tool Architecture
    ========================================================================== */
 
 .studio-master-split {
   display: grid;
-  grid-template-columns: minmax(0, 60fr) minmax(0, 40fr);
+  grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
   gap: 20px;
   align-items: start;
   inline-size: 100%;
+}
+
+.studio-modules-container {
+  container: studio-main / inline-size;
+  min-inline-size: 0;
 }
 
 .studio-master-split > * {
@@ -7367,4 +7380,341 @@ dialog.studio-modal-dialog::backdrop {
     font-size: max(1rem, 1em);
   }
 }
+
+/* ==========================================================================
+   Career Studio 3.0: Context Bar, Actionable Keyword Chips, Bullet Impact Auditor & LinkedIn SEO
+   ========================================================================== */
+
+.studio-context-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: var(--bg-card, rgba(15, 23, 42, 0.72));
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 20px;
+  padding: 16px 18px;
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.28);
+}
+
+.studio-target-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(9, 13, 22, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.studio-target-bar-top {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.3fr) minmax(220px, 1.3fr) minmax(240px, 1fr);
+  gap: 12px;
+  align-items: end;
+}
+
+@media (max-width: 1024px) {
+  .studio-target-bar-top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.studio-target-col {
+  min-inline-size: 0;
+}
+
+.studio-cv-compact-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  min-block-size: 44px;
+}
+
+.studio-cv-compact-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-inline-size: 0;
+}
+
+.studio-cv-compact-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.studio-job-details-accordion {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.45);
+  overflow: hidden;
+}
+
+.studio-job-details-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 14px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  min-block-size: 42px;
+}
+
+.studio-job-details-summary::-webkit-details-marker {
+  display: none;
+}
+
+.studio-job-details-accordion[open] .studio-accordion-chevron {
+  transform: rotate(180deg);
+}
+
+.studio-job-details-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 14px 14px;
+  border-block-start: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Modern Web Guidance Tabs: Active Indicator Pseudo-Element */
+.studio-subnav-pipeline [role="tab"] {
+  position: relative;
+}
+
+.studio-subnav-pipeline [role="tab"][aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset-inline: 14px;
+  inset-block-end: 0;
+  border-block-end: 3px solid var(--dashboard-cyan, #38bdf8);
+  border-radius: 3px 3px 0 0;
+}
+
+/* Actionable Missing Keyword Chips -> One-Click Inject to Tool 2 */
+.dashboard-app .ats-keyword-tag.missing.is-actionable {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 146, 60, 0.45);
+  background: rgba(251, 146, 60, 0.12);
+  color: #fed7aa;
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+@media (hover: hover) {
+  .dashboard-app .ats-keyword-tag.missing.is-actionable:hover {
+    border-color: var(--dashboard-cyan, #38bdf8);
+    background: rgba(14, 165, 233, 0.2);
+    color: #f0f9ff;
+    transform: translateY(-1px);
+  }
+}
+
+.keyword-inject-cta {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.65);
+  color: var(--dashboard-cyan, #38bdf8);
+}
+
+/* Unified Package Builder & Bullet Impact Auditor (Tool 2) */
+.studio-package-config-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.studio-package-meta-split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-block-start: 10px;
+}
+
+@container studio-main (max-width: 620px) {
+  .studio-package-meta-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.studio-sticky-preview-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.writer-auditor-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.62);
+  border: 1px solid rgba(56, 189, 248, 0.18);
+  margin-block-end: 14px;
+}
+
+.writer-auditor-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.writer-auditor-title {
+  margin: 0;
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-wrap: balance;
+}
+
+.writer-auditor-subtitle {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  text-wrap: pretty;
+}
+
+.writer-bullet-audit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.writer-audit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(9, 13, 22, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.writer-audit-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.writer-audit-text {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #e2e8f0;
+  text-wrap: pretty;
+}
+
+.writer-audit-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.audit-mini-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.audit-mini-pill.pass {
+  background: rgba(52, 211, 153, 0.14);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  color: #6ee7b7;
+}
+
+.audit-mini-pill.warn {
+  background: rgba(251, 146, 60, 0.14);
+  border: 1px solid rgba(251, 146, 60, 0.35);
+  color: #fdba74;
+}
+
+/* Tool 3: Dynamic LinkedIn SEO Optimizer */
+.linkedin-optimizer-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-block-end: 14px;
+}
+
+.linkedin-copy-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(9, 13, 22, 0.72);
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.linkedin-copy-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.linkedin-copy-preview {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  text-align: left;
+}
+
+/* Job Radar -> Career Studio 1-Click Action Button */
+.dashboard-app .btn-open-in-studio {
+  border-color: rgba(56, 189, 248, 0.42);
+  background: rgba(14, 165, 233, 0.14);
+  color: #bae6fd;
+}
+
+@media (hover: hover) {
+  .dashboard-app .btn-open-in-studio:hover {
+    border-color: var(--dashboard-cyan, #38bdf8);
+    background: rgba(14, 165, 233, 0.26);
+    color: #ffffff;
+  }
+}
+
+/* Intrinsic Typography Rhythm (modern-web-guidance form-factor-adaptation) */
+#careerStudioWorkspace h2,
+#careerStudioWorkspace h3,
+#careerStudioWorkspace h4 {
+  text-wrap: balance;
+}
+
+#careerStudioWorkspace p {
+  text-wrap: pretty;
+}
+
 
