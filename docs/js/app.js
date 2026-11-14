@@ -316,6 +316,3 @@ export async function initApp() {
     }
   }
 }
-
-// Export initApp for explicit invocation by module consumers
-export { initApp };

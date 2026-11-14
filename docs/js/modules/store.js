@@ -14,17 +14,8 @@ export const STORAGE_KEYS = {
   LEGACY_STARRED: 'jobStars'
 };
 
-// Default Curated Starred Jobs (Fallback Seed)
-export const DEFAULT_STARRED_LINKS = [
-  "https://il.linkedin.com/jobs/view/%D7%AA%D7%94%D7%9C%D7%99%D7%9B%D7%99-%D7%91%D7%A7%D7%A8%D7%94-%D7%95-ai-at-iai-israel-aerospace-industries-4478429532",
-  "https://il.linkedin.com/jobs/view/high-pressure-natural-gas-project-israel-at-rina-4469463836",
-  "https://www.comeet.com/jobs/enlightenergy/99.006/project-manager---construction---enlight-local/92.F66",
-  "https://il.linkedin.com/jobs/view/junior-business-development-manager-at-ormash-group-%D7%A7%D7%91%D7%95%D7%A6%D7%AA-%D7%90%D7%95%D7%A8%D7%9E%D7%A9-4468984224",
-  "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4447699352",
-  "https://il.linkedin.com/jobs/view/junior-solar-account-coordinator-at-amarel-ltd-4481350574",
-  "https://il.linkedin.com/jobs/view/practical-engineer-at-solaredge-technologies-4481748648",
-  "https://il.linkedin.com/jobs/view/system-engineer-renewable-energy-energy-storage-projects-at-nextcom-group-4478214360"
-];
+// Default Curated Starred Jobs (empty by default so new sessions do not inherit personal seeds)
+export const DEFAULT_STARRED_LINKS = [];
 
 // Pub/Sub Event System
 class EventEmitter {
@@ -393,14 +384,16 @@ class Store extends EventEmitter {
 
 export const store = new Store();
 
-// Backwards compatibility for window
+// Backwards compatibility for window (live getters prevent stale references after fetchJobsData)
 if (typeof window !== 'undefined') {
   window.store = store;
-  window.jobStates = store.jobStates;
-  window.starredJobs = store.starredJobs;
-  window.rawJobsData = store.rawJobsData;
-  window.historicalCatalog = store.historicalCatalog;
-  window.allJobsMap = store.allJobsMap;
+  Object.defineProperties(window, {
+    jobStates: { get: () => store.jobStates, set: (v) => { store.jobStates = v || {}; }, configurable: true },
+    starredJobs: { get: () => store.starredJobs, set: (v) => { store.starredJobs = v || {}; }, configurable: true },
+    rawJobsData: { get: () => store.rawJobsData, set: (v) => { store.rawJobsData = Array.isArray(v) ? v : []; }, configurable: true },
+    historicalCatalog: { get: () => store.historicalCatalog, set: (v) => { store.historicalCatalog = (v && typeof v === 'object') ? v : {}; }, configurable: true },
+    allJobsMap: { get: () => store.allJobsMap, set: (v) => { store.allJobsMap = (v && typeof v === 'object') ? v : {}; }, configurable: true }
+  });
   window.getAllAvailableJobs = () => store.getAllAvailableJobs();
   window.toggleStar = (id) => store.toggleStar(id);
   window.saveTriageState = (s) => store.saveTriageState(s);

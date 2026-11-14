@@ -19,12 +19,17 @@ export function escapeHtml(str) {
 
 export function sanitizeUrl(rawUrl) {
   if (!rawUrl || typeof rawUrl !== 'string') return '#';
-  const trimmed = rawUrl.trim();
-  const lower = trimmed.toLowerCase();
-  if (lower.startsWith('javascript:') || lower.startsWith('data:') || lower.startsWith('vbscript:')) {
+  const cleaned = rawUrl.replace(/[\u0000-\u001F\u007F]/g, '').trim();
+  if (!cleaned) return '#';
+  try {
+    const parsed = new URL(cleaned);
+    if (!['http:', 'https:', 'mailto:'].includes(parsed.protocol) || parsed.username || parsed.password) {
+      return '#';
+    }
+    return escapeHtml(parsed.href);
+  } catch (_) {
     return '#';
   }
-  return trimmed;
 }
 
 export function stripEmojis(str) {
@@ -188,7 +193,7 @@ export function renderCards() {
           </div>
         </div>
         <div class="job-card-header-actions">
-          <button type="button" class="btn-star ${isStarred ? 'starred' : ''}" onclick="window.store.toggleStar('${id}')" title="סימון בכוכב" aria-label="סמן בכוכב">
+          <button type="button" class="btn-star ${isStarred ? 'starred' : ''}" onclick="window.store.toggleStar(${escapeHtml(JSON.stringify(String(id)))})" title="סימון בכוכב" aria-label="סמן בכוכב">
             <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
           </button>
           <div class="job-score-badge ${scoreClass}">
@@ -208,15 +213,15 @@ export function renderCards() {
 
       <div class="job-card-footer">
         <div class="job-card-actions">
-          <button type="button" class="btn-action btn-save ${store.getJobState(id) === 'saved' ? 'active' : ''}" onclick="window.store.setJobAction('${id}', 'saved')" title="שמור להגשה">
+          <button type="button" class="btn-action btn-save ${store.getJobState(id) === 'saved' ? 'active' : ''}" onclick="window.store.setJobAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved')" title="שמור להגשה">
             <i class="ph-bold ph-bookmark-simple"></i>
             <span>שמור</span>
           </button>
-          <button type="button" class="btn-action btn-reject ${store.getJobState(id) === 'rejected' ? 'active' : ''}" onclick="window.store.setJobAction('${id}', 'rejected')" title="הסר משרה">
+          <button type="button" class="btn-action btn-reject ${store.getJobState(id) === 'rejected' ? 'active' : ''}" onclick="window.store.setJobAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected')" title="הסר משרה">
             <i class="ph-bold ph-trash"></i>
             <span>הסר</span>
           </button>
-          <button type="button" class="btn-action btn-details" onclick="window.openJobModal('${safeId}')" title="פרטים מלאים">
+          <button type="button" class="btn-action btn-details" onclick="window.openJobModal(${escapeHtml(JSON.stringify(String(id)))})" title="פרטים מלאים">
             <i class="ph-bold ph-arrows-out-simple"></i>
             <span>פרטים</span>
           </button>
@@ -342,7 +347,10 @@ export function updateCubeCountsImmediately() {
 
 export function openJobModal(encodedId) {
   if (typeof document === 'undefined') return;
-  const id = decodeURIComponent(encodedId);
+  let id = String(encodedId || '');
+  if (!store.allJobsMap[id]) {
+    try { id = decodeURIComponent(id); } catch (_) {}
+  }
   const job = store.allJobsMap[id];
   if (!job) return;
 
@@ -358,10 +366,11 @@ export function openJobModal(encodedId) {
   const safeLoc = escapeHtml(stripEmojis(job.location || 'ישראל'));
   const safeLink = sanitizeUrl(job.link);
   const isStarred = store.isStarred(id);
+  const safeIdAttr = escapeHtml(JSON.stringify(String(id)));
 
   if (topActions) {
     topActions.innerHTML = `
-      <button type="button" class="btn-star ${isStarred ? 'starred' : ''}" onclick="window.store.toggleStar('${id}'); this.classList.toggle('starred');">
+      <button type="button" class="btn-star ${isStarred ? 'starred' : ''}" onclick="window.store.toggleStar(${safeIdAttr}); this.classList.toggle('starred');">
         <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
       </button>
       <div class="job-score-badge badge-score-high">
@@ -400,10 +409,10 @@ export function openJobModal(encodedId) {
   if (bottomBar) {
     bottomBar.innerHTML = `
       <div style="display: flex; gap: 8px; flex: 1;">
-        <button type="button" class="btn-action btn-save" onclick="window.store.setJobAction('${id}', 'saved'); closeJobModal();">
+        <button type="button" class="btn-action btn-save" onclick="window.store.setJobAction(${safeIdAttr}, 'saved'); closeJobModal();">
           <i class="ph-bold ph-bookmark-simple"></i> שמור
         </button>
-        <button type="button" class="btn-action btn-reject" onclick="window.store.setJobAction('${id}', 'rejected'); closeJobModal();">
+        <button type="button" class="btn-action btn-reject" onclick="window.store.setJobAction(${safeIdAttr}, 'rejected'); closeJobModal();">
           <i class="ph-bold ph-trash"></i> הסר
         </button>
       </div>

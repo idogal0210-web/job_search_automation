@@ -6,42 +6,42 @@
  */
 
 export const CANONICAL_CV_PROFILE = {
-  name: "עידו גל",
-  name_en: "Ido Gal",
+  name: "מועמד מערכת (פרופיל בסיס)",
+  name_en: "Candidate Baseline Profile",
   title_he: "הנדסאי מכונות | בקרת גז טבעי | תפעול מערכות אנרגיה",
   title_en: "Gas Controller | Natural Gas Operations | Practical Mechanical Engineer",
   contact: {
-    phone: "052-632-8886",
-    phone_intl: "+972-52-632-8886",
-    email: "idogal0210@gmail.com",
-    linkedin: "https://www.linkedin.com/in/ido-g",
-    location: "תל אביב"
+    phone: "050-000-0000",
+    phone_intl: "+972-50-000-0000",
+    email: "candidate@confidential.il",
+    linkedin: "",
+    location: "מרכז"
   },
   education: [
-    "לימודי חשמלאי מוסמך | המרכז האקדמי רופין | צפי סיום: דצמבר 2026",
-    "הנדסאי מכונות — התמחות בגז טבעי ובאנרגיה ירוקה | המרכז האקדמי רופין | 2022. פרויקט גמר: השוואת נצילות וכדאיות כלכלית וטכנית בין מערכות סולאריות בעלות פאנלים דו־צדדיים (Bifacial) לבין מערכות בעלות פאנלים חד־צדדיים (Monofacial)."
+    "לימודי חשמלאי מוסמך | מוסד אקדמי מוכר | בלימודים לקראת סיום",
+    "הנדסאי מכונות — התמחות בגז טבעי ובאנרגיה ירוקה | פרויקט גמר: מערכות סולאריות פאנלים דו־צדדיים (Bifacial) מול חד־צדדיים (Monofacial)."
   ],
   experience: [
-    "בקר גז — תפעול ומוצר | Energean Israel Ltd. | נובמבר 2022 – ספטמבר 2026: בקרה 24/7 על אספקת גז טבעי לתחנות כוח ומפעלי תעשייה, ניטור לחצים וספיקות בזמן אמת עם AVEVA System Platform, טיפול ב-Nomination ו-Re-nomination, תיאום מול אסדת ההפקה הימית (FPSO), נתג״ז (INGL) והמחלקה המסחרית, פיתוח סוכן חישוב כמויות גז ב-Microsoft 365 Copilot עבור 10+ לקוחות גדולים, שיפור תהליך העברת משמרת עם סוכן Copilot נפרד, ודוחות Excel ו-SAP כולל דוח משמרות לילה לסמנכ״ל.",
-    "אחראי משמרת אבטחה במתקן אנרגיה אסטרטגי | וולקן עוצמה בע״מ / Energean Israel Ltd. | 2020–2022.",
-    "ראש צוות ומדריך מכירות | חברות מכירות בפעילות בינלאומית | 2015–2020 (ארה״ב וקו ישראל–גרמניה).",
-    "מתקין מערכות סולאריות | MER Group | 2010–2012: התקנה, חיווט והרכבה פיזית של מערכות פוטו־וולטאיות (PV)."
+    "בקר גז — תפעול ומוצר | חברת אנרגיה ותשתיות: בקרה 24/7 על אספקת גז טבעי לתחנות כוח ומפעלי תעשייה, ניטור לחצים וספיקות בזמן אמת עם AVEVA System Platform, טיפול ב-Nomination ו-Re-nomination, תיאום מול אסדת הפקה ימית (FPSO), מערכת הולכה ארצית והמחלקה המסחרית, פיתוח סוכני Microsoft 365 Copilot ודוחות Excel ו-SAP.",
+    "אחראי משמרת במתקן אנרגיה אסטרטגי.",
+    "הובלת צוות והדרכה בפעילות בינלאומית.",
+    "מתקין מערכות סולאריות: התקנה, חיווט והרכבה פיזית של מערכות פוטו־וולטאיות (PV)."
   ],
-  military: "סיירת נח״ל | לוחם ומפקד בתחום החבלה וההנדסה הקרבית | 2012–2015 (כולל שירות קבע והובלת תחום החבלה ביחידה). ניסיון מבצעי בהפעלת רחפנים (UAV) לסריקה ומיפוי שטח. הסמכות: רובאי 07, פלס/חבלה 08.",
+  military: "שירות קרבי ופיקודי בהנדסה קרבית והפעלת רחפנים (UAV) לסריקה ומיפוי שטח.",
   skills: [
     "AVEVA System Platform", "SCADA", "PRMS", "Nomination", "Re-nomination", "FPSO", "INGL",
     "SAP", "Microsoft Excel", "Microsoft 365 Copilot", "Google Gemini", "Bifacial PV", "Monofacial PV",
-    "ניטור לחצים וספיקות", "אסדת הפקה", "נתג״ז", "חבלה 07", "רובאי 08", "הפעלת רחפנים", "UAV",
+    "ניטור לחצים וספיקות", "אסדת הפקה", "נתג״ז", "הפעלת רחפנים", "UAV",
     "מתח נמוך", "חוק החשמל"
   ],
-  text: `עידו גל הנדסאי מכונות בקרת גז טבעי תפעול מערכות אנרגיה רופין 2022 אנרגיה ירוקה וגז טבעי
+  text: `הנדסאי מכונות בקרת גז טבעי תפעול מערכות אנרגיה אנרגיה ירוקה וגז טבעי
 פרויקט גמר פאנלים סולאריים דו צדדיים Bifacial PV מול Monofacial
-לימודי חשמלאי מוסמך רופין צפי סיום דצמבר 2026 לקראת סיום חוק החשמל חישובים תיאורטיים
-Energean Israel Ltd בקר גז תפעול ומוצר נובמבר 2022 ספטמבר 2026 AVEVA System Platform אסדת הפקה FPSO נתג״ז INGL PRMS SCADA Nomination Re-nomination SAP Excel Microsoft 365 Copilot Google Gemini מתקן אנרגיה 24/7
-וולקן עוצמה אחראי משמרת אבטחה במתקן אנרגיה אסטרטגי אחמ״ש אבטחה
-MER Group מתקין מערכות סולאריות PV שטח עבודה בגובה
-סיירת נח״ל לוחם ומפקד בתחום החבלה וההנדסה הקרבית פלס 07 חבלה 08 רובאי 07 רובאי 08 מפעיל רחפנים מבצעי טלמטריה
-טלפון 052-632-8886 0526328886 +972-52-632-8886 דואל idogal0210@gmail.com לינקדאין https://www.linkedin.com/in/ido-g`
+לימודי חשמלאי מוסמך לקראת סיום חוק החשמל חישובים תיאורטיים
+בקר גז תפעול ומוצר AVEVA System Platform אסדת הפקה FPSO נתג״ז INGL PRMS SCADA Nomination Re-nomination SAP Excel Microsoft 365 Copilot Google Gemini מתקן אנרגיה 24/7
+אחראי משמרת במתקן אנרגיה אסטרטגי
+מתקין מערכות סולאריות PV שטח עבודה בגובה
+הנדסה קרבית מפעיל רחפנים UAV מבצעי טלמטריה
+טלפון 050-000-0000 +972-50-000-0000 דואל candidate@confidential.il`
 };
 
 export const STATUTORY_HARD_GATES = [
@@ -661,8 +661,12 @@ export function generateCvBulletActionItem(keywordOrGate, jobContext = {}) {
   // Check direct match in templates
   let matched = bulletTemplates[term];
   if (!matched) {
-    // Partial substring search
-    const foundKey = Object.keys(bulletTemplates).find(k => term.includes(k) || k.includes(term));
+    // Word-boundary template key search (avoids arbitrary substring false positives)
+    const escapeKey = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/_/g, '[\\s_-]+');
+    const foundKey = Object.keys(bulletTemplates).find(k => {
+      const re = new RegExp(`(?:^|[\\s_/()-])${escapeKey(k)}(?:$|[\\s_/()-])`, 'i');
+      return re.test(term);
+    });
     if (foundKey) matched = bulletTemplates[foundKey];
   }
 

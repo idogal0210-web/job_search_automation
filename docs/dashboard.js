@@ -686,9 +686,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   function saveSupabaseSession(tokenResponse, emailFallback = '') {
     if (!tokenResponse || !tokenResponse.access_token) return null;
     const userEmail = (tokenResponse.user && tokenResponse.user.email) || emailFallback || '';
+    const userId = (tokenResponse.user && tokenResponse.user.id) || '';
     const session = {
       access_token: tokenResponse.access_token,
       refresh_token: tokenResponse.refresh_token,
+      user_id: userId,
       user_email: userEmail,
       expires_at: Math.floor(Date.now() / 1000) + (tokenResponse.expires_in || 3600)
     };
@@ -802,6 +804,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   async function runCloudAuthAction(kind) {
+    if (kind === 'signup') {
+      setCloudAuthMessage('הרשמה עצמית חסומה בלוח בקרה אישי זה.', 'error');
+      return;
+    }
     const { email, password } = readCloudAuthCredentials();
     if (!email || password.length < 8) {
       setCloudAuthMessage('נא להזין אימייל וסיסמה (לפחות 8 תווים)', 'error');
@@ -809,18 +815,14 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
     const buttons = document.querySelectorAll('#cloudAuthSignedOut button');
     buttons.forEach(b => { b.disabled = true; });
-    setCloudAuthMessage(kind === 'signup' ? 'נרשם...' : 'מתחבר...', '');
+    setCloudAuthMessage('מתחבר...', '');
     try {
-      const res = kind === 'signup' ? await supabaseSignUp(email, password) : await supabaseSignIn(email, password);
+      const res = await supabaseSignIn(email, password);
       if (!res.ok) {
         setCloudAuthMessage(res.message || 'הפעולה נכשלה', 'error');
         return;
       }
       try { localStorage.setItem('supabase_last_email', email); } catch (e) {}
-      if (res.confirmEmail) {
-        setCloudAuthMessage('נשלח מייל אימות. אשר אותו ואז התחבר.', 'ok');
-        return;
-      }
       const pw = document.getElementById('cloudAuthPassword');
       if (pw) pw.value = '';
       updateCloudAuthModalUI();
@@ -836,8 +838,25 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function handleCloudSignOut() {
     supabaseSignOut();
+    cloudSyncMeta = null;
     setCloudSyncStatus('local');
     updateCloudAuthModalUI();
+  }
+
+  let cloudSyncMeta = null;
+
+  function extractUserIdFromJwt(jwt) {
+    if (!jwt || typeof jwt !== 'string') return '';
+    try {
+      const parts = jwt.split('.');
+      if (parts.length < 2) return '';
+      const b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+      const jsonStr = typeof atob === 'function' ? atob(b64) : '';
+      const payload = jsonStr ? JSON.parse(jsonStr) : {};
+      return payload.sub || '';
+    } catch (_) {
+      return '';
+    }
   }
 
   const supabaseSyncAdapter = {
@@ -845,7 +864,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       try {
         const token = await getSupabaseAccessToken();
         if (!token) return { ok: false, authRequired: true };
-        const resp = await fetch(`${SUPABASE_SYNC_CONFIG.url}/rest/v1/${SUPABASE_SYNC_CONFIG.table}?id=eq.${SUPABASE_SYNC_CONFIG.rowId}&select=payload,updated_at`, {
+        const resp = await fetch(`${SUPABASE_SYNC_CONFIG.url}/rest/v1/${SUPABASE_SYNC_CONFIG.table}?select=*&limit=1`, {
           headers: {
             'apikey': SUPABASE_SYNC_CONFIG.publishableKey,
             'Authorization': `Bearer ${token}`
@@ -855,10 +874,21 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         if (resp.status === 401 || resp.status === 403) return { ok: false, authRequired: true };
         if (!resp.ok) return { ok: false };
         const rows = await resp.json();
-        if (!rows || rows.length === 0) return { ok: false };
+        if (!rows || rows.length === 0) {
+          cloudSyncMeta = { exists: false, id: null, user_id: extractUserIdFromJwt(token), version: null, updated_at: null };
+          return { ok: false, notFound: true };
+        }
         const row = rows[0];
-        const data = row.payload || {};
+        cloudSyncMeta = {
+          exists: true,
+          id: row.id || null,
+          user_id: row.user_id || extractUserIdFromJwt(token) || null,
+          version: typeof row.version === 'number' ? row.version : null,
+          updated_at: row.updated_at || null
+        };
+        const data = Object.assign({}, row.payload || {});
         data.updated_at = row.updated_at;
+        data.version = row.version;
         return {
           ok: true,
           json: async () => data
@@ -872,21 +902,102 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       try {
         const token = await getSupabaseAccessToken();
         if (!token) return { ok: false, authRequired: true };
+        const session = loadSupabaseSession();
+        const userId = (session && session.user_id) || extractUserIdFromJwt(token) || '';
+        const nowIso = new Date().toISOString();
+
+        // Ensure we have current row metadata before attempting conditional write
+        if (!cloudSyncMeta) {
+          await this.read();
+        }
+
+        // Case 1: Existing row -> conditional PATCH (true Compare-And-Swap)
+        if (cloudSyncMeta && cloudSyncMeta.exists) {
+          let queryFilter = '';
+          const patchBody = {
+            payload: payload,
+            updated_at: nowIso
+          };
+          if (typeof cloudSyncMeta.version === 'number' && (cloudSyncMeta.user_id || userId)) {
+            const targetUid = cloudSyncMeta.user_id || userId;
+            queryFilter = `user_id=eq.${encodeURIComponent(targetUid)}&version=eq.${encodeURIComponent(String(cloudSyncMeta.version))}`;
+            patchBody.version = cloudSyncMeta.version + 1;
+          } else if (cloudSyncMeta.updated_at) {
+            const targetId = cloudSyncMeta.id || userId || SUPABASE_SYNC_CONFIG.rowId;
+            queryFilter = `id=eq.${encodeURIComponent(targetId)}&updated_at=eq.${encodeURIComponent(cloudSyncMeta.updated_at)}`;
+          } else {
+            const targetId = cloudSyncMeta.id || userId || SUPABASE_SYNC_CONFIG.rowId;
+            queryFilter = `id=eq.${encodeURIComponent(targetId)}`;
+          }
+
+          const resp = await fetch(`${SUPABASE_SYNC_CONFIG.url}/rest/v1/${SUPABASE_SYNC_CONFIG.table}?${queryFilter}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': SUPABASE_SYNC_CONFIG.publishableKey,
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=representation'
+            },
+            body: JSON.stringify(patchBody)
+          });
+          if (resp.status === 401 || resp.status === 403) {
+            return { ok: false, authRequired: true };
+          }
+          if (!resp.ok) {
+            return { ok: false };
+          }
+          const updatedRows = await resp.json().catch(() => []);
+          if (!Array.isArray(updatedRows) || updatedRows.length === 0) {
+            // Concurrent modification detected: expected version/timestamp did not match
+            return { ok: false, conflict: true };
+          }
+          const updated = updatedRows[0];
+          cloudSyncMeta = {
+            exists: true,
+            id: updated.id || cloudSyncMeta.id,
+            user_id: updated.user_id || cloudSyncMeta.user_id || userId,
+            version: typeof updated.version === 'number' ? updated.version : cloudSyncMeta.version,
+            updated_at: updated.updated_at || nowIso
+          };
+          return { ok: true, version: cloudSyncMeta.version, updated_at: cloudSyncMeta.updated_at };
+        }
+
+        // Case 2: No row exists yet -> atomic INSERT without merge-duplicates overwrite
+        const insertBody = {
+          id: userId || SUPABASE_SYNC_CONFIG.rowId,
+          payload: payload,
+          updated_at: nowIso
+        };
+        if (userId) insertBody.user_id = userId;
         const resp = await fetch(`${SUPABASE_SYNC_CONFIG.url}/rest/v1/${SUPABASE_SYNC_CONFIG.table}`, {
           method: 'POST',
           headers: {
             'apikey': SUPABASE_SYNC_CONFIG.publishableKey,
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
-            'Prefer': 'resolution=merge-duplicates'
+            'Prefer': 'return=representation'
           },
-          body: JSON.stringify({
-            id: SUPABASE_SYNC_CONFIG.rowId,
-            payload: payload,
-            updated_at: new Date().toISOString()
-          })
+          body: JSON.stringify(insertBody)
         });
-        return { ok: resp.ok, authRequired: resp.status === 401 || resp.status === 403 };
+        if (resp.status === 409) {
+          return { ok: false, conflict: true };
+        }
+        if (resp.status === 401 || resp.status === 403) {
+          return { ok: false, authRequired: true };
+        }
+        if (!resp.ok) {
+          return { ok: false };
+        }
+        const insertedRows = await resp.json().catch(() => []);
+        const inserted = Array.isArray(insertedRows) && insertedRows[0] ? insertedRows[0] : insertBody;
+        cloudSyncMeta = {
+          exists: true,
+          id: inserted.id || insertBody.id,
+          user_id: inserted.user_id || userId || null,
+          version: typeof inserted.version === 'number' ? inserted.version : null,
+          updated_at: inserted.updated_at || nowIso
+        };
+        return { ok: true, version: cloudSyncMeta.version, updated_at: cloudSyncMeta.updated_at };
       } catch (e) {
         return { ok: false };
       }
@@ -1121,7 +1232,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     cloudSyncTimeout = setTimeout(pushCloudSync, 400);
   }
 
-  async function pushCloudSync() {
+  async function pushCloudSync(isConflictRetry = false) {
     if (isSyncInProgress) return;
     if (typeof navigator !== 'undefined' && navigator.onLine === false) {
       setCloudSyncStatus('offline');
@@ -1148,8 +1259,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (!privateSync) { setCloudSyncStatus('local'); return; }
       const resp = await privateSync.compareAndSwap(payload, cloudLastUpdated);
       if (resp.ok) {
-        cloudLastUpdated = Date.now();
+        cloudLastUpdated = resp.updated_at ? new Date(resp.updated_at).getTime() : Date.now();
         setCloudSyncStatus('synced', cloudLastUpdated);
+      } else if (resp.conflict && !isConflictRetry) {
+        // Concurrent update from another device: merge remote changes first, then retry CAS once
+        isSyncInProgress = false;
+        await fetchCloudSync(false);
+        return await pushCloudSync(true);
       } else if (resp.authRequired) {
         setCloudSyncStatus('local');
       } else {
@@ -1986,13 +2102,14 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         markerZoomAnimation: true
       }).setView([32.0853, 34.85], 8);
 
-      // Official Google Maps tile layer in English (hl=en)
-      L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=en', {
+      // OpenStreetMap / CARTO Voyager tile layer (compliant with public map tile TOS)
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         maxZoom: 19,
+        subdomains: 'abcd',
         keepBuffer: 6,
         updateWhenZooming: false,
         updateWhenIdle: true,
-        attribution: '&copy; Google Maps'
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
       }).addTo(liveJobsMapInstance);
 
       if (typeof L.markerClusterGroup === 'function') {
@@ -2104,7 +2221,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             <span style="color: ${scoreColor}; font-weight: 700;"><i class="ph-duotone ph-chart-line-up"></i> התאמה ${score}%</span>
           </div>
           <div style="display: flex; gap: 8px; margin-top: 4px;">
-            <button onclick="openJobModal(decodeURIComponent('${safeId}'))" class="btn-triage" style="flex: 1; width: auto; min-height: 34px; height: 34px; padding: 6px 10px; font-size: 12px; font-weight: 600; justify-content: center; background: rgba(137, 244, 231, 0.15); color: var(--dashboard-cyan); border: 1px solid rgba(137, 244, 231, 0.4); border-radius: 999px; box-sizing: border-box;">
+            <button onclick="openJobModal(${escapeHtml(JSON.stringify(String(job.link || '')))})" class="btn-triage" style="flex: 1; width: auto; min-height: 34px; height: 34px; padding: 6px 10px; font-size: 12px; font-weight: 600; justify-content: center; background: rgba(137, 244, 231, 0.15); color: var(--dashboard-cyan); border: 1px solid rgba(137, 244, 231, 0.4); border-radius: 999px; box-sizing: border-box;">
               <i class="ph-duotone ph-eye" style="font-size: 14px;"></i> צפה בכרטיס
             </button>
             <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply" style="flex: 1; width: auto; min-height: 34px; height: 34px; padding: 6px 10px; font-size: 12px; font-weight: 600; justify-content: center; text-decoration: none; border-radius: 999px; box-sizing: border-box;">
@@ -2294,15 +2411,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function sanitizeUrl(rawUrl) {
     if (!rawUrl) return '#';
-    const trimmed = String(rawUrl).trim();
-    if (/^(?:https?:\/\/|mailto:)/i.test(trimmed)) {
-      try {
-        const url = new URL(trimmed);
-        if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) return '#';
-        return escapeHtml(url.href);
-      } catch (_) { return '#'; }
+    const cleaned = String(rawUrl).replace(/[\u0000-\u001F\u007F]/g, '').trim();
+    if (!cleaned) return '#';
+    try {
+      const url = new URL(cleaned);
+      if (!['http:', 'https:', 'mailto:'].includes(url.protocol) || url.username || url.password) return '#';
+      return escapeHtml(url.href);
+    } catch (_) {
+      return '#';
     }
-    return '#';
   }
 
   function classifyJobRegion(locStr) {
@@ -4594,11 +4711,61 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     });
   }
 
+  const externalScriptPromises = {};
+
+  function loadExternalScriptWithSri(src, integrity) {
+    if (externalScriptPromises[src]) return externalScriptPromises[src];
+    externalScriptPromises[src] = new Promise((resolve, reject) => {
+      if (typeof document === 'undefined' || !document.head) {
+        return resolve(false);
+      }
+      const script = document.createElement('script');
+      script.src = src;
+      if (integrity) script.integrity = integrity;
+      script.crossOrigin = 'anonymous';
+      script.referrerPolicy = 'no-referrer';
+      script.onload = () => resolve(true);
+      script.onerror = (err) => {
+        delete externalScriptPromises[src];
+        reject(err);
+      };
+      document.head.appendChild(script);
+    });
+    return externalScriptPromises[src];
+  }
+
+  async function ensurePdfJsLoaded() {
+    if (typeof window !== 'undefined' && window.pdfjsLib && window.pdfjsLib.getDocument) return true;
+    try {
+      await loadExternalScriptWithSri(
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
+        'sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e'
+      );
+      return Boolean(typeof window !== 'undefined' && window.pdfjsLib && window.pdfjsLib.getDocument);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  async function ensureMammothLoaded() {
+    if (typeof window !== 'undefined' && window.mammoth && window.mammoth.extractRawText) return true;
+    try {
+      await loadExternalScriptWithSri(
+        'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js',
+        'sha384-nFoSjZIoH3CCp8W639jJyQkuPHinJ2NHe7on1xvlUA7SuGfJAfvMldrsoAVm6ECz'
+      );
+      return Boolean(typeof window !== 'undefined' && window.mammoth && window.mammoth.extractRawText);
+    } catch (_) {
+      return false;
+    }
+  }
+
   /**
    * Extracts text from PDF file via PDF.js with fallback.
    */
   async function extractPdfText(file) {
     const arrayBuffer = await file.arrayBuffer();
+    await ensurePdfJsLoaded();
     if (typeof window !== 'undefined' && window.pdfjsLib && window.pdfjsLib.getDocument) {
       try {
         if (!window.pdfjsLib.GlobalWorkerOptions.workerSrc) {
@@ -4627,6 +4794,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
    */
   async function extractDocxText(file) {
     const arrayBuffer = await file.arrayBuffer();
+    await ensureMammothLoaded();
     if (typeof window !== 'undefined' && window.mammoth && window.mammoth.extractRawText) {
       try {
         const result = await window.mammoth.extractRawText({ arrayBuffer: arrayBuffer });
@@ -4714,12 +4882,19 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         baselineStatusText.textContent = `מוכן לניתוח מול קובץ שהועלה: ${fileName} (${wordCount} מילים)`;
       }
 
-      // Persist state in localStorage
+      // Persist state in sessionStorage only (do not leave plaintext CV in persistent localStorage)
       try {
-        localStorage.setItem('job_studio_custom_cv_name', fileName);
-        localStorage.setItem('job_studio_custom_cv_size', `${fileSizeKb} KB`);
-        if (cleanText && cleanText.length < 300000) {
-          localStorage.setItem('job_studio_custom_cv_text', cleanText);
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem('job_studio_custom_cv_name');
+          localStorage.removeItem('job_studio_custom_cv_size');
+          localStorage.removeItem('job_studio_custom_cv_text');
+        }
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.setItem('job_studio_custom_cv_name', fileName);
+          sessionStorage.setItem('job_studio_custom_cv_size', `${fileSizeKb} KB`);
+          if (cleanText && cleanText.length < 300000) {
+            sessionStorage.setItem('job_studio_custom_cv_text', cleanText);
+          }
         }
       } catch (e) {}
 
@@ -4764,9 +4939,16 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
    */
   function resetToBaselineCv() {
     try {
-      localStorage.removeItem('job_studio_custom_cv_name');
-      localStorage.removeItem('job_studio_custom_cv_size');
-      localStorage.removeItem('job_studio_custom_cv_text');
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('job_studio_custom_cv_name');
+        localStorage.removeItem('job_studio_custom_cv_size');
+        localStorage.removeItem('job_studio_custom_cv_text');
+      }
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.removeItem('job_studio_custom_cv_name');
+        sessionStorage.removeItem('job_studio_custom_cv_size');
+        sessionStorage.removeItem('job_studio_custom_cv_text');
+      }
     } catch (e) {}
 
     window.customUploadedCvName = null;
@@ -4845,13 +5027,17 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   /**
-   * Restores uploaded CV metadata and extracted text from localStorage on page load.
+   * Restores uploaded CV metadata and extracted text from sessionStorage on page load.
    */
   function initCvUploadState() {
     try {
-      const savedName = localStorage.getItem('job_studio_custom_cv_name');
-      const savedSize = localStorage.getItem('job_studio_custom_cv_size');
-      const savedText = localStorage.getItem('job_studio_custom_cv_text');
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('job_studio_custom_cv_text');
+      }
+      const storeRef = (typeof sessionStorage !== 'undefined') ? sessionStorage : null;
+      const savedName = storeRef ? storeRef.getItem('job_studio_custom_cv_name') : null;
+      const savedSize = storeRef ? storeRef.getItem('job_studio_custom_cv_size') : null;
+      const savedText = storeRef ? storeRef.getItem('job_studio_custom_cv_text') : null;
 
       if (savedName) {
         window.customUploadedCvName = savedName;
@@ -4896,42 +5082,42 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
      ========================================================================== */
 
   const CANONICAL_CV_PROFILE = {
-    name: "עידו גל",
-    name_en: "Ido Gal",
+    name: "מועמד מערכת (פרופיל בסיס)",
+    name_en: "Candidate Baseline Profile",
     title_he: "הנדסאי מכונות | בקרת גז טבעי | תפעול מערכות אנרגיה",
     title_en: "Gas Controller | Natural Gas Operations | Practical Mechanical Engineer",
     contact: {
-      phone: "052-632-8886",
-      phone_intl: "+972-52-632-8886",
-      email: "idogal0210@gmail.com",
-      linkedin: "https://www.linkedin.com/in/ido-g",
-      location: "תל אביב"
+      phone: "050-000-0000",
+      phone_intl: "+972-50-000-0000",
+      email: "candidate@confidential.il",
+      linkedin: "",
+      location: "מרכז"
     },
     education: [
-      "לימודי חשמלאי מוסמך | המרכז האקדמי רופין | צפי סיום: דצמבר 2026",
-      "הנדסאי מכונות — התמחות בגז טבעי ובאנרגיה ירוקה | המרכז האקדמי רופין | 2022. פרויקט גמר: השוואת נצילות וכדאיות כלכלית וטכנית בין מערכות סולאריות בעלות פאנלים דו־צדדיים (Bifacial) לבין מערכות בעלות פאנלים חד־צדדיים (Monofacial)."
+      "לימודי חשמלאי מוסמך | מוסד אקדמי מוכר | בלימודים לקראת סיום",
+      "הנדסאי מכונות — התמחות בגז טבעי ובאנרגיה ירוקה | פרויקט גמר: מערכות סולאריות פאנלים דו־צדדיים (Bifacial) מול חד־צדדיים (Monofacial)."
     ],
     experience: [
-      "בקר גז — תפעול ומוצר | Energean Israel Ltd. | נובמבר 2022 – ספטמבר 2026: בקרה 24/7 על אספקת גז טבעי לתחנות כוח ומפעלי תעשייה, ניטור לחצים וספיקות בזמן אמת עם AVEVA System Platform, טיפול ב-Nomination ו-Re-nomination, תיאום מול אסדת ההפקה הימית (FPSO), נתג״ז (INGL) והמחלקה המסחרית, פיתוח סוכן חישוב כמויות גז ב-Microsoft 365 Copilot עבור 10+ לקוחות גדולים, שיפור תהליך העברת משמרת עם סוכן Copilot נפרד, ודוחות Excel ו-SAP כולל דוח משמרות לילה לסמנכ״ל.",
-      "אחראי משמרת אבטחה במתקן אנרגיה אסטרטגי | וולקן עוצמה בע״מ / Energean Israel Ltd. | 2020–2022.",
-      "ראש צוות ומדריך מכירות | חברות מכירות בפעילות בינלאומית | 2015–2020 (ארה״ב וקו ישראל–גרמניה).",
-      "מתקין מערכות סולאריות | MER Group | 2010–2012: התקנה, חיווט והרכבה פיזית של מערכות פוטו־וולטאיות (PV)."
+      "בקר גז — תפעול ומוצר | חברת אנרגיה ותשתיות: בקרה 24/7 על אספקת גז טבעי לתחנות כוח ומפעלי תעשייה, ניטור לחצים וספיקות בזמן אמת עם AVEVA System Platform, טיפול ב-Nomination ו-Re-nomination, תיאום מול אסדת הפקה ימית (FPSO), מערכת הולכה ארצית והמחלקה המסחרית, פיתוח סוכני Microsoft 365 Copilot ודוחות Excel ו-SAP.",
+      "אחראי משמרת במתקן אנרגיה אסטרטגי.",
+      "הובלת צוות והדרכה בפעילות בינלאומית.",
+      "מתקין מערכות סולאריות: התקנה, חיווט והרכבה פיזית של מערכות פוטו־וולטאיות (PV)."
     ],
-    military: "סיירת נח״ל | לוחם ומפקד בתחום החבלה וההנדסה הקרבית | 2012–2015 (כולל שירות קבע והובלת תחום החבלה ביחידה). ניסיון מבצעי בהפעלת רחפנים (UAV) לסריקה ומיפוי שטח. הסמכות: רובאי 07, פלס/חבלה 08.",
+    military: "שירות קרבי ופיקודי בהנדסה קרבית והפעלת רחפנים (UAV) לסריקה ומיפוי שטח.",
     skills: [
       "AVEVA System Platform", "SCADA", "PRMS", "Nomination", "Re-nomination", "FPSO", "INGL",
       "SAP", "Microsoft Excel", "Microsoft 365 Copilot", "Google Gemini", "Bifacial PV", "Monofacial PV",
-      "ניטור לחצים וספיקות", "אסדת הפקה", "נתג״ז", "חבלה 07", "רובאי 08", "הפעלת רחפנים", "UAV",
+      "ניטור לחצים וספיקות", "אסדת הפקה", "נתג״ז", "הפעלת רחפנים", "UAV",
       "מתח נמוך", "חוק החשמל"
     ],
-    text: `עידו גל הנדסאי מכונות בקרת גז טבעי תפעול מערכות אנרגיה רופין 2022 אנרגיה ירוקה וגז טבעי
+    text: `הנדסאי מכונות בקרת גז טבעי תפעול מערכות אנרגיה אנרגיה ירוקה וגז טבעי
 פרויקט גמר פאנלים סולאריים דו צדדיים Bifacial PV מול Monofacial
-לימודי חשמלאי מוסמך רופין צפי סיום דצמבר 2026 לקראת סיום חוק החשמל חישובים תיאורטיים
-Energean Israel Ltd בקר גז תפעול ומוצר נובמבר 2022 ספטמבר 2026 AVEVA System Platform אסדת הפקה FPSO נתג״ז INGL PRMS SCADA Nomination Re-nomination SAP Excel Microsoft 365 Copilot Google Gemini מתקן אנרגיה 24/7
-וולקן עוצמה אחראי משמרת אבטחה במתקן אנרגיה אסטרטגי אחמ״ש אבטחה
-MER Group מתקין מערכות סולאריות PV שטח עבודה בגובה
-סיירת נח״ל לוחם ומפקד בתחום החבלה וההנדסה הקרבית פלס 07 חבלה 08 רובאי 07 רובאי 08 מפעיל רחפנים מבצעי טלמטריה
-טלפון 052-632-8886 0526328886 +972-52-632-8886 דואל idogal0210@gmail.com לינקדאין https://www.linkedin.com/in/ido-g`
+לימודי חשמלאי מוסמך לקראת סיום חוק החשמל חישובים תיאורטיים
+בקר גז תפעול ומוצר AVEVA System Platform אסדת הפקה FPSO נתג״ז INGL PRMS SCADA Nomination Re-nomination SAP Excel Microsoft 365 Copilot Google Gemini מתקן אנרגיה 24/7
+אחראי משמרת במתקן אנרגיה אסטרטגי
+מתקין מערכות סולאריות PV שטח עבודה בגובה
+הנדסה קרבית מפעיל רחפנים UAV מבצעי טלמטריה
+טלפון 050-000-0000 +972-50-000-0000 דואל candidate@confidential.il`
   };
 
   const STATUTORY_HARD_GATES = [
@@ -5473,7 +5659,11 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
 
     let matched = bulletTemplates[term];
     if (!matched) {
-      const foundKey = Object.keys(bulletTemplates).find(k => term.includes(k) || k.includes(term));
+      const escapeKey = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/_/g, '[\\s_-]+');
+      const foundKey = Object.keys(bulletTemplates).find(k => {
+        const re = new RegExp(`(?:^|[\\s_/()-])${escapeKey(k)}(?:$|[\\s_/()-])`, 'i');
+        return re.test(term);
+      });
       if (foundKey) matched = bulletTemplates[foundKey];
     }
 
@@ -5958,11 +6148,11 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
 
       let html = '';
       missingList.forEach(term => {
-        const safeTerm = String(term || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        const safeTermAttr = escapeHtml(JSON.stringify(String(term || '')));
         html += `
-          <button type="button" class="ats-keyword-tag missing is-actionable" onclick="injectKeywordToWriter('${safeTerm}')" title="לחץ לשילוב המונח בעורך קורות החיים">
+          <button type="button" class="ats-keyword-tag missing is-actionable" onclick="injectKeywordToWriter(${safeTermAttr})" title="לחץ לשילוב המונח בעורך קורות החיים">
             <i class="ph-bold ph-plus-circle" aria-hidden="true"></i>
-            <span>${term}</span>
+            <span>${escapeHtml(term)}</span>
             <span class="keyword-inject-cta">שלב בקו״ח</span>
           </button>
         `;
@@ -5970,9 +6160,9 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
 
       matchedList.forEach(term => {
         html += `
-          <span class="ats-keyword-tag matched" title="מונח קיים ומתועד בקו״ח של עידו גל">
+          <span class="ats-keyword-tag matched" title="מונח קיים ומתועד בקו״ח">
             <i class="ph-bold ph-check" aria-hidden="true"></i>
-            <span>${term}</span>
+            <span>${escapeHtml(term)}</span>
           </span>
         `;
       });
@@ -6771,18 +6961,18 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
       const audit = validateBulletGrammar(bullet);
       totalScore += audit.score;
       const scoreClass = audit.score >= 80 ? 'score-high' : (audit.score >= 55 ? 'score-mid' : 'score-low');
-      const safeBullet = String(bullet || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const safeBulletAttr = escapeHtml(JSON.stringify(String(bullet || '')));
       return `
         <div class="writer-audit-row">
           <div class="writer-audit-main">
             <span class="writer-score-badge ${scoreClass}">${audit.score}/100</span>
-            <p class="writer-audit-text" dir="auto">${bullet}</p>
+            <p class="writer-audit-text" dir="auto">${escapeHtml(bullet)}</p>
           </div>
           <div class="writer-audit-meta">
             <span class="audit-mini-pill ${audit.hasActiveVerb ? 'pass' : 'warn'}">${audit.hasActiveVerb ? 'פועל פעיל' : 'חסר פועל'}</span>
             <span class="audit-mini-pill ${audit.hasScope ? 'pass' : 'warn'}">${audit.hasScope ? 'מערכת מוגדרת' : 'חסרה מערכת'}</span>
             <span class="audit-mini-pill ${audit.hasMetric ? 'pass' : 'warn'}">${audit.hasMetric ? 'מדד כמותי' : 'חסר מדד'}</span>
-            <button type="button" class="studio-mini-btn is-accent" onclick="selectPreviewLineForEditing('${safeBullet}')">
+            <button type="button" class="studio-mini-btn is-accent" onclick="selectPreviewLineForEditing(${safeBulletAttr})">
               <i class="ph-duotone ph-magic-wand" aria-hidden="true"></i>
               <span>טען לשדרוג</span>
             </button>
@@ -6820,18 +7010,18 @@ MER Group מתקין מערכות סולאריות PV שטח עבודה בגוב
 
     gridEl.innerHTML = terms.map(t => {
       const catClass = catClassMap[t.category] || 'cat-automation';
-      const safeSnippet = t.snippet.replace(/'/g, "\\'");
+      const safeSnippetAttr = escapeHtml(JSON.stringify(String(t.snippet || '')));
       return `
-        <div class="writer-dict-card" onclick="insertDictionaryTerm('${safeSnippet}')">
+        <div class="writer-dict-card" onclick="insertDictionaryTerm(${safeSnippetAttr})">
           <div class="writer-dict-card-top">
-            <span class="writer-dict-card-term-en">${t.acronym}</span>
-            <span class="writer-dict-card-cat ${catClass}">${t.category_he}</span>
+            <span class="writer-dict-card-term-en">${escapeHtml(t.acronym)}</span>
+            <span class="writer-dict-card-cat ${catClass}">${escapeHtml(t.category_he)}</span>
           </div>
-          <div class="writer-dict-card-term-he">${t.term_he}</div>
-          <div class="writer-dict-card-desc">${t.description_he}</div>
+          <div class="writer-dict-card-term-he">${escapeHtml(t.term_he)}</div>
+          <div class="writer-dict-card-desc">${escapeHtml(t.description_he)}</div>
           <div class="writer-dict-card-bottom">
-            <span class="writer-dict-card-cat ${catClass}">${t.category_he}</span>
-            <button type="button" class="writer-dict-insert-btn" onclick="event.stopPropagation(); insertDictionaryTerm('${safeSnippet}')">
+            <span class="writer-dict-card-cat ${catClass}">${escapeHtml(t.category_he)}</span>
+            <button type="button" class="writer-dict-insert-btn" onclick="event.stopPropagation(); insertDictionaryTerm(${safeSnippetAttr})">
               <i class="ph-duotone ph-arrow-up-right"></i>
               <span>שלב בטקסט</span>
             </button>
@@ -7444,11 +7634,11 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
 פיתוח סוכני Microsoft 365 Copilot לחישוב כמויות גז ושיפור העברת משמרת, עבודה עם SAP ו-Excel וכעת בלימודי חשמלאי מוסמך.
 ליצירת קשר דיסקרטי: candidate@confidential.il`;
 
-  const ORIGINAL_CV_SUMMARY_TEXT = `עידו גל — הנדסאי מכונות | בקרת גז טבעי | תפעול מערכות אנרגיה
-תל אביב | 0526328886 | idogal0210@gmail.com | linkedin.com/in/ido-g/
-ניסיון: בקר גז — תפעול ומוצר ב-Energean Israel Ltd. (2022–2026), עבודה עם AVEVA System Platform, SAP ו-Excel.
-פיתוח סוכני Microsoft 365 Copilot לחישוב כמויות גז עבור 10+ לקוחות גדולים ולשיפור תהליך העברת משמרת.
-השכלה: הנדסאי מכונות (רופין 2022) ולימודי חשמלאי מוסמך (צפי סיום: דצמבר 2026).`;
+  const ORIGINAL_CV_SUMMARY_TEXT = `מועמד מערכת — הנדסאי מכונות | בקרת גז טבעי | תפעול מערכות אנרגיה
+מרכז | 050-000-0000 | candidate@confidential.il
+ניסיון: בקר גז — תפעול ומוצר בחברת אנרגיה ותשתיות, עבודה עם AVEVA System Platform, SAP ו-Excel.
+פיתוח סוכני Microsoft 365 Copilot לחישוב כמויות גז ולשיפור תהליך העברת משמרת.
+השכלה: הנדסאי מכונות ולימודי חשמלאי מוסמך (בלימודים לקראת סיום).`;
 
   function initSkillsModule() {
     const toggle = document.getElementById('anonToggleCheckbox');
@@ -7626,7 +7816,19 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     return 'http://127.0.0.1:8765';
   }
 
-  async function callStudioBridge(endpoint, payload = null, method = 'POST', timeoutMs = 45000) {
+  // Per-process session token issued by the loopback bridge (GET /api/session, CORS-protected).
+  let studioBridgeToken = null;
+
+  async function getStudioBridgeToken(forceRefresh = false) {
+    if (studioBridgeToken && !forceRefresh) return studioBridgeToken;
+    const res = await fetch(`${getStudioBridgeBaseUrl()}/api/session`, { method: 'GET', cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json().catch(() => ({}));
+    studioBridgeToken = (data && typeof data.token === 'string') ? data.token : null;
+    return studioBridgeToken;
+  }
+
+  async function callStudioBridge(endpoint, payload = null, method = 'POST', timeoutMs = 45000, isRetry = false) {
     if (typeof fetch !== 'function') {
       throw new Error('fetch אינו זמין בסביבה זו');
     }
@@ -7635,15 +7837,25 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
     const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
     try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (endpoint !== '/api/health') {
+        const token = await getStudioBridgeToken(isRetry);
+        if (token) headers['X-Studio-Token'] = token;
+      }
       const opts = {
         method,
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         ...(controller ? { signal: controller.signal } : {})
       };
       if (method !== 'GET' && payload !== null) {
         opts.body = JSON.stringify(payload);
       }
       const res = await fetch(url, opts);
+      if (res.status === 401 && !isRetry) {
+        // Bridge restarted and rotated its token: refresh once and retry.
+        if (timer) clearTimeout(timer);
+        return callStudioBridge(endpoint, payload, method, timeoutMs, true);
+      }
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
         const msg = data.error_message || `HTTP ${res.status}`;
@@ -7661,11 +7873,31 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
   function applyStudioProfileSync(profile, savedOutputs) {
     if (profile && typeof profile === 'object') {
       studioProfileCache = Object.assign({}, studioProfileCache || {}, profile);
-      if (profile.source !== 'policy_config' && profile.source !== 'template' && profile.title_he && !window.customUploadedCvText) {
-        const nameEl = document.getElementById('studioCvFileName');
-        const subEl = document.getElementById('studioCvFileSub');
-        if (nameEl) nameEl.textContent = 'עידו גל — פרופיל בסיס (base_profile.md)';
-        if (subEl) subEl.textContent = profile.title_he;
+      if (profile.source !== 'policy_config' && profile.source !== 'template') {
+        if (profile.name) CANONICAL_CV_PROFILE.name = profile.name;
+        if (profile.title_he) CANONICAL_CV_PROFILE.title_he = profile.title_he;
+        if (profile.title_en) CANONICAL_CV_PROFILE.title_en = profile.title_en;
+        if (profile.contact && typeof profile.contact === 'object') {
+          CANONICAL_CV_PROFILE.contact = Object.assign({}, CANONICAL_CV_PROFILE.contact, profile.contact);
+        }
+        if (Array.isArray(profile.education) && profile.education.length) {
+          CANONICAL_CV_PROFILE.education = profile.education;
+        }
+        if (Array.isArray(profile.experience_highlights) && profile.experience_highlights.length) {
+          CANONICAL_CV_PROFILE.experience = profile.experience_highlights;
+        }
+        if (Array.isArray(profile.military) && profile.military.length) {
+          CANONICAL_CV_PROFILE.military = profile.military.join(' ');
+        }
+        if (profile.baseline_summary_he && !window.customUploadedCvText) {
+          CANONICAL_CV_PROFILE.text = `${CANONICAL_CV_PROFILE.text}\n${profile.baseline_summary_he}`;
+        }
+        if (profile.title_he && !window.customUploadedCvText) {
+          const nameEl = document.getElementById('studioCvFileName');
+          const subEl = document.getElementById('studioCvFileSub');
+          if (nameEl) nameEl.textContent = 'עידו גל — פרופיל בסיס (base_profile.md)';
+          if (subEl) subEl.textContent = profile.title_he;
+        }
       }
     }
     if (Array.isArray(savedOutputs)) {

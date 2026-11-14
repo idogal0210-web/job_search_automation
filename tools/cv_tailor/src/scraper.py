@@ -9,6 +9,10 @@ try:
 except ModuleNotFoundError:
     from src.utils import print_info, print_warning, print_success
     fetch_ats_job_detail = None
+try:
+    from src.url_guard import safe_get
+except ImportError:  # CLI execution from tools/cv_tailor where `src` is the local package
+    safe_get = None
 
 @dataclass
 class JobPosting:
@@ -49,7 +53,11 @@ def scrape_with_bs4(url: str) -> str:
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         "Accept-Language": "he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
     }
-    res = requests.get(url, headers=headers, timeout=20)
+    if safe_get is not None:
+        # Validates every redirect hop and the connected peer address (anti-SSRF).
+        res = safe_get(url, headers=headers, timeout=20)
+    else:
+        res = requests.get(url, headers=headers, timeout=20)
     res.raise_for_status()
     soup = BeautifulSoup(res.text, "html.parser")
     

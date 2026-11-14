@@ -259,7 +259,7 @@ class TestCareerStudioBridgeAndEngine(unittest.TestCase):
 
             def _request(path: str, payload=None, method: str = "POST"):
                 data = json.dumps(payload).encode("utf-8") if payload is not None else None
-                headers = {"Origin": "http://127.0.0.1:8000"}
+                headers = {"Origin": "http://127.0.0.1:8000", "X-Studio-Token": "test-token"}
                 if data is not None:
                     headers["Content-Type"] = "application/json"
                 req = Request(f"http://127.0.0.1:{port}{path}", data=data, headers=headers, method=method)
@@ -272,7 +272,7 @@ class TestCareerStudioBridgeAndEngine(unittest.TestCase):
                     err.close()
                     return code, json.loads(body)
 
-            server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(svc))
+            server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(svc, session_token="test-token"))
             port = server.server_address[1]
             thread = threading.Thread(target=server.serve_forever, daemon=True)
             thread.start()

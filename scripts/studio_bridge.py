@@ -9,12 +9,12 @@ zero-emoji verification, and atomic persistence into tools/cv_tailor/output/.
 """
 
 import argparse
-import ipaddress
+import hmac
 import json
 import mimetypes
 import os
 import re
-import socket
+import secrets
 import sys
 from datetime import datetime
 from http import HTTPStatus
@@ -35,6 +35,7 @@ except ImportError:
 
 from google import genai
 from scripts.validate_zero_emoji import check_text as check_zero_emoji
+from src.url_guard import validate_public_http_url  # noqa: F401 - re-exported for tests
 from src.gemini_runtime import (
     CvTailoredBulletSchema,
     EvaluationUnavailable,
@@ -65,6 +66,10 @@ ALLOWED_ORIGIN_PATTERNS = (
 )
 
 
+STUDIO_TOKEN_HEADER = "X-Studio-Token"
+LOOPBACK_HOSTNAMES = {"127.0.0.1", "localhost", "[::1]"}
+
+
 def is_allowed_origin(origin: str) -> bool:
     """Allow local development origins and owner GitHub Pages dashboard only."""
     if not origin or origin == "null":
@@ -72,39 +77,31 @@ def is_allowed_origin(origin: str) -> bool:
     return any(p.match(origin.strip()) for p in ALLOWED_ORIGIN_PATTERNS)
 
 
-def validate_public_http_url(url: str) -> Tuple[bool, str]:
-    """Validate that URL uses http/https and resolves only to public IP addresses (anti-SSRF)."""
-    raw = (url or "").strip()
-    if not raw:
-        return False, "כתובת URL ריקה."
-    parsed = urlparse(raw)
-    if parsed.scheme.lower() not in {"http", "https"} or not parsed.netloc or not parsed.hostname:
-        return False, "נתמכות כתובות http ו-https תקינות בלבד."
-    host = parsed.hostname.strip().lower()
-    if host in {"localhost", "localhost.localdomain"}:
-        return False, "כתובת פנימית (localhost) אינה מורשית לגריפה."
-    try:
-        ip_obj = ipaddress.ip_address(host)
-        if not ip_obj.is_global:
-            return False, "כתובת IP פנימית או שמורה אינה מורשית לגריפה."
-        return True, ""
-    except ValueError:
-        pass
+def is_allowed_host_header(host_header: str, port: int) -> bool:
+    """Reject DNS-rebinding requests: Host must be a loopback name with the bound port."""
+    value = (host_header or "").strip().lower()
+    if not value:
+        return False
+    if value.startswith("["):
+        name, _, rest = value.partition("]")
+        name = name + "]"
+        port_part = rest[1:] if rest.startswith(":") else ""
+    else:
+        name, _, port_part = value.partition(":")
+    if name not in LOOPBACK_HOSTNAMES:
+        return False
+    return port_part == str(port)
 
-    try:
-        infos = socket.getaddrinfo(host, None, type=socket.SOCK_STREAM)
-    except OSError:
-        return False, "לא ניתן היה לפתור את שם הדומיין (DNS)."
 
-    for info in infos:
-        addr_str = info[4][0].split("%")[0]
-        try:
-            addr = ipaddress.ip_address(addr_str)
-            if addr.is_private or addr.is_loopback or addr.is_link_local or addr.is_reserved or addr.is_multicast:
-                return False, "הדומיין מצביע לכתובת רשת פנימית ואינו מורשה לגריפה."
-        except ValueError:
-            continue
-    return True, ""
+def parse_content_length(raw_value: Optional[str], max_bytes: int) -> Tuple[Optional[int], Optional[str]]:
+    """Parse Content-Length strictly into the closed range [0, max_bytes]."""
+    raw = (raw_value or "0").strip()
+    if not raw.isdigit():
+        return None, "invalid_content_length"
+    length = int(raw)
+    if length > max_bytes:
+        return None, "payload_too_large"
+    return length, None
 
 
 def list_saved_output_files(output_dir: Optional[str] = None, limit: int = 12) -> List[Dict[str, Any]]:
@@ -586,21 +583,45 @@ class BridgeServices:
             }
 
 
-def make_handler(services: Optional[BridgeServices] = None):
-    """Build a ThreadingHTTPServer handler bound to the provided BridgeServices instance."""
+def make_handler(services: Optional[BridgeServices] = None, session_token: Optional[str] = None, port: Optional[int] = None):
+    """Build a ThreadingHTTPServer handler bound to the provided BridgeServices instance.
+
+    Security model (loopback bridge reachable from any page the user visits):
+    - Host header must be a loopback name with the bound port (blocks DNS rebinding).
+    - POST requires an allowlisted Origin AND the per-process session token.
+    - The token is obtainable only via GET /api/session from an allowlisted Origin
+      (CORS prevents foreign pages from reading it) or same-origin navigation.
+    """
     svc = services or BridgeServices()
+    token = session_token or secrets.token_urlsafe(32)
     docs_root = (ROOT_DIR / "docs").resolve()
 
+    def _deny(handler: "BaseHTTPRequestHandler", status: int, code: str, message: str) -> None:
+        handler._send_json(status, {"ok": False, "error_code": code, "error_message": message, "recoverable": False})
+
     class StudioBridgeHandler(BaseHTTPRequestHandler):
+        def _bound_port(self) -> int:
+            return port if port is not None else int(self.server.server_address[1])
+
+        def _host_ok(self) -> bool:
+            return is_allowed_host_header(self.headers.get("Host", ""), self._bound_port())
+
+        def _origin(self) -> str:
+            return self.headers.get("Origin", "")
+
+        def _token_ok(self) -> bool:
+            supplied = self.headers.get(STUDIO_TOKEN_HEADER, "")
+            return bool(supplied) and hmac.compare_digest(supplied.encode("utf-8"), token.encode("utf-8"))
+
         def _send_cors_headers(self):
-            origin = self.headers.get("Origin", "")
+            origin = self._origin()
             if is_allowed_origin(origin):
                 self.send_header("Access-Control-Allow-Origin", origin)
                 self.send_header("Vary", "Origin")
-            self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-            self.send_header("Access-Control-Allow-Headers", "Content-Type")
-            if self.headers.get("Access-Control-Request-Private-Network") == "true":
-                self.send_header("Access-Control-Allow-Private-Network", "true")
+                self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+                self.send_header("Access-Control-Allow-Headers", f"Content-Type, {STUDIO_TOKEN_HEADER}")
+                if self.headers.get("Access-Control-Request-Private-Network") == "true":
+                    self.send_header("Access-Control-Allow-Private-Network", "true")
 
         def _send_json(self, status: int, payload: Dict[str, Any]):
             raw = json.dumps(payload, ensure_ascii=False).encode("utf-8")
@@ -608,22 +629,28 @@ def make_handler(services: Optional[BridgeServices] = None):
             self._send_cors_headers()
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Cache-Control", "no-store")
+            self.send_header("X-Content-Type-Options", "nosniff")
             self.send_header("Content-Length", str(len(raw)))
             self.end_headers()
             self.wfile.write(raw)
 
         def _read_json_body(self) -> Tuple[Optional[Dict[str, Any]], Optional[Tuple[int, Dict[str, Any]]]]:
-            try:
-                length = int(self.headers.get("Content-Length", "0"))
-            except ValueError:
+            length, err_code = parse_content_length(self.headers.get("Content-Length"), MAX_BODY_BYTES)
+            if err_code == "payload_too_large":
+                return None, (HTTPStatus.REQUEST_ENTITY_TOO_LARGE, {
+                    "ok": False, "error_code": "payload_too_large",
+                    "error_message": "גודל הבקשה חורג מן המגבלה (1MB).", "recoverable": False,
+                })
+            if err_code or length is None:
                 return None, (HTTPStatus.BAD_REQUEST, {
                     "ok": False, "error_code": "invalid_content_length",
                     "error_message": "כותרת Content-Length לא תקינה.", "recoverable": True,
                 })
-            if length > MAX_BODY_BYTES:
-                return None, (HTTPStatus.REQUEST_ENTITY_TOO_LARGE, {
-                    "ok": False, "error_code": "payload_too_large",
-                    "error_message": "גודל הבקשה חורג מן המגבלה (1MB).", "recoverable": False,
+            ctype = (self.headers.get("Content-Type") or "").split(";")[0].strip().lower()
+            if length > 0 and ctype != "application/json":
+                return None, (HTTPStatus.UNSUPPORTED_MEDIA_TYPE, {
+                    "ok": False, "error_code": "unsupported_media_type",
+                    "error_message": "נדרש Content-Type: application/json.", "recoverable": False,
                 })
             raw = self.rfile.read(length) if length > 0 else b"{}"
             try:
@@ -641,16 +668,38 @@ def make_handler(services: Optional[BridgeServices] = None):
             return
 
         def do_OPTIONS(self):
-            self.send_response(HTTPStatus.NO_CONTENT)
+            if not self._host_ok():
+                _deny(self, HTTPStatus.FORBIDDEN, "invalid_host", "כותרת Host אינה מורשית.")
+                return
+            self.send_response(HTTPStatus.NO_CONTENT if is_allowed_origin(self._origin()) else HTTPStatus.FORBIDDEN)
             self._send_cors_headers()
+            self.send_header("Content-Length", "0")
             self.end_headers()
 
         def do_GET(self):
+            if not self._host_ok():
+                _deny(self, HTTPStatus.FORBIDDEN, "invalid_host", "כותרת Host אינה מורשית.")
+                return
             path = urlparse(self.path).path
+            origin = self._origin()
+            if origin and not is_allowed_origin(origin):
+                _deny(self, HTTPStatus.FORBIDDEN, "origin_not_allowed", "מקור הבקשה אינו מורשה.")
+                return
+            if path == "/api/session":
+                # Cross-origin readers are limited by CORS; same-origin fetches omit Origin.
+                fetch_site = (self.headers.get("Sec-Fetch-Site") or "").lower()
+                if not origin and fetch_site not in {"same-origin", "none"}:
+                    _deny(self, HTTPStatus.FORBIDDEN, "origin_required", "נדרש מקור מורשה לקבלת אסימון.")
+                    return
+                self._send_json(HTTPStatus.OK, {"ok": True, "token": token, "header": STUDIO_TOKEN_HEADER})
+                return
             if path == "/api/health":
                 self._send_json(HTTPStatus.OK, svc.health())
                 return
             if path == "/api/profile":
+                if not self._token_ok():
+                    _deny(self, HTTPStatus.UNAUTHORIZED, "invalid_token", "אסימון הסטודיו חסר או שגוי.")
+                    return
                 self._send_json(HTTPStatus.OK, svc.profile())
                 return
 
@@ -668,11 +717,21 @@ def make_handler(services: Optional[BridgeServices] = None):
             self.send_response(HTTPStatus.OK)
             self._send_cors_headers()
             self.send_header("Content-Type", mime or "application/octet-stream")
+            self.send_header("X-Content-Type-Options", "nosniff")
             self.send_header("Content-Length", str(len(content)))
             self.end_headers()
             self.wfile.write(content)
 
         def do_POST(self):
+            if not self._host_ok():
+                _deny(self, HTTPStatus.FORBIDDEN, "invalid_host", "כותרת Host אינה מורשית.")
+                return
+            if not is_allowed_origin(self._origin()):
+                _deny(self, HTTPStatus.FORBIDDEN, "origin_not_allowed", "מקור הבקשה אינו מורשה.")
+                return
+            if not self._token_ok():
+                _deny(self, HTTPStatus.UNAUTHORIZED, "invalid_token", "אסימון הסטודיו חסר או שגוי.")
+                return
             path = urlparse(self.path).path
             payload, err = self._read_json_body()
             if err:
@@ -708,10 +767,13 @@ def main():
     parser.add_argument("--host", default=DEFAULT_HOST)
     parser.add_argument("--port", type=int, default=DEFAULT_PORT)
     args = parser.parse_args()
+    if args.host not in {"127.0.0.1", "localhost", "::1"}:
+        parser.error("The bridge must bind to a loopback address only.")
 
     services = BridgeServices()
-    server = ThreadingHTTPServer((args.host, args.port), make_handler(services))
+    server = ThreadingHTTPServer((args.host, args.port), make_handler(services, port=args.port))
     print(f"[STUDIO_BRIDGE] Listening on http://{args.host}:{args.port} (serving UI + Career Studio AI API)", flush=True)
+    print("[STUDIO_BRIDGE] Session token issued to allowlisted origins via GET /api/session.", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

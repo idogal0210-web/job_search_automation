@@ -296,33 +296,41 @@ export function loadLeafletAssets() {
       return resolve(null);
     }
 
-    // 1. Inject Leaflet CSS
+    // 1. Inject Leaflet CSS with SRI
     if (!document.querySelector('link[href*="leaflet"]')) {
       const link1 = document.createElement('link');
       link1.rel = 'stylesheet';
       link1.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-      link1.crossOrigin = '';
+      link1.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+      link1.crossOrigin = 'anonymous';
       document.head.appendChild(link1);
 
       const link2 = document.createElement('link');
       link2.rel = 'stylesheet';
       link2.href = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css';
+      link2.integrity = 'sha384-pmjIAcz2bAn0xukfxADbZIb3t8oRT9Sv0rvO+BR5Csr6Dhqq+nZs59P0pPKQJkEV';
+      link2.crossOrigin = 'anonymous';
       document.head.appendChild(link2);
 
       const link3 = document.createElement('link');
       link3.rel = 'stylesheet';
       link3.href = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css';
+      link3.integrity = 'sha384-wgw+aLYNQ7dlhK47ZPK7FRACiq7ROZwgFNg0m04avm4CaXS+Z9Y7nMu8yNjBKYC+';
+      link3.crossOrigin = 'anonymous';
       document.head.appendChild(link3);
     }
 
-    // 2. Inject Leaflet JS
+    // 2. Inject Leaflet JS with SRI
     const scriptL = document.createElement('script');
     scriptL.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-    scriptL.crossOrigin = '';
+    scriptL.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+    scriptL.crossOrigin = 'anonymous';
     scriptL.onload = () => {
-      // 3. Inject MarkerCluster JS
+      // 3. Inject MarkerCluster JS with SRI
       const scriptMC = document.createElement('script');
       scriptMC.src = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js';
+      scriptMC.integrity = 'sha384-eXVCORTRlv4FUUgS/xmOyr66XBVraen8ATNLMESp92FKXLAMiKkerixTiBvXriZr';
+      scriptMC.crossOrigin = 'anonymous';
       scriptMC.onload = () => resolve(window.L);
       scriptMC.onerror = () => resolve(window.L);
       document.head.appendChild(scriptMC);
@@ -364,12 +372,13 @@ export function initLiveJobsMap() {
       markerZoomAnimation: true
     }).setView([32.0853, 34.85], 8);
 
-    L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&hl=en', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
+      subdomains: 'abcd',
       keepBuffer: 6,
       updateWhenZooming: false,
       updateWhenIdle: true,
-      attribution: '&copy; Google Maps'
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
     }).addTo(liveJobsMapInstance);
 
     if (typeof L.markerClusterGroup === 'function') {
