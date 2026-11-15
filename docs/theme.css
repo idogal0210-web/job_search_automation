@@ -7,7 +7,8 @@ body { margin: 0; font-family: "Google Sans", Arial, sans-serif; font-size: 1.12
 h1, h2, h3, h4 { text-wrap: pretty; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button, a, input, select { touch-action: manipulation; }
-[hidden] { display: none !important; }
+[hidden]:not([hidden="until-found"]) { display: none !important; }
+[hidden="until-found"] { content-visibility: hidden; }
 img { max-width: 100%; }
 summary { cursor: pointer; min-height: 44px; }
 svg { display: block; width: 22px; height: 22px; flex-shrink: 0; }

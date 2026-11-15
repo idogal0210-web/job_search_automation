@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
   <meta name="description" content="לוח בקרת משרות וסטודיו קריירה הנדסי — עידו גל. סריקת משרות אנרגיה, גז טבעי, סולארי, מכונות ורחפנים, ניתוח התאמת ATS וניהול גרסאות קורות חיים.">
   <title>לוח משרות טכנולוגיות — עידו גל</title>
   <link rel="stylesheet" href="fonts.css">
@@ -34,6 +35,10 @@
           <button type="button" id="headerCloudBtn" class="cloud-pill" onclick="openCloudModal()" title="חשבון וסנכרון ענן" aria-label="חשבון וסנכרון ענן">
             <span class="sync-status-dot" id="headerSyncDot" role="status" aria-live="polite"></span>
             <span>ענן</span>
+          </button>
+          <button type="button" id="themeToggleBtn" class="cloud-pill theme-toggle-pill" onclick="toggleDashboardTheme()" aria-pressed="false" title="החלף ערכת נושא בהירה או כהה" aria-label="החלף ערכת נושא בהירה או כהה">
+            <i class="ph-duotone ph-sun-dim" id="themeToggleIcon" aria-hidden="true"></i>
+            <span id="themeToggleLabel">מצב תצוגה</span>
           </button>
         </div>
         <div class="brand-subtitle-row">
@@ -350,19 +355,31 @@
 
     </div><!-- /#radarWorkspace -->
 
-    <!-- Dedicated Full-Width Career Studio 3.0 Workspace View -->
+    <!-- Dedicated Full-Width Career Studio Workspace View -->
     <div id="careerStudioWorkspace" class="dashboard-view-container hidden" style="display: none;">
 
-      <!-- Unified Top Context Bar: Header + Target Job Ingest + 3-Tool Switcher -->
+      <!-- Unified Top Context Bar: Sticky 56px Target Job Strip + Target Job Ingest + 3-Stage Switcher -->
       <div class="studio-context-bar">
-        <div class="studio-header-strip">
+        <div id="studioStickyJobBar" class="studio-header-strip studio-sticky-job-bar">
           <div class="studio-title-box">
             <div class="studio-badge-pill">
               <i class="ph-duotone ph-sparkle" aria-hidden="true"></i>
-              <span>סטודיו קריירה 3.0</span>
+              <span>סטודיו קריירה</span>
             </div>
-            <h2 class="studio-main-heading">עידו גל | התאמת ATS, עורך קו״ח A4 ואופטימיזציית LinkedIn</h2>
+            <h2 class="studio-main-heading" id="studioStickyTargetJobLabel">עידו גל | ניתוח התאמת משרה, עריכת קו״ח A4 ופרופיל LinkedIn</h2>
           </div>
+
+          <div class="studio-sticky-match-widget" id="studioStickyMatchWidget" aria-label="מד התאמת משרה מול סף יעד">
+            <div class="studio-sticky-match-meta">
+              <span class="studio-sticky-match-label">מד התאמה (סף יעד 75%):</span>
+              <strong id="studioStickyMatchValue" class="studio-sticky-match-val">0%</strong>
+            </div>
+            <div id="studioStickyMatchBar" class="studio-horizontal-match-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="אחוז התאמה למשרה">
+              <div id="studioStickyMatchFill" class="studio-horizontal-match-fill" style="inline-size: 0%;"></div>
+              <span id="studioStickyMatchThreshold" class="studio-horizontal-match-threshold" style="inset-inline-start: 75%;" title="קו סף מומלץ להגשה: 75%"></span>
+            </div>
+          </div>
+
           <div class="studio-header-actions">
             <div class="studio-status-indicator" id="studioBridgeStatusPill" role="status" aria-live="polite">
               <span class="studio-indicator-dot offline" id="studioBridgeStatusDot"></span>
@@ -371,6 +388,10 @@
             <button type="button" id="btnRetryBridgeHealth" class="studio-bridge-retry-btn" onclick="checkStudioBridgeHealth(true)">
               <i class="ph-duotone ph-plugs-connected" aria-hidden="true"></i>
               <span>בדוק חיבור שרת</span>
+            </button>
+            <button type="button" id="btnHeaderExportPackage" class="studio-bridge-retry-btn" onclick="openStudioExportModal()" aria-haspopup="dialog" aria-controls="studioExportDialog">
+              <i class="ph-duotone ph-export" aria-hidden="true"></i>
+              <span>ייצוא חבילה</span>
             </button>
             <button type="button" id="btnMobileOpenPreview" class="studio-mobile-preview-trigger" onclick="openMobilePreviewDialog()" aria-haspopup="dialog" aria-controls="studioMobilePreviewDialog">
               <i class="ph-duotone ph-file-text" aria-hidden="true"></i>
@@ -483,14 +504,18 @@
           </details>
         </div>
 
-        <!-- 3-Tool Horizontal Segmented Navigation (Modern Web Guidance Tabs Pattern) -->
-        <nav class="studio-subnav-pill studio-subnav-pipeline" focusgroup="tablist nomemory" role="tablist" aria-label="כלי הליבה של סטודיו קריירה">
+        <!-- 3-Stage Horizontal Segmented Navigation (Modern Web Guidance Tabs Pattern) -->
+        <nav class="studio-subnav-pill studio-subnav-pipeline" focusgroup="tablist nomemory" role="tablist" aria-label="שלבי עבודה בסטודיו קריירה">
           <button type="button" role="tab" id="studioTabAts" class="studio-subnav-btn studio-step-btn active" aria-selected="true" focusgroupstart onclick="switchStudioModule('ats')">
             <div class="step-num-badge">1</div>
             <div class="step-icon-wrap"><i class="ph-duotone ph-scales" aria-hidden="true"></i></div>
             <div class="step-content-meta">
-              <span class="step-title">סורק התאמת משרה ופערי ATS</span>
-              <span class="step-desc">שערי סף, השוואת מילות מפתח וניתוח חברה (Jobscan Mode)</span>
+              <div class="step-title-row">
+                <span class="step-title">ניתוח התאמה</span>
+                <span class="step-status-pill" id="studioStageStatusAts">טרם הופעל</span>
+                <span class="step-issues-badge" id="studioStageIssuesAts">0 פערים</span>
+              </div>
+              <span class="step-desc">שערי סף, השוואת מילות מפתח וניתוח חברה</span>
             </div>
           </button>
 
@@ -498,8 +523,12 @@
             <div class="step-num-badge">2</div>
             <div class="step-icon-wrap"><i class="ph-duotone ph-pen-nib" aria-hidden="true"></i></div>
             <div class="step-content-meta">
-              <span class="step-title">עורך קו״ח חכם ומחולל A4</span>
-              <span class="step-desc">התאמת קו״ח ומכתב פנייה וביקורת שורות (Teal + Resume Worded)</span>
+              <div class="step-title-row">
+                <span class="step-title">עריכת קו״ח</span>
+                <span class="step-status-pill" id="studioStageStatusWriter">טרם הופעל</span>
+                <span class="step-issues-badge" id="studioStageIssuesWriter">0 הצעות</span>
+              </div>
+              <span class="step-desc">התאמת קו״ח A4, מכתב פנייה והצעות שינוי מבוקרות</span>
             </div>
           </button>
 
@@ -507,8 +536,12 @@
             <div class="step-num-badge">3</div>
             <div class="step-icon-wrap"><i class="ph-duotone ph-linkedin-logo" aria-hidden="true"></i></div>
             <div class="step-content-meta">
-              <span class="step-title">אופטימיזציית LinkedIn והכנה לראיון</span>
-              <span class="step-desc">דירוג SEO למגייסים וסימולטור שאלות למשרה (LinkedIn &amp; STAR)</span>
+              <div class="step-title-row">
+                <span class="step-title">פרופיל LinkedIn והכנה לראיון</span>
+                <span class="step-status-pill" id="studioStageStatusInterview">טרם הופעל</span>
+                <span class="step-issues-badge" id="studioStageIssuesInterview">מוכן</span>
+              </div>
+              <span class="step-desc">דירוג SEO למגייסים וסימולטור שאלות למשרה (STAR)</span>
             </div>
           </button>
         </nav>
@@ -522,7 +555,7 @@
           <div class="studio-modules-container">
 
             <!-- ==============================================================
-                 TOOL 1: Jobscan ATS Matcher, Statutory Hard Gates & AI Insights
+                 STAGE 1: ATS Fit Analysis, Statutory Hard Gates & AI Insights
                  ============================================================== -->
             <section id="studioModuleAts" class="studio-module-panel active" role="tabpanel" aria-labelledby="studioTabAts">
               <div class="studio-module-card">
@@ -636,7 +669,21 @@
                     </div>
                   </div>
 
-                  <!-- Jobscan Side-by-Side Findings: Hard Gates + Interactive Keyword Diff Matrix -->
+                  <!-- Unified Severity-Sorted Gaps Summary Card (Section 5.5 Stage 1) -->
+                  <div id="atsSeveritySortedGapsCard" class="studio-card-glass ats-severity-gaps-card">
+                    <div class="ats-card-header">
+                      <div class="ats-card-header-title">
+                        <i class="ph-duotone ph-scales" aria-hidden="true"></i>
+                        <span>סיכום החלטה ורשימת פערים ממוינת לפי חומרה</span>
+                      </div>
+                      <span class="ats-card-badge" id="atsVerdictSummaryLine">ממתין לסריקת משרה</span>
+                    </div>
+                    <div id="atsSeveritySortedGapsList" class="ats-severity-gaps-list">
+                      <p class="ats-card-caption">הרץ סריקת התאמה כדי לקבל דירוג פערים (חסם קשיח, מילת מפתח חסרה, המלצת ניסוח) עם העברה בלחיצה לשלב עריכת קו״ח.</p>
+                    </div>
+                  </div>
+
+                  <!-- Side-by-Side Findings: Hard Gates + Interactive Keyword Diff Matrix -->
                   <div id="atsStep3Grid" class="ats-details-grid">
                     <!-- Card 1: Statutory Hard Gates -->
                     <div class="studio-card-glass ats-subcard">
@@ -656,7 +703,7 @@
                       <div class="ats-card-header">
                         <div class="ats-card-header-title">
                           <i class="ph-duotone ph-tree-structure" style="color: var(--dashboard-cyan);" aria-hidden="true"></i>
-                          <span>מטריצת השוואת מילות מפתח (Jobscan Keyword Diff)</span>
+                          <span>מטריצת השוואת מילות מפתח ופערי התאמה</span>
                         </div>
                         <span class="ats-card-badge" id="atsKeywordsCountBadge">0 פערים</span>
                       </div>
@@ -714,13 +761,13 @@
             </section>
 
             <!-- ==============================================================
-                 TOOL 2: Teal A4 Package Builder + Resume Worded Bullet Auditor
+                 STAGE 2: Tailored A4 Package Builder + Tracked Line Auditor
                  ============================================================== -->
-            <section id="studioModuleWriter" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabWriter" hidden="until-found" style="display: none;">
+            <section id="studioModuleWriter" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabWriter" hidden="until-found">
               <div class="studio-module-card">
                 <div id="writerModuleContent" class="writer-workspace-content">
 
-                  <!-- Section A: Teal 1-Click Tailored A4 Package Builder -->
+                  <!-- Section A: 1-Click Tailored A4 Package Builder -->
                   <div id="studioPackageWorkbench" class="studio-card-glass studio-package-workbench">
                     <div class="ats-card-header">
                       <div class="ats-card-header-title">
@@ -835,12 +882,12 @@
                     <div id="studioTailorPreviewPane" class="visually-hidden" aria-hidden="true"></div>
                   </div>
 
-                  <!-- Section B: Resume Worded Line-by-Line Bullet Impact Auditor & Rewriter -->
+                  <!-- Section B: Line-by-Line Bullet Impact Auditor & Tracked Suggestions -->
                   <div class="studio-card-glass writer-auditor-section">
                     <div class="ats-card-header">
                       <div class="ats-card-header-title">
                         <i class="ph-duotone ph-list-checks" style="color: var(--dashboard-cyan);" aria-hidden="true"></i>
-                        <span>מבקר עוצמת שורות קו״ח ושכתוב ממוקד (Resume Worded Line Auditor)</span>
+                        <span>ביקורת עוצמת שורות קו״ח והצעות שינוי מבוקרות</span>
                       </div>
                       <span class="ats-card-badge" id="writerAuditorSummaryBadge">ביקורת שורות פעילה</span>
                     </div>
@@ -930,7 +977,7 @@
                           <div class="writer-analysis-header">
                             <div class="writer-analysis-title-group">
                               <i class="ph-duotone ph-chart-bar" style="color: var(--dashboard-lime);" aria-hidden="true"></i>
-                              <span class="writer-analysis-title">מדדי איכות שורה (Resume Worded Score)</span>
+                              <span class="writer-analysis-title">מדדי איכות שורה</span>
                             </div>
                             <div class="writer-score-badge-wrap">
                               <span class="writer-score-label">ציון איכות:</span>
@@ -1017,9 +1064,9 @@
             </section>
 
             <!-- ==============================================================
-                 TOOL 3: LinkedIn SEO Optimizer & Role Interview Prep
+                 STAGE 3: LinkedIn SEO Optimizer & Role Interview Prep
                  ============================================================== -->
-            <section id="studioModuleInterview" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabInterview" hidden="until-found" style="display: none;">
+            <section id="studioModuleInterview" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabInterview" hidden="until-found">
               <div class="studio-module-card">
 
                 <div id="interviewSegmentedBar" class="interview-segmented-bar" focusgroup="tablist nomemory" role="tablist" aria-label="בחירת כלי לינקדאין או הכנה לראיון">
@@ -1035,7 +1082,7 @@
 
                 <div id="interviewWorkbench" class="interview-workbench is-li-focus">
 
-                  <!-- Sub-View 1: Dynamic LinkedIn Profile Optimizer (Resume Worded Style) -->
+                  <!-- Sub-View 1: Dynamic LinkedIn Profile Optimizer -->
                   <div id="interviewColSide" class="interview-col-side">
                     <div class="interview-section-box">
                       <div class="section-box-header">

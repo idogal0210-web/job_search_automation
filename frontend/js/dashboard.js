@@ -4508,7 +4508,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   /**
-   * Switches the active module inside Career Studio 3.0 workspace (3 core tools).
+   * Switches the active module inside Career Studio workspace (3 core stages).
    * @param {string} moduleId - 'ats', 'writer', 'interview'
    */
   function switchStudioModule(moduleId) {
@@ -4581,7 +4581,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           if (typeof panelEl.setAttribute === 'function') {
             panelEl.setAttribute('hidden', 'until-found');
           }
-          panelEl.style.display = 'none';
+          panelEl.style.display = '';
           panelEl.classList.remove('active');
         }
       }
@@ -4596,7 +4596,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   /**
-   * Opens a job directly from Job Radar inside Career Studio 3.0 and runs immediate ATS & LinkedIn analysis.
+   * Opens a job directly from Job Radar inside Career Studio and runs immediate ATS & LinkedIn analysis.
    * @param {string} jobId
    * @param {Event} [event]
    */
@@ -5967,6 +5967,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     renderHardGates(report.hardGates, jobText);
     renderKeywordTaxonomy(report.missingKeywords, report.matchedKeywords, jobText);
     renderAtsStructuralChecklist(report.structuralCompliance);
+    renderSeveritySortedGaps(report, jobText);
+    updateStudioWorkbenchHeaderAndStages(report, jobText);
 
     if (typeof StudioState !== 'undefined' && StudioState) {
       StudioState.matchScore = score;
@@ -6004,6 +6006,178 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     } else {
       setAtsActiveStep(1);
     }
+  }
+
+  function updateStudioWorkbenchHeaderAndStages(report, jobText) {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+    const score = (report && typeof report.matchScore === 'number') ? report.matchScore : 0;
+    const hasInput = Boolean(jobText && String(jobText).trim());
+
+    const titleVal = (document.getElementById('atsTitleInput')?.value || '').trim();
+    const compVal = (document.getElementById('atsCompanyInput')?.value || '').trim();
+    const headerLabel = document.getElementById('studioStickyTargetJobLabel');
+    if (headerLabel) {
+      headerLabel.textContent = (compVal || titleVal)
+        ? `משרת יעד: ${[compVal, titleVal].filter(Boolean).join(' — ')}`
+        : 'עידו גל | ניתוח התאמת משרה, עריכת קו״ח A4 ופרופיל LinkedIn';
+    }
+
+    const matchValEl = document.getElementById('studioStickyMatchValue');
+    const matchBarEl = document.getElementById('studioStickyMatchBar');
+    const matchFillEl = document.getElementById('studioStickyMatchFill');
+    if (matchValEl) matchValEl.textContent = `${score}%`;
+    if (matchBarEl && typeof matchBarEl.setAttribute === 'function') {
+      matchBarEl.setAttribute('aria-valuenow', String(score));
+    }
+    if (matchFillEl && matchFillEl.style) {
+      matchFillEl.style.inlineSize = `${Math.max(0, Math.min(100, score))}%`;
+      if (matchFillEl.classList) {
+        matchFillEl.classList.remove('is-pass', 'is-warn', 'is-fail');
+        if (score >= 75) matchFillEl.classList.add('is-pass');
+        else if (score >= 55) matchFillEl.classList.add('is-warn');
+        else if (hasInput) matchFillEl.classList.add('is-fail');
+      }
+    }
+
+    const gates = (report && Array.isArray(report.hardGates)) ? report.hardGates : [];
+    const hardBlockers = gates.filter(g => g.status === 'GAP').length;
+    const missingCount = report && report.missingKeywords
+      ? ((report.missingKeywords.methodologies?.length || 0) +
+         (report.missingKeywords.financials?.length || 0) +
+         (report.missingKeywords.systems?.length || 0) +
+         (report.missingKeywords.energy?.length || 0))
+      : 0;
+    const totalIssues = hardBlockers + missingCount;
+
+    const statusAtsEl = document.getElementById('studioStageStatusAts');
+    const issuesAtsEl = document.getElementById('studioStageIssuesAts');
+    if (statusAtsEl) {
+      statusAtsEl.classList?.remove('is-working', 'is-done', 'is-blocked');
+      if (!hasInput) {
+        statusAtsEl.textContent = 'טרם הופעל';
+      } else if (hardBlockers > 0) {
+        statusAtsEl.textContent = 'חסום';
+        statusAtsEl.classList?.add('is-blocked');
+      } else {
+        statusAtsEl.textContent = 'הושלם';
+        statusAtsEl.classList?.add('is-done');
+      }
+    }
+    if (issuesAtsEl) {
+      issuesAtsEl.textContent = `${totalIssues} פערים`;
+    }
+
+    const statusWriterEl = document.getElementById('studioStageStatusWriter');
+    const issuesWriterEl = document.getElementById('studioStageIssuesWriter');
+    const appliedCount = (typeof StudioState !== 'undefined' && Array.isArray(StudioState.appliedBullets))
+      ? StudioState.appliedBullets.length
+      : 0;
+    if (statusWriterEl) {
+      statusWriterEl.classList?.remove('is-working', 'is-done', 'is-blocked');
+      if (appliedCount > 0) {
+        statusWriterEl.textContent = 'הושלם';
+        statusWriterEl.classList?.add('is-done');
+      } else if (hasInput) {
+        statusWriterEl.textContent = 'בעבודה';
+        statusWriterEl.classList?.add('is-working');
+      } else {
+        statusWriterEl.textContent = 'טרם הופעל';
+      }
+    }
+    if (issuesWriterEl) {
+      issuesWriterEl.textContent = `${missingCount} הצעות`;
+    }
+
+    const statusInterviewEl = document.getElementById('studioStageStatusInterview');
+    if (statusInterviewEl) {
+      statusInterviewEl.classList?.remove('is-working', 'is-done', 'is-blocked');
+      if (hasInput) {
+        statusInterviewEl.textContent = 'בעבודה';
+        statusInterviewEl.classList?.add('is-working');
+      } else {
+        statusInterviewEl.textContent = 'טרם הופעל';
+      }
+    }
+  }
+
+  function renderSeveritySortedGaps(report, jobText) {
+    if (typeof document === 'undefined' || typeof document.getElementById !== 'function') return;
+    const verdictEl = document.getElementById('atsVerdictSummaryLine');
+    const listEl = document.getElementById('atsSeveritySortedGapsList');
+    if (!listEl) return;
+
+    const hasInput = Boolean(jobText && String(jobText).trim());
+    if (!hasInput || !report) {
+      if (verdictEl) verdictEl.textContent = 'ממתין לסריקת משרה';
+      listEl.innerHTML = '<p class="ats-card-caption">הרץ סריקת התאמה כדי לקבל דירוג פערים (חסם קשיח, מילת מפתח חסרה, המלצת ניסוח) עם העברה בלחיצה לשלב עריכת קו״ח.</p>';
+      return;
+    }
+
+    const gates = Array.isArray(report.hardGates) ? report.hardGates : [];
+    const gapGates = gates.filter(g => g.status === 'GAP');
+    const inProgressGates = gates.filter(g => g.status === 'IN_PROGRESS');
+    const missingKw = [
+      ...(report.missingKeywords?.systems || []),
+      ...(report.missingKeywords?.energy || []),
+      ...(report.missingKeywords?.methodologies || []),
+      ...(report.missingKeywords?.financials || [])
+    ];
+
+    if (verdictEl) {
+      if (gapGates.some(g => g.id === 'gate_degree_bsc_engineer')) {
+        verdictEl.textContent = 'חסם השכלה (נדרש תואר B.Sc)';
+      } else if (gapGates.length > 0) {
+        verdictEl.textContent = 'חסם רישוי קשיח';
+      } else if (missingKw.length > 3) {
+        verdictEl.textContent = 'חסר ניסיון / מילות מפתח בדרישות';
+      } else {
+        verdictEl.textContent = 'עובר סף — מוכן להתאמת קו״ח';
+      }
+    }
+
+    const items = [];
+    gapGates.forEach(g => {
+      items.push({
+        severityClass: 'severity-blocker',
+        severityLabel: 'חסם קשיח',
+        title: `${g.name_he || g.id}: ${g.evidence || ''}`,
+        term: g.name_he || g.id
+      });
+    });
+    missingKw.forEach(kw => {
+      items.push({
+        severityClass: 'severity-keyword',
+        severityLabel: 'מילת מפתח חסרה',
+        title: `המונח "${kw}" מופיע בדרישות המשרה וחסר בקורות החיים`,
+        term: kw
+      });
+    });
+    inProgressGates.forEach(g => {
+      items.push({
+        severityClass: 'severity-style',
+        severityLabel: 'המלצת ניסוח',
+        title: `${g.name_he || g.id}: מומלץ להבליט סטטוס לימודים פעילים בקו״ח`,
+        term: g.name_he || g.id
+      });
+    });
+
+    if (items.length === 0) {
+      listEl.innerHTML = '<p class="ats-card-caption">לא נמצאו חסמים קשיחים או מילות מפתח חסרות מול משרת היעד.</p>';
+      return;
+    }
+
+    listEl.innerHTML = items.map(item => {
+      const safeTerm = escapeHtml(JSON.stringify(String(item.term || '')));
+      return `
+        <div class="ats-severity-gap-row">
+          <div class="ats-severity-gap-info">
+            <span class="ats-gap-severity-pill ${item.severityClass}">${escapeHtml(item.severityLabel)}</span>
+            <span>${escapeHtml(item.title)}</span>
+          </div>
+          <button type="button" class="ats-gap-inject-btn" onclick="injectKeywordToWriter(${safeTerm})">הוסף לקו״ח</button>
+        </div>
+      `;
+    }).join('');
   }
 
   function renderHardGates(triggeredGates, jobText) {
@@ -6956,25 +7130,50 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       return;
     }
 
+    const activeTone = (typeof currentWriterTone !== 'undefined' && currentWriterTone) ? currentWriterTone : 'technical';
+    const missingList = (typeof StudioState !== 'undefined' && Array.isArray(StudioState.atsKeywordsMissing))
+      ? StudioState.atsKeywordsMissing
+      : [];
+
     let totalScore = 0;
     const rowsHtml = bullets.map((bullet, idx) => {
       const audit = validateBulletGrammar(bullet);
       totalScore += audit.score;
       const scoreClass = audit.score >= 80 ? 'score-high' : (audit.score >= 55 ? 'score-mid' : 'score-low');
       const safeBulletAttr = escapeHtml(JSON.stringify(String(bullet || '')));
+      const transformedObj = (typeof transformBullet === 'function') ? transformBullet(bullet, activeTone) : null;
+      const proposedText = (transformedObj && transformedObj.transformed) ? transformedObj.transformed : bullet;
+      const safeProposedAttr = escapeHtml(JSON.stringify(String(proposedText || '')));
+      const closedGap = missingList[idx % Math.max(1, missingList.length)] || 'דיוק תפעולי וכימות הישגים';
+      const rationale = !audit.hasMetric
+        ? 'מוסיף מדד כמותי ופעולה הנדסית ברורה להעלאת דירוג ATS.'
+        : 'מחדד פועל פעיל ומינוח מערכות תואם לדרישות המשרה.';
+
       return `
-        <div class="writer-audit-row">
+        <div class="writer-audit-row" data-bullet-index="${idx}">
           <div class="writer-audit-main">
             <span class="writer-score-badge ${scoreClass}">${audit.score}/100</span>
             <p class="writer-audit-text" dir="auto">${escapeHtml(bullet)}</p>
           </div>
-          <div class="writer-audit-meta">
+          <div class="writer-tracked-diff-box">
+            <div class="writer-tracked-proposed" dir="auto">נוסח מוצע: ${escapeHtml(proposedText)}</div>
+            <div class="writer-tracked-rationale">נימוק: ${escapeHtml(rationale)} | סוגר פער ATS: <strong>${escapeHtml(closedGap)}</strong></div>
+          </div>
+          <div class="writer-audit-meta writer-tracked-actions">
             <span class="audit-mini-pill ${audit.hasActiveVerb ? 'pass' : 'warn'}">${audit.hasActiveVerb ? 'פועל פעיל' : 'חסר פועל'}</span>
             <span class="audit-mini-pill ${audit.hasScope ? 'pass' : 'warn'}">${audit.hasScope ? 'מערכת מוגדרת' : 'חסרה מערכת'}</span>
             <span class="audit-mini-pill ${audit.hasMetric ? 'pass' : 'warn'}">${audit.hasMetric ? 'מדד כמותי' : 'חסר מדד'}</span>
-            <button type="button" class="studio-mini-btn is-accent" onclick="selectPreviewLineForEditing(${safeBulletAttr})">
-              <i class="ph-duotone ph-magic-wand" aria-hidden="true"></i>
-              <span>טען לשדרוג</span>
+            <button type="button" class="studio-mini-btn is-accent" onclick="acceptTrackedBulletSuggestion(${safeBulletAttr}, ${safeProposedAttr})">
+              <i class="ph-duotone ph-check" aria-hidden="true"></i>
+              <span>קבל</span>
+            </button>
+            <button type="button" class="studio-mini-btn" onclick="rejectTrackedBulletSuggestion(${idx})">
+              <i class="ph-duotone ph-x" aria-hidden="true"></i>
+              <span>דחה</span>
+            </button>
+            <button type="button" class="studio-mini-btn" onclick="selectPreviewLineForEditing(${safeBulletAttr})">
+              <i class="ph-duotone ph-pencil-simple" aria-hidden="true"></i>
+              <span>ערוך</span>
             </button>
           </div>
         </div>
@@ -6986,6 +7185,30 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       badgeEl.textContent = `ציון ממוצע לשורות: ${avg}/100`;
     }
     listEl.innerHTML = rowsHtml;
+  }
+
+  function acceptTrackedBulletSuggestion(originalText, proposedText) {
+    const cleanProposed = String(proposedText || '').trim();
+    if (!cleanProposed) return;
+    if (typeof StudioState !== 'undefined' && StudioState) {
+      if (!Array.isArray(StudioState.appliedBullets)) StudioState.appliedBullets = [];
+      if (!StudioState.appliedBullets.includes(cleanProposed)) {
+        StudioState.appliedBullets.push(cleanProposed);
+      }
+      StudioState.highlightedLine = cleanProposed;
+    }
+    if (typeof renderCarryOverSummary === 'function') renderCarryOverSummary();
+    if (typeof renderStickyLivePreview === 'function') renderStickyLivePreview();
+    if (typeof showToast === 'function') showToast('ההצעה אושרה והוטמעה במסמך ה-A4.', 'success');
+  }
+
+  function rejectTrackedBulletSuggestion(rowIdx) {
+    if (typeof document === 'undefined' || typeof document.querySelector !== 'function') return;
+    const row = document.querySelector(`.writer-audit-row[data-bullet-index="${Number(rowIdx)}"] .writer-tracked-diff-box`);
+    if (row) {
+      row.hidden = true;
+    }
+    if (typeof showToast === 'function') showToast('ההצעה לשורה זו נדחתה; הנוסח המקורי נשמר.', 'info');
   }
 
   function renderEnergyDictionary(terms) {
@@ -8902,12 +9125,74 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
   window.runLiveJobCheck = runLiveJobCheck;
   window.handleRemoveInactiveJob = handleRemoveInactiveJob;
   window.handleRemoveAllInactiveJobs = handleRemoveAllInactiveJobs;
+  const THEME_STORAGE_KEY = 'ido_theme_preference';
+
+  function applyDashboardTheme(theme) {
+    const normalized = theme === 'light' ? 'light' : 'dark';
+    if (typeof document !== 'undefined' && document.documentElement && typeof document.documentElement.setAttribute === 'function') {
+      document.documentElement.setAttribute('data-theme', normalized);
+    }
+    if (typeof document !== 'undefined' && typeof document.getElementById === 'function') {
+      const btn = document.getElementById('themeToggleBtn');
+      const label = document.getElementById('themeToggleLabel');
+      const icon = document.getElementById('themeToggleIcon');
+      if (btn && typeof btn.setAttribute === 'function') {
+        btn.setAttribute('aria-pressed', normalized === 'light' ? 'true' : 'false');
+      }
+      if (label) {
+        label.textContent = normalized === 'light' ? 'בהיר' : 'כהה';
+      }
+      if (icon) {
+        icon.className = normalized === 'light' ? 'ph-duotone ph-moon' : 'ph-duotone ph-sun-dim';
+      }
+    }
+    return normalized;
+  }
+
+  function initDashboardTheme() {
+    let saved = null;
+    try {
+      if (typeof localStorage !== 'undefined' && localStorage) {
+        saved = localStorage.getItem(THEME_STORAGE_KEY);
+      }
+    } catch (e) {}
+    if (saved === 'light' || saved === 'dark') {
+      return applyDashboardTheme(saved);
+    }
+    const prefersLight = (typeof window !== 'undefined' && typeof window.matchMedia === 'function')
+      ? Boolean(window.matchMedia('(prefers-color-scheme: light)')?.matches)
+      : false;
+    return applyDashboardTheme(prefersLight ? 'light' : 'dark');
+  }
+
+  function toggleDashboardTheme() {
+    let current = 'dark';
+    if (typeof document !== 'undefined' && document.documentElement && typeof document.documentElement.getAttribute === 'function') {
+      current = document.documentElement.getAttribute('data-theme') || 'dark';
+    }
+    const next = current === 'light' ? 'dark' : 'light';
+    applyDashboardTheme(next);
+    try {
+      if (typeof localStorage !== 'undefined' && localStorage) {
+        localStorage.setItem(THEME_STORAGE_KEY, next);
+      }
+    } catch (e) {}
+    return next;
+  }
+
+  window.toggleDashboardTheme = toggleDashboardTheme;
+  window.initDashboardTheme = initDashboardTheme;
+  window.acceptTrackedBulletSuggestion = acceptTrackedBulletSuggestion;
+  window.rejectTrackedBulletSuggestion = rejectTrackedBulletSuggestion;
+  window.renderSeveritySortedGaps = renderSeveritySortedGaps;
+  window.updateStudioWorkbenchHeaderAndStages = updateStudioWorkbenchHeaderAndStages;
   window.handleMergeDuplicates = handleMergeDuplicates;
   window.handleRemoveDuplicates = handleRemoveDuplicates;
   window.handleIgnoreGroup = handleIgnoreGroup;
 
 
   window.onload = async () => {
+    initDashboardTheme();
     updateCubeCountsImmediately();
     updateSortIconAndToast(currentSort, false);
     await fetchJobsData();

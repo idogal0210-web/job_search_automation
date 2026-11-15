@@ -27,5 +27,5 @@
   src: url(assets/fonts/google-sans-700.woff2) format('woff2');
 }
 
-:root { --font-ui: "Google Sans", Arial, sans-serif; }
+:root { --font-ui: 'Assistant', 'Google Sans', Arial, sans-serif; }
 html:lang(he) body, html:lang(he) body * { font-family: var(--font-ui); }
