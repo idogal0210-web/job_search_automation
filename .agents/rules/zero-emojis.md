@@ -10,6 +10,7 @@ Strictly ZERO EMOJIS across all code files, comments, docstrings, documentation 
 
 ## 2. Replacement Guidelines
 - Never use pictorial Unicode emojis (such as rockets, checkmarks, warning triangles, folder icons, tools, sparkles).
+- Never use Dingbat symbols (Unicode range `U+2700 - U+27BF`, such as `U+2715` Multiplication X) in JavaScript string comparisons, template literals, or DOM selectors for close/clear buttons. Always use standard ASCII `'x'`, CSS class names (`.search-clear-btn`, `.btn-clear-search`), or Phosphor vector icon classes (`.ph-x`).
 - Use clean, professional typographic formatting instead:
   - Bullet lists (`-`, `*`)
   - Clear text labels (`[OK]`, `[FAILED]`, `[WARNING]`, `[INFO]`)

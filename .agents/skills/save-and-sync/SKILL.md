@@ -84,6 +84,18 @@ Captures exact count of items removed and total disk space freed.
 5. Push to GitHub: `git push origin main` (retry up to 3 times on transient transport failures with backoff: 2s, 4s, 8s).
 6. Verify remote branch tip matches local commit.
 
+### Automated GitHub Actions Rebase Reconciliation:
+When a push is rejected due to background automated GitHub Actions commits (`chore: save job evaluations and dashboard [skip ci]`):
+1. Execute `git pull --rebase origin main`.
+2. If conflict occurs in `docs/index.html`, reconcile the incoming remote `build_id` and data URLs with local `<link>` / `<script>` elements, ensuring zero loss of new assets.
+3. Continue rebase in non-interactive environment using: `GIT_EDITOR=true git rebase --continue`.
+4. Verify parity and zero-emoji compliance:
+   ```bash
+   python3 -m unittest tests/test_template_docs_sync.py
+   python3 scripts/validate_zero_emoji.py
+   ```
+5. Push to GitHub: `git push origin main`.
+
 ## 4. GitOps Invariants for GitHub Actions Workflows (`.github/workflows/`)
 When writing, editing, or inspecting workflow files:
 1. **Runner-Side Auto-Commit Pattern**:

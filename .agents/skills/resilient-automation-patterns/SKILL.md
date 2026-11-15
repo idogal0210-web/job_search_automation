@@ -30,3 +30,9 @@ Running the pipeline twice must produce identical state without data loss:
 - **Distinguish Empty vs. Broken:** Log `[INFO] Run completed - no new data to process` (`SUCCESS_EMPTY_RUN`) when fetchers succeed with 0 new matches, versus explicit failure alerts when scrapers or APIs fail.
 - **Structured Error Context:** Every error log must include `[ERROR] <module>.<func> | Attempt X/Y | <ErrorType>: <context>`. Zero bare `except: pass` blocks.
 - **Zero Emojis:** Strictly zero emojis in logs, step summaries (`GITHUB_STEP_SUMMARY`), email alerts, and dashboard banners.
+
+## 5. Client-Side DOM Auto-Fixer & MutationObserver Safeguards
+When deploying runtime UI/DOM fixers (such as `ui-fixes.js`) monitored by `MutationObserver`:
+- **Idempotent Equality Guard**: Never write `el.textContent = target` unconditionally. Always verify `if (el.textContent !== target)` first to avoid dispatching redundant `childList` / `characterData` mutation events.
+- **Recursion Lock**: Wrap the batch fix runner in an execution flag (`isApplyingFixes = true / false`) to prevent nested re-entry during DOM modifications.
+- **Single-Binding Event Guard**: Tag elements with `dataset.uiFixBound = 'true'` before adding event listeners to prevent duplicate handler accumulation on repeated observer triggers.
