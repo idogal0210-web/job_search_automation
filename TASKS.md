@@ -7,7 +7,7 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
 
 ## Active Backlog
 
-- [ ] **TASK-39**: Execute Phase 6 of the project review remediation (Career Studio CSS modularization and single-job workbench design).
+- None (All Phase 0-6 Review and Layout Harmonization tasks verified).
 
 ---
 
@@ -144,3 +144,6 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
 - [x] **TASK-40**: Supabase Migration History Synchronization with Remote Project (Fix Supabase Preview GitHub Integration).
   - Target files: `supabase/migrations/20261109222817_create_sync_state.sql`, `PROJECT_CONTEXT.md`, `TASKS.md`
   - Evidence: 1) Added base migration `20261109222817_create_sync_state.sql` matching remote `public.sync_state` table creation version in Supabase project `job-search-dashboard` (`wvwdxpttwsrdbvvtiyoh`), restoring 1:1 migration history alignment between remote `supabase_migrations.schema_migrations` and local repository; 2) Resolved Supabase GitHub Preview failure ("Remote migration versions not found in local migrations directory"); 3) Verified 388/388 unit tests, secret scanning, and zero emojis. Completed 2026-11-15.
+- [x] **TASK-41**: Comprehensive Dashboard and Career Studio Visual, Icon, and Typography Layout Harmonization.
+  - Target files: `frontend/css/dashboard.css`, `docs/dashboard.css`, `tests/test_phase6_design_and_a11y.py`, `PROJECT_CONTEXT.md`, `TASKS.md`
+  - Evidence: 1) Neutralized external CDN `.ph-duotone.*:after { margin-left: -1em; }` with `margin: 0 !important; margin-left: 0 !important; margin-right: 0 !important;` and `position: absolute; inset: 0;`, resolving the 1em leftward drift of icon foreground layers onto adjacent Hebrew text across all buttons, cards, pills, chips, and modals (`כפילויות`, `שנסגרו`, `שיתוף קישור`, `בדוק חיבור שרת`, `יצוא חבילה`, `שלוף מלינק`, `החלף קובץ`, and sample role chips); 2) Added interactive controls (`.tool-btn-compact`, `.ats-chip-btn`, `.studio-bridge-retry-btn`, `.studio-mini-btn`, `.ats-secondary-btn`, `.ats-primary-btn`, `.ats-ai-btn`, `.view-toggle-btn`, `.cloud-pill`, `.mode-switch-btn`, `.stat-cube-btn`) to the unified inline-flex gap list; 3) Overrode unlayered `theme.css`'s `label { display: flex; flex-direction: column; }` with `display: flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important;` on `.ats-input-label`, `.studio-summary-title`, and `.cards-count-summary`, fixing icons floating vertically above section titles and inputs; 4) Expanded `.header-progress-info` width from 105px to 135px with `gap: 6px;` to prevent "סקירה 13% מוינו" from wrapping or colliding, and preserved desktop header symmetry; 5) Added `padding-inline-end: 28px/32px` to `.sort-select-container select`, `.controls-inputs-stack select`, and `.ats-select` to accommodate native WebKit/Blink dropdown arrows on the left in RTL without overlapping Hebrew text; 6) Maintained 1:1 dual-template synchronization between `frontend/` and `docs/`; 7) Verified 388/388 Python unit tests passing, `modern-web-guidance legacy-scan` (0 findings), and zero emojis. Completed 2026-11-15.
