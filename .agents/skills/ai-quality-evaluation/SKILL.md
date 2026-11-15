@@ -22,16 +22,16 @@ Always evaluate against the active codebase and unified policy:
   - `scripts/evaluate_dataset.py` (calculates Confusion Matrix, Precision, Recall, F1, and False Negatives against `data/evaluation_benchmark_template.json`).
   - `scripts/requeue_jobs.py` (re-evaluates `RETRY_PENDING` or cached jobs).
   - `scripts/project_hygiene.py --validate` (validates syntax, JSON schemas, and repo hygiene).
-- **Aligned Quality Thresholds (Synchronized with `job-search-automation-state`):**
+- **Aligned Quality Thresholds (Synchronized with `job-search-automation-state` & `search-preferences.json`):**
   - **Energy / Gas / Solar PV / BESS / SCADA:** Pass threshold **`60+`** (with >= 3 distinct evidenced matches).
   - **UAV / Drone / Defence:** Pass threshold **`70+`** (with >= 3 distinct evidenced matches).
-  - **Hard Blacklist (`Energean`, `INGL`, `Chevron`) & Excluded Roles:** Score must deterministically equal **`0`** (`DISQUALIFIED`).
-  - **Control Room / NOC Rule:** Disqualified unless industrial SCADA/telemetry is explicit AND (advertised salary >= 20,000 ILS or Tier-1 enterprise employer). Advertised salary < 15,000 ILS = `0`.
+  - **Hard Blacklist (`Energean`, `INGL`, `Chevron`, staffing/security agencies) & Excluded Roles (including 24/7 rotating shifts and non-energy factory operators):** Score must deterministically equal **`0`** (`DISQUALIFIED`).
+  - **Control Room / Salary Floor Rule:** Requires explicit energy/power/utility SCADA (non-energy factory SCADA and 24/7 rotating shifts are strictly disqualified). Advertised salary `< 14,000 ILS` = `0`.
 
 ## 4. Execution Workflow
 
 ### Step 1 — Define Quality Dimensions
-1. **Deterministic Gate Accuracy:** 100% block rate on blacklisted employers, excluded non-technical roles, and sub-15,000 ILS roles before or during evaluation.
+1. **Deterministic Gate Accuracy:** 100% block rate on blacklisted employers, excluded non-technical/shift roles, and sub-14,000 ILS roles before or during evaluation.
 2. **Schema & Pydantic Compliance:** Every Gemini response must validate cleanly against its Pydantic contract without hallucinated fields or missing rationale.
 3. **Evidence Grounding:** Match scores and requirement assessments must cite concrete phrases from the job description (e.g., practical engineer flexibility vs. rigid B.Sc requirement).
 4. **State & Retry Resilience:** Rate limits (`429`) or empty descriptions transition cleanly to `RETRY_PENDING` in `data/evaluation_state.json` without corrupting `data/jobs_state.json` or `docs/data/jobs.json`.

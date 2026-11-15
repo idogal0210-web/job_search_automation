@@ -12,13 +12,13 @@ description: "Project-specific skill for calibrating, validating, and displaying
 
 ## 2. Mandatory Salary Floors & Domain Calibration (`search-preferences.json`)
 Enforce the candidate's explicit compensation boundaries alongside market estimation:
-1. **Absolute Floor:** **`15,000 ILS / month`**. Any role with an explicitly advertised salary `< 15,000 ILS` is automatically disqualified (`Score = 0`).
-2. **24/7 Shifts & Control Room Floor:** **`20,000 ILS / month`**. Control-room/NOC roles require explicit SCADA/telemetry AND either advertised salary `>= 20,000 ILS` or a Tier-1 enterprise employer.
-3. **Target Compensation Range:** **`16,000 – 25,000+ ILS / month`** across Ido Gal's core role families:
-   - **Gas & Pressure Systems / PRMS / Power Stations:** Typically `18,000 – 26,000 ILS` (higher with 24/7 shift premiums or senior dispatcher scope).
-   - **Solar PV / BESS / Grid Interconnection & SCADA Operations:** Typically `16,000 – 23,000 ILS` (often includes field vehicle `רכב צמוד`).
-   - **UAV / Drone Integration, Flight-Test & Avionics Operations:** Typically `17,000 – 25,000 ILS` depending on defence tier and clearance/experience level.
-   - **Practical Mechanical Engineer (הנדסאי מכונות) Industrial Operations:** Typically `15,500 – 21,000 ILS`.
+1. **Absolute Floor:** **`14,000 ILS / month`**. Any role with an explicitly advertised salary `< 14,000 ILS` is automatically disqualified (`Score = 0`).
+2. **Control Room & Shift Policy:** `24/7` rotating shift roles are strictly disqualified per `search-preferences.json`; daytime/operational control-room roles require explicit energy/utility SCADA (`>= 20,000 ILS` benchmark for senior/shift-adjacent control rooms).
+3. **Target Compensation Range:** **`14,000 – 22,000+ ILS / month`** across Ido Gal's core role families:
+   - **Gas & Pressure Systems / PRMS / Power Stations:** Typically `16,000 – 24,000 ILS`.
+   - **Solar PV / BESS / Commissioning / Site Coordination & SCADA Operations:** Typically `14,500 – 22,000 ILS` (often includes field vehicle `רכב צמוד`).
+   - **UAV / Drone Integration, Flight-Test & Avionics Operations:** Typically `16,000 – 24,000 ILS` depending on defence tier and experience level.
+   - **Practical Mechanical Engineer (הנדסאי מכונות) Energy & Cleantech Operations:** Typically `14,000 – 21,000 ILS`.
 
 ## 3. Estimation & Provenance Rules (`src/salary_engine.py`)
 1. **Strict Separation of Estimate Types:**

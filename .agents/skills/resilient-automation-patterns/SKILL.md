@@ -1,11 +1,11 @@
 ---
 name: resilient-automation-patterns
-description: "Ensures unattended automations (cron jobs, scrapers, GeminiPool LLM calls, Tavily/Firecrawl extraction, and Supabase cloud sync) in job_search_automation are fault-tolerant, credit-safe, observable, and idempotent."
+description: "Ensures unattended automations (cron jobs, scrapers, GeminiPool LLM calls, Tavily/api-anything/Firecrawl extraction, and Supabase cloud sync) in job_search_automation are fault-tolerant, credit-safe, observable, and idempotent."
 ---
 
 # Resilient Automation Patterns (`job_search_automation`)
 
-Make every unattended run (`main.py`, `src/pipeline.py`, `.github/workflows/daily_job_search.yml`) **observable, credit-safe, recoverable, and idempotent**. Assume every external dependency (LinkedIn, Drushim, Comeet, Gemini API, Tavily, Firecrawl, Supabase, SMTP) will eventually fail or rate-limit.
+Make every unattended run (`main.py`, `src/pipeline.py`, `.github/workflows/daily_job_search.yml`) **observable, credit-safe, recoverable, and idempotent**. Assume every external dependency (LinkedIn, Drushim, Comeet, Gemini API, Tavily, api-anything, Firecrawl, Supabase, SMTP) will eventually fail or rate-limit.
 
 ## 1. Multi-Model Gemini Fallback Pool (`src/gemini_runtime.py`)
 - **Ordered Model Rotation (`GeminiPool`):** Execute structured evaluations using the configured fallback chain:
