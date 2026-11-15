@@ -119,9 +119,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     const isAd = job.salary_source_type === 'job_ad' || job.salary_source_type === 'ad' || job.salary_source_type === 'employer';
     if (isAd) {
-      return `<span class="job-salary-chip salary-chip-ad" title="שכר שפורסם במודעת המשרה"><i class="ph-duotone ph-coins"></i> ${escapeHtml(sal)} (במודעה)</span>`;
+      return `<span class="job-salary-chip salary-chip-ad salary-badge" title="שכר שפורסם במודעת המשרה"><i class="ph-duotone ph-coins"></i> ${escapeHtml(sal)} (במודעה)</span>`;
     }
-    return `<span class="job-salary-chip salary-chip-benchmark" title="טווח שכר ענפי מותאם לתפקיד"><i class="ph-duotone ph-coins"></i> ${escapeHtml(sal)}</span>`;
+    return `<span class="job-salary-chip salary-chip-benchmark salary-badge" title="טווח שכר ענפי מותאם לתפקיד"><i class="ph-duotone ph-coins"></i> ${escapeHtml(sal)}</span>`;
   }
 
   function formatJobScopeAndRole(job) {
@@ -1789,10 +1789,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     if (info.primaryUrl) {
       return `
-        <div class="job-company-logo" title="${safeComp}">
+        <div class="job-company-logo company-logo-box" title="${safeComp}">
           <img src="${info.primaryUrl}" 
                alt="${safeComp}" 
-               class="job-logo-img" 
+               class="job-logo-img company-logo" 
                loading="lazy" 
                decoding="async" 
                data-step="${info.initialStep}"
@@ -2702,7 +2702,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         </div>
 
         <!-- Job Card Meta Row: Date, Location, Source -->
-        <div class="job-card-meta-row">
+        <div class="job-card-meta-row job-meta-grid">
           <span class="meta-item"><i class="ph-duotone ph-calendar-blank"></i> <span class="meta-label">תאריך ברשימה:</span> ${escapeHtml(jobDate)}</span>
           <span class="meta-item"><i class="ph-duotone ph-map-pin"></i> ${loc}</span>
           <span class="meta-item"><i class="ph-duotone ${sourceIcon}"></i> <span class="meta-label">מקור:</span> ${escapeHtml(sourceName)}</span>
@@ -2712,7 +2712,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         ${tagsHtml}
 
         <!-- Clean Key Requirements (Anchor 2 of 3) -->
-        <div class="job-key-requirements">
+        <div class="job-key-requirements requirements-box">
           <div class="job-key-requirements-header">
             <i class="ph-duotone ph-check-circle"></i>
             <span>דרישות סף:</span>
@@ -3159,8 +3159,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   let searchDebounceTimer = null;
   function onSearchInput(val) {
     const wrapper = document.getElementById('searchInputWrapper');
+    const hasVal = Boolean(val && val.trim().length > 0);
     if (wrapper) {
-      wrapper.classList.toggle('has-value', Boolean(val && val.trim().length > 0));
+      wrapper.classList.toggle('has-value', hasVal);
+    }
+    const clearBtn = document.querySelector('.search-clear-btn');
+    if (clearBtn) {
+      clearBtn.classList.toggle('is-hidden', !hasVal);
     }
     if (searchDebounceTimer) {
       clearTimeout(searchDebounceTimer);
@@ -3182,6 +3187,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
     if (wrapper) {
       wrapper.classList.remove('has-value');
+    }
+    const clearBtn = document.querySelector('.search-clear-btn');
+    if (clearBtn) {
+      clearBtn.classList.add('is-hidden');
     }
     filterCards();
   }

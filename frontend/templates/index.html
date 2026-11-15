@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" integrity="sha384-wgw+aLYNQ7dlhK47ZPK7FRACiq7ROZwgFNg0m04avm4CaXS+Z9Y7nMu8yNjBKYC+" crossorigin="anonymous" referrerpolicy="no-referrer">
   <script defer src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" integrity="sha384-eXVCORTRlv4FUUgS/xmOyr66XBVraen8ATNLMESp92FKXLAMiKkerixTiBvXriZr" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="dashboard.css?v=__BUILD_ID__">
+  <link rel="stylesheet" href="ui-fixes.css?v=__BUILD_ID__">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -214,7 +215,7 @@
             <div class="search-input-wrapper" id="searchInputWrapper">
               <label for="searchInput" class="sr-only" style="display:none;">חיפוש משרה</label>
               <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה..." oninput="onSearchInput(this.value)" aria-label="חיפוש משרה, חברה או דרישה טכנית" />
-              <button type="button" class="btn-clear-search" onclick="clearSearchInput()" title="נקה חיפוש" aria-label="נקה חיפוש">
+              <button type="button" class="btn-clear-search search-clear-btn is-hidden" onclick="clearSearchInput()" title="נקה חיפוש" aria-label="נקה חיפוש">
                 <i class="ph-bold ph-x"></i>
               </button>
             </div>
@@ -1562,5 +1563,6 @@
     };
   </script>
   <script src="dashboard.js?v=__BUILD_ID__" defer></script>
+  <script src="ui-fixes.js?v=__BUILD_ID__" defer></script>
 </body>
 </html>

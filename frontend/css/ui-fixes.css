@@ -1,0 +1,106 @@
+/* ==========================================================================
+   1. תיקון כפילות חיצים בתיבות בחירה (Select) וכיווניות טקסט (BiDi / RTL)
+   ========================================================================== */
+select,
+.filter-select {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: left 0.85rem center !important;
+  background-size: 1rem !important;
+  padding-left: 2.5rem !important;
+}
+
+select::-ms-expand {
+  display: none !important;
+}
+
+/* מניעת היפוך מספרי שכר וטקסט מעורב עברית/אנגלית */
+.salary-badge,
+[class*="salary"],
+.ltr-range {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.chart-x-label,
+.chart-axis-label {
+  unicode-bidi: plaintext !important;
+  font-size: 0.8rem !important;
+  color: #d1d5db !important;
+}
+
+/* ==========================================================================
+   2. שדה חיפוש וכפתורי סינון
+   ========================================================================== */
+/* הסתרת כפתור הניקוי (X) כששדה החיפוש ריק */
+.search-clear-btn.is-hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+.search-clear-btn {
+  transition: opacity 0.15s ease-in-out;
+}
+
+/* ==========================================================================
+   3. אחידות כרטיסי משרות ולוגואים (Dark Mode Friendly)
+   ========================================================================== */
+.job-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  height: 100% !important;
+}
+
+/* ביטול הריבוע הלבן המסנוור של הלוגואים */
+.company-logo-box,
+.job-card img.company-logo,
+.logo-placeholder {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 10px !important;
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  flex-shrink: 0 !important;
+  color: #34d399 !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* סידור אחיד למטא-דאטה של הכרטיס (מיקום, תאריך, מקור) */
+.job-meta-grid {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  row-gap: 0.35rem !important;
+  column-gap: 0.75rem !important;
+  align-items: center !important;
+  margin: 0.75rem 0 !important;
+  padding-top: 0.65rem !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* הצמדת תיבת "דרישות סף" לתחתית הכרטיס ליצירת גובה אחיד בשורה */
+.requirements-box {
+  margin-top: auto !important;
+}
+
+/* ==========================================================================
+   4. דיוק גרף העמודות
+   ========================================================================== */
+.bar-column,
+[class*="chart-bar"] {
+  border-radius: 6px 6px 0 0 !important;
+  margin-bottom: 0 !important;
+}

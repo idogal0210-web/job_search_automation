@@ -45,7 +45,9 @@ job_search_automation/
 │   ├── templates/index.html        # HTML layout shell and metadata slots
 │   ├── templates/email_report.html # Externalized HTML email digest template
 │   ├── css/dashboard.css           # Modular dashboard CSS styles
+│   ├── css/ui-fixes.css            # Specialized UI/BiDi/dark-mode fixes stylesheet
 │   ├── js/dashboard.js             # Client-side SPA application logic and data fetcher
+│   ├── js/ui-fixes.js              # Client-side UI, BiDi, and auto-fix runtime script
 │   ├── data/studio_profile.json    # Tracked non-PII excluded employers config synced to Career Studio UI
 │   └── assets/                     # Local static assets and company logos
 ├── prompts/                        # Versioned LLM prompts extracted from code
@@ -72,7 +74,9 @@ job_search_automation/
 ├── docs/
 │   ├── index.html                  # Lightweight production SPA shell (~31KB) hosted on GitHub Pages
 │   ├── dashboard.css               # Compiled dashboard styles
+│   ├── ui-fixes.css                # Specialized UI/BiDi/dark-mode fixes stylesheet
 │   ├── dashboard.js                # Compiled application script
+│   ├── ui-fixes.js                 # Client-side UI, BiDi, and auto-fix runtime script
 │   ├── theme.css                   # Global design tokens, color variables, and base responsive styles
 │   ├── fonts.css                   # Local font declarations
 │   ├── data/

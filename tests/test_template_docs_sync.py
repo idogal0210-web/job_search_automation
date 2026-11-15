@@ -25,7 +25,9 @@ class TemplateDocsSyncTests(unittest.TestCase):
     def test_js_and_css_copies_identical(self):
         pairs = [
             ("frontend/js/dashboard.js", "docs/dashboard.js"),
+            ("frontend/js/ui-fixes.js", "docs/ui-fixes.js"),
             ("frontend/css/dashboard.css", "docs/dashboard.css"),
+            ("frontend/css/ui-fixes.css", "docs/ui-fixes.css"),
             ("frontend/js/app.js", "docs/js/app.js"),
             ("frontend/data/cv/cv_he.html", "docs/career/cv/cv_he.html"),
             ("frontend/data/cv/cv_en.html", "docs/career/cv/cv_en.html"),
