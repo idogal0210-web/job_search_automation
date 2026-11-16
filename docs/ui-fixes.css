@@ -3,46 +3,45 @@
    ========================================================================== */
 select,
 .filter-select {
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  appearance: none !important;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
-  background-repeat: no-repeat !important;
-  background-position: left 0.85rem center !important;
-  background-size: 1rem !important;
-  padding-left: 2.5rem !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: left 0.85rem center;
+  background-size: 1rem;
+  padding-left: 2.5rem;
 }
 
 select::-ms-expand {
-  display: none !important;
+  display: none;
 }
 
 /* מניעת היפוך מספרי שכר וטקסט מעורב עברית/אנגלית */
 .salary-badge,
 [class*="salary"],
 .ltr-range {
-  direction: ltr !important;
-  unicode-bidi: isolate !important;
-  display: inline-flex !important;
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-flex;
   align-items: center;
   gap: 0.25rem;
 }
 
 .chart-x-label,
 .chart-axis-label {
-  unicode-bidi: plaintext !important;
-  font-size: 0.8rem !important;
-  color: #d1d5db !important;
+  unicode-bidi: plaintext;
+  font-size: 0.8rem;
+  color: var(--text-secondary, #d1d5db);
 }
 
 /* ==========================================================================
    2. שדה חיפוש וכפתורי סינון
    ========================================================================== */
-/* הסתרת כפתור הניקוי (X) כששדה החיפוש ריק */
 .search-clear-btn.is-hidden {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  visibility: hidden !important;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .search-clear-btn {
@@ -50,52 +49,64 @@ select::-ms-expand {
 }
 
 /* ==========================================================================
-   3. אחידות כרטיסי משרות ולוגואים (Dark Mode Friendly)
+   3. אחידות כרטיסי משרות ולוגואים (תמיכה ב-Dark & Light Mode)
    ========================================================================== */
 .job-card {
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-start !important;
-  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
-/* ביטול הריבוע הלבן המסנוור של הלוגואים */
+.job-company-logo,
 .company-logo-box,
 .job-card img.company-logo,
 .logo-placeholder {
-  width: 36px !important;
-  height: 36px !important;
-  border-radius: 8px !important;
-  background-color: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  overflow: hidden !important;
-  flex-shrink: 0 !important;
-  color: #34d399 !important;
-  font-weight: 700 !important;
-  font-size: 0.85rem !important;
-  letter-spacing: 0.5px !important;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  color: var(--status-pass, #34d399);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
 }
 
-/* סידור אחיד למטא-דאטה של הכרטיס (מיקום, תאריך, מקור) */
+:root[data-theme="light"] .job-company-logo,
+:root[data-theme="light"] .company-logo-box,
+:root[data-theme="light"] .job-card img.company-logo,
+:root[data-theme="light"] .logo-placeholder {
+  background-color: rgba(27, 35, 48, 0.04);
+  border-color: rgba(27, 35, 48, 0.14);
+}
+
+@media (max-width: 880px) {
+  #cardsContainer .job-company-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+  }
+}
+
 .job-meta-grid {
-  display: grid !important;
-  grid-template-columns: 1fr auto !important;
-  row-gap: 0.25rem !important;
-  column-gap: 0.5rem !important;
-  align-items: center !important;
-  margin: 0.35rem 0 !important;
-  padding-top: 0.35rem !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  font-size: 0.75rem !important;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  row-gap: 0.35rem;
+  column-gap: 0.75rem;
+  align-items: center;
+  margin: 0.75rem 0;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--dashboard-edge, rgba(255, 255, 255, 0.08));
 }
 
-/* ביטול רווחים מתים: דרישות סף צמודות למטא-דאטה, ורק שורת הפעולות נצמדת לתחתית */
 .requirements-box {
-  margin-top: 0.25rem !important;
-  margin-bottom: 0.35rem !important;
+  margin-top: auto;
 }
 
 /* ==========================================================================
@@ -103,6 +114,6 @@ select::-ms-expand {
    ========================================================================== */
 .bar-column,
 [class*="chart-bar"] {
-  border-radius: 6px 6px 0 0 !important;
-  margin-bottom: 0 !important;
+  border-radius: 6px 6px 0 0;
+  margin-bottom: 0;
 }
