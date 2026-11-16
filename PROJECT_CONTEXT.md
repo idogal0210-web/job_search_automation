@@ -36,7 +36,7 @@ job_search_automation/
 ├── AGENTS.md                        # Official Google Antigravity project root rules and mission specification
 ├── .agents/                        # Operational policies, workspace plugins, and domain skills
 │   ├── plugins/                    # Project-scoped MCP plugins (api-anything)
-│   ├── rules/                      # System rules (mcp-denylist.md always_on + mcp-policy.md model_decision: Tavily, Firecrawl, Supabase, GitHub, api-anything; scoped CV globs; zero-emojis, token-efficiency)
+│   ├── rules/                      # System rules (mcp-denylist.md, single-source-and-replaceability-guard.md always_on + mcp-policy.md model_decision: Tavily, Firecrawl, Supabase, GitHub, api-anything; scoped CV globs; zero-emojis, token-efficiency)
 │   └── skills/                     # Specialized skills (api-anything, salary-intelligence, cloud-sync, health-audit, etc.)
 ├── .github/
 │   └── workflows/
