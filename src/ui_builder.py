@@ -114,9 +114,6 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
         shutil.copy2(ui_fixes_src, os.path.join(docs_dir, "ui-fixes.css"))
     if os.path.exists(js_src):
         shutil.copy2(js_src, os.path.join(docs_dir, "dashboard.js"))
-    ui_fixes_js_src = os.path.join(frontend_dir, "js", "ui-fixes.js")
-    if os.path.exists(ui_fixes_js_src):
-        shutil.copy2(ui_fixes_js_src, os.path.join(docs_dir, "ui-fixes.js"))
     js_modules_src = os.path.join(frontend_dir, "js", "modules")
     if os.path.exists(js_modules_src):
         shutil.copytree(js_modules_src, os.path.join(docs_dir, "js", "modules"), dirs_exist_ok=True)
@@ -382,7 +379,6 @@ def sync_frontend_to_docs(project_root=ROOT_DIR):
         (os.path.join(frontend_dir, "css", "dashboard.css"), os.path.join(docs_dir, "dashboard.css")),
         (os.path.join(frontend_dir, "css", "ui-fixes.css"), os.path.join(docs_dir, "ui-fixes.css")),
         (os.path.join(frontend_dir, "js", "dashboard.js"), os.path.join(docs_dir, "dashboard.js")),
-        (os.path.join(frontend_dir, "js", "ui-fixes.js"), os.path.join(docs_dir, "ui-fixes.js")),
         (os.path.join(frontend_dir, "js", "app.js"), os.path.join(docs_dir, "js", "app.js")),
     ]
     for src_p, dst_p in pairs:

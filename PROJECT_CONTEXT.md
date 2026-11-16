@@ -257,7 +257,7 @@ job_search_automation/
 - **Source Files:** The frontend source code is cleanly separated in `frontend/` (`frontend/templates/index.html`, `frontend/css/dashboard.css`, `frontend/js/dashboard.js`).
 - **Build Pipeline:** `src/ui_builder.py` orchestrates the build process via `build_and_save_docs_app`, outputting the lightweight HTML shell to `docs/index.html`, bundled CSS/JS assets, and decoupled data feeds (`docs/data/jobs.json` with schema version 2.0.0 and `docs/data/historical_catalog.json`).
 - **Cascade Layer Architecture & UI Fixes:** `dashboard.css` is structured into `@layer base, dashboard, studio`. Supplemental cross-browser fixes and overrides are housed unlayered in `ui-fixes.css` (`frontend/css/ui-fixes.css` and `docs/ui-fixes.css`), naturally taking higher cascade precedence over layered styles without requiring brittle `!important` flags.
-- **Native Runtime Normalization:** Salary range inversion auto-ordering (`normalizeSalaryRange`) and duplicate city deduplication (`normalizeJobLocation`) are implemented natively in `dashboard.js`, completely retiring the external `ui-fixes.js` script.
+- **Native Runtime Normalization & Legacy Cleanup:** Salary range inversion auto-ordering (`normalizeSalaryRange`) and duplicate city deduplication (`normalizeJobLocation`) are implemented natively in `dashboard.js`. The obsolete `ui-fixes.js` script has been removed from `frontend/js/`, `docs/`, `ui_builder.py`, and `test_template_docs_sync.py`.
 - **Prohibited Action:** Never directly edit compiled production files in `docs/index.html`, `docs/dashboard.css`, `docs/dashboard.js`, or `docs/data/`. Always apply edits to `frontend/` or `src/ui_builder.py` and rebuild.
 
 ### 6.3 Bidirectional Text & RTL Formatting
