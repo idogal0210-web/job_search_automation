@@ -55,7 +55,7 @@ select::-ms-expand {
 .job-card {
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-between !important;
+  justify-content: flex-start !important;
   height: 100% !important;
 }
 
@@ -63,9 +63,9 @@ select::-ms-expand {
 .company-logo-box,
 .job-card img.company-logo,
 .logo-placeholder {
-  width: 44px !important;
-  height: 44px !important;
-  border-radius: 10px !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
   background-color: rgba(255, 255, 255, 0.06) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   display: flex !important;
@@ -75,7 +75,7 @@ select::-ms-expand {
   flex-shrink: 0 !important;
   color: #34d399 !important;
   font-weight: 700 !important;
-  font-size: 0.95rem !important;
+  font-size: 0.85rem !important;
   letter-spacing: 0.5px !important;
 }
 
@@ -83,17 +83,19 @@ select::-ms-expand {
 .job-meta-grid {
   display: grid !important;
   grid-template-columns: 1fr auto !important;
-  row-gap: 0.35rem !important;
-  column-gap: 0.75rem !important;
+  row-gap: 0.25rem !important;
+  column-gap: 0.5rem !important;
   align-items: center !important;
-  margin: 0.75rem 0 !important;
-  padding-top: 0.65rem !important;
+  margin: 0.35rem 0 !important;
+  padding-top: 0.35rem !important;
   border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  font-size: 0.75rem !important;
 }
 
-/* הצמדת תיבת "דרישות סף" לתחתית הכרטיס ליצירת גובה אחיד בשורה */
+/* ביטול רווחים מתים: דרישות סף צמודות למטא-דאטה, ורק שורת הפעולות נצמדת לתחתית */
 .requirements-box {
-  margin-top: auto !important;
+  margin-top: 0.25rem !important;
+  margin-bottom: 0.35rem !important;
 }
 
 /* ==========================================================================

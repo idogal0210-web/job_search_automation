@@ -2513,12 +2513,18 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       details.classList.remove('expanded');
       btn.classList.remove('expanded');
       btn.setAttribute('aria-expanded', 'false');
-      btn.innerHTML = '<span>הרחב ניתוח מלא</span> <i class="ph-bold ph-caret-down"></i>';
+      btn.setAttribute('title', 'הרחב ניתוח מלא');
+      btn.setAttribute('aria-label', 'הרחב ניתוח מלא');
+      btn.setAttribute('data-tooltip', 'הרחב ניתוח מלא');
+      btn.innerHTML = '<i class="ph-bold ph-caret-down"></i>';
     } else {
       details.classList.add('expanded');
       btn.classList.add('expanded');
       btn.setAttribute('aria-expanded', 'true');
-      btn.innerHTML = '<span>הסתר ניתוח מלא</span> <i class="ph-bold ph-caret-up"></i>';
+      btn.setAttribute('title', 'הסתר ניתוח מלא');
+      btn.setAttribute('aria-label', 'הסתר ניתוח מלא');
+      btn.setAttribute('data-tooltip', 'הסתר ניתוח מלא');
+      btn.innerHTML = '<i class="ph-bold ph-caret-up"></i>';
     }
   }
 
@@ -2734,45 +2740,42 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           </div>
         </div>
 
-        <!-- Action Bar -->
+        <!-- Action Bar: Single-Row Compact Icon Buttons -->
         <div class="job-actions-bar">
-          <div class="job-actions-top-row">
-            <button type="button" class="btn-toggle-details" onclick="toggleCardDetails(this, event)" aria-expanded="false" title="הרחב ניתוח מלא">
-              <span>הרחב ניתוח מלא</span>
-              <i class="ph-bold ph-caret-down"></i>
-            </button>
-            ${state === 'rejected' ? `
-            <button type="button" onclick="restoreJob(${escapeHtml(JSON.stringify(String(id)))}, event)" class="btn-triage action-restore-btn" title="שחזר לחדשות" aria-label="שחזר לחדשות">
-              <i class="ph-duotone ph-arrow-counter-clockwise"></i> <span class="btn-text">שחזר לחדשות</span>
-            </button>
-            <button type="button" onclick="purgeJobPermanently(${escapeHtml(JSON.stringify(String(id)))}, event)" class="btn-triage action-reject-btn rejected-active" title="מחיקה לצמיתות" aria-label="מחיקה לצמיתות" style="background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-color: rgba(239, 68, 68, 0.5);">
-              <i class="ph-duotone ph-trash-simple"></i>
-            </button>
-            ` : `
-            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved', event)" class="btn-triage action-save-btn ${state === 'saved' ? 'saved-active' : ''}" title="שמור להגשה">
-              <i class="ph-duotone ph-bookmark-simple"></i> <span class="btn-text">${state === 'saved' ? 'נשמר להגשה' : 'שמור להגשה'}</span>
-            </button>
-            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected', event)" class="btn-triage action-reject-btn" title="הסר משרה" aria-label="הסר משרה">
-              <i class="ph-duotone ph-trash"></i>
-            </button>
-            `}
-          </div>
-          <div class="job-actions-bottom-row" style="display: flex; gap: 8px; align-items: center;">
+          <div class="job-actions-cluster">
             <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="apply-icon-btn" title="הגש מועמדות" aria-label="הגש מועמדות" data-tooltip="הגש מועמדות" onclick="event.stopPropagation()">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="22" y1="2" x2="11" y2="13"></line>
                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
               </svg>
             </a>
-            <button type="button" class="btn-triage btn-open-in-studio" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}, event)" title="התאם קו״ח ונתח בסטודיו קריירה" style="flex: 1;">
-              <i class="ph-duotone ph-magic-wand"></i> <span>התאם קו״ח</span>
+            <button type="button" class="card-action-icon-btn btn-open-in-studio" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}, event)" title="התאם קו״ח בסטודיו קריירה" aria-label="התאם קו״ח בסטודיו קריירה" data-tooltip="התאם קו״ח בסטודיו">
+              <i class="ph-duotone ph-magic-wand"></i>
             </button>
+            ${state === 'rejected' ? `
+            <button type="button" onclick="restoreJob(${escapeHtml(JSON.stringify(String(id)))}, event)" class="card-action-icon-btn action-restore-btn" title="שחזר לחדשות" aria-label="שחזר לחדשות" data-tooltip="שחזר לחדשות">
+              <i class="ph-duotone ph-arrow-counter-clockwise"></i>
+            </button>
+            <button type="button" onclick="purgeJobPermanently(${escapeHtml(JSON.stringify(String(id)))}, event)" class="card-action-icon-btn action-reject-btn rejected-active" title="מחיקה לצמיתות" aria-label="מחיקה לצמיתות" data-tooltip="מחיקה לצמיתות">
+              <i class="ph-duotone ph-trash-simple"></i>
+            </button>
+            ` : `
+            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved', event)" class="card-action-icon-btn action-save-btn ${state === 'saved' ? 'saved-active' : ''}" title="${state === 'saved' ? 'נשמר להגשה (לחץ להסרה)' : 'שמור להגשה'}" aria-label="שמור להגשה" data-tooltip="${state === 'saved' ? 'נשמר להגשה' : 'שמור להגשה'}">
+              <i class="${state === 'saved' ? 'ph-fill ph-bookmark-simple' : 'ph-duotone ph-bookmark-simple'}"></i>
+            </button>
+            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected', event)" class="card-action-icon-btn action-reject-btn" title="הסר משרה" aria-label="הסר משרה" data-tooltip="הסר משרה">
+              <i class="ph-duotone ph-trash"></i>
+            </button>
+            `}
             ${Array.isArray(altLinksStore[id]) && altLinksStore[id].length > 0 ? `
-              <a href="${sanitizeUrl(altLinksStore[id][0])}" target="_blank" rel="noopener noreferrer" class="btn-triage" style="padding: 10px 14px; font-size: 13px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" onclick="event.stopPropagation()" title="מקור נוסף להגשת מועמדות (מוזג מכפילות)">
-                <i class="ph-duotone ph-link"></i> <span>מקור נוסף (${altLinksStore[id].length})</span>
-              </a>
+            <a href="${sanitizeUrl(altLinksStore[id][0])}" target="_blank" rel="noopener noreferrer" class="card-action-icon-btn btn-alt-link" onclick="event.stopPropagation()" title="מקור נוסף להגשת מועמדות (מוזג מכפילות)" aria-label="מקור נוסף" data-tooltip="מקור נוסף (${altLinksStore[id].length})">
+              <i class="ph-duotone ph-link"></i>
+            </a>
             ` : ''}
           </div>
+          <button type="button" class="card-action-icon-btn btn-toggle-details" onclick="toggleCardDetails(this, event)" aria-expanded="false" title="הרחב ניתוח מלא" aria-label="הרחב ניתוח מלא" data-tooltip="הרחב ניתוח מלא">
+            <i class="ph-bold ph-caret-down"></i>
+          </button>
         </div>
       `;
 
@@ -3311,19 +3314,31 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const rejectBtn = card.querySelector('.action-reject-btn');
       const saveText = saveBtn ? saveBtn.querySelector('.btn-text') : null;
 
-      if (saveBtn && saveText) {
+      if (saveBtn) {
         if (state === 'saved') {
-          saveBtn.className = "btn-triage action-save-btn saved-active";
-          saveText.textContent = "נשמר להגשה";
-          if (rejectBtn) rejectBtn.className = "btn-triage action-reject-btn";
+          saveBtn.classList.add('saved-active');
+          if (saveText) saveText.textContent = "נשמר להגשה";
+          saveBtn.setAttribute('title', 'נשמר להגשה (לחץ להסרה)');
+          saveBtn.setAttribute('data-tooltip', 'נשמר להגשה');
+          const saveIcon = saveBtn.querySelector('i');
+          if (saveIcon) saveIcon.className = 'ph-fill ph-bookmark-simple';
+          if (rejectBtn) rejectBtn.classList.remove('rejected-active');
         } else if (state === 'rejected') {
-          if (rejectBtn) rejectBtn.className = "btn-triage action-reject-btn rejected-active";
-          saveBtn.className = "btn-triage action-save-btn";
-          saveText.textContent = "שמור להגשה";
+          if (rejectBtn) rejectBtn.classList.add('rejected-active');
+          saveBtn.classList.remove('saved-active');
+          if (saveText) saveText.textContent = "שמור להגשה";
+          saveBtn.setAttribute('title', 'שמור להגשה');
+          saveBtn.setAttribute('data-tooltip', 'שמור להגשה');
+          const saveIcon = saveBtn.querySelector('i');
+          if (saveIcon) saveIcon.className = 'ph-duotone ph-bookmark-simple';
         } else {
-          saveBtn.className = "btn-triage action-save-btn";
-          if (rejectBtn) rejectBtn.className = "btn-triage action-reject-btn";
-          saveText.textContent = "שמור להגשה";
+          saveBtn.classList.remove('saved-active');
+          if (rejectBtn) rejectBtn.classList.remove('rejected-active');
+          if (saveText) saveText.textContent = "שמור להגשה";
+          saveBtn.setAttribute('title', 'שמור להגשה');
+          saveBtn.setAttribute('data-tooltip', 'שמור להגשה');
+          const saveIcon = saveBtn.querySelector('i');
+          if (saveIcon) saveIcon.className = 'ph-duotone ph-bookmark-simple';
         }
       }
 
