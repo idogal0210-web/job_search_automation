@@ -107,15 +107,37 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
   }
 
+  function normalizeSalaryRange(text) {
+    if (!text) return '';
+    return String(text).replace(
+      /(?:₪\s*)?([\d,]+)\s*[-–]\s*([\d,]+)(?:\s*₪)?/g,
+      (_, a, b) => {
+        const n1 = Number(a.replace(/,/g, ''));
+        const n2 = Number(b.replace(/,/g, ''));
+        if (!Number.isFinite(n1) || !Number.isFinite(n2)) return `${a} - ${b}`;
+        const [minVal, maxVal] = n1 <= n2 ? [a, b] : [b, a];
+        return `${minVal} - ${maxVal} ₪`;
+      }
+    );
+  }
+
+  function normalizeJobLocation(rawLocation) {
+    return stripEmojis(rawLocation || '')
+      .replace(/\b([A-Za-z\s]+),\s*\1\b/gi, '$1')
+      .replace(/([\u0590-\u05FF\s"״'-]+),\s*\1(?=$|,)/g, '$1')
+      .trim();
+  }
+
   function formatJobSalaryTag(job) {
     if (!job) return '';
     let sal = (job.salary_range || '').trim();
     if (!sal || sal === 'לא צוין במודעה' || sal === 'לא צוין שכר' || sal === 'לא צוין') {
       return '';
     }
-    // Clean any accidental word 'הערכה'
+    // Clean any accidental word 'הערכה' and normalize reversed ranges
     sal = sal.replace(/הערכה\s*(?:חודשית|פנימית|בלבד)?/g, '').replace(/—\s*$/, '').replace(/;\s*:/g, ':').trim();
     sal = sal.replace(/\(\s*\)/g, '').trim();
+    sal = normalizeSalaryRange(sal);
 
     const isAd = job.salary_source_type === 'job_ad' || job.salary_source_type === 'ad' || job.salary_source_type === 'employer';
     if (isAd) {
@@ -574,9 +596,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     saveStarredJobs(starredJobs);
     scheduleCloudPush();
 
+    const canon = getCanonicalJobKey(id);
     document.querySelectorAll('.job-card').forEach(card => {
       const cardId = card.getAttribute('data-id');
-      if (cardId === id || getCanonicalJobKey(cardId) === canon) {
+      if (cardId === id || (canon && getCanonicalJobKey(cardId) === canon)) {
         const starBtn = card.querySelector('.btn-star');
         const activeStar = isJobStarred(cardId);
         if (starBtn) {
@@ -2176,10 +2199,14 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const safeLink = sanitizeUrl(job.link);
       const safeId = encodeURIComponent(id).replace(/'/g, '%27');
 
-      const markerLogoInner = logoInfo.logoUrl ? `
-        <img src="${logoInfo.logoUrl}" alt="${safeComp}" loading="lazy" class="map-pin-logo-img"
-             onload="if(this.naturalWidth <= 16 && this.naturalHeight <= 16){ this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }"
-             onerror="if(this.dataset.fallbackTried !== '1' && '${logoInfo.fallbackUrl}'){ this.dataset.fallbackTried = '1'; this.src = '${logoInfo.fallbackUrl}'; } else { this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }" />
+      const faviconFallback = logoInfo.domain
+        ? `https://icons.duckduckgo.com/ip3/${encodeURIComponent(logoInfo.domain)}.ico`
+        : '';
+      const markerLogoInner = logoInfo.primaryUrl ? `
+        <img src="${logoInfo.primaryUrl}" alt="${safeComp}" loading="lazy" class="map-pin-logo-img"
+             data-step="${logoInfo.initialStep}"
+             onload="if(this.naturalWidth <= 16 && this.naturalHeight <= 16 && this.dataset.step === '1'){ this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }"
+             onerror="if(this.dataset.fallbackTried !== '1' && '${faviconFallback}'){ this.dataset.fallbackTried = '1'; this.dataset.step = '2'; this.src = '${faviconFallback}'; } else { this.style.display='none'; var fb = this.nextElementSibling; if(fb) fb.style.display='flex'; }" />
         <div class="map-pin-avatar-fallback" style="display: none;">${logoInfo.initials}</div>
       ` : `
         <div class="map-pin-avatar-fallback">${logoInfo.initials}</div>
@@ -2216,7 +2243,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             </div>
           </div>
           <div style="font-size: 11.5px; color: var(--dashboard-muted); display: flex; flex-direction: column; gap: 3px; margin-bottom: 10px;">
-            <span><i class="ph-duotone ph-map-pin"></i> ${escapeHtml(job.location || 'ישראל')}</span>
+            <span><i class="ph-duotone ph-map-pin"></i> ${escapeHtml(normalizeJobLocation(job.location) || 'ישראל')}</span>
             <span style="color: var(--dashboard-lime);"><i class="ph-duotone ph-coins"></i> ${salaryRangeStr}</span>
             <span style="color: ${scoreColor}; font-weight: 700;"><i class="ph-duotone ph-chart-line-up"></i> התאמה ${score}%</span>
           </div>
@@ -2612,7 +2639,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       else if (score < 90) scoreClass = 'badge-score-med';
 
       const domain = escapeHtml(stripEmojis(job.company_domain_product || job.company_summary || 'מידע על החברה לא צוין'));
-      const loc = escapeHtml(stripEmojis(job.location || 'מיקום לא צוין'));
+      const loc = escapeHtml(normalizeJobLocation(job.location) || 'מיקום לא צוין');
       const jobSum = escapeHtml(stripEmojis(job.job_summary || job.company_summary || 'לא צוין תיאור מלא למשרה.'));
       const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'אין ניתוח התאמה מאומת למשרה זו.'));
       const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'אין ניתוח התאמה מאומת למשרה זו.'));
@@ -2803,7 +2830,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const safeCompany = escapeHtml(company);
     const safeTitle = escapeHtml(title);
     const safeLink = sanitizeUrl(link);
-    const loc = escapeHtml(stripEmojis(job.location || 'מיקום לא צוין'));
+    const loc = escapeHtml(normalizeJobLocation(job.location) || 'מיקום לא צוין');
     const jobDate = escapeHtml(job.date || 'היום');
     const classifiedSector = classifyJobSector(job);
     const domain = escapeHtml(stripEmojis(job.company_domain_product || job.company_summary || 'מידע על החברה לא צוין'));
@@ -3274,6 +3301,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (reg) reg.value = 'all';
     if (inp) inp.value = '';
     if (wrap) wrap.classList.remove('has-value');
+    const clearBtn = document.querySelector('.search-clear-btn');
+    if (clearBtn) clearBtn.classList.add('is-hidden');
 
     filterCards();
     showToast('ph-arrow-counter-clockwise', 'המסננים וחיפוש המשרות אופסו בהצלחה');
@@ -3413,12 +3442,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         // Apply highlighting to key visible text elements when search is active
         const titleEl = card.querySelector('.job-title-text');
         const compEl = card.querySelector('.job-company-name');
-        const domainEl = card.querySelector('.job-bubble-domain .bubble-content');
-        const reqsEl = card.querySelector('.job-bubble-reqs .bubble-content');
+        const reqsEl = card.querySelector('.job-key-requirements-content');
 
         if (titleEl) highlightSearchTerms(titleEl, searchTerms);
         if (compEl) highlightSearchTerms(compEl, searchTerms);
-        if (domainEl) highlightSearchTerms(domainEl, searchTerms);
         if (reqsEl) highlightSearchTerms(reqsEl, searchTerms);
       } else {
         card.style.display = 'none';
@@ -3573,6 +3600,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           if (titleEl) titleEl.textContent = 'לא נמצאו משרות בהתאם לסינון';
           if (descEl) descEl.innerHTML = 'נסה לבחור אזור אחר, לשנות את מילת החיפוש או <button type="button" onclick="resetAllFilters()" style="background:none;border:none;color:var(--dashboard-cyan);cursor:pointer;text-decoration:underline;font:inherit;padding:0;">לאפס את כל המסננים</button>.';
         } else if (currentFilter === 'rejected') {
+          const totalRejectedInStore = new Set(
+            Object.keys(jobStates || {})
+              .filter(k => jobStates[k] === 'rejected' || jobStates[k] === 'purged')
+              .map(k => getCanonicalJobKey(k))
+          ).size;
           if (iconEl) iconEl.innerHTML = '<i class="ph-duotone ph-trash"></i>';
           if (titleEl) titleEl.textContent = totalRejectedInStore > 0 ? `כל ${totalRejectedInStore} המשרות שהוסרו מנוטרלות לצמיתות` : 'אין כרגע משרות שהוסרו מהסבב';
           if (descEl) descEl.textContent = totalRejectedInStore > 0 ? 'משרות אלו סוננו מחלון ההזדמנויות השבועי ולא ישובו להופיע בדוחות הבאים.' : 'כאשר תסיר משרה מהסבב, היא תופיע כאן.';
@@ -7168,8 +7200,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       totalScore += audit.score;
       const scoreClass = audit.score >= 80 ? 'score-high' : (audit.score >= 55 ? 'score-mid' : 'score-low');
       const safeBulletAttr = escapeHtml(JSON.stringify(String(bullet || '')));
-      const transformedObj = (typeof transformBullet === 'function') ? transformBullet(bullet, activeTone) : null;
-      const proposedText = (transformedObj && transformedObj.transformed) ? transformedObj.transformed : bullet;
+      const proposedText = (typeof transformBulletTone === 'function')
+        ? (transformBulletTone(bullet, activeTone) || bullet)
+        : bullet;
       const safeProposedAttr = escapeHtml(JSON.stringify(String(proposedText || '')));
       const closedGap = missingList[idx % Math.max(1, missingList.length)] || 'דיוק תפעולי וכימות הישגים';
       const rationale = !audit.hasMetric
@@ -8957,7 +8990,7 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
 
     if (roleEl) {
       const comp = (document.getElementById('atsCompanyInput')?.value || '').trim();
-      const title = (document.getElementById('atsJobTitleInput')?.value || '').trim();
+      const title = (document.getElementById('atsTitleInput')?.value || '').trim();
       roleEl.textContent = (comp || title)
         ? `יעד: ${[comp, title].filter(Boolean).join(' - ')}`
         : ((StudioState && StudioState.lastSourceLabel) || 'יעד: פרופיל בסיס');
