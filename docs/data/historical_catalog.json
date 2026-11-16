@@ -26576,5 +26576,451 @@
     "is_shifts_24_7": false,
     "is_junior_friendly": false,
     "curated_tags": []
+  },
+  "https://xtend.me/careers/flight-operations-drone-pilot/": {
+    "link": "https://xtend.me/careers/flight-operations-drone-pilot/",
+    "title": "Flight Operations Drone Pilot",
+    "company": "XTEND",
+    "location": "Tampa, Tampa, FL",
+    "date": "2026-11-16",
+    "source": "Comeet",
+    "match_score": 90,
+    "base_match_score": 85,
+    "priority_bonus": 5,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "drones",
+    "company_domain_product": "XTEND",
+    "company_summary": "",
+    "job_summary": "הפעלת רחפנים, ביצוע טיסות ניסוי, תכנון משימות ותמיכה בפעילות מבצעית.",
+    "company_requirements": "ניסיון בהפעלת רחפנים, יכולת העבודה בשטח ונכונות לנסיעות.",
+    "experience_strengths": "רקע פיקודי מבצעי ביחידת עילית וניסיון בהפעלת מערכות טכניות בשטח.",
+    "reasoning": "המועמד בעל ניסיון צבאי רלוונטי בהפעלת רחפנים ורקע טכני חזק בשטח.",
+    "key_highlights": "התאמה גבוהה לדרישות התפקיד בתחום טיסות הניסוי וההפעלה המבצעית.",
+    "salary_range": "14,000 - 19,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: רחפנים, כטב״ם ומערכות C-UAS.",
+    "salary_source_url": "",
+    "p25": 14000,
+    "p75": 19000,
+    "logo": null,
+    "company_logo_url": null,
+    "snippet": "Description: The Flight Operations Drone Pilot is responsible for the safe operation, mission execution, and flight testing of unmanned aircraft systems (UAS) in support of customer, engineering, training, and operational requirements.\nThis position conducts flight operations, supports system evaluations, assists with mission planning, and ensures compliance with company procedures and applicable aviation regulations.\nMain Responsibilities\nConduct pre-flight, flight, and post-flight operations for unmanned aircraft systems\nExecute mission profiles, flight test events, demonstrations, and training operations\nDevelop and review flight plans, risk assessments, and mission documentation\nMonitor aircraft performance and respond to abnormal operating conditions during flight operations\nCoordinate with engineering, program management, and customer personnel during flight activities\nCollect, document, and report flight data, observations, and mission results\nPerform pre-flight inspections and verify aircraft airworthiness and mission readiness\nSupport customer training, operational demonstrations, and fielding activities\nEnsure compliance with FAA regulations, company flight procedures, and safety requirements\nAssist in troubleshooting operational issues and provide feedback to engineering teams for system improvements\nTravel as required to support testing, training, demonstrations, and customer operations | Requirements: FAA Part 107 Remote Pilot Certificate\nExperience operating small unmanned aircraft systems in training, testing, or operational environments\nKnowledge of UAS flight operations, mission planning, and airspace considerations.\nAbility to work independently in dynamic field environments\nStrong communication, organizational, and documentation skills\nAbility to travel and support field operations\nPreferred Qualifications\nMilitary aviation or UAS operational experience\nExperience conducting developmental testing, operational testing, or customer demonstrations\nFamiliarity with ISR, tactical UAS, or counter-UAS operations\nExperience operating Group 1–3 unmanned aircraft systems\nActive or previously held security clearance",
+    "stable_job_id": "ch_715d0d2f0207",
+    "content_hash": "ch_715d0d2f0207",
+    "requirement_assessments": [
+      {
+        "requirement": "Experience operating small unmanned aircraft systems in training, testing, or operational environments",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Experience operating small unmanned aircraft systems in training, testing, or operational environments",
+          "source_field": "Requirements"
+        },
+        "profile_evidence": {
+          "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח\"ל).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע מבצעי עשיר הכולל הפעלת מערכות שטח טכניות."
+      },
+      {
+        "requirement": "Military aviation or UAS operational experience",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "Military aviation or UAS operational experience",
+          "source_field": "Preferred Qualifications"
+        },
+        "profile_evidence": {
+          "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח\"ל).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע שירות צבאי משמעותי בסיירת נח\"ל."
+      }
+    ],
+    "fit_gaps": "נדרשת בדיקה לגבי החזקת רישיון טיס רלוונטי המקביל לדרישות ה-FAA.",
+    "is_direct_ats": true,
+    "is_field_work": true,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": [
+      {
+        "type": "tag-field",
+        "icon": "ph-bold ph-wrench",
+        "label": "עבודת שטח"
+      }
+    ]
+  },
+  "https://il.linkedin.com/jobs/view/core-uav-r-d-systems-integration-engineer-avionics-flight-field-at-esp710-4489390269": {
+    "link": "https://il.linkedin.com/jobs/view/core-uav-r-d-systems-integration-engineer-avionics-flight-field-at-esp710-4489390269",
+    "title": "Core UAV R&D & Systems Integration Engineer (Avionics, Flight & Field)",
+    "company": "ESP710",
+    "location": "unknown",
+    "date": "2026-11-16",
+    "source": "LinkedIn",
+    "match_score": 90,
+    "base_match_score": 90,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "drones",
+    "company_domain_product": "סטארטאפ בתחום הביטחוני המפתח רחפנים טקטיים, חימוש משוטט ומערכות מוטסות.",
+    "company_summary": "",
+    "job_summary": "דרוש מהנדס אינטגרציה ומערכות UAV מעשי לשילוב מערכות אלקטרוניקה, אוביוניקה וביצוע ניסויי שדה חיים.",
+    "company_requirements": "ניסיון מעשי בבناء רחפנים, אלקטרוניקה ואווירוניקה, בקר טיסה וניסויי שדה.",
+    "experience_strengths": "רקע מעשי בהנדסה אזרחית וצבאית (סיירת נח\"ל), יכולות טכניות בעבודה עם חומרה, רחפנים, ואלקטרוניקה.",
+    "reasoning": "מועמד בעל רקע קרבי והנדסי עשיר באינטגרציית רחפנים, אלקטרוניקה ובחינות שדה מבצעיות.",
+    "key_highlights": "ניסיון מעשי בבניית רחפנים, התאמת בקר טיסה, ניסויי שדה מבצעיים ויכולת עבודה עצמאית בתנאי שטח.",
+    "salary_range": "14,000 - 19,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: רחפנים, כטב״ם ומערכות C-UAS.",
+    "salary_source_url": "",
+    "p25": 14000,
+    "p75": 19000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEGCZh_pjA90A/company-logo_100_100/company-logo_100_100/0/1733571590166/esp710_logo?e=2147483647&v=beta&t=7Bro2fpY-5pddP3FifGwdgxswtZoj8aRoO7ZcN59jbQ",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQEGCZh_pjA90A/company-logo_100_100/company-logo_100_100/0/1733571590166/esp710_logo?e=2147483647&v=beta&t=7Bro2fpY-5pddP3FifGwdgxswtZoj8aRoO7ZcN59jbQ",
+    "snippet": "ESP710\nis a dynamic defense-tech startup developing cutting-edge tactical UAVs, loitering munitions, and airborne systems at the forefront of aerial warfare technology.\nAbout the Role: We are\nlooking for a hands-on\nCore UAV R&D & Systems Integration Engineer\nto join our core R&D team and bring our aerial platforms to life. Working side-by-side with our Mechanical, Software, and Algorithm developers, you will take freshly prototyped mechanical platforms from the CAD/3D-printing stage and transform them into fully functional, combat-ready flying systems—from electronics and avionics build-up, through lab and GNSS-denied field flight testing, to operational delivery and soldier training.\nKey Responsibilities\nPrototype Bring-Up (From Shell to Flying System):\nPartner closely with the Mechanical R&D team to turn newly designed/3D-printed airframes into operational prototypes—performing precision soldering, harnessing, electronics assembly, and payload/sensor integration.\nAvionics & Flight Controller Mastery:\nConfigure, calibrate, and tune flight controllers (\nPX4, ArduPilot, Betaflight/INAV\n), ESCs, GPS/IMU sensors, and RF/video communication links for optimal flight performance.\nLab Validation & Live Field Trials:\nLead end-to-end testing from bench validation to live field flight trials—including complex operational scenarios such as\nGNSS-denied environments\n—and analyze flight logs to drive rapid R&D iterations.\nReal-Time Field Troubleshooting:\nDiagnose and solve multidisciplinary issues (hardware, RF, avionics, power, and mechanical interfaces) on the spot under field conditions.\nOperational Delivery & End-User Training:\nAccompany platforms through final operational acceptance, conducting live demonstrations and direct training for end-users/soldiers in the field.\nQualifications & Requirements\nHands-On UAV / Drone Builder:\nProven practical experience building, integrating, and flying UAVs, FPV/tactical drones, or loitering munitions from scratch (professional or elite military background).\nElectronics & Avionics Skills:\nStrong hands-on capabilities in electronics, fine soldering, wiring/harnessing, power systems, and RF/telemetry data links (UART, CAN, MAVLink, ELRS/analog/digital video).\nAutopilot & Tuning Proficiency:\nHands-on experience setting up, calibrating, and troubleshooting open-source or commercial flight controllers (\nPX4 / ArduPilot / Betaflight\n) and analyzing flight logs.\nField-First R&D Mindset:\nHigh independence, creativity, and ability to improvise, modify hardware/setups on the fly, and solve problems in real-time field environments.\nStrong Advantage:\nBackground in rapid-prototyping defense/aerospace environments, robotics startups, or hands-on tactical drone/FPV development and field operations.",
+    "stable_job_id": "li_4489390269",
+    "content_hash": "ch_e319528672f8",
+    "requirement_assessments": [
+      {
+        "requirement": "Hands-On UAV / Drone Builder",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Proven practical experience building, integrating, and flying UAVs, FPV/tactical drones",
+          "source_field": "Qualifications & Requirements"
+        },
+        "profile_evidence": {
+          "quote": "drone/UAV integration and flight operations",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש רקע מעשי בשילוב רחפנים ופעולות טיסה."
+      },
+      {
+        "requirement": "Electronics & Avionics Skills",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Strong hands-on capabilities in electronics, fine soldering, wiring/harnessing",
+          "source_field": "Qualifications & Requirements"
+        },
+        "profile_evidence": {
+          "quote": "electro-mechanical systems, site supervision, equipment commissioning",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "המועמד שולט במערכות אלקטרו-מכניות ואינטגרציה מעשית."
+      },
+      {
+        "requirement": "Autopilot & Tuning Proficiency",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Hands-on experience setting up, calibrating, and troubleshooting open-source or commercial flight controllers",
+          "source_field": "Qualifications & Requirements"
+        },
+        "profile_evidence": {
+          "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מביא יכולות פתרון בעיות בשטח ובקיאות מבצעית גבוהה."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": true,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": [
+      {
+        "type": "tag-field",
+        "icon": "ph-bold ph-wrench",
+        "label": "עבודת שטח"
+      }
+    ]
+  },
+  "https://il.linkedin.com/jobs/view/equipment-technician-student-at-tower-semiconductor-4490221380": {
+    "link": "https://il.linkedin.com/jobs/view/equipment-technician-student-at-tower-semiconductor-4490221380",
+    "title": "Equipment Technician Student",
+    "company": "Tower Semiconductor",
+    "location": "ישראל",
+    "date": "2026-11-16",
+    "source": "LinkedIn",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "energy_tech",
+    "company_domain_product": "Tower Semiconductor - פאונדרי מוביל לפתרונות אנלוגיים מוליכים למחצה",
+    "company_summary": "",
+    "job_summary": "משרת סטודנט לטכנאי ציוד האחראי על תחזוקה מונעת ותיקון מכלולי ציוד במפעל ייצור.",
+    "company_requirements": "לימודי הנדסאי מכונות/מכטרוניקה/חשמל, כישורים טכניים גבוהות, עבודה במשמרות",
+    "experience_strengths": "רקע חזק במכונות, מיומנויות טכניות גבוהות ויכולת עבודה בצוות.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך העונה במדויק על דרישת הלימודים לתפקיד טכנאי ציוד.",
+    "key_highlights": "התאמה מלאה לדרישת הסטודנט להנדסאי מכונות, עם דגש על תחזוקת מערכות אלקטרו-מכניות.",
+    "salary_range": "13,500 - 17,500 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • כולל משמרות",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 13500,
+    "p75": 17500,
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQEiYEs4gm2jAg/company-logo_100_100/company-logo_100_100/0/1630494257212/tower_semiconductor_logo?e=2147483647&v=beta&t=kl_Oa5WM-tyVGAMF52TP7eMjXkwapXFZ0OkLKQBpOEg",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQEiYEs4gm2jAg/company-logo_100_100/company-logo_100_100/0/1630494257212/tower_semiconductor_logo?e=2147483647&v=beta&t=kl_Oa5WM-tyVGAMF52TP7eMjXkwapXFZ0OkLKQBpOEg",
+    "snippet": "About Tower Semiconductor\nLooking for a career path in the high-tech industry? Become part of a team focused on delivering the most exciting semiconductor technology in the world! If you enjoy working with others in a dynamic, fast-paced environment and are looking for an opportunity to grow your career in this exciting industry, then Tower Semiconductor is the place to be!\nTower Semiconductor, the leading foundry of high-value analog semiconductor solutions, provides technology, development, and process platforms for analog integrated circuits to more than 300 customers worldwide across growing markets such as communications, mobile, infrastructure, consumer, industrial, automotive, medical, and aerospace and defense, among others.\nJoin Tower and become part of a dynamic organization with exceptionally talented and dedicated team members who work collaboratively to provide best-in-class technological solutions to our clients.\nJob Description\nPerforming preventative maintenance and assist with repair on semiconductor assemblies and equipment. Interfaces with Equipment Engineers and area Manager to identify and assist in resolving equipment and process-related issues which support production. Participate in the activities assigned to them by the area engineers or managers, and work on set priorities based on production requirements.\nThis Job Is For You If:\nYou would like to get unique training and gain experience in your profession\nYou are looking for technical challenges\nWorking with people and sharing new ideas makes you excited\nYou would like to get full annual scholarship and work in a flexible environment for students\nJob Requirements\n**Must Have:**\n- You should be studying for a Practical Engineer degree in Mechanical/Mechatronics/Electrical/Electronic with at least one year till graduation and Ability to work 2-3 days a week\n- High Technical skills\n- Team work capabilities\n- Available to work in shifts",
+    "stable_job_id": "li_4490221380",
+    "content_hash": "ch_378212b781c8",
+    "requirement_assessments": [
+      {
+        "requirement": "You should be studying for a Practical Engineer degree in Mechanical/Mechatronics/Electrical/Electronic",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "You should be studying for a Practical Engineer degree in Mechanical/Mechatronics/Electrical/Electronic",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בדיפלומה של הנדסאי מכונות."
+      },
+      {
+        "requirement": "High Technical skills",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "High Technical skills",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer with Deep Specialization in Energy Systems",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע טכני רב-תחומי ויכולות מעשיות גבוהות."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://il.linkedin.com/jobs/view/quality-engineer-at-odem-scientific-applications-ltd-4489386378": {
+    "link": "https://il.linkedin.com/jobs/view/quality-engineer-at-odem-scientific-applications-ltd-4489386378",
+    "title": "Quality Engineer",
+    "company": "Odem Scientific Applications Ltd",
+    "location": "נס ציונה",
+    "date": "2026-11-16",
+    "source": "LinkedIn",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "operations",
+    "company_domain_product": "מערכות מתקדמות וייצור תעשייתי",
+    "company_summary": "",
+    "job_summary": "מהנדס/ת איכות לאחריות על איכות פרויקטים, בדיקות בקו הייצור, חקירת תשלובות וטיפול באי-התאמות.",
+    "company_requirements": "הנדסאי מכונות, ניסיון בבקרת איכות, היכרות עם תקני ISO 9001, אנגלית ברמה גבוהה.",
+    "experience_strengths": "הנדסאי מכונות סרופ מוסמך עם הכשרה רלוונטית במערכות אלקטרו-מכניות וניהול תהליכים טכניים.",
+    "reasoning": "המוועמד הוא הנדסאי מכונות מוסמך עם רקע מוצק בבקרה, מערכות אלקטרו-מכניות ובקרת איכות תעשייתית.",
+    "key_highlights": "התאמה מלאה לדרישת ההשכלה כהנדסאי מכונות וניסיון בעבודה בסביבה תעשייתית מרובת ממשקים.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQF6nFGXyain5g/company-logo_100_100/company-logo_100_100/0/1664732081472/odem_scientific_applications_ltd_logo?e=2147483647&v=beta&t=pdvU9uTvSrfLp0kO-G1sZLc4jKlE4a1ZK2ctVVUvbl8",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQF6nFGXyain5g/company-logo_100_100/company-logo_100_100/0/1664732081472/odem_scientific_applications_ltd_logo?e=2147483647&v=beta&t=pdvU9uTvSrfLp0kO-G1sZLc4jKlE4a1ZK2ctVVUvbl8",
+    "snippet": "Odem Scientific Applications, a leading company in the manufacturing industry for advanced industries, is recruiting a Quality Engineer to join the professional team in Ness Ziona.\nJob Description:\nResponsibility for the quality of projects, including inspections on the production line and examination of products.\nSupporting existing or new projects from the initial stage through completion of production.\nRepresenting the Quality function within the company with the customer (handling customer complaints and failure investigations).\nHandling non-conformities with various departments within the company and its suppliers.\nContinuous quality improvement.\nVarious tasks as part of the company’s Quality team (statistical analyses, audits, support for incoming inspection).\nJob Requirements:\nMechanical Engineer / Practical Mechanical Engineer.\nExperience in Quality Assurance.\nFamiliarity with ISO 9001 or AS9100 standards – a significant advantage.\nHigh level of English – reading, writing, and speaking.\nExperience working in a manufacturing plant – multidisciplinary systems.\nAbility to analyze processes, identify weaknesses and defects, and build processes.\nAttention to detail, strong organizational skills, and a structured approach to work.\nGood interpersonal skills and ability to work with multiple stakeholders.\nHigh proficiency in Office applications.",
+    "stable_job_id": "li_4489386378",
+    "content_hash": "ch_e0de8629c143",
+    "requirement_assessments": [
+      {
+        "requirement": "Mechanical Engineer / Practical Mechanical Engineer",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Mechanical Engineer / Practical Mechanical Engineer.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בדיפלומת הנדסאי מכונות מוסמך בהתאם לדרישת הסף."
+      },
+      {
+        "requirement": "High level of English",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "High level of English – reading, writing, and speaking.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע טכנולוגי מתקדם המעיד על יכולת אוריינות באנגלית טכנית."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://www.drushim.co.il/job/39089900/df87bbe7/": {
+    "link": "https://www.drushim.co.il/job/39089900/df87bbe7/",
+    "title": "אינטגרטור/ית בייצור- כיולים אלקטרוניים",
+    "company": "קורן טק טכנולוגיות",
+    "location": "אזור השפלה",
+    "date": "2026-11-16",
+    "source": "Drushim",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "other",
+    "company_domain_product": "מערכות בחזית הטכנולוגיה בחברה ביטחונית",
+    "company_summary": "",
+    "job_summary": "דרוש/ה אינטגרטור/ית לביצוע כיולים אלקטרוניים, אינטגרציה ותקלות מכاניקה ואלקטרוניקה בחברה ביטחונית.",
+    "company_requirements": "הנדסאי (חשמל, מכונות, אלקטרוניקה), ידע באינטגרציה, כיולים אלקטרוניים וקריאת סכמות ושרטוטים.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם רקע במערכות אלקטרו-מכניות ואינטגרציה.",
+    "reasoning": "המוועמד הנדסאי מכונות עם רקע באינטגרציה, מכاניקה ואלקטרוניקה המתאים לדרישות התפקיד.",
+    "key_highlights": "דרישה להנדסאי מכונות/חשמל/אלקטרוניקה וניסיון באינטגרציה וכיולים.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "https://webapi.drushim.co.il/logos/10368/page/638469755259409321.png",
+    "company_logo_url": "https://webapi.drushim.co.il/logos/10368/page/638469755259409321.png",
+    "snippet": "אינטגרטור/ית בייצור- כיולים אלקטרוניים\nקורן טק טכנולוגיות\nמספר מקומות\nיהוד\nלוד\nפתח תקווה\n3-4 שנים\nמשרה מלאה\n15/11/2026\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברה ביטחונית באזור השפלה דרוש/ה אינטגרטור/ית , הזדמנות לעבוד על מערכות בחזית הטכנולוגיה.\nביצוע כיולים אלקטרוניים, אינטגרציה, תקלות מכאניקה, אלקטרוניקה\nדרישות התפקיד\nהנדסאי/ת (בעדיפות חשמל , מכונות , אלקטרוניקה)\nידע באינטגרציה\nניסיון בכיולים אלקטרוניים\nניסיון בקריאת סכמות חשמליות\nיכולת בקריאת שרטוטים\nעדיפות ליוצאי/ות חיל האוויר\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nתעשיה / ייצור\nתחומים\nטכנאי/ת - תעשייה וייצור\nחשמל ואלקטרוניקה\nטכנאי/ת מכונות",
+    "stable_job_id": "drushim_39089900",
+    "content_hash": "ch_691ff8722807",
+    "requirement_assessments": [
+      {
+        "requirement": "הנדסאי/ת (בעדיפות חשמל , מכונות , אלקטרוניקה)",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "הנדסאי/ת (בעדיפות חשמל , מכונות , אלקטרוניקה)",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בתואר הנדסאי מכונות המבוקש במשרה."
+      },
+      {
+        "requirement": "ידע באינטגרציה",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ידע באינטגרציה",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting, drone/UAV integration and flight operations.",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון באינטגרציה של מערכות אלקטרו-מכניות."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://il.linkedin.com/jobs/view/adms-solution-integrator-at-ge-vernova-4454529040": {
+    "link": "https://il.linkedin.com/jobs/view/adms-solution-integrator-at-ge-vernova-4454529040",
+    "title": "ADMS Solution Integrator",
+    "company": "GE Vernova",
+    "location": "unknown",
+    "date": "2026-11-16",
+    "source": "LinkedIn",
+    "match_score": 82,
+    "base_match_score": 82,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "scada",
+    "company_domain_product": "GE Vernova",
+    "company_summary": "",
+    "job_summary": "משרת אינטגרטור פתרונות תוכנה ובקרה (ADMS), האחראי על יישום פתרונות טכניים, תמיכה הנדסית וליווי מחזור חיי הפרויקט עבור לקוחות בתחום האנרגיה.",
+    "company_requirements": "ניסיון עבודה עם פתרונות תוכנה הנדסיים, הבנה של תהליכי ייצור או רשתות אנרגיה, יכולת עבודה עם לקוחות ותקשורת בינאישית.",
+    "experience_strengths": "ניסיון מעשי בהנדסת מכונות, מערכות אנרגיה, תפעול מערכות בקרה (SCADA) ואוטומציה תהליכית.",
+    "reasoning": "המוعמד בעל רקע הנדסי מוצק במערכות אנרגיה, שליטה ובקרה, מתאים להטמעת פתרונות טכניים ותפעוליים.",
+    "key_highlights": "התאמה טובה לדרישות האינטגרציה, מערכות הבקרה ותמיכה הנדסית בלקוחות בתחום האנרגיה.",
+    "salary_range": "13,000 - 16,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • משרת יום",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות).",
+    "salary_source_url": "",
+    "p25": 13000,
+    "p75": 16000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQG3fXAI-jYu5A/company-logo_100_100/company-logo_100_100/0/1681910638687/gevernova_logo?e=2147483647&v=beta&t=wxmEC0JI8pdfZCuf9nRT8XLaNDFKjVAOQ3tB3dU6wTk",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQG3fXAI-jYu5A/company-logo_100_100/company-logo_100_100/0/1681910638687/gevernova_logo?e=2147483647&v=beta&t=wxmEC0JI8pdfZCuf9nRT8XLaNDFKjVAOQ3tB3dU6wTk",
+    "snippet": "Job Description Summary\nBietet Know-how für nachhaltigen Kundenerfolg und Wachstum im Post-Sales-Kundenlebenszyklus durch Schulung, professionellen Service, technischen Support, Verlängerungen, Erreichung von Ergebnissen, Bindung, Erweiterung und Kundenbetreuung mit digitalem Fokus. Verantwortlich für die Planung/Ausführung des Abteilungsbetriebs oder konzentriert sich auf die Ausführung von beruflichen Tätigkeiten innerhalb einer technischen Disziplin.Hat eine gewisse Autonomie, wird jedoch von festgelegten Richtlinien oder der Überprüfung der Endergebnisse geleitet.\nDie Stelle ermöglicht die Änderung von Arbeitsabläufen und Praktiken, sofern die Endergebnisse den Standards der Akzeptanz (Qualität, Umfang, Aktualität usw.) entsprechen.\nJob Description\nRollen und Verantwortlichkeiten\nTragen zur Implementierung von MES-Lösungen unter Verwendung der Software-Suite bei. Übernehmen während des gesamten Lebenszyklus der Projekte die Verantwortung für technische Leistungen. Beteiligen sich während des gesamten Lebenszyklus von zugewiesenen Projekten an Entscheidungen bezüglich Architektur, Design und Funktionalität, um Programme hinsichtlich Budget, Zeit und Kundenerwartungen innerhalb des vorgegebenen Rahmens zu halten. Arbeiten eng mit dem Kunden zusammen, um dessen Bedürfnisse zu verstehen und Strategien zu entwickeln, die mittels Standortbewertungen auf seine Organisation zugeschnitten sind. Geben zudem während des Implementierungsprozesses gegenüber Kunden Standardempfehlungen zu Workflow, Anwendung, Benutzeroberfläche, Berichten, Tests und Uploads ab. Tragen die Verantwortung für die Bereitschaft und den Support für die Inbetriebnahme sowie für die Nachuntersuchungen und müssen mit internen Teammitgliedern und Kunden zusammenarbeiten, um die Kundenzufriedenheit zu gewährleisten\nNutzt vertiefte Kenntnisse einer technischen Disziplin sowie analytisches Denken und technische Erfahrung zur Umsetzung von Richtlinien/Strategien.\nHat Kenntnisse über Best Practices und darüber, wie sich der eigene Bereich in andere integriert; ist sich des Wettbewerbs und der Faktoren bewusst, die das Unternehmen auf dem Markt auszeichnen\nNutzt ein gewisses Urteilsvermögen und hat die Fähigkeit, verschiedene Lösungen außerhalb der festgelegten Parameter vorzuschlagen, um kompliziertere Herstellungsprozesse mit technischer Vielfalt und/oder voneinander abhängigen Produktionszyklen anzugehen.Verwendet technische Erfahrung und analytisches Denken.Verwendet mehrere interne und begrenzte externe Quellen außerhalb der eigenen Teams, um Entscheidungen zu treffen.\nDient als Ressource für Kollegen mit weniger Erfahrung.Kann kleine Projekte mit geringen Risiken und Ressourcenanforderungen leiten.Erklärt Informationen; Entwicklung von Fähigkeiten, um Teammitglieder zu einem Konsens über Themen innerhalb des Feldes zu bewegen.Vermittelt Leistungserwartungen und kann vertrauliche Themen behandeln.\nGrundqualifikationen\nDiese Rolle erfordert fortgeschrittene Erfahrung. Der Wissensstand ist vergleichbar mit einem Bachelor-Abschluss einer akkreditierten Universität oder Hochschule (oder einem Abitur mit relevanter Erfahrung).\nGewünschte Eigenschaften\nSehr gute mündliche und schriftliche Kommunikationsfähigkeiten. Ausgeprägte Sozialkompetenz und Führungsqualitäten. Fähigkeit, andere zu beeinflussen und kleine Teams zu führen. Initiativen von mittlerem Umfang und mittlerer Wirkung leiten. Fähigkeit, mehrere Projekte gleichzeitig zu koordinieren. Effektive Erkennung und Lösung von Problemen. Nachweisliche analytische und organisatorische Fähigkeiten.Hinweis:Um die Einwanderungsbestimmungen der USA und andere gesetzliche Anforderungen zu erfüllen, muss die Mindestanzahl der Jahre an Erfahrung angegeben werden, die für eine Tätigkeit in den USA erforderlich sind.Für Rollen außerhalb der USA sollten sich die JDs auf das für die Rolle erforderliche inhaltliche Erfahrungsniveau konzentrieren, um die Einhaltung der geltenden Rechtsvorschriften zu gewährleisten, und eine Mindestanzahl von Jahren sollte NICHT verwendet werden.Diese Stellenbeschreibung soll einen allgemeinen Leitfaden für die Rolle liefern.Sie soll jedoch nicht die von jedem Mitarbeiter gemäß dem jeweiligen Arbeitsvertrag und/oder gemäß einer anderweitigen Vereinbarung zwischen einem Mitarbeiter und seinem Vorgesetzten geforderten Pflichten ändern oder anderweitig einzuschränken/erweitern.\nAdditional Information\nThe job is open to men and women equally\nRelocation Assistance Provided:\nNo",
+    "stable_job_id": "li_4454529040",
+    "content_hash": "ch_014da4aed700",
+    "requirement_assessments": [
+      {
+        "requirement": "ידע וניסיון בדיסציפלינה טכנית והבנת תהליכי תוכנה או בקרה תעשייתית",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Nutzt vertiefte Kenntnisse einer technischen Disziplin sowie analytisches Denken",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Real-Time Operations Control (SCADA / AVEVA / 24/7 Control Rooms)",
+          "source_field": "Candidate profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש רקע מעמיק במערכות בקרה תעשייתיות, SCADA ואוטומציה תהליכית."
+      },
+      {
+        "requirement": "השכלה אקדמית או ניסיון מעשי מקביל",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "vergleichbar mit einem Bachelor-Abschluss einer akkreditierten Universität oder Hochschule (oder einem Abitur mit relevanter Erfahrung)",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
+          "source_field": "Candidate profile"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בתואר הנדסאי מכונות וניסיון מעשי מקביל המקובל עבור התפקיד."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
   }
 }
