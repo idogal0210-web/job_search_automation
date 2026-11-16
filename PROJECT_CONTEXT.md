@@ -33,6 +33,7 @@ job_search_automation/
 ├── requirements.txt                # Python package dependencies
 ├── requirements-lock.txt           # Exact pinned dependencies for reproducible builds
 ├── .python-version                 # Target Python runtime anchor (Python 3.11 / 3.9+)
+├── AGENTS.md                        # Official Google Antigravity project root rules and mission specification
 ├── .agents/                        # Operational policies, workspace plugins, and domain skills
 │   ├── plugins/                    # Project-scoped MCP plugins (api-anything)
 │   ├── rules/                      # System rules (mcp-denylist.md always_on + mcp-policy.md model_decision: Tavily, Firecrawl, Supabase, GitHub, api-anything; scoped CV globs; zero-emojis, token-efficiency)
