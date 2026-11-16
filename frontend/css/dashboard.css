@@ -1024,37 +1024,38 @@ box-sizing: border-box;
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 11.5px;
       font-weight: 700;
       line-height: 1.2;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 100%;
-      background: rgba(45, 212, 191, 0.12);
-      border: 1px solid rgba(45, 212, 191, 0.35);
-      color: #2dd4bf;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      background: rgba(6, 78, 59, 0.35);
+      border: 1px solid rgba(52, 211, 153, 0.32);
+      color: #34d399;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
     }
     .job-salary-chip i {
       font-size: 13px;
+      color: #34d399;
     }
     .job-salary-chip.salary-chip-ad {
-      background: rgba(168, 213, 115, 0.16);
-      border: 1px solid rgba(168, 213, 115, 0.42);
-      color: #a8d573;
+      background: rgba(6, 78, 59, 0.45);
+      border: 1px solid rgba(52, 211, 153, 0.42);
+      color: #34d399;
     }
 
     .badge-score {
-      padding: 3px 8px;
-      border-radius: 999px;
+      padding: 4px 10px;
+      border-radius: 8px;
       font-weight: 700;
       font-size: 11.5px;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       white-space: nowrap !important;
       word-break: keep-all !important;
       flex-shrink: 0 !important;
@@ -1064,10 +1065,10 @@ box-sizing: border-box;
       white-space: nowrap !important;
     }
     .badge-score-high {
-      background: rgba(52, 211, 153, 0.16);
-      color: var(--dashboard-lime);
+      background: rgba(6, 78, 59, 0.45);
+      color: #34d399;
       border: 1px solid rgba(52, 211, 153, 0.38);
-      box-shadow: 0 0 16px rgba(52, 211, 153, 0.15);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
     }
     .badge-score-med {
       background: rgba(137, 244, 231, 0.16);
@@ -1247,40 +1248,40 @@ box-sizing: border-box;
       line-height: 1.55;
     }
 
-    /* Clean Key Requirements Block (Canva-aligned Architecture) */
+    /* Clean Key Requirements Block (Modern Recessed Architecture) */
     .job-key-requirements {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(15, 23, 42, 0.55);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 8px;
-      padding: 7px 10px;
-      margin: 2px 0 4px 0;
+      border-radius: 10px;
+      padding: 9px 12px;
+      margin: 4px 0 6px 0;
       font-size: 11.5px;
-      line-height: 1.35;
+      line-height: 1.5;
       transition: border-color 0.2s ease, background 0.2s ease;
     }
     .job-card:hover .job-key-requirements {
-      border-color: rgba(255, 255, 255, 0.14);
-      background: rgba(255, 255, 255, 0.045);
+      border-color: rgba(52, 211, 153, 0.22);
+      background: rgba(15, 23, 42, 0.75);
     }
     .job-key-requirements-header {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       color: var(--dashboard-cyan);
       font-weight: 700;
       font-size: 11px;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
       letter-spacing: 0.2px;
     }
     .job-key-requirements-header i {
       font-size: 13px;
     }
     .job-key-requirements-content {
-      color: #e2e8df;
+      color: rgba(226, 232, 240, 0.88);
       font-size: 11.5px;
-      line-height: 1.35;
+      line-height: 1.5;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -4509,14 +4510,35 @@ border-radius: 20px;
 }
 
 .ats-gate-row {
+  position: relative;
   background: rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  padding: 12px 14px;
+  border-radius: 10px;
+  padding: 12px 18px 12px 14px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow: hidden;
   transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.ats-gate-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.ats-gate-row.is-triggered::before {
+  background: var(--dashboard-lime, #10b981);
+}
+
+.ats-gate-row.is-gap::before {
+  background: #ef4444;
 }
 
 .ats-gate-row.is-triggered {
@@ -4525,8 +4547,8 @@ border-radius: 20px;
 }
 
 .ats-gate-row.is-gap {
-  border-color: rgba(248, 113, 113, 0.35);
-  background: rgba(248, 113, 113, 0.04);
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(127, 29, 29, 0.12);
 }
 
 .ats-gate-main {
@@ -4584,15 +4606,17 @@ border-radius: 20px;
 }
 
 .badge-gap {
-  background: rgba(248, 113, 113, 0.15);
-  border: 1px solid rgba(248, 113, 113, 0.4);
+  background: rgba(127, 29, 29, 0.35);
+  border: 1px solid rgba(239, 68, 68, 0.4);
   color: #fca5a5;
+  border-radius: 6px;
 }
 
 .badge-notice {
   background: rgba(255, 211, 104, 0.15);
   border: 1px solid rgba(255, 211, 104, 0.4);
   color: var(--dashboard-gold);
+  border-radius: 6px;
 }
 
 .ats-badge-trigger {
@@ -4622,9 +4646,23 @@ border-radius: 20px;
 }
 
 .ats-gate-note {
-  font-size: 11.5px;
-  color: var(--dashboard-gold);
-  line-height: 1.3;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(127, 29, 29, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #fca5a5;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.ats-gate-note i {
+  font-size: 14px;
+  color: #f87171;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
 /* Missing Keywords Taxonomy */
@@ -6780,6 +6818,27 @@ border-top: 1px solid var(--dashboard-edge) !important;
   min-inline-size: 0;
   direction: ltr;
   text-align: start;
+}
+
+.studio-url-input-group #btnFetchJobUrl {
+  background: #059669;
+  color: #ffffff;
+  border-color: rgba(52, 211, 153, 0.4);
+  box-shadow: 0 1px 4px rgba(5, 150, 105, 0.25);
+  border-radius: 8px;
+}
+
+.studio-url-input-group #btnFetchJobUrl:hover {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.studio-text-input:focus,
+.ats-textarea:focus,
+.studio-clarification-input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.22);
+  outline: none;
 }
 
 .studio-meta-inputs-grid {
