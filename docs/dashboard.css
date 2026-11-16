@@ -1570,6 +1570,68 @@ box-sizing: border-box;
     }
 }
 
+    /* Bottom row: Compact icon button for job application with SVG plane */
+    .apply-icon-btn,
+    .dashboard-app a.apply-icon-btn {
+      position: relative;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background-color: #10b981;
+      color: #ffffff !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .apply-icon-btn svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      flex-shrink: 0;
+      display: block;
+    }
+    .apply-icon-btn:hover,
+    .dashboard-app a.apply-icon-btn:hover {
+      background-color: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    }
+    .apply-icon-btn:active,
+    .dashboard-app a.apply-icon-btn:active {
+      transform: translateY(0);
+    }
+
+    /* בועית Tooltip מעוצבת בריחוף */
+    .apply-icon-btn::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      background-color: #181c1a;
+      color: #e5e7eb;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 20;
+    }
+    .apply-icon-btn:hover::after,
+    .dashboard-app a.apply-icon-btn:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
     .action-btn-group {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -2467,6 +2529,17 @@ border-radius: 999px;
         max-height: 44px !important;
         flex: 0 0 44px !important;
         border-radius: 50% !important;
+      }
+      #cardsContainer .apply-icon-btn,
+      #cardsContainer a.apply-icon-btn {
+        width: 44px !important;
+        min-width: 44px !important;
+        max-width: 44px !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
+        flex: 0 0 44px !important;
+        border-radius: 999px !important;
       }
       #cardsContainer .btn-apply,
       #cardsContainer a.btn-apply {

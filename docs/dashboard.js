@@ -2758,10 +2758,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             `}
           </div>
           <div class="job-actions-bottom-row" style="display: flex; gap: 8px; align-items: center;">
-            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant" style="flex: 1;" onclick="event.stopPropagation()">
-              <span>הגש מועמדות</span> <i class="ph-duotone ph-arrow-up-right"></i>
+            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="apply-icon-btn" title="הגש מועמדות" aria-label="הגש מועמדות" data-tooltip="הגש מועמדות" onclick="event.stopPropagation()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
             </a>
-            <button type="button" class="btn-triage btn-open-in-studio" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}, event)" title="התאם קו״ח ונתח בסטודיו קריירה">
+            <button type="button" class="btn-triage btn-open-in-studio" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}, event)" title="התאם קו״ח ונתח בסטודיו קריירה" style="flex: 1;">
               <i class="ph-duotone ph-magic-wand"></i> <span>התאם קו״ח</span>
             </button>
             ${Array.isArray(altLinksStore[id]) && altLinksStore[id].length > 0 ? `

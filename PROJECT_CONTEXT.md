@@ -265,6 +265,7 @@ job_search_automation/
 ### 6.4 Touch Targets & Responsive Layout
 - **Minimum Tap Size:** Interactive controls (buttons, links, select inputs) must maintain a minimum physical hit area of 44x44 CSS pixels.
 - **Mobile First:** Ensure zero horizontal overflow (`scrollWidth <= windowWidth`) and complete symmetry across viewports down to 360px.
+- **Job Card Action Bar Symmetry:** The bottom row of job cards in `#cardsContainer` features a compact `.apply-icon-btn` with a paper-plane vector SVG, `title`, `aria-label`, and `data-tooltip="הגש מועמדות"`, paired with an expanding `flex: 1` Career Studio button (`.btn-open-in-studio`), ensuring balanced layout and 44x44px touch targets on mobile.
 
 ### 6.5 Secret Hygiene & Security
 - **No Hardcoded Credentials:** Never place API keys, passwords, or tokens in source code, commit history, or logs.

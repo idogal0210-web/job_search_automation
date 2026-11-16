@@ -226,9 +226,11 @@ export function renderCards() {
             <span>פרטים</span>
           </button>
         </div>
-        <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply-direct" title="הגש מועמדות ישירות">
-          <span>הגש עכשיו</span>
-          <i class="ph-bold ph-arrow-left"></i>
+        <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="apply-icon-btn" title="הגש מועמדות" aria-label="הגש מועמדות" data-tooltip="הגש מועמדות">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
         </a>
       </div>
     `;
