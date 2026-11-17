@@ -24,6 +24,7 @@
     --control-h-sm: 32px;
     --control-h-md: 38px;
     --control-h-lg: 44px;
+    --sticky-bar-h: 56px;
 
     /* Glassmorphism Surface & Shadow System */
     --glass-bg-canvas: #12161C;
@@ -274,6 +275,13 @@
     background-size: cover;
     color: var(--text-primary);
     min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  @media (pointer: coarse), (max-width: 900px) {
+    body {
+      background-attachment: scroll;
+    }
   }
 
   * {
@@ -644,8 +652,13 @@
       gap: 2px !important;
       text-align: center !important;
       text-decoration: none !important;
-      outline: none;
       box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.10), 0 2px 6px rgba(0, 0, 0, 0.25) !important;
+    }
+    .stat-box:focus-visible,
+    .dashboard-app .stat-cube-btn:focus-visible,
+    .stat-cube-btn:focus-visible {
+      outline: 2px solid var(--dashboard-cyan, #38bdf8) !important;
+      outline-offset: 2px !important;
     }
     @media (hover: hover) {
   .stat-box:hover,
@@ -877,9 +890,14 @@
     }
     .dashboard-app .controls-inputs-stack select:focus,
     .dashboard-app .controls-inputs-stack input:focus {
-      outline: none !important;
+      outline: none;
       border-color: var(--accent-primary) !important;
       box-shadow: 0 0 0 2px rgba(127, 178, 229, 0.25), inset 0 1px 2px rgba(0, 0, 0, 0.35) !important;
+    }
+    .dashboard-app .controls-inputs-stack select:focus-visible,
+    .dashboard-app .controls-inputs-stack input:focus-visible {
+      outline: 2px solid var(--accent-primary) !important;
+      outline-offset: 1px !important;
     }
     .dashboard-app .controls-inputs-stack input::placeholder {
       color: rgba(255, 255, 255, 0.65) !important;
@@ -1331,9 +1349,11 @@
       line-height: 1.5;
       transition: border-color 0.2s ease, background 0.2s ease;
     }
-    .job-card:hover .job-key-requirements {
-      border-color: rgba(52, 211, 153, 0.22);
-      background: rgba(15, 23, 42, 0.75);
+    @media (hover: hover) {
+      .job-card:hover .job-key-requirements {
+        border-color: rgba(52, 211, 153, 0.22);
+        background: rgba(15, 23, 42, 0.75);
+      }
     }
     .job-key-requirements-header {
       display: flex;
@@ -1603,6 +1623,13 @@
 
     /* Toggle Details Icon Button */
     .card-action-icon-btn.btn-toggle-details {
+      width: 32px !important;
+      min-width: 32px !important;
+      max-width: 32px !important;
+      height: 32px !important;
+      min-height: 32px !important;
+      max-height: 32px !important;
+      padding: 0 !important;
       border-color: rgba(255, 255, 255, 0.16);
       background: rgba(255, 255, 255, 0.05);
       color: #cbd5e1;
@@ -1643,10 +1670,17 @@
       z-index: 30;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
     }
-    .card-action-icon-btn[data-tooltip]:hover::after,
-    .apply-icon-btn[data-tooltip]:hover::after {
+    .card-action-icon-btn[data-tooltip]:focus-visible::after,
+    .apply-icon-btn[data-tooltip]:focus-visible::after {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
+    }
+    @media (hover: hover) {
+      .card-action-icon-btn[data-tooltip]:hover::after,
+      .apply-icon-btn[data-tooltip]:hover::after {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
     }
 
     /* Bottom-most: Apply - prominent and elegant */
@@ -1706,11 +1740,13 @@
       flex-shrink: 0;
       display: block;
     }
-    .apply-icon-btn:hover,
-    .dashboard-app a.apply-icon-btn:hover {
-      background-color: #059669;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    @media (hover: hover) {
+      .apply-icon-btn:hover,
+      .dashboard-app a.apply-icon-btn:hover {
+        background-color: #059669;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+      }
     }
     .apply-icon-btn:active,
     .dashboard-app a.apply-icon-btn:active {
@@ -1736,10 +1772,17 @@
       transition: opacity 0.15s ease, transform 0.15s ease;
       z-index: 20;
     }
-    .apply-icon-btn:hover::after,
-    .dashboard-app a.apply-icon-btn:hover::after {
+    .apply-icon-btn:focus-visible::after,
+    .dashboard-app a.apply-icon-btn:focus-visible::after {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
+    }
+    @media (hover: hover) {
+      .apply-icon-btn:hover::after,
+      .dashboard-app a.apply-icon-btn:hover::after {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
     }
 
     .action-btn-group {
@@ -1890,20 +1933,22 @@
     /* Modals and Overlays (Native <dialog>) */
     dialog.dashboard-modal-backdrop {
       border: none;
-      width: 100vw;
+      width: 100%;
+      inline-size: 100%;
+      max-width: 100%;
+      max-inline-size: 100%;
       height: 100dvh;
-      max-width: 100vw;
       max-height: 100dvh;
       margin: 0;
       box-sizing: border-box;
       color: inherit;
+      background: transparent;
     }
     dialog.dashboard-modal-backdrop:not([open]) {
       display: none !important;
     }
     dialog.dashboard-modal-backdrop::backdrop {
       background: rgba(11, 13, 12, 0.78);
-overscroll-behavior: contain;
     }
     .dashboard-modal-backdrop {
       position: fixed;
@@ -1924,6 +1969,16 @@ z-index: 100;
       max-height: 85vh;
       overflow-y: auto;
       margin-bottom: 0;
+    }
+    @keyframes slideUpModal {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
     .job-details-modal-box {
       max-width: 640px;
@@ -2116,7 +2171,7 @@ border-radius: 999px;
     }
 
     /* Responsive Media Queries (Mobile, iPhone & Tablet) */
-    @media (max-width: 880px) {
+    @media (max-width: 900px) {
       body, html {
         overflow-x: hidden;
       }
@@ -2729,10 +2784,16 @@ border-radius: 999px;
         padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
       }
       .dashboard-toast {
-        bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+        bottom: calc(56px + 16px + env(safe-area-inset-bottom, 0px)) !important;
         right: 16px !important;
         left: 16px !important;
         max-width: calc(100% - 32px) !important;
+        z-index: 10000 !important;
+      }
+      .btn-back-to-top {
+        bottom: calc(56px + 16px + env(safe-area-inset-bottom, 0px)) !important;
+        left: 16px !important;
+        z-index: 10000 !important;
       }
 
       /* Duplicates Modal Sheet on iPhone */
@@ -3578,7 +3639,7 @@ box-shadow: var(--dashboard-shadow);
 }
 
 .studio-sidebar-card {
-  background: var(--bg-card);
+  background: var(--bg-card, rgba(9, 13, 22, 0.76));
   border: 1px solid var(--dashboard-edge);
 border-radius: 20px;
   padding: 16px;
@@ -4041,7 +4102,7 @@ border-radius: 24px;
 }
 
 /* Responsive Overrides */
-@media (max-width: 880px) {
+@media (max-width: 900px) {
   .dashboard-sidebar {
     flex-wrap: wrap !important;
   }
@@ -6093,6 +6154,17 @@ border-radius: 24px;
   transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease, transform 150ms ease, opacity 150ms ease;
 }
 
+@keyframes pulseHeat {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(244, 63, 94, 0);
+    transform: scale(1.02);
+  }
+}
+
 .voice-rec-btn.recording {
   background: #f43f5e;
   color: #fff;
@@ -6426,11 +6498,16 @@ border-radius: 24px;
   padding: 8px 12px;
   color: #fff;
   font-size: 13px;
-  outline: none;
 }
 
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   border-color: var(--dashboard-cyan);
+  outline: none;
+}
+
+.form-input:focus-visible, .form-select:focus-visible, .form-textarea:focus-visible {
+  outline: 2px solid var(--dashboard-cyan, #38bdf8);
+  outline-offset: 1px;
 }
 
 /* Responsive adjustments */
@@ -6680,8 +6757,10 @@ border-top: 1px solid var(--dashboard-edge) !important;
   cursor: pointer;
 }
 
-.studio-outline-btn:hover {
-  background: rgba(255, 255, 255, 0.09);
+@media (hover: hover) {
+  .studio-outline-btn:hover {
+    background: rgba(255, 255, 255, 0.09);
+  }
 }
 
 .studio-outline-btn:focus-visible {
@@ -6773,7 +6852,9 @@ border-top: 1px solid var(--dashboard-edge) !important;
   font-size: 12px;
   cursor: pointer;
 }
-.cloud-pill:hover { color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+@media (hover: hover) {
+  .cloud-pill:hover { color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+}
 .cloud-pill:focus-visible { outline: 3px solid #a8d573; outline-offset: 2px; }
 .cloud-pill .sync-status-dot { position: static; width: 7px; height: 7px; }
 .cloud-pill .sync-status-dot.local { background: var(--dashboard-muted); box-shadow: none; }
@@ -6906,9 +6987,11 @@ border-top: 1px solid var(--dashboard-edge) !important;
   border-radius: 8px;
 }
 
-.studio-url-input-group #btnFetchJobUrl:hover {
-  background: #10b981;
-  color: #ffffff;
+@media (hover: hover) {
+  .studio-url-input-group #btnFetchJobUrl:hover {
+    background: #10b981;
+    color: #ffffff;
+  }
 }
 
 .studio-text-input:focus,
@@ -6917,6 +7000,13 @@ border-top: 1px solid var(--dashboard-edge) !important;
   border-color: #10b981;
   box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.22);
   outline: none;
+}
+
+.studio-text-input:focus-visible,
+.ats-textarea:focus-visible,
+.studio-clarification-input:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 1px;
 }
 
 .studio-meta-inputs-grid {
@@ -7203,7 +7293,6 @@ border-top: 1px solid var(--dashboard-edge) !important;
 /* Responsive container queries for studio workbenches */
 @container studio-main (min-width: 640px) {
   .studio-master-split .writer-workbench,
-  .studio-master-split .studio-package-workbench,
   .studio-master-split .ats-details-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -7211,7 +7300,6 @@ border-top: 1px solid var(--dashboard-edge) !important;
 
 @container studio-main (max-width: 639px) {
   .studio-master-split .writer-workbench,
-  .studio-master-split .studio-package-workbench,
   .studio-master-split .skills-workbench,
   .studio-master-split .studio-split-pane,
   .studio-master-split .ats-details-grid {
@@ -7242,8 +7330,8 @@ border-top: 1px solid var(--dashboard-edge) !important;
 
 .studio-sticky-preview-col {
   position: sticky;
-  inset-block-start: 16px;
-  max-block-size: calc(100dvh - 32px);
+  inset-block-start: calc(var(--sticky-bar-h, 56px) + 16px);
+  max-block-size: calc(100dvh - var(--sticky-bar-h, 56px) - 32px);
   display: flex;
   flex-direction: column;
 }
@@ -7501,9 +7589,11 @@ border-top: 1px solid var(--dashboard-edge) !important;
   transition: background 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
 }
-.ats-subtab-btn:hover {
-  color: #f8fafc;
-  background: rgba(255, 255, 255, 0.04);
+@media (hover: hover) {
+  .ats-subtab-btn:hover {
+    color: #f8fafc;
+    background: rgba(255, 255, 255, 0.04);
+  }
 }
 .ats-subtab-btn.active {
   background: rgba(14, 165, 233, 0.16);
@@ -7563,11 +7653,13 @@ border-top: 1px solid var(--dashboard-edge) !important;
   transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
-.studio-guided-nav-btn:hover {
-  background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(13, 148, 136, 0.25));
-  border-color: rgba(56, 189, 248, 0.6);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.2);
+@media (hover: hover) {
+  .studio-guided-nav-btn:hover {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(13, 148, 136, 0.25));
+    border-color: rgba(56, 189, 248, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(14, 165, 233, 0.2);
+  }
 }
 .studio-guided-nav-btn:active {
   transform: scale(0.98);
@@ -7584,8 +7676,10 @@ border-top: 1px solid var(--dashboard-edge) !important;
   border-radius: 6px;
   transition: background 0.15s ease, outline 0.15s ease;
 }
-.live-preview-editable-text:hover {
-  background: rgba(255, 255, 255, 0.04);
+@media (hover: hover) {
+  .live-preview-editable-text:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
 }
 .live-preview-editable-text:focus {
   background: rgba(13, 148, 136, 0.08);

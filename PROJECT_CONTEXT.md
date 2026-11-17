@@ -295,6 +295,13 @@ job_search_automation/
 - **Guided Stage Navigation:** Tactical, high-contrast guided navigation buttons at the bottom of Stage 1 and Stage 2 ("המשך לשדרוג קו״ח עם הפערים שזוהו" and "המשך להכנה לראיון למשרה זו") streamlining user progression.
 - **Visual Design & Performance Hygiene:** Built with double-bezel card nesting, hairline glass borders (`rgba(255, 255, 255, 0.08)`), micro-interaction hover states, GPU-safe scoped CSS transitions (zero `transition: all`), and 100% zero-emoji compliance.
 
+### 6.8 CSS Stability, Responsive Layout, and Accessibility Hardening (TASK-58)
+- **Modal & Dialog Parity:** `@keyframes slideUpModal` and `@keyframes pulseHeat` registered natively; `dialog.dashboard-modal-backdrop` scoped to `width: 100% / max-inline-size: 100%` with transparent dialog background to prevent double-darkening with `::backdrop` and eliminate horizontal overflow; non-standard `overscroll-behavior: contain` removed from `::backdrop`.
+- **Responsive Navigation Alignment:** Breakpoint unified from 880px to 900px across `.dashboard-app` bottom padding and `.mobile-bottom-nav`. Toast notifications (`.dashboard-toast`) and back-to-top button (`.btn-back-to-top`) positioned at `calc(56px + 16px + env(safe-area-inset-bottom, 0px))` with `z-index: 10000`, preventing occlusion by the 56px bottom navigation.
+- **Focus & A11y Standards (WCAG 2.4.7 / 2.4.11):** High-contrast `:focus-visible` outlines (2px solid with outline-offset) restored across `.stat-box`, `.stat-cube-btn`, `.controls-inputs-stack select/input`, `.form-input/select/textarea`, and Studio inputs (`.studio-text-input`, `.ats-textarea`, `.studio-clarification-input`).
+- **Layout Coordination & Padding Leak Isolation:** Resolved 32px squashed icon on `.card-action-icon-btn.btn-toggle-details` by isolating `padding: 0 !important` and explicit 32px box constraints; eliminated sticky overlap by configuring `.studio-sticky-preview-col` with `calc(var(--sticky-bar-h, 56px) + 16px)` top offset; removed dead flex container queries on `.studio-package-workbench`.
+- **Touch & Tooltip Polishing:** Wrapped all desktop hover states (`.cloud-pill`, `.ats-subtab-btn`, `.studio-guided-nav-btn`, `.live-preview-editable-text`, `.apply-icon-btn`, `#btnFetchJobUrl`, `.job-key-requirements`) in `@media (hover: hover)` preventing sticky hover on touch devices; added keyboard `:focus-visible` support to floating action tooltips; added `background-attachment: scroll` for mobile/touch.
+
 ---
 
 ## 7. MCP Servers Usage Policy & Operational Protocol
