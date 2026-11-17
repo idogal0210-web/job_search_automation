@@ -43,6 +43,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (typeof populateAtsJobSelector === 'function') {
         populateAtsJobSelector();
       }
+      if (typeof initStudioFocusMode === 'function') {
+        initStudioFocusMode();
+      }
 
       // Preload historical catalog in the background so saved/starred jobs from older cycles are immediately available
       const currentLinks = new Set(rawJobsData.map(job => job.link));
@@ -4520,6 +4523,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (typeof populateAtsJobSelector === 'function') {
         populateAtsJobSelector();
       }
+      if (typeof initStudioFocusMode === 'function') {
+        initStudioFocusMode();
+      }
       if (updateHash && window.location.hash !== '#studio') {
         window.location.hash = '#studio';
       }
@@ -8736,6 +8742,9 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
 
     const an = res.analysis || {};
     card.hidden = false;
+    if (typeof switchAtsSubtab === 'function') {
+      switchAtsSubtab('research');
+    }
     if (sourceBadge) {
       sourceBadge.textContent = res.degraded ? 'חילוץ מילולי חלקי (ללא ציון AI)' : `Gemini (${an.evaluation_model || 'active'})`;
     }
@@ -9119,6 +9128,30 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     }
   }
 
+  let liveDocEditDebounceTimer = null;
+  function onLiveDocLineEdited(originalText, updatedText) {
+    if (!originalText || !updatedText || originalText === updatedText) return;
+    if (!StudioState) StudioState = {};
+    if (!StudioState.bulletReplacements) StudioState.bulletReplacements = {};
+    StudioState.bulletReplacements[originalText] = updatedText;
+
+    if (!Array.isArray(studioAppliedBullets)) studioAppliedBullets = [];
+    if (!studioAppliedBullets.includes(updatedText)) {
+      studioAppliedBullets.push(updatedText);
+    }
+
+    clearTimeout(liveDocEditDebounceTimer);
+    liveDocEditDebounceTimer = setTimeout(() => {
+      const sourceLabelEl = document.getElementById('studioPreviewSourceLabel');
+      if (sourceLabelEl) {
+        sourceLabelEl.textContent = 'מקור: עריכה ישירה במסמך (WYSIWYG)';
+      }
+      try {
+        sessionStorage.setItem('studio_wysiwyg_edits', JSON.stringify(StudioState.bulletReplacements));
+      } catch (_) {}
+    }, 250);
+  }
+
   function buildInteractivePreviewNodes(markdownText, targetDir) {
     if (typeof document === 'undefined' || typeof document.createElement !== 'function') return [];
     const lines = String(markdownText || '').split('\n');
@@ -9160,31 +9193,64 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
       const cleanText = line.replace(/^[-*•]\s*/, '').replace(/\*\*/g, '').trim();
       if (!cleanText) return;
 
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'live-preview-line';
-      btn.dir = targetDir;
+      const lineEl = document.createElement('div');
+      lineEl.className = 'live-preview-line';
+      lineEl.dir = targetDir;
+      lineEl.setAttribute('role', 'region');
+      lineEl.setAttribute('aria-label', cleanText);
 
       const isApplied = Array.isArray(studioAppliedBullets) && studioAppliedBullets.includes(cleanText);
       const isHighlighted = (StudioState && StudioState.highlightedLine === cleanText) || isApplied;
       const isSelected = Boolean(StudioState && StudioState.selectedPreviewLine === cleanText);
 
-      if (isSelected) btn.classList.add('is-selected');
-      if (isHighlighted) btn.classList.add('is-highlighted');
+      if (isSelected) lineEl.classList.add('is-selected');
+      if (isHighlighted) lineEl.classList.add('is-highlighted');
 
       const txtSpan = document.createElement('span');
+      txtSpan.className = 'live-preview-editable-text';
+      txtSpan.setAttribute('contenteditable', 'true');
+      txtSpan.setAttribute('spellcheck', 'false');
+      txtSpan.setAttribute('title', 'עריכה ישירה (WYSIWYG) — לחץ וערוך את הטקסט במסמך');
       txtSpan.textContent = cleanText;
-      btn.appendChild(txtSpan);
+
+      txtSpan.addEventListener('input', (ev) => {
+        const updated = ev.target.textContent.trim();
+        onLiveDocLineEdited(cleanText, updated);
+      });
+
+      const actionWrap = document.createElement('div');
+      actionWrap.className = 'live-preview-line-actions';
+
+      const editBtn = document.createElement('button');
+      editBtn.type = 'button';
+      editBtn.className = 'live-preview-action-btn';
+      editBtn.title = 'טען שורה זו לעורך השורות';
+      editBtn.setAttribute('aria-label', 'טען שורה זו לעורך השורות');
+      editBtn.innerHTML = '<i class="ph-duotone ph-pencil-simple" aria-hidden="true"></i>';
+      editBtn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const currentText = txtSpan.textContent.trim() || cleanText;
+        selectPreviewLineForEditing(currentText);
+      });
+      actionWrap.appendChild(editBtn);
 
       if (isHighlighted) {
         const tag = document.createElement('span');
         tag.className = 'live-preview-line-tag';
         tag.textContent = 'שודרג מהעורך';
-        btn.appendChild(tag);
+        actionWrap.appendChild(tag);
       }
 
-      btn.addEventListener('click', () => selectPreviewLineForEditing(cleanText));
-      nodes.push(btn);
+      lineEl.appendChild(txtSpan);
+      lineEl.appendChild(actionWrap);
+
+      lineEl.addEventListener('click', (ev) => {
+        if (ev.target === txtSpan || ev.target === editBtn || editBtn.contains(ev.target)) return;
+        const currentText = txtSpan.textContent.trim() || cleanText;
+        selectPreviewLineForEditing(currentText);
+      });
+
+      nodes.push(lineEl);
     });
 
     return nodes;
@@ -9394,7 +9460,69 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     }
   }
 
+  function toggleStudioFocusMode() {
+    if (typeof document === 'undefined') return;
+    const ws = document.getElementById('careerStudioWorkspace');
+    const btn = document.getElementById('btnToggleStudioFocus');
+    const icon = document.getElementById('studioFocusIcon');
+    const label = document.getElementById('studioFocusLabel');
+    if (!ws) return;
+    const isFocus = ws.classList.toggle('is-focus-mode');
+    if (btn) btn.classList.toggle('is-active', isFocus);
+    if (icon) {
+      icon.className = isFocus ? 'ph-duotone ph-arrows-in-simple' : 'ph-duotone ph-arrows-out-simple';
+    }
+    if (label) {
+      label.textContent = isFocus ? 'חזור למסך מפוצל' : 'מצב מיקוד';
+    }
+    try {
+      localStorage.setItem('studio_focus_mode', isFocus ? '1' : '0');
+    } catch (_) {}
+  }
+
+  function initStudioFocusMode() {
+    if (typeof document === 'undefined') return;
+    try {
+      if (localStorage.getItem('studio_focus_mode') === '1') {
+        const ws = document.getElementById('careerStudioWorkspace');
+        const btn = document.getElementById('btnToggleStudioFocus');
+        const icon = document.getElementById('studioFocusIcon');
+        const label = document.getElementById('studioFocusLabel');
+        if (ws) ws.classList.add('is-focus-mode');
+        if (btn) btn.classList.add('is-active');
+        if (icon) icon.className = 'ph-duotone ph-arrows-in-simple';
+        if (label) label.textContent = 'חזור למסך מפוצל';
+      }
+    } catch (_) {}
+  }
+
+  function switchAtsSubtab(tabName) {
+    if (typeof document === 'undefined') return;
+    const tabMap = {
+      gates: { btn: 'atsSubtabGatesBtn', panel: 'atsSubtabGatesPanel' },
+      keywords: { btn: 'atsSubtabKeywordsBtn', panel: 'atsSubtabKeywordsPanel' },
+      research: { btn: 'atsSubtabResearchBtn', panel: 'atsSubtabResearchPanel' }
+    };
+    Object.keys(tabMap).forEach(k => {
+      const isTarget = (k === tabName);
+      const b = document.getElementById(tabMap[k].btn);
+      const p = document.getElementById(tabMap[k].panel);
+      if (b) {
+        b.classList.toggle('active', isTarget);
+        b.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+      }
+      if (p) {
+        p.classList.toggle('active', isTarget);
+        p.hidden = !isTarget;
+      }
+    });
+  }
+
   // Window Exposures for Milestones 4, 5, 6 and Studio Bridge
+  window.toggleStudioFocusMode = toggleStudioFocusMode;
+  window.initStudioFocusMode = initStudioFocusMode;
+  window.switchAtsSubtab = switchAtsSubtab;
+  window.onLiveDocLineEdited = onLiveDocLineEdited;
   window.checkStudioBridgeHealth = checkStudioBridgeHealth;
   window.fetchStudioJobFromUrl = fetchStudioJobFromUrl;
   window.runDeepStudioAtsAnalysis = runDeepStudioAtsAnalysis;

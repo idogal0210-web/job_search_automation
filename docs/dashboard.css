@@ -7447,6 +7447,181 @@ border-top: 1px solid var(--dashboard-edge) !important;
   color: #a3e635;
 }
 
+/* Focus Mode: expands active tool to 100% full-width on demand */
+.dashboard-app #careerStudioWorkspace.is-focus-mode .studio-master-split {
+  grid-template-columns: minmax(0, 1fr);
+}
+.dashboard-app #careerStudioWorkspace.is-focus-mode .studio-sticky-preview-col {
+  display: none !important;
+}
+.dashboard-app #careerStudioWorkspace.is-focus-mode .studio-modules-container {
+  inline-size: 100% !important;
+  max-inline-size: 100% !important;
+}
+.dashboard-app .studio-focus-toggle-btn {
+  transition: background 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dashboard-app .studio-focus-toggle-btn.is-active {
+  background: rgba(14, 165, 233, 0.22);
+  border-color: rgba(56, 189, 248, 0.45);
+  color: #38bdf8;
+}
+
+/* Stage 1 Pill Subtabs & Progressive Disclosure */
+.ats-subtabs-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-block-start: 16px;
+}
+.ats-subtabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+.ats-subtab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary, #94a3b8);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+.ats-subtab-btn:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.04);
+}
+.ats-subtab-btn.active {
+  background: rgba(14, 165, 233, 0.16);
+  border-color: rgba(56, 189, 248, 0.32);
+  color: #e0f2fe;
+}
+.ats-subtab-btn:active {
+  transform: scale(0.98);
+}
+.ats-subtab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+}
+.ats-subtab-btn.active .ats-subtab-badge {
+  background: rgba(56, 189, 248, 0.24);
+  color: #38bdf8;
+}
+.ats-subtab-panel {
+  display: none;
+}
+.ats-subtab-panel.active {
+  display: block;
+  animation: fadeInSubtabPanel 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes fadeInSubtabPanel {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Stage Bottom Guided Navigation Bar */
+.studio-guided-nav-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-start: 20px;
+  padding-block-start: 14px;
+  border-block-start: 1px solid rgba(255, 255, 255, 0.06);
+}
+.studio-guided-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(13, 148, 136, 0.15));
+  color: #f0fdfa;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+.studio-guided-nav-btn:hover {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(13, 148, 136, 0.25));
+  border-color: rgba(56, 189, 248, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.2);
+}
+.studio-guided-nav-btn:active {
+  transform: scale(0.98);
+}
+
+/* Live A4 WYSIWYG Editable Line */
+.live-preview-editable-text {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  outline: none;
+  cursor: text;
+  padding: 3px 6px;
+  margin: -3px -6px;
+  border-radius: 6px;
+  transition: background 0.15s ease, outline 0.15s ease;
+}
+.live-preview-editable-text:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.live-preview-editable-text:focus {
+  background: rgba(13, 148, 136, 0.08);
+  outline: 1.5px solid rgba(45, 212, 191, 0.45);
+  outline-offset: 1px;
+}
+.live-preview-line-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-inline-start: auto;
+}
+.live-preview-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 24px;
+  block-size: 24px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary, #94a3b8);
+  font-size: 0.78rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+.live-preview-line:hover .live-preview-action-btn {
+  opacity: 1;
+}
+.live-preview-action-btn:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+}
+
 /* Native <dialog> Modals & Side Drawers (modern-web-guidance compliant) */
 dialog.studio-drawer-dialog,
 dialog.studio-modal-dialog {

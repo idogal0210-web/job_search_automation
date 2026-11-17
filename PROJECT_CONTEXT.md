@@ -284,6 +284,17 @@ job_search_automation/
   5. `Junior` (Entry-Level / Beginners): Triggered on 0-2 years experience, "Junior", or entry-level beginner wording. Excludes Senior/lead titles or explicit non-junior requirements.
 - **Triage Tabs Parity:** Starred jobs automatically transfer from "חדשות" to "בכוכב", and saved jobs transfer to "נשמרו". Default sort is `date_desc`, ensuring newest jobs are prominently displayed first.
 
+### 6.7 Career Studio Ergonomic Architecture & High-End Visual Design (TASK-56 & TASK-57)
+- **Flexible Split-Screen & Focus Mode:** 55% active tool workbench / 45% live A4 document split-screen on desktop (>= 1120px). Features a 1-click Focus Mode toggle button (`#btnToggleStudioFocus`) in `#studioStickyJobBar` that expands the active tool to 100% full-width on demand and hides the preview column, persisted in `localStorage`.
+- **Stage 1 (ATS Fit Analysis) Two-Level Structure:** Compact 58px score gauge and 52px KPI ribbon at the top, directly accompanied by the actionable severity gaps card (`#atsSeveritySortedGapsCard`). Dense findings are partitioned into 3 progressive pill subtabs:
+  1. `שערי סף והסמכות` (`#atsSubtabGatesBtn`): Statutory hard gates checklist (`#atsHardGatesList`).
+  2. `מטריצת מילות מפתח` (`#atsSubtabKeywordsBtn`): 4 taxonomy groups with 1-click injection.
+  3. `מחקר חברה ותובנות AI` (`#atsSubtabResearchBtn`): Deep Gemini analysis, company research, and clarification questions.
+- **Stage 2 (AI Writer) Inline Tuning & WYSIWYG A4 Document Editing:** De-emphasized bulky package generator cards into compact controls, focusing user attention on the line-by-line bullet impact auditor (`#writerAuditorSection`) and the live A4 document. The live A4 document lines (`.live-preview-editable-text`) support direct WYSIWYG inline editing (`contenteditable="true"`), debounced real-time synchronization (`onLiveDocLineEdited`) into model replacement mappings, and instant A4 PDF printing.
+- **Stage 3 (Interview Prep & LinkedIn SEO) Subtabs:** Clean segmented switcher between LinkedIn Profile Optimizer (`#interviewColSide`) and Role-Specific STAR Simulator (`#interviewColMain`).
+- **Guided Stage Navigation:** Tactical, high-contrast guided navigation buttons at the bottom of Stage 1 and Stage 2 ("המשך לשדרוג קו״ח עם הפערים שזוהו" and "המשך להכנה לראיון למשרה זו") streamlining user progression.
+- **Visual Design & Performance Hygiene:** Built with double-bezel card nesting, hairline glass borders (`rgba(255, 255, 255, 0.08)`), micro-interaction hover states, GPU-safe scoped CSS transitions (zero `transition: all`), and 100% zero-emoji compliance.
+
 ---
 
 ## 7. MCP Servers Usage Policy & Operational Protocol

@@ -385,6 +385,10 @@
             <i class="ph-duotone ph-plugs-connected" aria-hidden="true"></i>
             <span>בדוק חיבור שרת</span>
           </button>
+          <button type="button" id="btnToggleStudioFocus" class="studio-bridge-retry-btn studio-focus-toggle-btn" onclick="toggleStudioFocusMode()" aria-label="מצב מיקוד (מסך מלא / מסך מפוצל)" title="מצב מיקוד (מסך מלא / מסך מפוצל)">
+            <i class="ph-duotone ph-arrows-out-simple" id="studioFocusIcon" aria-hidden="true"></i>
+            <span id="studioFocusLabel">מצב מיקוד</span>
+          </button>
           <button type="button" id="btnHeaderExportPackage" class="studio-bridge-retry-btn" onclick="openStudioExportModal()" aria-haspopup="dialog" aria-controls="studioExportDialog" aria-label="ייצוא חבילת הגשה" title="ייצוא חבילת הגשה">
             <i class="ph-duotone ph-export" aria-hidden="true"></i>
             <span>ייצוא חבילה</span>
@@ -640,33 +644,6 @@
                     </div>
                   </div>
 
-                  <!-- Deep AI Insights, Company Research & Clarification Questions -->
-                  <div id="atsAiInsightsCard" class="studio-card-glass studio-ai-insights-card" hidden>
-                    <div class="ats-card-header">
-                      <div class="ats-card-header-title">
-                        <i class="ph-duotone ph-sparkle" style="color: var(--dashboard-cyan);" aria-hidden="true"></i>
-                        <span>ניתוח עומק AI, מחקר חברה ושאלות דיוק לפני הפקת קו״ח</span>
-                      </div>
-                      <span class="ats-card-badge" id="atsAiInsightsSourceBadge">Gemini AI</span>
-                    </div>
-                    <p id="atsAiSummaryText" class="ats-card-caption"></p>
-                    <div id="atsAiResearchBox" class="studio-research-box" hidden>
-                      <strong id="atsAiResearchHeader">מחקר חברה:</strong>
-                      <p id="atsAiResearchSummary"></p>
-                    </div>
-                    <div id="atsAiScorecardBars" class="studio-scorecard-bars"></div>
-                    <div id="atsClarificationsSection" class="studio-clarifications-box" hidden>
-                      <h4 class="studio-sub-heading">שאלות דיוק והבהרה לשילוב עובדתי בקורות החיים:</h4>
-                      <div id="atsClarificationsFields" class="studio-clarifications-fields"></div>
-                    </div>
-                    <div class="studio-ai-insights-actions">
-                      <button type="button" class="ats-primary-btn" onclick="proceedFromAtsToPackage()">
-                        <i class="ph-duotone ph-arrow-left" aria-hidden="true"></i>
-                        <span>שמור הבהרות והמשך לעורך קו״ח ומחולל A4</span>
-                      </button>
-                    </div>
-                  </div>
-
                   <!-- Unified Severity-Sorted Gaps Summary Card (Section 5.5 Stage 1) -->
                   <div id="atsSeveritySortedGapsCard" class="studio-card-glass ats-severity-gaps-card">
                     <div class="ats-card-header">
@@ -681,78 +658,139 @@
                     </div>
                   </div>
 
-                  <!-- Side-by-Side Findings: Hard Gates + Interactive Keyword Diff Matrix -->
-                  <div id="atsStep3Grid" class="ats-details-grid">
-                    <!-- Card 1: Statutory Hard Gates -->
-                    <div class="studio-card-glass ats-subcard">
-                      <div class="ats-card-header">
-                        <div class="ats-card-header-title">
-                          <i class="ph-duotone ph-shield-check" style="color: var(--dashboard-lime);" aria-hidden="true"></i>
-                          <span>שערי סף והסמכות (Statutory Hard Gates)</span>
-                        </div>
-                        <span class="ats-card-badge" id="atsGatesSummaryBadge">7 שערים פעילים</span>
-                      </div>
-                      <p class="ats-card-caption">בדיקת דרישות השכלה ורישוי (הנדסאי מכונות מול תואר B.Sc, רישיון חשמלאי מוסמך בלימודים, עבודה בגובה ותקנים):</p>
-                      <div id="atsHardGatesList" class="ats-gates-list"></div>
+                  <!-- Subtabs Navigation & Panels in Stage 1 -->
+                  <div id="atsStep3Grid" class="ats-subtabs-container">
+                    <div class="ats-subtabs-bar" focusgroup="tablist nomemory" role="tablist" aria-label="לשוניות פירוט נתוני התאמה">
+                      <button type="button" role="tab" id="atsSubtabGatesBtn" class="ats-subtab-btn active" aria-selected="true" focusgroupstart onclick="switchAtsSubtab('gates')">
+                        <i class="ph-duotone ph-shield-check" aria-hidden="true"></i>
+                        <span>שערי סף והסמכות</span>
+                        <span class="ats-subtab-badge" id="atsSubtabGatesBadge">7 שערים</span>
+                      </button>
+                      <button type="button" role="tab" id="atsSubtabKeywordsBtn" class="ats-subtab-btn" aria-selected="false" onclick="switchAtsSubtab('keywords')">
+                        <i class="ph-duotone ph-tree-structure" aria-hidden="true"></i>
+                        <span>מטריצת מילות מפתח</span>
+                        <span class="ats-subtab-badge" id="atsSubtabKeywordsBadge">0 פערים</span>
+                      </button>
+                      <button type="button" role="tab" id="atsSubtabResearchBtn" class="ats-subtab-btn" aria-selected="false" onclick="switchAtsSubtab('research')">
+                        <i class="ph-duotone ph-sparkle" aria-hidden="true"></i>
+                        <span>מחקר חברה ותובנות AI</span>
+                        <span class="ats-subtab-badge" id="atsSubtabResearchBadge">Gemini</span>
+                      </button>
                     </div>
 
-                    <!-- Card 2: Interactive Keyword Diff & 1-Click Injection -->
-                    <div class="studio-card-glass ats-subcard">
-                      <div class="ats-card-header">
-                        <div class="ats-card-header-title">
-                          <i class="ph-duotone ph-tree-structure" style="color: var(--dashboard-cyan);" aria-hidden="true"></i>
-                          <span>מטריצת השוואת מילות מפתח ופערי התאמה</span>
-                        </div>
-                        <span class="ats-card-badge" id="atsKeywordsCountBadge">0 פערים</span>
-                      </div>
-                      <p class="ats-card-caption">לחץ על כל מונח חסר כדי להעביר אותו ישירות לשכתוב נקודה עובדתית בעורך קורות החיים:</p>
-
-                      <div class="ats-taxonomy-sections">
-                        <div class="ats-taxonomy-group" id="groupSystems">
-                          <div class="ats-taxonomy-header" style="color: var(--dashboard-lime);">
-                            <i class="ph-duotone ph-cpu" aria-hidden="true"></i>
-                            <span>מערכות שליטה ובקרה (SCADA, PLC, PRMS, HMI, DCS)</span>
+                    <div class="ats-subtabs-panels">
+                      <!-- Subtab Panel 1: Statutory Hard Gates -->
+                      <div id="atsSubtabGatesPanel" class="ats-subtab-panel active" role="tabpanel" aria-labelledby="atsSubtabGatesBtn">
+                        <div class="studio-card-glass ats-subcard">
+                          <div class="ats-card-header">
+                            <div class="ats-card-header-title">
+                              <i class="ph-duotone ph-shield-check" style="color: var(--dashboard-lime);" aria-hidden="true"></i>
+                              <span>שערי סף והסמכות (Statutory Hard Gates)</span>
+                            </div>
+                            <span class="ats-card-badge" id="atsGatesSummaryBadge">7 שערים פעילים</span>
                           </div>
-                          <div class="ats-badges-wrap" id="atsKeywordsSystems">
-                            <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
-                          </div>
-                        </div>
-
-                        <div class="ats-taxonomy-group" id="groupEnergy">
-                          <div class="ats-taxonomy-header" style="color: #a78bfa;">
-                            <i class="ph-duotone ph-lightning" aria-hidden="true"></i>
-                            <span>תשתיות אנרגיה, סולאר וחשמל (BESS, High Voltage, Bifacial PV)</span>
-                          </div>
-                          <div class="ats-badges-wrap" id="atsKeywordsEnergy">
-                            <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
-                          </div>
-                        </div>
-
-                        <div class="ats-taxonomy-group" id="groupMethodologies">
-                          <div class="ats-taxonomy-header" style="color: var(--dashboard-cyan);">
-                            <i class="ph-duotone ph-tree-structure" aria-hidden="true"></i>
-                            <span>מתודולוגיות תפעוליות ואיכות (Lean, Six Sigma, 5S, RCA)</span>
-                          </div>
-                          <div class="ats-badges-wrap" id="atsKeywordsMethodologies">
-                            <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
-                          </div>
-                        </div>
-
-                        <div class="ats-taxonomy-group" id="groupFinancials">
-                          <div class="ats-taxonomy-header" style="color: var(--dashboard-gold);">
-                            <i class="ph-duotone ph-currency-circle-dollar" aria-hidden="true"></i>
-                            <span>ניהול פרויקטים ותקציב (CAPEX, OPEX, ROI)</span>
-                          </div>
-                          <div class="ats-badges-wrap" id="atsKeywordsFinancials">
-                            <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
-                          </div>
+                          <p class="ats-card-caption">בדיקת דרישות השכלה ורישוי (הנדסאי מכונות מול תואר B.Sc, רישיון חשמלאי מוסמך בלימודים, עבודה בגובה ותקנים):</p>
+                          <div id="atsHardGatesList" class="ats-gates-list"></div>
                         </div>
                       </div>
+
+                      <!-- Subtab Panel 2: Interactive Keyword Diff Matrix -->
+                      <div id="atsSubtabKeywordsPanel" class="ats-subtab-panel" role="tabpanel" aria-labelledby="atsSubtabKeywordsBtn" hidden>
+                        <div class="studio-card-glass ats-subcard">
+                          <div class="ats-card-header">
+                            <div class="ats-card-header-title">
+                              <i class="ph-duotone ph-tree-structure" style="color: var(--dashboard-cyan);" aria-hidden="true"></i>
+                              <span>מטריצת השוואת מילות מפתח ופערי התאמה</span>
+                            </div>
+                            <span class="ats-card-badge" id="atsKeywordsCountBadge">0 פערים</span>
+                          </div>
+                          <p class="ats-card-caption">לחץ על כל מונח חסר כדי להעביר אותו ישירות לשכתוב נקודה עובדתית בעורך קורות החיים:</p>
+
+                          <div class="ats-taxonomy-sections">
+                            <div class="ats-taxonomy-group" id="groupSystems">
+                              <div class="ats-taxonomy-header" style="color: var(--dashboard-lime);">
+                                <i class="ph-duotone ph-cpu" aria-hidden="true"></i>
+                                <span>מערכות שליטה ובקרה (SCADA, PLC, PRMS, HMI, DCS)</span>
+                              </div>
+                              <div class="ats-badges-wrap" id="atsKeywordsSystems">
+                                <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
+                              </div>
+                            </div>
+
+                            <div class="ats-taxonomy-group" id="groupEnergy">
+                              <div class="ats-taxonomy-header" style="color: #a78bfa;">
+                                <i class="ph-duotone ph-lightning" aria-hidden="true"></i>
+                                <span>תשתיות אנרגיה, סולאר וחשמל (BESS, High Voltage, Bifacial PV)</span>
+                              </div>
+                              <div class="ats-badges-wrap" id="atsKeywordsEnergy">
+                                <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
+                              </div>
+                            </div>
+
+                            <div class="ats-taxonomy-group" id="groupMethodologies">
+                              <div class="ats-taxonomy-header" style="color: var(--dashboard-cyan);">
+                                <i class="ph-duotone ph-tree-structure" aria-hidden="true"></i>
+                                <span>מתודולוגיות תפעוליות ואיכות (Lean, Six Sigma, 5S, RCA)</span>
+                              </div>
+                              <div class="ats-badges-wrap" id="atsKeywordsMethodologies">
+                                <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
+                              </div>
+                            </div>
+
+                            <div class="ats-taxonomy-group" id="groupFinancials">
+                              <div class="ats-taxonomy-header" style="color: var(--dashboard-gold);">
+                                <i class="ph-duotone ph-currency-circle-dollar" aria-hidden="true"></i>
+                                <span>ניהול פרויקטים ותקציב (CAPEX, OPEX, ROI)</span>
+                              </div>
+                              <div class="ats-badges-wrap" id="atsKeywordsFinancials">
+                                <span class="ats-empty-tag">לא נדרשו מונחים מקטגוריה זו</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Subtab Panel 3: Deep AI Insights, Company Research & Clarification Questions -->
+                      <div id="atsSubtabResearchPanel" class="ats-subtab-panel" role="tabpanel" aria-labelledby="atsSubtabResearchBtn" hidden>
+                        <div id="atsAiInsightsCard" class="studio-card-glass studio-ai-insights-card">
+                          <div class="ats-card-header">
+                            <div class="ats-card-header-title">
+                              <i class="ph-duotone ph-sparkle" style="color: var(--dashboard-cyan);" aria-hidden="true"></i>
+                              <span>ניתוח עומק AI, מחקר חברה ושאלות דיוק לפני הפקת קו״ח</span>
+                            </div>
+                            <span class="ats-card-badge" id="atsAiInsightsSourceBadge">Gemini AI</span>
+                          </div>
+                          <p id="atsAiSummaryText" class="ats-card-caption">לחץ על ״ניתוח עומק AI + מחקר חברה״ בסרגל העליון לקבלת ניתוח מותאם אישית.</p>
+                          <div id="atsAiResearchBox" class="studio-research-box" hidden>
+                            <strong id="atsAiResearchHeader">מחקר חברה:</strong>
+                            <p id="atsAiResearchSummary"></p>
+                          </div>
+                          <div id="atsAiScorecardBars" class="studio-scorecard-bars"></div>
+                          <div id="atsClarificationsSection" class="studio-clarifications-box" hidden>
+                            <h4 class="studio-sub-heading">שאלות דיוק והבהרה לשילוב עובדתי בקורות החיים:</h4>
+                            <div id="atsClarificationsFields" class="studio-clarifications-fields"></div>
+                          </div>
+                          <div class="studio-ai-insights-actions">
+                            <button type="button" class="ats-primary-btn" onclick="proceedFromAtsToPackage()">
+                              <i class="ph-duotone ph-arrow-left" aria-hidden="true"></i>
+                              <span>שמור הבהרות והמשך לעורך קו״ח ומחולל A4</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Hidden Structural Rules Mount for Engine Parity -->
+                      <div id="atsRulesChecklist" class="visually-hidden" aria-hidden="true"></div>
+                      <span id="atsStructuralStatusBadge" class="visually-hidden" aria-hidden="true">תואם מלא</span>
                     </div>
 
-                    <!-- Hidden Structural Rules Mount for Engine Parity -->
-                    <div id="atsRulesChecklist" class="visually-hidden" aria-hidden="true"></div>
-                    <span id="atsStructuralStatusBadge" class="visually-hidden" aria-hidden="true">תואם מלא</span>
+                    <!-- Stage 1 Guided Bottom Navigation Button -->
+                    <div class="studio-guided-nav-bar">
+                      <button type="button" class="studio-guided-nav-btn" onclick="switchStudioModule('writer')">
+                        <span>המשך לשדרוג קו״ח עם הפערים שזוהו</span>
+                        <i class="ph-bold ph-arrow-left" aria-hidden="true"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1074,6 +1112,14 @@
                         </a>
                       </div>
                     </div>
+                  </div>
+
+                  <!-- Stage 2 Guided Bottom Navigation Button -->
+                  <div class="studio-guided-nav-bar">
+                    <button type="button" class="studio-guided-nav-btn" onclick="switchStudioModule('interview')">
+                      <span>המשך להכנה לראיון למשרה זו</span>
+                      <i class="ph-bold ph-arrow-left" aria-hidden="true"></i>
+                    </button>
                   </div>
 
                 </div>
