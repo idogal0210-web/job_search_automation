@@ -9,7 +9,7 @@
 
 ## 2. Tech Stack & Environment
 - **Runtime & Backend:** Python 3.9+ / Python 3.14 (core pipeline, fetchers, evaluators, salary engine, unit test suite).
-- **Frontend & Dashboard:** Pure Vanilla HTML5, Modern CSS3 (CSS Grid, Flexbox, CSS Variables, Backdrop-Filter glassmorphism), ES6+ JavaScript (Zero-framework, single-page application).
+- **Frontend & Dashboard:** Pure Vanilla HTML5, Modern CSS3 (CSS Grid, Flexbox, CSS Variables, Glassmorphism canvas and card surfaces with nested-radius law and 3-tier control heights, CSS Cascade Layers `@layer base, dashboard, studio`), ES6+ JavaScript (Zero-framework, single-page application).
 - **AI & LLM Services:** Google Gemini API via official `google-genai` SDK (`GeminiPool` utilizing `gemini-3.8-flash`, `gemini-3.5-flash-lite`, and `gemini-3.5-flash` with strict Pydantic JSON schema enforcement; Groq API is completely decommissioned and removed).
 - **Client Libraries & Icons:** Phosphor Icons (vector SVG web font), Leaflet.js 1.9.4 with Leaflet.markercluster (geographic map view and coordinate clustering), Chart.js (sector distribution visualization).
 - **Scraping & Data Extraction:** BeautifulSoup4, Requests, Urllib (custom User-Agent spoofing, exponential backoff, rate limiting).
@@ -37,7 +37,7 @@ job_search_automation/
 ├── .agents/                        # Operational policies, workspace plugins, and domain skills
 │   ├── plugins/                    # Project-scoped MCP plugins (api-anything)
 │   ├── rules/                      # System rules (mcp-denylist.md, single-source-and-replaceability-guard.md always_on + mcp-policy.md model_decision: Tavily, Firecrawl, Supabase, GitHub, api-anything; scoped CV globs; zero-emojis, token-efficiency)
-│   └── skills/                     # Specialized skills (api-anything, salary-intelligence, cloud-sync, health-audit, etc.)
+│   └── skills/                     # Specialized skills (api-anything, salary-intelligence, cloud-sync, health-audit, ui-review, etc.)
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml                  # Continuous integration: test suite, UI build check, zero emoji guard on PRs

@@ -269,7 +269,7 @@
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: var(--dashboard-muted);">
           <span>מקורות: LinkedIn, Drushim & Comeet</span>
-          <button onclick="shareSyncLink()" class="dashboard-chip" style="cursor: pointer; font-size: 11px; padding: 3px 10px;">
+          <button type="button" onclick="shareSyncLink()" class="dashboard-chip" aria-label="שיתוף קישור סנכרון" title="שיתוף קישור סנכרון" style="cursor: pointer; font-size: 11px; padding: 3px 10px;">
             <i class="ph-duotone ph-share-network"></i> שיתוף קישור
           </button>
         </div>
@@ -385,11 +385,11 @@
             <span class="studio-indicator-dot offline" id="studioBridgeStatusDot"></span>
             <span id="studioBridgeStatusText">מצב אופליין מקומי (ללא שרת AI)</span>
           </div>
-          <button type="button" id="btnRetryBridgeHealth" class="studio-bridge-retry-btn" onclick="checkStudioBridgeHealth(true)">
+          <button type="button" id="btnRetryBridgeHealth" class="studio-bridge-retry-btn" onclick="checkStudioBridgeHealth(true)" aria-label="בדוק חיבור שרת" title="בדוק חיבור שרת">
             <i class="ph-duotone ph-plugs-connected" aria-hidden="true"></i>
             <span>בדוק חיבור שרת</span>
           </button>
-          <button type="button" id="btnHeaderExportPackage" class="studio-bridge-retry-btn" onclick="openStudioExportModal()" aria-haspopup="dialog" aria-controls="studioExportDialog">
+          <button type="button" id="btnHeaderExportPackage" class="studio-bridge-retry-btn" onclick="openStudioExportModal()" aria-haspopup="dialog" aria-controls="studioExportDialog" aria-label="ייצוא חבילת הגשה" title="ייצוא חבילת הגשה">
             <i class="ph-duotone ph-export" aria-hidden="true"></i>
             <span>ייצוא חבילה</span>
           </button>

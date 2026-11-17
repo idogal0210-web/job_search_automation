@@ -17,8 +17,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" integrity="sha384-pmjIAcz2bAn0xukfxADbZIb3t8oRT9Sv0rvO+BR5Csr6Dhqq+nZs59P0pPKQJkEV" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" integrity="sha384-wgw+aLYNQ7dlhK47ZPK7FRACiq7ROZwgFNg0m04avm4CaXS+Z9Y7nMu8yNjBKYC+" crossorigin="anonymous" referrerpolicy="no-referrer">
   <script defer src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" integrity="sha384-eXVCORTRlv4FUUgS/xmOyr66XBVraen8ATNLMESp92FKXLAMiKkerixTiBvXriZr" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261117030400">
-  <link rel="stylesheet" href="ui-fixes.css?v=20261117030400">
+  <link rel="stylesheet" href="dashboard.css?v=20261117144526">
+  <link rel="stylesheet" href="ui-fixes.css?v=20261117144526">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -269,7 +269,7 @@
         </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: var(--dashboard-muted);">
           <span>מקורות: LinkedIn, Drushim & Comeet</span>
-          <button onclick="shareSyncLink()" class="dashboard-chip" style="cursor: pointer; font-size: 11px; padding: 3px 10px;">
+          <button type="button" onclick="shareSyncLink()" class="dashboard-chip" aria-label="שיתוף קישור סנכרון" title="שיתוף קישור סנכרון" style="cursor: pointer; font-size: 11px; padding: 3px 10px;">
             <i class="ph-duotone ph-share-network"></i> שיתוף קישור
           </button>
         </div>
@@ -385,11 +385,11 @@
             <span class="studio-indicator-dot offline" id="studioBridgeStatusDot"></span>
             <span id="studioBridgeStatusText">מצב אופליין מקומי (ללא שרת AI)</span>
           </div>
-          <button type="button" id="btnRetryBridgeHealth" class="studio-bridge-retry-btn" onclick="checkStudioBridgeHealth(true)">
+          <button type="button" id="btnRetryBridgeHealth" class="studio-bridge-retry-btn" onclick="checkStudioBridgeHealth(true)" aria-label="בדוק חיבור שרת" title="בדוק חיבור שרת">
             <i class="ph-duotone ph-plugs-connected" aria-hidden="true"></i>
             <span>בדוק חיבור שרת</span>
           </button>
-          <button type="button" id="btnHeaderExportPackage" class="studio-bridge-retry-btn" onclick="openStudioExportModal()" aria-haspopup="dialog" aria-controls="studioExportDialog">
+          <button type="button" id="btnHeaderExportPackage" class="studio-bridge-retry-btn" onclick="openStudioExportModal()" aria-haspopup="dialog" aria-controls="studioExportDialog" aria-label="ייצוא חבילת הגשה" title="ייצוא חבילת הגשה">
             <i class="ph-duotone ph-export" aria-hidden="true"></i>
             <span>ייצוא חבילה</span>
           </button>
@@ -1573,16 +1573,16 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261117030400",
+      build_id: "20261117144526",
       schema_version: "2.0.0",
       generated_at: "17.11.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261117030400",
-      catalog_data_url: "data/historical_catalog.json?v=20261117030400",
+      jobs_data_url: "data/jobs.json?v=20261117144526",
+      catalog_data_url: "data/historical_catalog.json?v=20261117144526",
       supabase_url: "https://wvwdxpttwsrdbvvtiyoh.supabase.co",
       supabase_anon_key: "sb_publishable_U8BEszbgC7i76c1waY5Ceg_7JvCQKZ6"
     };
   </script>
-  <script src="dashboard.js?v=20261117030400" defer></script>
+  <script src="dashboard.js?v=20261117144526" defer></script>
 </body>
 </html>
