@@ -359,48 +359,49 @@
     <!-- Dedicated Full-Width Career Studio Workspace View -->
     <div id="careerStudioWorkspace" class="dashboard-view-container hidden" style="display: none;">
 
-      <!-- Unified Top Context Bar: Sticky 56px Target Job Strip + Target Job Ingest + 3-Stage Switcher -->
-      <div class="studio-context-bar">
-        <div id="studioStickyJobBar" class="studio-header-strip studio-sticky-job-bar">
-          <div class="studio-title-box">
-            <div class="studio-badge-pill">
-              <i class="ph-duotone ph-sparkle" aria-hidden="true"></i>
-              <span>סטודיו קריירה</span>
-            </div>
-            <h2 class="studio-main-heading" id="studioStickyTargetJobLabel">עידו גל | ניתוח התאמת משרה, עריכת קו״ח A4 ופרופיל LinkedIn</h2>
+      <!-- Sticky 56px Target Job Strip -->
+      <div id="studioStickyJobBar" class="studio-header-strip studio-sticky-job-bar">
+        <div class="studio-title-box">
+          <div class="studio-badge-pill">
+            <i class="ph-duotone ph-sparkle" aria-hidden="true"></i>
+            <span>סטודיו קריירה</span>
           </div>
+          <h2 class="studio-main-heading" id="studioStickyTargetJobLabel">עידו גל | ניתוח התאמת משרה, עריכת קו״ח A4 ופרופיל LinkedIn</h2>
+        </div>
 
-          <div class="studio-sticky-match-widget" id="studioStickyMatchWidget" aria-label="מד התאמת משרה מול סף יעד">
-            <div class="studio-sticky-match-meta">
-              <span class="studio-sticky-match-label">מד התאמה (סף יעד 75%):</span>
-              <strong id="studioStickyMatchValue" class="studio-sticky-match-val">0%</strong>
-            </div>
-            <div id="studioStickyMatchBar" class="studio-horizontal-match-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="אחוז התאמה למשרה">
-              <div id="studioStickyMatchFill" class="studio-horizontal-match-fill" style="inline-size: 0%;"></div>
-              <span id="studioStickyMatchThreshold" class="studio-horizontal-match-threshold" style="inset-inline-start: 75%;" title="קו סף מומלץ להגשה: 75%"></span>
-            </div>
+        <div class="studio-sticky-match-widget" id="studioStickyMatchWidget" aria-label="מד התאמת משרה מול סף יעד">
+          <div class="studio-sticky-match-meta">
+            <span class="studio-sticky-match-label">מד התאמה (סף יעד 75%):</span>
+            <strong id="studioStickyMatchValue" class="studio-sticky-match-val">0%</strong>
           </div>
-
-          <div class="studio-header-actions">
-            <div class="studio-status-indicator" id="studioBridgeStatusPill" role="status" aria-live="polite">
-              <span class="studio-indicator-dot offline" id="studioBridgeStatusDot"></span>
-              <span id="studioBridgeStatusText">מצב אופליין מקומי (ללא שרת AI)</span>
-            </div>
-            <button type="button" id="btnRetryBridgeHealth" class="studio-bridge-retry-btn" onclick="checkStudioBridgeHealth(true)">
-              <i class="ph-duotone ph-plugs-connected" aria-hidden="true"></i>
-              <span>בדוק חיבור שרת</span>
-            </button>
-            <button type="button" id="btnHeaderExportPackage" class="studio-bridge-retry-btn" onclick="openStudioExportModal()" aria-haspopup="dialog" aria-controls="studioExportDialog">
-              <i class="ph-duotone ph-export" aria-hidden="true"></i>
-              <span>ייצוא חבילה</span>
-            </button>
-            <button type="button" id="btnMobileOpenPreview" class="studio-mobile-preview-trigger" onclick="openMobilePreviewDialog()" aria-haspopup="dialog" aria-controls="studioMobilePreviewDialog">
-              <i class="ph-duotone ph-file-text" aria-hidden="true"></i>
-              <span>תצוגת קו״ח חיה</span>
-            </button>
+          <div id="studioStickyMatchBar" class="studio-horizontal-match-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="אחוז התאמה למשרה">
+            <div id="studioStickyMatchFill" class="studio-horizontal-match-fill" style="inline-size: 0%;"></div>
+            <span id="studioStickyMatchThreshold" class="studio-horizontal-match-threshold" style="inset-inline-start: 75%;" title="קו סף מומלץ להגשה: 75%"></span>
           </div>
         </div>
 
+        <div class="studio-header-actions">
+          <div class="studio-status-indicator" id="studioBridgeStatusPill" role="status" aria-live="polite">
+            <span class="studio-indicator-dot offline" id="studioBridgeStatusDot"></span>
+            <span id="studioBridgeStatusText">מצב אופליין מקומי (ללא שרת AI)</span>
+          </div>
+          <button type="button" id="btnRetryBridgeHealth" class="studio-bridge-retry-btn" onclick="checkStudioBridgeHealth(true)">
+            <i class="ph-duotone ph-plugs-connected" aria-hidden="true"></i>
+            <span>בדוק חיבור שרת</span>
+          </button>
+          <button type="button" id="btnHeaderExportPackage" class="studio-bridge-retry-btn" onclick="openStudioExportModal()" aria-haspopup="dialog" aria-controls="studioExportDialog">
+            <i class="ph-duotone ph-export" aria-hidden="true"></i>
+            <span>ייצוא חבילה</span>
+          </button>
+          <button type="button" id="btnMobileOpenPreview" class="studio-mobile-preview-trigger" onclick="openMobilePreviewDialog()" aria-haspopup="dialog" aria-controls="studioMobilePreviewDialog">
+            <i class="ph-duotone ph-file-text" aria-hidden="true"></i>
+            <span>תצוגת קו״ח חיה</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Unified Top Context Bar: Target Job Ingest + 3-Stage Switcher -->
+      <div class="studio-context-bar">
         <!-- Unified Target Job & Active CV Control Bar -->
         <div id="atsStep1Panel" class="studio-card-glass studio-target-bar studio-step-active-glow">
           <div class="studio-target-bar-top">
@@ -470,7 +471,9 @@
                 <i class="ph-duotone ph-file-text" aria-hidden="true"></i>
                 <span>פרטי המשרה ותיאור הדרישות לניתוח (עריכה / הדבקת טקסט או בדיקה מהירה)</span>
               </div>
-              <div class="ats-sample-chips" onclick="event.stopPropagation()">
+            </summary>
+            <div class="studio-job-details-body">
+              <div class="ats-sample-chips">
                 <span class="ats-chips-label">דוגמה מהירה:</span>
                 <button type="button" class="ats-chip-btn" onclick="loadSampleAtsJob('solar')">
                   <i class="ph-duotone ph-sun" aria-hidden="true"></i>
@@ -485,8 +488,6 @@
                   <span>בדיקת חסם B.Sc</span>
                 </button>
               </div>
-            </summary>
-            <div class="studio-job-details-body">
               <div class="studio-meta-inputs-grid">
                 <div class="studio-field-group">
                   <label for="atsCompanyInput" class="ats-input-label">שם החברה:</label>
@@ -767,6 +768,25 @@
             <section id="studioModuleWriter" class="studio-module-panel" role="tabpanel" aria-labelledby="studioTabWriter" hidden="until-found">
               <div class="studio-module-card">
                 <div id="writerModuleContent" class="writer-workspace-content">
+
+                  <!-- Step 2 Sticky Target Job Context Card -->
+                  <div id="writerTargetJobContextCard" class="studio-card-glass writer-target-context-card" style="margin-block-end: 16px; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border-subtle);">
+                    <div class="writer-target-context-header" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; cursor: pointer;" onclick="toggleWriterJobContext()">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <i class="ph-duotone ph-briefcase" style="color: var(--dashboard-cyan); font-size: 1.1rem;" aria-hidden="true"></i>
+                        <strong id="writerTargetJobTitlePreview" style="font-size: 0.92rem; color: var(--text-primary);">משרת יעד טרם נבחרה</strong>
+                        <span id="writerTargetCompanyPreview" class="badge-tag" style="font-size: 0.78rem;">כללי</span>
+                      </div>
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <span id="writerTargetMissingKeywordsBadge" class="step-issues-badge" style="font-size: 0.75rem;">מילות מפתח חסרות</span>
+                        <i id="writerJobContextChevron" class="ph-bold ph-caret-down" style="font-size: 0.9rem;" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                    <div id="writerTargetJobContextBody" class="writer-target-context-body" style="display: none; margin-block-start: 10px; padding-block-start: 10px; border-block-start: 1px solid var(--border-subtle);">
+                      <div id="writerTargetKeywordsList" style="display: flex; flex-wrap: wrap; gap: 6px; margin-block-end: 8px;"></div>
+                      <p id="writerTargetJobTextPreview" style="font-size: 0.82rem; line-height: 1.5; color: var(--text-secondary); max-height: 120px; overflow-y: auto; margin: 0; white-space: pre-wrap;"></p>
+                    </div>
+                  </div>
 
                   <!-- Section A: 1-Click Tailored A4 Package Builder -->
                   <div id="studioPackageWorkbench" class="studio-card-glass studio-package-workbench">
@@ -1196,6 +1216,7 @@
                           <button type="button" class="q-chip" onclick="setInterviewCategory('contractors', this)">קבלנים ופרויקטים</button>
                           <button type="button" class="q-chip" onclick="setInterviewCategory('hse', this)">בטיחות ו-SCADA</button>
                           <button type="button" class="q-chip" onclick="setInterviewCategory('mechanical', this)">תקלות מכניות</button>
+                          <button type="button" class="q-chip" onclick="setInterviewCategory('uav', this)">רחפנים ומערכות אוטונומיות</button>
                         </div>
                       </div>
 
@@ -1266,7 +1287,7 @@
                             <div class="factor-header">
                               <span class="factor-letter">S</span>
                               <span class="factor-name">Situation (רקע)</span>
-                              <span class="factor-status pass">מלא</span>
+                              <span class="factor-status pass" id="starSituationStatus">מלא</span>
                             </div>
                             <p class="factor-text" id="starSituationText">הגדרת זירה ברורה: משמרת לילה, מתקן PRMS, סיכון קבלנים סמוכים.</p>
                           </div>
@@ -1275,7 +1296,7 @@
                             <div class="factor-header">
                               <span class="factor-letter">T</span>
                               <span class="factor-name">Task (משימה)</span>
-                              <span class="factor-status pass">מלא</span>
+                              <span class="factor-status pass" id="starTaskStatus">מלא</span>
                             </div>
                             <p class="factor-text" id="starTaskText">הצבת יעד כפול: הצלת חיי אדם ובלימת דליפת הגז.</p>
                           </div>
@@ -1284,7 +1305,7 @@
                             <div class="factor-header">
                               <span class="factor-letter">A</span>
                               <span class="factor-name">Action (פעולה)</span>
-                              <span class="factor-status pass">חזק</span>
+                              <span class="factor-status pass" id="starActionStatus">חזק</span>
                             </div>
                             <p class="factor-text" id="starActionText">שימוש נכון בסמכות: הפעלת ESD, שימוש ב-SCADA ותיאום שטח.</p>
                           </div>
@@ -1293,7 +1314,7 @@
                             <div class="factor-header">
                               <span class="factor-letter">R</span>
                               <span class="factor-name">Result (תוצאה)</span>
-                              <span class="factor-status pass">מדיד</span>
+                              <span class="factor-status pass" id="starResultStatus">מדיד</span>
                             </div>
                             <p class="factor-text" id="starResultText">שילוב מדד Zero LTI ובלימה תוך 7 דקות ללא נזק סביבתי.</p>
                           </div>

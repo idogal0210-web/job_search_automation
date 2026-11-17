@@ -4628,6 +4628,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             if (typeof renderBulletImpactAuditor === 'function') {
               renderBulletImpactAuditor();
             }
+            if (typeof updateWriterJobContextPreview === 'function') {
+              updateWriterJobContextPreview();
+            }
           } else if (m === 'interview') {
             if (typeof initInterviewModule === 'function') {
               initInterviewModule();
@@ -5249,7 +5252,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   const KEYWORD_TAXONOMY = {
     methodologies: {
-      category_he: "מתודולוגיות תפעוליות",
+      category_he: "מתודולוגיות תפעוליות ובטיחות",
       icon: "ph-duotone ph-tree-structure",
       color: "var(--dashboard-cyan)",
       terms: [
@@ -5257,7 +5260,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         { name: "Six Sigma", pattern: /six[\s-]sigma|שש[\s-]סיגמא/i },
         { name: "5S", pattern: /\b5s\b/i },
         { name: "RCA", pattern: /root[\s-]cause|חקר[\s-]תקלות|rca/i },
-        { name: "Kaizen", pattern: /kaizen|קאיזן/i }
+        { name: "Kaizen", pattern: /kaizen|קאיזן/i },
+        { name: "Zero LTI / HSE", pattern: /zero[\s-]lti|בטיחות|hse|גהות/i },
+        { name: "ISO Standards", pattern: /iso[\s-]?(?:9001|14001|45001)|תקן[\s-]איכות/i },
+        { name: "ESD / נוהלי חירום", pattern: /\besd\b|חירום|hazop|סקר[\s-]סיכונים/i }
       ]
     },
     financials: {
@@ -5272,7 +5278,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       ]
     },
     systems: {
-      category_he: "מערכות שליטה ואוטומציה",
+      category_he: "מערכות שליטה, מכונות ואוטומציה",
       icon: "ph-duotone ph-cpu",
       color: "var(--dashboard-lime)",
       terms: [
@@ -5281,11 +5287,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         { name: "PRMS", pattern: /\bprms\b|תחנת[\s-]הפחתת[\s-]לחץ/i },
         { name: "HMI", pattern: /\bhmi\b|ממשק[\s-]מפעיל/i },
         { name: "DCS", pattern: /\bdcs\b/i },
-        { name: "Modbus / Fieldbus", pattern: /modbus|profibus|fieldbus/i }
+        { name: "Modbus / Fieldbus", pattern: /modbus|profibus|fieldbus/i },
+        { name: "SolidWorks / CAD", pattern: /solidworks|autocad|תיב״ם|\bcad\b/i },
+        { name: "P&ID / שרטוט טכני", pattern: /p&id|שרטוט[\s-]טכני|isometrics/i },
+        { name: "Pumps & Compressors", pattern: /משאב(?:ה|ות)|מדחס(?:ים)?|compressors?|pumps?/i },
+        { name: "Hydraulics & Valves", pattern: /הידראוליק|פנאומטיק|שסתום|מגוף|valves?/i }
       ]
     },
     energy: {
-      category_he: "תשתיות אנרגיה וחשמל",
+      category_he: "תשתיות אנרגיה, רחפנים וחשמל",
       icon: "ph-duotone ph-lightning",
       color: "#a78bfa",
       terms: [
@@ -5293,7 +5303,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         { name: "High Voltage", pattern: /מתח[\s-]גבוה|high[\s-]voltage|\bhv\b/i },
         { name: "Bifacial PV", pattern: /bifacial|דו[\s-]צדדי/i },
         { name: "Grid Connection", pattern: /חיבור[\s-]לרשת|grid[\s-]connection/i },
-        { name: "FPSO", pattern: /\bfpso\b|אסדת[\s-]הפקה/i }
+        { name: "FPSO", pattern: /\bfpso\b|אסדת[\s-]הפקה/i },
+        { name: "UAV / רחפנים", pattern: /רחפן|כטב״ם|\buav\b|\bdrones?\b|מטיס/i }
       ]
     }
   };
@@ -5976,10 +5987,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       } else if (score >= 80) {
         badgeEl.classList.add('level-high');
         badgeTextEl.textContent = 'התאמה גבוהה (High Match)';
-      } else if (score >= 60) {
+      } else if (score >= 65) {
         badgeEl.classList.add('level-med');
         badgeTextEl.textContent = 'התאמה טובה (Good Match)';
-      } else if (score >= 45) {
+      } else if (score >= 50) {
         badgeEl.classList.add('level-fair');
         badgeTextEl.textContent = 'התאמה בינונית / חלקית';
       } else {
@@ -6840,8 +6851,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     const suggestions = [];
 
-    // 1. Check for Active Action Verb at start
-    const firstWord = raw.split(/[\s,.:;]+/)[0] || '';
+    // 1. Check for Active Action Verb in first 3 words
+    const words = raw.split(/[\s,.:;]+/).filter(Boolean);
+    const firstThreeWords = words.slice(0, 3);
     const activeVerbsHe = [
       'ניטרתי', 'כיַילתי', 'כיילתי', 'חישבתי', 'ניתחתי', 'אפיינתי', 'התקנתי', 'מיפיתי', 'תכננתי', 'תיכננתי', 'שדרגתי', 'בדקתי',
       'הובלתי', 'תפעלתי', 'ניהלתי', 'בלמתי', 'אכפתי', 'הכרעתי', 'שימשתי', 'פיקדתי', 'ייצבתי', 'חילצתי', 'הגנתי', 'הפעלתי',
@@ -6861,8 +6873,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const isPassive = isPassiveStartHe || isPassiveStartEn;
 
     const hasActiveVerb = !isPassive && (
-      activeVerbsHe.includes(firstWord) ||
-      activeVerbsEn.includes(firstWord.toLowerCase()) ||
+      firstThreeWords.some(w => activeVerbsHe.includes(w) || activeVerbsEn.includes(w.toLowerCase())) ||
       raw.startsWith('שימשתי כ')
     );
 
@@ -6897,6 +6908,25 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (hasActiveVerb) score += 30;
     if (hasMetric) score += 30;
     if (hasScope) score += 20;
+
+    // Word count & fluff checks
+    const wordCount = words.length;
+    let lengthPenalty = 0;
+    if (wordCount < 8) {
+      lengthPenalty = 15;
+      suggestions.push(`השורה קצרה מדי (${wordCount} מילים). מומלץ להרחיב למבנה של 12-25 מילים הכולל תהליך ותוצאה.`);
+    } else if (wordCount > 32) {
+      lengthPenalty = 10;
+      suggestions.push(`השורה ארוכה מדי (${wordCount} מילים). מומלץ לתמצת ל-12 עד 25 מילים לסריקה מהירה ע״י מגייסים.`);
+    }
+
+    const genericFluff = /(?:מוטיבציה גבוהה|יחסי אנוש מעולים|עבודה תחת לחץ|ראש גדול|חרוץ|מסור|בעל יחסי אנוש)/i;
+    if (genericFluff.test(raw)) {
+      score = Math.max(10, score - 15);
+      suggestions.push("הימנע מקלישאות ('מוטיבציה', 'עבודה תחת לחץ') והחלף אותן בהישגים הנדסיים קונקרטיים.");
+    }
+
+    score = Math.max(10, score - lengthPenalty);
 
     if (isPassive) {
       score = Math.max(10, score - 20);
@@ -7037,14 +7067,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     renderGrammarAnalysis(analysis);
   }
 
-  function triggerGrammarValidation() {
+  function triggerGrammarValidation(preferOutput = false) {
     const inputEl = document.getElementById('writerRawInput');
     const outputEl = document.getElementById('writerTransformedOutput');
     if (!inputEl) return;
 
-    const textToValidate = (outputEl && outputEl.textContent && !outputEl.querySelector('.writer-output-placeholder'))
-      ? outputEl.textContent.trim()
-      : inputEl.value.trim();
+    let textToValidate = (inputEl.value || '').trim();
+    if (preferOutput && outputEl && outputEl.textContent && !outputEl.querySelector('.writer-output-placeholder')) {
+      textToValidate = outputEl.textContent.trim();
+    }
 
     const analysis = validateBulletGrammar(textToValidate);
     renderGrammarAnalysis(analysis);
@@ -7248,18 +7279,45 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   function acceptTrackedBulletSuggestion(originalText, proposedText) {
-    const cleanProposed = String(proposedText || '').trim();
+    const cleanOrig = String(originalText || '').replace(/^[-*•]\s*/, '').trim();
+    const cleanProposed = String(proposedText || '').replace(/^[-*•]\s*/, '').trim();
     if (!cleanProposed) return;
+
     if (typeof StudioState !== 'undefined' && StudioState) {
+      if (!StudioState.bulletReplacements) StudioState.bulletReplacements = {};
+      if (cleanOrig) {
+        StudioState.bulletReplacements[cleanOrig] = cleanProposed;
+      }
       if (!Array.isArray(StudioState.appliedBullets)) StudioState.appliedBullets = [];
       if (!StudioState.appliedBullets.includes(cleanProposed)) {
         StudioState.appliedBullets.push(cleanProposed);
       }
       StudioState.highlightedLine = cleanProposed;
     }
+
+    if (typeof studioAppliedBullets !== 'undefined' && Array.isArray(studioAppliedBullets)) {
+      if (!studioAppliedBullets.includes(cleanProposed)) {
+        studioAppliedBullets.push(cleanProposed);
+      }
+    }
+
+    if (typeof document !== 'undefined') {
+      const rows = document.querySelectorAll('.writer-audit-row');
+      rows.forEach(r => {
+        const textEl = r.querySelector('.writer-audit-text');
+        if (textEl && cleanOrig && (textEl.textContent || '').includes(cleanOrig)) {
+          r.classList.add('is-accepted');
+          const actions = r.querySelector('.writer-tracked-actions');
+          if (actions) {
+            actions.innerHTML = '<span class="step-issues-badge" style="color: var(--dashboard-lime);"><i class="ph-bold ph-check"></i> הוחל במסמך ה-A4</span>';
+          }
+        }
+      });
+    }
+
     if (typeof renderCarryOverSummary === 'function') renderCarryOverSummary();
     if (typeof renderStickyLivePreview === 'function') renderStickyLivePreview();
-    if (typeof showToast === 'function') showToast('ההצעה אושרה והוטמעה במסמך ה-A4.', 'success');
+    if (typeof showToast === 'function') showToast('ההצעה הוטמעה ישירות בגוף קורות החיים (A4).', 'success');
   }
 
   function rejectTrackedBulletSuggestion(rowIdx) {
@@ -7383,9 +7441,68 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       writerInitialized = true;
     }
     renderBulletImpactAuditor();
+    updateWriterJobContextPreview();
+  }
+
+  function toggleWriterJobContext() {
+    const body = document.getElementById('writerTargetJobContextBody');
+    const chevron = document.getElementById('writerJobContextChevron');
+    if (!body) return;
+    const isHidden = (body.style.display === 'none');
+    body.style.display = isHidden ? 'block' : 'none';
+    if (chevron) {
+      chevron.className = isHidden ? 'ph-bold ph-caret-up' : 'ph-bold ph-caret-down';
+    }
+  }
+
+  function updateWriterJobContextPreview() {
+    if (typeof document === 'undefined') return;
+    const titleEl = document.getElementById('writerTargetJobTitlePreview');
+    const compEl = document.getElementById('writerTargetCompanyPreview');
+    const textEl = document.getElementById('writerTargetJobTextPreview');
+    const kwListEl = document.getElementById('writerTargetKeywordsList');
+    const missingBadge = document.getElementById('writerTargetMissingKeywordsBadge');
+
+    const titleInput = document.getElementById('atsTitleInput');
+    const compInput = document.getElementById('atsCompanyInput');
+    const jobInput = document.getElementById('atsJobInput');
+
+    const title = (titleInput && titleInput.value.trim()) || 'משרת יעד טרם נבחרה';
+    const comp = (compInput && compInput.value.trim()) || 'כללי';
+    const desc = (jobInput && jobInput.value.trim()) || '';
+
+    if (titleEl) titleEl.textContent = title;
+    if (compEl) compEl.textContent = comp;
+    if (textEl) textEl.textContent = desc || 'לא הוזן תיאור משרה. הזן בשלב 1 או בחר משרה מלוח המשרות.';
+
+    if (kwListEl && typeof document.createElement === 'function') {
+      const activeCv = (typeof getActiveCvProfile === 'function') ? getActiveCvProfile() : CANONICAL_CV_PROFILE;
+      const cvText = (activeCv && activeCv.text) ? activeCv.text : '';
+      const missingTerms = [];
+      for (const group of Object.values(KEYWORD_TAXONOMY)) {
+        for (const term of group.terms) {
+          if (term.pattern.test(desc) && !term.pattern.test(cvText)) {
+            missingTerms.push(term.name);
+          }
+        }
+      }
+      if (missingBadge) {
+        missingBadge.textContent = `${missingTerms.length} מילות מפתח חסרות`;
+      }
+      const chips = missingTerms.slice(0, 8).map(name => {
+        const span = document.createElement('span');
+        span.className = 'formula-chip metric';
+        span.style.fontSize = '0.74rem';
+        span.textContent = name;
+        return span;
+      });
+      kwListEl.replaceChildren(...chips);
+    }
   }
 
   // Expose global functions to window
+  window.toggleWriterJobContext = toggleWriterJobContext;
+  window.updateWriterJobContextPreview = updateWriterJobContextPreview;
   window.switchDashboardAppMode = switchDashboardAppMode;
   window.switchStudioModule = switchStudioModule;
   window.getActiveCvProfile = getActiveCvProfile;
@@ -7490,6 +7607,23 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         title: "תרחיש: רעידות חריגות ורעש קביטציה במשאבת סחרור ראשית",
         desc: "משאבת הזנה ראשית מציגה עלייה הדרגתית בטמפרטורת המיסב ורעידות מעל התקן. כיצד תאבחן את מקור הכשל לפני גרימת השבתה קטסטרופלית?",
         category: "אבחון תקלות מכניות"
+      }
+    ],
+    uav: [
+      {
+        title: "תרחיש: איבוד קשר טלמטריה (Failsafe) לרחפן משימה בסמוך למתקן אנרגיה",
+        desc: "במהלך טיסת צילום תרמי של שדה סולארי / מתקן תשתית, נותק קשר הרדיו והווידאו למערכת השליטה (GCS). כיצד מוגדר פרוטוקול ה-Return to Home (RTH) וכיצד תפעל לאיתור ואימות נחיתה בטוחה?",
+        category: "רחפנים ומערכות אוטונומיות"
+      },
+      {
+        title: "תרחיש: זיהוי תא סולארי פגום (Hotspot) באמצעות צילום תרמי אוטונומי",
+        desc: "ניתוח מטע״ד תרמי מראה נקודה חמה חריגה במחרוזת פאנלים. כיצד תצליב את הנתונים מול נתוני ה-SCADA ומהו סדר הפעולות לבדיקת דיודה / חיבור חשמלי?",
+        category: "רחפנים ומערכות אוטונומיות"
+      },
+      {
+        title: "תרחיש: משבי רוח פתאומיים מעבר למגבלות יצרן בטיסת מיפוי",
+        desc: "מד הרוח מצביע על משבים של 25 קשר בגובה 50 מטרים במהלך משימת מיפוי פוטוגרמטרי. כיצד תכריע בין המשך משימה להנחתה יזומה ומניעת התרסקות?",
+        category: "רחפנים ומערכות אוטונומיות"
       }
     ]
   };
@@ -7700,6 +7834,27 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (aEl) aEl.textContent = payload.aDesc || '';
     if (rEl) rEl.textContent = payload.rDesc || '';
 
+    // Dynamically update factor status badges
+    const updateFactorStatus = (id, score, maxScore) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const ratio = maxScore > 0 ? score / maxScore : 0;
+      if (ratio >= 0.8) {
+        el.className = 'factor-status pass';
+        el.textContent = 'מלא';
+      } else if (ratio >= 0.5) {
+        el.className = 'factor-status warning';
+        el.textContent = 'חלקי';
+      } else {
+        el.className = 'factor-status fail';
+        el.textContent = 'חסר';
+      }
+    };
+    updateFactorStatus('starSituationStatus', payload.sScore ?? (payload.totalScore > 0 ? 16 : 0), 20);
+    updateFactorStatus('starTaskStatus', payload.tScore ?? (payload.totalScore > 0 ? 16 : 0), 20);
+    updateFactorStatus('starActionStatus', payload.aScore ?? (payload.totalScore > 0 ? 32 : 0), 40);
+    updateFactorStatus('starResultStatus', payload.rScore ?? (payload.totalScore > 0 ? 16 : 0), 20);
+
     const sourceBadge = document.getElementById('starEvaluationSourceBadge');
     if (sourceBadge) sourceBadge.textContent = payload.sourceLabel || '';
 
@@ -7726,34 +7881,97 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function evaluateStarAnswer() {
     const input = document.getElementById('interviewAnswerInput');
-    const txt = input ? input.value : '';
+    const txt = (input ? input.value : '').trim();
 
-    let sScore = 25, tScore = 25, aScore = 25, rScore = 25;
+    // Guard against empty submission
+    if (!txt) {
+      applyStarEvaluationToDom({
+        totalScore: 0,
+        sScore: 0,
+        tScore: 0,
+        aScore: 0,
+        rScore: 0,
+        sDesc: 'לא הוזנה תשובה. הקלד תיאור אירוע או הקלט מענה לבדיקה.',
+        tDesc: 'לא הוגדרה משימה.',
+        aDesc: 'לא תוארו פעולות שנקטת.',
+        rDesc: 'לא הוצגו תוצאות מדידות.',
+        sourceLabel: 'הזן תשובה לבדיקת מודל STAR',
+        goldenAnswer: '',
+        tips: ['מודל STAR בנוי מ-4 שלבים: רקע (Situation), משימה (Task), פעולה אישית (Action), ותוצאה מדידה (Result).']
+      });
+      return;
+    }
+
+    // Standard STAR Weighting: 20% Situation, 20% Task, 40% Action, 20% Result
+    let sScore = 20, tScore = 20, aScore = 40, rScore = 20;
     let sDesc = 'הגדרת זירה ורקע תפעולי ברורים.',
         tDesc = 'הצבת יעד ברור לבלימת הכשל והגנה על הצוות.',
-        aDesc = 'שימוש נכון בסמכות מקצועית, מגופים ונוהל חירום.',
-        rDesc = 'תוצאה חיובית עם שמירה על 0 נפגעים (Zero LTI).';
+        aDesc = 'שימוש נכון בסמכות מקצועית, נוהל חירום ותיאום שטח.',
+        rDesc = 'תוצאה חיובית עם שמירה על מדדי איכות ובטיחות.';
 
-    if (!txt.includes('PRMS') && !txt.includes('שטח') && !txt.includes('משמרת')) {
-      sScore = 18;
-      sDesc = 'מומלץ לציין במפורש את זירת הפעולה (למשל: משמרת לילה במתקן PRMS).';
-    }
-    if (!txt.includes('פינוי') && !txt.includes('משימה') && !txt.includes('יעד')) {
-      tScore = 19;
-      tDesc = 'כדאי להדגיש את המשימה הדחופה ביותר: הצלת חיי אדם ובלימת הדליפה.';
-    }
-    if (!txt.includes('ESD') && !txt.includes('SCADA') && !txt.includes('סגרתי') && !txt.includes('נוהל')) {
-      aScore = 18;
-      aDesc = 'מומלץ לתאר פעולות הנדסיות קונקרטיות: הפעלת ESD ובידוד קווים.';
-    }
-    if (!txt.includes('Zero LTI') && !txt.includes('דקות') && !txt.includes('0 תאונות')) {
-      rScore = 18;
-      rDesc = 'מומלץ לחזק את התוצאה במדד כמותי: זמן תגובה בדקות ומדד Zero LTI.';
+    const isUav = currentInterviewCategory === 'uav';
+    const isMech = currentInterviewCategory === 'mechanical';
+
+    if (isUav) {
+      if (!txt.includes('רחפן') && !txt.includes('טיסה') && !txt.includes('שטח') && !txt.includes('משימה')) {
+        sScore = 12;
+        sDesc = 'מומלץ לציין במפורש את מתאר הטיסה (טיסת סריקה תרמית, גובה, תנאי שטח).';
+      }
+      if (!txt.includes('RTH') && !txt.includes('נחיתה') && !txt.includes('בטיחות') && !txt.includes('יעד')) {
+        tScore = 12;
+        tDesc = 'הדגש את המשימה המרכזית: מניעת פגיעה באדם או בתשתית והשבת הכלי בבטחה.';
+      }
+      if (!txt.includes('Failsafe') && !txt.includes('GCS') && !txt.includes('טלמטרי') && !txt.includes('עברתי') && !txt.includes('ניתקתי')) {
+        aScore = 24;
+        aDesc = 'פרט פעולות שליטה: מעבר למוד ידני/Failsafe, בדיקת טלמטריה וסריקת מרחב נחיתה.';
+      }
+      if (!txt.includes('נחת') && !txt.includes('ללא נזק') && !txt.includes('דקות') && !txt.includes('בשלום')) {
+        rScore = 12;
+        rDesc = 'חזק את התוצאה במדד מוחשי: נחיתה בטוחה, מניעת נזק לכלי ותחקור לוגים.';
+      }
+    } else if (isMech) {
+      if (!txt.includes('משאב') && !txt.includes('מתקן') && !txt.includes('משמרת') && !txt.includes('ציוד')) {
+        sScore = 12;
+        sDesc = 'ציין את סוג הציוד והמערכת התעשייתית (משאבה, מדחס, צנרת).';
+      }
+      if (!txt.includes('תקלה') && !txt.includes('משימה') && !txt.includes('בדיקה') && !txt.includes('השבתה')) {
+        tScore = 12;
+        tDesc = 'הגדר את המטרה: אבחון שורש כשל ומניעת השבתת קו הייצור.';
+      }
+      if (!txt.includes('פירוק') && !txt.includes('שסתום') && !txt.includes('מיסב') && !txt.includes('בדקתי') && !txt.includes('מדדתי')) {
+        aScore = 24;
+        aDesc = 'פרט פעולות הנדסיות: בדיקת רעידות/טמפרטורה, ניתוק לחצים ובדיקת שסתומים.';
+      }
+      if (!txt.includes('נמנעה') && !txt.includes('שעות') && !txt.includes('100%') && !txt.includes('תקין')) {
+        rScore = 12;
+        rDesc = 'ציין תוצאה כמותית: שעות השבתה שנחסכו, החלפת רכיב מהירה ואפס נזק משני.';
+      }
+    } else {
+      if (!txt.includes('PRMS') && !txt.includes('שטח') && !txt.includes('משמרת') && !txt.includes('מתקן')) {
+        sScore = 14;
+        sDesc = 'מומלץ לציין במפורש את זירת הפעולה וההקשר התפעולי.';
+      }
+      if (!txt.includes('פינוי') && !txt.includes('משימה') && !txt.includes('יעד') && !txt.includes('בטיחות')) {
+        tScore = 14;
+        tDesc = 'הדגש את משימת ההגנה על חיי אדם והגבלת הנזק התפעולי.';
+      }
+      if (!txt.includes('ESD') && !txt.includes('SCADA') && !txt.includes('סגרתי') && !txt.includes('נוהל') && !txt.includes('הפעלתי')) {
+        aScore = 26;
+        aDesc = 'מומלץ לתאר פעולות הנדסיות קונקרטיות: נוהל חירום, הפעלת בקרים ובידוד קווים.';
+      }
+      if (!txt.includes('Zero LTI') && !txt.includes('דקות') && !txt.includes('0 תאונות') && !txt.includes('ללא נפגעים')) {
+        rScore = 14;
+        rDesc = 'מומלץ לחזק את התוצאה במדד כמותי: זמן תגובה בדקות, מדד Zero LTI או רציפות אספקה.';
+      }
     }
 
     const total = sScore + tScore + aScore + rScore;
     applyStarEvaluationToDom({
       totalScore: total,
+      sScore,
+      tScore,
+      aScore,
+      rScore,
       sDesc,
       tDesc,
       aDesc,
@@ -8523,6 +8741,43 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
     }
     if (summaryEl) summaryEl.textContent = an.match_summary || '';
 
+    if (typeof an.overall_score === 'number') {
+      const aiScore = Math.min(100, Math.max(0, Math.round(an.overall_score)));
+      const scoreValEl = document.getElementById('atsScoreValue');
+      if (scoreValEl) scoreValEl.textContent = `${aiScore}%`;
+      const progressEl = document.getElementById('atsScoreProgress');
+      if (progressEl) {
+        const circ = 314.159;
+        progressEl.style.strokeDashoffset = circ - (aiScore / 100) * circ;
+        if (aiScore >= 80) progressEl.style.stroke = 'var(--dashboard-lime)';
+        else if (aiScore >= 65) progressEl.style.stroke = 'var(--dashboard-cyan)';
+        else if (aiScore >= 50) progressEl.style.stroke = 'var(--dashboard-gold)';
+        else progressEl.style.stroke = '#f87171';
+      }
+      const stickyVal = document.getElementById('studioStickyMatchValue');
+      const stickyFill = document.getElementById('studioStickyMatchFill');
+      if (stickyVal) stickyVal.textContent = `${aiScore}%`;
+      if (stickyFill) stickyFill.style.inlineSize = `${aiScore}%`;
+      const badgeEl = document.getElementById('atsMatchLevelBadge');
+      const badgeTextEl = document.getElementById('atsMatchLevelText');
+      if (badgeEl && badgeTextEl) {
+        badgeEl.className = 'ats-match-level-badge';
+        if (aiScore >= 80) {
+          badgeEl.classList.add('level-high');
+          badgeTextEl.textContent = `התאמה גבוהה (Gemini: ${aiScore}%)`;
+        } else if (aiScore >= 65) {
+          badgeEl.classList.add('level-med');
+          badgeTextEl.textContent = `התאמה טובה (Gemini: ${aiScore}%)`;
+        } else if (aiScore >= 50) {
+          badgeEl.classList.add('level-fair');
+          badgeTextEl.textContent = `התאמה בינונית (Gemini: ${aiScore}%)`;
+        } else {
+          badgeEl.classList.add('level-gap');
+          badgeTextEl.textContent = `פער סף (Gemini: ${aiScore}%)`;
+        }
+      }
+    }
+
     if (researchBox && researchSummary && res.research && res.research.summary) {
       researchBox.hidden = false;
       if (researchHeader) {
@@ -8782,9 +9037,21 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
       return `# דגשים לראיון ושיחת סינון (${comp})\n\n## 3 נקודות מפתח להצגה בראיון\n- ניסיון 24/7 בחדר בקרה לאומי (Energean Israel): קבלת החלטות בזמן אמת מול אסדה ימית, נתג״ז ולקוחות אסטרטגיים.\n- גישור הנדסי ומסחרי: ניהול Nomination ו-Re-nomination תחת הסכמי GSPA לצד עבודה עם AVEVA System Platform ו-SAP.\n- ערך מוסף טכנולוגי וחשמלי: פיתוח סוכני Microsoft 365 Copilot לחישוב כמויות גז ולימודי חשמלאי מוסמך (סיום דצמבר 2026).`;
     }
 
+    const applyBulletReplacements = (text) => {
+      let result = String(text || '');
+      const rep = (typeof StudioState !== 'undefined' && StudioState && StudioState.bulletReplacements) ? StudioState.bulletReplacements : {};
+      for (const [orig, pro] of Object.entries(rep)) {
+        if (orig && pro && result.includes(orig)) {
+          result = result.replaceAll(orig, pro);
+        }
+      }
+      return result;
+    };
+
     if (studioTailoredPackage && studioTailoredPackage.cv_markdown) {
-      let md = String(studioTailoredPackage.cv_markdown);
-      const extra = (studioAppliedBullets || []).filter(b => b && !md.includes(b));
+      let md = applyBulletReplacements(String(studioTailoredPackage.cv_markdown));
+      const rep = (typeof StudioState !== 'undefined' && StudioState && StudioState.bulletReplacements) ? StudioState.bulletReplacements : {};
+      const extra = (studioAppliedBullets || []).filter(b => b && !md.includes(b) && !Object.values(rep).includes(b));
       if (extra.length > 0) {
         md += '\n\n## שדרוגים שהוחלו בעורך\n' + extra.map(b => `- ${b}`).join('\n');
       }
@@ -8793,18 +9060,22 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
 
     const activeProfile = (typeof getActiveCvProfile === 'function') ? getActiveCvProfile() : null;
     if (activeProfile && activeProfile.isCustom && activeProfile.rawText) {
-      let md = `# קורות חיים פעילים (${activeProfile.label || 'מותאם'})\n\n## תוכן מסמך מועמד\n${activeProfile.rawText}`;
-      if (Array.isArray(studioAppliedBullets) && studioAppliedBullets.length > 0) {
-        md += `\n\n## שדרוגים שהוחלו בעורך (${studioAppliedBullets.length})\n` + studioAppliedBullets.map(b => `- ${b}`).join('\n');
+      let md = `# קורות חיים פעילים (${activeProfile.label || 'מותאם'})\n\n## תוכן מסמך מועמד\n${applyBulletReplacements(activeProfile.rawText)}`;
+      const rep = (typeof StudioState !== 'undefined' && StudioState && StudioState.bulletReplacements) ? StudioState.bulletReplacements : {};
+      const extra = (studioAppliedBullets || []).filter(b => b && !md.includes(b) && !Object.values(rep).includes(b));
+      if (extra.length > 0) {
+        md += `\n\n## שדרוגים שהוחלו בעורך (${extra.length})\n` + extra.map(b => `- ${b}`).join('\n');
       }
       return md;
     }
 
     const baseSummary = (studioProfileCache && studioProfileCache.baseline_summary_he) || ORIGINAL_CV_SUMMARY_TEXT || '';
     const candidateName = (studioProfileCache && studioProfileCache.candidate_name) || 'עידו גל';
-    let md = `# ${candidateName} - פרופיל בסיס מקומי\n\n## תקציר וניסיון תפעולי\n${baseSummary}`;
-    if (Array.isArray(studioAppliedBullets) && studioAppliedBullets.length > 0) {
-      md += `\n\n## שדרוגי AI Writer שהוחלו (${studioAppliedBullets.length})\n` + studioAppliedBullets.map(b => `- ${b}`).join('\n');
+    let md = `# ${candidateName} - פרופיל בסיס מקומי\n\n## תקציר וניסיון תפעולי\n${applyBulletReplacements(baseSummary)}`;
+    const rep = (typeof StudioState !== 'undefined' && StudioState && StudioState.bulletReplacements) ? StudioState.bulletReplacements : {};
+    const extra = (studioAppliedBullets || []).filter(b => b && !md.includes(b) && !Object.values(rep).includes(b));
+    if (extra.length > 0) {
+      md += `\n\n## שדרוגי AI Writer שהוחלו (${extra.length})\n` + extra.map(b => `- ${b}`).join('\n');
     }
     return md;
   }
