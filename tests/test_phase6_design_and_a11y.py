@@ -123,7 +123,7 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
     def test_05_sticky_job_bar_horizontal_meter_and_stage_status_dom(self):
         """Top sticky bar, horizontal match progress bar, and stage status pills exist in DOM."""
         self.assertIsNotNone(self.soup.find("meta", attrs={"name": "color-scheme", "content": "light dark"}))
-        self.assertIsNotNone(self.soup.find(id="themeToggleBtn"))
+        self.assertIsNone(self.soup.find(id="themeToggleBtn"))
         self.assertIsNotNone(self.soup.find(id="studioStickyJobBar"))
         self.assertIsNotNone(self.soup.find(id="studioStickyMatchBar"))
         self.assertIsNotNone(self.soup.find(id="studioStickyMatchFill"))
@@ -199,7 +199,7 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
         self.assertEqual(proc.returncode, 0, f"JS failed: {proc.stderr}\n{proc.stdout}")
         res = json.loads(proc.stdout.strip())
         self.assertEqual(res["t1"], "dark")
-        self.assertEqual(res["t2"], "light")
+        self.assertEqual(res["t2"], "dark")
         self.assertIn("B.Sc", res["verdict"])
         self.assertTrue(res["hasInjectBtn"])
         self.assertEqual(res["stageAts"], "חסום")

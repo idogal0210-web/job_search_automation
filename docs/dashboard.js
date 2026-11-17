@@ -9459,56 +9459,33 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
   const THEME_STORAGE_KEY = 'ido_theme_preference';
 
   function applyDashboardTheme(theme) {
-    const normalized = theme === 'light' ? 'light' : 'dark';
+    const normalized = 'dark';
     if (typeof document !== 'undefined' && document.documentElement && typeof document.documentElement.setAttribute === 'function') {
-      document.documentElement.setAttribute('data-theme', normalized);
+      document.documentElement.setAttribute('data-theme', 'dark');
     }
     if (typeof document !== 'undefined' && typeof document.getElementById === 'function') {
       const btn = document.getElementById('themeToggleBtn');
       const label = document.getElementById('themeToggleLabel');
       const icon = document.getElementById('themeToggleIcon');
       if (btn && typeof btn.setAttribute === 'function') {
-        btn.setAttribute('aria-pressed', normalized === 'light' ? 'true' : 'false');
+        btn.setAttribute('aria-pressed', 'false');
       }
       if (label) {
-        label.textContent = normalized === 'light' ? 'בהיר' : 'כהה';
+        label.textContent = 'כהה';
       }
       if (icon) {
-        icon.className = normalized === 'light' ? 'ph-duotone ph-moon' : 'ph-duotone ph-sun-dim';
+        icon.className = 'ph-duotone ph-moon';
       }
     }
     return normalized;
   }
 
   function initDashboardTheme() {
-    let saved = null;
-    try {
-      if (typeof localStorage !== 'undefined' && localStorage) {
-        saved = localStorage.getItem(THEME_STORAGE_KEY);
-      }
-    } catch (e) {}
-    if (saved === 'light' || saved === 'dark') {
-      return applyDashboardTheme(saved);
-    }
-    const prefersLight = (typeof window !== 'undefined' && typeof window.matchMedia === 'function')
-      ? Boolean(window.matchMedia('(prefers-color-scheme: light)')?.matches)
-      : false;
-    return applyDashboardTheme(prefersLight ? 'light' : 'dark');
+    return applyDashboardTheme('dark');
   }
 
   function toggleDashboardTheme() {
-    let current = 'dark';
-    if (typeof document !== 'undefined' && document.documentElement && typeof document.documentElement.getAttribute === 'function') {
-      current = document.documentElement.getAttribute('data-theme') || 'dark';
-    }
-    const next = current === 'light' ? 'dark' : 'light';
-    applyDashboardTheme(next);
-    try {
-      if (typeof localStorage !== 'undefined' && localStorage) {
-        localStorage.setItem(THEME_STORAGE_KEY, next);
-      }
-    } catch (e) {}
-    return next;
+    return applyDashboardTheme('dark');
   }
 
   window.toggleDashboardTheme = toggleDashboardTheme;
