@@ -695,7 +695,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   const appConfig = window.__APP_CONFIG__ || {};
   const SUPABASE_SYNC_CONFIG = {
     url: appConfig.supabase_url || 'https://wvwdxpttwsrdbvvtiyoh.supabase.co',
-    publishableKey: appConfig.supabase_anon_key || 'sb_publishable_U8BEszbgC7i76c1waY5Ceg_7JvCQKZ6',
+    publishableKey: appConfig.supabase_anon_key || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2d2R4cHR0d3NyZGJ2dnRpeW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQyNjA0MTcsImV4cCI6MjEwOTgzNjQxN30.YUun0ttLje3gwWvOU-ACimAtX-xgbUbXhJoELCsx0V4',
     table: 'sync_state',
     rowId: 'default'
   };
