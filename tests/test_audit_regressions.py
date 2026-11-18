@@ -52,12 +52,12 @@ class AuditRegressionTests(unittest.TestCase):
         server.sendmail.assert_called_once()
 
     def test_is_incomplete_run_behavior(self):
-        # 1. Normal run with secondary scraper failures (Indeed/Glassdoor 403) must NOT be marked incomplete
+        # 1. Normal run with secondary connector failures must NOT be marked incomplete
         health = RunHealth(
             linkedin_requests=10, linkedin_successes=10, linkedin_failures=0,
             drushim_requests=5, drushim_successes=5, drushim_failures=0,
-            indeed_requests=1, indeed_failures=1,
-            glassdoor_requests=1, glassdoor_failures=1,
+            greenhouse_requests=1, greenhouse_failures=1,
+            lever_requests=1, lever_failures=1,
             jobs_evaluated=10, pending_evaluations=0,
             final_status='SUCCESS'
         )
@@ -91,8 +91,8 @@ class AuditRegressionTests(unittest.TestCase):
         server = MagicMock()
         health = RunHealth(
             linkedin_requests=5, linkedin_successes=5,
-            indeed_requests=1, indeed_failures=1,
-            glassdoor_requests=1, glassdoor_failures=1,
+            greenhouse_requests=1, greenhouse_failures=1,
+            lever_requests=1, lever_failures=1,
             jobs_evaluated=5, pending_evaluations=0,
             final_status='DEGRADED_NETWORK'
         )

@@ -27,7 +27,6 @@ These rules are loaded into context unconditionally:
 - [critical-thinking-quality.md](.agents/rules/critical-thinking-quality.md): Uncompromising quality floor. Active evaluation of proposals, identification of failure modes, and empirical verification before declaring task completion.
 - [interactive-greeting.md](.agents/rules/interactive-greeting.md): Triggers the 5-capability interactive menu via `ask_question` whenever the user initiates a conversation or greets the assistant.
 - [save-and-sync.md](.agents/rules/save-and-sync.md): Immediate trigger handler for Save & Sync workflow requests.
-- [mcp-denylist.md](.agents/rules/mcp-denylist.md): Enforces strict blocking of unapproved MCP servers (`apify`, `colab-mcp`).
 
 ### 2.2 Model Decision & Contextual Rules (`trigger: model_decision`)
 Loaded dynamically when relevant tool calls or architectural questions are evaluated:

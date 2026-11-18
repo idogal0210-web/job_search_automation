@@ -72,16 +72,6 @@ class RunHealth:
     lever_successes: int = 0
     lever_failures: int = 0
     lever_jobs_found: int = 0
-
-    indeed_requests: int = 0
-    indeed_successes: int = 0
-    indeed_failures: int = 0
-    indeed_jobs_found: int = 0
-
-    glassdoor_requests: int = 0
-    glassdoor_successes: int = 0
-    glassdoor_failures: int = 0
-    glassdoor_jobs_found: int = 0
     
     gemini_attempts: int = 0
     gemini_successes: int = 0
@@ -631,16 +621,6 @@ def fetch_lever_jobs(
         return []
 
 
-def fetch_indeed_jobs(keywords, health_metrics, location="Israel", max_pages=1, session=None):
-    """Decommissioned: Indeed scraper removed due to persistent anti-bot gating."""
-    return []
-
-
-def fetch_glassdoor_jobs(keywords, health_metrics, location="Israel", max_pages=1, session=None):
-    """Decommissioned: Glassdoor scraper removed due to persistent anti-bot gating."""
-    return []
-
-
 class JobFetcher:
     """Base interface for all scrapers and ATS connectors."""
     source_name: str = "generic"
@@ -692,26 +672,6 @@ class LeverFetcher(JobFetcher):
         company_slug = kwargs.get("company_slug") or kwargs.get("company_name", "")
         display_name = kwargs.get("company_display_name", company_slug)
         return fetch_lever_jobs(company_slug, display_name, health_metrics=health_metrics)
-
-
-class IndeedFetcher(JobFetcher):
-    source_name = "Indeed"
-
-    def fetch(self, keywords, health_metrics: RunHealth, **kwargs) -> list:
-        location = kwargs.get("location", "Israel")
-        max_pages = kwargs.get("max_pages", 1)
-        session = kwargs.get("session")
-        return fetch_indeed_jobs(keywords, health_metrics, location=location, max_pages=max_pages, session=session)
-
-
-class GlassdoorFetcher(JobFetcher):
-    source_name = "Glassdoor"
-
-    def fetch(self, keywords, health_metrics: RunHealth, **kwargs) -> list:
-        location = kwargs.get("location", "Israel")
-        max_pages = kwargs.get("max_pages", 1)
-        session = kwargs.get("session")
-        return fetch_glassdoor_jobs(keywords, health_metrics, location=location, max_pages=max_pages, session=session)
 
 
 FETCHERS = {

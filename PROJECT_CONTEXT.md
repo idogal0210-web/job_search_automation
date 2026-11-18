@@ -342,10 +342,6 @@ job_search_automation/
 | **`supabase_mcp`** | Cloud database & sync management: PostgreSQL schema, `public.sync_state` table, RLS policies, security advisors. | When verifying, debugging, or updating cross-device sync state (Mobile/Desktop), table migrations, or advisory checks. | Forbidden in routine scraping runs without database changes; destructive operations (DDL/DML delete) require explicit confirmation. |
 | **`gemini-api-docs`** | Official library documentation: Google Gemini API and SDK references. | Strictly when upgrading `google-genai` SDK code, syntax, or modifying structured JSON output schemas. | Forbidden if connection and schema code is stable and not undergoing syntactic revision. |
 
-### 7.2 Explicit Denylist (Strictly Prohibited)
-- **`apify` (Completely Prohibited):** Heavy, expensive, and redundant. Job discovery and extraction are performed with optimal efficiency via Tavily and Firecrawl.
-- **`colab-mcp` (Completely Prohibited):** Project execution relies solely on local Python virtual environment (`venv`) and GitHub Actions. Remote cloud notebook sessions are forbidden.
-
 ---
 
 ## 8. Next Session Priorities & Backlog (To Remind on Session Start)

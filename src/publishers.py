@@ -52,8 +52,7 @@ def wrap_ltr_tokens(text):
 def is_incomplete_run(health) -> bool:
     """
     Determine if a run should be flagged as partial/incomplete in user notifications.
-    Secondary aggregator scrapers (Indeed/Glassdoor) with expected 403 blocks in cloud runners
-    and minor transient network drops do not mark the entire run as incomplete.
+    Secondary ATS connectors and minor transient network drops do not mark the entire run as incomplete.
     A run is only marked incomplete if:
       - System failure occurred (final_status starts with FAILED_)
       - A primary core source (LinkedIn or Drushim) suffered a complete failure (100% failures)
