@@ -302,6 +302,17 @@
 }
 
 @layer dashboard {
+    /* Main App Container Reset */
+    .dashboard-app {
+      background-color: var(--bg-canvas);
+      background-image: none;
+      color: var(--text-primary);
+    }
+
+    .dashboard-card {
+      background: var(--glass-bg-card);
+    }
+
     /* --- קונטיינר ראשי --- */
     .dashboard-header,
     .dashboard-app .dashboard-sidebar,

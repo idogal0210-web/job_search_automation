@@ -317,6 +317,11 @@ job_search_automation/
 - **Color Contrast Hardening:** Upgraded CTA buttons to high-contrast emerald palettes: `.btn-apply.btn-apply-elegant` (`linear-gradient(135deg, #059669 0%, #047857 100%)`, contrast >= 5.5:1), `.apply-icon-btn` (`#047857`, contrast 8.0:1), and `.studio-url-input-group #btnFetchJobUrl` (`#047857`, contrast >= 5.5:1).
 - **iOS WebKit Auto-Zoom Elimination:** Applied `font-size: 16px !important` across all inputs, textareas, and dropdowns under `@media (pointer: coarse), (max-width: 900px)` to prevent viewport zooming on mobile Safari.
 
+### 6.11 Theme Cascade Consolidation and Retirement of `theme.css` (TASK-61)
+- **Cascade Layer Precedence Fix:** Eliminated legacy unlayered stylesheet `theme.css` which was overriding `@layer base` and `@layer dashboard` via W3C cascade precedence rules.
+- **Immediate Theme Initialization:** Added `data-theme="dark"` directly onto `<html lang="he" dir="rtl" data-theme="dark">` to ensure instant dark-mode token evaluation without waiting for client-side JavaScript execution.
+- **Container Resets:** Reset `.dashboard-app` (`background-color: var(--bg-canvas); background-image: none;`) and `.dashboard-card` (`background: var(--glass-bg-card);`) in `dashboard.css`, ensuring full visual parity across local and deployed environments.
+
 ---
 
 ## 7. MCP Servers Usage Policy & Operational Protocol
