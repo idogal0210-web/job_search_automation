@@ -12,7 +12,7 @@ description: "Tailors Ido Gal's CV or requested cover letter to a specific vacan
 - **Engine & Prompt Assets:**
   - Codebase module: `tools/cv_tailor/` (`src/scraper.py` uses API-first ATS extraction via `src/ats_client.py` for Greenhouse, Lever, Ashby, and Comeet before Firecrawl/BS4 fallback)
   - Structured Prompts: `prompts/cv_analysis_v1.txt` (ATS gap analysis) and `prompts/cv_generation_v1.txt` (factual tailoring)
-  - Career Studio API Bridge: `scripts/studio_bridge.py` (`POST /api/ats/match`, `POST /api/writer/tailor`) validated via Pydantic schemas in `src/gemini_runtime.py`.
+  - Career Studio API Bridge: `scripts/studio_bridge.py` (`GET /api/session`, `GET /api/profile`, `POST /api/ats/analyze`, `POST /api/studio/tailor`, `POST /api/writer/tailor`) protected by `X-Studio-Token` and `src/url_guard.py`, and validated via Pydantic schemas in `src/gemini_runtime.py`.
 
 ## 2. Iron Rules of Factual Integrity
 Follow [realism-rules.md](references/realism-rules.md) and [realism-guidelines.md](references/realism-guidelines.md):
