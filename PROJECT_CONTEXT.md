@@ -311,6 +311,12 @@ job_search_automation/
 - **Contract Standardization:** Standard envelope `{ caller, action, payload }` and response `{ ok, data, error }` enforced across all modules and APIs.
 - **Secrets & Isolation:** Secrets strictly in `.env`, variable thresholds in configuration, and absolute isolation across projects.
 
+### 6.10 Mobile Accessibility, Micro-Typography, and Touch Target Hardening (TASK-60)
+- **Micro-Typography Enhancements:** Scaled up sub-11px labels across dashboard and studio for improved readability: `.stat-cube-label` (11px, line-height: 1.15), `.badge-importance` (11.5px), `.hub-badge` (11.5px), `.q-badge` (11.5px), `.skill-time` (11.5px, `#94a3b8`), `.step-status-pill` and `.step-issues-badge` (0.76rem).
+- **WCAG Touch Targets (2.5.5 / 2.5.8 >= 44x44px):** Expanded hitboxes using `::before` / `::after` on `.icon-button` (::before 44x44px), `.apply-icon-btn` (::before 44x44px), and `.live-preview-action-btn` (::after 44x44px); enforced 40x40px with margin on `#cardsContainer .card-action-icon-btn` on mobile; enforced min-height 44px on `.cloud-pill`, `.interview-btn`, `.writer-preset-btn`, `.writer-icon-btn`, `.q-chip`, `.studio-reset-cv-btn`, and navigation mode switches.
+- **Color Contrast Hardening:** Upgraded CTA buttons to high-contrast emerald palettes: `.btn-apply.btn-apply-elegant` (`linear-gradient(135deg, #059669 0%, #047857 100%)`, contrast >= 5.5:1), `.apply-icon-btn` (`#047857`, contrast 8.0:1), and `.studio-url-input-group #btnFetchJobUrl` (`#047857`, contrast >= 5.5:1).
+- **iOS WebKit Auto-Zoom Elimination:** Applied `font-size: 16px !important` across all inputs, textareas, and dropdowns under `@media (pointer: coarse), (max-width: 900px)` to prevent viewport zooming on mobile Safari.
+
 ---
 
 ## 7. MCP Servers Usage Policy & Operational Protocol
