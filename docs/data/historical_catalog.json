@@ -27022,5 +27022,81 @@
     "is_shifts_24_7": false,
     "is_junior_friendly": false,
     "curated_tags": []
+  },
+  "https://mprest.com/mprest_careers/co/petah-tikva-israel/16.07F/junior-project-manager/all/": {
+    "link": "https://mprest.com/mprest_careers/co/petah-tikva-israel/16.07F/junior-project-manager/all/",
+    "title": "Junior Project Manager – Air Defense Systems",
+    "company": "mPrest",
+    "location": "Petah Tikva, Petah Tikva, Israel",
+    "date": "2026-11-18",
+    "source": "Comeet",
+    "match_score": 95,
+    "base_match_score": 85,
+    "priority_bonus": 10,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "cuas",
+    "company_domain_product": "מערכות שליטה ובקרה להגנה אווירית",
+    "company_summary": "",
+    "job_summary": "ניהול ותיאום פרויקטים טכנולוגיים למערכות הגנה אווירית, מעקב אחר לוחות זמנים, אינטגרציה וניהול ממשקים מרובים.",
+    "company_requirements": "תואר ראשון רלוונטי, 1-3 שנות ניסיון בניהול פרויקטים או רקע צבאי רלוונטי, אנגלית ועברית ברמה גבוהה.",
+    "experience_strengths": "רקע פיקודי מבצעי משמעותי בסיירת נח\"ל, ניסיון באופרציה, בקרה מערכתית ויכולות טכניות מגוונות.",
+    "reasoning": "ניסיון מבצעי טכני ורקע צבאי פיקודי מתאימים מאוד לניהול פרויקטים במערכות שליטה ובקרה.",
+    "key_highlights": "התאמה גבוהה לדרישות הסף כולל רקע צבאי טכנולוגי/מבצעי ויכולת עבודה מול צוותי אינטגרציה.",
+    "salary_range": "14,000 - 19,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: רחפנים, כטב״ם ומערכות C-UAS.",
+    "salary_source_url": "",
+    "p25": 14000,
+    "p75": 19000,
+    "logo": null,
+    "company_logo_url": null,
+    "snippet": "Description: We’re looking for an energetic, resourceful Junior Project Manager to join our air defense programs team. You’ll help deliver mission-critical command-and-control projects from requirements through integration, testing and delivery. You’ll work with engineering, QA, systems and customer teams. The role suits someone who solves problems quickly, cares about the details and keeps the whole mission in view. | Responsibilities: Support the project manager in planning, tracking and running project work plans, milestones and deliverables.\nCoordinate between development, systems engineering, integration, QA and operations teams.\nTrack schedules, resources, risks and dependencies, and flag problems early with a proposed solution.\nPrepare status reports, presentations, and documentation for management and customers.\nHelp manage requirements, change requests and configuration control.\nTake part in integration events, field tests and customer reviews.\nFollow open issues until they’re closed. | Requirements: B.Sc./B.A. in Industrial Engineering & Management, Engineering, Computer Science or a related field.\n1–3 years of experience in project coordination or management, or in a relevant military role.\nExcellent Hebrew and English, both written and spoken.\nStrong skills in MS Office (Excel, PowerPoint, Project).\nEligibility for Israeli security clearance.\nAdvantages\nMilitary service in air defense, C4I, intelligence technology or operational/technical units.\nFamiliarity with defense or software development lifecycles (Agile, Waterfall, systems engineering). | Why Join Us: You’ll work on systems that protect lives.\nYou’ll get hands-on mentorship and a clear path to Project Manager.\nYou’ll join a team of talented, mission-driven people.",
+    "stable_job_id": "ch_b5ad6410a490",
+    "content_hash": "ch_b5ad6410a490",
+    "requirement_assessments": [
+      {
+        "requirement": "1–3 years of experience in project coordination or management, or in a relevant military role.",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "1–3 years of experience in project coordination or management, or in a relevant military role.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Military: Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח\"ל).",
+          "source_field": "Candidate profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש רקע צבאי פיקודי ומבצעי משמעותי התואם את החלופה הנדרשת."
+      },
+      {
+        "requirement": "Military service in air defense, C4I, intelligence technology or operational/technical units.",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "Military service in air defense, C4I, intelligence technology or operational/technical units.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance",
+          "source_field": "Candidate profile"
+        },
+        "assessment": "match",
+        "explanation": "שירות מבצעי קרבי ופיקודי עונה על הדרישה המועדפת ליחידה מבצעית."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": true,
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": true,
+    "curated_tags": [
+      {
+        "type": "tag-junior",
+        "icon": "ph-bold ph-graduation-cap",
+        "label": "Junior"
+      }
+    ]
   }
 }
