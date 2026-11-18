@@ -30,6 +30,7 @@
 job_search_automation/
 ├── main.py                         # Application CLI entrypoint; coordinates fetch, evaluation, storage, and build
 ├── PROJECT_CONTEXT.md              # Single source of truth context anchor for AI agents and developers
+├── DESIGN.md                       # Single source of truth visual style reference (tokens, components, layout, agent prompt guide)
 ├── requirements.txt                # Python package dependencies
 ├── requirements-lock.txt           # Exact pinned dependencies for reproducible builds
 ├── .python-version                 # Target Python runtime anchor (Python 3.11 / 3.9+)

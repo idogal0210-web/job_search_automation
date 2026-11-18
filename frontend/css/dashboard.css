@@ -607,7 +607,7 @@
       white-space: nowrap !important;
     }
     .progress-pct-chip {
-      font-size: 10.5px !important;
+      font-size: 11px !important;
       font-weight: 800 !important;
       color: var(--dashboard-cyan) !important;
       background: rgba(137, 244, 231, 0.12) !important;
@@ -1279,6 +1279,8 @@
       flex-shrink: 0;
     }
     .job-tag-pill.tag-salary {
+      direction: ltr;
+      unicode-bidi: isolate;
       background: rgba(52, 211, 153, 0.12);
       border: 1px solid rgba(52, 211, 153, 0.35);
       color: #6ee7b7;
@@ -1551,6 +1553,20 @@
     .card-action-icon-btn i {
       font-size: 15px;
       line-height: 1;
+    }
+    @media (pointer: coarse) {
+      .job-actions-cluster {
+        gap: 12px;
+      }
+      .card-action-icon-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 44px;
+        min-height: 44px;
+      }
     }
 
     /* Career Studio Icon Button */
@@ -2252,7 +2268,7 @@ border-radius: 999px;
       }
       @media (max-width: 400px) {
         .metric-summary-pill {
-          font-size: 10px !important;
+          font-size: 11px !important;
           padding: 3.5px 1px !important;
           gap: 2px !important;
         }
@@ -3211,7 +3227,7 @@ padding: 0 !important;
       position: absolute;
       top: -5px;
       right: -7px;
-      font-size: 9.5px;
+      font-size: 11px;
       font-weight: 800;
       border-radius: 999px;
       padding: 1px 4.5px;
@@ -3363,7 +3379,7 @@ letter-spacing: 0.2px;
   border: 1px solid rgba(56, 189, 248, 0.3);
 }
 .badge-assessment {
-  font-size: 10.5px;
+  font-size: 11px;
   padding: 2px 7px;
   border-radius: 4px;
   font-weight: 700;
@@ -3787,7 +3803,7 @@ border-radius: 20px;
 }
 
 .studio-drop-formats {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--dashboard-lime);
   margin-top: 4px;
@@ -4776,7 +4792,7 @@ border-radius: 24px;
 }
 
 .ats-badge-trigger {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
   padding: 2px 7px;
   border-radius: 999px;
@@ -5783,7 +5799,7 @@ border-radius: 24px;
 }
 
 .writer-dict-card-cat {
-  font-size: 10.5px;
+  font-size: 11px;
   padding: 2px 7px;
   border-radius: 4px;
   font-weight: 600;
@@ -6319,7 +6335,7 @@ border-radius: 24px;
 }
 
 .factor-name { font-size: 11px; font-weight: 700; color: #f1f5f9; flex: 1; }
-.factor-status.pass { color: #34d399; font-size: 10px; font-weight: 700; }
+.factor-status.pass { color: #34d399; font-size: 11px; font-weight: 700; }
 .factor-text { font-size: 11px; color: #cbd5e1; margin: 0; line-height: 1.4; }
 
 /* LinkedIn Check Rows */
@@ -6384,7 +6400,7 @@ border-radius: 24px;
 }
 
 .skill-tag {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   padding: 2px 7px;
   border-radius: 6px;
@@ -7827,8 +7843,8 @@ dialog.studio-modal-dialog {
 dialog.studio-drawer-dialog {
   margin: 0;
   margin-inline-start: auto;
-  inline-size: min(560px, 100vw);
-  max-inline-size: 100vw;
+  inline-size: min(560px, 100%);
+  max-inline-size: 100%;
   block-size: 100dvh;
   max-block-size: 100dvh;
   border-radius: 0;
@@ -7837,7 +7853,7 @@ dialog.studio-drawer-dialog {
 
 dialog.studio-modal-dialog {
   margin: auto;
-  inline-size: min(760px, calc(100vw - 24px));
+  inline-size: min(760px, calc(100% - 24px));
   max-block-size: calc(100dvh - 32px);
   border-radius: 18px;
 }
@@ -8110,6 +8126,8 @@ overflow: hidden;
 }
 
 .dashboard-app .job-salary-chip {
+  direction: ltr;
+  unicode-bidi: isolate;
   white-space: normal;
   line-height: 1.3;
   text-align: start;
@@ -8140,9 +8158,85 @@ overflow: hidden;
 }
 
 .dashboard-toast {
-  max-inline-size: min(460px, calc(100vw - 32px));
+  max-inline-size: min(460px, calc(100% - 32px));
   border-radius: 14px;
   line-height: 1.45;
+}
+
+/* Semantic Modal Utilities (Duplicates / Inactive / Job Details) */
+.dashboard-modal-box--wide {
+  max-inline-size: 680px;
+}
+
+.modal-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-block-end: 16px;
+  padding-block-end: 12px;
+  border-block-end: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header-lead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-inline-size: 0;
+}
+
+.modal-heading {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.modal-subtitle {
+  color: var(--dashboard-muted);
+}
+
+.modal-close-pill {
+  min-block-size: 36px;
+  padding: 6px 12px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 999px;
+}
+
+.modal-scroll-list {
+  max-block-size: 55dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding-inline-end: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-start: 18px;
+  padding-block-start: 12px;
+  border-block-start: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-icon-squircle.danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+}
+
+.job-modal-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (max-width: 900px) {
+  html {
+    scroll-padding-bottom: calc(56px + 16px + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 @media (max-width: 767px) {

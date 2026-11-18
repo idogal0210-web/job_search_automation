@@ -36,6 +36,7 @@ Loaded dynamically when relevant tool calls or architectural questions are evalu
 ### 2.3 Scoped Glob Rules (`trigger: glob`)
 Activated automatically when working on matched file paths:
 
+- [DESIGN.md](DESIGN.md): Read `DESIGN.md` before changing any UI — single source of truth for colors, typography, spacing, component states, layout rules, and open design consolidation questions.
 - [ui-invariants-symmetry-guard.md](.agents/rules/ui-invariants-symmetry-guard.md): UI invariants, desktop symmetry, dark-mode tokens, and zero synthetic logo rules for HTML/CSS/JS assets (`*.html, *.css, *.js, frontend/**, docs/**, src/ui_builder.py`).
 - [realism-grounding.md](.agents/rules/realism-grounding.md): Enforces 100% candidate realism, locked original job titles, and zero credential fabrication across all tailored CV and cover letter workflows (`.agents/skills/cv-tailor/**, tools/cv_tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**`).
 - [cover-letter-policy.md](.agents/rules/cover-letter-policy.md): Mandates explicit user confirmation before authoring cover letters.

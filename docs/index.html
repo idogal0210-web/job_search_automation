@@ -17,8 +17,8 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" integrity="sha384-pmjIAcz2bAn0xukfxADbZIb3t8oRT9Sv0rvO+BR5Csr6Dhqq+nZs59P0pPKQJkEV" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" integrity="sha384-wgw+aLYNQ7dlhK47ZPK7FRACiq7ROZwgFNg0m04avm4CaXS+Z9Y7nMu8yNjBKYC+" crossorigin="anonymous" referrerpolicy="no-referrer">
   <script defer src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" integrity="sha384-eXVCORTRlv4FUUgS/xmOyr66XBVraen8ATNLMESp92FKXLAMiKkerixTiBvXriZr" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261118235450">
-  <link rel="stylesheet" href="ui-fixes.css?v=20261118235450">
+  <link rel="stylesheet" href="dashboard.css?v=20261119001956">
+  <link rel="stylesheet" href="ui-fixes.css?v=20261119001956">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -40,7 +40,7 @@
         </div>
         <div class="brand-subtitle-row">
           <span class="brand-subtitle profile-subtitle">אנרגיה, גז טבעי ורחפנים</span>
-          <span class="sync-time-chip" id="lastSyncTimeChip" title="מועד סנכרון אחרון">עודכן: 18.11.2026</span>
+          <span class="sync-time-chip" id="lastSyncTimeChip" title="מועד סנכרון אחרון">עודכן: 19.11.2026</span>
         </div>
       </div>
     </div>
@@ -154,7 +154,7 @@
         <span class="dashboard-local">סריקה יומית חכמה • התאמה לפרופיל הנדסאי מכונות, אנרגיה ורחפנים</span>
       </div>
       <div style="display: flex; align-items: center; gap: 10px;">
-        <span>תאריך סריקה: <strong>18.11.2026</strong></span>
+        <span>תאריך סריקה: <strong>19.11.2026</strong></span>
         <span class="dashboard-divider">|</span>
         <span class="dashboard-chip" style="font-size: 11px; padding: 2px 10px;">סריקה יומית</span>
       </div>
@@ -1495,10 +1495,10 @@
 
 
   <!-- Cloud Account Modal -->
-  <dialog id="cloudModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeCloudModal()">
+  <dialog id="cloudModal" class="dashboard-modal-backdrop" aria-labelledby="cloudModalTitle" onclick="if(event.target===this)closeCloudModal()">
     <div class="dashboard-card dashboard-modal-box cloud-modal-box">
       <div id="cloudAuthSignedOut" class="cloud-modal-body">
-        <h3 class="cloud-modal-title">חשבון סנכרון</h3>
+        <h3 id="cloudModalTitle" class="cloud-modal-title">חשבון סנכרון</h3>
         <form class="cloud-modal-body" onsubmit="event.preventDefault(); runCloudAuthAction('signin');">
           <input type="email" id="cloudAuthEmail" class="cloud-input" autocomplete="username" placeholder="אימייל" required>
           <input type="password" id="cloudAuthPassword" class="cloud-input" autocomplete="current-password" placeholder="סיסמה (8 תווים לפחות)" required minlength="8">
@@ -1522,67 +1522,67 @@
   </dialog>
 
   <!-- Duplicates Modal -->
-  <dialog id="duplicatesModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeDuplicatesModal()">
-    <div class="dashboard-card dashboard-modal-box" style="max-width: 680px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <div class="stat-icon-squircle gold">
+  <dialog id="duplicatesModal" class="dashboard-modal-backdrop" aria-labelledby="duplicatesModalTitle" onclick="if(event.target===this)closeDuplicatesModal()">
+    <div class="dashboard-card dashboard-modal-box dashboard-modal-box--wide">
+      <div class="modal-section-header">
+        <div class="modal-header-lead">
+          <div class="stat-icon-squircle gold" aria-hidden="true">
             <i class="ph-duotone ph-copy"></i>
           </div>
           <div>
-            <h3 style="margin: 0; font-size: 18px; font-weight: 600;">בדיקת כפילות משרות</h3>
-            <small style="color: var(--dashboard-muted);">זיהוי משרות זהות או דומות לפי כותרת, מזהה וחברה</small>
+            <h3 id="duplicatesModalTitle" class="modal-heading">בדיקת כפילות משרות</h3>
+            <small class="modal-subtitle">זיהוי משרות זהות או דומות לפי כותרת, מזהה וחברה</small>
           </div>
         </div>
-        <button onclick="closeDuplicatesModal()" class="tool-btn" style="min-height: 36px; padding: 6px 12px; font-size: 16px; cursor: pointer; border-radius: 999px;" aria-label="סגור"><i class="ph-bold ph-x"></i></button>
+        <button type="button" onclick="closeDuplicatesModal()" class="tool-btn modal-close-pill" aria-label="סגור"><i class="ph-bold ph-x" aria-hidden="true"></i></button>
       </div>
 
-      <div id="duplicatesContent" style="max-height: 55vh; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 14px;">
+      <div id="duplicatesContent" class="modal-scroll-list">
         <!-- Filled by JS -->
       </div>
 
-      <div style="display: flex; justify-content: flex-end; margin-top: 18px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
-        <button onclick="closeDuplicatesModal()" class="tool-btn">סגור</button>
+      <div class="modal-footer-actions">
+        <button type="button" onclick="closeDuplicatesModal()" class="tool-btn">סגור</button>
       </div>
     </div>
   </dialog>
 
   <!-- Inactive Jobs Modal -->
-  <dialog id="inactiveJobsModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeInactiveJobsModal()">
-    <div class="dashboard-card dashboard-modal-box" style="max-width: 680px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <div class="stat-icon-squircle" style="background: rgba(239, 68, 68, 0.15); color: #f87171;">
+  <dialog id="inactiveJobsModal" class="dashboard-modal-backdrop" aria-labelledby="inactiveJobsModalTitle" onclick="if(event.target===this)closeInactiveJobsModal()">
+    <div class="dashboard-card dashboard-modal-box dashboard-modal-box--wide">
+      <div class="modal-section-header">
+        <div class="modal-header-lead">
+          <div class="stat-icon-squircle danger" aria-hidden="true">
             <i class="ph-duotone ph-link-break"></i>
           </div>
           <div>
-            <h3 style="margin: 0; font-size: 18px; font-weight: 600;">סריקת משרות לא פעילות</h3>
-            <small style="color: var(--dashboard-muted);">זיהוי משרות שנסגרו, הוסרו או שהגשת קורות החיים אליהן הסתיימה</small>
+            <h3 id="inactiveJobsModalTitle" class="modal-heading">סריקת משרות לא פעילות</h3>
+            <small class="modal-subtitle">זיהוי משרות שנסגרו, הוסרו או שהגשת קורות החיים אליהן הסתיימה</small>
           </div>
         </div>
-        <button onclick="closeInactiveJobsModal()" class="tool-btn" style="min-height: 36px; padding: 6px 12px; font-size: 16px; cursor: pointer; border-radius: 999px;" aria-label="סגור"><i class="ph-bold ph-x"></i></button>
+        <button type="button" onclick="closeInactiveJobsModal()" class="tool-btn modal-close-pill" aria-label="סגור"><i class="ph-bold ph-x" aria-hidden="true"></i></button>
       </div>
 
-      <div id="inactiveJobsContent" style="max-height: 55vh; overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 14px;">
+      <div id="inactiveJobsContent" class="modal-scroll-list">
         <!-- Populated dynamically -->
       </div>
 
-      <div style="display: flex; justify-content: flex-end; margin-top: 18px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
-        <button onclick="closeInactiveJobsModal()" class="tool-btn">סגור</button>
+      <div class="modal-footer-actions">
+        <button type="button" onclick="closeInactiveJobsModal()" class="tool-btn">סגור</button>
       </div>
     </div>
   </dialog>
 
   <!-- Job Details Modal -->
-  <dialog id="jobDetailsModal" class="dashboard-modal-backdrop" onclick="if(event.target===this)closeJobModal()">
+  <dialog id="jobDetailsModal" class="dashboard-modal-backdrop" aria-label="פרטי משרה" onclick="if(event.target===this)closeJobModal()">
     <div class="dashboard-card dashboard-modal-box job-details-modal-box" id="jobModalBox">
       <!-- Modal Header Bar -->
       <div class="job-modal-header-bar">
         <button type="button" onclick="closeJobModal()" class="job-modal-close-btn" title="סגור וחזור לרשימת המשרות">
-          <i class="ph-bold ph-arrow-right"></i>
+          <i class="ph-bold ph-arrow-right" aria-hidden="true"></i>
           <span>חזור למשרות</span>
         </button>
-        <div id="jobModalTopActions" style="display: flex; align-items: center; gap: 8px;">
+        <div id="jobModalTopActions" class="job-modal-top-actions">
           <!-- Dynamically populated: Star button and Match score badge -->
         </div>
       </div>
@@ -1616,16 +1616,16 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261118235450",
+      build_id: "20261119001956",
       schema_version: "2.0.0",
-      generated_at: "18.11.2026",
+      generated_at: "19.11.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261118235450",
-      catalog_data_url: "data/historical_catalog.json?v=20261118235450",
+      jobs_data_url: "data/jobs.json?v=20261119001956",
+      catalog_data_url: "data/historical_catalog.json?v=20261119001956",
       supabase_url: "https://wvwdxpttwsrdbvvtiyoh.supabase.co",
       supabase_anon_key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2d2R4cHR0d3NyZGJ2dnRpeW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQyNjA0MTcsImV4cCI6MjEwOTgzNjQxN30.YUun0ttLje3gwWvOU-ACimAtX-xgbUbXhJoELCsx0V4"
     };
   </script>
-  <script src="dashboard.js?v=20261118235450" defer></script>
+  <script src="dashboard.js?v=20261119001956" defer></script>
 </body>
 </html>
