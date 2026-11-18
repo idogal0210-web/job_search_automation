@@ -852,8 +852,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const pw = document.getElementById('cloudAuthPassword');
       if (pw) pw.value = '';
       updateCloudAuthModalUI();
-      await fetchCloudSync(false);
-      await pushCloudSync();
+      await fetchCloudSync(true);
       closeCloudModal();
     } catch (e) {
       setCloudAuthMessage('שגיאת רשת. נסה שוב.', 'error');
