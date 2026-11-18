@@ -1,14 +1,20 @@
 import os
+import sys
 import json
 import re
 import shutil
 from datetime import datetime, timedelta
+
+# Ensure repo root is on sys.path for direct script execution (python3 src/ui_builder.py)
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+
 from src.state_manager import save_state_atomic, load_state
 from src.job_policy import extract_curated_tags
 from src.url_utils import stable_job_id, content_job_hash
 
 # Load HTML template from frontend/templates/index.html
-ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_PATH = os.path.join(ROOT_DIR, "frontend", "templates", "index.html")
 
 if os.path.exists(TEMPLATE_PATH):
@@ -442,3 +448,8 @@ def sync_frontend_to_docs(project_root=ROOT_DIR):
     with open(out_file, "w", encoding="utf-8") as f:
         f.write(html_out)
     return out_file
+
+
+if __name__ == "__main__":
+    sync_frontend_to_docs()
+    print("[OK] Synchronized frontend/ to docs/ successfully.")
