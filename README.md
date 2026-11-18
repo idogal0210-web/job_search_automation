@@ -43,6 +43,8 @@ job_search_automation/
 │   ├── url_utils.py                # סניטיזציה, אימות ונרמול כתובות URL
 │   └── publishers.py               # הפקת דוח דוא"ל מעוצב (RTL) ושליחה אוטומטית למשרות נבחרות
 ├── docs/                           # אפליקציית Web אינטראקטיבית ב-GitHub Pages
+│   ├── PRD.md                      # מסמך אפיון מובנה של 37 הסעיפים התקניים (Single Source of Truth לדרישות ולקוד)
+│   ├── decisions/                  # יומן החלטות ארכיטקטורה ומוצר (Architecture Decision Records)
 │   ├── index.html                  # שלד האפליקציה המשרת את GitHub Pages
 │   ├── dashboard.css               # סגנונות הדשבורד וסטודיו קריירה
 │   ├── dashboard.js                # לוגיקת האפליקציה המאוחדת

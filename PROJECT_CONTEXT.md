@@ -73,6 +73,9 @@ job_search_automation/
 │   ├── url_utils.py                # URL validation, normalization, and sanitization
 │   └── publishers.py               # Email dispatch and notification services
 ├── docs/
+│   ├── PRD.md                      # מסמך אפיון מובנה של 37 הסעיפים התקניים (Single Source of Truth לדרישות ולקוד)
+│   ├── decisions/                  # יומן החלטות ארכיטקטורה ומוצר (Architecture Decision Records)
+│   │   └── template-decision.md    # תבנית מסמך החלטה מאושרת לפי פרוטוקול ההחלטות
 │   ├── index.html                  # Lightweight production SPA shell (~31KB) hosted on GitHub Pages
 │   ├── dashboard.css               # Compiled dashboard styles
 │   ├── ui-fixes.css                # Specialized UI/BiDi/dark-mode fixes stylesheet
@@ -301,6 +304,12 @@ job_search_automation/
 - **Focus & A11y Standards (WCAG 2.4.7 / 2.4.11):** High-contrast `:focus-visible` outlines (2px solid with outline-offset) restored across `.stat-box`, `.stat-cube-btn`, `.controls-inputs-stack select/input`, `.form-input/select/textarea`, and Studio inputs (`.studio-text-input`, `.ats-textarea`, `.studio-clarification-input`).
 - **Layout Coordination & Padding Leak Isolation:** Resolved 32px squashed icon on `.card-action-icon-btn.btn-toggle-details` by isolating `padding: 0 !important` and explicit 32px box constraints; eliminated sticky overlap by configuring `.studio-sticky-preview-col` with `calc(var(--sticky-bar-h, 56px) + 16px)` top offset; removed dead flex container queries on `.studio-package-workbench`.
 - **Touch & Tooltip Polishing:** Wrapped all desktop hover states (`.cloud-pill`, `.ats-subtab-btn`, `.studio-guided-nav-btn`, `.live-preview-editable-text`, `.apply-icon-btn`, `#btnFetchJobUrl`, `.job-key-requirements`) in `@media (hover: hover)` preventing sticky hover on touch devices; added keyboard `:focus-visible` support to floating action tooltips; added `background-attachment: scroll` for mobile/touch.
+
+### 6.9 PRD Build Protocol & Numbered Requirements Architecture (TASK-59)
+- **Single Source of Truth (`docs/PRD.md`):** Complete standard 37-section PRD anchored to actual project systems and pipelines. Every feature, refactor, or automation must trace directly to a numbered requirement (`REQ-01` through `REQ-15`). Code without an explicit requirement is never written.
+- **Decision Architecture (`docs/decisions/`):** All major architectural shifts, module divisions, or provider replacements require a documented Architecture Decision Record (`docs/decisions/DEC-XXX.md`) created from `template-decision.md` before implementation.
+- **Contract Standardization:** Standard envelope `{ caller, action, payload }` and response `{ ok, data, error }` enforced across all modules and APIs.
+- **Secrets & Isolation:** Secrets strictly in `.env`, variable thresholds in configuration, and absolute isolation across projects.
 
 ---
 
