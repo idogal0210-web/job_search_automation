@@ -266,9 +266,17 @@
     text-align: right;
     font-family: var(--font-ui);
     background-color: var(--bg-canvas);
-    background-image: none;
+    background-image:
+      radial-gradient(circle at 12% 14%, rgba(31, 78, 121, 0.22) 0%, transparent 40%),
+      radial-gradient(circle at 88% 18%, rgba(79, 70, 229, 0.16) 0%, transparent 35%),
+      radial-gradient(circle at 50% 82%, rgba(16, 185, 129, 0.12) 0%, transparent 45%),
+      radial-gradient(circle at 82% 86%, rgba(56, 189, 248, 0.14) 0%, transparent 35%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
     color: var(--text-primary);
     min-height: 100vh;
+    min-height: 100dvh;
   }
 
   @media (pointer: coarse), (max-width: 900px) {
@@ -302,17 +310,6 @@
 }
 
 @layer dashboard {
-    /* Main App Container Reset */
-    .dashboard-app {
-      background-color: var(--bg-canvas);
-      background-image: none;
-      color: var(--text-primary);
-    }
-
-    .dashboard-card {
-      background: var(--glass-bg-card);
-    }
-
     /* --- קונטיינר ראשי --- */
     .dashboard-header,
     .dashboard-app .dashboard-sidebar,
@@ -322,12 +319,12 @@
       justify-content: space-between; /* פיזור 3 האזורים: ימין, אמצע, שמאל */
       align-items: center; /* יישור כל האלמנטים לאמצע הציר האנכי */
       padding: 12px 24px;
-      background: #131722;
-      border: 1px solid rgba(255, 255, 255, 0.03);
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
-      border-radius: 12px;
+      background: rgba(22, 28, 36, 0.82);
+      border-radius: var(--radius-card, 16px);
       gap: 20px;
       min-height: 80px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       box-sizing: border-box;
       position: relative;
     }
@@ -732,12 +729,12 @@
       margin: 0 !important;
     }
     .stat-cube-label {
-      font-size: 11px !important;
+      font-size: 9px !important;
       font-weight: 600 !important;
       color: rgba(255, 255, 255, 0.75) !important;
       white-space: nowrap !important;
-      line-height: 1.15 !important;
-      letter-spacing: -0.1px !important;
+      line-height: 1 !important;
+      letter-spacing: -0.2px !important;
     }
 
     /* Stats Overview Grid (2 Cards: Search/Filters & Sector Chart) */
@@ -1065,28 +1062,28 @@
       flex-direction: column;
       justify-content: flex-start;
       gap: 7px;
+      border-radius: var(--radius-card, 16px);
       padding: 13px 15px;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
       position: relative;
+      background: var(--glass-bg-card, rgba(27, 33, 42, 0.72));
+      border: 1px solid var(--dashboard-edge, rgba(255, 255, 255, 0.12));
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.10);
       height: 100%;
       box-sizing: border-box;
       contain: layout style;
-      background: var(--glass-bg-card);
-      border: var(--glass-border);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.02);
-      border-radius: 16px;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .job-card:nth-child(n+7) {
       content-visibility: auto;
       contain-intrinsic-size: auto 340px;
     }
     @media (hover: hover) {
-      .job-card:hover {
-        border-color: rgba(167, 139, 250, 0.4);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-      }
+  .job-card:hover {
+      border-color: rgba(255, 255, 255, 0.28);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.38), inset 0 1px 1px rgba(255, 255, 255, 0.16);
     }
+}
     .job-card-topbar {
       display: flex;
       flex-direction: column;
@@ -1546,9 +1543,9 @@
       cursor: pointer;
       box-sizing: border-box;
       font-size: 15px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      color: var(--text-secondary);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      color: #e2e8df;
       transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
     .card-action-icon-btn i {
@@ -1558,9 +1555,9 @@
 
     /* Career Studio Icon Button */
     .card-action-icon-btn.btn-open-in-studio {
-      background: rgba(139, 92, 246, 0.1);
-      border-color: rgba(139, 92, 246, 0.2);
-      color: #a78bfa;
+      border-color: rgba(56, 189, 248, 0.38);
+      background: rgba(14, 165, 233, 0.14);
+      color: #38bdf8;
     }
     @media (hover: hover) {
       .card-action-icon-btn.btn-open-in-studio:hover {
@@ -1705,27 +1702,27 @@
       padding: 8px 18px;
       font-size: 13.5px;
       font-weight: 700;
-      background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-      border: 1px solid rgba(167, 139, 250, 0.5);
-      box-shadow: 0 2px 12px rgba(124, 58, 237, 0.25);
-      color: #ffffff !important;
-      border-radius: 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      border: 1px solid rgba(52, 211, 153, 0.45);
+      box-shadow: 0 2px 10px rgba(4, 120, 87, 0.28);
       transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease, transform 150ms ease, opacity 150ms ease;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       text-decoration: none;
+      color: #ffffff !important;
     }
     @media (hover: hover) {
-      .btn-apply.btn-apply-elegant:hover,
-      .dashboard-app a.btn-apply.btn-apply-elegant:hover {
-        background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
-        border-color: rgba(167, 139, 250, 0.7);
-        box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
-        transform: translateY(-2px);
-      }
+  .btn-apply.btn-apply-elegant:hover,
+    .dashboard-app a.btn-apply.btn-apply-elegant:hover {
+      background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+      border-color: rgba(52, 211, 153, 0.7);
+      box-shadow: 0 4px 16px rgba(4, 120, 87, 0.42);
+      transform: translateY(-2px);
     }
+}
 
     /* Bottom row: Compact icon button for job application with SVG plane */
     .apply-icon-btn,
@@ -1742,6 +1739,9 @@
       flex-shrink: 0;
       text-decoration: none;
       border: none;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
     }
     .apply-icon-btn::before,
     .dashboard-app a.apply-icon-btn::before {
@@ -1752,10 +1752,6 @@
       transform: translate(-50%, -50%);
       min-width: 44px;
       min-height: 44px;
-    }
-      cursor: pointer;
-      box-sizing: border-box;
-      transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
     }
     .apply-icon-btn svg {
       width: 18px;
@@ -3517,16 +3513,15 @@ letter-spacing: 0.2px;
 /* כפתור פעיל (לוח משרות) */
 .nav-btn.active,
 .mode-switch-btn.active {
-  background: rgba(255, 255, 255, 0.08) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: none !important;
+  background: rgba(127, 178, 229, 0.18) !important;
+  border: 1px solid rgba(127, 178, 229, 0.45) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
   color: #ffffff !important;
-  border-radius: 8px !important;
 }
 
 .nav-btn.active i,
 .mode-switch-btn.active i {
-  color: #ffffff !important;
+  color: var(--accent-primary) !important;
 }
 
 .nav-btn:focus-visible,
@@ -6561,12 +6556,12 @@ border-radius: 24px;
     justify-content: space-between !important;
     align-items: center !important;
     padding: 10px 20px !important;
-    background: #131722 !important;
-    border-radius: 12px !important;
-    border: 1px solid rgba(255, 255, 255, 0.03) !important;
+    background: rgba(22, 28, 36, 0.82) !important;
+    border-radius: var(--radius-card, 16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
     gap: 12px !important;
     min-height: 70px !important;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.14) !important;
     box-sizing: border-box !important;
   }
   .header-section-right {
@@ -8779,4 +8774,36 @@ overflow: hidden;
   color-scheme: light;
 }
 
+}
+
+/* Targeted Deep-Purple Theme Overrides (unlayered to apply cleanly over theme.css without altering structure) */
+html:has(.dashboard-app),
+body:has(.dashboard-app),
+body {
+  background-color: var(--bg-canvas) !important;
+  background-image: none !important;
+}
+
+.dashboard-app {
+  background-color: transparent !important;
+  background-image: none !important;
+  --dashboard-text: var(--text-primary);
+  --dashboard-muted: var(--text-secondary);
+  --dashboard-cyan: #a78bfa;
+  --dashboard-edge: rgba(255, 255, 255, 0.05);
+  --dashboard-glass: var(--glass-bg-card);
+  --dashboard-shadow: var(--shadow-glass-md);
+}
+
+.btn-apply.btn-apply-elegant,
+.dashboard-app a.btn-apply.btn-apply-elegant {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+  border-color: rgba(167, 139, 250, 0.5) !important;
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.25) !important;
+}
+
+.card-action-icon-btn.btn-open-in-studio {
+  background: rgba(139, 92, 246, 0.1) !important;
+  border-color: rgba(139, 92, 246, 0.2) !important;
+  color: #a78bfa !important;
 }

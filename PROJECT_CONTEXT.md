@@ -322,6 +322,11 @@ job_search_automation/
 - **Immediate Theme Initialization:** Added `data-theme="dark"` directly onto `<html lang="he" dir="rtl" data-theme="dark">` to ensure instant dark-mode token evaluation without waiting for client-side JavaScript execution.
 - **Container Resets:** Reset `.dashboard-app` (`background-color: var(--bg-canvas); background-image: none;`) and `.dashboard-card` (`background: var(--glass-bg-card);`) in `dashboard.css`, ensuring full visual parity across local and deployed environments.
 
+### 6.12 Structural CSS Recovery & Safe Deep-Purple Theme Overrides (TASK-62)
+- **CSS Brace & Layer Recovery:** Fixed the premature closing brace in `.apply-icon-btn` that had previously caused Blink to discard all 674 rules of `@layer studio` (`.studio-master-split`, `.ats-gauge-svg`, desktop `.dashboard-header` overrides), restoring exact `depth=0` balance.
+- **Layered `docs/theme.css` Baseline:** Restored `docs/theme.css` (preserving `.dashboard-app` padding, `.dashboard-main` centering, `.dashboard-topbar`, `.dashboard-two-col`, and filter grids) and wrapped its rules inside `@layer base` (after `@layer base, dashboard, studio;`), preventing unlayered overrides of `.ats-gauge-svg` (`58x58`) and Studio controls while preserving layout geometry.
+- **Header Cube & Theme Overrides:** Restored desktop `.stat-cube-label` to `9px` inside `68px` cubes (retaining `11px` on mobile), updated `:root[data-theme="dark"]` with deep-purple tokens (`#0b0e14`, `#131722`, `#8b5cf6`, `#a78bfa`), and appended targeted unlayered overrides at the end of `dashboard.css` for clean canvas background (`background-image: none !important`), `.btn-apply-elegant`, and `.btn-open-in-studio`.
+
 ---
 
 ## 7. MCP Servers Usage Policy & Operational Protocol
