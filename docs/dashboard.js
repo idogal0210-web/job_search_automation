@@ -1134,13 +1134,20 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           cloudLastUpdated = remoteTimestamp;
         }
 
+        const lastLocalVersion = Number(localStorage.getItem('ido_job_last_cloud_version') || 0);
+        const remoteVersion = typeof data.version === 'number' ? data.version : 0;
+        const isNewRemoteVersion = (remoteVersion > 0 && remoteVersion > lastLocalVersion);
+
         const lastLocalEdit = Number(localStorage.getItem(LAST_LOCAL_EDIT_KEY) || 0);
         const storedTriage = localStorage.getItem(STORAGE_KEY);
         const storedStarred = localStorage.getItem(STARRED_STORAGE_KEY);
         const isClientVirgin = (lastLocalEdit === 0) && (!storedTriage || storedTriage === '{}') && (!storedStarred || storedStarred === '{}');
-        const shouldMirrorFromRemote = forceMirror || isClientVirgin || (remoteTimestamp > (lastLocalEdit + 500));
+        const shouldMirrorFromRemote = forceMirror || isClientVirgin || isNewRemoteVersion || (remoteTimestamp > (lastLocalEdit + 500));
 
         if (shouldMirrorFromRemote) {
+          if (remoteVersion > 0) {
+            localStorage.setItem('ido_job_last_cloud_version', String(remoteVersion));
+          }
           const newJobStates = {};
           if (Array.isArray(data.purged)) {
             data.purged.forEach(link => {
@@ -1186,12 +1193,35 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           renderCards();
           updateUI();
         } else {
+          if (remoteVersion > 0) {
+            localStorage.setItem('ido_job_last_cloud_version', String(remoteVersion));
+          }
           // Device has existing local edits: reconcile safely without overwriting user choices
           let changed = false;
           const unstarredMap = loadUnstarredJobs();
           const restoredMap = loadRestoredJobs();
 
           if (Array.isArray(data.purged)) {
+            const remotePurgedSet = new Set(data.purged);
+            data.purged.forEach(link => {
+              const c = getCanonicalJobKey(link);
+              if (c) remotePurgedSet.add(c);
+            });
+
+            // Reconcile un-purged jobs: if a job was marked 'purged' locally,
+            // but is no longer present in the authoritative remote purged list,
+            // remove it from local jobStates so it correctly resurfaces as active/new!
+            Object.keys(jobStates).forEach(link => {
+              if (jobStates[link] === 'purged') {
+                const c = getCanonicalJobKey(link);
+                const stillPurged = remotePurgedSet.has(link) || (c && remotePurgedSet.has(c));
+                if (!stillPurged) {
+                  delete jobStates[link];
+                  changed = true;
+                }
+              }
+            });
+
             data.purged.forEach(link => {
               const c = getCanonicalJobKey(link);
               if (!restoredMap[link] && !restoredMap[c] && jobStates[link] !== 'saved' && jobStates[c] !== 'saved') {
