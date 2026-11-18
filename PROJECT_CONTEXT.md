@@ -327,6 +327,12 @@ job_search_automation/
 - **Layered `docs/theme.css` Baseline:** Restored `docs/theme.css` (preserving `.dashboard-app` padding, `.dashboard-main` centering, `.dashboard-topbar`, `.dashboard-two-col`, and filter grids) and wrapped its rules inside `@layer base` (after `@layer base, dashboard, studio;`), preventing unlayered overrides of `.ats-gauge-svg` (`58x58`) and Studio controls while preserving layout geometry.
 - **Header Cube & Theme Overrides:** Restored desktop `.stat-cube-label` to `9px` inside `68px` cubes (retaining `11px` on mobile), updated `:root[data-theme="dark"]` with deep-purple tokens (`#0b0e14`, `#131722`, `#8b5cf6`, `#a78bfa`), and appended targeted unlayered overrides at the end of `dashboard.css` for clean canvas background (`background-image: none !important`), `.btn-apply-elegant`, and `.btn-open-in-studio`.
 
+### 6.13 Permanent Job Purge Resilience & Cloud Sync Tombstone Architecture (TASK-68)
+- **Excised Premature Un-Purging in Background Sync:** Removed aggressive logic in `fetchCloudSync` that previously purged local `purged` status when a job was not yet present in the remote `data.purged` array, eliminating the race condition where local purges were wiped before the remote CAS write completed.
+- **Persistent Tombstone Tracking (`purgedMap`):** Introduced `ido_job_purged_keys` in `localStorage` backed by `loadPurgedJobs()` and `savePurgedJobs()`. Applied across single-job permanent deletion (`purgeJobPermanently`), bulk deletion (`clearAllRejected`), and triage toggling (`toggleAction`), mirroring the architectural pattern of `loadRestoredJobs()`.
+- **Remote Resurrection Protection:** Hardened both `shouldMirrorFromRemote` and standard incremental reconciliation to cross-check `purgedMap` before adding jobs to `rejected`, `saved`, or `starred`, strictly preventing stale cloud records from reviving purged jobs.
+- **Atomic CAS Cloud Partitioning:** Enhanced `pushCloudSync` to build `purgedSet` across local states and `purgedMap`, strictly excluding purged identifiers from `payload.rejected`, `payload.saved`, and `payload.starred` prior to transmission to Supabase.
+
 ---
 
 ## 7. MCP Servers Usage Policy & Operational Protocol

@@ -362,6 +362,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   const UNSTARRED_STORAGE_KEY = 'ido_job_unstarred_keys';
   const RESTORED_STORAGE_KEY = 'ido_job_restored_keys';
+  const PURGED_STORAGE_KEY = 'ido_job_purged_keys';
 
   function loadUnstarredJobs() {
     try {
@@ -388,6 +389,20 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   function saveRestoredJobs(map) {
     try {
       localStorage.setItem(RESTORED_STORAGE_KEY, JSON.stringify(map || {}));
+    } catch (e) {}
+  }
+
+  function loadPurgedJobs() {
+    try {
+      const stored = localStorage.getItem(PURGED_STORAGE_KEY);
+      if (stored) return JSON.parse(stored) || {};
+    } catch (e) {}
+    return {};
+  }
+
+  function savePurgedJobs(map) {
+    try {
+      localStorage.setItem(PURGED_STORAGE_KEY, JSON.stringify(map || {}));
     } catch (e) {}
   }
 
@@ -677,6 +692,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         Object.assign(state, userState);
       }
     } catch (e) {}
+
+    const purgedMap = loadPurgedJobs();
+    Object.keys(purgedMap).forEach(key => {
+      if (purgedMap[key]) {
+        state[key] = 'purged';
+      }
+    });
 
     // Deduplicate / canonicalize pure numeric IDs to full URLs
     Object.keys(state).forEach(key => {
@@ -1147,6 +1169,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           if (remoteVersion > 0) {
             localStorage.setItem('ido_job_last_cloud_version', String(remoteVersion));
           }
+          const restoredMap = loadRestoredJobs();
+          const purgedMap = loadPurgedJobs();
           const newJobStates = {};
           if (Array.isArray(data.purged)) {
             data.purged.forEach(link => {
@@ -1155,32 +1179,48 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
               if (c) newJobStates[c] = 'purged';
             });
           }
+          // Preserve locally purged tombstones so remote mirror does not un-purge freshly purged jobs
+          Object.keys(purgedMap).forEach(link => {
+            newJobStates[link] = 'purged';
+            const c = getCanonicalJobKey(link);
+            if (c) newJobStates[c] = 'purged';
+          });
           if (Array.isArray(data.saved)) {
             data.saved.forEach(link => {
-              newJobStates[link] = 'saved';
               const c = getCanonicalJobKey(link);
-              if (c) newJobStates[c] = 'saved';
+              const isPurged = Boolean(newJobStates[link] === 'purged' || (c && newJobStates[c] === 'purged') || purgedMap[link] || (c && purgedMap[c]));
+              if (!isPurged) {
+                newJobStates[link] = 'saved';
+                if (c) newJobStates[c] = 'saved';
+              }
             });
           }
           if (Array.isArray(data.rejected)) {
             data.rejected.forEach(link => {
-              newJobStates[link] = 'rejected';
               const c = getCanonicalJobKey(link);
-              if (c) newJobStates[c] = 'rejected';
+              const isPurged = Boolean(newJobStates[link] === 'purged' || (c && newJobStates[c] === 'purged') || purgedMap[link] || (c && purgedMap[c]));
+              const isRestored = Boolean(restoredMap[link] || (c && restoredMap[c]));
+              if (!isPurged && !isRestored) {
+                newJobStates[link] = 'rejected';
+                if (c) newJobStates[c] = 'rejected';
+              }
             });
           }
           const newStarredJobs = {};
           if (Array.isArray(data.starred)) {
             data.starred.forEach(link => {
-              newStarredJobs[link] = true;
               const c = getCanonicalJobKey(link);
-              if (c) newStarredJobs[c] = true;
+              const isPurged = Boolean(newJobStates[link] === 'purged' || (c && newJobStates[c] === 'purged') || purgedMap[link] || (c && purgedMap[c]));
+              if (!isPurged) {
+                newStarredJobs[link] = true;
+                if (c) newStarredJobs[c] = true;
+              }
             });
           }
           // Clean up conflicting starred states (rejection/purged trumps starred)
           Object.keys(newStarredJobs).forEach(link => {
             const c = getCanonicalJobKey(link);
-            if (newJobStates[link] === 'purged' || newJobStates[link] === 'rejected' || newJobStates[c] === 'purged' || newJobStates[c] === 'rejected') {
+            if (newJobStates[link] === 'purged' || newJobStates[link] === 'rejected' || (c && (newJobStates[c] === 'purged' || newJobStates[c] === 'rejected'))) {
               delete newStarredJobs[link];
               if (c) delete newStarredJobs[c];
             }
@@ -1199,28 +1239,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           let changed = false;
           const unstarredMap = loadUnstarredJobs();
           const restoredMap = loadRestoredJobs();
+          const purgedMap = loadPurgedJobs();
 
           if (Array.isArray(data.purged)) {
-            const remotePurgedSet = new Set(data.purged);
-            data.purged.forEach(link => {
-              const c = getCanonicalJobKey(link);
-              if (c) remotePurgedSet.add(c);
-            });
-
-            // Reconcile un-purged jobs: if a job was marked 'purged' locally,
-            // but is no longer present in the authoritative remote purged list,
-            // remove it from local jobStates so it correctly resurfaces as active/new!
-            Object.keys(jobStates).forEach(link => {
-              if (jobStates[link] === 'purged') {
-                const c = getCanonicalJobKey(link);
-                const stillPurged = remotePurgedSet.has(link) || (c && remotePurgedSet.has(c));
-                if (!stillPurged) {
-                  delete jobStates[link];
-                  changed = true;
-                }
-              }
-            });
-
             data.purged.forEach(link => {
               const c = getCanonicalJobKey(link);
               if (!restoredMap[link] && !restoredMap[c] && jobStates[link] !== 'saved' && jobStates[c] !== 'saved') {
@@ -1232,10 +1253,25 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
               }
             });
           }
+
+          // Apply local purged tombstones to ensure local purges are never lost
+          Object.keys(purgedMap).forEach(link => {
+            const c = getCanonicalJobKey(link);
+            if (jobStates[link] !== 'purged') {
+              jobStates[link] = 'purged';
+              changed = true;
+            }
+            if (c && jobStates[c] !== 'purged') {
+              jobStates[c] = 'purged';
+              changed = true;
+            }
+          });
+
           if (Array.isArray(data.rejected)) {
             data.rejected.forEach(link => {
               const c = getCanonicalJobKey(link);
-              if (!restoredMap[link] && !restoredMap[c] && (!jobStates[link] || jobStates[link] === 'pending')) {
+              const isPurged = Boolean(purgedMap[link] || (c && purgedMap[c]) || jobStates[link] === 'purged' || (c && jobStates[c] === 'purged'));
+              if (!isPurged && !restoredMap[link] && !restoredMap[c] && (!jobStates[link] || jobStates[link] === 'pending')) {
                 jobStates[link] = 'rejected';
                 if (c) jobStates[c] = 'rejected';
                 changed = true;
@@ -1245,7 +1281,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           if (Array.isArray(data.saved)) {
             data.saved.forEach(link => {
               const c = getCanonicalJobKey(link);
-              if (!jobStates[link] && !jobStates[c]) {
+              const isPurged = Boolean(purgedMap[link] || (c && purgedMap[c]) || jobStates[link] === 'purged' || (c && jobStates[c] === 'purged'));
+              if (!isPurged && !jobStates[link] && !jobStates[c]) {
                 jobStates[link] = 'saved';
                 if (c) jobStates[c] = 'saved';
                 changed = true;
@@ -1255,8 +1292,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           if (Array.isArray(data.starred)) {
             data.starred.forEach(link => {
               const c = getCanonicalJobKey(link);
-              if (!unstarredMap[link] && !unstarredMap[c] && !starredJobs[link] && !starredJobs[c]) {
-                if (jobStates[link] !== 'purged' && jobStates[link] !== 'rejected' && jobStates[c] !== 'purged' && jobStates[c] !== 'rejected') {
+              const isPurged = Boolean(purgedMap[link] || (c && purgedMap[c]) || jobStates[link] === 'purged' || (c && jobStates[c] === 'purged'));
+              if (!isPurged && !unstarredMap[link] && !unstarredMap[c] && !starredJobs[link] && !starredJobs[c]) {
+                if (jobStates[link] !== 'purged' && jobStates[link] !== 'rejected' && (!c || (jobStates[c] !== 'purged' && jobStates[c] !== 'rejected'))) {
                   starredJobs[link] = true;
                   if (c) starredJobs[c] = true;
                   changed = true;
@@ -1297,10 +1335,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     setCloudSyncStatus('syncing');
 
     try {
-      const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !Boolean(starredJobs[id]));
-      const starredList = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id]));
-      const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected' && !Boolean(starredJobs[id]));
-      const purgedList = Object.keys(jobStates).filter(id => jobStates[id] === 'purged' && !Boolean(starredJobs[id]));
+      const purgedMap = loadPurgedJobs();
+      const purgedSet = new Set(Object.keys(jobStates).filter(id => jobStates[id] === 'purged' && !Boolean(starredJobs[id])));
+      Object.keys(purgedMap).forEach(k => {
+        if (!Boolean(starredJobs[k])) purgedSet.add(k);
+      });
+      const purgedList = Array.from(purgedSet);
+      const rejectedList = Object.keys(jobStates).filter(id => jobStates[id] === 'rejected' && !Boolean(starredJobs[id]) && !purgedSet.has(id));
+      const savedList = Object.keys(jobStates).filter(id => jobStates[id] === 'saved' && !Boolean(starredJobs[id]) && !purgedSet.has(id));
+      const starredList = Object.keys(starredJobs).filter(id => Boolean(starredJobs[id]) && !purgedSet.has(id));
       
       const timestamp = new Date().toISOString();
       const payload = {
@@ -3100,14 +3143,29 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       saveStarredJobs(starredJobs);
 
       if (current === 'rejected') {
+        const purgedMap = loadPurgedJobs();
         keys.forEach(k => {
           jobStates[k] = 'purged';
+          purgedMap[k] = true;
         });
+        savePurgedJobs(purgedMap);
         showToast('ph-trash', 'המשרה נמחקה לצמיתות ולא תוצג שוב');
       } else {
+        const purgedMap = loadPurgedJobs();
+        const restoredMap = loadRestoredJobs();
         keys.forEach(k => {
           jobStates[k] = 'rejected';
+          delete purgedMap[k];
+          delete restoredMap[k];
         });
+        for (const k of Object.keys(purgedMap)) {
+          if (keys.some(ref => getCanonicalJobKey(k) === getCanonicalJobKey(ref))) delete purgedMap[k];
+        }
+        for (const k of Object.keys(restoredMap)) {
+          if (keys.some(ref => getCanonicalJobKey(k) === getCanonicalJobKey(ref))) delete restoredMap[k];
+        }
+        savePurgedJobs(purgedMap);
+        saveRestoredJobs(restoredMap);
         showToast('ph-trash', 'המשרה הועברה למשרות שהוסרו');
       }
     } else if (action === 'saved') {
@@ -3139,13 +3197,16 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }
     recordLocalEdit();
     const keys = getJobKeys(id);
+    const purgedMap = loadPurgedJobs();
     keys.forEach(k => {
       delete starredJobs[k];
       jobStates[k] = 'purged';
+      purgedMap[k] = true;
     });
     for (const k of Object.keys(starredJobs)) {
       if (keys.some(ref => getCanonicalJobKey(k) === getCanonicalJobKey(ref))) delete starredJobs[k];
     }
+    savePurgedJobs(purgedMap);
     saveStarredJobs(starredJobs);
     saveTriageState(jobStates);
     renderCards();
@@ -3162,10 +3223,16 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     recordLocalEdit();
     const keys = getJobKeys(id);
     const restoredMap = loadRestoredJobs();
+    const purgedMap = loadPurgedJobs();
     keys.forEach(k => {
       restoredMap[k] = true;
+      delete purgedMap[k];
     });
+    for (const k of Object.keys(purgedMap)) {
+      if (keys.some(ref => getCanonicalJobKey(k) === getCanonicalJobKey(ref))) delete purgedMap[k];
+    }
     saveRestoredJobs(restoredMap);
+    savePurgedJobs(purgedMap);
 
     keys.forEach(k => {
       delete starredJobs[k];
@@ -4414,11 +4481,21 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       return;
     }
 
+    recordLocalEdit();
+    const purgedMap = loadPurgedJobs();
     rejectedKeys.forEach(id => {
+      const keys = getJobKeys(id);
+      keys.forEach(k => {
+        delete starredJobs[k];
+        jobStates[k] = 'purged';
+        purgedMap[k] = true;
+      });
       jobStates[id] = 'purged';
+      purgedMap[id] = true;
     });
 
-    recordLocalEdit();
+    savePurgedJobs(purgedMap);
+    saveStarredJobs(starredJobs);
     saveTriageState(jobStates);
     updateCubeCountsImmediately();
     renderCards();
