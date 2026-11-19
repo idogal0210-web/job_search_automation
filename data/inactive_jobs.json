@@ -1,8 +1,8 @@
 {
-  "scanned_at": "2026-11-19T00:02:43.340373+00:00",
-  "total_scanned": 37,
+  "scanned_at": "2026-11-19T15:01:13.499528+00:00",
+  "total_scanned": 39,
   "inactive_count": 4,
-  "unknown_count": 6,
+  "unknown_count": 2,
   "inactive_jobs": [
     {
       "link": "https://www.drushim.co.il/job/39074548/df2dbdb5/",
@@ -10,7 +10,7 @@
       "company": "עיריית הרצליה",
       "reason": "דף המשרה הוסר (HTTP 410)",
       "status_code": 410,
-      "detected_at": "2026-11-19T00:02:34.087348+00:00"
+      "detected_at": "2026-11-19T15:01:05.005392+00:00"
     },
     {
       "link": "https://il.linkedin.com/jobs/view/quality-engineer-at-odem-scientific-applications-ltd-4489386378",
@@ -18,7 +18,7 @@
       "company": "Odem Scientific Applications Ltd",
       "reason": "משרה סגורה בלינקדאין",
       "status_code": 200,
-      "detected_at": "2026-11-19T00:02:35.422783+00:00"
+      "detected_at": "2026-11-19T15:01:06.352960+00:00"
     },
     {
       "link": "https://il.linkedin.com/jobs/view/adms-solution-integrator-at-ge-vernova-4454529040",
@@ -26,7 +26,7 @@
       "company": "GE Vernova",
       "reason": "משרה סגורה בלינקדאין",
       "status_code": 200,
-      "detected_at": "2026-11-19T00:02:35.744612+00:00"
+      "detected_at": "2026-11-19T15:01:06.801734+00:00"
     },
     {
       "link": "https://www.drushim.co.il/job/38794906/e35ceddf/",
@@ -34,48 +34,50 @@
       "company": "AMTS - TQM",
       "reason": "דף המשרה הוסר (HTTP 410)",
       "status_code": 410,
-      "detected_at": "2026-11-19T00:02:41.317380+00:00"
+      "detected_at": "2026-11-19T15:01:11.394777+00:00"
     }
   ],
   "verified_links": [
-    "https://il.linkedin.com/jobs/view/ohle-pos-quality-inspector-at-alstom-4489775783",
-    "https://il.linkedin.com/jobs/view/handler-engineer-at-kla-4476465132",
+    "https://www.drushim.co.il/job/39108482/ba92e340/",
     "https://www.drushim.co.il/job/39074548/df2dbdb5/",
+    "https://il.linkedin.com/jobs/view/handler-engineer-at-kla-4476465132",
+    "https://il.linkedin.com/jobs/view/integration-engineer-at-sqlink-group-4489732771",
     "https://il.linkedin.com/jobs/view/multiskilled-technician-2-at-alstom-4489791212",
+    "https://il.linkedin.com/jobs/view/ohle-pos-quality-inspector-at-alstom-4489775783",
     "https://www.drushim.co.il/job/39028055/6c3e8cd3/",
-    "https://il.linkedin.com/jobs/view/core-uav-r-d-systems-integration-engineer-avionics-flight-field-at-esp710-4489390269",
+    "https://xtend.me/careers/flight-operations-drone-pilot/",
     "https://il.linkedin.com/jobs/view/technical-specialist-npi-field-support-at-kornit-digital-4483365929",
-    "https://il.linkedin.com/jobs/view/equipment-technician-student-at-tower-semiconductor-4490221380",
+    "https://il.linkedin.com/jobs/view/core-uav-r-d-systems-integration-engineer-avionics-flight-field-at-esp710-4489390269",
     "https://il.linkedin.com/jobs/view/quality-engineer-at-odem-scientific-applications-ltd-4489386378",
-    "https://mprest.com/mprest_careers/co/petah-tikva-israel/16.07F/junior-project-manager/all/",
+    "https://il.linkedin.com/jobs/view/equipment-technician-student-at-tower-semiconductor-4490221380",
     "https://www.drushim.co.il/job/39089900/df87bbe7/",
     "https://il.linkedin.com/jobs/view/adms-solution-integrator-at-ge-vernova-4454529040",
-    "https://jobs.lever.co/d-fendsolutions/ad96d5f9-f12e-4b56-a3da-73f50e71a99c",
-    "https://il.linkedin.com/jobs/view/installation-engineer-at-applied-materials-israel-4488248300",
-    "https://xtend.me/careers/flight-operations-drone-pilot/",
     "https://xtend.me/careers/manufacturing-engineer/",
-    "https://il.linkedin.com/jobs/view/mechanics-practical-engineer-at-bird-aerosystems-4491233913",
     "https://xtend.me/careers/ras-training-demonstration-pilot/",
-    "https://www.drushim.co.il/job/38960301/934031db/",
-    "https://il.linkedin.com/jobs/view/systems-integration-engineer-at-ottopia-defense-4487739972",
-    "https://www.drushim.co.il/job/38945272/abdf742a/",
-    "https://il.linkedin.com/jobs/view/field-integrator-at-allpha-innovation-4488699886",
-    "https://il.linkedin.com/jobs/view/%D7%9E%D7%95%D7%9E%D7%97%D7%94-%D7%98%D7%9B%D7%A0%D7%99-%D7%91%D7%AA%D7%97%D7%95%D7%9D-%D7%94%D7%9E%D7%AA%D7%97-%D7%94%D7%A0%D7%9E%D7%95%D7%9A-at-deeplan-4488207994",
-    "https://mprest.com/mprest_careers/co/petah-tikva-israel/5D.B62/qc-engineer/all/",
+    "https://jobs.lever.co/d-fendsolutions/ad96d5f9-f12e-4b56-a3da-73f50e71a99c",
+    "https://mprest.com/mprest_careers/co/petah-tikva-israel/16.07F/junior-project-manager/all/",
     "https://il.linkedin.com/jobs/view/%D7%A8%D7%9B%D7%96-%D7%AA-%D7%AA%D7%A4%D7%A2%D7%95%D7%9C-%D7%95%D7%A9%D7%99%D7%A8%D7%95%D7%AA-%D7%A9%D7%98%D7%97-%D7%91%D7%AA%D7%97%D7%95%D7%9D-%D7%94%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-%D7%94%D7%A1%D7%95%D7%9C%D7%90%D7%A8%D7%99%D7%AA-at-amarel-ltd-4490223710",
+    "https://il.linkedin.com/jobs/view/mechanics-practical-engineer-at-bird-aerosystems-4491233913",
+    "https://il.linkedin.com/jobs/view/systems-integration-engineer-at-ottopia-defense-4487739972",
+    "https://www.drushim.co.il/job/38960301/934031db/",
+    "https://il.linkedin.com/jobs/view/%D7%9E%D7%95%D7%9E%D7%97%D7%94-%D7%98%D7%9B%D7%A0%D7%99-%D7%91%D7%AA%D7%97%D7%95%D7%9D-%D7%94%D7%9E%D7%AA%D7%97-%D7%94%D7%A0%D7%9E%D7%95%D7%9A-at-deeplan-4488207994",
+    "https://www.drushim.co.il/job/38945272/abdf742a/",
+    "https://il.linkedin.com/jobs/view/production-quality-specialist-at-pixel-sight-4487249927",
     "https://www.drushim.co.il/job/38866916/e9d0014c/",
     "https://www.drushim.co.il/job/39053154/e0f127fb/",
     "https://www.drushim.co.il/job/38892870/a0fa7d86/",
+    "https://il.linkedin.com/jobs/view/debug-practical-engineer-at-solaredge-technologies-4401000393",
+    "https://il.linkedin.com/jobs/view/debug-engineer-at-solaredge-technologies-4467245080",
+    "https://il.linkedin.com/jobs/view/field-integrator-at-allpha-innovation-4488699886",
+    "https://mprest.com/mprest_careers/co/petah-tikva-israel/5D.B62/qc-engineer/all/",
+    "https://il.linkedin.com/jobs/view/pmo-%E2%80%93-ai-data-center-at-enlight-renewable-energy-ltd-enlt-4488802260",
     "https://www.drushim.co.il/job/39056251/0c22fe89/",
+    "https://www.drushim.co.il/job/38818751/774e6899/",
     "https://www.drushim.co.il/job/38794906/e35ceddf/",
-    "https://www.drushim.co.il/job/38818751/774e6899/"
+    "https://il.linkedin.com/jobs/view/system-integration-engineer-at-applied-materials-israel-4487814341"
   ],
   "unknown_links": [
-    "https://il.linkedin.com/jobs/view/production-quality-specialist-at-pixel-sight-4487249927",
-    "https://il.linkedin.com/jobs/view/uav-station-technician-at-yael-korentec-technologies-4490340804",
-    "https://il.linkedin.com/jobs/view/debug-engineer-at-solaredge-technologies-4467245080",
-    "https://il.linkedin.com/jobs/view/debug-practical-engineer-at-solaredge-technologies-4401000393",
-    "https://il.linkedin.com/jobs/view/pmo-%E2%80%93-ai-data-center-at-enlight-renewable-energy-ltd-enlt-4488802260",
-    "https://il.linkedin.com/jobs/view/system-integration-engineer-at-applied-materials-israel-4487814341"
+    "https://il.linkedin.com/jobs/view/installation-engineer-at-applied-materials-israel-4488248300",
+    "https://il.linkedin.com/jobs/view/uav-station-technician-at-yael-korentec-technologies-4490340804"
   ]
 }

@@ -3768,5 +3768,203 @@
     "p25": 13500,
     "p50": 15500,
     "p75": 17500
+  },
+  {
+    "link": "https://il.linkedin.com/jobs/view/integration-engineer-at-sqlink-group-4489732771",
+    "title": "Integration Engineer",
+    "company": "SQLink Group",
+    "snippet": "We are recruiting an\nIntegration Engineer\nfor a large defense organization located in central Israel\nRESPONSIBILITIES:\nPerforming hands-on system integration in field environments and laboratories\nIntegrating systems composed of multiple units and assemblies\nConnecting and disconnecting enclosures and performing mechanical assemblies\nReading technical drawings and understanding interfaces between system components\nParticipating in experiments and integration activities under varying conditions\nREQUIREMENTS:\n2 years of hands-on experience in system integration\nExperience reading technical drawings and understanding interfaces between system units and components\nMechanical aptitude and experience with assembly, disassembly, and connecting enclosures and assemblies\nElectronics Technician or Practical Engineer diploma",
+    "query": "Mechanical Assembler UAV",
+    "source": "LinkedIn",
+    "location": "מרכז הארץ",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGOBDuXd3FW6A/company-logo_100_100/B4DZv79QnYH0AQ-/0/1769458699469?e=2147483647&v=beta&t=ZcKmC7Wvv6xulnfGsqJx5dFT8O4tv9RC-3w3MfbZUQ4",
+    "date": "2026-11-19",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "We are recruiting an\nIntegration Engineer\nfor a large defense organization located in central Israel\nRESPONSIBILITIES:\nPerforming hands-on system integration in field environments and laboratories\nIntegrating systems composed of multiple units and assemblies\nConnecting and disconnecting enclosures and performing mechanical assemblies\nReading technical drawings and understanding interfaces between system components\nParticipating in experiments and integration activities under varying conditions\nREQUIREMENTS:\n2 years of hands-on experience in system integration\nExperience reading technical drawings and understanding interfaces between system units and components\nMechanical aptitude and experience with assembly, disassembly, and connecting enclosures and assemblies\nElectronics Technician or Practical Engineer diploma",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 85,
+    "concrete_matches_count": 4,
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי מוצק באינטגרציית מערכות אלקטרו-מכניות.",
+    "sector_key": "energy_tech",
+    "sector": "בטחוני / טכנולוגי",
+    "company_domain_product": "ארגון ביטחוני גדול",
+    "job_summary": "משרת מהנדס/ת אינטגרציה לביצוע אינטגרציה מעשית בסביבות שטח ומעבדות, לרבות הרכבות מכניות וקריאת שרטוטים טכניים.",
+    "experience_strengths": "ניסיון מעשי בהנדסת מכונות, הרכבות אלקטרו-מכניות והבנת ממשקים הנדסיים.",
+    "key_highlights": "דרישה לתעודת הנדסאי או טכנאי אלקטרוניקה, אותה מחזיק המועמד כהנדסאי מכונות.",
+    "company_size": "unknown",
+    "junior_openness": "unknown",
+    "work_model": "unknown",
+    "company_requirements": "ניסיון באינטגרציית מערכות, קריאת שרטוטים טכניים, זיקה מכנית ותעודת הנדסאי.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "תעודת הנדסאי או טכנאי אלקטרוניקה",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Electronics Technician or Practical Engineer diploma",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בתעודת הנדסאי מכונות המוכרת והנדרשת."
+      },
+      {
+        "requirement": "זיקה מכנית וניסיון בהרכבות מכניות",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Mechanical aptitude and experience with assembly, disassembly, and connecting enclosures and assemblies",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer with Deep Specialization in Energy Systems",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע מעשי רחב במערכות אלקטרו-מכניות וביצוע הרכבות."
+      }
+    ],
+    "evaluation_model": "gemini-3.5-flash-lite",
+    "evaluation_source": "gemini",
+    "evaluation_complete": true,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "is_target_company": false,
+    "disqualification_reason": "",
+    "target_category": "",
+    "target_tier": 0,
+    "evidence_status": "verified_quotes",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": false,
+    "has_company_car": false,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 11500,
+    "p50": 13250,
+    "p75": 15000
+  },
+  {
+    "link": "https://www.drushim.co.il/job/39108482/ba92e340/",
+    "title": "אינטגרטור/ית לחברה מובילה באופקים",
+    "company": "חברה מובילה (דיסקרטי)",
+    "snippet": "חסוי\nאינטגרטור/ית לחברה מובילה באופקים\n- חסוי -\nאופקים\nללא נסיון\nמשרה מלאה\n16/11/2026\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברה טכנולוגית מובילה באזור אופקים דרוש/ה אינטגרטור/ית להשתלבות בסביבת עבודה מתקדמת ומאתגרת.\nבמסגרת התפקיד:\n-ביצוע אינטגרציה והרכבה של מערכות ומכלולים טכנולוגיים.\n-איתור תקלות ומתן מענה ראשוני במהלך תהליך העבודה.\n-עבודה בהתאם לשרטוטים, נהלים והוראות עבודה.\n-ביצוע בדיקות ותיעוד תהליכים.\n-עבודה עצמאית ובצוות תוך עמידה ביעדי איכות ולוחות זמנים.\nדרישות התפקיד\nחוש טכני ויכולת עבודה בסביבה טכנולוגית.\nיכולת קריאה והבנת שרטוטים - יתרון.\nאחריות, יסודיות ויכולת למידה גבוהה.\nנכונות למשרה מלאה ושעות נוספות לפי הצורך.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nתעשיה / ייצור\nתחומים\nחשמל ואלקטרוניקה\nטכנאי/ת - תעשייה וייצור",
+    "query": "אינטגרטור תפעול ואוטומציה",
+    "source": "Drushim",
+    "location": "אופקים",
+    "logo": "",
+    "date": "2026-11-19",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "חסוי\nאינטגרטור/ית לחברה מובילה באופקים\n- חסוי -\nאופקים\nללא נסיון\nמשרה מלאה\n16/11/2026\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברה טכנולוגית מובילה באזור אופקים דרוש/ה אינטגרטור/ית להשתלבות בסביבת עבודה מתקדמת ומאתגרת.\nבמסגרת התפקיד:\n-ביצוע אינטגרציה והרכבה של מערכות ומכלולים טכנולוגיים.\n-איתור תקלות ומתן מענה ראשוני במהלך תהליך העבודה.\n-עבודה בהתאם לשרטוטים, נהלים והוראות עבודה.\n-ביצוע בדיקות ותיעוד תהליכים.\n-עבודה עצמאית ובצוות תוך עמידה ביעדי איכות ולוחות זמנים.\nדרישות התפקיד\nחוש טכני ויכולת עבודה בסביבה טכנולוגית.\nיכולת קריאה והבנת שרטוטים - יתרון.\nאחריות, יסודיות ויכולת למידה גבוהה.\nנכונות למשרה מלאה ושעות נוספות לפי הצורך.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nתעשיה / ייצור\nתחומים\nחשמל ואלקטרוניקה\nטכנאי/ת - תעשייה וייצור",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 85,
+    "concrete_matches_count": 5,
+    "reasoning": "המוועמד בעל רקע מכני והנדסאי מתאים לאינטגרציה והרכבת מערכות טכנולוגיות.",
+    "sector_key": "operations",
+    "sector": "תעשיה / ייצור",
+    "company_domain_product": "מערכות ומכלולים טכנולוגיים",
+    "job_summary": "דרוש/ה אינטגרטור/ית לביצוע אינטגרציה והרכבה של מערכות טכנולוגיות, איתור תקלות, ועבודה לפי שרטוטים.",
+    "experience_strengths": "ניסיון מעשי בהנדסת מכונות, מערכות אלקטרו-מכניות ועבודה עם שרטוטים והרכבות.",
+    "key_highlights": "התפקיד מתאים למועמדים חסרי ניסיון או בתחילת הדרך, פתוח למשרה מלאה ודורש חוש טכני ויכולת למידה.",
+    "company_size": "לא צוין",
+    "junior_openness": "ללא ניסיון",
+    "work_model": "משרה מלאה",
+    "company_requirements": "חוש טכני, יכולת קריאה והבנת שרטוטים - יתרון, אחריות ויכולת למידה גבוהה.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "חוש טכני ויכולת עבודה בסביבה טכנולוגית",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "חוש טכני ויכולת עבודה בסביבה טכנולוגית.",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע נרחב כמהנדסאי מכונות ובעל חוש טכני גבוה במערכות אלקטרו-מכניות."
+      },
+      {
+        "requirement": "יכולת קריאה והבנת שרטוטים",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "יכולת קריאה והבנת שרטוטים - יתרון.",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "כהנדסאי מכונות מוסמך, למועמד יש יכולת מוכחת בעבודה עם שרטוטים טכניים."
+      },
+      {
+        "requirement": "ביצוע אינטגרציה והרכבה של מערכות ומכלולים טכנולוגיים",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "-ביצוע אינטגרציה והרכבה של מערכות ומכלולים טכנולוגיים.",
+          "source_field": "job_summary"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון בעבודה מעשית עם מערכות אלקטרו-מכניות ואינטגרציה."
+      }
+    ],
+    "evaluation_model": "gemini-3.5-flash-lite",
+    "evaluation_source": "gemini",
+    "evaluation_complete": true,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "is_target_company": false,
+    "disqualification_reason": "",
+    "target_category": "",
+    "target_tier": 0,
+    "evidence_status": "verified_quotes",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: תפעול, אחזקה ומכונות תעשייתיות"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": false,
+    "has_company_car": false,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 11500,
+    "p50": 13250,
+    "p75": 15000
   }
 ]
