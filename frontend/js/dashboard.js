@@ -2808,10 +2808,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar(${escapeHtml(JSON.stringify(String(id)))}, event)" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}" aria-label="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
               <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
             </button>
-            <button type="button" class="card-action-icon-btn action-save-btn ${state === 'saved' ? 'saved-active' : ''}" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved', event)" title="${state === 'saved' ? 'נשמר להגשה (לחץ להסרה)' : 'שמור להגשה'}" aria-label="שמור להגשה" style="width: 34px; height: 34px; border-radius: 50%;">
+            <button type="button" class="card-action-icon-btn action-save-btn ${state === 'saved' ? 'saved-active' : ''}" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved', event)" title="${state === 'saved' ? 'נשמר להגשה (לחץ להסרה)' : 'שמור להגשה'}" aria-label="שמור להגשה">
               <i class="${state === 'saved' ? 'ph-fill ph-bookmark-simple' : 'ph-duotone ph-bookmark-simple'}"></i>
             </button>
-            <button type="button" class="btn-copy-link" onclick="copyJobLink(${escapeHtml(JSON.stringify(String(link)))}, event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה" style="width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.06); cursor: pointer; color: #6b7280;">
+            <button type="button" class="btn-copy-link" onclick="copyJobLink(${escapeHtml(JSON.stringify(String(link)))}, event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
               <i class="ph-bold ph-share-network"></i>
             </button>
           </div>
@@ -2828,7 +2828,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
         <!-- Tags Row: Match Score + Inactive + Curated -->
         <div class="card-tags-row">
-          <span class="card-tag-pill" style="font-weight: 700; color: #059669; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.25);">
+          <span class="card-tag-pill card-tag-match" style="font-weight: 700; color: #059669; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.25);">
             <i class="ph-duotone ph-lightning"></i> ${score}% התאמה
           </span>
           ${inactiveBadgeHtml}
@@ -2840,43 +2840,46 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           <strong>דרישות סף:</strong> ${companyReqs}
         </div>
 
-        <!-- Bottom Row: Salary + Location & Actions Cluster -->
+        <!-- Bottom Row: Dedicated Salary/Location Tier & Action Controls -->
         <div class="card-bottom-row">
           <div class="card-salary-location">
-            <div class="card-salary-val">${salaryValHtml}</div>
-            <div class="card-location-text"><i class="ph-duotone ph-map-pin"></i> ${loc}</div>
+            <div class="card-salary-val" dir="auto"><bdi>${salaryValHtml}</bdi></div>
+            <div class="card-location-text"><i class="ph-duotone ph-map-pin"></i> <span>${loc}</span></div>
           </div>
 
           <div class="card-actions-cluster">
-            <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="apply-icon-btn" title="הגש מועמדות" aria-label="הגש מועמדות" data-tooltip="הגש מועמדות" onclick="event.stopPropagation()">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13"></line>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-              </svg>
-            </a>
-            <button type="button" class="card-action-icon-btn btn-open-in-studio" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}, event)" title="התאם קו״ח בסטודיו קריירה" aria-label="התאם קו״ח בסטודיו קריירה" data-tooltip="התאם בסטודיו">
-              <i class="ph-duotone ph-magic-wand"></i>
-            </button>
-            ${state === 'rejected' ? `
-            <button type="button" onclick="restoreJob(${escapeHtml(JSON.stringify(String(id)))}, event)" class="card-action-icon-btn action-restore-btn" title="שחזר לחדשות" aria-label="שחזר לחדשות" data-tooltip="שחזר לחדשות">
-              <i class="ph-duotone ph-arrow-counter-clockwise"></i>
-            </button>
-            <button type="button" onclick="purgeJobPermanently(${escapeHtml(JSON.stringify(String(id)))}, event)" class="card-action-icon-btn action-reject-btn rejected-active" title="מחיקה לצמיתות" aria-label="מחיקה לצמיתות" data-tooltip="מחיקה לצמיתות">
-              <i class="ph-duotone ph-trash-simple"></i>
-            </button>
-            ` : `
-            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected', event)" class="card-action-icon-btn action-reject-btn" title="הסר משרה" aria-label="הסר משרה" data-tooltip="הסר משרה">
-              <i class="ph-duotone ph-trash"></i>
-            </button>
-            `}
-            ${Array.isArray(altLinksStore[id]) && altLinksStore[id].length > 0 ? `
-            <a href="${sanitizeUrl(altLinksStore[id][0])}" target="_blank" rel="noopener noreferrer" class="card-action-icon-btn btn-alt-link" onclick="event.stopPropagation()" title="מקור נוסף להגשת מועמדות (מוזג מכפילות)" aria-label="מקור נוסף" data-tooltip="מקור נוסף (${altLinksStore[id].length})">
-              <i class="ph-duotone ph-link"></i>
-            </a>
-            ` : ''}
             <button type="button" class="btn-details-pill" onclick="openJobModal(${escapeHtml(JSON.stringify(String(id)))})" title="צפייה בפרטי משרה מלאים וניתוח">
               <span>פרטים</span>
+              <i class="ph-bold ph-arrow-left"></i>
             </button>
+            <div class="card-actions-subgroup">
+              <button type="button" class="card-action-icon-btn btn-open-in-studio" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}, event)" title="התאם קו״ח בסטודיו קריירה" aria-label="התאם קו״ח בסטודיו קריירה" data-tooltip="התאם בסטודיו">
+                <i class="ph-duotone ph-magic-wand"></i>
+              </button>
+              ${state === 'rejected' ? `
+              <button type="button" onclick="restoreJob(${escapeHtml(JSON.stringify(String(id)))}, event)" class="card-action-icon-btn action-restore-btn" title="שחזר לחדשות" aria-label="שחזר לחדשות" data-tooltip="שחזר לחדשות">
+                <i class="ph-duotone ph-arrow-counter-clockwise"></i>
+              </button>
+              <button type="button" onclick="purgeJobPermanently(${escapeHtml(JSON.stringify(String(id)))}, event)" class="card-action-icon-btn action-reject-btn rejected-active" title="מחיקה לצמיתות" aria-label="מחיקה לצמיתות" data-tooltip="מחיקה לצמיתות">
+                <i class="ph-duotone ph-trash-simple"></i>
+              </button>
+              ` : `
+              <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected', event)" class="card-action-icon-btn action-reject-btn" title="הסר משרה" aria-label="הסר משרה" data-tooltip="הסר משרה">
+                <i class="ph-duotone ph-trash"></i>
+              </button>
+              `}
+              ${Array.isArray(altLinksStore[id]) && altLinksStore[id].length > 0 ? `
+              <a href="${sanitizeUrl(altLinksStore[id][0])}" target="_blank" rel="noopener noreferrer" class="card-action-icon-btn btn-alt-link" onclick="event.stopPropagation()" title="מקור נוסף להגשת מועמדות (מוזג מכפילות)" aria-label="מקור נוסף" data-tooltip="מקור נוסף (${altLinksStore[id].length})">
+                <i class="ph-duotone ph-link"></i>
+              </a>
+              ` : ''}
+              <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="apply-icon-btn" title="הגש מועמדות" aria-label="הגש מועמדות" data-tooltip="הגש מועמדות" onclick="event.stopPropagation()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
       `;

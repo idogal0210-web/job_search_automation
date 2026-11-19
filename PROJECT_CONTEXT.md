@@ -335,6 +335,12 @@ job_search_automation/
 - **Remote Resurrection Protection:** Hardened both `shouldMirrorFromRemote` and standard incremental reconciliation to cross-check `purgedMap` before adding jobs to `rejected`, `saved`, or `starred`, strictly preventing stale cloud records from reviving purged jobs.
 - **Atomic CAS Cloud Partitioning:** Enhanced `pushCloudSync` to build `purgedSet` across local states and `purgedMap`, strictly excluding purged identifiers from `payload.rejected`, `payload.saved`, and `payload.starred` prior to transmission to Supabase.
 
+### 6.14 Apple-Style High-End Visual Design & Collision-Proof 2-Tier Job Cards (TASK-71)
+- **Elimination of Card Bottom Overlaps:** Refactored `.card-bottom-row` into a dedicated 2-tier vertical stack: Upper tier provides 100% width for `.card-salary-location` (`.card-salary-val` wrapped in `<bdi dir="auto">` and `.card-location-text`), Lower tier houses `.card-actions-cluster` with prominent Apple primary pill CTA (`.btn-details-pill` with chevron indicator) and circular utility controls (`.apply-icon-btn`, `.btn-open-in-studio`, `.action-reject-btn`). Collision count dropped from 44/44 to 0/44.
+- **Requirements Preview Descender Fix:** Updated `.card-reqs-preview` with generous line-height (`1.55`) and padding (`10px 12px`), preventing vertical clipping of Hebrew/Latin text descenders.
+- **Career Studio Accordion Overlap Resolution:** Enforced `.studio-job-details-accordion:not([open]) > :not(summary) { display: none !important; }`, preventing closed `<details>` body contents (`.ats-sample-chips`, `.ats-input-label`) from leaking vertically onto `.studio-subnav-pipeline` (dropping studio overlaps from 12 to 0).
+- **Apple & 3D Web Experience Craft:** Implemented Apple-inspired double-bezel concentric border-radii (`20px` card, `12px` inner snippets, `999px` pills), top specular edge highlight (`inset 0 1px 0 rgba(255, 255, 255, 0.12)`), multi-layered ambient drop shadows (`0 6px 24px rgba(0, 0, 0, 0.35)`), smooth tactile lift on hover (`translateY(-3px)`), and tactile press on buttons (`scale(0.97)`).
+
 ---
 
 ## 7. MCP Servers Usage Policy & Operational Protocol

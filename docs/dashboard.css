@@ -3811,17 +3811,18 @@ letter-spacing: 0.2px;
   background: rgba(255, 255, 255, 0.85);
   border: 1px solid rgba(0, 0, 0, 0.05);
   border-radius: 999px;
-  padding: 4px 12px;
+  padding: 3px 11px;
   font-size: 11.5px;
   font-weight: 600;
+  letter-spacing: -0.01em;
   color: #374151;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 :root[data-theme="dark"] .card-date-pill {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #e5e7eb;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
 }
 
 .card-top-actions {
@@ -3830,7 +3831,9 @@ letter-spacing: 0.2px;
   gap: 6px;
 }
 
-.job-card .btn-star {
+.job-card .btn-star,
+.job-card .action-save-btn,
+.job-card .btn-copy-link {
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -3841,8 +3844,23 @@ letter-spacing: 0.2px;
   justify-content: center;
   cursor: pointer;
   color: #6b7280;
-  transition: transform 0.15s ease, color 0.15s ease, background-color 0.15s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 150ms ease, color 150ms ease, background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.job-card .btn-star:hover,
+.job-card .action-save-btn:hover,
+.job-card .btn-copy-link:hover {
+  transform: translateY(-1px);
+  color: #111827;
+  background: #ffffff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.job-card .btn-star:active,
+.job-card .action-save-btn:active,
+.job-card .btn-copy-link:active {
+  transform: scale(0.95);
 }
 
 .job-card .btn-star.is-starred {
@@ -3850,16 +3868,38 @@ letter-spacing: 0.2px;
   background: #ffffff;
 }
 
-:root[data-theme="dark"] .job-card .btn-star {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #d1d5db;
+.job-card .action-save-btn.saved-active {
+  color: #0284c7;
+  background: #ffffff;
+}
+
+:root[data-theme="dark"] .job-card .btn-star,
+:root[data-theme="dark"] .job-card .action-save-btn,
+:root[data-theme="dark"] .job-card .btn-copy-link {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme="dark"] .job-card .btn-star:hover,
+:root[data-theme="dark"] .job-card .action-save-btn:hover,
+:root[data-theme="dark"] .job-card .btn-copy-link:hover {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 :root[data-theme="dark"] .job-card .btn-star.is-starred {
   color: #f59e0b;
   background: rgba(245, 158, 11, 0.15);
   border-color: rgba(245, 158, 11, 0.3);
+}
+
+:root[data-theme="dark"] .job-card .action-save-btn.saved-active {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.3);
 }
 
 /* Card Body Header (Company + Title + Logo) */
@@ -3887,13 +3927,14 @@ letter-spacing: 0.2px;
 }
 
 :root[data-theme="dark"] .card-company-name {
-  color: #9ca3af;
+  color: #94a3b8;
 }
 
 .card-job-title {
   font-size: 18px;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
   margin: 0;
   color: #111827;
   display: -webkit-box;
@@ -3959,14 +4000,16 @@ letter-spacing: 0.2px;
   color: #e5e7eb;
 }
 
-/* Card Key Reqs Preview */
+/* Card Key Reqs Preview - High-End Apple Micro-Surface */
 .card-reqs-preview {
   font-size: 12px;
-  line-height: 1.45;
+  line-height: 1.55;
   color: #4b5563;
-  background: rgba(255, 255, 255, 0.45);
-  border-radius: 10px;
-  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-sizing: border-box;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -3974,16 +4017,17 @@ letter-spacing: 0.2px;
 }
 
 :root[data-theme="dark"] .card-reqs-preview {
-  background: rgba(0, 0, 0, 0.2);
-  color: #9ca3af;
+  background: rgba(0, 0, 0, 0.22);
+  border-color: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
 }
 
-/* Card Bottom Row */
+/* Card Bottom Row - Dedicated 2-Tier Stack (Eliminates Collisions) */
 .card-bottom-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
   width: 100%;
   padding-top: 12px;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
@@ -3991,30 +4035,31 @@ letter-spacing: 0.2px;
 }
 
 :root[data-theme="dark"] .card-bottom-row {
-  border-top-color: rgba(255, 255, 255, 0.06);
+  border-top-color: rgba(255, 255, 255, 0.08);
 }
 
+/* Upper Tier: Salary + Location */
 .card-salary-location {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1 1 auto;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
   min-width: 0;
 }
 
 .card-salary-val {
-  font-size: 15.5px;
-  font-weight: 800;
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   color: #111827;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  direction: ltr;
-  unicode-bidi: isolate;
+  flex-shrink: 0;
 }
 
 :root[data-theme="dark"] .card-salary-val {
-  color: #ffffff;
+  color: #f8fafc;
 }
 
 .card-location-text {
@@ -4026,48 +4071,160 @@ letter-spacing: 0.2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  min-width: 0;
 }
 
 :root[data-theme="dark"] .card-location-text {
-  color: #9ca3af;
+  color: #94a3b8;
 }
 
-/* Card Actions Cluster & Details Button */
+/* Lower Tier: Action Controls */
 .card-actions-cluster {
   display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
+  width: 100%;
+}
+
+.card-actions-subgroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   flex-shrink: 0;
 }
 
+/* Apple Primary Pill CTA */
 .btn-details-pill {
+  flex: 1 1 auto;
+  min-width: 86px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #14171f;
+  gap: 6px;
+  background: #111827;
   color: #ffffff;
-  border: none;
-  border-radius: 999px;
-  padding: 8px 20px;
-  font-size: 12.5px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  transition: background-color 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: transform 150ms ease, background-color 150ms ease, box-shadow 150ms ease;
 }
 
 .btn-details-pill:hover {
   background: #000000;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-details-pill:active {
+  transform: scale(0.97);
 }
 
 :root[data-theme="dark"] .btn-details-pill {
   background: #ffffff;
-  color: #0f172a;
+  color: #090d16;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 :root[data-theme="dark"] .btn-details-pill:hover {
-  background: #e2e8f0;
+  background: #f1f5f9;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="dark"] .btn-details-pill:active {
+  transform: scale(0.97);
+}
+
+/* Secondary Circular Action Buttons */
+.card-action-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.04);
+  color: #4b5563;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 150ms ease, background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+.card-action-icon-btn:hover {
+  transform: translateY(-1px);
+  color: #111827;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.card-action-icon-btn:active {
+  transform: scale(0.95);
+}
+
+:root[data-theme="dark"] .card-action-icon-btn {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme="dark"] .card-action-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #f8fafc;
+}
+
+:root[data-theme="dark"] .card-action-icon-btn:active {
+  transform: scale(0.95);
+}
+
+.card-action-icon-btn.btn-open-in-studio:hover {
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(14, 165, 233, 0.15);
+}
+
+.card-action-icon-btn.action-reject-btn:hover {
+  color: #f43f5e;
+  border-color: rgba(244, 63, 94, 0.4);
+  background: rgba(244, 63, 94, 0.15);
+}
+
+/* Apple Emerald Accent for Quick Apply */
+.apply-icon-btn,
+.dashboard-app a.apply-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+  color: #ffffff !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+.apply-icon-btn:hover,
+.dashboard-app a.apply-icon-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.45);
+}
+
+.apply-icon-btn:active,
+.dashboard-app a.apply-icon-btn:active {
+  transform: scale(0.95);
 }
 
 }
@@ -8969,6 +9126,10 @@ overflow: hidden;
 
 .studio-job-details-accordion[open] .studio-accordion-chevron {
   transform: rotate(180deg);
+}
+
+.studio-job-details-accordion:not([open]) > :not(summary) {
+  display: none !important;
 }
 
 .studio-job-details-body {
