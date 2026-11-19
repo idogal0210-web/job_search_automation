@@ -160,195 +160,198 @@
       </div>
     </div>
 
-    <!-- 2 Overview Cards (Search/Filters, Sector Distribution) -->
-    <div class="dashboard-stats-grid">
-      
-      <!-- Card 1: סינון ואיתור משרות -->
-      <div class="dashboard-card" style="margin-bottom: 0;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <div style="display: flex; gap: 8px;">
-            <span class="dashboard-chip" style="font-size: 11.5px; padding: 3px 9px;">סינון חכם</span>
-            <span class="dashboard-chip" style="font-size: 11.5px; padding: 3px 9px; color: var(--dashboard-lime); border-color: rgba(52, 211, 153, 0.35); background: rgba(52, 211, 153, 0.1);">סריקה עדכנית</span>
-          </div>
-          <small style="color: var(--dashboard-muted); font-size: 12px;">מיון ואיסוף</small>
-        </div>
-        <h3 style="margin: 0 0 5px; font-size: 17px; font-weight: 700;">סינון ואיתור משרות</h3>
-        <p style="color: var(--dashboard-muted); font-size: 13px; line-height: 1.45; margin-bottom: 12px;">
-          סינון לפי מגזרי אנרגיה ורחפנים, איתור כפילויות ומיון לפי התאמה, שכר או תאריך.
-        </p>
-
-        <div class="controls-inputs-stack">
-          <!-- Row 1: Two Column Layout for Sectors and Regions -->
-          <div class="filters-two-col-row">
-            <div class="filter-select-field">
-              <label for="sectorFilter" class="sr-only" style="display:none;">תחום משרה</label>
-              <select id="sectorFilter" onchange="filterCards()" aria-label="כל התחומים" title="סינון לפי תחום">
-                <option value="all">כל התחומים</option>
-                <option value="scada">בקרה ו-SCADA</option>
-                <option value="solar">מערכות סולאריות</option>
-                <option value="natural_gas">גז טבעי</option>
-                <option value="drones">רחפנים וכטב"ם</option>
-                <option value="energy_tech">אגירה ו-Energy Tech</option>
-                <option value="operations">תפעול ואחזקה</option>
-                <option value="energy">אנרגיה כללית</option>
-              </select>
-            </div>
-            <div class="filter-select-field">
-              <label for="regionFilter" class="sr-only" style="display:none;">אזור בארץ</label>
-              <select id="regionFilter" onchange="filterCards()" aria-label="כל האזורים בארץ" title="סינון לפי אזור בארץ">
-                <option value="all">כל האזורים בארץ</option>
-                <option value="center">מרכז וירושלים</option>
-                <option value="sharon">אזור השרון</option>
-                <option value="north">חיפה והצפון</option>
-                <option value="south">שפלה ודרום</option>
-                <option value="nationwide">פריסה ארצית / שטח</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Row 2: Search field and Sorting control within one compact bar -->
-          <div class="search-sort-compact-bar">
-            <div class="search-input-wrapper" id="searchInputWrapper">
-              <label for="searchInput" class="sr-only" style="display:none;">חיפוש משרה</label>
-              <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה..." oninput="onSearchInput(this.value)" aria-label="חיפוש משרה, חברה או דרישה טכנית" />
-              <button type="button" class="btn-clear-search search-clear-btn is-hidden" onclick="clearSearchInput()" title="נקה חיפוש" aria-label="נקה חיפוש">
-                <i class="ph-bold ph-x"></i>
-              </button>
-            </div>
-            
-            <div class="sort-select-wrapper">
-              <label for="sortSelect" class="sr-only" style="display:none;">אפשרות מיון</label>
-              <div class="sort-select-container">
-                <i id="sortIcon" class="ph-duotone ph-calendar-blank"></i>
-                <select id="sortSelect" onchange="changeSort(this.value)" title="בחר אפשרות מיון משרות" aria-label="בחר אפשרות מיון משרות">
-                  <option value="date_desc" style="background: #171c12; color: #fff;">חדש קודם</option>
-                  <option value="score_desc" style="background: #171c12; color: #fff;">ציון התאמה</option>
-                  <option value="salary_desc" style="background: #171c12; color: #fff;">רמת שכר</option>
-                  <option value="company_asc" style="background: #171c12; color: #fff;">שם חברה (א-ת)</option>
-                </select>
-              </div>
-            </div>
-
-            <button type="button" onclick="openDuplicatesModal()" class="tool-btn-compact" style="border-color: rgba(255, 211, 104, 0.35); color: var(--dashboard-gold);" title="סרוק כפילויות משרות" aria-label="בדיקת כפילויות משרות">
-              <i class="ph-duotone ph-copy" style="font-size: 15px;"></i>
-              <span>כפילויות</span>
-            </button>
-            <button type="button" id="btnOpenInactiveJobsModal" onclick="openInactiveJobsModal()" class="tool-btn-compact" style="border-color: rgba(239, 68, 68, 0.35); color: #fca5a5;" title="סרוק משרות לא פעילות שנסגרו" aria-label="סריקת משרות לא פעילות">
-              <i class="ph-duotone ph-link-break" style="font-size: 15px;"></i>
-              <span>שנסגרו</span>
-              <span id="inactiveJobsCountBadge" style="display: none; background: rgba(239, 68, 68, 0.35); color: #fff; font-size: 11px; padding: 1px 6px; border-radius: 999px; font-weight: 600;"></span>
-            </button>
-          </div>
-
-          <!-- Bottom Control Hub: Realtime Result Summary & Quick Reset -->
-          <div class="filter-card-footer" style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: var(--dashboard-muted); min-height: 36px;">
-            <div id="filterResultSummary" style="display: flex; align-items: center; gap: 6px; font-weight: 500;">
-              <span class="dashboard-dot" style="background: var(--dashboard-cyan); width: 6px; height: 6px; border-radius: 50%; display: inline-block;"></span>
-              <span id="filterStatusText">מוצגות כל המשרות הפעילות</span>
-            </div>
-            <button type="button" id="btnResetFilters" onclick="resetAllFilters()" class="dashboard-chip btn-reset-filters" title="איפוס כל המסננים והחיפוש">
-              <i class="ph-duotone ph-arrow-counter-clockwise"></i>
-              <span>איפוס מסננים</span>
-            </button>
-          </div>
-        </div>
+    <!-- Integrated Capsule Search & Filter Ribbon (Neo-Job Board) -->
+    <div class="search-capsule-ribbon" role="search" aria-label="סרגל חיפוש וסינון משרות">
+      <!-- Search Input Capsule -->
+      <div class="search-capsule search-capsule-input-wide" id="searchInputWrapper">
+        <i class="ph-bold ph-magnifying-glass" aria-hidden="true"></i>
+        <label for="searchInput" class="sr-only" style="display:none;">חיפוש משרה</label>
+        <input id="searchInput" type="text" placeholder="חיפוש משרה, חברה או דרישה..." oninput="onSearchInput(this.value)" aria-label="חיפוש משרה, חברה או דרישה טכנית" />
+        <button type="button" class="btn-clear-search search-clear-btn is-hidden" onclick="clearSearchInput()" title="נקה חיפוש" aria-label="נקה חיפוש" style="background: none; border: none; color: #94a3b8; cursor: pointer;">
+          <i class="ph-bold ph-x"></i>
+        </button>
       </div>
 
-      <!-- Card 3: התפלגות לפי תחומים -->
-      <div class="dashboard-card" style="margin-bottom: 0; display: flex; flex-direction: column;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <h3 id="chartTitle" style="margin: 0; font-size: 18px; font-weight: 600;">התפלגות תחומים</h3>
-          <span id="chartChip" class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35);">פעיל השבוע</span>
-        </div>
-        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 160px;">
-          <canvas id="sectorChart" style="max-height: 160px; width: 100%;"></canvas>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: var(--dashboard-muted);">
-          <span>מקורות: LinkedIn, Drushim & Comeet</span>
-          <button type="button" onclick="shareSyncLink()" class="dashboard-chip" aria-label="שיתוף קישור סנכרון" title="שיתוף קישור סנכרון" style="cursor: pointer; font-size: 11px; padding: 3px 10px;">
-            <i class="ph-duotone ph-share-network"></i> שיתוף קישור
+      <!-- Region Filter Capsule -->
+      <div class="search-capsule">
+        <i class="ph-duotone ph-map-pin" aria-hidden="true"></i>
+        <label for="regionFilter" class="sr-only" style="display:none;">אזור בארץ</label>
+        <select id="regionFilter" onchange="filterCards()" aria-label="כל האזורים בארץ" title="סינון לפי אזור בארץ">
+          <option value="all">כל האזורים בארץ</option>
+          <option value="center">מרכז וירושלים</option>
+          <option value="sharon">אזור השרון</option>
+          <option value="north">חיפה והצפון</option>
+          <option value="south">שפלה ודרום</option>
+          <option value="nationwide">פריסה ארצית / שטח</option>
+        </select>
+      </div>
+
+      <!-- Sector Filter Capsule -->
+      <div class="search-capsule">
+        <i class="ph-duotone ph-briefcase" aria-hidden="true"></i>
+        <label for="sectorFilter" class="sr-only" style="display:none;">תחום משרה</label>
+        <select id="sectorFilter" onchange="filterCards()" aria-label="כל התחומים" title="סינון לפי תחום">
+          <option value="all">כל התחומים</option>
+          <option value="scada">בקרה ו-SCADA</option>
+          <option value="solar">מערכות סולאריות</option>
+          <option value="natural_gas">גז טבעי</option>
+          <option value="drones">רחפנים וכטב"ם</option>
+          <option value="energy_tech">אגירה ו-Energy Tech</option>
+          <option value="operations">תפעול ואחזקה</option>
+          <option value="energy">אנרגיה כללית</option>
+        </select>
+      </div>
+
+      <!-- Sort Filter Capsule -->
+      <div class="search-capsule">
+        <i id="sortIcon" class="ph-duotone ph-calendar-blank" aria-hidden="true"></i>
+        <label for="sortSelect" class="sr-only" style="display:none;">אפשרות מיון</label>
+        <select id="sortSelect" onchange="changeSort(this.value)" title="בחר אפשרות מיון משרות" aria-label="בחר אפשרות מיון משרות">
+          <option value="date_desc">חדש קודם</option>
+          <option value="score_desc">ציון התאמה</option>
+          <option value="salary_desc">רמת שכר</option>
+          <option value="company_asc">שם חברה (א-ת)</option>
+        </select>
+      </div>
+
+      <!-- Tools & Modals Actions -->
+      <div class="search-ribbon-actions">
+        <button type="button" onclick="openDuplicatesModal()" class="tool-btn-compact" style="border-color: rgba(255, 211, 104, 0.35); color: var(--dashboard-gold); background: rgba(255, 211, 104, 0.08); border-radius: 999px; padding: 5px 12px;" title="סרוק כפילויות משרות" aria-label="בדיקת כפילויות משרות">
+          <i class="ph-duotone ph-copy" style="font-size: 14px;"></i>
+          <span>כפילויות</span>
+        </button>
+        <button type="button" id="btnOpenInactiveJobsModal" onclick="openInactiveJobsModal()" class="tool-btn-compact" style="border-color: rgba(239, 68, 68, 0.35); color: #fca5a5; background: rgba(239, 68, 68, 0.08); border-radius: 999px; padding: 5px 12px;" title="סרוק משרות לא פעילות שנסגרו" aria-label="סריקת משרות לא פעילות">
+          <i class="ph-duotone ph-link-break" style="font-size: 14px;"></i>
+          <span>שנסגרו</span>
+          <span id="inactiveJobsCountBadge" style="display: none; background: rgba(239, 68, 68, 0.35); color: #fff; font-size: 11px; padding: 1px 6px; border-radius: 999px; font-weight: 600;"></span>
+        </button>
+        <button type="button" id="btnResetFilters" onclick="resetAllFilters()" class="dashboard-chip btn-reset-filters" title="איפוס כל המסננים והחיפוש" style="border-radius: 999px; padding: 5px 12px; cursor: pointer;">
+          <i class="ph-duotone ph-arrow-counter-clockwise"></i>
+          <span>איפוס</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Result Status Line -->
+    <div id="filterResultSummary" style="display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding: 0 4px; font-size: 12px; color: var(--dashboard-muted);">
+      <div style="display: flex; align-items: center; gap: 6px; font-weight: 500;">
+        <span class="dashboard-dot" style="background: var(--dashboard-cyan); width: 6px; height: 6px; border-radius: 50%; display: inline-block;"></span>
+        <span id="filterStatusText">מוצגות כל המשרות הפעילות</span>
+      </div>
+    </div>
+
+    <!-- Main 2-Column Split Layout (Sidebar + Cards Grid) -->
+    <div class="radar-split-layout">
+
+      <!-- Right Column: Sidebar (Copilot Card + Sector Chart + Actions) -->
+      <aside class="radar-sidebar" aria-label="סרגל עזר וכלים">
+        <!-- Copilot Promo Card (from Screenshot Reference) -->
+        <div class="copilot-promo-card">
+          <h3 class="copilot-promo-title">שדרג את מועמדותך בסטודיו קריירה</h3>
+          <p class="copilot-promo-desc">
+            התאמת ATS מדויקת, עריכת קו״ח A4 להדפסה, שדרוג פרופיל LinkedIn וסימולטור שאלות STAR מקצועי.
+          </p>
+          <button type="button" class="copilot-promo-btn" onclick="switchDashboardAppMode('studio')" title="פתח את סטודיו קריירה">
+            <i class="ph-duotone ph-sparkle" aria-hidden="true"></i>
+            <span>כניסה לסטודיו קריירה</span>
           </button>
         </div>
-      </div>
 
-    </div>
-
-    <!-- Contextual Action Bar for Saved Jobs (Export to Excel) -->
-    <div id="savedActionBar" class="context-action-bar saved" style="display: none;">
-      <div style="display: flex; align-items: center; gap: 14px;">
-        <div class="stat-icon-squircle cyan" style="width: 44px; height: 44px; font-size: 24px;">
-          <i class="ph-duotone ph-bookmark-simple"></i>
+        <!-- Sector Distribution Card -->
+        <div class="dashboard-card" style="margin-bottom: 0; display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <h3 id="chartTitle" style="margin: 0; font-size: 16px; font-weight: 700;">התפלגות תחומים</h3>
+            <span id="chartChip" class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35);">פעיל</span>
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 150px;">
+            <canvas id="sectorChart" style="max-height: 150px; width: 100%;"></canvas>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 11.5px; color: var(--dashboard-muted);">
+            <span>מקורות: LinkedIn, Drushim, ATS</span>
+            <button type="button" onclick="shareSyncLink()" class="dashboard-chip" aria-label="שיתוף קישור סנכרון" title="שיתוף קישור סנכרון" style="cursor: pointer; font-size: 11px; padding: 2px 8px;">
+              <i class="ph-duotone ph-share-network"></i> שיתוף
+            </button>
+          </div>
         </div>
-        <div>
-          <div style="font-size: 16px; font-weight: 600; color: var(--dashboard-cyan);">משרות ששמרת להגשה</div>
-          <div style="font-size: 13px; color: var(--dashboard-muted);">ייצוא מהיר של כל המשרות השמורות לקובץ Excel מסודר עם קישורים ישירים ונתוני שכר.</div>
-        </div>
-      </div>
-      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-        <button onclick="exportSavedToExcel()" class="btn-excel" style="white-space: nowrap;" title="הורד קובץ Excel מסודר עם כל המשרות השמורות">
-          <i class="ph-duotone ph-file-xls"></i> <span>ייצוא לאקסל (Excel)</span>
-        </button>
-      </div>
-    </div>
 
-    <!-- Contextual Action Bar for Rejected Jobs (Permanent Delete & Reset) -->
-    <div id="rejectedActionBar" class="context-action-bar rejected" style="display: none;">
-      <div style="display: flex; align-items: center; gap: 14px;">
-        <div class="stat-icon-squircle gold" style="width: 44px; height: 44px; font-size: 24px; color: #fca5a5;">
-          <i class="ph-duotone ph-trash"></i>
+        <!-- Contextual Action Bar for Saved Jobs (Export to Excel) -->
+        <div id="savedActionBar" class="context-action-bar saved" style="display: none; border-radius: 16px; padding: 14px;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <div class="stat-icon-squircle cyan" style="width: 36px; height: 36px; font-size: 18px;">
+              <i class="ph-duotone ph-bookmark-simple"></i>
+            </div>
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: var(--dashboard-cyan);">משרות שמורות להגשה</div>
+            </div>
+          </div>
+          <button onclick="exportSavedToExcel()" class="btn-excel" style="width: 100%; justify-content: center; font-size: 13px;" title="הורד קובץ Excel מסודר עם כל המשרות השמורות">
+            <i class="ph-duotone ph-file-xls"></i> <span>ייצוא לאקסל (Excel)</span>
+          </button>
         </div>
-        <div>
-          <div style="font-size: 16px; font-weight: 600; color: #fca5a5;">משרות שסומנו להסרה</div>
-          <div style="font-size: 13px; color: var(--dashboard-muted);">לחיצה על מחיקה תנקה את כל הרשימה לצמיתות מכל המכשירים ותאפס את המספר ל-0.</div>
+
+        <!-- Contextual Action Bar for Rejected Jobs (Permanent Delete & Reset) -->
+        <div id="rejectedActionBar" class="context-action-bar rejected" style="display: none; border-radius: 16px; padding: 14px;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+            <div class="stat-icon-squircle gold" style="width: 36px; height: 36px; font-size: 18px; color: #fca5a5;">
+              <i class="ph-duotone ph-trash"></i>
+            </div>
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: #fca5a5;">משרות שסומנו להסרה</div>
+            </div>
+          </div>
+          <button onclick="clearAllRejected()" class="btn-triage" style="width: 100%; justify-content: center; background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-color: rgba(239, 68, 68, 0.5); font-size: 13px;">
+            <i class="ph-duotone ph-trash-simple"></i> <span>מחיקה לצמיתות ואיפוס</span>
+          </button>
         </div>
-      </div>
-      <button onclick="clearAllRejected()" class="btn-triage" style="background: rgba(239, 68, 68, 0.25); color: #fca5a5; border-color: rgba(239, 68, 68, 0.5); white-space: nowrap;">
-        <i class="ph-duotone ph-trash-simple"></i> <span>מחיקה לצמיתות ואיפוס</span>
-      </button>
-    </div>
+      </aside>
 
-    <!-- Cards View Header (Count & Grid/Map Toggle) -->
-    <div class="cards-view-header">
-      <div class="cards-count-summary">
-        <i class="ph-duotone ph-briefcase" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
-        <span id="visibleJobsCountText">סה״כ משרות חדשות: __TOTAL_NEW_JOBS__</span>
-      </div>
-      <div class="view-mode-toggle" role="group" aria-label="מצב תצוגה">
-        <button type="button" id="viewGridBtn" class="view-toggle-btn active" onclick="setViewMode('grid')" title="תצוגת קוביות (Grid)">
-          <i class="ph-bold ph-squares-four"></i> <span>קוביות</span>
-        </button>
-        <button type="button" id="viewMapBtn" class="view-toggle-btn" onclick="setViewMode('map')" title="תצוגת מפה חיה (Map)">
-          <i class="ph-bold ph-map-trifold"></i> <span>מפה</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Job Cards List -->
-    <div id="cardsContainer"></div>
-
-    <!-- Map View Container -->
-    <div id="mapViewContainer" style="display: none;">
-      <div id="mapHeaderBar" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: rgba(15, 23, 42, 0.75); border-bottom: 1px solid var(--dashboard-edge); font-size: 13px; flex-wrap: wrap; gap: 8px;">
-        <div style="display: flex; align-items: center; gap: 8px; color: var(--dashboard-cyan); font-weight: 700;">
-          <i class="ph-duotone ph-map-pin" style="font-size: 18px;"></i>
-          <span id="mapMarkersCountText">מציג משרות על המפה</span>
+      <!-- Left Column: Main Content Area (Cards Grid & Map View) -->
+      <section class="radar-main-content" aria-label="רשימת משרות מומלצות">
+        <!-- Cards View Header (Count & Grid/Map Toggle) -->
+        <div class="cards-view-header" style="margin-top: 0;">
+          <div class="cards-count-summary">
+            <i class="ph-duotone ph-briefcase" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
+            <span id="visibleJobsCountText">סה״כ משרות חדשות: __TOTAL_NEW_JOBS__</span>
+          </div>
+          <div class="view-mode-toggle" role="group" aria-label="מצב תצוגה">
+            <button type="button" id="viewGridBtn" class="view-toggle-btn active" onclick="setViewMode('grid')" title="תצוגת קוביות (Grid)">
+              <i class="ph-bold ph-squares-four"></i> <span>קוביות</span>
+            </button>
+            <button type="button" id="viewMapBtn" class="view-toggle-btn" onclick="setViewMode('map')" title="תצוגת מפה חיה (Map)">
+              <i class="ph-bold ph-map-trifold"></i> <span>מפה</span>
+            </button>
+          </div>
         </div>
-        <div style="font-size: 12px; color: var(--dashboard-muted); display: flex; align-items: center; gap: 6px;">
-          <i class="ph-duotone ph-hand-pointing"></i>
-          <span>בחרו סמן לצפייה בפרטי המשרה</span>
-        </div>
-      </div>
-      <div id="liveJobsMap"></div>
-    </div>
 
-    <!-- Empty State -->
-    <div id="emptyState" class="dashboard-card empty-state" style="display: none; text-align: center; padding: 48px 24px;">
-      <div id="emptyStateIcon" style="font-size: 44px; margin-bottom: 12px; color: var(--dashboard-cyan);">
-        <i class="ph-duotone ph-magnifying-glass"></i>
-      </div>
-      <h3 id="emptyStateTitle" style="font-size: 20px; margin-bottom: 8px;">לא נמצאו משרות בהתאם לסינון</h3>
-      <p id="emptyStateDesc" style="color: var(--dashboard-muted); font-size: 15px; margin: 0;">נסה לבחור לשונית או תחום אחר.</p>
-    </div>
+        <!-- Job Cards List (3-Column Responsive Grid) -->
+        <div id="cardsContainer"></div>
+
+        <!-- Map View Container -->
+        <div id="mapViewContainer" style="display: none;">
+          <div id="mapHeaderBar" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: rgba(15, 23, 42, 0.75); border-bottom: 1px solid var(--dashboard-edge); font-size: 13px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px; color: var(--dashboard-cyan); font-weight: 700;">
+              <i class="ph-duotone ph-map-pin" style="font-size: 18px;"></i>
+              <span id="mapMarkersCountText">מציג משרות על המפה</span>
+            </div>
+            <div style="font-size: 12px; color: var(--dashboard-muted); display: flex; align-items: center; gap: 6px;">
+              <i class="ph-duotone ph-hand-pointing"></i>
+              <span>בחרו סמן לצפייה בפרטי המשרה</span>
+            </div>
+          </div>
+          <div id="liveJobsMap"></div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="dashboard-card empty-state" style="display: none; text-align: center; padding: 48px 24px;">
+          <div id="emptyStateIcon" style="font-size: 44px; margin-bottom: 12px; color: var(--dashboard-cyan);">
+            <i class="ph-duotone ph-magnifying-glass"></i>
+          </div>
+          <h3 id="emptyStateTitle" style="font-size: 20px; margin-bottom: 8px;">לא נמצאו משרות בהתאם לסינון</h3>
+          <p id="emptyStateDesc" style="color: var(--dashboard-muted); font-size: 15px; margin: 0;">נסה לבחור לשונית או תחום אחר.</p>
+        </div>
+      </section>
+
+    </div><!-- /.radar-split-layout -->
 
     </div><!-- /#radarWorkspace -->
 

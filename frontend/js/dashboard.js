@@ -1872,6 +1872,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   function hideCompanyLogoElement(img) {
+    const circle = img.closest('.card-logo-circle');
+    if (circle) {
+      circle.style.display = 'none';
+    }
     const parent = img.closest('.job-company-logo');
     if (parent) {
       parent.style.display = 'none';
@@ -1895,7 +1899,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
                decoding="async" 
                data-step="${info.initialStep}"
                onload="handleCompanyLogoLoad(this, '${safeDom}')" 
-               onerror="if(typeof handleCompanyLogoError==='function'){handleCompanyLogoError(this, '${safeDom}');}else{const p=this.closest('.job-company-logo');if(p)p.style.display='none';}" />
+               onerror="if(typeof handleCompanyLogoError==='function'){handleCompanyLogoError(this, '${safeDom}');}else{const c=this.closest('.card-logo-circle')||this.closest('.job-company-logo');if(c)c.style.display='none';}" />
         </div>
       `;
     }
@@ -2762,10 +2766,25 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const inactiveBadgeHtml = isInactive ? `<span class="dashboard-chip rose" style="font-size: 11px; padding: 2px 7px; gap: 4px; display: inline-flex; align-items: center;" title="${escapeHtml(getJobInactiveReason(link))}"><i class="ph-duotone ph-link-break"></i> משרה נסגרה</span>` : '';
 
       const curatedTags = getJobCuratedTags(job);
+      const pastelThemes = [
+        'card-pastel-peach',
+        'card-pastel-mint',
+        'card-pastel-lavender',
+        'card-pastel-sky',
+        'card-pastel-rose',
+        'card-pastel-slate'
+      ];
+      const pastelClass = pastelThemes[idx % pastelThemes.length];
+
+      let salaryValHtml = 'שכר ענפי גמיש';
+      if (job.salary_range && job.salary_range.trim() && job.salary_range !== 'לא צוין במודעה' && job.salary_range !== 'לא צוין') {
+        salaryValHtml = escapeHtml(normalizeSalaryRange(job.salary_range.trim()));
+      }
+
       let tagsHtml = '';
       if (curatedTags && curatedTags.length > 0) {
-        const pills = curatedTags.map(t => `<span class="job-tag-pill ${escapeHtml(t.type)}"><i class="${escapeHtml(t.icon)}"></i><span dir="auto">${escapeHtml(t.label)}</span></span>`).join('');
-        tagsHtml = `<div class="job-card-tags">${pills}</div>`;
+        const pills = curatedTags.map(t => `<span class="card-tag-pill"><i class="${escapeHtml(t.icon)}"></i><span dir="auto">${escapeHtml(t.label)}</span></span>`).join('');
+        tagsHtml = `<div class="card-tags-row">${pills}</div>`;
       }
 
       const card = document.createElement('article');
@@ -2776,82 +2795,66 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       card.setAttribute('data-region', classifiedRegion);
       card.setAttribute('data-starred', isStarred ? 'true' : 'false');
       card.setAttribute('data-score', score);
-      card.className = `dashboard-card job-card ${isStarred ? 'is-starred-card' : ''}`;
+      card.className = `dashboard-card job-card ${pastelClass} ${isStarred ? 'is-starred-card' : ''}`;
 
       card.innerHTML = `
-        <!-- Top Meta Row -->
-        <div class="job-card-topbar">
-          <div class="job-card-topbar-primary">
-            <div class="job-card-actions-group" style="display: flex; align-items: center; gap: 5px; flex-shrink: 0;">
-              <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar(${escapeHtml(JSON.stringify(String(id)))}, event)" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}" aria-label="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
-                <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
-              </button>
-              <button type="button" class="btn-copy-link" onclick="copyJobLink(${escapeHtml(JSON.stringify(String(link)))}, event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה">
-                <i class="ph-bold ph-share-network"></i>
-              </button>
-            </div>
-            <div class="job-card-topbar-badges">
-              ${inactiveBadgeHtml}
-              ${salaryTagHtml}
-              <div class="badge-score ${scoreClass}">
-                <span><i class="ph-duotone ph-lightning"></i> ${score}%</span> התאמה
-              </div>
-            </div>
+        <!-- Top Row: Date Pill & Actions -->
+        <div class="card-top-row">
+          <span class="card-date-pill">
+            <i class="ph-duotone ph-calendar-blank" style="font-size: 11px;"></i>
+            <span>${escapeHtml(jobDate)}</span>
+          </span>
+          <div class="card-top-actions">
+            <button type="button" class="btn-star ${isStarred ? 'is-starred' : ''}" onclick="toggleStar(${escapeHtml(JSON.stringify(String(id)))}, event)" title="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}" aria-label="${isStarred ? 'הסר כוכב מהמשרה' : 'סמן משרה בכוכב'}">
+              <i class="${isStarred ? 'ph-fill ph-star' : 'ph-bold ph-star'}"></i>
+            </button>
+            <button type="button" class="card-action-icon-btn action-save-btn ${state === 'saved' ? 'saved-active' : ''}" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved', event)" title="${state === 'saved' ? 'נשמר להגשה (לחץ להסרה)' : 'שמור להגשה'}" aria-label="שמור להגשה" style="width: 34px; height: 34px; border-radius: 50%;">
+              <i class="${state === 'saved' ? 'ph-fill ph-bookmark-simple' : 'ph-duotone ph-bookmark-simple'}"></i>
+            </button>
+            <button type="button" class="btn-copy-link" onclick="copyJobLink(${escapeHtml(JSON.stringify(String(link)))}, event)" title="העתק קישור למשרה" aria-label="העתק קישור למשרה" style="width: 34px; height: 34px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.7); border: 1px solid rgba(0,0,0,0.06); cursor: pointer; color: #6b7280;">
+              <i class="ph-bold ph-share-network"></i>
+            </button>
           </div>
         </div>
 
-        <!-- Title & Company Header -->
-        <div class="job-card-main-header">
-          ${logoHtml}
-          <div class="job-header-text">
-            <div class="job-company-name" dir="auto" title="${safeCompany}"><bdi>${safeCompany}</bdi></div>
-            <h2 class="job-title-text" dir="auto" title="${safeTitle}"><bdi>${safeTitle}</bdi></h2>
+        <!-- Body Header: Company + Job Title + Logo -->
+        <div class="card-body-header">
+          <div class="card-title-stack">
+            <div class="card-company-name" dir="auto" title="${safeCompany}"><bdi>${safeCompany}</bdi></div>
+            <h2 class="card-job-title" dir="auto" title="${safeTitle}"><bdi>${safeTitle}</bdi></h2>
           </div>
+          ${logoHtml ? `<div class="card-logo-circle">${logoHtml}</div>` : ''}
         </div>
 
-        <!-- Job Card Meta Row: Date, Location, Source -->
-        <div class="job-card-meta-row job-meta-grid">
-          <span class="meta-item"><i class="ph-duotone ph-calendar-blank"></i> <span class="meta-label">תאריך ברשימה:</span> ${escapeHtml(jobDate)}</span>
-          <span class="meta-item"><i class="ph-duotone ph-map-pin"></i> ${loc}</span>
-          <span class="meta-item"><i class="ph-duotone ${sourceIcon}"></i> <span class="meta-label">מקור:</span> ${escapeHtml(sourceName)}</span>
+        <!-- Tags Row: Match Score + Inactive + Curated -->
+        <div class="card-tags-row">
+          <span class="card-tag-pill" style="font-weight: 700; color: #059669; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.25);">
+            <i class="ph-duotone ph-lightning"></i> ${score}% התאמה
+          </span>
+          ${inactiveBadgeHtml}
+          ${curatedTags && curatedTags.length > 0 ? curatedTags.map(t => `<span class="card-tag-pill"><i class="${escapeHtml(t.icon)}"></i><span dir="auto">${escapeHtml(t.label)}</span></span>`).join('') : ''}
         </div>
 
-        <!-- Curated Tags (0 to 5 tags, flexible) -->
-        ${tagsHtml}
+        <!-- Key Requirements Snippet -->
+        <div class="card-reqs-preview" dir="auto">
+          <strong>דרישות סף:</strong> ${companyReqs}
+        </div>
 
-        <!-- Clean Key Requirements (Anchor 2 of 3) -->
-        <div class="job-key-requirements requirements-box">
-          <div class="job-key-requirements-header">
-            <i class="ph-duotone ph-check-circle"></i>
-            <span>דרישות סף:</span>
+        <!-- Bottom Row: Salary + Location & Actions Cluster -->
+        <div class="card-bottom-row">
+          <div class="card-salary-location">
+            <div class="card-salary-val">${salaryValHtml}</div>
+            <div class="card-location-text"><i class="ph-duotone ph-map-pin"></i> ${loc}</div>
           </div>
-          <div class="job-key-requirements-content" dir="auto">${companyReqs}</div>
-        </div>
 
-        <!-- Collapsible Full Information Panels (Anchors 1 & 3 of 3) -->
-        <div class="job-details-collapsible">
-          <div class="job-boxes-grid" style="margin-top: 8px;">
-            <div class="job-box">
-              <strong><i class="ph-duotone ph-buildings"></i> תחום ותפקיד:</strong>
-              <span dir="auto">${scopeAndRole}</span>
-            </div>
-            <div class="job-box ${matchInfo.isNoGap ? 'highlight-mint' : 'highlight-gold'}">
-              <strong><i class="ph-duotone ph-sparkle"></i> התאמה ופערים:</strong>
-              <span dir="auto">${matchInfo.fullHtml}</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Action Bar: Single-Row Compact Icon Buttons -->
-        <div class="job-actions-bar">
-          <div class="job-actions-cluster">
+          <div class="card-actions-cluster">
             <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="apply-icon-btn" title="הגש מועמדות" aria-label="הגש מועמדות" data-tooltip="הגש מועמדות" onclick="event.stopPropagation()">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="22" y1="2" x2="11" y2="13"></line>
                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
               </svg>
             </a>
-            <button type="button" class="card-action-icon-btn btn-open-in-studio" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}, event)" title="התאם קו״ח בסטודיו קריירה" aria-label="התאם קו״ח בסטודיו קריירה" data-tooltip="התאם קו״ח בסטודיו">
+            <button type="button" class="card-action-icon-btn btn-open-in-studio" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}, event)" title="התאם קו״ח בסטודיו קריירה" aria-label="התאם קו״ח בסטודיו קריירה" data-tooltip="התאם בסטודיו">
               <i class="ph-duotone ph-magic-wand"></i>
             </button>
             ${state === 'rejected' ? `
@@ -2862,9 +2865,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
               <i class="ph-duotone ph-trash-simple"></i>
             </button>
             ` : `
-            <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'saved', event)" class="card-action-icon-btn action-save-btn ${state === 'saved' ? 'saved-active' : ''}" title="${state === 'saved' ? 'נשמר להגשה (לחץ להסרה)' : 'שמור להגשה'}" aria-label="שמור להגשה" data-tooltip="${state === 'saved' ? 'נשמר להגשה' : 'שמור להגשה'}">
-              <i class="${state === 'saved' ? 'ph-fill ph-bookmark-simple' : 'ph-duotone ph-bookmark-simple'}"></i>
-            </button>
             <button type="button" onclick="toggleAction(${escapeHtml(JSON.stringify(String(id)))}, 'rejected', event)" class="card-action-icon-btn action-reject-btn" title="הסר משרה" aria-label="הסר משרה" data-tooltip="הסר משרה">
               <i class="ph-duotone ph-trash"></i>
             </button>
@@ -2874,10 +2874,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
               <i class="ph-duotone ph-link"></i>
             </a>
             ` : ''}
+            <button type="button" class="btn-details-pill" onclick="openJobModal(${escapeHtml(JSON.stringify(String(id)))})" title="צפייה בפרטי משרה מלאים וניתוח">
+              <span>פרטים</span>
+            </button>
           </div>
-          <button type="button" class="card-action-icon-btn btn-toggle-details" onclick="toggleCardDetails(this, event)" aria-expanded="false" title="הרחב ניתוח מלא" aria-label="הרחב ניתוח מלא" data-tooltip="הרחב ניתוח מלא">
-            <i class="ph-bold ph-caret-down"></i>
-          </button>
         </div>
       `;
 

@@ -3452,6 +3452,624 @@ letter-spacing: 0.2px;
   opacity: 0.75;
 }
 
+/* ==========================================================================
+   Neo-Job Board (Screenshot Reference Architecture & Pastel Card System)
+   ========================================================================== */
+
+/* --- Integrated Capsule Search & Filter Ribbon --- */
+.search-capsule-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(18, 22, 30, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  margin-top: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.search-capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 6px 14px;
+  color: #ffffff;
+  font-size: 13px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.search-capsule:focus-within {
+  border-color: var(--accent-primary, #8b5cf6);
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.search-capsule i {
+  font-size: 15px;
+  color: var(--dashboard-cyan, #a78bfa);
+}
+
+.search-capsule input,
+.search-capsule select {
+  background: transparent !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-size: 13px !important;
+  outline: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+  cursor: pointer;
+}
+
+.search-capsule select option {
+  background: #14171f;
+  color: #ffffff;
+}
+
+.search-capsule-input-wide {
+  flex: 1 1 200px;
+  min-width: 180px;
+}
+
+.search-capsule-input-wide input {
+  width: 100%;
+  cursor: text;
+}
+
+.search-ribbon-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-inline-start: auto;
+}
+
+/* --- Radar Workspace 2-Column Split Layout --- */
+.radar-split-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 16px;
+  box-sizing: border-box;
+}
+
+.radar-sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.radar-main-content {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* --- Copilot Promo Card --- */
+.copilot-promo-card {
+  background: #14171f;
+  border-radius: 20px;
+  padding: 24px 20px;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.copilot-promo-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.copilot-promo-title {
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.35;
+  margin: 0 0 10px;
+  color: #ffffff;
+  position: relative;
+  z-index: 1;
+}
+
+.copilot-promo-desc {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: #94a3b8;
+  margin: 0 0 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.copilot-promo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #7dd3fc;
+  color: #0f172a;
+  font-weight: 700;
+  font-size: 13.5px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  z-index: 1;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.copilot-promo-btn:hover {
+  background: #38bdf8;
+  transform: translateY(-1px);
+}
+
+/* --- Sidebar Fast Filters Card --- */
+.sidebar-filters-card {
+  background: rgba(20, 23, 31, 0.7);
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebar-filters-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.filter-group-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-pills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #e2e8f0;
+  font-size: 11.5px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.filter-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.filter-pill-btn.active {
+  background: var(--accent-primary, #8b5cf6);
+  border-color: var(--accent-primary, #8b5cf6);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* --- 3-Column Job Cards Grid --- */
+#cardsContainer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+@media (max-width: 1240px) {
+  #cardsContainer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 992px) {
+  .radar-split-layout {
+    flex-direction: column;
+  }
+  .radar-sidebar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 680px) {
+  #cardsContainer {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Neo Job Card & Pastel Themes --- */
+.job-card {
+  border-radius: 20px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  position: relative;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+.job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+/* Pastel Themes in Light Mode */
+.job-card.card-pastel-peach {
+  background: #FEEFE6;
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  color: #16191E;
+}
+.job-card.card-pastel-mint {
+  background: #E2F6ED;
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  color: #16191E;
+}
+.job-card.card-pastel-lavender {
+  background: #ECE5F9;
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  color: #16191E;
+}
+.job-card.card-pastel-sky {
+  background: #E3F2FD;
+  border: 1px solid rgba(14, 165, 233, 0.15);
+  color: #16191E;
+}
+.job-card.card-pastel-rose {
+  background: #FDE8ED;
+  border: 1px solid rgba(244, 63, 94, 0.15);
+  color: #16191E;
+}
+.job-card.card-pastel-slate {
+  background: #F3F4F6;
+  border: 1px solid rgba(107, 114, 128, 0.15);
+  color: #16191E;
+}
+
+/* Pastel Themes in Dark Mode (High Contrast & Tinted Glass) */
+:root[data-theme="dark"] .job-card.card-pastel-peach {
+  background: #231b17;
+  border: 1px solid rgba(249, 115, 22, 0.28);
+  color: #ffffff;
+}
+:root[data-theme="dark"] .job-card.card-pastel-mint {
+  background: #15221c;
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  color: #ffffff;
+}
+:root[data-theme="dark"] .job-card.card-pastel-lavender {
+  background: #1f192b;
+  border: 1px solid rgba(167, 139, 250, 0.28);
+  color: #ffffff;
+}
+:root[data-theme="dark"] .job-card.card-pastel-sky {
+  background: #15202b;
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  color: #ffffff;
+}
+:root[data-theme="dark"] .job-card.card-pastel-rose {
+  background: #25171f;
+  border: 1px solid rgba(244, 63, 94, 0.28);
+  color: #ffffff;
+}
+:root[data-theme="dark"] .job-card.card-pastel-slate {
+  background: #181d26;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  color: #ffffff;
+}
+
+/* Card Top Row */
+.card-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.card-date-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #374151;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+:root[data-theme="dark"] .card-date-pill {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #e5e7eb;
+}
+
+.card-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.job-card .btn-star {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #6b7280;
+  transition: transform 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.job-card .btn-star.is-starred {
+  color: #f59e0b;
+  background: #ffffff;
+}
+
+:root[data-theme="dark"] .job-card .btn-star {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #d1d5db;
+}
+
+:root[data-theme="dark"] .job-card .btn-star.is-starred {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+/* Card Body Header (Company + Title + Logo) */
+.card-body-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.card-title-stack {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-company-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4b5563;
+  line-height: 1.3;
+}
+
+:root[data-theme="dark"] .card-company-name {
+  color: #9ca3af;
+}
+
+.card-job-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+  color: #111827;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+:root[data-theme="dark"] .card-job-title {
+  color: #ffffff;
+}
+
+.card-logo-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.card-logo-circle:empty {
+  display: none !important;
+}
+
+.card-logo-circle img,
+.card-logo-circle svg {
+  max-width: 28px;
+  max-height: 28px;
+  object-fit: contain;
+}
+
+/* Card Tags Row */
+.card-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 100%;
+}
+
+.card-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  font-size: 11px;
+  font-weight: 500;
+  color: #374151;
+  white-space: nowrap;
+}
+
+:root[data-theme="dark"] .card-tag-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.06);
+  color: #e5e7eb;
+}
+
+/* Card Key Reqs Preview */
+.card-reqs-preview {
+  font-size: 12px;
+  line-height: 1.45;
+  color: #4b5563;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+:root[data-theme="dark"] .card-reqs-preview {
+  background: rgba(0, 0, 0, 0.2);
+  color: #9ca3af;
+}
+
+/* Card Bottom Row */
+.card-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+:root[data-theme="dark"] .card-bottom-row {
+  border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+.card-salary-location {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.card-salary-val {
+  font-size: 15.5px;
+  font-weight: 800;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+:root[data-theme="dark"] .card-salary-val {
+  color: #ffffff;
+}
+
+.card-location-text {
+  font-size: 12px;
+  color: #6b7280;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:root[data-theme="dark"] .card-location-text {
+  color: #9ca3af;
+}
+
+/* Card Actions Cluster & Details Button */
+.card-actions-cluster {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-details-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #14171f;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-details-pill:hover {
+  background: #000000;
+  transform: translateY(-1px);
+}
+
+:root[data-theme="dark"] .btn-details-pill {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+:root[data-theme="dark"] .btn-details-pill:hover {
+  background: #e2e8f0;
+}
+
 }
 
 @layer studio {
