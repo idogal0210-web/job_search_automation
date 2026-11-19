@@ -55,14 +55,14 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
 
     def test_01_wcag_aa_contrast_ratios_for_all_section_5_4_tokens(self):
         """Every foreground token in Light and Dark mode meets >= 4.5:1 against both canvas and surface."""
-        light_backgrounds = ("#F6F3EE", "#FFFFFF")
+        light_backgrounds = ("#F8FAFC", "#FFFFFF")
         light_foregrounds = {
-            "text-primary": "#1B2330",
-            "text-secondary": "#5B6472",
-            "accent-primary": "#1F4E79",
-            "status-fail": "#B42318",
-            "status-warn": "#B54708",
-            "status-pass": "#067647",
+            "text-primary": "#0F172A",
+            "text-secondary": "#475569",
+            "accent-primary": "#0369A1",
+            "status-fail": "#DC2626",
+            "status-warn": "#B45309",
+            "status-pass": "#047857",
         }
         for bg in light_backgrounds:
             for name, fg in light_foregrounds.items():
@@ -71,14 +71,14 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
                     ratio, 4.5, f"Light token {name} ({fg}) on {bg} has contrast {ratio:.2f} < 4.5:1"
                 )
 
-        dark_backgrounds = ("#12161C", "#1B212A")
+        dark_backgrounds = ("#0B0F19", "#131B2E")
         dark_foregrounds = {
-            "text-primary": "#E8EBF0",
-            "text-secondary": "#A3ACB9",
-            "accent-primary": "#7FB2E5",
-            "status-fail": "#F97066",
-            "status-warn": "#FDB022",
-            "status-pass": "#47CD89",
+            "text-primary": "#F8FAFC",
+            "text-secondary": "#94A3B8",
+            "accent-primary": "#38BDF8",
+            "status-fail": "#F87171",
+            "status-warn": "#FBBF24",
+            "status-pass": "#34D399",
         }
         for bg in dark_backgrounds:
             for name, fg in dark_foregrounds.items():
@@ -98,9 +98,9 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
         self.assertNotIn("direction: ltr !important;", self.css_text)
 
         for token in (
-            "#F6F3EE", "#12161C", "#FFFFFF", "#1B212A", "#1B2330", "#E8EBF0",
-            "#5B6472", "#A3ACB9", "#1F4E79", "#7FB2E5", "#B42318", "#F97066",
-            "#B54708", "#FDB022", "#067647", "#47CD89"
+            "#F8FAFC", "#0B0F19", "#FFFFFF", "#131B2E", "#0F172A",
+            "#475569", "#94A3B8", "#0369A1", "#38BDF8", "#DC2626", "#F87171",
+            "#B45309", "#FBBF24", "#047857", "#34D399"
         ):
             self.assertIn(token, self.css_text, f"Missing design token {token} in dashboard.css")
 

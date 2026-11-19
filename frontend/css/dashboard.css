@@ -27,29 +27,29 @@
     --sticky-bar-h: 56px;
 
     /* Glassmorphism Surface & Shadow System */
-    --glass-bg-canvas: #12161C;
+    --glass-bg-canvas: #0B0F19;
     --glass-bg-base: rgba(255, 255, 255, 0.04);
-    --glass-bg-card: rgba(27, 33, 42, 0.72);
-    --glass-bg-elevated: rgba(33, 41, 52, 0.88);
-    --glass-border: 1px solid rgba(255, 255, 255, 0.12);
-    --glass-border-hover: 1px solid rgba(255, 255, 255, 0.24);
-    --glass-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.14);
+    --glass-bg-card: rgba(19, 27, 46, 0.72);
+    --glass-bg-elevated: rgba(26, 35, 58, 0.90);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+    --glass-border-hover: 1px solid rgba(56, 189, 248, 0.35);
+    --glass-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.08);
     --shadow-glass-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
     --shadow-glass-md: 0 8px 24px rgba(0, 0, 0, 0.35);
     --shadow-glass-lg: 0 16px 48px rgba(0, 0, 0, 0.50);
-    --shadow-glass-glow: 0 0 20px rgba(127, 178, 229, 0.25);
+    --shadow-glass-glow: 0 0 20px rgba(56, 189, 248, 0.20);
 
     /* Dark Theme Tokens (Section 5.4 Default) */
-    --bg-canvas: #12161C;
-    --bg-surface: #1B212A;
-    --text-primary: #E8EBF0;
-    --text-secondary: #A3ACB9;
-    --accent-primary: #7FB2E5;
-    --status-fail: #F97066;
-    --status-warn: #FDB022;
-    --status-pass: #47CD89;
-    --border-subtle: 1px solid rgba(232, 235, 240, 0.14);
-    --shadow-floating: 0 8px 24px rgba(0, 0, 0, 0.32);
+    --bg-canvas: #0B0F19;
+    --bg-surface: #131B2E;
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --accent-primary: #38BDF8;
+    --status-fail: #F87171;
+    --status-warn: #FBBF24;
+    --status-pass: #34D399;
+    --border-subtle: 1px solid rgba(255, 255, 255, 0.08);
+    --shadow-floating: 0 8px 32px rgba(0, 0, 0, 0.50);
 
     /* Semantic Dashboard Mappings */
     --dashboard-text: var(--text-primary);
@@ -57,7 +57,7 @@
     --dashboard-lime: var(--status-pass);
     --dashboard-cyan: var(--accent-primary);
     --dashboard-gold: var(--status-warn);
-    --dashboard-edge: rgba(255, 255, 255, 0.12);
+    --dashboard-edge: rgba(255, 255, 255, 0.08);
     --dashboard-glass: var(--glass-bg-card);
     --dashboard-shadow: var(--shadow-glass-md);
   }
@@ -65,28 +65,28 @@
   @media (prefers-color-scheme: light) {
     :root:not([data-theme="dark"]) {
       color-scheme: light;
-      --bg-canvas: #F6F3EE;
+      --bg-canvas: #F8FAFC;
       --bg-surface: #FFFFFF;
-      --text-primary: #1B2330;
-      --text-secondary: #5B6472;
-      --accent-primary: #1F4E79;
-      --status-fail: #B42318;
-      --status-warn: #B54708;
-      --status-pass: #067647;
-      --border-subtle: 1px solid rgba(27, 35, 48, 0.14);
-      --shadow-floating: 0 8px 24px rgba(27, 35, 48, 0.10);
-      --glass-bg-canvas: #F6F3EE;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --accent-primary: #0369A1;
+      --status-fail: #DC2626;
+      --status-warn: #B45309;
+      --status-pass: #047857;
+      --border-subtle: 1px solid rgba(15, 23, 42, 0.12);
+      --shadow-floating: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --glass-bg-canvas: #F8FAFC;
       --glass-bg-base: rgba(255, 255, 255, 0.65);
-      --glass-bg-card: rgba(255, 255, 255, 0.82);
+      --glass-bg-card: rgba(255, 255, 255, 0.85);
       --glass-bg-elevated: rgba(255, 255, 255, 0.96);
-      --glass-border: 1px solid rgba(27, 35, 48, 0.12);
-      --glass-border-hover: 1px solid rgba(31, 78, 121, 0.28);
+      --glass-border: 1px solid rgba(15, 23, 42, 0.12);
+      --glass-border-hover: 1px solid rgba(3, 105, 161, 0.28);
       --glass-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.90);
-      --shadow-glass-sm: 0 2px 8px rgba(27, 35, 48, 0.06);
-      --shadow-glass-md: 0 8px 24px rgba(27, 35, 48, 0.10);
-      --shadow-glass-lg: 0 16px 48px rgba(27, 35, 48, 0.15);
-      --shadow-glass-glow: 0 0 20px rgba(31, 78, 121, 0.15);
-      --dashboard-edge: rgba(27, 35, 48, 0.12);
+      --shadow-glass-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+      --shadow-glass-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --shadow-glass-lg: 0 16px 48px rgba(15, 23, 42, 0.12);
+      --shadow-glass-glow: 0 0 20px rgba(3, 105, 161, 0.15);
+      --dashboard-edge: rgba(15, 23, 42, 0.12);
       --dashboard-glass: var(--glass-bg-card);
       --dashboard-shadow: var(--shadow-glass-md);
     }
@@ -94,71 +94,71 @@
 
   :root[data-theme="light"] {
     color-scheme: light;
-    --bg-canvas: #F6F3EE;
+    --bg-canvas: #F8FAFC;
     --bg-surface: #FFFFFF;
-    --text-primary: #1B2330;
-    --text-secondary: #5B6472;
-    --accent-primary: #1F4E79;
-    --status-fail: #B42318;
-    --status-warn: #B54708;
-    --status-pass: #067647;
-    --border-subtle: 1px solid rgba(27, 35, 48, 0.14);
-    --shadow-floating: 0 8px 24px rgba(27, 35, 48, 0.10);
-    --glass-bg-canvas: #F6F3EE;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --accent-primary: #0369A1;
+    --status-fail: #DC2626;
+    --status-warn: #B45309;
+    --status-pass: #047857;
+    --border-subtle: 1px solid rgba(15, 23, 42, 0.12);
+    --shadow-floating: 0 8px 24px rgba(15, 23, 42, 0.08);
+    --glass-bg-canvas: #F8FAFC;
     --glass-bg-base: rgba(255, 255, 255, 0.65);
-    --glass-bg-card: rgba(255, 255, 255, 0.82);
+    --glass-bg-card: rgba(255, 255, 255, 0.85);
     --glass-bg-elevated: rgba(255, 255, 255, 0.96);
-    --glass-border: 1px solid rgba(27, 35, 48, 0.12);
-    --glass-border-hover: 1px solid rgba(31, 78, 121, 0.28);
+    --glass-border: 1px solid rgba(15, 23, 42, 0.12);
+    --glass-border-hover: 1px solid rgba(3, 105, 161, 0.28);
     --glass-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.90);
-    --shadow-glass-sm: 0 2px 8px rgba(27, 35, 48, 0.06);
-    --shadow-glass-md: 0 8px 24px rgba(27, 35, 48, 0.10);
-    --shadow-glass-lg: 0 16px 48px rgba(27, 35, 48, 0.15);
-    --shadow-glass-glow: 0 0 20px rgba(31, 78, 121, 0.15);
-    --dashboard-edge: rgba(27, 35, 48, 0.12);
+    --shadow-glass-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+    --shadow-glass-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+    --shadow-glass-lg: 0 16px 48px rgba(15, 23, 42, 0.12);
+    --shadow-glass-glow: 0 0 20px rgba(3, 105, 161, 0.15);
+    --dashboard-edge: rgba(15, 23, 42, 0.12);
     --dashboard-glass: var(--glass-bg-card);
     --dashboard-shadow: var(--shadow-glass-md);
   }
 
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg-canvas: #0b0e14;
-    --bg-surface: #131722;
-    --text-primary: #ffffff;
-    --text-secondary: #8b92a5;
-    --accent-primary: #8b5cf6;
-    --dashboard-cyan: #a78bfa;
-    --status-fail: #ef4444;
-    --status-warn: #f59e0b;
-    --status-pass: #10b981;
-    --border-subtle: 1px solid rgba(255, 255, 255, 0.04);
-    --shadow-floating: 0 8px 32px rgba(0, 0, 0, 0.6);
-    --glass-bg-canvas: #0b0e14;
-    --glass-bg-base: rgba(19, 23, 34, 0.6);
-    --glass-bg-card: linear-gradient(180deg, rgba(30, 36, 48, 0.4) 0%, rgba(19, 23, 34, 0.8) 100%);
-    --glass-bg-elevated: #1a1f2e;
-    --glass-border: 1px solid rgba(255, 255, 255, 0.05);
-    --glass-border-hover: 1px solid rgba(167, 139, 250, 0.3);
-    --glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
-    --shadow-glass-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
-    --shadow-glass-md: 0 8px 24px rgba(0, 0, 0, 0.4);
-    --shadow-glass-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
-    --shadow-glass-glow: 0 0 24px rgba(139, 92, 246, 0.15);
-    --dashboard-edge: rgba(255, 255, 255, 0.05);
+    --bg-canvas: #0B0F19;
+    --bg-surface: #131B2E;
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --accent-primary: #38BDF8;
+    --dashboard-cyan: #38BDF8;
+    --status-fail: #F87171;
+    --status-warn: #FBBF24;
+    --status-pass: #34D399;
+    --border-subtle: 1px solid rgba(255, 255, 255, 0.08);
+    --shadow-floating: 0 8px 32px rgba(0, 0, 0, 0.50);
+    --glass-bg-canvas: #0B0F19;
+    --glass-bg-base: rgba(19, 27, 46, 0.60);
+    --glass-bg-card: linear-gradient(180deg, rgba(30, 41, 59, 0.45) 0%, rgba(19, 27, 46, 0.85) 100%);
+    --glass-bg-elevated: #1A233A;
+    --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+    --glass-border-hover: 1px solid rgba(56, 189, 248, 0.35);
+    --glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+    --shadow-glass-sm: 0 4px 12px rgba(0, 0, 0, 0.20);
+    --shadow-glass-md: 0 8px 24px rgba(0, 0, 0, 0.40);
+    --shadow-glass-lg: 0 16px 48px rgba(0, 0, 0, 0.60);
+    --shadow-glass-glow: 0 0 24px rgba(56, 189, 248, 0.18);
+    --dashboard-edge: rgba(255, 255, 255, 0.08);
     --dashboard-glass: var(--glass-bg-card);
     --dashboard-shadow: var(--shadow-glass-md);
   }
 
   @supports (color: light-dark(#000, #fff)) {
     :root:not([data-theme]) {
-      --bg-canvas: light-dark(#F6F3EE, #12161C);
-      --bg-surface: light-dark(#FFFFFF, #1B212A);
-      --text-primary: light-dark(#1B2330, #E8EBF0);
-      --text-secondary: light-dark(#5B6472, #A3ACB9);
-      --accent-primary: light-dark(#1F4E79, #7FB2E5);
-      --status-fail: light-dark(#B42318, #F97066);
-      --status-warn: light-dark(#B54708, #FDB022);
-      --status-pass: light-dark(#067647, #47CD89);
+      --bg-canvas: light-dark(#F8FAFC, #0B0F19);
+      --bg-surface: light-dark(#FFFFFF, #131B2E);
+      --text-primary: light-dark(#0F172A, #F8FAFC);
+      --text-secondary: light-dark(#475569, #94A3B8);
+      --accent-primary: light-dark(#0369A1, #38BDF8);
+      --status-fail: light-dark(#DC2626, #F87171);
+      --status-warn: light-dark(#B45309, #FBBF24);
+      --status-pass: light-dark(#047857, #34D399);
     }
   }
 
@@ -9658,9 +9658,9 @@ overflow: hidden;
 :root[data-theme="light"] body {
   background-color: var(--bg-canvas);
   background-image:
-    radial-gradient(circle at 12% 14%, rgba(31, 78, 121, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 88% 18%, rgba(99, 102, 241, 0.06) 0%, transparent 35%),
-    radial-gradient(circle at 50% 82%, rgba(16, 185, 129, 0.06) 0%, transparent 45%);
+    radial-gradient(circle at 12% 14%, rgba(3, 105, 161, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 88% 18%, rgba(99, 102, 241, 0.05) 0%, transparent 35%),
+    radial-gradient(circle at 50% 82%, rgba(4, 120, 87, 0.06) 0%, transparent 45%);
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
@@ -9688,7 +9688,7 @@ overflow: hidden;
 :root[data-theme="light"] .dashboard-app .studio-live-doc-viewer .live-preview-line {
   background: #f8fafc;
   color: #0f172a;
-  border-color: rgba(27, 35, 48, 0.12);
+  border-color: rgba(15, 23, 42, 0.12);
 }
 
 :root[data-theme="light"] .writer-audit-text {
@@ -9700,7 +9700,7 @@ overflow: hidden;
 :root[data-theme="light"] .dashboard-app textarea {
   background: #FFFFFF;
   color: var(--text-primary);
-  border-color: rgba(27, 35, 48, 0.22);
+  border-color: rgba(15, 23, 42, 0.20);
   color-scheme: light;
 }
 
@@ -9716,8 +9716,8 @@ overflow: hidden;
 
 :root[data-theme="light"] .cloud-pill.header-cloud-btn,
 :root[data-theme="light"] .cloud-pill.header-theme-btn {
-  background: rgba(27, 35, 48, 0.05) !important;
-  border-color: rgba(27, 35, 48, 0.16) !important;
+  background: rgba(15, 23, 42, 0.05) !important;
+  border-color: rgba(15, 23, 42, 0.16) !important;
   color: var(--text-primary) !important;
 }
 
@@ -9727,8 +9727,8 @@ overflow: hidden;
 }
 
 :root[data-theme="light"] .nav-pills-wrapper {
-  background: rgba(27, 35, 48, 0.06) !important;
-  border-color: rgba(27, 35, 48, 0.14) !important;
+  background: rgba(15, 23, 42, 0.06) !important;
+  border-color: rgba(15, 23, 42, 0.14) !important;
 }
 
 :root[data-theme="light"] .mode-switch-btn {
@@ -9740,7 +9740,7 @@ overflow: hidden;
 }
 
 :root[data-theme="light"] .mode-switch-btn.active {
-  background: #1F4E79 !important;
+  background: #0369A1 !important;
   color: #FFFFFF !important;
 }
 
@@ -9750,8 +9750,8 @@ overflow: hidden;
 
 :root[data-theme="light"] .header-stat-cubes .stat-box,
 :root[data-theme="light"] .header-stat-cubes .stat-cube-btn {
-  background: rgba(27, 35, 48, 0.04) !important;
-  border-color: rgba(27, 35, 48, 0.12) !important;
+  background: rgba(15, 23, 42, 0.04) !important;
+  border-color: rgba(15, 23, 42, 0.12) !important;
   color: var(--text-primary) !important;
 }
 
@@ -9764,13 +9764,13 @@ overflow: hidden;
 
 :root[data-theme="light"] .search-capsule-ribbon {
   background: #FFFFFF !important;
-  border-color: rgba(27, 35, 48, 0.12) !important;
-  box-shadow: 0 4px 16px rgba(27, 35, 48, 0.06) !important;
+  border-color: rgba(15, 23, 42, 0.12) !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06) !important;
 }
 
 :root[data-theme="light"] .search-capsule {
-  background: rgba(27, 35, 48, 0.04) !important;
-  border-color: rgba(27, 35, 48, 0.14) !important;
+  background: rgba(15, 23, 42, 0.04) !important;
+  border-color: rgba(15, 23, 42, 0.14) !important;
   color: var(--text-primary) !important;
 }
 
@@ -9781,29 +9781,29 @@ overflow: hidden;
 
 :root[data-theme="light"] .search-capsule select option {
   background: #FFFFFF !important;
-  color: #1B2330 !important;
+  color: #0F172A !important;
 }
 
 :root[data-theme="light"] .sync-time-chip {
   color: var(--text-secondary) !important;
-  background: rgba(27, 35, 48, 0.05) !important;
-  border-color: rgba(27, 35, 48, 0.1) !important;
+  background: rgba(15, 23, 42, 0.05) !important;
+  border-color: rgba(15, 23, 42, 0.10) !important;
 }
 
 :root[data-theme="light"] .btn-reset-filters {
-  background: rgba(27, 35, 48, 0.06) !important;
-  border-color: rgba(27, 35, 48, 0.18) !important;
+  background: rgba(15, 23, 42, 0.06) !important;
+  border-color: rgba(15, 23, 42, 0.18) !important;
   color: var(--text-secondary) !important;
 }
 
 :root[data-theme="light"] .btn-reset-filters:hover {
-  background: rgba(27, 35, 48, 0.1) !important;
+  background: rgba(15, 23, 42, 0.10) !important;
   color: var(--text-primary) !important;
 }
 
 }
 
-/* Targeted Deep-Purple Theme Overrides (unlayered to apply cleanly over theme.css without altering structure) */
+/* Targeted Theme Overrides */
 html:has(.dashboard-app),
 body:has(.dashboard-app),
 body {
@@ -9817,30 +9817,30 @@ body {
   --dashboard-text: var(--text-primary);
   --dashboard-muted: var(--text-secondary);
   --dashboard-cyan: var(--accent-primary);
-  --dashboard-edge: rgba(255, 255, 255, 0.05);
+  --dashboard-edge: rgba(255, 255, 255, 0.08);
   --dashboard-glass: var(--glass-bg-card);
   --dashboard-shadow: var(--shadow-glass-md);
 }
 
 :root[data-theme="dark"] .dashboard-app {
-  --dashboard-cyan: #a78bfa;
-  --dashboard-edge: rgba(255, 255, 255, 0.05);
+  --dashboard-cyan: #38BDF8;
+  --dashboard-edge: rgba(255, 255, 255, 0.08);
 }
 
 :root[data-theme="light"] .dashboard-app {
-  --dashboard-cyan: #1F4E79;
-  --dashboard-edge: rgba(27, 35, 48, 0.12);
+  --dashboard-cyan: #0369A1;
+  --dashboard-edge: rgba(15, 23, 42, 0.12);
 }
 
 .btn-apply.btn-apply-elegant,
 .dashboard-app a.btn-apply.btn-apply-elegant {
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
-  border-color: rgba(167, 139, 250, 0.5) !important;
-  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.25) !important;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
+  box-shadow: 0 2px 12px rgba(2, 132, 199, 0.25) !important;
 }
 
 .card-action-icon-btn.btn-open-in-studio {
-  background: rgba(139, 92, 246, 0.1) !important;
-  border-color: rgba(139, 92, 246, 0.2) !important;
-  color: #a78bfa !important;
+  background: rgba(56, 189, 248, 0.1) !important;
+  border-color: rgba(56, 189, 248, 0.25) !important;
+  color: #38BDF8 !important;
 }

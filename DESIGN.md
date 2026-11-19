@@ -35,17 +35,17 @@ Single source of truth for the visual design system of `job_search_automation` (
 
 | Role | Token | Dark Fallback (`:root`) | Light Mode (`data-theme="light"`) |
 | :--- | :--- | :--- | :--- |
-| Canvas | `--bg-canvas` | `#12161C` | `#F6F3EE` |
-| Surface | `--bg-surface` | `#1B212A` | `#FFFFFF` |
-| Card glass | `--glass-bg-card` | `rgba(27, 33, 42, 0.72)` | `rgba(255, 255, 255, 0.82)` |
-| Primary text | `--text-primary` | `#E8EBF0` | `#1B2330` |
-| Secondary text | `--text-secondary` | `#A3ACB9` | `#5B6472` |
-| Primary accent | `--accent-primary` | `#7FB2E5` | `#1F4E79` |
-| Status — Pass | `--status-pass` | `#47CD89` | `#067647` |
-| Status — Warn | `--status-warn` | `#FDB022` | `#B54708` |
-| Status — Fail | `--status-fail` | `#F97066` | `#B42318` |
+| Canvas | `--bg-canvas` | `#0B0F19` | `#F8FAFC` |
+| Surface | `--bg-surface` | `#131B2E` | `#FFFFFF` |
+| Card glass | `--glass-bg-card` | `rgba(19, 27, 46, 0.72)` | `rgba(255, 255, 255, 0.85)` |
+| Primary text | `--text-primary` | `#F8FAFC` | `#0F172A` |
+| Secondary text | `--text-secondary` | `#94A3B8` | `#475569` |
+| Primary accent | `--accent-primary` | `#38BDF8` | `#0369A1` |
+| Status — Pass | `--status-pass` | `#34D399` | `#047857` |
+| Status — Warn | `--status-warn` | `#FBBF24` | `#B45309` |
+| Status — Fail | `--status-fail` | `#F87171` | `#DC2626` |
 
-*Note:* The dark fallback tokens (`#12161C`, `#1B212A`, `#E8EBF0`, `#A3ACB9`, `#7FB2E5`, `#47CD89`, `#FDB022`, `#F97066`) and light tokens are verified for WCAG AA `>= 4.5:1` contrast by `tests/test_phase6_design_and_a11y.py`. Keep them defined in `:root`.
+*Note:* The dark tokens (`#0B0F19`, `#131B2E`, `#F8FAFC`, `#94A3B8`, `#38BDF8`, `#34D399`, `#FBBF24`, `#F87171`) and light tokens (`#F8FAFC`, `#FFFFFF`, `#0F172A`, `#475569`, `#0369A1`, `#047857`, `#B45309`, `#DC2626`) are verified for WCAG AA `>= 4.5:1` contrast by `tests/test_phase6_design_and_a11y.py`. Keep them defined in `:root`.
 
 ---
 
