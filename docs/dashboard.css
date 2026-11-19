@@ -8414,6 +8414,44 @@ border-top: 1px solid var(--dashboard-edge) !important;
   color: #a3e635;
 }
 
+/* Career Studio 4.0 A4 Document Page Boundary & Page-Break Indicators */
+.studio-live-doc-viewer.a4-page-frame {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+  padding: 24px 20px;
+  position: relative;
+  font-family: var(--font-sans, "Google Sans", Arial, sans-serif);
+}
+
+.studio-live-doc-viewer.a4-page-frame .live-preview-line {
+  background: #f8fafc;
+  color: #1e293b;
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+.a4-page-break-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--text-secondary, #64748b);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+.a4-page-break-indicator::before,
+.a4-page-break-indicator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px dashed rgba(100, 116, 139, 0.35);
+}
+
 /* Focus Mode: expands active tool to 100% full-width on demand */
 .dashboard-app #careerStudioWorkspace.is-focus-mode .studio-master-split {
   grid-template-columns: minmax(0, 1fr);

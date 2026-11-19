@@ -8562,6 +8562,15 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
   async function loadStaticStudioProfileFallback() {
     if (typeof fetch !== 'function' || studioProfileCache) return;
     try {
+      const resV2 = await fetch('career/career_studio_profile.json');
+      if (resV2.ok) {
+        const dataV2 = await resV2.json();
+        window.careerStudioProfileV2 = dataV2;
+        applyStudioProfileSync(dataV2, null);
+        return;
+      }
+    } catch (e) {}
+    try {
       const res = await fetch('career/studio_profile.json');
       if (res.ok) {
         const data = await res.json();

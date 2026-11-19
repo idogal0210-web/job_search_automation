@@ -51,6 +51,7 @@ job_search_automation/
 │   ├── js/dashboard.js             # Client-side SPA application logic and data fetcher
 │   ├── js/ui-fixes.js              # Client-side UI, BiDi, and auto-fix runtime script
 │   ├── data/studio_profile.json    # Tracked non-PII excluded employers config synced to Career Studio UI
+│   ├── data/career_studio_profile.json # Unified Career Studio profile schema (candidate facts, roles, STAR stories, exclusions)
 │   └── assets/                     # Local static assets and company logos
 ├── prompts/                        # Versioned LLM prompts extracted from code
 │   ├── job_evaluation_v1.txt       # Core job evaluation structured prompt

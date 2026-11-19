@@ -135,6 +135,10 @@ def build_and_save_docs_app(jobs, rejected_links, project_root, is_weekly=False)
         os.makedirs(os.path.join(docs_dir, "career", "cv"), exist_ok=True)
         shutil.copytree(cv_src, os.path.join(docs_dir, "career", "cv"), dirs_exist_ok=True)
     sync_studio_profile_json(project_root)
+    career_profile_src = os.path.join(frontend_dir, "data", "career_studio_profile.json")
+    if os.path.exists(career_profile_src):
+        os.makedirs(os.path.join(docs_dir, "career"), exist_ok=True)
+        shutil.copy2(career_profile_src, os.path.join(docs_dir, "career", "career_studio_profile.json"))
 
     build_id = datetime.now().strftime("%Y%m%d%H%M%S")
     now_str = datetime.now().strftime("%d.%m.%Y")
@@ -386,6 +390,7 @@ def sync_frontend_to_docs(project_root=ROOT_DIR):
         (os.path.join(frontend_dir, "css", "ui-fixes.css"), os.path.join(docs_dir, "ui-fixes.css")),
         (os.path.join(frontend_dir, "js", "dashboard.js"), os.path.join(docs_dir, "dashboard.js")),
         (os.path.join(frontend_dir, "js", "app.js"), os.path.join(docs_dir, "js", "app.js")),
+        (os.path.join(frontend_dir, "data", "career_studio_profile.json"), os.path.join(docs_dir, "career", "career_studio_profile.json")),
     ]
     for src_p, dst_p in pairs:
         if os.path.exists(src_p):
