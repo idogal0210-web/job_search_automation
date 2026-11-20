@@ -1,9 +1,177 @@
 {
   "schema_version": "2.0.0",
-  "build_id": "20261119150101",
-  "generated_at": "2026-11-19T15:01:01.454972",
-  "total_jobs": 39,
+  "build_id": "20261120143907",
+  "generated_at": "2026-11-20T14:39:07.348800",
+  "total_jobs": 34,
   "jobs": [
+    {
+      "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C-%D7%9E%D7%9B%D7%A8%D7%96%D7%99%D7%9D-%D7%95%D7%94%D7%AA%D7%A7%D7%A9%D7%A8%D7%95%D7%99%D7%95%D7%AA-%D7%9C%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98%D7%99-%D7%90%D7%A0%D7%A8%D7%92%D7%99%D7%94-at-avivim-consulting-placement-4489737292",
+      "title": "מנהל מכרזים והתקשרויות לפרויקטי אנרגיה",
+      "company": "AVIVIM - Consulting & Placement",
+      "location": "unknown",
+      "date": "2026-11-20",
+      "source": "LinkedIn",
+      "match_score": 85,
+      "base_match_score": 85,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "solar",
+      "company_domain_product": "ייעוץ והשמה לפרויקטי אנרגיה",
+      "company_summary": "",
+      "job_summary": "מנהל מכרזים והתקשרויות לפרויקטי אנרגיה, אחריות על הכנת הצעות מסחריות וטכניות ל-PV ו-BESS.",
+      "company_requirements": "מהנדס או הנדסאי מכונות/חשמל, 3 שנות ניסיון באנרגיה ותשתיות חשמל, ניסיון בפרויקטי PV/BESS.",
+      "experience_strengths": "הנדסאי מכונות מוסמך עם התמחות באנרגיה סולארית, אגירת אנרגיה (BESS) ומערכות חשמל.",
+      "reasoning": "המועמד הוא הנדסאי מכונות עם רקע בפרויקטי PV ו-BESS וניסיון בהנדסה ותשתיות אנרגיה.",
+      "key_highlights": "התאמה מלאה להשכלת הנדסאי מכונות מעולם האנרגיה והיכרות עם ציוד PV ו-BESS.",
+      "salary_range": "13,000 - 16,000 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • משרת יום",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: חדר בקרה ו-SCADA (אנרגיה ותשתיות קריטיות).",
+      "salary_source_url": "",
+      "p25": 13000,
+      "p75": 16000,
+      "logo": "https://media.licdn.com/dms/image/v2/C560BAQFjL2zZxIU0HA/company-logo_100_100/company-logo_100_100/0/1630610018985/avivim___consulting__placement_logo?e=2147483647&v=beta&t=V5QuhXUq_Eis7P9Zn9DYRcOTnXH-ASmPhwYiyPxO-u8",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/C560BAQFjL2zZxIU0HA/company-logo_100_100/company-logo_100_100/0/1630610018985/avivim___consulting__placement_logo?e=2147483647&v=beta&t=V5QuhXUq_Eis7P9Zn9DYRcOTnXH-ASmPhwYiyPxO-u8",
+      "snippet": "מהות התפקיד:\nאחריות על הכנת הצעות מסחריות וטכניות לפרויקטי אנרגיה, בדגש על PV, BESS ותשתיות חשמל, משלב קבלת ה־RFP/מכרז ועד להגשת הצעה מלאה.\nהתפקיד משלב הבנה הנדסית, תכנון קונספטואלי, תמחור, עבודה מול ספקים וקבלני משנה וניתוח סיכונים מסחריים וטכניים.\nתחומי אחריות מרכזיים:\nניהול תהליך ה־Bid מקבלת המכרז/RFP ועד להגשת ההצעה.\nלימוד מסמכי המכרז, מפרטים, SLD, תוכניות, דרישות חיבור והגדרת Scope of Work.\nהכנת Concept / Preliminary Design לצורך תמחור – העמדת ציוד, Layout ראשוני, בחירת קונפיגורציה והגדרת פתרון הנדסי.\nהכנת BOQ / BOM ואומדן כמויות.\nתמחור CAPEX לפרויקט: ציוד עיקרי, עבודות חשמל ואזרחיות, MV/HV, כבלים, תחנות משנה, SCADA/EMS, תקשורת, הקמה, בדיקות ו־Commissioning.\nקבלת הצעות מחיר מספקים וקבלני משנה, השוואת הצעות וניהול הבהרות טכניות ומסחריות.\nהיכרות שוטפת עם מחירי השוק, ספקים, קבלנים וטכנולוגיות בתחום האנרגיה.\nהכנת Cost Breakdown, תקציב בסיס ו־Tender Summary לאישור הנהלה.\nעבודה משותפת עם המחלקות השונות (משפטי, רכש, הנדסה, כספים).\nביצוע Bid-to-Execution Handover מסודר למנהל הפרויקט לאחר זכייה, כולל העברת התקציב, ההנחות, ההתחייבויות והסיכונים שעל בסיסם הוגשה ההצעה.\nבנייה ועדכון של מאגר מחירים ו־Cost Databaseארגוני המבוסס על הצעות ופרויקטים שבוצעו בפועל.\nביצוע Post-Bid / Post-Project analysis – השוואת התמחור המקורי לעלות בפועל והפקת לקחים להצעות הבאות.\nדרישות התפקיד (חובה):\nמהנדס/ת ו/או הנדסאי מכונות/חשמל מעולם האנרגיה.\nלפחות 3 שנות ניסיון בתחום האנרגיה/תשתיות חשמל.\nניסיון בפרויקטי PV ו/או BESS – עדיפות משמעותית לניסיון בשניהם.\nניסיון בתמחור, מכרזים, Engineering או Project Engineering בפרויקטי EPC.\nיכולת לקרוא ולהבין SLD, מפרטים טכניים, Layouts ותוכניות.\nיכולת לבצע תכנון קונספטואלי/ראשוני והעמדת ציוד לצורך בניית פתרון ותמחור.\nהבנה טובה של ציוד מרכזי: PV modules, inverters/PCS, BESS, transformers, MV/HV switchgear, cables, SCADA/EMS וכד'.\nהיכרות עם ספקים, קבלנים ומחירי שוק.\nExcel ברמה גבוהה ואנגלית מקצועית טובה מאוד.\nיתרון משמעותי\n: ניסיון בחברת EPC, עבודה מול ספקים בינלאומיים, תמחור תחנות משנה/HV/MV, AutoCAD, PVsyst, ניסיון בחוזי EPC והבנת תנאים מסחריים כגון warranties, LDs, payment milestones ו־performance guarantees.",
+      "stable_job_id": "li_4489737292",
+      "content_hash": "ch_1088487a92cf",
+      "requirement_assessments": [
+        {
+          "requirement": "מהנדס/ת ו/או הנדסאי מכונות/חשמל מעולם האנרגיה.",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "מהנדס/ת ו/או הנדסאי מכונות/חשמל מעולם האנרגיה.",
+            "source_field": "job_summary"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "המועמד הוא הנדסאי מכונות מוסמך עם התמחות באנרגיה ירוקה."
+        },
+        {
+          "requirement": "ניסיון בפרויקטי PV ו/או BESS",
+          "importance": "preferred",
+          "ad_evidence": {
+            "quote": "ניסיון בפרויקטי PV ו/או BESS – עדיפות משמעותית לניסיון בשניהם.",
+            "source_field": "job_summary"
+          },
+          "profile_evidence": {
+            "quote": "Natural Gas, Solar PV, BESS Energy Storage",
+            "source_field": "Core Profile"
+          },
+          "assessment": "match",
+          "explanation": "למועמד היכרות וניסיון מעשי בתחומי סולאר PV ואגירת אנרגיה BESS."
+        },
+        {
+          "requirement": "יכולת לקרוא ולהבין SLD, מפרטים טכניים, Layouts ותוכניות.",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "יכולת לקרוא ולהבין SLD, מפרטים טכניים, Layouts ותוכניות.",
+            "source_field": "job_summary"
+          },
+          "profile_evidence": {
+            "quote": "Solar PV field systems, battery storage (BESS) operations",
+            "source_field": "Key Competencies & Target Operational Focus"
+          },
+          "assessment": "match",
+          "explanation": "הרקע של המועמד במערכות אנרגיה כולל הבנה של תוכניות הנדסיות ותשתיות."
+        }
+      ],
+      "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+      "is_direct_ats": "",
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
+    },
+    {
+      "link": "https://il.linkedin.com/jobs/view/system-integration-engineer-at-applied-materials-israel-4487814341",
+      "title": "System Integration Engineer",
+      "company": "Applied Materials - Israel",
+      "location": "רחובות",
+      "date": "2026-11-20",
+      "source": "LinkedIn",
+      "match_score": 65,
+      "base_match_score": 65,
+      "priority_bonus": 0,
+      "evaluation_complete": true,
+      "evidence_status": "verified_quotes",
+      "sector_key": "other",
+      "company_domain_product": "ציוד בדיקה ומדידה לתעשיית המוליכים למחצה",
+      "company_summary": "",
+      "job_summary": "אינטגרציית מערכות מולטי-דיסציפלינריות מורכבות, הרכבה, בדיקות תפקוד, איתור תקלות אלקטרו-מכניות ותמיכה באתרים.",
+      "company_requirements": "דיפלומת הנדסאי מכונות או חשמל, 0-3 שנות ניסיון טכני רלוונטי, נכונות לנסיעות עד 10%.",
+      "experience_strengths": "דיפלומת הנדסאי מכונות, ידע אלקטרו-מכני, ניסיון באיתור תקלות ובדיקות תפעוליות.",
+      "reasoning": "תפקיד אינטגרציה אלקטרו-מכנית המתאים להנדסאי מכונות בתחילת הדרך, מחוץ לתחום האנרגיה.",
+      "key_highlights": "הגדרה ייעודית להנדסאי מכונות/חשמל, מותאם לבוגרים חדשים (0-3 שנות ניסיון), כולל כ-10% נסיעות.",
+      "salary_range": "11,500 - 15,000 ₪",
+      "salary_source_type": "sector_benchmark",
+      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+      "salary_source_url": "",
+      "p25": 11500,
+      "p75": 15000,
+      "logo": "https://media.licdn.com/dms/image/v2/D560BAQGQXZFTM-P1aA/company-logo_100_100/B56ZfwYXZpHcAc-/0/1752084610051/applied_materials_israel_logo?e=2147483647&v=beta&t=fz8rsBbT4pfj6GzzcTEsa7d2ywsVnp60ejvaUFXISMc",
+      "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQGQXZFTM-P1aA/company-logo_100_100/B56ZfwYXZpHcAc-/0/1752084610051/applied_materials_israel_logo?e=2147483647&v=beta&t=fz8rsBbT4pfj6GzzcTEsa7d2ywsVnp60ejvaUFXISMc",
+      "snippet": "Who We Are\nApplied Materials is the global leader in materials science and engineering solutions that are at the foundation of virtually every new semiconductor chip and advanced display in the world. The equipment that we create and service is essential to advancing AI and accelerating the commercialization of next-generation semiconductor chips. Join us and push the boundaries of materials science and engineering in a company at the foundation of the electronics industry. The work we do together advances the world’s technology.\nWhat We Offer\nLocation:\nRehovot,ISR\nYou’ll benefit from a supportive work culture that encourages you to learn, develop, and grow your career as you take on challenges and drive innovative solutions for our customers. We empower our team to push the boundaries of what is possible—while learning every day in a supportive leading global company. Visit our Careers website to learn more.\nAt Applied Materials, we care about the health and wellbeing of our employees. We’re committed to providing programs and support that encourage personal and professional growth and care for you at work, at home, or wherever you may go. Learn more about our benefits.\nSystem Integration Practical Engineer\nWe are looking for a highly talented hand-on System integration engineer to join our team and integrate complex multi-disciplinary systems.\nWhat’s in it for you?\nAs part of our team, you will work together with great people , hands-on with one of the most complex multi-disciplinary systems in the market, putting into practice many of the fields from your studies.\nOur Group:\nThe team is responsible for system integration of all Applied-Israel’s tools before shipment to the customer.\nIn addition, we lead R&D prototypes and new products in the organization , with large exposure to the most advanced technologies such as precise mechanics, electronics, motion and optics.\nWhat you'll be doing:\nResponsible for full system integration in order to meet the system’s specification, on time delivery and quality results until end of installation while managing both the technical and operational aspects of the tool’s integration process.\nTests and troubleshoots modules and fully integrates systems. Performs in-house customer acceptance tests. Travels to customer sites to install and support tools.\nEstablish and maintain effective relationships with customers and gain their trust and respect.\nFollow and complete documentation procedures and forms of semiconductor manufacturing equipment. Pursue and develop procedural, safety and process improvements. Identify problems and resolve problems as an individual or as a team.\nEvaluate system quality, performance and configuration issues. Resolve problems. Provide on-site production technical support, equipment operation, repair, maintenance, and upgrade.\nPerform complex operational and functional tests, calibrations, verification and troubleshooting of sub-assemblies and/or systems.\nWork with other cross-functional groups to develop, design, build and test new production assemblies and NPI systems\nTest and troubleshoot system level and component level problems in electrical and mechanical and optical systems and sub-systems.\nWork from schematics, diagrams, written and verbal descriptions, layouts or plans to perform moderate testing and troubleshooting.\nPerform necessary rework and assists in determining remedies for malfunctions and generates Quality Notifications.\nCompily logbooks and test procedures documentation utilizing good writing skills. Assists in revising, developing and implementing department and tool related procedures.\nPerform mechanical, electrical, beam, optics and process testing on systems to Engineering and Manufacturing documentation and specifications.\nObserves all safety standards. Maintains a secure, safe, clean and healthy work environment. Attends required health and safety training and follows safety and security policies, procedures and practices. Promptly reports accidents, injuries, safety hazards, or emergencies to supervisor or Safety dept. Follows operating instructions, uses protective equipment when required, and uses equipment and materials properly. Actively strives to prevent accidents and injuries.\nBecomes familiar with current manufacturing and/or engineering processes and stays informed of any changes in procedures. Assists in the correction of problems.\nWhat you should have?\nPractical Engineer diploma in in Mechanical / Electrical engineering\n0-3 years of relevant technical experience: System integration experience or other high complexity,\nTechnical background - Advantage\nUp to 10% traveling\nTeam player, Highly Creative and Proactive\nHigh level of independent work with constant drive for improvement\nWho we are?\nApplied Materials Israel\nis home to the Process Diagnostics and Control business unit (PDC). Based in Rehovot, we develop, manufacture and market cutting-edge machine learning and computer vision-based metrology and inspection products that are essential elements in wafer fabrication. By playing a significant role in enabling the production of the next generation of microchips, our expertise enables our customers to transform possibilities into reality.\nAdditional Information\nTime Type:\nFull time\nEmployee Type:\nNew College Grad\nTravel:\nYes, 10% of the Time\nRelocation Eligible:\nNo\nApplied Materials is an Equal Opportunity Employer. Qualified applicants will receive consideration for employment without regard to race, color, national origin, citizenship, ancestry, religion, creed, sex, sexual orientation, gender identity, age, disability, veteran or military status, or any other basis prohibited by law.",
+      "stable_job_id": "li_4487814341",
+      "content_hash": "ch_e1cdcb17f4dd",
+      "requirement_assessments": [
+        {
+          "requirement": "דיפלומת הנדסאי מכונות / חשמל",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "Practical Engineer diploma in in Mechanical / Electrical engineering",
+            "source_field": "job_description"
+          },
+          "profile_evidence": {
+            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "למועמד תעודת הנדסאי מכונות מוסמך."
+        },
+        {
+          "requirement": "ניסיון טכני של 0-3 שנים",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "0-3 years of relevant technical experience",
+            "source_field": "job_description"
+          },
+          "profile_evidence": {
+            "quote": "Ruppin Academic Center (2022)",
+            "source_field": "Education & Credentials"
+          },
+          "assessment": "match",
+          "explanation": "המועמד הינו בוגר מסלול הנדסאי ומתאים לטווח הניסיון המבוקש."
+        },
+        {
+          "requirement": "בדיקות ואיתור תקלות במערכות אלקטרו-מכניות",
+          "importance": "required",
+          "ad_evidence": {
+            "quote": "Test and troubleshoot system level and component level problems in electrical and mechanical and optical systems",
+            "source_field": "job_description"
+          },
+          "profile_evidence": {
+            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+            "source_field": "Key Competencies & Target Operational Focus"
+          },
+          "assessment": "match",
+          "explanation": "למועמד רקע מעשי בדיאגנוסטיקה ואיתור תקלות במערכות אלקטרו-מכניות."
+        }
+      ],
+      "fit_gaps": "התפקיד בתעשיית המוליכים למחצה ואינו מתמקד במערכות אנרגיה, תשתיות או SCADA.",
+      "is_direct_ats": "",
+      "is_field_work": false,
+      "provides_company_car": false,
+      "is_shifts_24_7": false,
+      "is_junior_friendly": false,
+      "curated_tags": []
+    },
     {
       "link": "https://www.drushim.co.il/job/39074548/df2dbdb5/",
       "title": "מנהל/ת מחלקת אנרגיה מתחדשת",
@@ -2626,592 +2794,6 @@
           "label": "Junior"
         }
       ]
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/debug-practical-engineer-at-solaredge-technologies-4401000393",
-      "title": "Debug Practical Engineer",
-      "company": "SolarEdge Technologies",
-      "location": "לא צוין במפורש",
-      "date": "2026-11-11",
-      "source": "LinkedIn",
-      "match_score": 90,
-      "base_match_score": 85,
-      "priority_bonus": 5,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "solar",
-      "company_domain_product": "SolarEdge Technologies - טכנולוגיות אנרגיה חכמה, ממירים סולאריים ואגירת אנרגיה",
-      "company_summary": "",
-      "job_summary": "דרוש הנדסאי מעשי או טכנאי אלקטרוניקה לצוות איכות ואמינות לביצוע אנליזת כשלים מעשית, בדיקות מעבדה ותמיכה בפתרון בעיות.",
-      "company_requirements": "הנדסאי או טכנאי אלקטרוניקה/חשמל, שליטה בציוד מעבדה, יכולת קריאת סכמות, אנגלית טכנית טובה.",
-      "experience_strengths": "הנדסאי מכונות מוסמך עם הבנה טכנית עמוקה במערכות אנרגיה ותפעול, ניסיון בעבודה עם כלי מדידה ותיעוד נתונים באקסל.",
-      "reasoning": "המוועמד הוא הנדסאי מכונות מוסמך עם רקע מוצק במערכות אנרגיה וניסיון מעשי המתאים בול לתפקידי מעבדה ובדיקות.",
-      "key_highlights": "התאמה גבוהה לרקע כהנדסאי מעשי, שליטה טובה באנגלית טכנית, ניסיון מעשי במערכות אלקטרומכניות.",
-      "salary_range": "12,500 - 16,500 ₪ (מקובל רכב ענפי)",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: סולארי ואגירת אנרגיה (PV / BESS).",
-      "salary_source_url": "",
-      "p25": 12500,
-      "p75": 16500,
-      "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGbyZbX7V9zzg/company-logo_100_100/company-logo_100_100/0/1689147743960/solaredge_logo?e=2147483647&v=beta&t=6svQGAyGX4rPqxAtJex_eCP1aRxvyeSTLH7Bmx9sSjA",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQGbyZbX7V9zzg/company-logo_100_100/company-logo_100_100/0/1689147743960/solaredge_logo?e=2147483647&v=beta&t=6svQGAyGX4rPqxAtJex_eCP1aRxvyeSTLH7Bmx9sSjA",
-      "snippet": "SolarEdge (NASDAQ: SEDG), is a global leader in high-performance smart energy technology, and millions of products installed in over 133 countries. Our diverse product offering comprises intelligent solar inverters, battery storage, backup systems, EV charging, and complete home energy management ecosystems. By leveraging world-class engineering capabilities and with a relentless focus on innovation, we strive to create a world where clean, green energy from the sun is the primary source of power for our homes, businesses, and just about everywhere we thrive.\nWe are seeking a skilled and motivated\nPractical Engineer (Electronics/Electrical)\nor\nElectronics Technician\nto join our Quality & Reliability team, specializing in hands‑on failure analysis, product investigation, and testing. The ideal candidate will have solid practical experience working with electronic circuits, performing measurements, and supporting troubleshooting activities at both the board and system level. This role involves conducting detailed failure analysis, assisting in root‑cause investigations, and performing experiments and tests to recreate issues and identify underlying problems. The position plays an important role in improving product reliability and supporting engineering teams.\nKey Responsibilities\nConduct electrical measurements, functional tests, and perform experiments to isolate and characterize fault mechanisms, including building test stations\nPerform hands‑on failure analysis on electronic boards, components, and system‑level assemblies, including careful removal of potting material to enable component-level inspection and testing without damage\nDocument findings, test results, and root cause hypotheses in a clear and structured manner using log files, pictures, Excel, and PowerPoint\nSupport Q&R engineers in root cause investigations and the definition of corrective and preventive actions\nOperate lab equipment including oscilloscopes, power supplies, DMMs, LCR meters, and thermal chambers\nCollaborate with teams within Q&R and with teams outside Q&R to resolve technical issues\nRequirements:\nPractical Engineer (Electronics/Electrical) or Electronics Technician with strong lab skills\nHands-on skills with lab equipment (oscilloscope, DMM, LCR meter, power supply)\nAbility to read schematics and understand analog and digital circuit behavior\nGood technical English (reading and writing)\nOrganized, detail-oriented, and methodical approach to problem solving\nPreferred Qualifications\nExperience with soldering, rework, and component-level troubleshooting\nBackground in power electronics — power converters, MOSFET/IGBT/SiC stages\nUnderstanding of common electronic failure mechanisms\nPrior experience in manufacturing, quality, or reliability engineering environments\n1–3 years of experience in electronics lab work, testing, or failure analysis",
-      "stable_job_id": "li_4401000393",
-      "content_hash": "ch_c5f1b075cc52",
-      "requirement_assessments": [
-        {
-          "requirement": "Practical Engineer (Electronics/Electrical) or Electronics Technician with strong lab skills",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Practical Engineer (Electronics/Electrical) or Electronics Technician with strong lab skills",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד הינו הנדסאי מוסמך בעל רקע טכני חזק ויכולות מעבדה, הגם שההתמחות היא במכונות ואנרגיה."
-        },
-        {
-          "requirement": "Hands-on skills with lab equipment (oscilloscope, DMM, LCR meter, power supply)",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Hands-on skills with lab equipment (oscilloscope, DMM, LCR meter, power supply)",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
-            "source_field": "Key Competencies & Target Operational Focus"
-          },
-          "assessment": "match",
-          "explanation": "למועמד יש רקע מעשי מוכח במערכות אלקטרומכניות, פתרון תקלות ותפעול ציוד."
-        },
-        {
-          "requirement": "Good technical English (reading and writing)",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Good technical English (reading and writing)",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
-            "source_field": "Key Competencies & Target Operational Focus"
-          },
-          "assessment": "match",
-          "explanation": "היכרות עם כלי תוכנה ואוטומציה מתקדמים מעידה על שליטה באנגלית טכנית."
-        },
-        {
-          "requirement": "1–3 years of experience in electronics lab work, testing, or failure analysis",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "1–3 years of experience in electronics lab work, testing, or failure analysis",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד בעל ניסיון מאז סיום הלימודים ב-2022 בתחום האנרגיה והמערכות הטכניות."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/debug-engineer-at-solaredge-technologies-4467245080",
-      "title": "Debug Engineer",
-      "company": "SolarEdge Technologies",
-      "location": "ישראל",
-      "date": "2026-11-11",
-      "source": "LinkedIn",
-      "match_score": 90,
-      "base_match_score": 85,
-      "priority_bonus": 5,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "solar",
-      "company_domain_product": "SolarEdge Technologies",
-      "company_summary": "",
-      "job_summary": "משרת מהנדס ניפוי שגיאות ואנליזת תקלות באלקטרוניקה במוצרי החברה, עבודה בסביבת מעבדה וייצור.",
-      "company_requirements": "השכלה טכנית רלוונטית, ניסיון באנליזת תקלות או סביבת מעבדה, אנגלית טכנית טובה.",
-      "experience_strengths": "הנדסאי מכונות מוסמך עם רקע מערכתי רחב, יכולות פתרון בעיות וניסיון בעבודה טכנית.",
-      "reasoning": "התאמה טובה לתפקיד טכני בסולאראדג' המשלב ניתוח תקלות, מעבדה והבנה אלקטרו-מכנית.",
-      "key_highlights": "התאמה לתחום הסולארי, דרישה להשכלה טכנית ויכולת עבודה בסביבת מעבדה.",
-      "salary_range": "12,500 - 16,500 ₪ (מקובל רכב ענפי)",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: סולארי ואגירת אנרגיה (PV / BESS).",
-      "salary_source_url": "",
-      "p25": 12500,
-      "p75": 16500,
-      "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGbyZbX7V9zzg/company-logo_100_100/company-logo_100_100/0/1689147743960/solaredge_logo?e=2147483647&v=beta&t=6svQGAyGX4rPqxAtJex_eCP1aRxvyeSTLH7Bmx9sSjA",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQGbyZbX7V9zzg/company-logo_100_100/company-logo_100_100/0/1689147743960/solaredge_logo?e=2147483647&v=beta&t=6svQGAyGX4rPqxAtJex_eCP1aRxvyeSTLH7Bmx9sSjA",
-      "snippet": "As part of this role, you will be responsible for performing electronic failure analysis on SolarEdge’s complex products in both manufacturing and development environments. The position includes identifying root causes, leading corrective actions, and working closely with Engineering, Quality, and Production teams to ensure high product quality and reliability.\nResponsibilities:\nPerform failure analysis on electronic products, boards, and systems\nIdentify root causes and lead debug activities\nDefine and implement corrective and preventive actions\nWork with lab equipment and test systems\nCollaborate with Engineering, Quality, and Production teams\nSupport continuous quality and reliability improvement processes\nRequirements:\nRelevant technical education (Practical Electronics Engineer / Technician- advantage)\nExperience in electronics manufacturing, failure analysis, or lab environments\nStrong analytical and problem‑solving skills\nTechnical English proficiency\nAbility to work in a dynamic, team‑oriented environment",
-      "stable_job_id": "li_4467245080",
-      "content_hash": "ch_0058b9ddbb2a",
-      "requirement_assessments": [
-        {
-          "requirement": "Relevant technical education (Practical Electronics Engineer / Technician- advantage)",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "Relevant technical education (Practical Electronics Engineer / Technician- advantage)",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "למועמד יש השכלה כהנדסאי מוסמך המהווה יתרון משמעותי."
-        },
-        {
-          "requirement": "Experience in electronics manufacturing, failure analysis, or lab environments",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Experience in electronics manufacturing, failure analysis, or lab environments",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "למועמד ניסיון בפתרון תקלות מערכתיות ואבחון רכיבים אלקטרו-מכניים."
-        },
-        {
-          "requirement": "Technical English proficiency",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Technical English proficiency",
-            "source_field": "snippet"
-          },
-          "profile_evidence": {
-            "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
-            "source_field": "Candidate profile"
-          },
-          "assessment": "match",
-          "explanation": "המועמד שולט בכלים טכנולוגיים מתקדמים המעידים על אנגלית טכנית ברמה גבוהה."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/pmo-%E2%80%93-ai-data-center-at-enlight-renewable-energy-ltd-enlt-4488802260",
-      "title": "PMO – AI Data Center",
-      "company": "Enlight Renewable Energy Ltd (ENLT)",
-      "location": "ישראל",
-      "date": "2026-11-11",
-      "source": "LinkedIn",
-      "match_score": 87,
-      "base_match_score": 82,
-      "priority_bonus": 5,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "energy",
-      "company_domain_product": "אנרגיה מתחדשת ופרויקטי תשתית",
-      "company_summary": "",
-      "job_summary": "דרוש/ה PMO להובלת בקרת לוחות זמנים, ניהול מסמכים ואינטגרציה בפרויקטי ענק של מרכזי נתונים ואנרגיה מתחדשת.",
-      "company_requirements": "תואר אקדמי או תעודת הסמכה בהנדסה, ניסיון כ-PMO או בבקרת פרויקטי בנייה, ושליטה בכלי ניהול פרויקטים.",
-      "experience_strengths": "הנדסאי מכונות מוסמך, שליטה בכלים אנליטיים, רקע במערכות אנרגיה ותפעול רב-תחומי.",
-      "reasoning": "המועמד הוא הנדסאי מכונות עם רקע באנרגיה וניהול פרויקטים טכניים, המתאים לתפקיד PMO הנדסי.",
-      "key_highlights": "ניסיון עבודה בסביבה הנדסית, היכרות עם כלי ניתוח נתונים, ויכולת תיאום מול גורמים רבים.",
-      "salary_range": "12,500 - 16,500 ₪ (מקובל רכב ענפי)",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: סולארי ואגירת אנרגיה (PV / BESS).",
-      "salary_source_url": "",
-      "p25": 12500,
-      "p75": 16500,
-      "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQFJ4jgNvwtMcw/company-logo_100_100/B4DZv_A.PUJwAQ-/0/1769510004095/enlight_renewable_energy_ltd_enlt__logo?e=2147483647&v=beta&t=7oYXaUoX6YIzMdxXX_Z9BsZ4MSAMUlYj8EdgvlulNLY",
-      "snippet": "We are seeking a PMO to join this dedicated data center task force. The PMO will serve as a central function within the task force, acting as a key integrator across all project workstreams and stakeholders.\nIn this role, the PMO will hold the full project view of mega-scale data center projects, from site development, zoning and permitting, through design and engineering, to construction, commissioning and handover. The PMO will oversee integrated project schedules and deliverables control, and drive reporting, data management and performance visibility across all workstreams.\nThe PMO will work closely with a large, multidisciplinary group, including designers, team leaders, project managers, engineering teams, consultants, contractors, suppliers and senior management, to ensure alignment, transparency, and informed decision-making, supporting the successful delivery of projects in accordance with contractual milestones and strategic objectives.\nResponsibilities:\nDevelop, maintain, and oversee detailed project schedules from early development, zoning and permitting through design, construction, commissioning, and handover to client and O&M\nMonitor overall project and portfolio progress, identifying risks, delays, and mitigation strategies\nPerform schedule analysis, critical path analysis, and progress tracking across projects\nLead deliverables control across all workstreams, tracking design packages, permit and zoning submissions, contractor and supplier submittals, review cycles and approvals against project milestones\nLead the preparation of management reports, dashboards, deliverables status, and performance insights\nMaintain and enhance BI tools, ensuring data accuracy, consistency, and timely updates\nProvide structured updates and key insights to management to support decision-making\nordinate inputs across engineering, procurement, construction, and subcontractors to ensure alignment\nSupport change management and development of recovery plans when required\nCapture, document, and implement lessons learned across projects to drive continuous improvement\nSupport the development, standardization, and enforcing of data center specific company and departmental procedures, tools, and best practices\nDrive standardization of planning, reporting, and control processes within the department\nLead project deliverables planning and control across all workstreams, including establishing submission plans, defining milestones and target dates, assigning responsible stakeholders, monitoring progress of all project deliverables, identifying gaps and delays, and driving corrective actions to ensure timely completion and alignment with project objectives.\nRequirements:\nAcademic degree or professional certificate studies in Engineering, Construction Management, Industrial Engineering, or a related field, combined with solid hands-on experience\nProven experience in a PMO, Planning, or Project Controls role within construction projects (renewable energy – advantage)\nExperience with data center projects – advantage\nStrong knowledge with MS Project\nGood understanding of construction methodologies and the full project lifecycle, including design, permitting and zoning\nStrong analytical skills with the ability to translate data into insights\nAbility to work both independently and within a multidisciplinary team\nExcellent communication, coordination, and stakeholder management skills\nExperience with reporting tools and BI platforms (e.g., Power BI) – advantage\nExperience with deliverables or document control systems (e.g., Aconex, Procore) – advantage\nExperience with AI tools - advantage",
-      "stable_job_id": "li_4488802260",
-      "content_hash": "ch_150a9ad2cd4d",
-      "requirement_assessments": [
-        {
-          "requirement": "תואר אקדמי או תעודת הסמכה בהנדסה, ניהול בנייה או תחום קשור",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Academic degree or professional certificate studies in Engineering, Construction Management, Industrial Engineering, or a related field",
-            "source_field": "Requirements"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "למועמד תעודת הנדסאי מכונות המוכרת כתעודת הסמכה הנדסית."
-        },
-        {
-          "requirement": "ניסיון קודם בתפקיד PMO, תכנון או בקרת פרויקטי בנייה",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "Proven experience in a PMO, Planning, or Project Controls role within construction projects",
-            "source_field": "Requirements"
-          },
-          "profile_evidence": {
-            "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer with Deep Specialization in Energy Systems",
-            "source_field": "Core Profile"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע טכני מוצק והבנה בפרויקטי אנרגיה ותשתיות."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
-    },
-    {
-      "link": "https://www.drushim.co.il/job/39056251/0c22fe89/",
-      "title": "אינטגרטור/ית ומכייל/ת מערכות אופטיות בחברת הייטק",
-      "company": "AVT",
-      "location": "כפר סבא",
-      "date": "2026-11-11",
-      "source": "Drushim",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "other",
-      "company_domain_product": "מערכות מולטידיסציפלינריות מתקדמות לבקרת איכות אוטומטית בתעשיית הדפוס",
-      "company_summary": "",
-      "job_summary": "אינטגרציה וכיול של מערכות אופטיות מולטידיסציפלינריות במחלקת הייצור של חברת AVT.",
-      "company_requirements": "השכלה כהנדסאי/ת מכונות או אלקטרוניקה, ניסיון בהרכבות מכניות וקריאת שרטוטים, אנגלית ברמה גבוהה.",
-      "experience_strengths": "הנדסאי מכונות מוסמך, רקע בהרכבות אלקטרו-מכניות וקריאת שרטוטים.",
-      "reasoning": "המוועמד הינו הנדסאי מכונות עם ניסיון במערכות מולטידיסציפלינריות, קריאת שרטוטים והרכבות מכניות.",
-      "key_highlights": "השכלה כהנדסאי מכונות, ניסיון בהרכבות וקריאת שרטוטים, הבנה טכנית רחבה.",
-      "salary_range": "11,500 - 15,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": "https://webapi.drushim.co.il/logos/970466/page/13506986.jpg",
-      "company_logo_url": "https://webapi.drushim.co.il/logos/970466/page/13506986.jpg",
-      "snippet": "אינטגרטור/ית ומכייל/ת מערכות אופטיות בחברת הייטק\nAVT\nכפר סבא\n1-2 שנים\nמשרה מלאה\nלפני 4 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברת AVT, חברת הייטק מובילה בתחום הפיתוח והייצור של מערכות מולטידיסציפלינריות מתקדמות לבקרת איכות אוטומטית בתעשיית הדפוס, דרוש/ה אינטגרטור/ית ומכייל/ת מערכות אופטיות למחלקת הייצור.\nאנחנו מציעים סביבת עבודה טכנולוגית, מקצועית ודינמית, לצד אווירה משפחתית ונעימה.\nבמסגרת התפקיד תהיה לך אחריות על תהליך מלא של בנייה, אינטגרציה וכיול של מערכות אופטיות מתקדמות, לרבות קריאת שרטוטים, ביצוע התאמות ופתרון תקלות מערכתיות.\nדרישות התפקיד\n*השכלה רלוונטית כגון הנדסאי/ת או טכנאי/ת בתחום האלקטרוניקה/ מכונות/ מחשוב.\n*נסיון של שנה ומעלה בהרכבות מכאניות, קריאת שרטוטים ועצי מוצר.\n* נכונות לנסיעות לחו\"ל (1-2 נסיעות בשנה).\n*היכרות קודמת עם מערכת לוגיסטית MFG והבנה כללית במחשבים (מערכות הפעלה, CPU וכיוב’)- יתרון\n*ידע באופטו-מכאניקה - יתרון\n*נסיון קודם מחברות מולטידיספלינריות - יתרון\n*אנגלית ברמה גבוהה\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nתעשיה / ייצור\nתחומים\nעובד/ת ייצור\nמרכיב/ה מכאני/ת\nאיש/ת מכשור ובקרה",
-      "stable_job_id": "drushim_39056251",
-      "content_hash": "ch_e32e3d66e3c0",
-      "requirement_assessments": [
-        {
-          "requirement": "השכלה רלוונטית כגון הנדסאי/ת או טכנאי/ת בתחום האלקטרוניקה/ מכונות",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "השכלה רלוונטית כגון הנדסאי/ת או טכנאי/ת בתחום האלקטרוניקה/ מכונות/ מחשוב",
-            "source_field": "job_summary"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד הוא הנדסאי מכונות מוסמך מטעם רופין."
-        },
-        {
-          "requirement": "נסיון של שנה ומעלה בהרכבות מכאניות, קריאת שרטוטים ועצי מוצר",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "נסיון של שנה ומעלה בהרכבות מכאניות, קריאת שרטוטים ועצי מוצר",
-            "source_field": "job_summary"
-          },
-          "profile_evidence": {
-            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
-            "source_field": "Key Competencies & Target Operational Focus"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע מוצק במערכות אלקטרו-מכניות ועבודה טכנית מעשית."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
-    },
-    {
-      "link": "https://www.drushim.co.il/job/38794906/e35ceddf/",
-      "title": "דרוש/ה טכנאי/ת לבדיקות איכות בצנרת",
-      "company": "AMTS - TQM",
-      "location": "קריית גת",
-      "date": "2026-11-11",
-      "source": "Drushim",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "natural_gas",
-      "company_domain_product": "AMTS - TQM",
-      "company_summary": "",
-      "job_summary": "דרוש/ה טכנאי/ת לבדיקות איכות למערכות גזים, הפעלה ואחזקה לפרויקט בקריית גת.",
-      "company_requirements": "כישורים טכניים, יכולת עבודה בצוות, עבודה בגובה, אנגלית יתרון.",
-      "experience_strengths": "הנדסאי מכונות מוסמך עם התמחות בגז טבעי ומערכות אנרגיה, רקע טכני חזק ויכולת עבודה עצמית.",
-      "reasoning": "התאמה טובה לתפקיד טכנאי בדיקות איכות למערכות גזים ואחזקה, בהתאם לרקע של המועמד בהנדסת מכונות.",
-      "key_highlights": "התפקיד כולל בדיקות איכות למערכות גזים, הפעלה ואחזקה בסביבה טכנולוגית מתקדמת.",
-      "salary_range": "11,500 - 15,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": null,
-      "company_logo_url": null,
-      "snippet": "A\nדרוש/ה טכנאי/ת לבדיקות איכות בצנרת\nAMTS - TQM\nקריית גת\nללא נסיון\nמשרה מלאה\nלפני 3 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nלחברה מובילה בישראל בתחום האיכות ופרויקטים גלובליים דרושים /ות טכנאי/ת לפרויקט בקרית גת.\nהתפקיד כולל ביצוע בדיקות איכות למערכות גזים, הפעלה ואחזקה.\nעבודה בסביבה טכנולוגית מתקדמת עם אפשרויות קידום והתפתחות מקצועית.\nדרישות התפקיד\n- יכולת עבודה בצוות, חשיבה יצירתית, כישורים טכניים, עבודה בגובה ויכולת עבודה עצמית\n- אנגלית - יתרון.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nתעשיה / ייצור\nתחומים\nבקרת איכות\nטכנאי/ת - תעשייה וייצור",
-      "stable_job_id": "drushim_38794906",
-      "content_hash": "ch_a2cce3d9ac0a",
-      "requirement_assessments": [
-        {
-          "requirement": "כישורים טכניים",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "כישורים טכניים",
-            "source_field": "job_summary"
-          },
-          "profile_evidence": {
-            "quote": "Practical Mechanical Engineer with Deep Specialization in Energy Systems",
-            "source_field": "Core Profile"
-          },
-          "assessment": "match",
-          "explanation": "למוועמד רקע חזק כהנדסאי מכונות וניסיון במערכות טכניות."
-        },
-        {
-          "requirement": "הפעלה ואחזקה למערכות גזים",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "ביצוע בדיקות איכות למערכות גזים, הפעלה ואחזקה",
-            "source_field": "job_summary"
-          },
-          "profile_evidence": {
-            "quote": "Natural Gas & Green Energy Specialization, Ruppin Academic Center",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המוועמד בעל התמחות ספציפית בגז טבעי ומערכות אנרגיה."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": true,
-      "curated_tags": [
-        {
-          "type": "tag-junior",
-          "icon": "ph-bold ph-graduation-cap",
-          "label": "Junior"
-        }
-      ]
-    },
-    {
-      "link": "https://www.drushim.co.il/job/38818751/774e6899/",
-      "title": "מפעילים/ות ואנשי אחזקה למט\"שים - שכר גבוה!!",
-      "company": "חסוי",
-      "location": "משאבי שדה / חולית / עפולה / משגב עם",
-      "date": "2026-11-11",
-      "source": "Drushim",
-      "match_score": 85,
-      "base_match_score": 85,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "operations",
-      "company_domain_product": "מתקני טיפול בשפכים ותשתיות",
-      "company_summary": "",
-      "job_summary": "תפעול שוטף ואחזקה של מתקני טיפול בשפכים, כולל אחזקה מונעת ותיקוני שבר, סיורים ובדיקות.",
-      "company_requirements": "ידע מכני בסיסי, שליטה במחשב, נכונות לעבודה בשטח ויתרון להנדסאי מכונות.",
-      "experience_strengths": "הנדסאי מכונות מוסמך, רקע חזק במערכות אלקטרו-מכניות ותפעול שוטף.",
-      "reasoning": "המועמד הוא הנדסאי מכונות מוסמך בעל ניסיון טכני ומכני המותאם לתפקידי תפעול ואחזקה מתקדמים.",
-      "key_highlights": "התאמה מלאה להנדסאי מכונות, יכולת עבודה טכנית ואחזקה מכנית מגוונת.",
-      "salary_range": "13,500 - 17,500 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • כולל משמרות",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 13500,
-      "p75": 17500,
-      "logo": null,
-      "company_logo_url": null,
-      "snippet": "חסוי\nמפעילים/ות ואנשי אחזקה למט\"שים - שכר גבוה!!\nחסוי\nמספר מקומות\nמשאבי שדה\nחולית\nנצרת\nנוף הגליל\nעפולה\nמגדל העמק\nרמת ישי\nמטולה\nמשגב עם\nללא נסיון\nמשרה מלאה\nלפני 1 שעות\nהגשה\nרוצה להבין מה במשרה יכול להתאים לך?\nהניסיון שלך בעבודה עם אנשים ובמתן שירות יכול להשתלב היטב בדרישות התפקיד.\nתיאור משרה\nחברת בנייה והנדסה מגייסת אנשי/נשות תפעול ואחזקה למתקני טיפול בשפכים\nעבודה טכנית מגוונת ויציבה בארבעה אתרים (משאבי שדה, חולית, עפולה ומשגב עם), בחברה צומחת ומתרחבת בתחום התשתיות וההנדסה!\nתיאור התפקיד:\n- תפעול שוטף ואחזקה של מתקני טיפול בשפכים על כל רכיביהם.\n- אחזקה מונעת ותיקוני שבר - החלפת משאבות, צינורות וטיפולים שוטפים.\n- סיורים במתקן, קריאת מדדים ורישום במחשב.\n- ביצוע דיגומים בשטח כחלק מתהליך הבקרה.\nשכר ותנאים:\n- משרה מלאה: א'-ה' 07:00-16:00 | שישי 07:00-11:00.\n- סבב כוננות בסופי שבוע וחגים - מתחלק בין חברי הצוות.\n- הזדמנות להשתלב בחברה צומחת ומתרחבת בתחום התשתיות וההנדסה!\n- מיקומים: משאבי שדה / חולית / עפולה / משגב עם\nדרישות התפקיד\n- ידע מכני בסיסי והבנה טכנית.\n- יכולת עבודה על מחשב (יישומי אופיס) לצורך עדכון מדדים.\n- נכונות לעבודה מאתגרת הכוללת חשיפה ללכלוך או ריח.\n- נכונות לסבב כוננות בסופי שבוע וחגים.\n- הנדסאי/ת מים / מכונות או תעודת דוגם/ת שפכים מוסמך/ת - יתרון משמעותי!\nשליחת קורות חיים או הגשת מועמדות מהווה הסכמה לכך שחברת ג׳וב ספייס בע״מ תשמור ותשתמש בפרטיך, לרבות למטרת פנייה אליך בנוגע למשרות נוספות ודומות ולהעברת פרטיך למעסיקים פוטנציאליים בעתיד.\nהשימוש במידע ייעשה בהתאם למדיניות הפרטיות של החברה ובה גם מידע על זכויותיך.\nניתן לסרב לשימוש עתידי כאמור במידע בשליחת ״תמחקו אותי״ או לפנות בכל שאלה או בקשה בנושא לכתובת privacy@jobspacepro.com.\n* משרה זו פונה לנשים וגברים כאחד.\nקטגוריה\nבעלי מקצוע\nתחומים\nטכנאי/ת\nמתקינים\nאחזקה",
-      "stable_job_id": "drushim_38818751",
-      "content_hash": "ch_24ddd5958aff",
-      "requirement_assessments": [
-        {
-          "requirement": "הנדסאי/ת מים / מכונות או תעודת דוגם/ת שפכים מוסמך/ת",
-          "importance": "preferred",
-          "ad_evidence": {
-            "quote": "הנדסאי/ת מים / מכונות או תעודת דוגם/ת שפכים מוסמך/ת - יתרון משמעותי!",
-            "source_field": "job_summary"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד מחזיק בדיוק בתעודת הנדסאי מכונות המוגדרת ביתרון משמעותי."
-        },
-        {
-          "requirement": "ידע מכני בסיסי והבנה טכנית",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "ידע מכני בסיסי והבנה טכנית.",
-            "source_field": "job_summary"
-          },
-          "profile_evidence": {
-            "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
-            "source_field": "Core Profile"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע מוצק והכשרה כהנדסאי מכונות הכוללת הבנה טכנית עמוקה."
-        },
-        {
-          "requirement": "יכולת עבודה על מחשב (יישומי אופיס) לצורך עדכון מדדים",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "יכולת עבודה על מחשב (יישומי אופיס) לצורך עדכון מדדים.",
-            "source_field": "job_summary"
-          },
-          "profile_evidence": {
-            "quote": "SAP, Excel data modeling.",
-            "source_field": "Key Competencies"
-          },
-          "assessment": "match",
-          "explanation": "המועמד שולט ביישומי דאטה ומחשוב לרבות Excel."
-        },
-        {
-          "requirement": "נכונות לסבב כוננות בסופי שבוע וחגים",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "- סבב כוננות בסופי שבוע וחגים - מתחלק בין חברי הצוות.",
-            "source_field": "job_summary"
-          },
-          "profile_evidence": {
-            "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע מבצעי עשיר המעיד על יכולת השתלבות בכוננויות ומסגרות תובעניות."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": true,
-      "curated_tags": [
-        {
-          "type": "tag-junior",
-          "icon": "ph-bold ph-graduation-cap",
-          "label": "Junior"
-        }
-      ]
-    },
-    {
-      "link": "https://il.linkedin.com/jobs/view/system-integration-engineer-at-applied-materials-israel-4487814341",
-      "title": "System Integration Engineer",
-      "company": "Applied Materials - Israel",
-      "location": "רחובות",
-      "date": "2026-11-11",
-      "source": "LinkedIn",
-      "match_score": 65,
-      "base_match_score": 65,
-      "priority_bonus": 0,
-      "evaluation_complete": true,
-      "evidence_status": "verified_quotes",
-      "sector_key": "other",
-      "company_domain_product": "ציוד בדיקה ומדידה לתעשיית המוליכים למחצה",
-      "company_summary": "",
-      "job_summary": "אינטגרציית מערכות מולטי-דיסציפלינריות מורכבות, הרכבה, בדיקות תפקוד, איתור תקלות אלקטרו-מכניות ותמיכה באתרים.",
-      "company_requirements": "דיפלומת הנדסאי מכונות או חשמל, 0-3 שנות ניסיון טכני רלוונטי, נכונות לנסיעות עד 10%.",
-      "experience_strengths": "דיפלומת הנדסאי מכונות, ידע אלקטרו-מכני, ניסיון באיתור תקלות ובדיקות תפעוליות.",
-      "reasoning": "תפקיד אינטגרציה אלקטרו-מכנית המתאים להנדסאי מכונות בתחילת הדרך, מחוץ לתחום האנרגיה.",
-      "key_highlights": "הגדרה ייעודית להנדסאי מכונות/חשמל, מותאם לבוגרים חדשים (0-3 שנות ניסיון), כולל כ-10% נסיעות.",
-      "salary_range": "11,500 - 15,000 ₪",
-      "salary_source_type": "sector_benchmark",
-      "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
-      "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
-      "salary_source_url": "",
-      "p25": 11500,
-      "p75": 15000,
-      "logo": "https://media.licdn.com/dms/image/v2/D560BAQGQXZFTM-P1aA/company-logo_100_100/B56ZfwYXZpHcAc-/0/1752084610051/applied_materials_israel_logo?e=2147483647&v=beta&t=fz8rsBbT4pfj6GzzcTEsa7d2ywsVnp60ejvaUFXISMc",
-      "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQGQXZFTM-P1aA/company-logo_100_100/B56ZfwYXZpHcAc-/0/1752084610051/applied_materials_israel_logo?e=2147483647&v=beta&t=fz8rsBbT4pfj6GzzcTEsa7d2ywsVnp60ejvaUFXISMc",
-      "snippet": "Who We Are\nApplied Materials is the global leader in materials science and engineering solutions that are at the foundation of virtually every new semiconductor chip and advanced display in the world. The equipment that we create and service is essential to advancing AI and accelerating the commercialization of next-generation semiconductor chips. Join us and push the boundaries of materials science and engineering in a company at the foundation of the electronics industry. The work we do together advances the world’s technology.\nWhat We Offer\nLocation:\nRehovot,ISR\nYou’ll benefit from a supportive work culture that encourages you to learn, develop, and grow your career as you take on challenges and drive innovative solutions for our customers. We empower our team to push the boundaries of what is possible—while learning every day in a supportive leading global company. Visit our Careers website to learn more.\nAt Applied Materials, we care about the health and wellbeing of our employees. We’re committed to providing programs and support that encourage personal and professional growth and care for you at work, at home, or wherever you may go. Learn more about our benefits.\nSystem Integration Practical Engineer\nWe are looking for a highly talented hand-on System integration engineer to join our team and integrate complex multi-disciplinary systems.\nWhat’s in it for you?\nAs part of our team, you will work together with great people , hands-on with one of the most complex multi-disciplinary systems in the market, putting into practice many of the fields from your studies.\nOur Group:\nThe team is responsible for system integration of all Applied-Israel’s tools before shipment to the customer.\nIn addition, we lead R&D prototypes and new products in the organization , with large exposure to the most advanced technologies such as precise mechanics, electronics, motion and optics.\nWhat you'll be doing:\nResponsible for full system integration in order to meet the system’s specification, on time delivery and quality results until end of installation while managing both the technical and operational aspects of the tool’s integration process.\nTests and troubleshoots modules and fully integrates systems. Performs in-house customer acceptance tests. Travels to customer sites to install and support tools.\nEstablish and maintain effective relationships with customers and gain their trust and respect.\nFollow and complete documentation procedures and forms of semiconductor manufacturing equipment. Pursue and develop procedural, safety and process improvements. Identify problems and resolve problems as an individual or as a team.\nEvaluate system quality, performance and configuration issues. Resolve problems. Provide on-site production technical support, equipment operation, repair, maintenance, and upgrade.\nPerform complex operational and functional tests, calibrations, verification and troubleshooting of sub-assemblies and/or systems.\nWork with other cross-functional groups to develop, design, build and test new production assemblies and NPI systems\nTest and troubleshoot system level and component level problems in electrical and mechanical and optical systems and sub-systems.\nWork from schematics, diagrams, written and verbal descriptions, layouts or plans to perform moderate testing and troubleshooting.\nPerform necessary rework and assists in determining remedies for malfunctions and generates Quality Notifications.\nCompily logbooks and test procedures documentation utilizing good writing skills. Assists in revising, developing and implementing department and tool related procedures.\nPerform mechanical, electrical, beam, optics and process testing on systems to Engineering and Manufacturing documentation and specifications.\nObserves all safety standards. Maintains a secure, safe, clean and healthy work environment. Attends required health and safety training and follows safety and security policies, procedures and practices. Promptly reports accidents, injuries, safety hazards, or emergencies to supervisor or Safety dept. Follows operating instructions, uses protective equipment when required, and uses equipment and materials properly. Actively strives to prevent accidents and injuries.\nBecomes familiar with current manufacturing and/or engineering processes and stays informed of any changes in procedures. Assists in the correction of problems.\nWhat you should have?\nPractical Engineer diploma in in Mechanical / Electrical engineering\n0-3 years of relevant technical experience: System integration experience or other high complexity,\nTechnical background - Advantage\nUp to 10% traveling\nTeam player, Highly Creative and Proactive\nHigh level of independent work with constant drive for improvement\nWho we are?\nApplied Materials Israel\nis home to the Process Diagnostics and Control business unit (PDC). Based in Rehovot, we develop, manufacture and market cutting-edge machine learning and computer vision-based metrology and inspection products that are essential elements in wafer fabrication. By playing a significant role in enabling the production of the next generation of microchips, our expertise enables our customers to transform possibilities into reality.\nAdditional Information\nTime Type:\nFull time\nEmployee Type:\nNew College Grad\nTravel:\nYes, 10% of the Time\nRelocation Eligible:\nNo\nApplied Materials is an Equal Opportunity Employer. Qualified applicants will receive consideration for employment without regard to race, color, national origin, citizenship, ancestry, religion, creed, sex, sexual orientation, gender identity, age, disability, veteran or military status, or any other basis prohibited by law.",
-      "stable_job_id": "li_4487814341",
-      "content_hash": "ch_e1cdcb17f4dd",
-      "requirement_assessments": [
-        {
-          "requirement": "דיפלומת הנדסאי מכונות / חשמל",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Practical Engineer diploma in in Mechanical / Electrical engineering",
-            "source_field": "job_description"
-          },
-          "profile_evidence": {
-            "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "למועמד תעודת הנדסאי מכונות מוסמך."
-        },
-        {
-          "requirement": "ניסיון טכני של 0-3 שנים",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "0-3 years of relevant technical experience",
-            "source_field": "job_description"
-          },
-          "profile_evidence": {
-            "quote": "Ruppin Academic Center (2022)",
-            "source_field": "Education & Credentials"
-          },
-          "assessment": "match",
-          "explanation": "המועמד הינו בוגר מסלול הנדסאי ומתאים לטווח הניסיון המבוקש."
-        },
-        {
-          "requirement": "בדיקות ואיתור תקלות במערכות אלקטרו-מכניות",
-          "importance": "required",
-          "ad_evidence": {
-            "quote": "Test and troubleshoot system level and component level problems in electrical and mechanical and optical systems",
-            "source_field": "job_description"
-          },
-          "profile_evidence": {
-            "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
-            "source_field": "Key Competencies & Target Operational Focus"
-          },
-          "assessment": "match",
-          "explanation": "למועמד רקע מעשי בדיאגנוסטיקה ואיתור תקלות במערכות אלקטרו-מכניות."
-        }
-      ],
-      "fit_gaps": "אין פערי סף מהותיים מול דרישות התפקיד.",
-      "is_direct_ats": "",
-      "is_field_work": false,
-      "provides_company_car": false,
-      "is_shifts_24_7": false,
-      "is_junior_friendly": false,
-      "curated_tags": []
     }
   ]
 }
