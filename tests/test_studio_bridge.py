@@ -162,6 +162,7 @@ class TestCareerStudioBridgeAndEngine(unittest.TestCase):
 
     def test_profile_parsing_ci_template_fallback_when_private_profile_absent(self):
         with tempfile.TemporaryDirectory() as tmp_dir, \
+             patch.object(cv_utils, "CAREER_STUDIO_PROFILE_PATH", os.path.join(tmp_dir, "nonexistent_career_profile.json")), \
              patch.object(cv_utils, "BASE_PROFILE_PATH", os.path.join(tmp_dir, "nonexistent_base_profile.md")):
             data = load_candidate_profile_data()
             sync_payload = sync_studio_profile_json(tmp_dir)

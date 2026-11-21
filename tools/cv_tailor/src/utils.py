@@ -179,16 +179,6 @@ def load_base_profile(path: str = None) -> str:
         with open(target_path, "r", encoding="utf-8") as f:
             return f.read()
 
-    # Default lookup:
-    # If BASE_PROFILE_PATH does not exist (e.g. patched in CI or missing private files),
-    # fallback to base_profile.template.md
-    if not os.path.exists(BASE_PROFILE_PATH):
-        template_path = os.path.join(BASE_DIR, "base_profile.template.md")
-        if os.path.exists(template_path):
-            with open(template_path, "r", encoding="utf-8") as f:
-                return f.read()
-        raise FileNotFoundError(f"Base profile file not found at: {BASE_PROFILE_PATH}")
-
     # Primary Single Source of Truth: career_studio_profile.json
     if os.path.exists(CAREER_STUDIO_PROFILE_PATH):
         try:
@@ -198,8 +188,16 @@ def load_base_profile(path: str = None) -> str:
             pass
 
     # Secondary fallback: base_profile.md
-    with open(BASE_PROFILE_PATH, "r", encoding="utf-8") as f:
-        return f.read()
+    if os.path.exists(BASE_PROFILE_PATH):
+        with open(BASE_PROFILE_PATH, "r", encoding="utf-8") as f:
+            return f.read()
+
+    # Final fallback: template
+    template_path = os.path.join(BASE_DIR, "base_profile.template.md")
+    if os.path.exists(template_path):
+        with open(template_path, "r", encoding="utf-8") as f:
+            return f.read()
+    raise FileNotFoundError(f"Base profile file not found at: {BASE_PROFILE_PATH}")
 
 def ensure_dir(dir_path: str):
     """Ensure directory exists."""
@@ -274,12 +272,12 @@ def load_candidate_profile_data(path: Optional[str] = None) -> Dict[str, Any]:
     """Parse candidate profile into structured JSON-ready data from career_studio_profile.json or base_profile.md."""
     if path:
         target_path = path
-    elif not os.path.exists(BASE_PROFILE_PATH):
-        target_path = os.path.join(BASE_DIR, "base_profile.template.md")
     elif os.path.exists(CAREER_STUDIO_PROFILE_PATH):
         target_path = CAREER_STUDIO_PROFILE_PATH
-    else:
+    elif os.path.exists(BASE_PROFILE_PATH):
         target_path = BASE_PROFILE_PATH
+    else:
+        target_path = os.path.join(BASE_DIR, "base_profile.template.md")
 
     # Primary Single Source of Truth branch: career_studio_profile.json
     if target_path.endswith(".json") and os.path.exists(target_path):
