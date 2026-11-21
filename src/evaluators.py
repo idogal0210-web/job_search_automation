@@ -93,13 +93,6 @@ def get_target_company_tier(company_name: str) -> int:
         if _matches_company_target(target_to_check, c) or (canonical and _matches_company_target(company_name, c)):
             return 2
 
-    # Category positional fallback (ranks 1-5 vs 6-15)
-    for cat, comps in TARGET_COMPANIES_BY_CATEGORY.items():
-        if any(_matches_company_target(target_to_check, c) for c in comps[:5]):
-            return 1
-        if any(_matches_company_target(target_to_check, c) for c in comps[5:]):
-            return 2
-
     is_tgt, _ = is_target_company(company_name)
     return 2 if is_tgt else 0
 
@@ -169,8 +162,7 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     base = data["match_score"]
     data.update(base_match_score=base, priority_bonus=0, is_target_company=False,
                 disqualification_reason="")
-    drone_domain = is_drone or data["sector_key"] in {"drones", "cuas"}
-    threshold = 70 if drone_domain else 60
+    threshold = 75
     # All eligibility gates precede employer preference.
     reason = ""
     if data["status"] == "DISQUALIFIED" or not data["technical_role"]:
@@ -185,7 +177,7 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
         target, category = is_target_company(company)
         tier = get_target_company_tier(company)
         data.update(is_target_company=target, target_category=category, target_tier=tier)
-        if target and base >= 65:
+        if target and base >= 75:
             max_bonus = 10 if tier == 1 else 5
             data["priority_bonus"] = min(max_bonus, 100 - base)
         data["match_score"] = base + data["priority_bonus"]
@@ -193,14 +185,48 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
     assessments = data.get("requirement_assessments", [])
     data["evidence_status"] = "verified_quotes" if assessments and all(
         item["assessment"] != "unknown" for item in assessments) else "incomplete"
-    if data["status"] == "QUALIFIED" and (
-        not assessments or
-        len({item["ad_evidence"]["quote"].casefold() for item in assessments if item["assessment"] == "match"}) < 2 or
-        any(item.get("importance") == "required" and item["assessment"] != "match" for item in assessments)
-    ):
-        data.update(status="RETRY_PENDING", evaluation_complete=False,
-                    retry_reason="unverified_or_conflicting_requirements",
-                    fit_gaps="נדרש אימות דרישות מול ראיות המודעה והפרופיל.")
+
+    STATUTORY_BLOCKER_REGEX = re.compile(
+        r"פנקס\s+המהנדסים|רישום\s+בפנקס\s+המהנדסים|רישיון\s+חשמלאי\s+מוסמך\s+בתוקף\s+חובה|משמרות\s+24/7|\blicense\b",
+        re.I
+    )
+
+    if data["status"] == "QUALIFIED":
+        has_statutory_blocker = any(
+            item.get("importance") == "required"
+            and item.get("assessment") == "gap"
+            and (
+                STATUTORY_BLOCKER_REGEX.search(str(item.get("requirement", "")))
+                or STATUTORY_BLOCKER_REGEX.search(str((item.get("ad_evidence") or {}).get("quote", "")))
+            )
+            for item in assessments
+        )
+        if has_statutory_blocker:
+            data.update(
+                status="DISQUALIFIED",
+                match_score=0,
+                disqualification_reason="statutory_blocker",
+                fit_gaps="דרישת סף חוקית/סטטוטורית חסרה (רישיון חובה או רישום בפנקס המהנדסים)."
+            )
+        elif (
+            not assessments
+            or len({(item.get("ad_evidence") or {}).get("quote", "").casefold() for item in assessments if item.get("assessment") == "match"}) < 2
+            or any(item.get("importance") == "required" and item.get("assessment") == "unknown" for item in assessments)
+        ):
+            data.update(
+                status="RETRY_PENDING",
+                evaluation_complete=False,
+                retry_reason="unverified_or_conflicting_requirements",
+                fit_gaps="נדרש אימות דרישות מול ראיות המודעה והפרופיל."
+            )
+        else:
+            gaps = [
+                str(item.get("explanation") or item.get("requirement") or "")
+                for item in assessments
+                if item.get("assessment") == "gap"
+            ]
+            if gaps and not data.get("fit_gaps"):
+                data["fit_gaps"] = "; ".join(filter(None, gaps))
     data.update(evaluate_job_salary({**job, "sector_key": data["sector_key"]}))
     print("[EVALUATION] " + json.dumps({
         "company": company, "title": title, "status": data["status"],

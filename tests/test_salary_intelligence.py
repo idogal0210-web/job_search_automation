@@ -61,6 +61,21 @@ class TestSalaryIntelligence(unittest.TestCase):
         self.assertTrue(res["has_company_car"])
         self.assertIn("רכב צמוד", res["salary_range"])
 
+    def test_benchmark_matrix_project_manager_coordinator(self):
+        job = {
+            "title": "Junior Project Manager",
+            "company": "Enlight",
+            "snippet": "ניהול פרויקטי אנרגיה מתחדשת ולוחות זמנים",
+            "sector_key": "energy"
+        }
+        res = evaluate_job_salary(job)
+        self.assertEqual(res["estimate_type"], "market_estimate")
+        self.assertEqual(res["quality_level"], "medium")
+        self.assertEqual(res["salary_source_type"], "sector_benchmark")
+        self.assertIn("ניהול פרויקטים", res["salary_evidence"])
+        self.assertEqual(res["p25"], 15000)
+        self.assertEqual(res["p75"], 20000)
+
     def test_graceful_abstention_outside_core(self):
         job = {
             "title": "מנהל קמפיינים PPC ומדיה דיגיטלית",

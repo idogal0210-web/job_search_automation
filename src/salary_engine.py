@@ -73,6 +73,16 @@ BENCHMARK_MATRIX = {
         "source": "סקר שכר AllJobs ו-CPS: הנדסאי מכונות ושירות שטח",
         "url": ALLJOBS_SURVEY_URL,
     },
+    "project_management_coordinator": {
+        "title": "ניהול פרויקטים, תיאום הקמות ו-PMO טכני",
+        "base_min": 15000,
+        "base_max": 20000,
+        "shift_min": 17000,
+        "shift_max": 23000,
+        "has_vehicle_norm": True,
+        "source": "סקר שכר נישה והייטק: מנהל פרויקטים ג'וניור, רכז הקמות ו-PMO טכני",
+        "url": CPS_SURVEY_URL,
+    },
 }
 
 NON_SALARY_COUNTERWORDS = [
@@ -338,6 +348,13 @@ def classify_role_category(title: str, sector_key: str, snippet: str) -> str:
         "מתח גבוה", "מתח עליון", "מתקני אנרגיה"
     ]):
         return "power_plant_maintenance"
+
+    if any(k in combined for k in [
+        "מנהל פרויקט", "רכז פרויקט", "מתאם פרויקט", "רכז הקמות", "מתאם הקמות", "רכז תפעול",
+        "מתאם תפעול", "עוזר מנהל פרויקט", "pmo", "project manager", "project coordinator",
+        "site coordinator", "construction coordinator", "operations coordinator", "מנהל אתר מתחיל"
+    ]):
+        return "project_management_coordinator"
 
     if any(k in combined for k in [
         "מכונות", "הנדסאי מכונות", "טכנאי שירות", "אינטגרטור", "אלקטרו-מכני", "תפעול", "אחזקה",

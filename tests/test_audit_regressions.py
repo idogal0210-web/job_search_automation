@@ -247,17 +247,38 @@ class AuditRegressionTests(unittest.TestCase):
         self.assertIn('הערכה חודשית',extract_salary_from_ad('65 ש"ח לשעה')['salary_range'])
 
     def test_required_gap_or_contradiction_stays_pending(self):
-        pool=MagicMock()
-        matches=[{'requirement':word,'importance':'preferred','ad_evidence':{'quote':word},
-                  'profile_evidence':{'quote':'SCADA'},'assessment':'match'} for word in ['industrial','maintenance']]
-        for assessment in ['gap','unknown']:
-            required={'requirement':'License','importance':'required','ad_evidence':{'quote':'license'},
-                      'profile_evidence':{'quote':'Certified Electrician Studies'},'assessment':assessment}
-            pool.evaluate.return_value={'match_score':90,'status':'QUALIFIED','technical_role':True,
-                'sector_key':'energy','concrete_matches_count':3,'reasoning':'test','evaluation_model':'mock',
-                'evaluation_complete':True,'requirement_assessments':matches+[required]}
-            result=evaluate_and_enrich_job_with_gemini(object(),'Solar technician','Example','industrial maintenance license',False,RunHealth(),pool=pool)
-            self.assertEqual(result['status'],'RETRY_PENDING')
+        pool = MagicMock()
+        matches = [{'requirement': word, 'importance': 'preferred', 'ad_evidence': {'quote': word},
+                    'profile_evidence': {'quote': 'SCADA'}, 'assessment': 'match'} for word in ['industrial', 'maintenance']]
+
+        # 1. Unknown assessment (unverified quote / contradictory evidence) -> RETRY_PENDING
+        unverified = {'requirement': 'License', 'importance': 'required', 'ad_evidence': {'quote': 'license'},
+                      'profile_evidence': {'quote': 'Certified Electrician Studies'}, 'assessment': 'unknown'}
+        pool.evaluate.return_value = {'match_score': 90, 'status': 'QUALIFIED', 'technical_role': True,
+            'sector_key': 'energy', 'concrete_matches_count': 3, 'reasoning': 'test', 'evaluation_model': 'mock',
+            'evaluation_complete': True, 'requirement_assessments': matches + [unverified]}
+        result = evaluate_and_enrich_job_with_gemini(object(), 'Solar technician', 'Example', 'industrial maintenance license', False, RunHealth(), pool=pool)
+        self.assertEqual(result['status'], 'RETRY_PENDING')
+
+        # 2. Gap on statutory blocker (mandatory license) -> DISQUALIFIED
+        statutory_gap = {'requirement': 'License', 'importance': 'required', 'ad_evidence': {'quote': 'license'},
+                         'profile_evidence': {'quote': 'Certified Electrician Studies'}, 'assessment': 'gap'}
+        pool.evaluate.return_value = {'match_score': 90, 'status': 'QUALIFIED', 'technical_role': True,
+            'sector_key': 'energy', 'concrete_matches_count': 3, 'reasoning': 'test', 'evaluation_model': 'mock',
+            'evaluation_complete': True, 'requirement_assessments': matches + [statutory_gap]}
+        result2 = evaluate_and_enrich_job_with_gemini(object(), 'Solar technician', 'Example', 'industrial maintenance license', False, RunHealth(), pool=pool)
+        self.assertEqual(result2['status'], 'DISQUALIFIED')
+        self.assertEqual(result2['disqualification_reason'], 'statutory_blocker')
+
+        # 3. Gap on flexible requirement (years of experience) with score >= 75 -> QUALIFIED with fit_gaps
+        flexible_gap = {'requirement': '5 years experience', 'importance': 'required', 'ad_evidence': {'quote': 'experience'},
+                        'profile_evidence': {'quote': 'Ruppin'}, 'assessment': 'gap', 'explanation': 'דרוש ניסיון רב יותר'}
+        pool.evaluate.return_value = {'match_score': 85, 'status': 'QUALIFIED', 'technical_role': True,
+            'sector_key': 'energy', 'concrete_matches_count': 3, 'reasoning': 'test', 'evaluation_model': 'mock',
+            'evaluation_complete': True, 'requirement_assessments': matches + [flexible_gap]}
+        result3 = evaluate_and_enrich_job_with_gemini(object(), 'Solar technician', 'Example', 'industrial maintenance experience', False, RunHealth(), pool=pool)
+        self.assertEqual(result3['status'], 'QUALIFIED')
+        self.assertIn('דרוש ניסיון רב יותר', result3['fit_gaps'])
 
     def test_delivery_commits_only_the_five_reported_jobs(self):
         import main

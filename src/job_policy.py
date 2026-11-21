@@ -53,7 +53,10 @@ KNOWN_ENTERPRISE_EMPLOYERS = {
     "אירונאוטיקס", "bluebird", "בלובריד", "netafim", "נטפים", "unitronics", "יוניטרוניקס",
     "maytronics", "מיטרוניקס", "solgreen", "סולגרין", "paz solar", "פז סולאר", "solarpower",
     "סולארפאוור", "baran", "ברן", "lesico", "לסיקו", "dor chemicals", "דור כימיקלים",
-    "copterpix", "קופטרפיקס", "afimilk", "אפימילק", "clariter", "קלריטר"
+    "copterpix", "קופטרפיקס", "afimilk", "אפימילק", "clariter", "קלריטר",
+    "noga", "נגה", "mprest", "אמפרסט", "electreon", "אלקטריאון", "driivz", "דרייבז",
+    "airtouch", "איירטץ'", "spear uav", "ספיר כטב\"ם", "nextvision", "נקסט ויז'ן",
+    "d-fend", "די פנד", "prime energy", "פריים אנרגיה", "meshek energy", "משק אנרגיה"
 }
 
 def is_known_enterprise(company_name):
@@ -63,7 +66,13 @@ def is_known_enterprise(company_name):
     return any(has_term(c, term) for term in KNOWN_ENTERPRISE_EMPLOYERS)
 
 KEYWORD_GROUPS = {
-    "site_management": ["מנהל אתר", "site manager", "מנהל פרויקט", "רכז הקמות", "מפקח הקמה", "פיקוח הקמות", "הקמה סולארית", "מנהל עבודה", "construction coordinator", "qa inspector"],
+    "site_management": [
+        "מנהל אתר", "site manager", "מנהל פרויקט", "רכז הקמות", "מפקח הקמה", "פיקוח הקמות",
+        "הקמה סולארית", "מנהל עבודה", "construction coordinator", "qa inspector",
+        "junior project manager", "project coordinator", "operations coordinator",
+        "technical pmo", "site coordinator", "מנהל פרויקטים ג'וניור", "עוזר מנהל פרויקט",
+        "רכז פרויקטים", "מתאם פרויקטים", "מתאם תפעול", "pmo טכני", "מנהל אתר מתחיל"
+    ],
     "commissioning": ["commissioning", "מסירה והפעלה", "בדיקות קבלה", "אינטגרציה", "הפעלה ומסירה", "field service", "מהנדס שירות שטח"],
     "cleantech": ["cleantech", "קלינטק", "startup", "סטארטאפ", "אנרגיה ירוקה", "climate tech"],
     "gas": ["natural gas", "גז טבעי", "מתקני גז", "מתקן גז", "prms"],
@@ -140,11 +149,76 @@ def advertised_very_high_salary(text, min_lower_bound=20000, max_upper_bound=800
     return False
 
 
-def advertised_low_salary(text, max_upper_bound=14000, min_lower_bound=5000):
-    """Conservative: explicit monthly ILS upper bound <= max_upper_bound."""
+def advertised_low_salary(text, max_upper_bound=16000, min_lower_bound=5000):
+    """Conservative: explicit monthly ILS upper bound < max_upper_bound."""
     for amounts in extract_advertised_monthly_ils_amounts(text, exclude_up_to=False):
-        if max(amounts) <= max_upper_bound and min(amounts) >= min_lower_bound:
+        if max(amounts) < max_upper_bound and min(amounts) >= min_lower_bound:
             return True
+    return False
+
+
+def is_outside_commute_radius(job):
+    """
+    Determines if a stationary job is located outside the reasonable ~45-50 min commute radius from Tel Aviv.
+    Allowed: Gush Dan, Central District, Sharon (south of Hadera/Caesarea), Shfela (up to Ashdod inclusive).
+    Disqualified: Deep North (Haifa, North District, Galil, Golan) and Deep South (Beer Sheva, South District, Negev, Arava),
+    UNLESS the role is Remote/Hybrid or includes a company vehicle / nationwide field coverage.
+    """
+    text = f"{job.get('location', '')} {job.get('title', '')} {job.get('snippet', '')}".lower()
+
+    # 1. Exemptions: Remote, Hybrid, or Nationwide field travel with company vehicle
+    if re.search(r"\b(?:remote|hybrid|wfh)\b|מהבית|היברידי|מרחוק", text):
+        return False
+    if re.search(r"רכב\s+(?:חברה|צמוד|שירות)|רחבי\s+הארץ|כל\s+הארץ|ארצי|ניידות\s+ארצית", text):
+        return False
+
+    # 2. Solar and energy site management/commissioning roles are field project roles (exempt unless stationary location in far region)
+    is_field_site_role = bool(re.search(r"מנהל\s+אתר|רכז\s+הקמות|מפקח\s+הקמה|פיקוח\s+הקמות|site\s+manager|construction\s+coordinator|commissioning", text))
+    loc = str(job.get("location", "")).lower().strip()
+    if is_field_site_role and not loc:
+        return False
+
+    # 3. Check explicit location
+    if loc:
+        central_positive = re.search(
+            r"תל\s+אביב|גוש\s+דן|מרכז|פתח\s+תקוה|פתח\s+תקווה|רמת\s+גן|גבעתיים|בני\s+ברק|חולון|בת\s+ים|"
+            r"ראשון\s+לציון|הרצליה|רעננה|כפר\s+סבא|הוד\s+השרון|רמת\s+השרון|נתניה|כפר\s+יונה|אבן\s+יהודה|"
+            r"תל\s+מונד|קדימה|צורן|ראש\s+העין|יהוד|אור\s+יהודה|קריית\s+אונו|קרית\s+אונו|לוד|רמלה|רחובות|"
+            r"נס\s+ציונה|יבנה|אשדוד|גדרה|שוהם|מודיעין|איירפורט\s+סיטי|נתב\"ג|שפלה|שרון|"
+            r"\b(?:tel aviv|center|gush dan|sharon|shfela|herzliya|petah tikva|rishon|netanya)\b",
+            loc
+        )
+        if central_positive:
+            return False
+
+        far_north = re.search(
+            r"חיפה|קריות|קריית\s+אתא|קרית\s+אתא|קריית\s+ביאליק|קרית\s+ביאליק|קריית\s+מוצקין|קרית\s+מוצקין|"
+            r"קריית\s+ים|קרית\s+ים|נשר|עכו|נהריה|כרמיאל|יקנעם|עפולה|טבריה|מגדל\s+העמק|נצרת|בית\s+שאן|"
+            r"קריית\s+שמונה|קרית\s+שמונה|רמת\s+הגולן|גולן|קצרין|משגב|גליל|צפת|מעלות|חצור|שלומי|עמק\s+יזרעאל|"
+            r"\b(?:haifa|karmiel|afula|tiberias|nazareth|nahariya|galilee|golan)\b",
+            loc
+        )
+        if far_north:
+            return True
+
+        far_south = re.search(
+            r"באר\s+שבע|אשקלון|שדרות|אופקים|נתיבות|דימונה|ערד|ירוחם|אילת|רמת\s+חובב|נאות\s+חובב|ים\s+המלח|"
+            r"מצפה\s+רמון|נגב|ערבה|שער\s+הנגב|אשכול|רהט|"
+            r"\b(?:beer sheva|beersheba|ashkelon|eilat|dimona|negev|arava|dead sea)\b",
+            loc
+        )
+        if far_south:
+            return True
+
+    # 4. If loc is empty, check if snippet explicitly states distant stationary location
+    snippet_first = str(job.get("snippet", ""))[:200].lower()
+    explicit_distant = re.search(
+        r"(?:מיקום\s+(?:המשרה|בפועל)|משרדי\s+החברה\s+ב|אתר\s+קבוע\s+ב|עבודה\s+ב)(?:חיפה|באר\s+שבע|כרמיאל|עפולה|אילת|דימונה)",
+        snippet_first
+    )
+    if explicit_distant:
+        return True
+
     return False
 
 
@@ -162,11 +236,33 @@ def deterministic_filter(job):
         if not re.search(r"מהנדס|הנדסאי|מנהל|lead|head|scada|plc", title, re.I):
             return rejection("manual_no_engineering_horizon", "עבודה ידנית או מוסכית ללא אופק הנדסי")
 
+    # Commute distance gate (~45-50 min from Tel Aviv)
+    if is_outside_commute_radius(job):
+        loc = job.get("location") or "צפון/דרום מחוץ לטווח"
+        return rejection("location_out_of_range", f"מיקום המשרה ({loc}) מחוץ לטווח הנסיעה היומי המקסימלי מתל אביב (45-50 דקות)")
+
     text = f"{title} {company} {job.get('snippet', '')}"
 
-    # Explicit low salary rejection (< 14,000 ILS / month)
+    # Explicit low salary rejection (< 16,000 ILS / month)
     if advertised_low_salary(text):
-        return rejection("below_salary_floor", "שכר מפורסם נמוך מ-14,000 ₪ לחודש")
+        return rejection("below_salary_floor", "שכר מפורסם נמוך מ-16,000 ₪ לחודש")
+
+    # Junior PM / Coordinator / PMO domain anchor guard
+    is_pm_or_coordinator = bool(re.search(
+        r"(?:project\s+manager|project\s+coordinator|operations\s+coordinator|site\s+coordinator|"
+        r"construction\s+coordinator|\bpmo\b|מנהל(?:ת|/ת)?\s+פרויקט|רכז(?:ת|/ת)?\s+פרויקט|מתאם(?:ת|/ת)?\s+פרויקט|"
+        r"רכז(?:ת|/ת)?\s+הקמות|מתאם(?:ת|/ת)?\s+הקמות|רכז(?:ת|/ת)?\s+תפעול|מתאם(?:ת|/ת)?\s+תפעול|"
+        r"עוזר(?:ת|/ת)?\s+מנהל\s+פרויקט|סגן(?:ית)?\s+מנהל\s+פרויקט)",
+        title, re.I
+    ))
+    if is_pm_or_coordinator:
+        non_technical_domain = re.search(
+            r"שיווק|דיגיטל|משאבי\s+אנוש|גיוס|הדרכה|תוכן|סושיאל|פיננסים|חשבונות|משפטי|קליני|רפואי|"
+            r"\b(?:marketing|digital|hr|recruiting|clinical|finance|legal|social\s+media|content)\b",
+            text, re.I
+        )
+        if non_technical_domain:
+            return rejection("non_technical_pm", f"תפקיד ניהול/תיאום פרויקטים ללא זיקה הנדסית-טכנית ({non_technical_domain.group(0)})")
 
     # Unconditional 24/7 rotating shifts rejection (strict user policy)
     is_24_7_shift = bool(re.search(

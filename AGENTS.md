@@ -22,16 +22,13 @@ These rules are loaded into context unconditionally:
 - [dual-template-sync-guard.md](.agents/rules/dual-template-sync-guard.md): Enforces strict 1:1 structural and byte parity between `frontend/` source templates/styles and `docs/` production distribution files. Forbids editing `docs/` in isolation.
 - [pre-push-verification-and-living-docs.md](.agents/rules/pre-push-verification-and-living-docs.md): Requires clean execution of `project_hygiene.py --validate` and full unit test suite before any commit. Mandates same-commit updates to `TASKS.md`, `PROJECT_CONTEXT.md`, and `README.md`.
 - [supabase-state-integrity-guard.md](.agents/rules/supabase-state-integrity-guard.md): Guarantees non-destructive, additive upsert contracts for user triage records (`starred`, `saved`, `rejected`, notes) on Supabase Cloud Database.
-- [single-source-and-replaceability-guard.md](.agents/rules/single-source-and-replaceability-guard.md): Enforces single source of truth and modular component replaceability across scrapers, database persistence, and UI.
-- [token-efficiency-guard.md](.agents/rules/token-efficiency-guard.md): Zero-scan navigation principle. Absolute ban on bulk reading raw data files (`data/*.json`). Requires line-scoped file reads and CLI inspection tools.
+- [single-source-and-replaceability-guard.md](.agents/rules/single-source-and-replaceability-guard.md): Enforces single source of truth, modular component replaceability across scrapers, database persistence, UI, and bulk data lockout on `data/*.json`.
 - [critical-thinking-quality.md](.agents/rules/critical-thinking-quality.md): Uncompromising quality floor. Active evaluation of proposals, identification of failure modes, and empirical verification before declaring task completion.
-- [interactive-greeting.md](.agents/rules/interactive-greeting.md): Triggers the 5-capability interactive menu via `ask_question` whenever the user initiates a conversation or greets the assistant.
-- [save-and-sync.md](.agents/rules/save-and-sync.md): Immediate trigger handler for Save & Sync workflow requests.
 
 ### 2.2 Model Decision & Contextual Rules (`trigger: model_decision`)
 Loaded dynamically when relevant tool calls or architectural questions are evaluated:
 
-- [mcp-policy.md](.agents/rules/mcp-policy.md): Standard operating procedures, safety bounds, and credit conservation rules for allowed MCP servers (`tavily`, `firecrawl`, `api-anything`, `chrome-devtools`, `github`, `supabase_mcp`, `gemini-api-docs`).
+- [mcp-policy.md](.agents/rules/mcp-policy.md): Standard operating procedures, safety bounds, and credit conservation rules for allowed MCP servers (`tavily`, `firecrawl`, `chrome-devtools`, `github`, `supabase_mcp`, `gemini-api-docs`). Native ATS integrations (Comeet, Greenhouse, Lever) run directly via `src/ats_client.py`.
 
 ### 2.3 Scoped Glob Rules (`trigger: glob`)
 Activated automatically when working on matched file paths:

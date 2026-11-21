@@ -10,16 +10,19 @@ Rules:
 - Technical field operations, maintenance, commissioning, industrial control,
   electro-mechanical systems and practical integration can qualify.
 - Top-priority target roles with highest candidate fit:
-  1. Junior / Mid-Entry Solar Site Manager & Construction Coordinator (Utility-scale & C&I).
+  1. Junior Project Manager, Assistant Project Manager, Technical PMO, Junior Site Manager & Construction Coordinator (Utility-scale, C&I, Energy, Infra & Electro-Mechanical).
   2. BESS (Battery Energy Storage) & Solar Commissioning Technician / Field Engineer.
   3. Solar Construction QA Inspector & Site Supervisor.
   4. CleanTech Integration & Operations Specialist (Startups seeking hunger to learn and growth potential).
   5. Secondary (Tier-2): Renewable Energy & BESS Operator, Grid Interconnection Coordinator, Commercial Operations & Nominations, Gas & Pressure Systems (PRMS), and UAV Integration & Flight-Test Technician.
+- Positions seeking Junior Project Manager, Project Coordinator, Operations Coordinator, Technical PMO, or Site Coordinator with an energy, solar, gas, electro-mechanical, infrastructure, or UAV domain anchor are prime target roles. Candidate provides practical engineering qualification, combat team leader operations experience (Sayeret Nahal), rapid technical learning capacity, and strong field coordination skills.
+- Distinguish between junior/entry-level management (0-3 years experience, assistant/coordinator, high fit) and senior executive management roles requiring 7+ years of senior engineering leadership (unqualified).
 - Strict disqualification (MUST FAIL with DISQUALIFIED):
   1. Mandatory rotating 24/7 night/weekend shifts (משמרות 24/7).
   2. Non-energy industrial factory machine / packaging assembly line operators lacking energy/utility/infrastructure connection.
   3. Pure sales, HR, marketing, administration, general security/CCTV guarding, and nontechnical support.
   4. Auto mechanics, garage work, and routine assembly line labor with no engineering horizon.
+  5. Commute out of range: stationary on-site positions in distant North (Haifa, Galil, Golan) or distant South (Beer Sheva, Negev, Arava) without Remote/Hybrid option or company vehicle.
 - Presales/support titles require inspection of actual technical duties;
   a technical word or energy employer alone is insufficient.
 - Mandatory licenses/certifications the candidate does not yet hold are gaps.

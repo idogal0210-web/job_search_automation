@@ -19,3 +19,8 @@ description: "Rule enforcing single source of truth and modular replaceability a
 ## 3. איסור תלות הדדית (No Tight Coupling)
 - בכל שינוי או הוספת קוד, יש לוודא: "אם נחליף את הרכיב הזה מחר, האם משהו מחוץ לו יישבר?". התשובה חייבת להיות: שום דבר מחוץ לו.
 - שינוי שדורש עריכה מקבילה בשני קבצים שונים עבור אותה דרישה מוגדר ככשל ארכיטקטוני שיש לתקנו ברמת המבנה ולא באמצעות עקיפה.
+
+## 4. נעילת קובצי מידע גולמיים (Bulk Data Lockout)
+- איסור מוחלט על קריאת קובצי מאגרי נתונים גולמיים ב-`data/*.json` (`jobs.json`, `sync_state.json`, `historical_catalog.json`) באמצעות `read_file`.
+- לבדיקת נתונים, מונים, מפתחות סכמה או סנכרון, יש להשתמש אך ורק בכלי ה-CLI הייעודי: `python3 scripts/inspect_state.py [options]`.
+- לבדיקת רשומה בודדת, יש להשתמש ב-`python3 scripts/inspect_state.py --job <id>`.
