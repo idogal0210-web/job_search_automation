@@ -60,7 +60,7 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
             "text-primary": "#0F172A",
             "text-secondary": "#475569",
             "accent-primary": "#0369A1",
-            "status-fail": "#DC2626",
+            "status-fail": "#991B1B",
             "status-warn": "#B45309",
             "status-pass": "#047857",
         }
@@ -99,7 +99,7 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
 
         for token in (
             "#F8FAFC", "#0B0F19", "#FFFFFF", "#131B2E", "#0F172A",
-            "#475569", "#94A3B8", "#0369A1", "#38BDF8", "#DC2626", "#F87171",
+            "#475569", "#94A3B8", "#0369A1", "#38BDF8", "#991B1B", "#F87171",
             "#B45309", "#FBBF24", "#047857", "#34D399"
         ):
             self.assertIn(token, self.css_text, f"Missing design token {token} in dashboard.css")

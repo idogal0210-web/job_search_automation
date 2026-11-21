@@ -10223,3 +10223,75 @@ body {
   border-color: rgba(56, 189, 248, 0.25) !important;
   color: #38BDF8 !important;
 }
+
+/* === Light Mode Minimal Slate + Cobalt Override === */
+@layer dashboard {
+  :root[data-theme="light"] {
+    --bg-canvas: #F4F6FA;
+    --glass-bg-canvas: #F4F6FA;
+    --bg-surface: #FFFFFF;
+    --glass-bg-elevated: #FFFFFF;
+    --glass-bg-base: #FFFFFF;
+    --glass-bg-card: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+    --dashboard-glass: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+    --border-subtle: 1px solid #E2E8F0;
+    --glass-border: 1px solid #CBD5E1;
+    --dashboard-edge: 1px solid #CBD5E1;
+    --glass-border-hover: 1px solid #1D4ED8;
+    --text-primary: #0F172A;
+    --dashboard-text: #0F172A;
+    --text-secondary: #475569;
+    --dashboard-muted: #475569;
+    --accent-primary: #1D4ED8;
+    --dashboard-cyan: #1E3A8A;
+    --status-pass: #047857;
+    --status-warn: #B45309;
+    --status-fail: #991B1B;
+  }
+
+  :root[data-theme="light"] .mode-switch-btn,
+  :root[data-theme="light"] .copilot-promo-btn,
+  :root[data-theme="light"] .btn-apply,
+  :root[data-theme="light"] .btn-apply-elegant,
+  :root[data-theme="light"] .dashboard-primary {
+    background: #FFFFFF;
+    color: #0F172A;
+    border: 1.5px solid #1D4ED8;
+  }
+
+  :root[data-theme="light"] .mode-switch-btn.active,
+  :root[data-theme="light"] .mode-switch-btn[aria-selected="true"] {
+    background: #EFF6FF;
+    color: #0F172A;
+    border: 1.5px solid #1D4ED8;
+  }
+
+  :root[data-theme="light"] .mode-switch-btn i,
+  :root[data-theme="light"] .copilot-promo-btn i,
+  :root[data-theme="light"] .btn-apply i,
+  :root[data-theme="light"] .btn-apply-elegant i,
+  :root[data-theme="light"] .dashboard-primary i {
+    color: #1D4ED8;
+  }
+
+  :root[data-theme="light"] .mode-switch-btn:active,
+  :root[data-theme="light"] .copilot-promo-btn:active,
+  :root[data-theme="light"] .btn-apply:active,
+  :root[data-theme="light"] .btn-apply-elegant:active,
+  :root[data-theme="light"] .dashboard-primary:active {
+    transform: scale(0.98);
+  }
+
+  @media (hover: hover) {
+    :root[data-theme="light"] .mode-switch-btn:hover,
+    :root[data-theme="light"] .copilot-promo-btn:hover,
+    :root[data-theme="light"] .btn-apply:hover,
+    :root[data-theme="light"] .btn-apply-elegant:hover,
+    :root[data-theme="light"] .dashboard-primary:hover {
+      background: #EFF6FF;
+      color: #0F172A;
+      border-color: #1E3A8A;
+      transform: translateY(-1px);
+    }
+  }
+}

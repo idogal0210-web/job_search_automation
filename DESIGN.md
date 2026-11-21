@@ -44,13 +44,13 @@ Single source of truth for the visual design system of `job_search_automation` (
 | Hover border | `--glass-border-hover` | `1px solid rgba(56, 189, 248, 0.35)` | `1px solid rgba(109, 40, 217, 0.45)` |
 | Primary text | `--text-primary` | `#F8FAFC` | `#0F172A` |
 | Secondary text | `--text-secondary` | `#94A3B8` | `#475569` |
-| Primary accent | `--accent-primary` | `#38BDF8` | `#6D28D9` |
-| Highlight accent | `--dashboard-cyan` | `#38BDF8` | `#5B21B6` |
+| Primary accent | `--accent-primary` | `#38BDF8` | `#1D4ED8` |
+| Highlight accent | `--dashboard-cyan` | `#38BDF8` | `#1E3A8A` |
 | Status — Pass | `--status-pass` | `#34D399` | `#047857` |
 | Status — Warn | `--status-warn` | `#FBBF24` | `#B45309` |
-| Status — Fail | `--status-fail` | `#F87171` | `#DC2626` |
+| Status — Fail | `--status-fail` | `#F87171` | `#991B1B` |
 
-*Note:* The dark tokens (`#0B0F19`, `#131B2E`, `#F8FAFC`, `#94A3B8`, `#38BDF8`, `#34D399`, `#FBBF24`, `#F87171`) and light tokens (`#F8FAFC`, `#FFFFFF`, `#0F172A`, `#475569`, `#0369A1`, `#047857`, `#B45309`, `#DC2626`) are verified for WCAG AA `>= 4.5:1` contrast by `tests/test_phase6_design_and_a11y.py`. Keep them defined in `:root`.
+*Note:* The dark tokens (`#0B0F19`, `#131B2E`, `#F8FAFC`, `#94A3B8`, `#38BDF8`, `#34D399`, `#FBBF24`, `#F87171`) and light tokens (`#F8FAFC`, `#FFFFFF`, `#0F172A`, `#475569`, `#0369A1`, `#047857`, `#B45309`, `#991B1B`) are verified for WCAG AA `>= 4.5:1` contrast by `tests/test_phase6_design_and_a11y.py`. Keep them defined in `:root`.
 
 ---
 
