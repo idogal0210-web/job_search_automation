@@ -35,12 +35,17 @@ Single source of truth for the visual design system of `job_search_automation` (
 
 | Role | Token | Dark Fallback (`:root`) | Light Mode (`data-theme="light"`) |
 | :--- | :--- | :--- | :--- |
-| Canvas | `--bg-canvas` | `#0B0F19` | `#F8FAFC` |
-| Surface | `--bg-surface` | `#131B2E` | `#FFFFFF` |
-| Card glass | `--glass-bg-card` | `rgba(19, 27, 46, 0.72)` | `rgba(255, 255, 255, 0.85)` |
+| Canvas background | `--bg-canvas` / `--glass-bg-canvas` | `#0B0F19` | `#F4F6FA` |
+| Surface background | `--bg-surface` | `#131B2E` | `#FFFFFF` |
+| Elevated surface | `--glass-bg-elevated` | `#1A233A` | `#FFFFFF` |
+| Card glass surface | `--glass-bg-card` | `rgba(19, 27, 46, 0.72)` | `linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)` |
+| Subtle border | `--border-subtle` | `1px solid rgba(255, 255, 255, 0.08)` | `1px solid #E2E8F0` |
+| Glass border | `--glass-border` / `--dashboard-edge` | `1px solid rgba(255, 255, 255, 0.08)` | `1px solid #CBD5E1` |
+| Hover border | `--glass-border-hover` | `1px solid rgba(56, 189, 248, 0.35)` | `1px solid rgba(109, 40, 217, 0.45)` |
 | Primary text | `--text-primary` | `#F8FAFC` | `#0F172A` |
 | Secondary text | `--text-secondary` | `#94A3B8` | `#475569` |
-| Primary accent | `--accent-primary` | `#38BDF8` | `#0369A1` |
+| Primary accent | `--accent-primary` | `#38BDF8` | `#6D28D9` |
+| Highlight accent | `--dashboard-cyan` | `#38BDF8` | `#5B21B6` |
 | Status — Pass | `--status-pass` | `#34D399` | `#047857` |
 | Status — Warn | `--status-warn` | `#FBBF24` | `#B45309` |
 | Status — Fail | `--status-fail` | `#F87171` | `#DC2626` |

@@ -342,6 +342,11 @@ job_search_automation/
 - **Career Studio Accordion Overlap Resolution:** Enforced `.studio-job-details-accordion:not([open]) > :not(summary) { display: none !important; }`, preventing closed `<details>` body contents (`.ats-sample-chips`, `.ats-input-label`) from leaking vertically onto `.studio-subnav-pipeline` (dropping studio overlaps from 12 to 0).
 - **Apple & 3D Web Experience Craft:** Implemented Apple-inspired double-bezel concentric border-radii (`20px` card, `12px` inner snippets, `999px` pills), top specular edge highlight (`inset 0 1px 0 rgba(255, 255, 255, 0.12)`), multi-layered ambient drop shadows (`0 6px 24px rgba(0, 0, 0, 0.35)`), smooth tactile lift on hover (`translateY(-3px)`), and tactile press on buttons (`scale(0.97)`).
 
+### 6.15 Light Mode Color System Upgrade & Dark-Override Neutralization (TASK-75)
+- **Unified Light Mode Architecture:** Upgraded `:root[data-theme="light"]` to crisp surfaces (`--bg-canvas: #F4F6FA`, `--bg-surface: #FFFFFF`, `--glass-bg-card: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)`), slate borders (`--border-subtle: 1px solid #E2E8F0`, `--glass-border: 1px solid #CBD5E1`), high-contrast typography (`--text-primary: #0F172A`, `--text-secondary: #475569`), and brand violet/indigo accents (`--accent-primary: #6D28D9`, `--dashboard-cyan: #5B21B6`).
+- **Neutralized Hardcoded Dark Components:** Refactored top header to clean white (`#FFFFFF`) with subtle border/shadows; neutralized dark stat cubes into high-contrast soft pastels (new green `#ECFDF5`/`#065F46`, saved blue `#EFF6FF`/`#1E40AF`, starred yellow `#FFFBEB`/`#92400E`, rejected red `#FEF2F2`/`#991B1B`); converted `.copilot-promo-card` from obsidian black to soft violet gradient (`linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)`) with border `#DDD6FE` and `#1E1B4B` text; and styled `.search-capsule-ribbon` with `#F8FAFC` capsules and `#CBD5E1` borders.
+- **Layer & Constraint Hygiene:** Maintained strict brace depth `0` across `@layer base, dashboard, studio;`, wrapped hover effects in `@media (hover: hover)`, eliminated all `backdrop-filter:`, `transition: all`, and `100vw`. Full parity verified by `test_template_docs_sync.py`, `test_phase6_design_and_a11y.py`, zero emojis, and clean hygiene.
+
 ---
 
 ## 7. MCP Servers Usage Policy & Operational Protocol
