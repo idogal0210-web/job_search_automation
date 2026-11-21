@@ -68,6 +68,15 @@ class _SuccessMockPool:
                 "clarification_questions": ["האם ניהלת קבלני משנה באתר PV מסחרי?"],
                 "recommended_changes": ["להבליט ניהול ממשקי תקשורת ותהליכי בקרה"],
                 "unmatched_requirements": ["רישיון חשמלאי מוסמך פעיל נדרש במודעה (בלימודים עד 2026)"],
+                "categorized_gaps": [
+                    {
+                        "requirement": "רישיון חשמלאי מוסמך פעיל נדרש במודעה (בלימודים עד 2026)",
+                        "severity": "blocking",
+                        "explanation": "המועמד בלימודים פעילים עד דצמבר 2026 ואינו מחזיק ברישיון פעיל.",
+                        "bridgeable": False,
+                        "bridge_strategy": "שקיפות על סטטוס לימודים ומועד סיום צפוי",
+                    }
+                ],
                 "evaluation_model": "gemini-3.8-flash",
             }
         if name == "TailoredCvPackageSchema":
@@ -166,6 +175,21 @@ class TestCareerStudioBridgeAndEngine(unittest.TestCase):
         self.assertNotIn(data["contact"]["email"], data["anonymized_summary_he"])
         self.assertEqual(sync_payload["source"], "policy_config")
         self.assertIn("energean", sync_payload["excluded_employers"])
+
+    def test_single_source_of_truth_profile_loading(self):
+        data = load_candidate_profile_data()
+        self.assertEqual(data["source"], "career_studio_profile")
+        self.assertEqual(data["name_he"], "עידו גל")
+        self.assertEqual(data["name_en"], "Ido Gal")
+        self.assertIn("הנדסאי מכונות", data["title_he"])
+        self.assertIn("052-6328886", data["contact"]["phone"])
+        self.assertIn("idogal0210@gmail.com", data["contact"]["email"])
+        self.assertGreater(len(data["star_stories"]), 0)
+        self.assertGreater(len(data["technical_skills"]), 0)
+        self.assertIn("energean", data["excluded_employers"])
+        self.assertNotIn("052-6328886", data["anonymized_summary_he"])
+        self.assertNotIn("idogal0210@gmail.com", data["anonymized_summary_he"])
+        self.assertNotIn("Energean", data["anonymized_summary_he"])
 
     def test_employer_blacklist_gate(self):
         blocked, reason = check_employer_blacklist("Energean Israel Ltd.", "בקר גז")
@@ -301,6 +325,10 @@ class TestCareerStudioBridgeAndEngine(unittest.TestCase):
                     })
                     self.assertEqual(st, 200)
                     self.assertEqual(ats["analysis"]["overall_score"], 88)
+                    self.assertIn("categorized_gaps", ats["analysis"])
+                    self.assertEqual(len(ats["analysis"]["categorized_gaps"]), 1)
+                    self.assertEqual(ats["analysis"]["categorized_gaps"][0]["severity"], "blocking")
+                    self.assertFalse(ats["analysis"]["categorized_gaps"][0]["bridgeable"])
 
                     st, pkg_res = _request("/api/studio/tailor", {
                         "job_text": "דרוש הנדסאי מכונות",

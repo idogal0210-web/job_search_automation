@@ -307,6 +307,7 @@ class BridgeServices:
                 "clarification_questions": analysis.clarification_questions,
                 "recommended_changes": analysis.recommended_changes,
                 "unmatched_requirements": analysis.unmatched_requirements,
+                "categorized_gaps": getattr(analysis, "categorized_gaps", []),
                 "evaluation_model": analysis.evaluation_model,
             },
         }

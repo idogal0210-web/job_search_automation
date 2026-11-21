@@ -20,6 +20,14 @@ except ModuleNotFoundError:
     )
 
 @dataclass
+class AtsCategorizedGap:
+    requirement: str
+    severity: str  # "blocking", "important", "nice_to_have"
+    explanation: str
+    bridgeable: bool = True
+    bridge_strategy: str = ""
+
+@dataclass
 class ATSAnalysis:
     overall_score: Optional[int]
     match_summary: str
@@ -30,6 +38,7 @@ class ATSAnalysis:
     clarification_questions: List[str]
     recommended_changes: List[str]
     unmatched_requirements: List[str] = field(default_factory=list)
+    categorized_gaps: List[Dict[str, Any]] = field(default_factory=list)
     evaluation_model: str = ""
     degraded: bool = False
 
@@ -86,6 +95,7 @@ def analyze_job_match(job: JobPosting, base_profile: str, gemini_key: str) -> AT
             clarification_questions=[],
             recommended_changes=[],
             unmatched_requirements=[],
+            categorized_gaps=[],
             evaluation_model="local_keyword_fallback",
             degraded=True,
         )
@@ -104,6 +114,7 @@ def analyze_job_match(job: JobPosting, base_profile: str, gemini_key: str) -> AT
         clarification_questions=list(data.get("clarification_questions", [])),
         recommended_changes=list(data.get("recommended_changes", [])),
         unmatched_requirements=list(data.get("unmatched_requirements", [])),
+        categorized_gaps=list(data.get("categorized_gaps", [])),
         evaluation_model=str(data.get("evaluation_model", "")),
         degraded=False,
     )
@@ -141,6 +152,21 @@ def print_ats_scorecard(analysis: ATSAnalysis):
     print(f"\n{Colors.BOLD}[CHANGES] שינויים מומלצים ומותאמים בקו״ח:{Colors.END}")
     for change in analysis.recommended_changes:
         print(f"  -> {change}")
+
+    if analysis.categorized_gaps:
+        print(f"\n{Colors.BOLD}[GAPS] פערי התאמה ממוינים לפי חומרה:{Colors.END}")
+        for gap in analysis.categorized_gaps:
+            sev = gap.get("severity", "nice_to_have") if isinstance(gap, dict) else getattr(gap, "severity", "nice_to_have")
+            req = gap.get("requirement", "") if isinstance(gap, dict) else getattr(gap, "requirement", "")
+            exp = gap.get("explanation", "") if isinstance(gap, dict) else getattr(gap, "explanation", "")
+            strat = gap.get("bridge_strategy", "") if isinstance(gap, dict) else getattr(gap, "bridge_strategy", "")
+            sev_badge = (
+                f"{Colors.RED}[חוסם]{Colors.END}" if sev == "blocking"
+                else (f"{Colors.YELLOW}[חשוב]{Colors.END}" if sev == "important" else f"{Colors.CYAN}[יתרון]{Colors.END}")
+            )
+            print(f"  * {sev_badge} {req}: {exp}")
+            if strat:
+                print(f"    -> אסטרטגיית גישור: {strat}")
 
     if analysis.clarification_questions:
         print(f"\n{Colors.BOLD}[QUESTIONS] שאלות דיוק וחידוד מומלצות:{Colors.END}")

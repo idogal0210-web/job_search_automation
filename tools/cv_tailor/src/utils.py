@@ -15,7 +15,9 @@ warnings.filterwarnings("ignore")
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(BASE_DIR))
 BASE_PROFILE_PATH = os.path.join(BASE_DIR, "base_profile.md")
+CAREER_STUDIO_PROFILE_PATH = os.path.join(PROJECT_ROOT, "frontend", "data", "career_studio_profile.json")
 DEFAULT_OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 
 class Colors:
@@ -64,16 +66,139 @@ def load_config():
     }
     return config
 
+def format_profile_json_to_markdown(data: Dict[str, Any]) -> str:
+    """Format structured candidate profile JSON into canonical base profile markdown."""
+    cand = data.get("candidate", {})
+    name_he = cand.get("name_he", "")
+    name_en = cand.get("name_en", "")
+    name_str = f"{name_he} ({name_en})" if name_en and name_he != name_en else name_he
+
+    sections = [
+        f"# פרופיל בסיס – {name_str}",
+        "",
+        "## פרטים אישיים",
+        f"* **שם:** {name_str}",
+        f"* **כותרת מקצועית (עברית):** {cand.get('title_he', '')}",
+        f"* **כותרת מקצועית (אנגלית):** {cand.get('title_en', '')}",
+        f"* **מגורים:** {cand.get('location', '')}",
+        f"* **טלפון:** {cand.get('phone', '')}",
+        f"* **אימייל:** {cand.get('email', '')}",
+        f"* **לינקדאין:** [{cand.get('linkedin_url', '')}]({cand.get('linkedin_url', '')})",
+        "",
+        "---",
+        "",
+        "## תמצית מקצועית (Professional Summary)",
+        "",
+        "### עברית",
+        cand.get("summary_he", ""),
+        "",
+        "### English",
+        cand.get("summary_en", ""),
+        "",
+        "---",
+        "",
+        "## ניסיון מקצועי (Professional Experience)",
+        "",
+    ]
+
+    for i, exp in enumerate(data.get("experience", []), 1):
+        role_he = exp.get("role_he", "")
+        company = exp.get("company", "")
+        period = exp.get("period", "")
+        role_en = exp.get("role_en", "")
+        heading = f"### {i}. {role_he} | {company} | {period}"
+        sections.append(heading)
+        if role_en:
+            sections.append(f"*({company.upper()} – {role_en} | {period})*")
+        for b in exp.get("bullets", []):
+            sections.append(f"* {b}")
+        sections.append("")
+
+    sections.extend([
+        "---",
+        "",
+        "## מערכות וכלים טכנולוגיים (Technical Tools and Systems)",
+    ])
+    tech = data.get("technical_skills", {})
+    if tech.get("control_and_operations"):
+        sections.append(f"* **בקרה ומערכות ארגוניות:** {', '.join(tech['control_and_operations'])}.")
+    if tech.get("digital_and_ai"):
+        sections.append(f"* **ניתוח נתונים ויישומי משרד:** {', '.join(tech['digital_and_ai'])}.")
+    if tech.get("energy_and_gas"):
+        sections.append(f"* **אנרגיה וגז:** {', '.join(tech['energy_and_gas'])}.")
+    if tech.get("drone_and_uav"):
+        sections.append(f"* **רחפנים ו-UAV:** {', '.join(tech['drone_and_uav'])}.")
+
+    sections.extend([
+        "",
+        "---",
+        "",
+        "## השכלה והכשרה מקצועית (Education and Certifications)",
+    ])
+    for edu in data.get("education", []):
+        deg = edu.get("degree", "")
+        inst = edu.get("institution", "")
+        yr = edu.get("year", "")
+        sections.append(f"* **{deg}** | {inst} | {yr}")
+        if edu.get("final_project"):
+            sections.append(f"  * פרויקט גמר: {edu['final_project']}")
+
+    sections.extend([
+        "",
+        "---",
+        "",
+        "## שירות צבאי (Military Service)",
+    ])
+    for exp in data.get("experience", []):
+        if "סיירת נח" in exp.get("company", "") or exp.get("id") == "exp_nahal_military":
+            sections.append(f"* **{exp.get('company')}** | {exp.get('role_he')} | {exp.get('period')}")
+            for b in exp.get("bullets", []):
+                sections.append(f"  * {b}")
+
+    sections.extend([
+        "",
+        "---",
+        "",
+        "## שפות (Languages)",
+        "* **עברית:** שפת אם (Native).",
+        "* **אנגלית:** שליטה מקצועית מלאה (Full Professional Proficiency).",
+        "",
+    ])
+    return "\n".join(sections).strip() + "\n"
+
+
 def load_base_profile(path: str = None) -> str:
-    """Read the base candidate profile from base_profile.md (or template fallback)."""
-    target_path = path or BASE_PROFILE_PATH
-    if not os.path.exists(target_path):
+    """Read the base candidate profile from career_studio_profile.json, base_profile.md, or template fallback."""
+    if path:
+        target_path = path
+        if not os.path.exists(target_path):
+            raise FileNotFoundError(f"Base profile file not found at: {target_path}")
+        if target_path.endswith(".json"):
+            with open(target_path, "r", encoding="utf-8") as f:
+                return format_profile_json_to_markdown(json.load(f))
+        with open(target_path, "r", encoding="utf-8") as f:
+            return f.read()
+
+    # Default lookup:
+    # If BASE_PROFILE_PATH does not exist (e.g. patched in CI or missing private files),
+    # fallback to base_profile.template.md
+    if not os.path.exists(BASE_PROFILE_PATH):
         template_path = os.path.join(BASE_DIR, "base_profile.template.md")
         if os.path.exists(template_path):
-            target_path = template_path
-        else:
-            raise FileNotFoundError(f"Base profile file not found at: {target_path}")
-    with open(target_path, "r", encoding="utf-8") as f:
+            with open(template_path, "r", encoding="utf-8") as f:
+                return f.read()
+        raise FileNotFoundError(f"Base profile file not found at: {BASE_PROFILE_PATH}")
+
+    # Primary Single Source of Truth: career_studio_profile.json
+    if os.path.exists(CAREER_STUDIO_PROFILE_PATH):
+        try:
+            with open(CAREER_STUDIO_PROFILE_PATH, "r", encoding="utf-8") as f:
+                return format_profile_json_to_markdown(json.load(f))
+        except Exception:
+            pass
+
+    # Secondary fallback: base_profile.md
+    with open(BASE_PROFILE_PATH, "r", encoding="utf-8") as f:
         return f.read()
 
 def ensure_dir(dir_path: str):
@@ -146,10 +271,129 @@ def check_employer_blacklist(company_name: str, job_text: str = "") -> Tuple[boo
 
 
 def load_candidate_profile_data(path: Optional[str] = None) -> Dict[str, Any]:
-    """Parse canonical base_profile.md (or template fallback) into structured JSON-ready data."""
-    target_path = path or BASE_PROFILE_PATH
-    using_template = (not os.path.exists(target_path)) and os.path.exists(os.path.join(BASE_DIR, "base_profile.template.md"))
-    markdown = load_base_profile(path)
+    """Parse candidate profile into structured JSON-ready data from career_studio_profile.json or base_profile.md."""
+    if path:
+        target_path = path
+    elif not os.path.exists(BASE_PROFILE_PATH):
+        target_path = os.path.join(BASE_DIR, "base_profile.template.md")
+    elif os.path.exists(CAREER_STUDIO_PROFILE_PATH):
+        target_path = CAREER_STUDIO_PROFILE_PATH
+    else:
+        target_path = BASE_PROFILE_PATH
+
+    # Primary Single Source of Truth branch: career_studio_profile.json
+    if target_path.endswith(".json") and os.path.exists(target_path):
+        with open(target_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        cand = data.get("candidate", {})
+        name_he = cand.get("name_he", "עידו גל")
+        name_en = cand.get("name_en", "Ido Gal")
+        name = f"{name_he} ({name_en})" if name_en and name_he != name_en else name_he
+        title_he = cand.get("title_he", "")
+        title_en = cand.get("title_en", "")
+        location = cand.get("location", "")
+        raw_phone = cand.get("phone", "")
+        raw_email = cand.get("email", "")
+        linkedin_url = cand.get("linkedin_url", "")
+        summary_he = cand.get("summary_he", "")
+        summary_en = cand.get("summary_en", "")
+
+        edu_lines = []
+        for e in data.get("education", []):
+            deg = e.get("degree", "")
+            inst = e.get("institution", "")
+            yr = e.get("year", "")
+            edu_lines.append(f"{deg} | {inst} | {yr}".strip(" |"))
+            if e.get("final_project"):
+                edu_lines.append(f"פרויקט גמר: {e['final_project']}")
+
+        exp_headings = []
+        exp_bullets = []
+        mil_lines = []
+        for exp in data.get("experience", []):
+            r = exp.get("role_he", "")
+            c = exp.get("company", "")
+            p = exp.get("period", "")
+            exp_headings.append(f"{r} | {c} | {p}".strip(" |"))
+            for b in exp.get("bullets", []):
+                exp_bullets.append(b)
+                if "סיירת נח" in c or exp.get("id") == "exp_nahal_military":
+                    mil_lines.append(b)
+
+        tools_lines = []
+        for cat, sk_list in data.get("technical_skills", {}).items():
+            if isinstance(sk_list, list):
+                tools_lines.append(f"{cat}: {', '.join(sk_list)}")
+
+        header_line = f"{name} — {title_he}" if title_he else name
+        contact_line = " | ".join([x for x in (location, raw_phone, raw_email, linkedin_url) if x])
+        baseline_summary_he = "\n".join([
+            header_line,
+            contact_line,
+            summary_he,
+            *[f"ניסיון: {h}" for h in exp_headings[:2]],
+            *[f"השכלה: {e}" for e in edu_lines[:2]],
+        ]).strip()
+
+        anonymized_text = baseline_summary_he
+        name_variants = [name, name_he, name_en]
+        for nv in dict.fromkeys(v for v in name_variants if v):
+            anonymized_text = anonymized_text.replace(nv, "[מועמד מנוסה]")
+
+        for phone_tok in re.split(r"\s*/\s*", raw_phone or ""):
+            tok = phone_tok.strip()
+            if tok:
+                anonymized_text = anonymized_text.replace(tok, "05X-XXXXXXX")
+        if raw_phone:
+            anonymized_text = anonymized_text.replace(raw_phone, "05X-XXXXXXX")
+
+        if raw_email:
+            anonymized_text = anonymized_text.replace(raw_email, "candidate@confidential.il")
+        if linkedin_url:
+            anonymized_text = anonymized_text.replace(linkedin_url, "[LinkedIn הוסתר]")
+
+        for employer_mask, label in [
+            ("Energean Israel Ltd.", "[חברת תשתיות ואנרגיה מובילה]"),
+            ("Energean", "[חברת אנרגיה מובילה]"),
+        ]:
+            anonymized_text = anonymized_text.replace(employer_mask, label)
+
+        raw_md = format_profile_json_to_markdown(data)
+
+        return {
+            "source": "career_studio_profile",
+            "source_path": os.path.relpath(target_path, PROJECT_ROOT) if target_path.startswith(PROJECT_ROOT) else target_path,
+            "name": name,
+            "name_he": name_he,
+            "name_en": name_en,
+            "title_he": title_he,
+            "title_en": title_en,
+            "location": location,
+            "contact": {
+                "phone": raw_phone,
+                "email": raw_email,
+                "linkedin": linkedin_url,
+                "location": location,
+            },
+            "summary_he": summary_he,
+            "summary_en": summary_en,
+            "education": edu_lines,
+            "experience_titles": exp_headings,
+            "experience_highlights": exp_bullets,
+            "military": mil_lines,
+            "tools": tools_lines,
+            "technical_skills": data.get("technical_skills", {}),
+            "star_stories": data.get("star_stories_catalog", []),
+            "baseline_summary_he": baseline_summary_he,
+            "anonymized_summary_he": anonymized_text,
+            "excluded_employers": load_excluded_employers(),
+            "raw_markdown": raw_md,
+        }
+
+    # Markdown parsing branch (fallback or custom path)
+    using_template = (not os.path.exists(target_path)) or "template" in target_path
+    markdown = load_base_profile(target_path)
 
     def _extract_field(label: str, default: str = "") -> str:
         m = re.search(rf"\*\*{re.escape(label)}:\*\*\s*(.+)", markdown)
@@ -229,6 +473,8 @@ def load_candidate_profile_data(path: Optional[str] = None) -> Dict[str, Any]:
         "source": "template" if using_template else "base_profile",
         "source_path": "tools/cv_tailor/base_profile.template.md" if using_template else "tools/cv_tailor/base_profile.md",
         "name": name,
+        "name_he": name.split("(")[0].strip() if "(" in name else name,
+        "name_en": name.split("(")[1].replace(")", "").strip() if "(" in name else "",
         "title_he": title_he,
         "title_en": title_en,
         "location": location,
@@ -245,6 +491,8 @@ def load_candidate_profile_data(path: Optional[str] = None) -> Dict[str, Any]:
         "experience_highlights": exp_bullets,
         "military": mil_lines,
         "tools": tools_lines,
+        "technical_skills": {},
+        "star_stories": [],
         "baseline_summary_he": baseline_summary_he,
         "anonymized_summary_he": anonymized_text,
         "excluded_employers": load_excluded_employers(),

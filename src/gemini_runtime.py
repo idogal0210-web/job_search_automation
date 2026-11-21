@@ -68,6 +68,15 @@ class AtsScorecardCategory(BaseModel):
     score: int = Field(ge=0, le=100)
 
 
+class AtsCategorizedGap(BaseModel):
+    model_config = ConfigDict(strict=True)
+    requirement: str = Field(min_length=1)
+    severity: Literal["blocking", "important", "nice_to_have"]
+    explanation: str = Field(min_length=1)
+    bridgeable: bool = True
+    bridge_strategy: str = ""
+
+
 class AtsStudioAnalysisSchema(BaseModel):
     model_config = ConfigDict(strict=True)
     overall_score: int = Field(ge=0, le=100)
@@ -79,6 +88,7 @@ class AtsStudioAnalysisSchema(BaseModel):
     clarification_questions: list[str] = Field(default_factory=list)
     recommended_changes: list[str] = Field(default_factory=list)
     unmatched_requirements: list[str] = Field(default_factory=list)
+    categorized_gaps: list[AtsCategorizedGap] = Field(default_factory=list)
 
 
 class TailoredCvPackageSchema(BaseModel):

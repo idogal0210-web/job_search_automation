@@ -8960,6 +8960,37 @@ Practical Mechanical Engineer with experience in 24/7 natural gas operations, re
         clarFields.replaceChildren();
       }
     }
+
+    if (Array.isArray(an.categorized_gaps) && an.categorized_gaps.length > 0) {
+      const verdictEl = document.getElementById('atsVerdictSummaryLine');
+      const listEl = document.getElementById('atsSeveritySortedGapsList');
+      if (listEl) {
+        const hasBlocker = an.categorized_gaps.some(g => g.severity === 'blocking');
+        if (verdictEl) {
+          verdictEl.textContent = hasBlocker ? 'זוהה פער חוסם' : 'פערים ניתנים לגישור';
+        }
+        listEl.innerHTML = an.categorized_gaps.map(gap => {
+          const sev = gap.severity || 'nice_to_have';
+          const sevClass = sev === 'blocking' ? 'severity-blocker' : (sev === 'important' ? 'severity-keyword' : 'severity-style');
+          const sevLabel = sev === 'blocking' ? 'חסם קשיח' : (sev === 'important' ? 'פער חשוב' : 'יתרון');
+          const safeTerm = escapeHtml(JSON.stringify(String(gap.requirement || '')));
+          const stratHtml = gap.bridge_strategy ? `<div style="font-size:11px;color:var(--text-muted);margin-block-start:2px;">אסטרטגיה: ${escapeHtml(gap.bridge_strategy)}</div>` : '';
+          return `
+            <div class="ats-severity-gap-row">
+              <div class="ats-severity-gap-info" style="flex-direction:column;align-items:flex-start;">
+                <div style="display:flex;align-items:center;gap:6px;">
+                  <span class="ats-gap-severity-pill ${sevClass}">${escapeHtml(sevLabel)}</span>
+                  <strong>${escapeHtml(gap.requirement)}</strong>
+                </div>
+                <span style="font-size:12px;color:var(--text-secondary);margin-block-start:2px;">${escapeHtml(gap.explanation)}</span>
+                ${stratHtml}
+              </div>
+              ${gap.bridgeable ? `<button type="button" class="ats-gap-inject-btn" onclick="injectKeywordToWriter(${safeTerm})">הוסף לקו״ח</button>` : ''}
+            </div>
+          `;
+        }).join('');
+      }
+    }
   }
 
   async function runDeepStudioAtsAnalysis() {
