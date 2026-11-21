@@ -99,7 +99,7 @@ job_search_automation/
 │   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
 ├── tools/                          # Standalone modular tooling
 │   └── cv_tailor/                  # Fact-based CV tailoring and interview prep engine
-├── tests/                          # Automated unit and integration test suite (382 passing Python tests + 2,489 JS stress assertions)
+├── tests/                          # Automated unit and integration test suite (395 passing Python tests + 2,489 JS stress assertions)
 │   ├── test_studio_bridge.py       # Unified Career Studio HTTP bridge, schema, SSRF, blacklist & generator tests
 │   ├── test_studio_bridge_security.py # Bridge Origin/Host/Token/Content-Length & URL guard SSRF/redirect tests
 │   ├── test_phase0_phase2_security.py # Client PII redaction, Supabase CAS/RLS, XSS onclick & SRI verification tests
@@ -170,7 +170,7 @@ job_search_automation/
 - `status`: String (`QUALIFIED`, `DISQUALIFIED`, `RETRY_PENDING`).
 - `match_score`: Integer (overall weighted fit score, 0 to 100).
 - `base_match_score`: Integer (raw AI evaluation score).
-- `priority_bonus`: Integer (+10 bonus for Tier 1 target employers ranks 1-5, +5 bonus for Tier 2 target employers ranks 6-15, capped at 100, applied when base_match_score >= 65).
+- `priority_bonus`: Integer (+10 bonus for Tier 1 target employers, +5 bonus for Tier 2 target employers, capped at 100, applied when base_match_score >= 75).
 - `concrete_matches_count`: Integer (count of confirmed technical requirement matches).
 - `reasoning`: String (concise Hebrew explanation of evaluation rationale).
 - `salary_min`: Integer (predicted minimum monthly gross compensation in ILS).

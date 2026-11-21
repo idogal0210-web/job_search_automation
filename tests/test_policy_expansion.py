@@ -174,7 +174,9 @@ class PolicyExpansionTests(unittest.TestCase):
             {"title": "הנדסאי מכונות", "company": "חברה תעשייתית", "location": "חיפה", "snippet": "באתר החברה בחיפה"},
             {"title": "הנדסאי מכונות", "company": "חברה תעשייתית", "location": "כרמיאל", "snippet": "עבודה יומיומית בכרמיאל"},
             {"title": "הנדסאי מכונות", "company": "חברה תעשייתית", "location": "באר שבע", "snippet": "משרה מלאה בבאר שבע"},
-            {"title": "הנדסאי מכונות", "company": "חברה תעשייתית", "location": "דימונה", "snippet": "במפעל בדימונה"}
+            {"title": "הנדסאי מכונות", "company": "חברה תעשייתית", "location": "דימונה", "snippet": "במפעל בדימונה"},
+            {"title": "הנדסאי מכונות", "company": "חברה תעשייתית", "location": "", "snippet": "מיקום המשרה: חיפה. עבודה במפעל תעשייתי ללא רכב"},
+            {"title": "הנדסאי מכונות", "company": "חברה תעשייתית", "location": "", "snippet": "מיקום בפועל: באר שבע, דרוש הנדסאי מנוסה"}
         ]
         for job in distant_jobs:
             with self.subTest(loc=job["location"]):
@@ -225,7 +227,11 @@ class PolicyExpansionTests(unittest.TestCase):
             {"title": "רכז הקמות", "company": "Doral", "snippet": "רכז הקמת פרויקטי אנרגיה מתחדשת"},
             {"title": "עוזר מנהל פרויקט", "company": "Lesico", "snippet": "פרויקטי תשתית צנרת וגז טבעי"},
             {"title": "PMO טכני", "company": "Baran Group", "snippet": "מעקב לו\"ז ותקציב בפרויקטים הנדסיים"},
-            {"title": "Junior Site Manager", "company": "Shikun & Binui Energy", "snippet": "ניהול אתר הקמה סולארי"}
+            {"title": "Junior Site Manager", "company": "Shikun & Binui Energy", "snippet": "ניהול אתר הקמה סולארי"},
+            # Roles with common operational words that should NOT be false-positively disqualified
+            {"title": "מתאם פרויקטי הקמה", "company": "Doral", "snippet": "אישור חשבונות קבלנים, פיקוח הנדסי וליווי אתר בינוי ותשתיות סולאריות"},
+            {"title": "רכז פרויקטים", "company": "Energix", "snippet": "הדרכות בטיחות לקבלנים באתר הקמות סולאר ואגירה"},
+            {"title": "עוזר מנהל פרויקט", "company": "Baran Group", "snippet": "עבודה מול גורמים משפטיים ורגולטוריים בפרויקטי תשתיות אנרגיה"}
         ]
         for job in valid_pm_jobs:
             with self.subTest(title=job["title"]):
@@ -236,7 +242,8 @@ class PolicyExpansionTests(unittest.TestCase):
             {"title": "Junior Project Manager", "company": "Startup", "snippet": "שיווק דיגיטלי וקמפיינים בסושיאל"},
             {"title": "Project Coordinator", "company": "Agency", "snippet": "ניהול פרויקטי משאבי אנוש וגיוס עובדים"},
             {"title": "רכזת פרויקטים", "company": "Fintech", "snippet": "פרויקטים פיננסיים והנהלת חשבונות"},
-            {"title": "עוזר מנהל פרויקט", "company": "Health", "snippet": "מחקר קליני ורגולציה רפואית"}
+            {"title": "עוזר מנהל פרויקט", "company": "Health", "snippet": "מחקר קליני ורגולציה רפואית"},
+            {"title": "מנהל פרויקט דיגיטל ושיווק", "company": "AdTech", "snippet": "ניהול קמפיינים ופרויקטים דיגיטליים"}
         ]
         for job in non_tech_pm_jobs:
             with self.subTest(title=job["title"]):

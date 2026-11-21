@@ -215,7 +215,7 @@ def is_outside_commute_radius(job):
     # 4. If loc is empty, check if snippet explicitly states distant stationary location
     snippet_first = str(job.get("snippet", ""))[:200].lower()
     explicit_distant = re.search(
-        r"(?:מיקום\s+(?:המשרה|בפועל)|משרדי\s+החברה\s+ב|אתר\s+קבוע\s+ב|עבודה\s+ב)(?:חיפה|באר\s+שבע|כרמיאל|עפולה|אילת|דימונה)",
+        r"(?:מיקום\s+(?:המשרה|בפועל)(?::\s*|\s+ב?|\s+)|\b(?:משרדי\s+החברה|אתר\s+קבוע|עבודה)\s+ב)(?:חיפה|באר\s+שבע|כרמיאל|עפולה|אילת|דימונה)",
         snippet_first
     )
     if explicit_distant:
@@ -258,13 +258,31 @@ def deterministic_filter(job):
         title, re.I
     ))
     if is_pm_or_coordinator:
-        non_technical_domain = re.search(
+        # Check if title itself explicitly specifies non-technical domain
+        non_tech_in_title = re.search(
             r"שיווק|דיגיטל|משאבי\s+אנוש|גיוס|הדרכה|תוכן|סושיאל|פיננסים|חשבונות|משפטי|קליני|רפואי|"
             r"\b(?:marketing|digital|hr|recruiting|clinical|finance|legal|social\s+media|content)\b",
+            title, re.I
+        )
+        if non_tech_in_title:
+            return rejection("non_technical_pm", f"תפקיד ניהול/תיאום פרויקטים ללא זיקה הנדסית-טכנית ({non_tech_in_title.group(0)})")
+
+        # Check if text has engineering, energy, solar, infrastructure, or technical anchor
+        has_technical_anchor = re.search(
+            r"סולאר|אנרגיה|תשתיות|הקמות|חשמל|מכונות|גז|הנדס|אתר|בינוי|אלקטרו[- ]?מכני|פיקוח\s+הנדסי|"
+            r"\b(?:solar|pv|bess|energy|infra|construction|commissioning|scada|mep|uav|drone)\b",
             text, re.I
         )
-        if non_technical_domain:
-            return rejection("non_technical_pm", f"תפקיד ניהול/תיאום פרויקטים ללא זיקה הנדסית-טכנית ({non_technical_domain.group(0)})")
+        if not has_technical_anchor:
+            non_technical_domain = re.search(
+                r"שיווק\s+דיגיטלי|קמפיינים|סושיאל|משאבי\s+אנוש|גיוס\s+עובדים|הדרכת\s+עובדים|"
+                r"פרויקטים\s+פיננסיים|הנהלת\s+חשבונות|מחלקה\s+משפטית|ייעוץ\s+משפטי|מחקר\s+קליני|רגולציה\s+רפואית|"
+                r"\b(?:marketing|digital\s+marketing|social\s+media|hr|human\s+resources|recruiting|talent\s+acquisition|"
+                r"clinical|finance|financial|legal|content\s+management)\b",
+                text, re.I
+            )
+            if non_technical_domain:
+                return rejection("non_technical_pm", f"תפקיד ניהול/תיאום פרויקטים ללא זיקה הנדסית-טכנית ({non_technical_domain.group(0)})")
 
     # Unconditional 24/7 rotating shifts rejection (strict user policy)
     is_24_7_shift = bool(re.search(

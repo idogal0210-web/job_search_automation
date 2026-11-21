@@ -103,6 +103,7 @@ Education & Credentials:
 - Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).
 - Certified Electrician Studies (חשמלאי מוסמך - לקראת סיום ההסמכה).
 - Military: Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance (סיירת נח"ל).
+- Licensing & Mobility: Valid Driver's License (רישיון נהיגה דרגה B בתוקף).
 Key Competencies & Target Operational Focus:
 - Energy & Utilities: Natural gas transmission/distribution control, nomination and re-nomination allocations, gas metering, settlement and billing coordination, PRMS and high-pressure gas facilities, solar PV field systems, battery storage (BESS) operations, clean-tech integration.
 - Operations, C2 & SCADA: Senior energy/gas dispatcher, 24/7 mission-critical control room operations, crisis response, supply continuity, operational automation (AVEVA System Platform, SCADA integrations, Python and Copilot AI calculation agents).
@@ -187,7 +188,9 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
         item["assessment"] != "unknown" for item in assessments) else "incomplete"
 
     STATUTORY_BLOCKER_REGEX = re.compile(
-        r"פנקס\s+המהנדסים|רישום\s+בפנקס\s+המהנדסים|רישיון\s+חשמלאי\s+מוסמך\s+בתוקף\s+חובה|משמרות\s+24/7|\blicense\b",
+        r"פנקס\s+המהנדסים|רישום\s+בפנקס\s+המהנדסים|רישיון\s+חשמלאי\s+מוסמך\s+בתוקף\s+חובה|משמרות\s+24/7|"
+        r"(?<!driver\'s\s)(?<!driving\s)\b(?:professional\s+engineer|pe|electrician|electrical|certified\s+electrician)\s+license\b|"
+        r"\bengineers?\s+register\b|\b24/7\s+shifts?\b",
         re.I
     )
 

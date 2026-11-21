@@ -261,12 +261,12 @@ class AuditRegressionTests(unittest.TestCase):
         self.assertEqual(result['status'], 'RETRY_PENDING')
 
         # 2. Gap on statutory blocker (mandatory license) -> DISQUALIFIED
-        statutory_gap = {'requirement': 'License', 'importance': 'required', 'ad_evidence': {'quote': 'license'},
+        statutory_gap = {'requirement': 'Certified Electrician License', 'importance': 'required', 'ad_evidence': {'quote': 'certified electrician license'},
                          'profile_evidence': {'quote': 'Certified Electrician Studies'}, 'assessment': 'gap'}
         pool.evaluate.return_value = {'match_score': 90, 'status': 'QUALIFIED', 'technical_role': True,
             'sector_key': 'energy', 'concrete_matches_count': 3, 'reasoning': 'test', 'evaluation_model': 'mock',
             'evaluation_complete': True, 'requirement_assessments': matches + [statutory_gap]}
-        result2 = evaluate_and_enrich_job_with_gemini(object(), 'Solar technician', 'Example', 'industrial maintenance license', False, RunHealth(), pool=pool)
+        result2 = evaluate_and_enrich_job_with_gemini(object(), 'Solar technician', 'Example', 'industrial maintenance certified electrician license', False, RunHealth(), pool=pool)
         self.assertEqual(result2['status'], 'DISQUALIFIED')
         self.assertEqual(result2['disqualification_reason'], 'statutory_blocker')
 
@@ -279,6 +279,16 @@ class AuditRegressionTests(unittest.TestCase):
         result3 = evaluate_and_enrich_job_with_gemini(object(), 'Solar technician', 'Example', 'industrial maintenance experience', False, RunHealth(), pool=pool)
         self.assertEqual(result3['status'], 'QUALIFIED')
         self.assertIn('דרוש ניסיון רב יותר', result3['fit_gaps'])
+
+        # 4. Driver's license gap is not a statutory blocker -> QUALIFIED with fit_gaps
+        drivers_gap = {'requirement': "Valid Driver's License", 'importance': 'required', 'ad_evidence': {'quote': "driver's license"},
+                       'profile_evidence': {'quote': "Driver's License"}, 'assessment': 'gap', 'explanation': 'רישיון נהיגה'}
+        pool.evaluate.return_value = {'match_score': 80, 'status': 'QUALIFIED', 'technical_role': True,
+            'sector_key': 'energy', 'concrete_matches_count': 3, 'reasoning': 'test', 'evaluation_model': 'mock',
+            'evaluation_complete': True, 'requirement_assessments': matches + [drivers_gap]}
+        result4 = evaluate_and_enrich_job_with_gemini(object(), 'Solar technician', 'Example', "industrial maintenance requires a valid driver's license for field visits", False, RunHealth(), pool=pool)
+        self.assertEqual(result4['status'], 'QUALIFIED')
+        self.assertIn('רישיון נהיגה', result4['fit_gaps'])
 
     def test_delivery_commits_only_the_five_reported_jobs(self):
         import main
