@@ -1,5 +1,6 @@
 """Evaluation orchestration, separated from scraping and delivery for offline tests."""
 import json
+import time
 from dataclasses import asdict
 from urllib.parse import urlparse
 
@@ -36,16 +37,24 @@ def enrich(job):
         job["description_complete"] = True
 
 
-def evaluate_candidates(jobs, client, health, ledger, *, pool=None, enrich_job=enrich):
+def evaluate_candidates(jobs, client, health, ledger, *, pool=None, enrich_job=enrich, max_duration=600):
     pool = pool or GeminiPool()
     ledger.stage_candidates(jobs)
     passed, audit = [], []
+    deadline = time.monotonic() + max_duration
     for original in jobs:
         job = dict(original)
         record = ledger.jobs.get(job["link"], {})
         if record.get("stage") == "READY":
             result = dict(record["job"])
             health.cached_evaluations += 1
+        elif time.monotonic() > deadline:
+            print("[EVALUATE_TIMEOUT_GUARD] Evaluation deadline reached; fast-pathing remaining candidates", flush=True)
+            precheck = deterministic_filter(job)
+            result = precheck if precheck else apply_keyword_fallback(job, "evaluation_deadline_reached")
+            if job.get("location") and job["location"] not in {"לא צוין", "ישראל"}:
+                result["location"] = job["location"]
+            ledger.record(job, result)
         else:
             # Clear stale result fields before retrying an earlier partial evaluation.
             job = {k: job.get(k, "") for k in ("link", "title", "company", "snippet", "query", "source", "location", "logo", "date", "source_id", "is_direct_ats", "description", "description_complete")}
@@ -53,6 +62,8 @@ def evaluate_candidates(jobs, client, health, ledger, *, pool=None, enrich_job=e
             # A missing industrial evidence decision requires the full description first.
             if precheck and precheck.get("disqualification_reason") != "control_room_lacks_scada_or_high_salary":
                 result = precheck
+            elif pool.is_exhausted() and not job.get("description_complete") and len(job.get("snippet", "").strip()) < 100:
+                result = apply_keyword_fallback(job, "ai_pool_exhausted")
             else:
                 enrich_job(job)
                 if (len(job.get("snippet", "").strip()) < 100 or

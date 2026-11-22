@@ -126,6 +126,37 @@ class ModelRecoveryTests(unittest.TestCase):
                 runtime.evaluate(client, 'p', RunHealth())
             self.assertEqual(client.models.generate_content.call_count, calls)
 
+    def test_model_circuit_breaker_trips_after_3_failures(self):
+        runtime, clock = pool(('one',), attempts=1)
+        client = MagicMock()
+        client.models.generate_content.side_effect = APIError(429, 'rate limit per minute')
+        health = RunHealth()
+        # 1st failure: cooldown backoff
+        with self.assertRaises(EvaluationUnavailable):
+            runtime.evaluate(client, 'p', health)
+        self.assertLess(runtime.states['one'].open_until, float('inf'))
+        self.assertFalse(runtime.is_exhausted())
+
+        # Advance clock and trigger 2nd failure
+        clock.now += 100
+        with self.assertRaises(EvaluationUnavailable):
+            runtime.evaluate(client, 'p', health)
+        self.assertLess(runtime.states['one'].open_until, float('inf'))
+        self.assertFalse(runtime.is_exhausted())
+
+        # Advance clock and trigger 3rd failure -> trips breaker to inf
+        clock.now += 200
+        with self.assertRaises(EvaluationUnavailable):
+            runtime.evaluate(client, 'p', health)
+        self.assertEqual(runtime.states['one'].open_until, float('inf'))
+        self.assertTrue(runtime.is_exhausted())
+
+        # 4th call is skipped immediately without making client calls
+        calls_before = client.models.generate_content.call_count
+        with self.assertRaises(EvaluationUnavailable):
+            runtime.evaluate(client, 'p', health)
+        self.assertEqual(client.models.generate_content.call_count, calls_before)
+
 
 class PolicyTests(unittest.TestCase):
     def test_technical_titles_are_not_auto_rejected(self):
@@ -279,6 +310,59 @@ class StateAndPipelineTests(unittest.TestCase):
         health.email_success = False
         self.assertEqual(final_status(health, email_configured=True), 'FAILED_EMAIL')
         self.assertEqual(final_status(health, email_configured=False), 'DEGRADED_EMAIL_NOT_CONFIGURED')
+
+    def test_evaluation_ledger_retires_pending_after_3_attempts(self):
+        job = {'link': 'https://example.com/retry-job', 'title': 'Technician', 'company': 'Co', 'snippet': 'Snippet'}
+        result = {'status': 'RETRY_PENDING', 'evaluation_complete': False, 'evaluation_source': 'missing_description'}
+        # 1st attempt
+        self.ledger.record(job, result)
+        self.assertEqual(self.ledger.jobs[job['link']]['stage'], 'RETRY_PENDING')
+        self.assertEqual(self.ledger.jobs[job['link']]['attempts'], 1)
+
+        # 2nd attempt
+        self.ledger.record(job, result)
+        self.assertEqual(self.ledger.jobs[job['link']]['stage'], 'RETRY_PENDING')
+        self.assertEqual(self.ledger.jobs[job['link']]['attempts'], 2)
+
+        # 3rd attempt -> transitions to COMPLETE
+        self.ledger.record(job, result)
+        self.assertEqual(self.ledger.jobs[job['link']]['stage'], 'COMPLETE')
+        self.assertEqual(self.ledger.jobs[job['link']]['attempts'], 3)
+        self.assertEqual(self.ledger.select([], set()), [])
+
+    def test_evaluation_deadline_guard_fast_paths_remaining_candidates(self):
+        jobs = [
+            {'link': f'https://example.com/job-{i}', 'title': 'Solar Tech', 'company': 'Co', 'snippet': 'Industrial maintenance ' * 10}
+            for i in range(5)
+        ]
+        health = RunHealth()
+        # max_duration = -1 forces immediate timeout guard
+        passed, audit = evaluate_candidates(jobs, None, health, self.ledger, max_duration=-1, enrich_job=lambda j: None)
+        self.assertEqual(health.jobs_evaluated, 5)
+        self.assertEqual(health.fallback_evaluations, 5)
+        for job in audit:
+            self.assertEqual(job['retry_reason'], 'evaluation_deadline_reached')
+
+    def test_linkedin_guest_circuit_breaker_trips(self):
+        from src.fetchers import fetch_linkedin_full_job_description, _linkedin_guest_breaker
+        _linkedin_guest_breaker.record_success("linkedin_guest")
+        mock_response = MagicMock(status_code=429)
+        with patch('src.fetchers._get_with_retries', return_value=mock_response) as mock_get:
+            # 1st failure
+            fetch_linkedin_full_job_description('https://www.linkedin.com/jobs/view/1001')
+            self.assertFalse(_linkedin_guest_breaker.is_open('linkedin_guest'))
+            # 2nd failure
+            fetch_linkedin_full_job_description('https://www.linkedin.com/jobs/view/1002')
+            self.assertFalse(_linkedin_guest_breaker.is_open('linkedin_guest'))
+            # 3rd failure -> trips breaker
+            fetch_linkedin_full_job_description('https://www.linkedin.com/jobs/view/1003')
+            self.assertTrue(_linkedin_guest_breaker.is_open('linkedin_guest'))
+            # 4th call returns immediately without network
+            calls_before = mock_get.call_count
+            res = fetch_linkedin_full_job_description('https://www.linkedin.com/jobs/view/1004')
+            self.assertEqual(res, '')
+            self.assertEqual(mock_get.call_count, calls_before)
+        _linkedin_guest_breaker.record_success("linkedin_guest")
 
 
 if __name__ == '__main__':

@@ -99,7 +99,7 @@ job_search_automation/
 │   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
 ├── tools/                          # Standalone modular tooling
 │   └── cv_tailor/                  # Fact-based CV tailoring and interview prep engine
-├── tests/                          # Automated unit and integration test suite (395 passing Python tests + 2,489 JS stress assertions)
+├── tests/                          # Automated unit and integration test suite (399 passing Python tests + 2,489 JS stress assertions)
 │   ├── test_studio_bridge.py       # Unified Career Studio HTTP bridge, schema, SSRF, blacklist & generator tests
 │   ├── test_studio_bridge_security.py # Bridge Origin/Host/Token/Content-Length & URL guard SSRF/redirect tests
 │   ├── test_phase0_phase2_security.py # Client PII redaction, Supabase CAS/RLS, XSS onclick & SRI verification tests

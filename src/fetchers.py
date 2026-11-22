@@ -46,6 +46,34 @@ def _source_url(link, domain):
     return host == domain or host.endswith("." + domain)
 
 
+class CircuitBreaker:
+    """Per-source circuit breaker opening after consecutive failures."""
+
+    def __init__(self, threshold: int = 3):
+        self.threshold = max(1, int(threshold))
+        self._failures: dict = {}
+        self._opened: set = set()
+
+    def is_open(self, source: str) -> bool:
+        return source in self._opened
+
+    def record_success(self, source: str) -> None:
+        self._failures[source] = 0
+        self._opened.discard(source)
+
+    def record_failure(self, source: str) -> bool:
+        count = self._failures.get(source, 0) + 1
+        self._failures[source] = count
+        if count >= self.threshold and source not in self._opened:
+            self._opened.add(source)
+            print(f"[CIRCUIT OPEN] {source}", flush=True)
+            return True
+        return False
+
+
+_linkedin_guest_breaker = CircuitBreaker(threshold=3)
+
+
 @dataclass
 class RunHealth:
     linkedin_requests: int = 0
@@ -202,6 +230,8 @@ def fetch_linkedin_full_job_description(link: str) -> str:
     """Attempt to extract full job description from LinkedIn guest API endpoint."""
     if not _source_url(link, "linkedin.com"):
         return ""
+    if _linkedin_guest_breaker.is_open("linkedin_guest"):
+        return ""
     try:
         # Extract numeric job ID from the end of the link
         match = re.search(r"/(\d+)$", urlsplit(canonical_job_url(link)).path)
@@ -217,13 +247,18 @@ def fetch_linkedin_full_job_description(link: str) -> str:
         }
         res = _get_with_retries(requests, api_url, headers=headers, timeout=8)
         if res.status_code == 200:
+            _linkedin_guest_breaker.record_success("linkedin_guest")
             soup = BeautifulSoup(res.text, "html.parser")
             desc_div = soup.find("div", class_="show-more-less-html__markup") or soup.find("div", class_="description__text")
             if desc_div:
                 clean_text = desc_div.get_text(separator="\n", strip=True)
                 if len(clean_text) > 100:
                     return clean_text
+        elif res.status_code in {429, 401, 403}:
+            _linkedin_guest_breaker.record_failure("linkedin_guest")
+            return ""
     except Exception as e:
+        _linkedin_guest_breaker.record_failure("linkedin_guest")
         print(f"[DESCRIPTION] LinkedIn unavailable: {type(e).__name__}", flush=True)
     return ""
 
@@ -442,31 +477,6 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
             health_metrics.comeet_failures += 1
         print(f"[COMEET_ERROR] Error fetching from {url}: {type(e).__name__}", flush=True)
         return []
-
-
-class CircuitBreaker:
-    """Per-source circuit breaker opening after consecutive failures."""
-
-    def __init__(self, threshold: int = 3):
-        self.threshold = max(1, int(threshold))
-        self._failures: dict = {}
-        self._opened: set = set()
-
-    def is_open(self, source: str) -> bool:
-        return source in self._opened
-
-    def record_success(self, source: str) -> None:
-        self._failures[source] = 0
-        self._opened.discard(source)
-
-    def record_failure(self, source: str) -> bool:
-        count = self._failures.get(source, 0) + 1
-        self._failures[source] = count
-        if count >= self.threshold and source not in self._opened:
-            self._opened.add(source)
-            print(f"[CIRCUIT OPEN] {source}", flush=True)
-            return True
-        return False
 
 
 def fetch_greenhouse_jobs(

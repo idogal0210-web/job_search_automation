@@ -132,7 +132,9 @@ def classify_error(error):
     message = str(error).lower()
     if str(code) == "429" or "429" in message or "resource_exhausted" in message:
         # 'quota' alone is NOT proof of a daily quota: per-minute limits use it too.
-        if any(s in message for s in ("perday", "per_day", "per day", "daily")):
+        if "per minute" in message or "per_minute" in message or "perminute" in message:
+            return "rate_limit"
+        if any(s in message for s in ("perday", "per_day", "per day", "daily", "free_tier", "quota exceeded")):
             return "daily_quota"
         return "rate_limit"
     if str(code) in {"401", "403"}:
@@ -231,7 +233,7 @@ class GeminiPool:
                         continue
                     state.failures += 1
                     state.reason = kind
-                    if kind in {"daily_quota", "authentication", "configuration"}:
+                    if kind in {"daily_quota", "authentication", "configuration"} or state.failures >= 3:
                         state.open_until = float("inf")
                     else:
                         base = 60 if kind == "rate_limit" else 15
@@ -244,6 +246,10 @@ class GeminiPool:
                     data["evaluation_model"] = name
                     return data
         raise EvaluationUnavailable(reasons)
+
+    def is_exhausted(self) -> bool:
+        """Check if all models in the pool have tripped circuit breakers for the run."""
+        return all(self.states[name].open_until == float("inf") for name in self.models)
 
     def evaluate(self, client, prompt, health):
         data = self.generate_json(client, prompt, schema=Evaluation, health=health)

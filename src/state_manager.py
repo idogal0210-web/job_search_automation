@@ -58,12 +58,15 @@ class EvaluationLedger:
 
     def record(self, job, result):
         stage = "RETRY_PENDING"
+        old = self.jobs.get(job["link"], {})
+        attempts = old.get("attempts", 0) + 1
         if result.get("evaluation_complete") is True:
             stage = "READY" if result.get("status") == "QUALIFIED" else "COMPLETE"
-        old = self.jobs.get(job["link"], {})
+        elif attempts >= 3:
+            stage = "COMPLETE"
         self.jobs[job["link"]] = {
             "stage": stage, "job": {**job, **result},
-            "attempts": old.get("attempts", 0) + 1,
+            "attempts": attempts,
             "updated_at": datetime.now(timezone.utc).isoformat(),
         }
         # Save after every evaluation: pending jobs survive even if the source disappears.
@@ -80,7 +83,7 @@ class EvaluationLedger:
         if changed:
             self.save()
 
-    def select(self, raw_jobs, handled):
+    def select(self, raw_jobs, handled, max_pending=30):
         selected = {}
         handled_canonical = {canonical_job_url(link) for link in handled}
         known = {job_identity(record["job"]): link for link, record in self.jobs.items()}
@@ -90,8 +93,16 @@ class EvaluationLedger:
             key = content_identity(entry["job"])
             if key:
                 content_seen[key] = entry["job"]
+        pending_count = 0
         for link, record in self.jobs.items():
             if record["stage"] != "COMPLETE":
+                if record["stage"] == "RETRY_PENDING":
+                    if record.get("attempts", 0) >= 3:
+                        record["stage"] = "COMPLETE"
+                        continue
+                    if pending_count >= max_pending:
+                        continue
+                    pending_count += 1
                 selected[link] = dict(record["job"])
         for job in raw_jobs:
             link = job.get("link")
