@@ -183,13 +183,13 @@ class TestCareerStudioBridgeAndEngine(unittest.TestCase):
         self.assertEqual(data["name_he"], "עידו גל")
         self.assertEqual(data["name_en"], "Ido Gal")
         self.assertIn("הנדסאי מכונות", data["title_he"])
-        self.assertIn("052-6328886", data["contact"]["phone"])
-        self.assertIn("idogal0210@gmail.com", data["contact"]["email"])
+        self.assertIn("050-000-0000", data["contact"]["phone"])
+        self.assertIn("candidate@confidential.il", data["contact"]["email"])
         self.assertGreater(len(data["star_stories"]), 0)
         self.assertGreater(len(data["technical_skills"]), 0)
         self.assertIn("energean", data["excluded_employers"])
-        self.assertNotIn("052-6328886", data["anonymized_summary_he"])
-        self.assertNotIn("idogal0210@gmail.com", data["anonymized_summary_he"])
+        self.assertNotIn("050-000-0000", data["anonymized_summary_he"])
+        self.assertNotIn("candidate@confidential.il", data["anonymized_summary_he"])
         self.assertNotIn("Energean", data["anonymized_summary_he"])
 
     def test_employer_blacklist_gate(self):
