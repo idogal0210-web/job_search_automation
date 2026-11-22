@@ -667,11 +667,13 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (!liveJobsMapInstance) {
         initLiveJobsMap();
       }
-      setTimeout(() => {
-        if (liveJobsMapInstance) {
-          liveJobsMapInstance.invalidateSize();
-        }
-      }, 150);
+      [100, 300, 600].forEach(delay => {
+        setTimeout(() => {
+          if (liveJobsMapInstance && typeof liveJobsMapInstance.invalidateSize === 'function') {
+            liveJobsMapInstance.invalidateSize();
+          }
+        }, delay);
+      });
       updateMapMarkers();
     } else {
       mapContainer.style.display = 'none';
@@ -2190,10 +2192,72 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   let liveJobsMapInstance = null;
   let markersClusterGroup = null;
+  let isMapLoading = false;
+  let leafletLoadPromise = null;
+
+  function loadLeafletAssetsOnDemand() {
+    if (typeof window !== 'undefined' && typeof window.L !== 'undefined' && typeof window.L.map === 'function') {
+      return Promise.resolve(window.L);
+    }
+    if (leafletLoadPromise) return leafletLoadPromise;
+
+    leafletLoadPromise = new Promise((resolve, reject) => {
+      if (typeof document === 'undefined') return resolve(null);
+
+      if (!document.querySelector('link[href*="leaflet"]')) {
+        const link1 = document.createElement('link');
+        link1.rel = 'stylesheet';
+        link1.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+        link1.crossOrigin = 'anonymous';
+        document.head.appendChild(link1);
+
+        const link2 = document.createElement('link');
+        link2.rel = 'stylesheet';
+        link2.href = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css';
+        link2.crossOrigin = 'anonymous';
+        document.head.appendChild(link2);
+
+        const link3 = document.createElement('link');
+        link3.rel = 'stylesheet';
+        link3.href = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css';
+        link3.crossOrigin = 'anonymous';
+        document.head.appendChild(link3);
+      }
+
+      const scriptL = document.createElement('script');
+      scriptL.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      scriptL.crossOrigin = 'anonymous';
+      scriptL.onload = () => {
+        const scriptMC = document.createElement('script');
+        scriptMC.src = 'https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js';
+        scriptMC.crossOrigin = 'anonymous';
+        scriptMC.onload = () => resolve(window.L);
+        scriptMC.onerror = () => resolve(window.L);
+        document.head.appendChild(scriptMC);
+      };
+      scriptL.onerror = (err) => reject(err);
+      document.head.appendChild(scriptL);
+    });
+
+    return leafletLoadPromise;
+  }
 
   function initLiveJobsMap() {
     const mapEl = document.getElementById('liveJobsMap');
-    if (!mapEl || liveJobsMapInstance) return;
+    if (!mapEl || liveJobsMapInstance || isMapLoading) return;
+
+    if (typeof L === 'undefined' || !L || typeof L.map !== 'function') {
+      isMapLoading = true;
+      loadLeafletAssetsOnDemand().then(() => {
+        isMapLoading = false;
+        initLiveJobsMap();
+        updateMapMarkers();
+      }).catch(err => {
+        isMapLoading = false;
+        console.warn('Could not load Leaflet assets on demand:', err);
+      });
+      return;
+    }
 
     try {
       liveJobsMapInstance = L.map('liveJobsMap', {
@@ -7621,6 +7685,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   // Expose global functions to window
+  window.setViewMode = setViewMode;
+  window.initLiveJobsMap = initLiveJobsMap;
+  window.updateMapMarkers = updateMapMarkers;
   window.toggleWriterJobContext = toggleWriterJobContext;
   window.updateWriterJobContextPreview = updateWriterJobContextPreview;
   window.switchDashboardAppMode = switchDashboardAppMode;
