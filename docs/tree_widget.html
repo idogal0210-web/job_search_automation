@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>עץ תיקיות פרויקט מעודכן</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: transparent;
+      color: var(--foreground, #0f172a);
+      margin: 0;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+    .tree-node {
+      user-select: none;
+      transition: background-color 0.15s ease;
+    }
+    .tree-node:hover {
+      background-color: rgba(148, 163, 184, 0.12);
+    }
+    .badge-modified {
+      background-color: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FCD34D;
+    }
+    .badge-new {
+      background-color: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #6EE7B7;
+    }
+    .badge-deleted {
+      background-color: #FEE2E2;
+      color: #991B1B;
+      border: 1px solid #FCA5A5;
+    }
+    @media (prefers-color-scheme: dark) {
+      .badge-modified {
+        background-color: rgba(217, 119, 6, 0.2);
+        color: #FBBF24;
+        border-color: rgba(245, 158, 11, 0.35);
+      }
+      .badge-new {
+        background-color: rgba(16, 185, 129, 0.2);
+        color: #34D399;
+        border-color: rgba(16, 185, 129, 0.35);
+      }
+      .badge-deleted {
+        background-color: rgba(239, 68, 68, 0.2);
+        color: #F87171;
+        border-color: rgba(239, 68, 68, 0.35);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="border border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-900 shadow-sm overflow-hidden text-sm">
+    <!-- Header -->
+    <div class="p-3 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-800 dark:text-slate-100">עץ תיקיות פרויקט מעודכן</span>
+        <span class="text-xs px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300 font-mono">job_search_automation</span>
+      </div>
+      <div class="flex items-center gap-3 text-xs">
+        <span class="flex items-center gap-1 font-medium text-amber-700 dark:text-amber-400">0 עודכנו</span>
+        <span class="flex items-center gap-1 font-medium text-emerald-700 dark:text-emerald-400">0 נוספו</span>
+        <span class="flex items-center gap-1 font-medium text-rose-700 dark:text-rose-400">0 הוסרו</span>
+        <button id="toggleAllBtn" class="px-2 py-1 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 rounded text-xs transition">פתח הכל</button>
+      </div>
+    </div>
+
+    <!-- Tree Content (LTR for code/path hierarchy) -->
+    <div class="p-3 space-y-1 font-mono text-xs text-left" dir="ltr">
+      
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>.agents/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">3 פריטים</span>
+          </div>
+          <div id="root-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>plugins/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-0-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-1')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-1-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>rules/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">13 פריטים</span>
+          </div>
+          <div id="root-0-1" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">cover-letter-policy.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">critical-thinking-quality.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">dual-template-sync-guard.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">file-naming-and-save-policy.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">language-generation-policy.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">mcp-policy.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">pre-push-verification-and-living-docs.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">project-tree-display.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">realism-grounding.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">single-source-and-replaceability-guard.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">supabase-state-integrity-guard.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">ui-invariants-symmetry-guard.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">zero-emojis.md</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-2')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-2-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>skills/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">9 פריטים</span>
+          </div>
+          <div id="root-0-2" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-2-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-2-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>ai-quality-evaluation/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-0-2-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-2-1')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-2-1-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>ai-ux-human-agent-interaction/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-0-2-1" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-2-2')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-2-2-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>cv-tailor/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-0-2-2" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-2-3')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-2-3-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>interview-prep-energy/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-0-2-3" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-2-4')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-2-4-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>job-market-salary-intelligence/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-0-2-4" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-2-5')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-2-5-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>job-search-automation-state/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-0-2-5" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-2-6')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-2-6-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>resilient-automation-patterns/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-0-2-6" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-2-7')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-2-7-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>task-lifecycle-manager/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-0-2-7" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-0-2-8')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-0-2-8-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>ui-review/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-0-2-8" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+          </div>
+        </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-1')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-1-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>.github/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">1 פריטים</span>
+          </div>
+          <div id="root-1" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-1-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-1-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>workflows/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">2 פריטים</span>
+          </div>
+          <div id="root-1-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">ci.yml</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">daily_job_search.yml</span>
+              
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-2')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-2-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>.recovery/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">1 פריטים</span>
+          </div>
+          <div id="root-2" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-2-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-2-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>backups/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-2-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-3')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-3-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>data/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">8 פריטים</span>
+          </div>
+          <div id="root-3" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">evaluation_benchmark_template.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">evaluation_state.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">historical_catalog.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">inactive_jobs.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">jobs_state.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">sync_state.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">sync_state_cloud_backup_20261118.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">weekly_archive.json</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-4')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-4-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>docs/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">16 פריטים</span>
+          </div>
+          <div id="root-4" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-4-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-4-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>archive/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">2 פריטים</span>
+          </div>
+          <div id="root-4-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">ANTIGRAVITY_UPGRADE_PLAN.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">TEST_READY.md</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-4-1')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-4-1-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>assets/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">2 פריטים</span>
+          </div>
+          <div id="root-4-1" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-4-1-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-4-1-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>fonts/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-4-1-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-4-1-1')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-4-1-1-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>logos/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-4-1-1" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-4-2')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-4-2-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>career/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">4 פריטים</span>
+          </div>
+          <div id="root-4-2" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-4-2-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-4-2-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>cv/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-4-2-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">career_studio_profile.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">studio_profile.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">studio_profile.json.bak</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-4-3')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-4-3-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>data/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">4 פריטים</span>
+          </div>
+          <div id="root-4-3" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">historical_catalog.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">inactive_jobs.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">jobs.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">studio_profile.json</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-4-4')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-4-4-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>decisions/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">1 פריטים</span>
+          </div>
+          <div id="root-4-4" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">template-decision.md</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-4-5')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-4-5-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>js/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">2 פריטים</span>
+          </div>
+          <div id="root-4-5" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-4-5-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-4-5-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>modules/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-4-5-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">app.js</span>
+              
+            </div>
+          </div>
+        </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">AUDIT_2026-10-26.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">CAREER_STUDIO_V2_SPEC.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">dashboard.css</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">dashboard.js</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">fonts.css</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">index.html</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">PRD.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">theme.css</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">ui-fixes.css</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">UPGRADE_STATUS.md</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-5')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-5-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>frontend/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">5 פריטים</span>
+          </div>
+          <div id="root-5" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-5-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-5-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>assets/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">1 פריטים</span>
+          </div>
+          <div id="root-5-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-5-0-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-5-0-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>logos/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-5-0-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-5-1')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-5-1-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>css/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">2 פריטים</span>
+          </div>
+          <div id="root-5-1" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">dashboard.css</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">ui-fixes.css</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-5-2')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-5-2-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>data/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">4 פריטים</span>
+          </div>
+          <div id="root-5-2" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-5-2-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-5-2-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>cv/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-5-2-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">career_studio_profile.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">studio_profile.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">studio_profile.json.bak</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-5-3')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-5-3-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>js/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">3 פריטים</span>
+          </div>
+          <div id="root-5-3" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-5-3-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-5-3-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>modules/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-5-3-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">app.js</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">dashboard.js</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-5-4')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-5-4-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>templates/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">2 פריטים</span>
+          </div>
+          <div id="root-5-4" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">email_report.html</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">index.html</span>
+              
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-6')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-6-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>logs/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-6" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-7')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-7-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>prompts/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">3 פריטים</span>
+          </div>
+          <div id="root-7" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">cv_analysis_v1.txt</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">cv_generation_v1.txt</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">job_evaluation_v1.txt</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-8')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-8-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>scripts/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">14 פריטים</span>
+          </div>
+          <div id="root-8" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">backfill_company_logos.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">clean_cloud_active_jobs.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">evaluate_dataset.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">inspect_state.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">pre-commit.sh</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">project_hygiene.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">README.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">render_tree_widget.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">requeue_jobs.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">restore_cloud_jobs.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">scan_inactive_jobs.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">studio_bridge.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">update_job_gaps_and_reasoning.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">validate_zero_emoji.py</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-9')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-9-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>src/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">16 פריטים</span>
+          </div>
+          <div id="root-9" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">ats_client.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">closure_signatures.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">company_matcher.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">config.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">evaluators.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">fetchers.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">gemini_runtime.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">job_policy.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">pipeline.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">prompts.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">publishers.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">salary_engine.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">state_manager.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">ui_builder.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">url_guard.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">url_utils.py</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-10')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-10-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>supabase/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">1 פריטים</span>
+          </div>
+          <div id="root-10" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-10-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-10-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>migrations/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">2 פריטים</span>
+          </div>
+          <div id="root-10-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">20261109222817_create_sync_state.sql</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">20261115011000_harden_sync_state_cas_and_rls.sql</span>
+              
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-11')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-11-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>tests/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">38 פריטים</span>
+          </div>
+          <div id="root-11" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-11-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-11-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>fixtures/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">3 פריטים</span>
+          </div>
+          <div id="root-11-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">drushim_jobs.html</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">linkedin_jobs.html</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">phosphor-2.1.1-glyphs.json</span>
+              
+            </div>
+          </div>
+        </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">js_runner.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">stress_m1_harness.js</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">stress_m2_harness.js</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_ats_connectors.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_audit_regressions.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_audit_state.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_benchmark_metrics.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_career_studio_spec.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_comeet_connector.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_curated_tags.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_cv_tailor.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_evidence_assessments.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_job_profile_redefinition.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_m1_challenger_stress.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_m2_ats_spec.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_m2_challenger_stress.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_m3_challenger_stress.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_m3_grammar_dict_challenger.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_m3_writer_spec.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_m456_studio_spec.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_main_integration.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_modular_es_spec.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_new_fetchers.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_phase0_phase2_security.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_phase3_to_5_regressions.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_phase6_design_and_a11y.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_phase_b_precision.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_policy_expansion.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_recovery.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_reliability_phase_a.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_render_tree_widget.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_requeue.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_salary_intelligence.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_state_and_counters_consistency.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_studio_bridge.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_studio_bridge_security.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">test_template_docs_sync.py</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-12')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-12-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>tools/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">3 פריטים</span>
+          </div>
+          <div id="root-12" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-12-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-12-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>cloudflare-worker/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">2 פריטים</span>
+          </div>
+          <div id="root-12-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">job-check.js</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">README.md</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-12-1')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-12-1-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>cv_tailor/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">12 פריטים</span>
+          </div>
+          <div id="root-12-1" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-12-1-0')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-12-1-0-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>Base_CV/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-12-1-0" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-12-1-1')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-12-1-1-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>output/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-12-1-1" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+        <div class="folder-group">
+          <div class="tree-node flex items-center justify-between py-1 px-2 rounded cursor-pointer" onclick="toggleFolder('root-12-1-2')">
+            <div class="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-200">
+              <span id="root-12-1-2-arrow" class="text-slate-400 font-mono text-xs">▶</span>
+              <span>src/</span>
+            </div>
+            <span class="text-xs text-slate-400 font-sans">0 פריטים</span>
+          </div>
+          <div id="root-12-1-2" class="hidden pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
+            
+          </div>
+        </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">.env.example</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">__init__.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">base_profile.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">base_profile.template.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">README.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">tailor.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">target_companies.json</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">target_companies.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">target_companies.template.json</span>
+              
+            </div>
+          </div>
+        </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">__init__.py</span>
+              
+            </div>
+          </div>
+        </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">.env</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">.python-version</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">.save-and-sync.yml</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">AGENTS.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">DESIGN.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">main.py</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">PROJECT_CONTEXT.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">README.md</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">requirements-lock.txt</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">requirements.txt</span>
+              
+            </div>
+            <div class="tree-node flex items-center justify-between py-1 px-2 rounded">
+              <span class="text-slate-700 dark:text-slate-300 font-mono">TASKS.md</span>
+              
+            </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleFolder(id) {
+      const el = document.getElementById(id);
+      const arrow = document.getElementById(id + '-arrow');
+      if (!el) return;
+      if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        if (arrow) arrow.textContent = '▼';
+      } else {
+        el.classList.add('hidden');
+        if (arrow) arrow.textContent = '▶';
+      }
+    }
+
+    let allExpanded = false;
+    const toggleBtn = document.getElementById('toggleAllBtn');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        allExpanded = !allExpanded;
+        document.querySelectorAll('[id$="-arrow"]').forEach(arrow => {
+          const targetId = arrow.id.replace('-arrow', '');
+          const targetEl = document.getElementById(targetId);
+          if (targetEl) {
+            if (allExpanded) {
+              targetEl.classList.remove('hidden');
+              arrow.textContent = '▼';
+            } else {
+              targetEl.classList.add('hidden');
+              arrow.textContent = '▶';
+            }
+          }
+        });
+        toggleBtn.textContent = allExpanded ? 'כווץ הכל' : 'פתח הכל';
+      });
+    }
+  </script>
+</body>
+</html>
