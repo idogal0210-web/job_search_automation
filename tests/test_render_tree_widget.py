@@ -56,6 +56,7 @@ class TestRenderTreeWidget(unittest.TestCase):
         self.assertIn("badge-new", html_out)
         self.assertIn("tailwindcss.min.js", html_out)
         self.assertIn('dir="rtl"', html_out)
+        self.assertIn('dir="ltr"', html_out)
 
     def test_git_status_fallback(self):
         status_map, mod_count, add_count, del_count = get_git_status(self.root_path)

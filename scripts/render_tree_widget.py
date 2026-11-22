@@ -167,7 +167,7 @@ def generate_html_widget(
 
         children_block = "".join(children_html_list)
         count_label = f"{len(children)} פריטים"
-        arrow = "▼" if any_child_changed else "◀"
+        arrow = "▼" if any_child_changed else "▶"
         hidden_class = "" if any_child_changed else "hidden"
 
         folder_html = f'''
@@ -179,7 +179,7 @@ def generate_html_widget(
             </div>
             <span class="text-xs text-slate-400 font-sans">{count_label}</span>
           </div>
-          <div id="{node_id}" class="{hidden_class} pr-4 border-r border-slate-200 dark:border-slate-700 mr-2 space-y-0.5 py-1">
+          <div id="{node_id}" class="{hidden_class} pl-4 border-l border-slate-200 dark:border-slate-700 ml-2 space-y-0.5 py-1">
             {children_block}
           </div>
         </div>'''
@@ -269,8 +269,8 @@ def generate_html_widget(
       </div>
     </div>
 
-    <!-- Tree Content -->
-    <div class="p-3 space-y-1 font-sans text-xs">
+    <!-- Tree Content (LTR for code/path hierarchy) -->
+    <div class="p-3 space-y-1 font-mono text-xs text-left" dir="ltr">
       {body_content}
     </div>
   </div>
@@ -285,7 +285,7 @@ def generate_html_widget(
         if (arrow) arrow.textContent = '▼';
       }} else {{
         el.classList.add('hidden');
-        if (arrow) arrow.textContent = '◀';
+        if (arrow) arrow.textContent = '▶';
       }}
     }}
 
@@ -303,7 +303,7 @@ def generate_html_widget(
               arrow.textContent = '▼';
             }} else {{
               targetEl.classList.add('hidden');
-              arrow.textContent = '◀';
+              arrow.textContent = '▶';
             }}
           }}
         }});
