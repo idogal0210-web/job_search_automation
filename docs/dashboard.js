@@ -149,6 +149,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     return `<span class="job-salary-chip salary-chip-benchmark salary-badge" title="טווח שכר ענפי מותאם לתפקיד"><i class="ph-duotone ph-coins"></i> ${escapeHtml(sal)}</span>`;
   }
 
+  function isolateBiDiTerms(escapedText) {
+    if (!escapedText) return '';
+    return escapedText.replace(/([A-Za-z0-9][A-Za-z0-9\s\.\+\#\-\/]*[A-Za-z0-9]|[A-Za-z0-9])/g, '<bdi>$1</bdi>');
+  }
+
   function formatJobScopeAndRole(job) {
     if (!job) return 'מידע על תחום ומוצר החברה לא צוין.';
     const domainRaw = stripEmojis(job.company_domain_product || job.company_summary || '').trim();
@@ -2723,7 +2728,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'אין ניתוח התאמה מאומת למשרה זו.'));
       const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'אין ניתוח התאמה מאומת למשרה זו.'));
       const fitGaps = escapeHtml(stripEmojis(job.fit_gaps || 'אין מספיק מידע לאימות פערי ההתאמה.'));
-      const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).'));
+      const companyReqs = isolateBiDiTerms(escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה (פירוט מלא בקישור להגשה).')));
       const scopeAndRole = formatJobScopeAndRole(job);
       const matchInfo = formatJobMatchAndGaps(job);
       const safeCompany = escapeHtml(company);
@@ -2914,7 +2919,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const domain = escapeHtml(stripEmojis(job.company_domain_product || job.company_summary || 'מידע על החברה לא צוין'));
     const jobSum = escapeHtml(stripEmojis(job.job_summary || job.company_summary || 'לא צוין תיאור מלא למשרה.'));
     const strengths = escapeHtml(stripEmojis(job.experience_strengths || job.reasoning || 'אין ניתוח התאמה מאומת למשרה זו.'));
-    const companyReqs = escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה.'));
+    const companyReqs = isolateBiDiTerms(escapeHtml(stripEmojis(job.company_requirements || job.key_highlights || (job.snippet ? job.snippet.slice(0, 160) + '...' : '') || 'דרישות סף טכניות בהתאם לתיאור המשרה.')));
     const quickInsight = escapeHtml(stripEmojis(job.reasoning || job.experience_strengths || job.job_summary || 'אין ניתוח התאמה מאומת למשרה זו.'));
     const fitGaps = escapeHtml(stripEmojis(job.fit_gaps || 'אין מספיק מידע לאימות פערי ההתאמה.'));
     const scopeAndRole = formatJobScopeAndRole(job);
