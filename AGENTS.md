@@ -23,6 +23,7 @@ These rules are loaded into context unconditionally:
 - [pre-push-verification-and-living-docs.md](.agents/rules/pre-push-verification-and-living-docs.md): Requires clean execution of `project_hygiene.py --validate` and full unit test suite before any commit. Mandates same-commit updates to `TASKS.md`, `PROJECT_CONTEXT.md`, and `README.md`.
 - [supabase-state-integrity-guard.md](.agents/rules/supabase-state-integrity-guard.md): Guarantees non-destructive, additive upsert contracts for user triage records (`starred`, `saved`, `rejected`, notes) on Supabase Cloud Database.
 - [single-source-and-replaceability-guard.md](.agents/rules/single-source-and-replaceability-guard.md): Enforces single source of truth, modular component replaceability across scrapers, database persistence, UI, and bulk data lockout on `data/*.json`.
+- [project-tree-display.md](.agents/rules/project-tree-display.md): Mandates rendering the interactive Generative UI tree widget (`scripts/render_tree_widget.py` + `<agent-embed>`) whenever the user requests to see the project tree or directory hierarchy.
 - [critical-thinking-quality.md](.agents/rules/critical-thinking-quality.md): Uncompromising quality floor. Active evaluation of proposals, identification of failure modes, and empirical verification before declaring task completion.
 
 ### 2.2 Model Decision & Contextual Rules (`trigger: model_decision`)
@@ -55,3 +56,5 @@ Before concluding turns or pushing changes, verify integrity with these determin
   `python3 -m unittest discover -s tests -p "test_*.py"`
 - Client-Side JavaScript Syntax:
   `node -c frontend/js/dashboard.js docs/dashboard.js`
+- Interactive Tree Widget Generation (Generative UI):
+  `python3 scripts/render_tree_widget.py --output docs/tree_widget.html`
