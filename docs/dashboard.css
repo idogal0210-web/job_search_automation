@@ -10026,6 +10026,88 @@ body {
   --accent-primary: #6D28D9;
 }
 
+/* ==========================================================================
+   Liquid Glass & Metal Dynamic Button System (Modern Glassmorphism)
+   ========================================================================== */
+
+/* Universal Liquid Glass base for primary CTAs and interactive actions */
+.btn-liquid-glass,
+.btn-apply.btn-apply-elegant,
+.dashboard-app a.btn-apply.btn-apply-elegant,
+.ats-primary-btn,
+.copilot-promo-btn {
+  position: relative;
+  overflow: hidden;
+  border-radius: 999px !important;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transform: translateZ(0);
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+/* Dark Theme Liquid Glass: Multi-tier specular highlights, inner refraction and glow */
+:root[data-theme="dark"] .btn-apply.btn-apply-elegant,
+:root[data-theme="dark"] .dashboard-app a.btn-apply.btn-apply-elegant,
+:root[data-theme="dark"] .btn-liquid-glass {
+  background: linear-gradient(180deg, rgba(2, 132, 199, 0.95) 0%, rgba(3, 105, 161, 0.85) 100%) !important;
+  border: 1px solid rgba(56, 189, 248, 0.45) !important;
+  color: #FFFFFF !important;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 0 16px rgba(56, 189, 248, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.5),
+    inset 0 0 8px rgba(56, 189, 248, 0.3) !important;
+}
+
+:root[data-theme="dark"] .ats-primary-btn {
+  background: linear-gradient(180deg, rgba(5, 150, 105, 0.95) 0%, rgba(4, 120, 87, 0.85) 100%) !important;
+  border: 1px solid rgba(52, 211, 153, 0.45) !important;
+  color: #FFFFFF !important;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 0 16px rgba(52, 211, 153, 0.22),
+    inset 0 1px 1px rgba(255, 255, 255, 0.45),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.5),
+    inset 0 0 8px rgba(52, 211, 153, 0.3) !important;
+}
+
+@media (hover: hover) {
+  :root[data-theme="dark"] .btn-apply.btn-apply-elegant:hover,
+  :root[data-theme="dark"] .dashboard-app a.btn-apply.btn-apply-elegant:hover,
+  :root[data-theme="dark"] .btn-liquid-glass:hover {
+    filter: brightness(1.12);
+    box-shadow: 
+      0 4px 16px rgba(0, 0, 0, 0.5),
+      0 0 24px rgba(56, 189, 248, 0.45),
+      inset 0 1px 2px rgba(255, 255, 255, 0.65),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.5) !important;
+    transform: translateY(-1.5px);
+  }
+
+  :root[data-theme="dark"] .ats-primary-btn:hover {
+    filter: brightness(1.12);
+    box-shadow: 
+      0 4px 16px rgba(0, 0, 0, 0.5),
+      0 0 24px rgba(52, 211, 153, 0.45),
+      inset 0 1px 2px rgba(255, 255, 255, 0.65),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.5) !important;
+    transform: translateY(-1.5px);
+  }
+}
+
+:root[data-theme="dark"] .btn-apply.btn-apply-elegant:active,
+:root[data-theme="dark"] .dashboard-app a.btn-apply.btn-apply-elegant:active,
+:root[data-theme="dark"] .ats-primary-btn:active,
+:root[data-theme="dark"] .btn-liquid-glass:active {
+  transform: translateY(1px) scale(0.985);
+  filter: brightness(0.95);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.5),
+    inset 0 2px 4px rgba(0, 0, 0, 0.6) !important;
+}
+
 .btn-apply.btn-apply-elegant,
 .dashboard-app a.btn-apply.btn-apply-elegant {
   background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
@@ -10064,10 +10146,55 @@ body {
     --status-fail: #991B1B;
   }
 
+  /* Light Mode Liquid Glass for Primary Action & Apply CTAs */
+  :root[data-theme="light"] .btn-apply.btn-apply-elegant,
+  :root[data-theme="light"] .dashboard-app a.btn-apply.btn-apply-elegant,
+  :root[data-theme="light"] .ats-primary-btn,
+  :root[data-theme="light"] .btn-liquid-glass {
+    background: linear-gradient(180deg, #2563EB 0%, #1D4ED8 100%) !important;
+    color: #FFFFFF !important;
+    border: 1px solid #1E40AF !important;
+    box-shadow: 
+      0 2px 6px rgba(15, 23, 42, 0.08),
+      0 4px 12px rgba(29, 78, 216, 0.20),
+      inset 0 1px 1px 0 rgba(255, 255, 255, 0.65),
+      inset 0 -1px 1px 0 rgba(0, 0, 0, 0.25) !important;
+  }
+
+  :root[data-theme="light"] .btn-apply.btn-apply-elegant i,
+  :root[data-theme="light"] .ats-primary-btn i,
+  :root[data-theme="light"] .btn-liquid-glass i {
+    color: #FFFFFF !important;
+  }
+
+  @media (hover: hover) {
+    :root[data-theme="light"] .btn-apply.btn-apply-elegant:hover,
+    :root[data-theme="light"] .dashboard-app a.btn-apply.btn-apply-elegant:hover,
+    :root[data-theme="light"] .ats-primary-btn:hover,
+    :root[data-theme="light"] .btn-liquid-glass:hover {
+      background: linear-gradient(180deg, #1D4ED8 0%, #1E40AF 100%) !important;
+      border-color: #1E3A8A !important;
+      box-shadow: 
+        0 4px 14px rgba(15, 23, 42, 0.12),
+        0 6px 18px rgba(29, 78, 216, 0.32),
+        inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.85),
+        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.25) !important;
+      transform: translateY(-1.5px);
+    }
+  }
+
+  :root[data-theme="light"] .btn-apply.btn-apply-elegant:active,
+  :root[data-theme="light"] .dashboard-app a.btn-apply.btn-apply-elegant:active,
+  :root[data-theme="light"] .ats-primary-btn:active,
+  :root[data-theme="light"] .btn-liquid-glass:active {
+    transform: translateY(1px) scale(0.985);
+    box-shadow: 
+      0 1px 2px rgba(15, 23, 42, 0.10),
+      inset 0 2px 3px rgba(0, 0, 0, 0.3) !important;
+  }
+
   :root[data-theme="light"] .mode-switch-btn,
   :root[data-theme="light"] .copilot-promo-btn,
-  :root[data-theme="light"] .btn-apply,
-  :root[data-theme="light"] .btn-apply-elegant,
   :root[data-theme="light"] .dashboard-primary {
     background: #FFFFFF;
     color: #0F172A;
