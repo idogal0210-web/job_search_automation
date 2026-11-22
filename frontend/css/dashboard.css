@@ -94,28 +94,28 @@
 
   :root[data-theme="light"] {
     color-scheme: light;
-    --bg-canvas: #F4F6FA;
+    --bg-canvas: #F8FAFC;
     --bg-surface: #FFFFFF;
     --text-primary: #0F172A;
     --text-secondary: #475569;
-    --accent-primary: #6D28D9;
-    --dashboard-cyan: #5B21B6;
-    --status-fail: #DC2626;
+    --accent-primary: #1D4ED8;
+    --dashboard-cyan: #1E3A8A;
+    --status-fail: #991B1B;
     --status-warn: #B45309;
     --status-pass: #047857;
     --border-subtle: 1px solid #E2E8F0;
     --shadow-floating: 0 8px 24px rgba(15, 23, 42, 0.08);
-    --glass-bg-canvas: #F4F6FA;
-    --glass-bg-base: rgba(255, 255, 255, 0.75);
+    --glass-bg-canvas: #F8FAFC;
+    --glass-bg-base: rgba(255, 255, 255, 0.85);
     --glass-bg-card: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
     --glass-bg-elevated: #FFFFFF;
     --glass-border: 1px solid #CBD5E1;
-    --glass-border-hover: 1px solid rgba(109, 40, 217, 0.45);
+    --glass-border-hover: 1px solid rgba(29, 78, 216, 0.45);
     --glass-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.90);
     --shadow-glass-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
     --shadow-glass-md: 0 8px 24px rgba(15, 23, 42, 0.08);
     --shadow-glass-lg: 0 16px 48px rgba(15, 23, 42, 0.12);
-    --shadow-glass-glow: 0 0 20px rgba(109, 40, 217, 0.15);
+    --shadow-glass-glow: 0 0 20px rgba(29, 78, 216, 0.15);
     --dashboard-edge: #CBD5E1;
     --dashboard-glass: var(--glass-bg-card);
     --dashboard-shadow: var(--shadow-glass-md);
@@ -4173,7 +4173,7 @@ border-radius: 999px;
   :root[data-theme="light"] .search-capsule:focus-within {
     border-color: var(--accent-primary) !important;
     background: #FFFFFF !important;
-    box-shadow: 0 0 0 2px rgba(109, 40, 217, 0.15) !important;
+    box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15) !important;
   }
 
   :root[data-theme="light"] .search-capsule i {
@@ -4218,19 +4218,19 @@ border-radius: 999px;
 
   /* Copilot Promo Card */
   :root[data-theme="light"] .copilot-promo-card {
-    background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%) !important;
-    border: 1px solid #DDD6FE !important;
-    color: #1E1B4B !important;
-    box-shadow: 0 8px 24px rgba(109, 40, 217, 0.08) !important;
+    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%) !important;
+    border: 1px solid #BFDBFE !important;
+    color: #1E3A8A !important;
+    box-shadow: 0 8px 24px rgba(29, 78, 216, 0.08) !important;
   }
 
   :root[data-theme="light"] .copilot-promo-card::before {
-    background-image: radial-gradient(rgba(109, 40, 217, 0.15) 1px, transparent 1px) !important;
+    background-image: radial-gradient(rgba(29, 78, 216, 0.15) 1px, transparent 1px) !important;
     opacity: 0.45 !important;
   }
 
   :root[data-theme="light"] .copilot-promo-title {
-    color: #1E1B4B !important;
+    color: #1E3A8A !important;
   }
 
   :root[data-theme="light"] .copilot-promo-desc {
@@ -4240,14 +4240,14 @@ border-radius: 999px;
   :root[data-theme="light"] .copilot-promo-btn {
     background: var(--accent-primary) !important;
     color: #FFFFFF !important;
-    box-shadow: 0 4px 12px rgba(109, 40, 217, 0.25) !important;
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25) !important;
   }
 
   @media (hover: hover) {
     :root[data-theme="light"] .copilot-promo-btn:hover {
       background: var(--dashboard-cyan) !important;
       transform: translateY(-1px);
-      box-shadow: 0 6px 16px rgba(109, 40, 217, 0.35) !important;
+      box-shadow: 0 6px 16px rgba(29, 78, 216, 0.35) !important;
     }
   }
 
@@ -4260,7 +4260,7 @@ border-radius: 999px;
   @media (hover: hover) {
     :root[data-theme="light"] .job-card:hover {
       box-shadow: 0 8px 24px rgba(15, 23, 42, 0.10) !important;
-      border-color: rgba(109, 40, 217, 0.35) !important;
+      border-color: rgba(29, 78, 216, 0.35) !important;
     }
   }
 
@@ -10042,8 +10042,8 @@ body {
 /* === Light Mode Minimal Slate + Cobalt Override === */
 @layer dashboard {
   :root[data-theme="light"] {
-    --bg-canvas: #F4F6FA;
-    --glass-bg-canvas: #F4F6FA;
+    --bg-canvas: #F8FAFC;
+    --glass-bg-canvas: #F8FAFC;
     --bg-surface: #FFFFFF;
     --glass-bg-elevated: #FFFFFF;
     --glass-bg-base: #FFFFFF;
