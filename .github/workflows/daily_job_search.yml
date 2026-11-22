@@ -177,7 +177,7 @@ jobs:
           sender = os.environ.get('SENDER_EMAIL')
           pwd = os.environ.get('SENDER_APP_PASSWORD')
           run_url = os.environ.get('RUN_URL')
-          recipient = 'idogal0210@gmail.com'
+          recipient = os.environ.get('RECIPIENT_EMAIL', sender)
 
           if sender and pwd:
               msg = MIMEMultipart()

@@ -273,8 +273,9 @@ def send_email_report(sender_email, sender_pwd, processed_jobs, *compat_args, da
     else:
         msg['Subject'] = Header(f"[יומי] דוח משרות מאוחד ({len(curated_email_jobs)} משרות נבחרות) | עידו גל", 'utf-8')
     
+    recipient_email = os.environ.get("RECIPIENT_EMAIL", sender_email)
     msg['From'] = Header(f"Job Search Automation <{sender_email}>", 'utf-8')
-    msg['To'] = Header("idogal0210@gmail.com", 'utf-8')
+    msg['To'] = Header(recipient_email, 'utf-8')
     msg.attach(MIMEText(email_html, 'html', 'utf-8'))
 
     for attempt in range(1, 3):
@@ -286,7 +287,7 @@ def send_email_report(sender_email, sender_pwd, processed_jobs, *compat_args, da
             server.starttls()
             server.login(sender_email, sender_pwd)
             delivery_attempted = True
-            server.sendmail(sender_email, "idogal0210@gmail.com", msg.as_string())
+            server.sendmail(sender_email, recipient_email, msg.as_string())
             health.email_success = True
             try:
                 server.quit()
