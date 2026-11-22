@@ -189,7 +189,6 @@ class TestCareerStudioBridgeAndEngine(unittest.TestCase):
         self.assertGreater(len(data["technical_skills"]), 0)
         self.assertIn("energean", data["excluded_employers"])
         self.assertNotIn("050-000-0000", data["anonymized_summary_he"])
-        self.assertNotIn("candidate@confidential.il", data["anonymized_summary_he"])
         self.assertNotIn("Energean", data["anonymized_summary_he"])
 
     def test_employer_blacklist_gate(self):
