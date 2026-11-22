@@ -3600,6 +3600,26 @@ letter-spacing: 0.2px;
   gap: 16px;
 }
 
+.radar-sidebar .context-action-bar {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  width: 100% !important;
+  margin-bottom: 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden;
+}
+
+.radar-sidebar .context-action-bar button,
+.radar-sidebar .context-action-bar .btn-triage,
+.radar-sidebar .context-action-bar .btn-excel {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  min-height: 40px !important;
+  margin: 0 !important;
+}
+
 .radar-main-content {
   flex: 1 1 0;
   min-width: 0;
