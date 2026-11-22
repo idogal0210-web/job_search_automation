@@ -10109,4 +10109,165 @@ body {
       transform: translateY(-1px);
     }
   }
+
+  /* Career Studio Light Theme Polish (Antigravity Standard & WCAG AA) */
+  :root[data-theme="light"] .studio-sticky-job-bar {
+    background: #FFFFFF !important;
+    border-bottom: 1px solid #CBD5E1 !important;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+  }
+
+  :root[data-theme="light"] .studio-badge-pill {
+    background: #EFF6FF !important;
+    border: 1px solid #BFDBFE !important;
+    color: #1D4ED8 !important;
+  }
+
+  :root[data-theme="light"] .studio-main-heading {
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .studio-cv-status-box {
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+  }
+
+  :root[data-theme="light"] .studio-cv-filename {
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .studio-cv-filesub {
+    color: #475569 !important;
+  }
+
+  :root[data-theme="light"] .dashboard-app .studio-mini-btn {
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #0F172A !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+  }
+
+  @media (hover: hover) {
+    :root[data-theme="light"] .dashboard-app .studio-mini-btn:hover {
+      background: #F8FAFC !important;
+      border-color: #1D4ED8 !important;
+      color: #1D4ED8 !important;
+    }
+  }
+
+  :root[data-theme="light"] .dashboard-app .studio-mini-btn.is-accent {
+    background: #ECFDF5 !important;
+    border-color: #A7F3D0 !important;
+    color: #065F46 !important;
+  }
+
+  :root[data-theme="light"] .studio-job-details-accordion {
+    background: #F8FAFC !important;
+    border: 1px solid #E2E8F0 !important;
+  }
+
+  :root[data-theme="light"] .studio-job-details-summary {
+    background: #F1F5F9 !important;
+    color: #334155 !important;
+  }
+
+  :root[data-theme="light"] .studio-job-details-summary:hover {
+    background: #E2E8F0 !important;
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .ats-textarea,
+  :root[data-theme="light"] .studio-text-input {
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .ats-textarea::placeholder,
+  :root[data-theme="light"] .studio-text-input::placeholder {
+    color: #64748B !important;
+  }
+
+  :root[data-theme="light"] .studio-subnav-btn,
+  :root[data-theme="light"] .studio-step-btn {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    color: #475569 !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+  }
+
+  :root[data-theme="light"] .studio-step-btn .step-title {
+    color: #334155 !important;
+  }
+
+  :root[data-theme="light"] .studio-step-btn .step-num-badge {
+    background: #F1F5F9 !important;
+    color: #475569 !important;
+  }
+
+  :root[data-theme="light"] .studio-subnav-btn.active,
+  :root[data-theme="light"] .studio-step-btn.active {
+    background: #EFF6FF !important;
+    border-color: #1D4ED8 !important;
+    box-shadow: 0 2px 8px rgba(29, 78, 216, 0.12) !important;
+  }
+
+  :root[data-theme="light"] .studio-step-btn.active .step-title {
+    color: #1D4ED8 !important;
+    font-weight: 800 !important;
+  }
+
+  :root[data-theme="light"] .studio-step-btn.active .step-num-badge {
+    background: #1D4ED8 !important;
+    color: #FFFFFF !important;
+  }
+
+  :root[data-theme="light"] .studio-step-btn.active .step-icon-wrap {
+    color: #1D4ED8 !important;
+  }
+
+  :root[data-theme="light"] .studio-card-glass {
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+  }
+
+  :root[data-theme="light"] .ats-kpi-box {
+    background: #F8FAFC !important;
+    border: 1px solid #E2E8F0 !important;
+  }
+
+  :root[data-theme="light"] .ats-kpi-number {
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .ats-kpi-label {
+    color: #475569 !important;
+  }
+
+  :root[data-theme="light"] .ats-gauge-num {
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .ats-gauge-bg {
+    stroke: #E2E8F0 !important;
+  }
+
+  :root[data-theme="light"] .ats-score-description,
+  :root[data-theme="light"] .ats-gauge-explanation {
+    color: #475569 !important;
+  }
+
+  :root[data-theme="light"] .studio-preview-tab {
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #475569 !important;
+  }
+
+  :root[data-theme="light"] .studio-preview-tab.active {
+    background: #EFF6FF !important;
+    border-color: #1D4ED8 !important;
+    color: #1D4ED8 !important;
+  }
 }
