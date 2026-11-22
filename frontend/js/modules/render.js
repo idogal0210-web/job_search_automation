@@ -5,7 +5,6 @@
  */
 
 import { store } from './store.js';
-import { updateMapMarkers } from './geoMap.js';
 
 export function escapeHtml(str) {
   if (str === null || str === undefined) return '';
@@ -291,11 +290,6 @@ export function filterCards() {
   const emptyState = document.getElementById('emptyState');
   if (emptyState) {
     emptyState.style.display = (visibleCount === 0) ? 'block' : 'none';
-  }
-
-  // Update map if available
-  if (typeof updateMapMarkers === 'function') {
-    updateMapMarkers();
   }
 }
 

@@ -1,12 +1,11 @@
 /**
  * app.js - Main Bootstrap Controller (ES Architecture)
- * Orchestrates Store, ATS Engine, GeoMap, Exporter, and Render Modules.
+ * Orchestrates Store, ATS Engine, Exporter, and Render Modules.
  * Binds debounced filters, sorting, search, and mode-switching events.
  */
 
 import { store } from './modules/store.js';
 import * as atsEngine from './modules/atsEngine.js';
-import * as geoMap from './modules/geoMap.js';
 import { exportSavedToExcel } from './modules/export.js';
 import {
   renderCards,
@@ -24,7 +23,6 @@ import {
 if (typeof window !== 'undefined') {
   window.store = store;
   window.atsEngine = atsEngine;
-  window.geoMap = geoMap;
   window.exportSavedToExcel = exportSavedToExcel;
 
   window.renderCards = renderCards;
@@ -48,10 +46,6 @@ if (typeof window !== 'undefined') {
   window.runAtsJobMatching = atsEngine.runAtsJobMatching;
   window.generateCvBulletActionItem = atsEngine.generateCvBulletActionItem;
 
-  // Map symbols
-  window.initLiveJobsMap = geoMap.initLiveJobsMap;
-  window.updateMapMarkers = geoMap.updateMapMarkers;
-  window.getJobLatLng = geoMap.getJobLatLng;
 }
 
 // Mode Switcher Logic
@@ -263,31 +257,6 @@ export async function initApp() {
     regionFilter.addEventListener('change', (e) => {
       store.setRegionFilter(e.target.value);
       filterCards();
-    });
-  }
-
-  // Bind view mode toggles (cards vs map)
-  const btnViewCards = document.getElementById('viewModeCards');
-  const btnViewMap = document.getElementById('viewModeMap');
-  const cardsContainer = document.getElementById('cardsContainer');
-  const mapContainer = document.getElementById('liveJobsMapContainer');
-
-  if (btnViewCards && btnViewMap) {
-    btnViewCards.addEventListener('click', () => {
-      btnViewCards.classList.add('active');
-      btnViewMap.classList.remove('active');
-      if (cardsContainer) cardsContainer.style.display = '';
-      if (mapContainer) mapContainer.style.display = 'none';
-    });
-
-    btnViewMap.addEventListener('click', () => {
-      btnViewMap.classList.add('active');
-      btnViewCards.classList.remove('active');
-      if (cardsContainer) cardsContainer.style.display = 'none';
-      if (mapContainer) {
-        mapContainer.style.display = 'block';
-        geoMap.initLiveJobsMap();
-      }
     });
   }
 

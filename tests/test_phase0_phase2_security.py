@@ -22,7 +22,6 @@ class TestPhase0AndPhase2Security(unittest.TestCase):
         self.docs_dashboard_js = (PROJECT_ROOT / "docs" / "dashboard.js").read_text(encoding="utf-8")
         self.ats_engine_js = (PROJECT_ROOT / "frontend" / "js" / "modules" / "atsEngine.js").read_text(encoding="utf-8")
         self.render_js = (PROJECT_ROOT / "frontend" / "js" / "modules" / "render.js").read_text(encoding="utf-8")
-        self.geomap_js = (PROJECT_ROOT / "frontend" / "js" / "modules" / "geoMap.js").read_text(encoding="utf-8")
         self.store_js = (PROJECT_ROOT / "frontend" / "js" / "modules" / "store.js").read_text(encoding="utf-8")
         self.index_html = (PROJECT_ROOT / "frontend" / "templates" / "index.html").read_text(encoding="utf-8")
 
@@ -82,7 +81,7 @@ class TestPhase0AndPhase2Security(unittest.TestCase):
         self.assertIn("onclick=\"injectKeywordToWriter(${safeTermAttr})\"", self.dashboard_js)
         self.assertIn("onclick=\"selectPreviewLineForEditing(${safeBulletAttr})\"", self.dashboard_js)
         self.assertIn("onclick=\"insertDictionaryTerm(${safeSnippetAttr})\"", self.dashboard_js)
-        self.assertIn("onclick=\"openJobModal(${escapeHtml(JSON.stringify(String(job.link || '')))})\"", self.dashboard_js)
+        self.assertIn("onclick=\"openJobModal(${escapeHtml(JSON.stringify(String(id)))})\"", self.dashboard_js)
         # Ensure vulnerable single-quote replacement patterns are gone
         self.assertNotIn("onclick=\"injectKeywordToWriter('${safeTerm}')\"", self.dashboard_js)
         self.assertNotIn("onclick=\"selectPreviewLineForEditing('${safeBullet}')\"", self.dashboard_js)
@@ -159,11 +158,6 @@ class TestPhase0AndPhase2Security(unittest.TestCase):
     def test_map_tiles_and_sri_and_index_html_hygiene(self):
         """Findings 7 & 7.2: No unofficial mt1.google.com tiles; chart.js pinned with SRI; no nested role=button in metricsToggleBtn."""
         self.assertNotIn("mt1.google.com", self.dashboard_js)
-        self.assertNotIn("mt1.google.com", self.geomap_js)
-        self.assertIn("basemaps.cartocdn.com", self.dashboard_js)
-        self.assertIn("basemaps.cartocdn.com", self.geomap_js)
-        self.assertIn("scriptL.integrity =", self.geomap_js)
-        self.assertIn("scriptMC.integrity =", self.geomap_js)
 
         soup = BeautifulSoup(self.index_html, "html.parser")
         self.assertIsNone(soup.find("meta", attrs={"http-equiv": re.compile("Cache-Control|Pragma|Expires", re.I)}))

@@ -240,7 +240,6 @@
   .ats-secondary-btn,
   .ats-primary-btn,
   .ats-ai-btn,
-  .view-toggle-btn,
   .cloud-pill,
   .mode-switch-btn,
   .stat-cube-btn,
@@ -1038,7 +1037,6 @@
     }
 
     /* Job Cards Grid Container (Cubes Layout) */
-    #cardsContainer.is-hidden-by-map,
     #cardsContainer[style*="display: none"] {
       display: none !important;
     }
@@ -1933,40 +1931,6 @@
     }
 }
 
-    /* Leaflet Marker Cluster Styles */
-    .marker-cluster-custom {
-      background: none !important;
-      border: none !important;
-    }
-    .custom-cluster-badge {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 13.5px;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.5);
-      border: 2px solid #ffffff;
-      color: #0f172a;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    @media (hover: hover) {
-  .custom-cluster-badge:hover {
-      transform: scale(1.1);
-    }
-}
-    .custom-cluster-badge.small {
-      background: var(--dashboard-lime);
-    }
-    .custom-cluster-badge.medium {
-      background: var(--dashboard-cyan);
-    }
-    .custom-cluster-badge.large {
-      background: var(--dashboard-gold);
-    }
-
     /* Modals and Overlays (Native <dialog>) */
     dialog.dashboard-modal-backdrop {
       border: none;
@@ -2523,7 +2487,6 @@ border-radius: 999px;
       }
 
       /* Upgraded Single Column Feed on Mobile (Balanced Preview, High Contrast Tags, AI Rationale & Quick Actions) */
-      #cardsContainer.is-hidden-by-map,
       #cardsContainer[style*="display: none"] {
         display: none !important;
       }
@@ -3092,238 +3055,6 @@ border-radius: 999px;
       align-items: center;
       gap: 8px;
     }
-    .view-mode-toggle {
-      display: inline-flex;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--dashboard-edge);
-      border-radius: 999px;
-      padding: 3px;
-      gap: 3px;
-    }
-    .view-toggle-btn {
-      background: transparent;
-      border: none;
-      color: var(--dashboard-muted);
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease, transform 150ms ease, opacity 150ms ease;
-    }
-    @media (hover: hover) {
-  .view-toggle-btn:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.08);
-    }
-}
-    .view-toggle-btn.active {
-      background: linear-gradient(135deg, rgba(137, 244, 231, 0.2), rgba(45, 212, 191, 0.25));
-      color: var(--dashboard-cyan);
-      border: 1px solid rgba(137, 244, 231, 0.45);
-      box-shadow: 0 2px 10px rgba(137, 244, 231, 0.2);
-    }
-    .view-toggle-btn.active i {
-      color: var(--dashboard-cyan) !important;
-    }
-
-    /* Live Jobs Map Mode */
-    #mapViewContainer {
-      border: 1px solid var(--dashboard-edge);
-      background: rgba(15, 23, 42, 0.7);
-border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
-      margin-bottom: 30px;
-    }
-    #liveJobsMap {
-      width: 100%;
-      height: 640px;
-      z-index: 1;
-    }
-    @media (max-width: 768px) {
-      #liveJobsMap {
-        height: 500px;
-      }
-    }
-    .leaflet-popup-content-wrapper {
-      background: rgba(15, 23, 42, 0.96) !important;
-      color: var(--dashboard-text) !important;
-      border: 1px solid var(--dashboard-edge) !important;
-      border-radius: 16px !important;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65) !important;
-padding: 0 !important;
-    }
-    .leaflet-popup-tip {
-      background: rgba(15, 23, 42, 0.96) !important;
-    }
-    .leaflet-popup-content {
-      margin: 12px 14px !important;
-      line-height: 1.4 !important;
-      font-family: 'Assistant', sans-serif !important;
-      direction: rtl !important;
-      text-align: right !important;
-    }
-    .glass-leaflet-popup .leaflet-popup-content .btn-apply,
-    .glass-leaflet-popup .leaflet-popup-content .btn-triage {
-      flex: 1 1 0% !important;
-      width: auto !important;
-      min-height: 34px !important;
-      height: 34px !important;
-      padding: 6px 10px !important;
-      font-size: 12px !important;
-      font-weight: 600 !important;
-      border-radius: 999px !important;
-      box-sizing: border-box !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 5px !important;
-      white-space: nowrap !important;
-    }
-    .leaflet-container {
-      font-family: 'Assistant', sans-serif !important;
-      background: #0f172a !important;
-    }
-    .leaflet-control-zoom a {
-      background: rgba(15, 23, 42, 0.9) !important;
-      color: #fff !important;
-      border-color: var(--dashboard-edge) !important;
-    }
-    @media (hover: hover) {
-  .leaflet-control-zoom a:hover {
-      background: rgba(30, 41, 59, 1) !important;
-      color: var(--dashboard-cyan) !important;
-    }
-}
-    .leaflet-control-attribution {
-      background: rgba(15, 23, 42, 0.75) !important;
-      color: var(--dashboard-muted) !important;
-      font-size: 11px !important;
-    }
-    .leaflet-control-attribution a {
-      color: var(--dashboard-cyan) !important;
-    }
-    .custom-map-marker {
-      background: transparent !important;
-      border: none !important;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 96px !important;
-      height: 70px !important;
-      pointer-events: auto;
-    }
-    @media (hover: hover) {
-  .custom-map-marker:hover {
-      z-index: 10000 !important;
-    }
-}
-    .custom-map-marker-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
-      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), filter 0.22s ease;
-      will-change: transform;
-      transform-origin: center bottom;
-      pointer-events: auto;
-    }
-    @media (hover: hover) {
-  .custom-map-marker:hover .custom-map-marker-inner {
-      transform: scale(1.12) translateY(-4px);
-      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.85));
-    }
-}
-    .map-pin-logo-bubble {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: #0f172a;
-      border: 2.5px solid var(--dashboard-cyan);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: visible;
-      box-sizing: border-box;
-      flex-shrink: 0;
-    }
-    .map-pin-logo-img {
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
-      border-radius: 6px;
-      display: block;
-    }
-    .map-pin-avatar-fallback {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 800;
-      color: #fff;
-      background: linear-gradient(135deg, rgba(52, 211, 153, 0.3), rgba(137, 244, 231, 0.25));
-    }
-    .map-pin-score-badge {
-      position: absolute;
-      top: -5px;
-      right: -7px;
-      font-size: 11px;
-      font-weight: 800;
-      border-radius: 999px;
-      padding: 1px 4.5px;
-      line-height: 1.1;
-      border: 1.5px solid #0f172a;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
-      white-space: nowrap;
-    }
-    .map-pin-pointer {
-      width: 0;
-      height: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 5px solid var(--dashboard-cyan);
-      margin-top: -1px;
-      margin-bottom: 2px;
-    }
-    .map-pin-company-name {
-      background: rgba(15, 23, 42, 0.92);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
-      border-radius: 8px;
-      padding: 1.5px 7px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #f1f5f9;
-      max-width: 96px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      text-align: center;
-      line-height: 1.35;
-letter-spacing: 0.2px;
-    }
-
-    /* Silky-Smooth Leaflet Zoom Animations */
-    .leaflet-zoom-animated {
-      transition: transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
-      will-change: transform;
-    }
-    .leaflet-tile-container {
-      will-change: transform, opacity;
-    }
-
 /* ==========================================================================
    U3: Loading Skeletons & Network State
    ========================================================================== */

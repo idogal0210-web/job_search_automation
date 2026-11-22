@@ -5,7 +5,7 @@ tests/test_m1_challenger_stress.py
 Empirical Challenger Stress Test Suite for Milestone 1:
 - Executes the full JavaScriptCore stress test harness (tests/stress_m1_harness.js)
   covering 6,600+ assertions of rapid toggling, malformed hashes, storage failures,
-  and Leaflet map invalidation.
+  and radar return resilience.
 - Verifies DOM hierarchy, ARIA attributes, and mode switcher structural compliance.
 - Ensures Zero-Emoji compliance on challenger artifacts.
 """

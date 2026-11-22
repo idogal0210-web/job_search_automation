@@ -5,7 +5,7 @@
  * - Rapid Mode Toggling (sequential, randomized, idempotent, invalid inputs)
  * - Hash Routing & Corrupted Hashes (#unknownMode, #studio?param=1, empty, malformed)
  * - Corrupted and Unavailable localStorage (SecurityError, QuotaExceeded, corrupted payloads)
- * - Leaflet Map Invalidation Resilience (null, undefined, valid spy, nullified mid-flight, non-callable)
+ * - Radar Return Resilience (Timer Queue Zero State)
  * - Missing DOM Element Resilience
  * - switchStudioModule Stress & Resilience
  *
@@ -608,132 +608,23 @@
   }
 
   // -------------------------------------------------------------------------
-  // Test Suite 4: Leaflet Map Invalidation Resilience
+  // Test Suite 4: Radar Return Resilience (Timer Queue Zero State)
   // -------------------------------------------------------------------------
-  print('\n--- Suite 4: Leaflet Map Invalidation Resilience ---');
+  print('\n--- Suite 4: Radar Return Resilience ---');
 
-  (function testMapInstanceNull() {
+  (function testRadarReturnResilience() {
     const env = createMockEnvironment();
     globalThis.window = env.window;
     globalThis.document = env.document;
     globalThis.localStorage = env.mockLocalStorage;
     globalThis.setTimeout = env.setTimeout;
 
-    // Initially, liveJobsMapInstance is null
     assertDoesNotThrow(function () {
       switchDashboardAppMode('radar', false);
-    }, 'Switching to radar when liveJobsMapInstance is null must not throw');
+    }, 'Switching to radar must not throw');
 
-    assertEqual(env.timerQueue.length, 0, 'No timeout should be scheduled if liveJobsMapInstance is null');
-    print('[PASS] liveJobsMapInstance = null handled safely with zero timers registered.');
-  })();
-
-  (function testMapInstanceValidWithInit() {
-    const env = createMockEnvironment();
-    globalThis.window = env.window;
-    globalThis.document = env.document;
-    globalThis.localStorage = env.mockLocalStorage;
-    globalThis.setTimeout = env.setTimeout;
-
-    let invalidateCount = 0;
-    // Provide liveJobsMap element in DOM
-    const mapEl = createMockElement('liveJobsMap');
-    env.elements.liveJobsMap = mapEl;
-
-    // Provide Leaflet mock
-    globalThis.L = {
-      map: function () {
-        return {
-          invalidateSize: function () { invalidateCount++; },
-          setView: function () { return this; },
-          addLayer: function () { return this; },
-          remove: function () { }
-        };
-      },
-      tileLayer: function () {
-        return { addTo: function () { return this; } };
-      },
-      layerGroup: function () {
-        return { addTo: function () { return this; }, clearLayers: function () { return this; } };
-      }
-    };
-
-    // Initialize the map via dashboard.js initLiveJobsMap
-    if (typeof initLiveJobsMap === 'function') {
-      initLiveJobsMap();
-    }
-
-    switchDashboardAppMode('radar', false);
-    assertEqual(env.timerQueue.length, 1, 'One timer scheduled for map invalidation');
-    if (env.timerQueue.length > 0) {
-      assertEqual(env.timerQueue[0].delay, 150, 'Map invalidation timer delay is 150ms');
-    }
-    assertEqual(invalidateCount, 0, 'invalidateSize not called synchronously before timeout');
-
-    // Flush timers
-    env.flushTimers();
-    assertEqual(invalidateCount, 1, 'invalidateSize called exactly once after timer flushes');
-    print('[PASS] Valid initialized map instance schedules and executes invalidateSize after 150ms.');
-  })();
-
-  (function testMapInvalidationContractStress() {
-    function executeMapInvalidation(mapInst, setTimeoutFn) {
-      if (typeof mapInst !== 'undefined' && mapInst) {
-        setTimeoutFn(() => {
-          if (mapInst && typeof mapInst.invalidateSize === 'function') {
-            mapInst.invalidateSize();
-          }
-        }, 150);
-      }
-    }
-
-    // 1. undefined map
-    const env1 = createMockEnvironment();
-    executeMapInvalidation(undefined, env1.setTimeout);
-    assertEqual(env1.timerQueue.length, 0, 'undefined map schedules no timer');
-
-    // 2. null map
-    const env2 = createMockEnvironment();
-    executeMapInvalidation(null, env2.setTimeout);
-    assertEqual(env2.timerQueue.length, 0, 'null map schedules no timer');
-
-    // 3. valid map
-    const env3 = createMockEnvironment();
-    let called3 = 0;
-    const map3 = { invalidateSize: function () { called3++; } };
-    executeMapInvalidation(map3, env3.setTimeout);
-    assertEqual(env3.timerQueue.length, 1, 'valid map schedules 1 timer');
-    assertEqual(env3.timerQueue[0].delay, 150, 'timer delay is 150ms');
-    env3.flushTimers();
-    assertEqual(called3, 1, 'valid map executes invalidateSize');
-
-    // 4. map destroyed mid-flight
-    const env4 = createMockEnvironment();
-    let called4 = 0;
-    const mapHolder = { current: { invalidateSize: function () { called4++; } } };
-    function executeHolder(holder, setTimeoutFn) {
-      if (typeof holder.current !== 'undefined' && holder.current) {
-        setTimeoutFn(() => {
-          if (holder.current && typeof holder.current.invalidateSize === 'function') {
-            holder.current.invalidateSize();
-          }
-        }, 150);
-      }
-    }
-    executeHolder(mapHolder, env4.setTimeout);
-    assertEqual(env4.timerQueue.length, 1, 'timer scheduled');
-    mapHolder.current = null; // destroyed before 150ms!
-    assertDoesNotThrow(function () { env4.flushTimers(); }, 'destroyed map mid-flight does not throw');
-    assertEqual(called4, 0, 'invalidateSize was not called on destroyed instance');
-
-    // 5. non-callable invalidateSize
-    const env5 = createMockEnvironment();
-    const map5 = { invalidateSize: 'not-a-function' };
-    executeMapInvalidation(map5, env5.setTimeout);
-    assertEqual(env5.timerQueue.length, 1, 'timer scheduled');
-    assertDoesNotThrow(function () { env5.flushTimers(); }, 'non-callable invalidateSize does not throw');
-
-    print('[PASS] Leaflet map invalidation contract thoroughly stress-tested across all edge cases.');
+    assertEqual(env.timerQueue.length, 0, 'No stray timers should be scheduled on radar return');
+    print('[PASS] Radar return handled safely with zero stray timers registered.');
   })();
 
   // -------------------------------------------------------------------------

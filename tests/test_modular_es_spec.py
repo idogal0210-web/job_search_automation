@@ -22,7 +22,7 @@ class TestModularEsArchitecture(unittest.TestCase):
         self.modules_dir = self.frontend_js / "modules"
 
     def test_modular_files_exist_in_frontend_and_docs(self):
-        expected_modules = ["store.js", "atsEngine.js", "geoMap.js", "export.js", "render.js"]
+        expected_modules = ["store.js", "atsEngine.js", "export.js", "render.js"]
         for mod in expected_modules:
             self.assertTrue((self.modules_dir / mod).exists(), f"Missing frontend/js/modules/{mod}")
             self.assertTrue((self.docs_js / "modules" / mod).exists(), f"Missing docs/js/modules/{mod}")
@@ -35,13 +35,11 @@ class TestModularEsArchitecture(unittest.TestCase):
             self.frontend_js / "app.js",
             self.frontend_js / "modules" / "store.js",
             self.frontend_js / "modules" / "atsEngine.js",
-            self.frontend_js / "modules" / "geoMap.js",
             self.frontend_js / "modules" / "export.js",
             self.frontend_js / "modules" / "render.js",
             self.docs_js / "app.js",
             self.docs_js / "modules" / "store.js",
             self.docs_js / "modules" / "atsEngine.js",
-            self.docs_js / "modules" / "geoMap.js",
             self.docs_js / "modules" / "export.js",
             self.docs_js / "modules" / "render.js",
         ]
