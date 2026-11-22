@@ -26,7 +26,8 @@ Single source of truth for the visual design system of `job_search_automation` (
 | Secondary / muted text | `--text-secondary` / `--dashboard-muted` | `#8b92a5` | Subtitles, metadata, timestamps, helper copy |
 | Primary interactive accent | `--accent-primary` | `#8b5cf6` | Primary CTAs, active borders, focus glow |
 | Highlight accent | `--dashboard-cyan` | `#a78bfa` | Company names, active tabs, Studio icon action |
-| Apply CTA gradient | `.btn-apply-elegant` | `linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)` | Primary external apply button on cards |
+| Apply CTA gradient | `.btn-apply-elegant` | `linear-gradient(180deg, rgba(2, 132, 199, 0.95) 0%, rgba(3, 105, 161, 0.85) 100%)` | Primary external apply button on cards (Liquid Glass) |
+| Liquid Glass Button | `.btn-liquid-glass`, `.ats-primary-btn` | Dynamic refraction + specular insets | Primary CTAs, Career Studio action buttons |
 | Status — Pass / Match / New | `--status-pass` / `--dashboard-lime` | `#10b981` | Passing gates, high match scores, active "New" cube |
 | Status — Warning / Starred | `--status-warn` / `--dashboard-gold` | `#f59e0b` | Gaps, warnings, active "Starred" cube |
 | Status — Fail / Rejected | `--status-fail` | `#ef4444` | Hard-gate failures, inactive jobs, active "Rejected" cube |
@@ -71,7 +72,7 @@ Single source of truth for the visual design system of `job_search_automation` (
 | Mobile / Coarse Inputs | `16px !important` | `400`–`500` | `1.3` | All `<input>`, `<select>`, `<textarea>` under `@media (pointer: coarse), (max-width: 900px)` (prevents iOS auto-zoom) |
 | Company Name / Meta | `12px`–`12.5px` | `600`–`700` | `1.35` | `.job-company-name`, `.evidence-item`, `.q-chip` |
 | Badges & Chips | `11.5px` | `700` | `1.2` | `.badge-score`, `.job-salary-chip`, `.badge-importance` |
-| Micro-Label Floor | `11px` | `600`–`800` | `1.2` | `.progress-pct-chip`, `.badge-assessment`, `.studio-drop-formats`, `.map-pin-score-badge`, `.skill-tag` |
+| Micro-Label Floor | `11px` | `600`–`800` | `1.2` | `.progress-pct-chip`, `.badge-assessment`, `.studio-drop-formats`, `.skill-tag` |
 | Desktop Stat Cube Label | `9px` (strict exception) | `600` | `1.0` | `.stat-cube-label` strictly inside `68px` header KPI cubes |
 
 ---
@@ -113,7 +114,10 @@ Single source of truth for the visual design system of `job_search_automation` (
 
 ## Components
 
-- **Primary Button (`.btn-apply.btn-apply-elegant`, `.dashboard-primary`):** Pill (`999px`), `min-height: 44px`, `padding: 9px 18px`, violet gradient (`#7c3aed` to `#6d28d9`) on apply CTAs. States: `@media (hover: hover)` lift (`translateY(-1px)`), `:focus-visible` high-contrast outline (`2px`–`3px` with `outline-offset`), `:active` `scale(0.98)`.
+- **Primary Button (`.btn-apply.btn-apply-elegant`, `.ats-primary-btn`, `.btn-liquid-glass`, `.dashboard-primary`):** Pill (`999px`), `min-height: 44px`, `padding: 9px 18px`. Implements the Liquid Glass system:
+  - **Dark Mode:** Deep cyan/sky liquid gradients (`linear-gradient(180deg, rgba(2, 132, 199, 0.95) 0%, rgba(3, 105, 161, 0.85) 100%)`), 1px cyan glass border (`rgba(56, 189, 248, 0.45)`), specular top inset (`inset 0 1px 1px rgba(255, 255, 255, 0.45)`), deep bottom shadow (`inset 0 -1px 1px rgba(0, 0, 0, 0.5)`), and ambient outer glow (`0 0 16px rgba(56, 189, 248, 0.25)`).
+  - **Light Mode:** High-clarity cobalt liquid gradients (`linear-gradient(180deg, #2563EB 0%, #1D4ED8 100%)`), crisp 1px `#1E40AF` border, white specular top highlight (`inset 0 1px 1px 0 rgba(255, 255, 255, 0.65)`), and soft ambient shadow (`0 4px 12px rgba(29, 78, 216, 0.20)`).
+  - **Tactile Interaction:** States: `@media (hover: hover)` lift (`translateY(-1.5px)` with brightness `1.12`), `:focus-visible` high-contrast outline (`2px`–`3px` with `outline-offset`), `:active` tactile depression (`translateY(1px) scale(0.985)` with deepened inset shadow).
 - **Secondary / Quiet Button (`.tool-btn`, `.studio-dialog-close-btn`):** Glass surface (`rgba(255, 255, 255, 0.05)`), `1px` border, `min-height: 44px` (`40px` in Studio drawers). Hover increases border opacity under `@media (hover: hover)`.
 - **Compact Action Icon Button (`.card-action-icon-btn`, `.icon-button`):** `32x32px` circle (`40x40px` for `.icon-button`). Uses `::before` pseudo-element (`min-width: 44px; min-height: 44px`) on `pointer: coarse` with `gap: 12px` in `.job-actions-cluster` so touch hitboxes never overlap. Supports `[data-tooltip]` on both `:hover` and `:focus-visible`.
 - **Stat Cubes (`.stat-cube-btn`):** Vertical column (`flex-direction: column`), `min-width: 52px`, `max-width: 68px` desktop (`height: 64px` 4-column grid on narrow mobile). Active state highlights border and tinted background strictly in its semantic color (`--status-pass` new, `--status-warn` starred, `--accent-primary` saved, `--status-fail` rejected).
