@@ -3,6 +3,7 @@
 Single source of truth for the visual design system of `job_search_automation` (Job Radar Dashboard and Career Studio).  
 **Directionality:** Hebrew RTL (`<html lang="he" dir="rtl" data-theme="dark">`).  
 **Primary CSS Sources:** `frontend/css/dashboard.css` (compiled to `docs/dashboard.css`), `frontend/css/ui-fixes.css` (compiled to `docs/ui-fixes.css`), `docs/theme.css`, `docs/fonts.css`.  
+**Architecture Layers:** Structured strictly under `@layer base, dashboard;` (with brace depth = 0).  
 **Editing Note:** Update tokens or rules in this file first when changing the visual direction, then propagate changes into `frontend/` and compile to `docs/` via `python3 src/ui_builder.py`.
 
 ---
@@ -36,10 +37,11 @@ Single source of truth for the visual design system of `job_search_automation` (
 
 | Role | Token | Dark Fallback (`:root`) | Light Mode (`data-theme="light"`) |
 | :--- | :--- | :--- | :--- |
-| Canvas background | `--bg-canvas` / `--glass-bg-canvas` | `#0B0F19` | `#F8FAFC` |
+| Canvas background | `--bg-canvas` / `--glass-bg-canvas` | `#0B0F19` | `#F8FAFC` (enforced on `html`, `body`, `.dashboard-app`) |
 | Surface background | `--bg-surface` | `#131B2E` | `#FFFFFF` |
 | Elevated surface | `--glass-bg-elevated` | `#1A233A` | `#FFFFFF` |
 | Card glass surface | `--glass-bg-card` | `rgba(19, 27, 46, 0.72)` | `linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)` |
+| Empty state / Sidebar card | `.empty-state`, `.dashboard-card` | `--glass-bg-card` | `#FFFFFF`, border `#CBD5E1`, shadow `0 4px 16px rgba(15,23,42,0.05)` |
 | Subtle border | `--border-subtle` | `1px solid rgba(255, 255, 255, 0.08)` | `1px solid #E2E8F0` |
 | Glass border | `--glass-border` / `--dashboard-edge` | `1px solid rgba(255, 255, 255, 0.08)` | `1px solid #CBD5E1` |
 | Hover border | `--glass-border-hover` | `1px solid rgba(56, 189, 248, 0.35)` | `1px solid rgba(29, 78, 216, 0.45)` |
@@ -121,9 +123,10 @@ Single source of truth for the visual design system of `job_search_automation` (
 - **Secondary / Quiet Button (`.tool-btn`, `.studio-dialog-close-btn`):** Glass surface (`rgba(255, 255, 255, 0.05)`), `1px` border, `min-height: 44px` (`40px` in Studio drawers). Hover increases border opacity under `@media (hover: hover)`.
 - **Compact Action Icon Button (`.card-action-icon-btn`, `.icon-button`):** `32x32px` circle (`40x40px` for `.icon-button`). Uses `::before` pseudo-element (`min-width: 44px; min-height: 44px`) on `pointer: coarse` with `gap: 12px` in `.job-actions-cluster` so touch hitboxes never overlap. Supports `[data-tooltip]` on both `:hover` and `:focus-visible`.
 - **Stat Cubes (`.stat-cube-btn`):** Vertical column (`flex-direction: column`), `min-width: 52px`, `max-width: 68px` desktop (`height: 64px` 4-column grid on narrow mobile). Active state highlights border and tinted background strictly in its semantic color (`--status-pass` new, `--status-warn` starred, `--accent-primary` saved, `--status-fail` rejected).
-- **Job Card (`.job-card`):** `border-radius: 20px`, `padding: 20px 22px`, flex column, `contain: layout style`. Follows the Neo-Job Board architecture with Apple-inspired double-bezel depth (specular top highlight `inset 0 1px 0 rgba(255, 255, 255, 0.12)`, ambient layered shadow `0 6px 24px rgba(0, 0, 0, 0.35)`, smooth tactile hover lift `translateY(-3px)`). Features 6 rotating pastel color themes, status date capsule (`.card-date-pill`), top triage controls (`.btn-star`, `.action-save-btn`, `.btn-copy-link`), company title stack, circular logo (`44x44px`), soft tag pills, unclipped requirements snippet (`line-height: 1.55`), and a collision-proof 2-tier footer: upper tier houses full-width salary & location (`.card-salary-location`), lower tier houses the Apple primary pill CTA (`.btn-details-pill` with chevron) alongside secondary action icons (`.apply-icon-btn`, `.btn-open-in-studio`, `.action-reject-btn`). Cards `:nth-child(n+7)` use `content-visibility: auto; contain-intrinsic-size: auto 340px`.
-- **Copilot Promo Card (`.copilot-promo-card`):** Dark obsidian floating card (`#14171f`, `border-radius: 20px`) with geometric line pattern, bold white heading ("שדרג את מועמדותך בסטודיו קריירה"), and light blue pill button (`.copilot-promo-btn`).
+- **Job Card (`.job-card`):** `border-radius: 20px`, `padding: 20px 22px`, flex column, `contain: layout style`. Follows the Neo-Job Board architecture with Apple-inspired double-bezel depth (specular top highlight `inset 0 1px 0 rgba(255, 255, 255, 0.12)`, ambient layered shadow `0 6px 24px rgba(0, 0, 0, 0.35)`, smooth tactile hover lift `translateY(-3px)`). Features 6 rotating pastel color themes, status date capsule (`.card-date-pill`), top triage controls (`.btn-star`, `.action-save-btn`, `.btn-copy-link`), company title stack, circular logo (`44x44px`), soft tag pills, unclipped requirements snippet (`line-height: 1.55`), and a collision-proof 2-tier footer: upper tier houses full-width salary & location (`.card-salary-location`), lower tier houses the Apple primary pill CTA (`.btn-details-pill` with chevron) alongside secondary action icons (`.apply-icon-btn`, `.action-reject-btn`). Cards `:nth-child(n+7)` use `content-visibility: auto; contain-intrinsic-size: auto 340px`.
+- **Career Studio Workspace:** The legacy Career Studio UI layer (`@layer studio`, mode switch tabs, and promo cards) has been cleanly reset to allow a clean-slate redesign. All core backend services (`scripts/studio_bridge.py`, `tools/cv_tailor/`), candidate realism guidelines, and baseline profile schemas are fully preserved.
 - **Capsule Search & Filter Ribbon (`.search-capsule-ribbon`, `.search-capsule`):** Horizontal container with dark translucent capsules (`border-radius: 999px`) for free-text search, region selection, sector selection, sort selection, and modal quick-launchers.
+- **Screen-Reader Utility (`.visually-hidden`):** Standard zero-pixel accessibility clipping utility in `@layer base` ensuring screen-reader text (`#themeToggleLabel`, `.dashboard-header-title`) is accessible to assistive technologies without visual text bleed.
 - **Form Inputs & Selects (`input`, `select`, `textarea`, `.cloud-input`, `.ats-select`):** Custom inline SVG chevron in `ui-fixes.css` (`appearance: none`, `padding-left: 2.5rem` for RTL arrow clearance). Enforces `font-size: 16px !important` under `@media (pointer: coarse), (max-width: 900px)`.
 - **Native Dialogs & Drawers (`<dialog>`):** Opened exclusively via `showModal()` (native inert backdrop, `Esc` dismissal, focus return). Always includes `aria-labelledby` (or `aria-label` when title is dynamic, e.g. `#jobDetailsModal`). Uses `overscroll-behavior: contain` on both `dialog:modal` and `dialog::backdrop` (`overflow: hidden` on `::backdrop`), and `inline-size` capped via `100%` (never `100vw`).
 - **Salary & Numeric Chips (`.job-salary-chip`, `.job-tag-pill.tag-salary`, `.salary-badge`):** `direction: ltr; unicode-bidi: isolate;` (no `!important` in `dashboard.css`), `border-radius: 8px`, `font-size: 11.5px`.
@@ -135,9 +138,9 @@ Single source of truth for the visual design system of `job_search_automation` (
 ## Layout
 
 - **Max Content Width:** `1400px` centered (`.dashboard-main`, `.dashboard-sidebar`). Outer padding: `max(12px, env(safe-area-inset-top, 0px)) clamp(12px, 3vw, 16px) calc(76px + env(safe-area-inset-bottom, 0px))`.
-- **Header Grid (Desktop):** Symmetrical 3-column CSS Grid (`1fr auto 1fr`) keeping the primary mode switcher (`לוח משרות` / `סטודיו קריירה`) centered at exact 50% viewport geometry between branding/tools (inline-start) and KPI stat cubes (inline-end).
+- **Header Grid (Desktop):** Symmetrical 3-column CSS Grid (`1fr auto 1fr`) housing branding/profile info with cloud sync & theme toggle on inline-start, accessible visually-hidden title in the center, and KPI stat cubes on inline-end.
 - **Job Radar Grid (`#cardsContainer`):** `grid-template-columns: repeat(auto-fill, minmax(min(100%, 285px), 1fr)); gap: 12px;` (switches to 2-col or 1-col on compact screens).
-- **Career Studio Split-Pane (`.studio-master-split`):** 2-column desktop layout (`minmax(0, 55fr) minmax(0, 45fr); gap: 20px;`) with sticky live A4 preview column (`.studio-sticky-preview-col` at `inset-block-start: calc(var(--sticky-bar-h, 56px) + 16px)`). Focus Mode (`.is-focus-mode`) expands active tool to `100%` single column. Uses `@container studio-main` (`min-width: 640px` / `max-width: 639px`) for internal module responsiveness.
+- **Career Studio Workspace:** Currently prepared for fresh redesign; workspace shell container `#careerStudioWorkspace` is preserved with clean decoupling from Job Radar feed.
 - **Scroll Ergonomics:** Sticky job bar (`inset-block-start: 8px; z-index: 25`), `scrollbar-gutter: stable` and `overscroll-behavior: contain` on all scrollable panels/modals, and `html { scroll-padding-bottom: calc(56px + 16px + env(safe-area-inset-bottom, 0px)); }` under `@media (max-width: 900px)` so keyboard focus is never hidden behind the mobile nav.
 - **Key Breakpoints:** `1119px` (Studio split-pane collapses to 1 column + mobile preview drawer button), `900px` (mobile bottom nav, touch sizing, `scroll-padding-bottom`), `767px` (compact pills/controls), `400px` (ultra-narrow phone adjustments).
 
@@ -145,7 +148,7 @@ Single source of truth for the visual design system of `job_search_automation` (
 
 ## Do's and Don'ts
 
-- **Do** declare all stylesheet additions inside the existing Cascade Layers (`@layer base, dashboard, studio;`) and keep brace depth at exact `0`.
+- **Do** declare all stylesheet additions inside the existing Cascade Layers (`@layer base, dashboard;`) and keep brace depth at exact `0`.
 - **Do** edit only `frontend/` source files and immediately compile to `docs/` with `python3 src/ui_builder.py`, then verify via `python3 tests/test_template_docs_sync.py`.
 - **Do** wrap desktop hover transforms in `@media (hover: hover)` so touch devices never get sticky hover artifacts.
 - **Do** use CSS Logical Properties (`inline-size`, `block-size`, `margin-inline`, `padding-inline`, `inset-block-start`) and `100%` (never `100vw`) on overlays and toasts.
@@ -162,7 +165,7 @@ Single source of truth for the visual design system of `job_search_automation` (
 
 ## Agent Prompt Guide
 
-Read `DESIGN.md` before changing any HTML, CSS, or UI JavaScript in `job_search_automation`. This is a Hebrew RTL (`dir="rtl"`), dark-mode-first (`data-theme="dark"`), vanilla HTML/CSS/JS glassmorphism workspace using `#0b0e14` canvas, `#131722` surfaces, `#8b5cf6` / `#a78bfa` violet interactive accents, and strict semantic status colors (`#10b981` pass, `#f59e0b` warn, `#ef4444` fail). Reuse existing CSS custom properties and `@layer base, dashboard, studio;` rules in `frontend/css/dashboard.css` instead of inventing inline styles or new hex codes. Maintain zero emojis, zero `transition: all`, zero `backdrop-filter:`, zero `100vw` widths, `>= 44x44px` coarse-pointer touch targets, and `>= 11px` micro-typography. After any edit in `frontend/`, run `python3 src/ui_builder.py` and confirm `tests/test_template_docs_sync.py`, `tests/test_phase6_design_and_a11y.py`, and `scripts/validate_zero_emoji.py` all pass.
+Read `DESIGN.md` before changing any HTML, CSS, or UI JavaScript in `job_search_automation`. This is a Hebrew RTL (`dir="rtl"`), dark-mode-first (`data-theme="dark"`), vanilla HTML/CSS/JS glassmorphism workspace using `#0b0e14` canvas, `#131722` surfaces, `#8b5cf6` / `#a78bfa` violet interactive accents, and strict semantic status colors (`#10b981` pass, `#f59e0b` warn, `#ef4444` fail). In Light Mode (`data-theme="light"`), canvas uses clean slate `#F8FAFC`, `#FFFFFF` cards with `#CBD5E1` borders, and cobalt interactive accents (`#1D4ED8` / `#1E3A8A`). Reuse existing CSS custom properties and `@layer base, dashboard;` rules in `frontend/css/dashboard.css` instead of inventing inline styles or new hex codes. Maintain zero emojis, zero `transition: all`, zero `backdrop-filter:`, zero `100vw` widths, `>= 44x44px` coarse-pointer touch targets, and `>= 11px` micro-typography. After any edit in `frontend/`, run `python3 src/ui_builder.py` and confirm `tests/test_template_docs_sync.py`, `tests/test_phase6_design_and_a11y.py`, and `scripts/validate_zero_emoji.py` all pass.
 
 ---
 
@@ -176,3 +179,5 @@ All previously identified CSS inconsistencies have been unified in `frontend/css
 4. **Responsive Breakpoints Unified (Resolved):** Consolidated fragmented media queries onto the 3 standard widths (`1120px`, `900px`, `640px`) plus `400px` for ultra-narrow phones.
 5. **Canonical `.btn-back-to-top` Positioning (Resolved):** Removed duplicate declaration. Single canonical rule now enforces CSS Logical Properties (`inset-inline-start: 16px; inset-block-end: 16px;`).
 6. **Non-Token Radii Snapped (Resolved):** 14px control and container radii snapped to `var(--radius-control)` (12px) or `var(--radius-card)` (16px). 18px dialog radii snapped to `var(--radius-modal)` (20px).
+7. **Light Mode Canvas & Component Surfaces (Resolved):** Neutralized dark bleed-through in Light Mode by enforcing `#F8FAFC` canvas across `:root[data-theme="light"]`, `html[data-theme="light"]`, and `.dashboard-app`. Styled `.dashboard-card`, `.empty-state`, headers, and subheaders in crisp white surfaces (`#FFFFFF`), `#CBD5E1` borders, and high-contrast dark typography (`#0F172A` / `#475569`). Dynamic Chart.js theme reactivity integrated with `applyDashboardTheme`.
+8. **Career Studio Legacy UI Decoupling (Resolved):** Excised legacy `@layer studio` and old split-pane/promo markup from `frontend/` to prepare for a clean-slate redesign, while preserving 100% of the backend bridges, realistic candidate CV assets, and verification tests.
