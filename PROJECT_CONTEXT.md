@@ -36,7 +36,7 @@ job_search_automation/
 ├── .python-version                 # Target Python runtime anchor (Python 3.11 / 3.9+)
 ├── AGENTS.md                        # Official Google Antigravity project root rules and mission specification
 ├── .agents/                        # Operational policies and domain skills
-│   ├── rules/                      # System rules (project-tree-display.md, single-source-and-replaceability-guard.md, zero-emojis.md, dual-template-sync-guard.md, supabase-state-integrity-guard.md, pre-push-verification-and-living-docs.md; mcp-policy.md; scoped CV & UI globs)
+│   ├── rules/                      # System rules (always_on: zero-emojis.md, pre-push-verification-and-living-docs.md, single-source-and-replaceability-guard.md, critical-thinking-quality.md; model_decision: mcp-policy.md, project-tree-display.md; glob: dual-template-sync-guard.md, supabase-state-integrity-guard.md, ui-invariants-symmetry-guard.md, realism-grounding.md, scoped CV policies)
 │   └── skills/                     # Specialized project skills (salary-intelligence, ui-review, cv-tailor, ai-quality-evaluation, etc.)
 ├── .github/
 │   └── workflows/
