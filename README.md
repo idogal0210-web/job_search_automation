@@ -1,8 +1,6 @@
 # Autonomous Job Discovery & Career Intelligence Platform
 **Multi-Source Ingestion, Calibrated AI Evaluation, Real-Time Cloud Sync & Interactive Web Dashboard**
 
-![Dashboard Preview](docs/assets/images/dashboard-preview.jpg)
-
 An autonomous, production-grade career discovery and triage platform engineered for specialized engineering disciplines (Energy, Natural Gas, Solar PV, Battery Storage / BESS, SCADA / Industrial Control, and Unmanned Autonomous Systems / UAVs).
 
 The system continuously crawls and normalizes vacancies across job boards and native ATS APIs, executes deterministic criteria gating and calibrated Google Gemini LLM evaluations, calculates market compensation benchmarks, synchronizes triage states securely across devices via Supabase, and publishes a responsive single-page analytics dashboard.
