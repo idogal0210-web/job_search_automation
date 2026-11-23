@@ -44,9 +44,19 @@
       </div>
     </div>
 
-    <!-- Header Section Center (Title & Status) - Symmetrical & Centered -->
+    <!-- Header Section Center (Title & Mode Switcher) - Symmetrical & Centered -->
     <div class="header-section header-section-center">
-      <h2 class="dashboard-header-title visually-hidden">לוח משרות</h2>
+      <h2 class="dashboard-header-title visually-hidden">לוח משרות וסטודיו קריירה</h2>
+      <nav class="app-mode-switcher" role="tablist" aria-label="מצב מערכת ראשי">
+        <button type="button" role="tab" id="modeSwitchRadar" class="app-mode-btn active" aria-selected="true" aria-controls="radarWorkspace" onclick="switchDashboardAppMode('radar')">
+          <i class="ph-duotone ph-briefcase" aria-hidden="true"></i>
+          <span>לוח משרות</span>
+        </button>
+        <button type="button" role="tab" id="modeSwitchStudio" class="app-mode-btn" aria-selected="false" aria-controls="careerStudioWorkspace" onclick="switchDashboardAppMode('studio')">
+          <i class="ph-duotone ph-sparkle" aria-hidden="true"></i>
+          <span>סטודיו קריירה</span>
+        </button>
+      </nav>
     </div>
 
     <!-- Header Section Left (Progress & Category Navigation Hub) -->
@@ -290,8 +300,363 @@
 
     </div><!-- /#radarWorkspace -->
 
-    <!-- Career Studio Workspace (Placeholder for scratch rebuild) -->
-    <div id="careerStudioWorkspace" class="dashboard-view-container hidden" style="display: none;"></div>
+    <!-- Career Studio Workspace (v3.0 Ground-Up Split Workbench) -->
+    <div id="careerStudioWorkspace" class="dashboard-view-container hidden" style="display: none;">
+      <!-- Studio Unified Context Header -->
+      <section class="studio-context-header" aria-label="סרגל הקשר של סטודיו קריירה">
+        <!-- Right: Active Job Meta & Quick Selector -->
+        <div class="studio-header-job-meta">
+          <div class="studio-job-icon-pill" aria-hidden="true">
+            <i class="ph-duotone ph-briefcase"></i>
+          </div>
+          <div class="studio-job-titles">
+            <div class="studio-job-title-row">
+              <h2 id="studioActiveJobTitle" class="studio-job-title">בחר משרה לעבודה בסטודיו</h2>
+              <span id="studioActiveCompanyBadge" class="studio-company-badge">כללי</span>
+            </div>
+            <div class="studio-job-select-row">
+              <label for="studioJobSelect" class="visually-hidden">בחר משרה פעילה לעבודה</label>
+              <select id="studioJobSelect" class="studio-job-select" onchange="onStudioJobSelectChange(this.value)">
+                <option value="">-- בחר משרה מרשימת המשרות --</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center: 4-Stage Chronological Stepper -->
+        <nav class="studio-stepper-nav" aria-label="שלבי התאמה והגשה">
+          <ol class="studio-stepper-list">
+            <li class="studio-step-item active" id="studioStepItem1" data-step="1">
+              <button type="button" class="studio-step-btn" onclick="goToStudioStep(1)">
+                <span class="step-num">1</span>
+                <span class="step-label">מיקוד והתאמה</span>
+              </button>
+            </li>
+            <li class="studio-step-item" id="studioStepItem2" data-step="2">
+              <button type="button" class="studio-step-btn" onclick="goToStudioStep(2)">
+                <span class="step-num">2</span>
+                <span class="step-label">התאמת קו&quot;ח</span>
+              </button>
+            </li>
+            <li class="studio-step-item disabled" id="studioStepItem3" data-step="3" aria-disabled="true">
+              <button type="button" class="studio-step-btn" disabled title="שלב 3 ייפתח בסבב הבא">
+                <span class="step-num">3</span>
+                <span class="step-label">LinkedIn והגשה</span>
+              </button>
+            </li>
+            <li class="studio-step-item disabled" id="studioStepItem4" data-step="4" aria-disabled="true">
+              <button type="button" class="studio-step-btn" disabled title="שלב 4 ייפתח בסבב הבא">
+                <span class="step-num">4</span>
+                <span class="step-label">הכנה לראיון</span>
+              </button>
+            </li>
+          </ol>
+        </nav>
+
+        <!-- Left: Match Score, Bridge Status & CV Upload Pill -->
+        <div class="studio-header-telemetry">
+          <div class="studio-match-score-pill" id="studioMatchScorePill" title="ציון התאמה משוקלל למשרה">
+            <span class="match-score-label">התאמה</span>
+            <bdi><span id="studioOverallScoreVal" class="match-score-val">--%</span></bdi>
+          </div>
+          <div class="studio-bridge-status-pill" id="studioBridgeStatusPill" title="סטטוס חיבור לשרת מקומי (studio_bridge)">
+            <span class="sync-status-dot offline" id="studioBridgeDot" role="status" aria-live="polite"></span>
+            <span id="studioBridgeLabel" class="bridge-status-text">אופליין מקומי</span>
+          </div>
+          <div class="studio-cv-profile-pill">
+            <input type="file" id="studioCvFileInput" accept=".json,.txt,.md" style="display: none;" onchange="handleStudioCvUpload(this.files)">
+            <button type="button" class="studio-btn-subtle" onclick="document.getElementById('studioCvFileInput').click()" title="טען קובץ קו&quot;ח חלופי / מותאם">
+              <i class="ph-duotone ph-file-arrow-up" aria-hidden="true"></i>
+              <span id="studioCvFileNameLabel">קו&quot;ח ברירת מחדל</span>
+            </button>
+          </div>
+          <!-- Mobile Preview Trigger (Visible only on < 1120px) -->
+          <button type="button" id="studioMobilePreviewBtn" class="studio-mobile-preview-btn" onclick="openStudioMobilePreview()" aria-haspopup="dialog" aria-controls="studioMobilePreviewDialog" title="הצג תצוגת A4 חיה">
+            <i class="ph-duotone ph-file-text" aria-hidden="true"></i>
+            <span>תצוגת מסמך</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Studio Split Workbench Layout (55fr / 45fr desktop, stacked mobile) -->
+      <div class="studio-workbench-grid">
+        <!-- Work Column (55% on desktop, Right in RTL) -->
+        <div class="studio-work-col">
+          <!-- Step 1 Pane: Focus & Fit Analysis -->
+          <section id="studioPaneStep1" class="studio-step-pane active" aria-labelledby="studioStep1Heading">
+            <div class="studio-card-glass studio-pane-card">
+              <div class="studio-pane-header">
+                <div class="studio-pane-title-group">
+                  <div class="studio-badge-pill">שלב 1</div>
+                  <h3 id="studioStep1Heading" class="studio-pane-heading">מיקוד ובדיקת התאמת משרה (ATS Fit &amp; Gap Analysis)</h3>
+                </div>
+                <span class="studio-pane-subtitle">קליטת דרישות המשרה, ניתוח שערי סף חוסמים וזיהוי פערי מילות מפתח</span>
+              </div>
+
+              <!-- Job Ingest / Input Area -->
+              <div class="studio-input-block">
+                <div class="studio-field-row">
+                  <div class="studio-field-col" style="flex: 2;">
+                    <label for="studioJobTitleInput" class="studio-field-label">כותרת משרה</label>
+                    <input type="text" id="studioJobTitleInput" class="studio-text-input" placeholder="למשל: מהנדס / הנדסאי תפעול ואחזקה BESS">
+                  </div>
+                  <div class="studio-field-col" style="flex: 2;">
+                    <label for="studioJobCompanyInput" class="studio-field-label">שם חברה</label>
+                    <input type="text" id="studioJobCompanyInput" class="studio-text-input" placeholder="למשל: אנלייט אנרגיה מתחדשת">
+                  </div>
+                  <div class="studio-field-col" style="flex: 3;">
+                    <label for="studioJobUrlInput" class="studio-field-label">קישור למשרה (ATS / Board)</label>
+                    <input type="url" id="studioJobUrlInput" class="studio-text-input" placeholder="https://..." dir="ltr">
+                  </div>
+                </div>
+                <div class="studio-field-row" style="margin-top: 10px;">
+                  <div class="studio-field-col" style="flex: 1;">
+                    <label for="studioJobDescriptionInput" class="studio-field-label">תיאור ודרישות המשרה (Job Description)</label>
+                    <textarea id="studioJobDescriptionInput" class="studio-textarea-input" rows="6" placeholder="הדבק כאן את תיאור המשרה המלא, דרישות הסף, ניסיון נדרש ויתרונות..."></textarea>
+                  </div>
+                </div>
+                <div class="studio-action-row" style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                  <div class="studio-toggles-inline">
+                    <label class="studio-checkbox-label">
+                      <input type="checkbox" id="studioRunResearchCheckbox" checked>
+                      <span>בצע מחקר חברה במקביל (Tavily)</span>
+                    </label>
+                  </div>
+                  <button type="button" id="studioBtnAnalyzeAts" class="btn-liquid-glass ats-primary-btn" onclick="runStudioAtsAnalysis()">
+                    <i class="ph-duotone ph-cpu" aria-hidden="true"></i>
+                    <span>הפעל ניתוח התאמה ופערים (ATS Analyze)</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Blacklist / Block Warning Banner -->
+              <div id="studioBlacklistBanner" class="studio-alert-banner fail" style="display: none;">
+                <i class="ph-duotone ph-warning-octagon" aria-hidden="true"></i>
+                <div class="studio-alert-content">
+                  <strong>משרה חסומה להגשה:</strong>
+                  <span id="studioBlacklistMessage">המשרה משויכת למעסיק ברשימת ההחרגות.</span>
+                </div>
+              </div>
+
+              <!-- Statutory Thresholds (Pass Collapsed / Fail Prominent) -->
+              <div id="studioThresholdsContainer" class="studio-thresholds-wrapper" style="display: none;">
+                <div id="studioBlockingAlert" class="studio-alert-banner warn" style="display: none;">
+                  <i class="ph-duotone ph-warning-circle" aria-hidden="true"></i>
+                  <div class="studio-alert-content">
+                    <strong>זוהו שערי סף לא תואמים:</strong>
+                    <span id="studioBlockingText">קיימות דרישות סף מובהקות ללא כיסוי מלא.</span>
+                  </div>
+                </div>
+                <details id="studioPassingThresholdsDetails" class="studio-thresholds-details">
+                  <summary class="studio-thresholds-summary">
+                    <span class="summary-title"><i class="ph-duotone ph-check-circle" aria-hidden="true"></i> <span>שערי סף ודרישות בסיס תקינות</span></span>
+                    <span id="studioPassingThresholdsCount" class="dashboard-chip" style="font-size: 11px;">0 עברו</span>
+                  </summary>
+                  <div id="studioPassingThresholdsList" class="studio-thresholds-body">
+                    <!-- Populated dynamically -->
+                  </div>
+                </details>
+              </div>
+
+              <!-- 3-Tier Categorized Gaps (Blocking, Important, Nice-to-have) -->
+              <div id="studioGapsContainer" class="studio-gaps-section" style="display: none;">
+                <div class="studio-section-title-row">
+                  <h4 class="studio-section-heading">מיפוי פערי התאמה ומילות מפתח</h4>
+                  <span id="studioGapsCountBadge" class="dashboard-chip" style="font-size: 11px;">0 פערים</span>
+                </div>
+                <div class="studio-gaps-grid">
+                  <!-- Tier 1: Blocking Gaps -->
+                  <div class="studio-gap-tier-card blocking">
+                    <div class="gap-tier-header">
+                      <span class="gap-tier-title"><i class="ph-duotone ph-shield-warning" aria-hidden="true"></i> פערים חוסמים (דרישות חובה)</span>
+                      <span id="gapCountBlocking" class="gap-tier-badge">0</span>
+                    </div>
+                    <ul id="gapListBlocking" class="gap-tier-list">
+                      <li class="gap-item-empty">טרם נותחו פערים</li>
+                    </ul>
+                  </div>
+
+                  <!-- Tier 2: Important Gaps -->
+                  <div class="studio-gap-tier-card important">
+                    <div class="gap-tier-header">
+                      <span class="gap-tier-title"><i class="ph-duotone ph-star" aria-hidden="true"></i> פערים מהותיים (יתרון משמעותי)</span>
+                      <span id="gapCountImportant" class="gap-tier-badge">0</span>
+                    </div>
+                    <ul id="gapListImportant" class="gap-tier-list">
+                      <li class="gap-item-empty">טרם נותחו פערים</li>
+                    </ul>
+                  </div>
+
+                  <!-- Tier 3: Nice-to-have Gaps -->
+                  <div class="studio-gap-tier-card nice-to-have">
+                    <div class="gap-tier-header">
+                      <span class="gap-tier-title"><i class="ph-duotone ph-sparkle" aria-hidden="true"></i> יתרון נוסף / העשרה</span>
+                      <span id="gapCountNiceToHave" class="gap-tier-badge">0</span>
+                    </div>
+                    <ul id="gapListNiceToHave" class="gap-tier-list">
+                      <li class="gap-item-empty">טרם נותחו פערים</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Company Research Synopsis (Optional Expander) -->
+                <details id="studioResearchDetails" class="studio-thresholds-details" style="margin-top: 14px;">
+                  <summary class="studio-thresholds-summary">
+                    <span class="summary-title"><i class="ph-duotone ph-buildings" aria-hidden="true"></i> <span>תמצית מחקר חברה ומידע אסטרטגי</span></span>
+                    <span id="studioResearchBadge" class="dashboard-chip" style="font-size: 11px;">Tavily</span>
+                  </summary>
+                  <div id="studioResearchBody" class="studio-thresholds-body">
+                    <p id="studioResearchSummaryText" class="studio-research-p">מחקר חברה יוצג כאן לאחר ביצוע הניתוח.</p>
+                  </div>
+                </details>
+              </div>
+
+              <!-- Primary CTA Step 1 -> Step 2 -->
+              <div class="studio-footer-cta-row">
+                <button type="button" id="studioBtnProceedToStep2" class="btn-liquid-glass ats-primary-btn cta-large" onclick="proceedToStudioStep2()" disabled>
+                  <span>המשך להתאמת קורות חיים (שלב 2)</span>
+                  <i class="ph-duotone ph-arrow-left" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Step 2 Pane: CV Tailoring & Keyword Injection -->
+          <section id="studioPaneStep2" class="studio-step-pane" aria-labelledby="studioStep2Heading" style="display: none;">
+            <div class="studio-card-glass studio-pane-card">
+              <div class="studio-pane-header">
+                <div class="studio-pane-title-group">
+                  <div class="studio-badge-pill">שלב 2</div>
+                  <h3 id="studioStep2Heading" class="studio-pane-heading">התאמת קורות חיים והזרקת מילות מפתח</h3>
+                </div>
+                <span class="studio-pane-subtitle">סגירת פערים משלב 1, שדרוג שורות מבוסס עובדות מקוריות והפקת קובץ A4</span>
+              </div>
+
+              <!-- Keyword & Gap Injection Toolbar -->
+              <div class="studio-injection-toolbar">
+                <div class="studio-section-title-row">
+                  <h4 class="studio-section-heading">פערים ומילות מפתח לסגירה (לחץ להזרקה מהירה לשורת העריכה)</h4>
+                  <span id="studioInjectKeywordsCount" class="dashboard-chip" style="font-size: 11px;">0 זמינים</span>
+                </div>
+                <div id="studioKeywordsChipCloud" class="studio-keywords-cloud">
+                  <span class="studio-empty-cloud-msg">בצע ניתוח בשלב 1 לטעינת מילות מפתח ופערי משרה</span>
+                </div>
+              </div>
+
+              <!-- Bullet Upgrade & Generation Studio -->
+              <div class="studio-bullet-refine-box">
+                <div class="studio-section-title-row">
+                  <h4 class="studio-section-heading">שדרוג ממוקד לשורות הישג (Bullet Refinement)</h4>
+                  <div class="studio-tone-selector" role="radiogroup" aria-label="טון מקצועי">
+                    <button type="button" class="studio-tone-btn active" data-tone="technical" onclick="setStudioWriterTone('technical', this)">טכני-הנדסי</button>
+                    <button type="button" class="studio-tone-btn" data-tone="operational" onclick="setStudioWriterTone('operational', this)">תפעולי-שטח</button>
+                    <button type="button" class="studio-tone-btn" data-tone="strategic" onclick="setStudioWriterTone('strategic', this)">ניהולי-אסטרטגי</button>
+                  </div>
+                </div>
+                <div class="studio-field-row">
+                  <div class="studio-field-col" style="flex: 1;">
+                    <label for="studioBulletInput" class="studio-field-label">שורת הישג מקורית לשדרוג</label>
+                    <textarea id="studioBulletInput" class="studio-textarea-input" rows="2" placeholder="למשל: תפעול מתקני גז טבעי ומערכות סולאריות ברמת זמינות גבוהה..."></textarea>
+                  </div>
+                </div>
+                <div class="studio-action-row" style="margin-top: 8px; display: flex; justify-content: flex-end; gap: 8px;">
+                  <button type="button" id="studioBtnUpgradeBullet" class="studio-btn-subtle" onclick="upgradeStudioBullet()">
+                    <i class="ph-duotone ph-lightning" aria-hidden="true"></i>
+                    <span>שדרג שורה ב-Gemini</span>
+                  </button>
+                </div>
+                <div id="studioBulletResultBox" class="studio-bullet-output" style="display: none;">
+                  <div class="bullet-output-header">
+                    <span class="bullet-output-title">הצעה משודרגת (מותאמת לתבנית מדד פעולה-תוצאה):</span>
+                    <button type="button" class="studio-btn-mini" onclick="injectBulletIntoLiveDoc()">
+                      <i class="ph-duotone ph-plus" aria-hidden="true"></i>
+                      <span>הזרק לקו&quot;ח</span>
+                    </button>
+                  </div>
+                  <p id="studioBulletResultText" class="bullet-output-text"></p>
+                </div>
+              </div>
+
+              <!-- Full Tailored Package Generation -->
+              <div class="studio-package-gen-box">
+                <div class="studio-section-title-row">
+                  <h4 class="studio-section-heading">הפקת חבילת הגשה מלאה ומותאמת (/api/studio/tailor)</h4>
+                  <span class="studio-grounding-note">שמות התפקידים המקוריים נשמרים ללא שינוי (Realism Grounding)</span>
+                </div>
+                <div class="studio-action-row" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                  <div class="studio-lang-toggle">
+                    <span class="studio-toggle-label">שפת מסמך:</span>
+                    <div class="studio-tone-selector" role="radiogroup" aria-label="שפת מסמך">
+                      <button type="button" class="studio-tone-btn active" data-lang="he" onclick="setStudioCvLang('he', this)">עברית (ברירת מחדל)</button>
+                      <button type="button" class="studio-tone-btn" data-lang="en" onclick="setStudioCvLang('en', this)">English</button>
+                    </div>
+                  </div>
+                  <button type="button" id="studioBtnGeneratePackage" class="btn-liquid-glass ats-primary-btn" onclick="generateTailoredCvPackage()">
+                    <i class="ph-duotone ph-file-text" aria-hidden="true"></i>
+                    <span>הפק קו&quot;ח מותאמים A4 מלאים</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Navigation CTA Row -->
+              <div class="studio-footer-cta-row" style="display: flex; justify-content: space-between;">
+                <button type="button" class="studio-btn-subtle" onclick="goToStudioStep(1)">
+                  <i class="ph-duotone ph-arrow-right" aria-hidden="true"></i>
+                  <span>חזור לשלב 1</span>
+                </button>
+                <button type="button" id="studioBtnProceedToStep3" class="btn-liquid-glass ats-primary-btn cta-large" disabled title="שלב 3 ייפתח בסבב הבא">
+                  <span>המשך ל-LinkedIn והגשה (שלב 3)</span>
+                  <i class="ph-duotone ph-arrow-left" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- Live A4 Preview Column (45% on desktop, Left in RTL) -->
+        <aside class="studio-preview-col" aria-label="תצוגת A4 חיה של המסמך המותאם">
+          <div class="studio-card-glass studio-preview-card">
+            <div class="studio-preview-toolbar">
+              <div class="studio-preview-doc-tabs" role="tablist" aria-label="בחירת מסמך לתצוגה">
+                <button type="button" role="tab" id="studioTabPreviewCv" class="studio-doc-tab active" aria-selected="true" onclick="setStudioPreviewDocTab('cv')">
+                  <i class="ph-duotone ph-file-text" aria-hidden="true"></i>
+                  <span>קורות חיים A4</span>
+                </button>
+                <button type="button" role="tab" id="studioTabPreviewCoverLetter" class="studio-doc-tab" aria-selected="false" onclick="setStudioPreviewDocTab('cover_letter')">
+                  <i class="ph-duotone ph-envelope" aria-hidden="true"></i>
+                  <span>מכתב פנייה</span>
+                </button>
+              </div>
+              <div class="studio-preview-actions">
+                <button type="button" class="studio-btn-mini" onclick="copyStudioLiveCvText()" title="העתק טקסט המסמך ללוח">
+                  <i class="ph-duotone ph-copy" aria-hidden="true"></i>
+                  <span>העתק</span>
+                </button>
+                <button type="button" class="studio-btn-mini highlight" onclick="printStudioLiveA4()" title="ייצוא או הדפסה ל-PDF בתקן A4">
+                  <i class="ph-duotone ph-printer" aria-hidden="true"></i>
+                  <span>ייצוא PDF</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Scrollable A4 Container -->
+            <div class="studio-a4-viewport">
+              <div id="studioLiveA4Sheet" class="studio-a4-sheet" contenteditable="true" spellcheck="false" dir="rtl" aria-label="דף קורות חיים A4 הניתן לעריכה ישירה">
+                <div class="studio-a4-placeholder">
+                  <h4>תצוגת מסמך A4 חיה ועריכה ישירה</h4>
+                  <p>בחר משרה משלב 1 והפעל ניתוח או הפק קו&quot;ח מותאמים בשלב 2 לעריכה ישירה והדפסה ל-PDF.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="studio-preview-footer">
+              <span class="studio-footer-hint"><i class="ph-duotone ph-pencil-simple" aria-hidden="true"></i> ניתן לערוך ישירות בתוך הדף לפני הדפסה או ייצוא</span>
+              <span id="studioDocWordCount" class="studio-footer-wordcount">0 מילים</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div><!-- /#careerStudioWorkspace -->
 
   </main>
 
@@ -371,6 +736,34 @@
 
       <div class="modal-footer-actions">
         <button type="button" onclick="closeInactiveJobsModal()" class="tool-btn">סגור</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Career Studio Mobile Live Preview Dialog -->
+  <dialog id="studioMobilePreviewDialog" class="dashboard-modal-backdrop studio-mobile-preview-dialog" aria-labelledby="studioMobilePreviewTitle" onclick="if(event.target===this)closeStudioMobilePreview()">
+    <div class="dashboard-modal-card studio-mobile-preview-card" role="document">
+      <div class="dashboard-modal-header">
+        <div class="modal-title-wrap">
+          <i class="ph-duotone ph-file-text" style="font-size: 22px; color: var(--accent-primary);" aria-hidden="true"></i>
+          <h3 id="studioMobilePreviewTitle" class="dashboard-modal-title">תצוגת A4 חיה (עריכה וייצוא)</h3>
+        </div>
+        <button type="button" class="dashboard-modal-close" onclick="closeStudioMobilePreview()" aria-label="סגור תצוגה">
+          <i class="ph-bold ph-x" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="studio-mobile-preview-body">
+        <div class="studio-preview-actions" style="margin-bottom: 12px; display: flex; gap: 8px;">
+          <button type="button" class="studio-btn-mini" onclick="copyStudioLiveCvText()" title="העתק טקסט">
+            <i class="ph-duotone ph-copy" aria-hidden="true"></i> <span>העתק</span>
+          </button>
+          <button type="button" class="studio-btn-mini highlight" onclick="printStudioLiveA4()" title="הדפס או שמור כ-PDF">
+            <i class="ph-duotone ph-printer" aria-hidden="true"></i> <span>ייצוא PDF</span>
+          </button>
+        </div>
+        <div id="studioMobileA4Sheet" class="studio-a4-sheet mobile-sheet" contenteditable="true" spellcheck="false" dir="rtl">
+          <!-- Synced with desktop sheet -->
+        </div>
       </div>
     </div>
   </dialog>

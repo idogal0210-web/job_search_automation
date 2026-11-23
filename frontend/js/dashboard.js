@@ -2528,6 +2528,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant" style="flex: 1;">
           <span>הגש מועמדות באתר המשרה</span> <i class="ph-duotone ph-arrow-up-right"></i>
         </a>
+        <button type="button" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}); closeJobModal();" class="btn-triage btn-open-in-studio" style="padding: 10px 14px; font-size: 13px; color: var(--accent-primary); border-color: rgba(139, 92, 246, 0.4);" title="פתח משרה לעבודה בסטודיו קריירה">
+          <i class="ph-duotone ph-sparkle"></i> <span>פתח בסטודיו</span>
+        </button>
         ${Array.isArray(altLinksStore[id]) && altLinksStore[id].length > 0 ? `
           <a href="${sanitizeUrl(altLinksStore[id][0])}" target="_blank" rel="noopener noreferrer" class="btn-triage" style="padding: 10px 14px; font-size: 13px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="מקור נוסף להגשת מועמדות (מוזג מכפילות)">
             <i class="ph-duotone ph-link"></i> <span>מקור נוסף (${altLinksStore[id].length})</span>
@@ -4212,3 +4215,973 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       filterCards();
     }, 100);
   });
+
+  // ==========================================================================
+  // Career Studio v3.0 Architecture (Ground-Up Rebuild)
+  // Single Context Header + 55/45 Split Workbench + Steps 1 & 2
+  // ==========================================================================
+
+  let currentAppMode = 'radar'; // 'radar' | 'studio'
+  let currentStudioStep = 1; // 1 | 2 | 3 | 4
+  let studioBridgeConnected = false;
+  let studioBridgeToken = null;
+  let studioActiveJob = null;
+  let studioProfileCache = null;
+  let studioAtsAnalysisState = null;
+  let studioTailoredPackageState = null;
+  let studioCurrentWriterTone = 'technical';
+  let studioCurrentCvLang = 'he';
+  let studioActivePreviewDocTab = 'cv'; // 'cv' | 'cover_letter'
+
+  function getStudioBridgeBaseUrl() {
+    return 'http://127.0.0.1:8765';
+  }
+
+  async function getStudioBridgeToken(forceRefresh = false) {
+    if (studioBridgeToken && !forceRefresh) return studioBridgeToken;
+    const res = await fetch(`${getStudioBridgeBaseUrl()}/api/session`, { method: 'GET', cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json().catch(() => ({}));
+    studioBridgeToken = (data && typeof data.token === 'string') ? data.token : null;
+    return studioBridgeToken;
+  }
+
+  async function callStudioBridge(endpoint, payload = null, method = 'POST', timeoutMs = 45000, isRetry = false) {
+    if (typeof fetch !== 'function') {
+      throw new Error('fetch אינו זמין בסביבה זו');
+    }
+    const base = getStudioBridgeBaseUrl();
+    const url = `${base}${endpoint}`;
+    const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (endpoint !== '/api/health') {
+        const token = await getStudioBridgeToken(isRetry);
+        if (token) headers['X-Studio-Token'] = token;
+      }
+      const opts = {
+        method,
+        headers,
+        ...(controller ? { signal: controller.signal } : {})
+      };
+      if (method !== 'GET' && payload !== null) {
+        opts.body = JSON.stringify(payload);
+      }
+      const res = await fetch(url, opts);
+      if (res.status === 401 && !isRetry) {
+        if (timer) clearTimeout(timer);
+        return callStudioBridge(endpoint, payload, method, timeoutMs, true);
+      }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        const msg = data.error_message || `HTTP ${res.status}`;
+        const err = new Error(msg);
+        err.status = res.status;
+        err.payload = data;
+        throw err;
+      }
+      return data;
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  }
+
+  function setStudioBridgeUiState(connected) {
+    studioBridgeConnected = Boolean(connected);
+    const dot = document.getElementById('studioBridgeDot');
+    const label = document.getElementById('studioBridgeLabel');
+    if (dot) {
+      dot.className = `sync-status-dot ${studioBridgeConnected ? 'online' : 'offline'}`;
+    }
+    if (label) {
+      label.textContent = studioBridgeConnected ? 'שרת AI מחובר' : 'אופליין מקומי';
+    }
+  }
+
+  async function checkStudioBridgeHealth(notifyUser = false) {
+    if (typeof fetch !== 'function') {
+      setStudioBridgeUiState(false);
+      return false;
+    }
+    try {
+      const health = await callStudioBridge('/api/health', null, 'GET', 4000);
+      if (health && health.ok) {
+        setStudioBridgeUiState(true);
+        if (notifyUser) showToast('שרת ה-AI המקומי מחובר ומוכן לעבודה!', 'success');
+        return true;
+      }
+      setStudioBridgeUiState(false);
+      if (notifyUser) showToast('שרת ה-AI המקומי אינו זמין (הרם scripts/studio_bridge.py).', 'warning');
+      return false;
+    } catch (e) {
+      setStudioBridgeUiState(false);
+      if (notifyUser) showToast('שרת ה-AI המקומי לא מגיב.', 'warning');
+      return false;
+    }
+  }
+
+  async function loadInitialStudioProfile() {
+    try {
+      const res = await fetch('data/career_studio_profile.json');
+      if (res.ok) {
+        studioProfileCache = await res.json().catch(() => null);
+        const nameLabel = document.getElementById('studioCvFileNameLabel');
+        if (nameLabel && studioProfileCache && studioProfileCache.candidate_name) {
+          nameLabel.textContent = `פרופיל: ${studioProfileCache.candidate_name}`;
+        }
+      }
+    } catch (e) {
+      // Offline fallback
+    }
+  }
+
+  function switchDashboardAppMode(mode) {
+    const nextMode = (mode === 'studio') ? 'studio' : 'radar';
+    currentAppMode = nextMode;
+
+    const radarWs = document.getElementById('radarWorkspace');
+    const studioWs = document.getElementById('careerStudioWorkspace');
+    const modeRadarBtn = document.getElementById('modeSwitchRadar');
+    const modeStudioBtn = document.getElementById('modeSwitchStudio');
+
+    if (nextMode === 'studio') {
+      if (radarWs) {
+        radarWs.classList.remove('active');
+        radarWs.classList.add('hidden');
+        radarWs.style.display = 'none';
+      }
+      if (studioWs) {
+        studioWs.classList.remove('hidden');
+        studioWs.classList.add('active');
+        studioWs.style.display = 'block';
+      }
+      if (modeRadarBtn) {
+        modeRadarBtn.classList.remove('active');
+        modeRadarBtn.setAttribute('aria-selected', 'false');
+      }
+      if (modeStudioBtn) {
+        modeStudioBtn.classList.add('active');
+        modeStudioBtn.setAttribute('aria-selected', 'true');
+      }
+      populateStudioJobSelect();
+      checkStudioBridgeHealth(false);
+    } else {
+      if (studioWs) {
+        studioWs.classList.remove('active');
+        studioWs.classList.add('hidden');
+        studioWs.style.display = 'none';
+      }
+      if (radarWs) {
+        radarWs.classList.remove('hidden');
+        radarWs.classList.add('active');
+        radarWs.style.display = 'block';
+      }
+      if (modeStudioBtn) {
+        modeStudioBtn.classList.remove('active');
+        modeStudioBtn.setAttribute('aria-selected', 'false');
+      }
+      if (modeRadarBtn) {
+        modeRadarBtn.classList.add('active');
+        modeRadarBtn.setAttribute('aria-selected', 'true');
+      }
+    }
+  }
+
+  function populateStudioJobSelect() {
+    const select = document.getElementById('studioJobSelect');
+    if (!select) return;
+
+    const currentVal = select.value;
+    select.innerHTML = '<option value="">-- בחר משרה מרשימת המשרות --</option>';
+
+    const allJobs = getAllAvailableJobs();
+    if (!allJobs || allJobs.length === 0) return;
+
+    allJobs.forEach((job, idx) => {
+      const opt = document.createElement('option');
+      const jobId = job.link || `job_${idx}`;
+      opt.value = String(jobId);
+      // Ensure allJobsMap has entry
+      allJobsMap[jobId] = job;
+      const comp = stripEmojis(job.company || 'חברה');
+      const title = stripEmojis(job.title || 'משרה');
+      const score = Math.max(0, Math.min(100, Number(job.base_match_score ?? job.match_score) || 0));
+      opt.textContent = `${title} | ${comp} (${score}%)`;
+      select.appendChild(opt);
+    });
+
+    if (currentVal && allJobsMap[currentVal]) {
+      select.value = currentVal;
+    }
+  }
+
+  function openJobInCareerStudio(id) {
+    const job = allJobsMap[id];
+    if (!job) return;
+
+    switchDashboardAppMode('studio');
+    selectStudioJob(job);
+  }
+
+  function onStudioJobSelectChange(id) {
+    if (!id) {
+      clearStudioJobContext();
+      return;
+    }
+    const job = allJobsMap[id];
+    if (job) {
+      selectStudioJob(job);
+    }
+  }
+
+  function clearStudioJobContext() {
+    studioActiveJob = null;
+    const titleEl = document.getElementById('studioActiveJobTitle');
+    const compEl = document.getElementById('studioActiveCompanyBadge');
+    const scoreVal = document.getElementById('studioOverallScoreVal');
+    if (titleEl) titleEl.textContent = 'בחר משרה לעבודה בסטודיו';
+    if (compEl) compEl.textContent = 'כללי';
+    if (scoreVal) scoreVal.textContent = '--%';
+
+    const titleIn = document.getElementById('studioJobTitleInput');
+    const compIn = document.getElementById('studioJobCompanyInput');
+    const urlIn = document.getElementById('studioJobUrlInput');
+    const descIn = document.getElementById('studioJobDescriptionInput');
+    if (titleIn) titleIn.value = '';
+    if (compIn) compIn.value = '';
+    if (urlIn) urlIn.value = '';
+    if (descIn) descIn.value = '';
+
+    goToStudioStep(1);
+  }
+
+  function selectStudioJob(job) {
+    studioActiveJob = job;
+
+    const id = String(job.id || '');
+    const select = document.getElementById('studioJobSelect');
+    if (select && select.value !== id) {
+      select.value = id;
+    }
+
+    const title = stripEmojis(job.title || 'משרה');
+    const comp = stripEmojis(job.company || 'כללי');
+    const score = Math.max(0, Math.min(100, Number(job.base_match_score ?? job.match_score) || 0));
+
+    const titleEl = document.getElementById('studioActiveJobTitle');
+    const compEl = document.getElementById('studioActiveCompanyBadge');
+    const scoreVal = document.getElementById('studioOverallScoreVal');
+
+    if (titleEl) titleEl.textContent = title;
+    if (compEl) compEl.textContent = comp;
+    if (scoreVal) scoreVal.textContent = `${score}%`;
+
+    const titleIn = document.getElementById('studioJobTitleInput');
+    const compIn = document.getElementById('studioJobCompanyInput');
+    const urlIn = document.getElementById('studioJobUrlInput');
+    const descIn = document.getElementById('studioJobDescriptionInput');
+
+    if (titleIn) titleIn.value = title;
+    if (compIn) compIn.value = comp;
+    if (urlIn) urlIn.value = job.link || '';
+    if (descIn) {
+      const fullText = (job.job_summary || '') + '\n' + (job.company_requirements || '') + '\n' + (job.snippet || '');
+      descIn.value = fullText.trim() || title;
+    }
+
+    goToStudioStep(1);
+    updateStudioBlacklistWarning();
+  }
+
+  function goToStudioStep(stepNum) {
+    if (stepNum > 2) {
+      showToast('שלבים 3 ו-4 ייפתחו בסבב הבא.', 'info');
+      return;
+    }
+    currentStudioStep = stepNum;
+
+    // Update stepper nav
+    for (let i = 1; i <= 4; i++) {
+      const item = document.getElementById(`studioStepItem${i}`);
+      if (item) {
+        item.classList.toggle('active', i === stepNum);
+      }
+    }
+
+    // Toggle Panes
+    const p1 = document.getElementById('studioPaneStep1');
+    const p2 = document.getElementById('studioPaneStep2');
+    if (p1) {
+      p1.classList.toggle('active', stepNum === 1);
+      p1.style.display = (stepNum === 1) ? 'block' : 'none';
+    }
+    if (p2) {
+      p2.classList.toggle('active', stepNum === 2);
+      p2.style.display = (stepNum === 2) ? 'block' : 'none';
+    }
+  }
+
+  function updateStudioBlacklistWarning() {
+    const compIn = document.getElementById('studioJobCompanyInput');
+    const descIn = document.getElementById('studioJobDescriptionInput');
+    const banner = document.getElementById('studioBlacklistBanner');
+    const msg = document.getElementById('studioBlacklistMessage');
+    const btn = document.getElementById('studioBtnAnalyzeAts');
+
+    const comp = (compIn ? compIn.value : '').trim().toLowerCase();
+    const desc = (descIn ? descIn.value : '').trim().toLowerCase();
+
+    // Check known blacklisted employers (e.g. defense blacklist/filters)
+    const isBlocked = (comp.includes('blacklist') || desc.includes('employer_blacklisted'));
+    if (banner) banner.style.display = isBlocked ? 'flex' : 'none';
+    if (msg && isBlocked) msg.textContent = 'משרה זו נחסמה להגשה על פי מדיניות הסינון.';
+    if (btn) btn.disabled = isBlocked;
+    return isBlocked;
+  }
+
+  function handleStudioCvUpload(files) {
+    if (!files || files.length === 0) return;
+    const file = files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const text = e.target.result;
+      studioProfileCache = {
+        candidate_name: file.name.replace(/\.[^/.]+$/, ""),
+        custom_cv_text: text
+      };
+      const nameLabel = document.getElementById('studioCvFileNameLabel');
+      if (nameLabel) {
+        nameLabel.textContent = file.name;
+      }
+      showToast(`קובץ קורות חיים נטען בהצלחה: ${file.name}`, 'success');
+    };
+    reader.readAsText(file);
+  }
+
+  // --------------------------------------------------------------------------
+  // Step 1: ATS Fit & Gap Analysis Implementation
+  // --------------------------------------------------------------------------
+
+  async function runStudioAtsAnalysis() {
+    const titleIn = document.getElementById('studioJobTitleInput');
+    const compIn = document.getElementById('studioJobCompanyInput');
+    const urlIn = document.getElementById('studioJobUrlInput');
+    const descIn = document.getElementById('studioJobDescriptionInput');
+    const btn = document.getElementById('studioBtnAnalyzeAts');
+    const researchChk = document.getElementById('studioRunResearchCheckbox');
+
+    const title = titleIn ? titleIn.value.trim() : '';
+    const company = compIn ? compIn.value.trim() : '';
+    const jobUrl = urlIn ? urlIn.value.trim() : '';
+    const jobText = descIn ? descIn.value.trim() : '';
+
+    if (!jobText && !title) {
+      showToast('הזן תיאור משרה או כותרת לניתוח התאמה.', 'warning');
+      return;
+    }
+
+    if (updateStudioBlacklistWarning()) {
+      showToast('המשרה חסומה להגשה.', 'error');
+      return;
+    }
+
+    if (btn) btn.disabled = true;
+    showToast('מפעיל ניתוח התאמה ב-Gemini / שרת מקומי...', 'info');
+
+    const customCv = (studioProfileCache && studioProfileCache.custom_cv_text) ? studioProfileCache.custom_cv_text : '';
+
+    try {
+      const res = await callStudioBridge('/api/ats/analyze', {
+        job_text: jobText || title,
+        company,
+        title,
+        job_url: jobUrl,
+        run_research: Boolean(researchChk && researchChk.checked),
+        cv_text: customCv
+      }, 'POST', 60000);
+
+      setStudioBridgeUiState(true);
+      studioAtsAnalysisState = res;
+      applyStudioAtsResults(res);
+      showToast('ניתוח ה-ATS הושלם בהצלחה!', 'success');
+    } catch (err) {
+      // Local rule-based fallback if bridge offline
+      showToast(`שרת מקומי אינו זמין (${err.message}) — מבצע ניתוח מילולי מקומי.`, 'warning');
+      const fallbackAnalysis = performLocalFallbackAtsAnalysis(jobText || title, title, company);
+      studioAtsAnalysisState = fallbackAnalysis;
+      applyStudioAtsResults(fallbackAnalysis);
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function performLocalFallbackAtsAnalysis(jobText, title, company) {
+    const textLower = jobText.toLowerCase();
+    const keywords = ['גז טבעי', 'scada', 'חשמל', 'בטיחות', 'רחפנים', 'סולאר', 'bess', 'plcs', 'אוטומציה', 'ניהול פרויקטים'];
+    const matched = [];
+    const missing = [];
+
+    keywords.forEach(kw => {
+      if (textLower.includes(kw.toLowerCase())) {
+        matched.push(kw);
+      } else {
+        missing.push(kw);
+      }
+    });
+
+    const score = Math.min(95, Math.max(50, matched.length * 12 + 40));
+
+    return {
+      ok: true,
+      source: 'local_rule_fallback',
+      analysis: {
+        overall_score: score,
+        match_summary: `ניתוח מילולי מקומי: זוהו ${matched.length} מילות מפתח תואמות ו-${missing.length} פערים אפשריים.`,
+        scorecard: {
+          experience: 80,
+          technical_skills: 75,
+          certifications: 85
+        },
+        matched_keywords: matched,
+        missing_keywords: missing,
+        categorized_gaps: [
+          ...missing.slice(0, 2).map(g => ({ tier: 'blocking', gap: g, rationale: 'דרישת חובה לפי תיאור המשרה' })),
+          ...missing.slice(2, 5).map(g => ({ tier: 'important', gap: g, rationale: 'יתרון משמעותי לפרופיל' })),
+          ...missing.slice(5).map(g => ({ tier: 'nice_to_have', gap: g, rationale: 'העשרה ויתרון נוסף' }))
+        ]
+      },
+      research: {
+        company_name: company || 'חברה',
+        summary: 'מחקר חברה מקומי (דורש studio_bridge פעיל לחיפוש רשת).',
+        is_live_data: false
+      }
+    };
+  }
+
+  function applyStudioAtsResults(res) {
+    if (!res || !res.analysis) return;
+    const an = res.analysis;
+
+    // Update match score pill
+    const overallScore = Math.max(0, Math.min(100, Number(an.overall_score) || 0));
+    const scoreVal = document.getElementById('studioOverallScoreVal');
+    if (scoreVal) scoreVal.textContent = `${overallScore}%`;
+
+    // Render thresholds & pass/fail
+    const threshContainer = document.getElementById('studioThresholdsContainer');
+    const passingCountBadge = document.getElementById('studioPassingThresholdsCount');
+    const passingList = document.getElementById('studioPassingThresholdsList');
+    const blockingAlert = document.getElementById('studioBlockingAlert');
+
+    if (threshContainer) threshContainer.style.display = 'block';
+
+    if (passingList) {
+      passingList.innerHTML = '';
+      const matched = an.matched_keywords || [];
+      if (passingCountBadge) passingCountBadge.textContent = `${matched.length} עברו`;
+      matched.forEach(kw => {
+        const span = document.createElement('span');
+        span.className = 'threshold-tag-pill';
+        span.innerHTML = `<i class="ph-duotone ph-check" aria-hidden="true"></i> <span>${escapeHtml(kw)}</span>`;
+        passingList.appendChild(span);
+      });
+    }
+
+    // Render 3-Tier Categorized Gaps
+    const gapsContainer = document.getElementById('studioGapsContainer');
+    if (gapsContainer) gapsContainer.style.display = 'block';
+
+    const gaps = an.categorized_gaps || [];
+    const blockingGaps = gaps.filter(g => g.tier === 'blocking');
+    const importantGaps = gaps.filter(g => g.tier === 'important');
+    const niceToHaveGaps = gaps.filter(g => g.tier === 'nice_to_have');
+
+    // If no categorized_gaps, partition missing_keywords
+    const missing = an.missing_keywords || [];
+    const bList = (blockingGaps.length > 0) ? blockingGaps.map(g => g.gap) : missing.slice(0, 2);
+    const iList = (importantGaps.length > 0) ? importantGaps.map(g => g.gap) : missing.slice(2, 5);
+    const nList = (niceToHaveGaps.length > 0) ? niceToHaveGaps.map(g => g.gap) : missing.slice(5);
+
+    if (blockingAlert) {
+      blockingAlert.style.display = (bList.length > 0) ? 'flex' : 'none';
+    }
+
+    renderGapList('gapListBlocking', 'gapCountBlocking', bList);
+    renderGapList('gapListImportant', 'gapCountImportant', iList);
+    renderGapList('gapListNiceToHave', 'gapCountNiceToHave', nList);
+
+    const totalGapsBadge = document.getElementById('studioGapsCountBadge');
+    if (totalGapsBadge) totalGapsBadge.textContent = `${bList.length + iList.length + nList.length} פערים`;
+
+    // Render Research if available
+    const resDetails = document.getElementById('studioResearchDetails');
+    const resText = document.getElementById('studioResearchSummaryText');
+    if (res.research && res.research.summary) {
+      if (resDetails) resDetails.style.display = 'block';
+      if (resText) resText.textContent = res.research.summary;
+    }
+
+    // Enable Proceed to Step 2
+    const btnProceed = document.getElementById('studioBtnProceedToStep2');
+    if (btnProceed) {
+      btnProceed.disabled = false;
+    }
+
+    // Populate Step 2 injection chips immediately
+    populateStep2KeywordsCloud(bList, iList, nList);
+  }
+
+  function renderGapList(listId, countId, items) {
+    const listEl = document.getElementById(listId);
+    const countEl = document.getElementById(countId);
+    if (countEl) countEl.textContent = String(items.length);
+    if (!listEl) return;
+
+    listEl.innerHTML = '';
+    if (items.length === 0) {
+      const emptyLi = document.createElement('li');
+      emptyLi.className = 'gap-item-empty';
+      emptyLi.textContent = 'לא זוהו פערים בקטגוריה זו';
+      listEl.appendChild(emptyLi);
+      return;
+    }
+
+    items.forEach(it => {
+      const li = document.createElement('li');
+      li.className = 'gap-tier-item';
+      li.textContent = it;
+      listEl.appendChild(li);
+    });
+  }
+
+  function proceedToStudioStep2() {
+    goToStudioStep(2);
+  }
+
+  // --------------------------------------------------------------------------
+  // Step 2: Tailoring, Bullet Refinement & A4 Live Document Implementation
+  // --------------------------------------------------------------------------
+
+  function populateStep2KeywordsCloud(blocking, important, niceToHave) {
+    const container = document.getElementById('studioKeywordsChipCloud');
+    const countBadge = document.getElementById('studioInjectKeywordsCount');
+    if (!container) return;
+
+    container.innerHTML = '';
+    const all = [
+      ...blocking.map(k => ({ kw: k, tier: 'blocking' })),
+      ...important.map(k => ({ kw: k, tier: 'important' })),
+      ...niceToHave.map(k => ({ kw: k, tier: 'nice-to-have' }))
+    ];
+
+    if (countBadge) countBadge.textContent = `${all.length} זמינים`;
+
+    if (all.length === 0) {
+      container.innerHTML = '<span class="studio-empty-cloud-msg">לא זוהו מילות מפתח לסגירה</span>';
+      return;
+    }
+
+    all.forEach(item => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = `studio-keyword-chip ${item.tier}`;
+      chip.title = 'לחץ להזרקה לשורת העריכה';
+      chip.innerHTML = `<i class="ph-duotone ph-plus" aria-hidden="true"></i> <span>${escapeHtml(item.kw)}</span>`;
+      chip.onclick = () => injectKeywordIntoBulletInput(item.kw);
+      container.appendChild(chip);
+    });
+  }
+
+  function injectKeywordIntoBulletInput(kw) {
+    const input = document.getElementById('studioBulletInput');
+    if (!input) return;
+    const current = input.value.trim();
+    input.value = current ? `${current}, ${kw}` : kw;
+    input.focus();
+    showToast(`מילת המפתח "${kw}" נוספה לתיבת השדרוג!`, 'info');
+  }
+
+  function setStudioWriterTone(tone, btn) {
+    studioCurrentWriterTone = tone;
+    const buttons = document.querySelectorAll('.studio-tone-btn[data-tone]');
+    buttons.forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+  }
+
+  function setStudioCvLang(lang, btn) {
+    studioCurrentCvLang = lang;
+    const buttons = document.querySelectorAll('.studio-tone-btn[data-lang]');
+    buttons.forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+  }
+
+  async function upgradeStudioBullet() {
+    const input = document.getElementById('studioBulletInput');
+    const resultBox = document.getElementById('studioBulletResultBox');
+    const resultText = document.getElementById('studioBulletResultText');
+    const btn = document.getElementById('studioBtnUpgradeBullet');
+
+    const raw = input ? input.value.trim() : '';
+    if (!raw) {
+      showToast('הזן שורת הישג לשדרוג.', 'warning');
+      return;
+    }
+
+    if (btn) btn.disabled = true;
+    showToast('משדרג שורת הישג באמצעות Gemini...', 'info');
+
+    const descIn = document.getElementById('studioJobDescriptionInput');
+    const jobContext = descIn ? descIn.value.trim() : '';
+
+    try {
+      const res = await callStudioBridge('/api/writer/tailor', {
+        raw_bullet: raw,
+        tone_mode: studioCurrentWriterTone || 'technical',
+        job_context: jobContext
+      }, 'POST', 35000);
+
+      if (res && res.ok && res.result && resultBox && resultText) {
+        resultText.textContent = res.result.rewritten_bullet || raw;
+        resultBox.style.display = 'block';
+        showToast('השורה שודרגה בהצלחה!', 'success');
+      }
+    } catch (err) {
+      // Local rule-based fallback upgrade
+      if (resultBox && resultText) {
+        const upgraded = `הובלת ${raw} תוך עמידה ביעדי זמינות של 99.8%, שיפור מדדי תפעול ובקרה קפדנית על פי נוהלי הבטיחות.`;
+        resultText.textContent = upgraded;
+        resultBox.style.display = 'block';
+        showToast(`שדרוג מקומי בוצע (${err.message}).`, 'info');
+      }
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function injectBulletIntoLiveDoc() {
+    const resultText = document.getElementById('studioBulletResultText');
+    const sheet = document.getElementById('studioLiveA4Sheet');
+    if (!resultText || !sheet) return;
+
+    const bullet = resultText.textContent.trim();
+    if (!bullet) return;
+
+    // Append bullet to current document
+    let ul = sheet.querySelector('ul');
+    if (!ul) {
+      ul = document.createElement('ul');
+      sheet.appendChild(ul);
+    }
+    const li = document.createElement('li');
+    li.textContent = bullet;
+    ul.appendChild(li);
+
+    syncLiveA4ToMobile();
+    updateLiveA4WordCount();
+    showToast('השורה הוזרקה לתצוגת ה-A4 החיה!', 'success');
+  }
+
+  async function generateTailoredCvPackage() {
+    const descIn = document.getElementById('studioJobDescriptionInput');
+    const compIn = document.getElementById('studioJobCompanyInput');
+    const titleIn = document.getElementById('studioJobTitleInput');
+    const btn = document.getElementById('studioBtnGeneratePackage');
+
+    const jobText = descIn ? descIn.value.trim() : '';
+    const company = compIn ? compIn.value.trim() : 'חברה';
+    const title = titleIn ? titleIn.value.trim() : 'משרה';
+
+    if (!jobText && !title) {
+      showToast('הזן תיאור משרה להפקת קורות חיים.', 'warning');
+      return;
+    }
+
+    if (btn) btn.disabled = true;
+    showToast('מפיק קורות חיים מותאמים A4 ב-Gemini...', 'info');
+
+    const customCv = (studioProfileCache && studioProfileCache.custom_cv_text) ? studioProfileCache.custom_cv_text : '';
+
+    try {
+      const res = await callStudioBridge('/api/studio/tailor', {
+        job_text: jobText || title,
+        company,
+        title,
+        lang: studioCurrentCvLang,
+        tone_mode: studioCurrentWriterTone,
+        analysis: studioAtsAnalysisState ? studioAtsAnalysisState.analysis : null,
+        research: studioAtsAnalysisState ? studioAtsAnalysisState.research : null,
+        save_outputs: true,
+        cv_text: customCv
+      }, 'POST', 60000);
+
+      if (res && res.ok && res.package) {
+        studioTailoredPackageState = res.package;
+        renderTailoredPackageInA4(res.package);
+        showToast('קו"ח מותאמים A4 הופקו בהצלחה!', 'success');
+      }
+    } catch (err) {
+      showToast(`הפקה בשרת אינה זמינה (${err.message}) — מייצר תבנית A4 מקומית.`, 'warning');
+      renderFallbackLocalCvInA4(title, company);
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function renderFallbackLocalCvInA4(title, company) {
+    const lang = studioCurrentCvLang;
+    const isEn = (lang === 'en');
+    const sheet = document.getElementById('studioLiveA4Sheet');
+    if (!sheet) return;
+
+    const baseMd = isEn ?
+      `# Candidate Profile - Tailored for ${title} at ${company}\n\n## Professional Summary\nMechanical Practical Engineer specializing in Natural Gas facilities, SCADA control systems, Solar PV & BESS operations, and Commercial Drone piloting (UAV).\n\n## Core Competencies\n- Operational facility maintenance & safety protocols\n- SCADA & industrial PLC monitoring\n- Natural gas PRMS regulation\n- Solar PV generation & battery storage\n\n## Experience Highlights\n- Leading operations and system availability with strict safety compliance\n- Real-time fault diagnosis and rapid resolution under statutory standards` :
+      `# פרופיל מקצועי — מותאם למשרת ${title} ב-${company}\n\n## תמצית מקצועית\nהנדסאי מכונות מוסמך, מומחה בתפעול מתקני גז טבעי (PRMS), מערכות בקרה ו-SCADA, מתקני אנרגיה סולארית ואגירה (BESS), והטסת רחפנים מסחריים (UAV).\n\n## כישורי ליבה והסמכות\n- תפעול ואחזקת מתקני גז טבעי ותשתיות אנרגיה\n- ניטור ובקרה רציפה בחדרי פיקוח (SCADA)\n- ניהול בטיחות, היתרי עבודה ורגולציה מחמירה\n- הפעלה וניטור מערכות פוטו-וולטאיות ומערכי מצברים\n\n## ניסיון תעסוקתי מודגש\n- הובלת תפעול שוטף תוך שמירה על זמינות מתקן מרבית ועמידה מלאה בתקני הבטיחות\n- איתור תקלות בזמן אמת, כיול מכשור וטיפול מיידי באירועי שטח`;
+
+    studioTailoredPackageState = {
+      title,
+      company,
+      lang,
+      cv_markdown: baseMd,
+      cover_letter_markdown: `# מכתב פנייה — ${title} (${company})\n\nשלום רב,\nאני פונה אליכם בנוגע למשרת ${title}. מניסיוני כהנדסאי מכונות בתחום האנרגיה והתפעול, כישוריי מתאימים היטב לדרישות התפקיד.`
+    };
+
+    renderTailoredPackageInA4(studioTailoredPackageState);
+  }
+
+  function renderTailoredPackageInA4(pkg) {
+    const sheet = document.getElementById('studioLiveA4Sheet');
+    if (!sheet || !pkg) return;
+
+    const isCover = (studioActivePreviewDocTab === 'cover_letter');
+    const md = isCover ? (pkg.cover_letter_markdown || '') : (pkg.cv_markdown || '');
+    const isEn = (pkg.lang === 'en');
+    const dir = isEn ? 'ltr' : 'rtl';
+
+    sheet.setAttribute('dir', dir);
+    const nodes = createSafeMarkdownNodes(md, dir);
+    sheet.replaceChildren(...nodes);
+
+    syncLiveA4ToMobile();
+    updateLiveA4WordCount();
+  }
+
+  function setStudioPreviewDocTab(tab) {
+    studioActivePreviewDocTab = tab;
+    const tabCv = document.getElementById('studioTabPreviewCv');
+    const tabCover = document.getElementById('studioTabPreviewCoverLetter');
+
+    if (tabCv) {
+      tabCv.classList.toggle('active', tab === 'cv');
+      tabCv.setAttribute('aria-selected', tab === 'cv' ? 'true' : 'false');
+    }
+    if (tabCover) {
+      tabCover.classList.toggle('active', tab === 'cover_letter');
+      tabCover.setAttribute('aria-selected', tab === 'cover_letter' ? 'true' : 'false');
+    }
+
+    if (studioTailoredPackageState) {
+      renderTailoredPackageInA4(studioTailoredPackageState);
+    }
+  }
+
+  function createSafeMarkdownNodes(markdownText, targetDir = 'rtl') {
+    if (typeof document === 'undefined' || typeof document.createElement !== 'function') return [];
+    const frag = [];
+    let currentList = null;
+
+    const appendInlineBold = (parent, text) => {
+      const parts = String(text || '').split(/(\*\*[^*]+\*\*)/g);
+      parts.forEach(part => {
+        if (part.startsWith('**') && part.endsWith('**') && part.length > 4) {
+          const strong = document.createElement('strong');
+          strong.textContent = part.slice(2, -2);
+          parent.appendChild(strong);
+        } else if (part) {
+          parent.appendChild(document.createTextNode(part));
+        }
+      });
+    };
+
+    const lines = String(markdownText || '').split(/\r?\n/);
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+      if (!line) {
+        currentList = null;
+        continue;
+      }
+      if (line.startsWith('# ')) {
+        currentList = null;
+        const h1 = document.createElement('h1');
+        h1.dir = targetDir;
+        appendInlineBold(h1, line.slice(2));
+        frag.push(h1);
+      } else if (line.startsWith('## ')) {
+        currentList = null;
+        const h2 = document.createElement('h2');
+        h2.dir = targetDir;
+        appendInlineBold(h2, line.slice(3));
+        frag.push(h2);
+      } else if (line.startsWith('### ')) {
+        currentList = null;
+        const h3 = document.createElement('h3');
+        h3.dir = targetDir;
+        appendInlineBold(h3, line.slice(4));
+        frag.push(h3);
+      } else if (line.startsWith('- ') || line.startsWith('* ')) {
+        if (!currentList) {
+          currentList = document.createElement('ul');
+          currentList.dir = targetDir;
+          frag.push(currentList);
+        }
+        const li = document.createElement('li');
+        appendInlineBold(li, line.slice(2));
+        currentList.appendChild(li);
+      } else {
+        currentList = null;
+        const p = document.createElement('p');
+        p.dir = targetDir;
+        appendInlineBold(p, line);
+        frag.push(p);
+      }
+    }
+    return frag;
+  }
+
+  function updateLiveA4WordCount() {
+    const sheet = document.getElementById('studioLiveA4Sheet');
+    const countEl = document.getElementById('studioDocWordCount');
+    if (!sheet || !countEl) return;
+    const txt = sheet.innerText || sheet.textContent || '';
+    const words = txt.trim().split(/\s+/).filter(Boolean).length;
+    countEl.textContent = `${words} מילים`;
+  }
+
+  function syncLiveA4ToMobile() {
+    const desktopSheet = document.getElementById('studioLiveA4Sheet');
+    const mobileSheet = document.getElementById('studioMobileA4Sheet');
+    if (desktopSheet && mobileSheet) {
+      mobileSheet.innerHTML = desktopSheet.innerHTML;
+      mobileSheet.setAttribute('dir', desktopSheet.getAttribute('dir') || 'rtl');
+    }
+  }
+
+  function copyStudioLiveCvText() {
+    const sheet = document.getElementById('studioLiveA4Sheet');
+    if (!sheet) return;
+    const txt = sheet.innerText || sheet.textContent || '';
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(txt).then(() => {
+        showToast('תוכן המסמך הועתק ללוח בהצלחה!', 'success');
+      });
+    }
+  }
+
+  function printStudioLiveA4() {
+    const sheet = document.getElementById('studioLiveA4Sheet');
+    if (!sheet) return;
+
+    const htmlContent = sheet.innerHTML;
+    const dir = sheet.getAttribute('dir') || 'rtl';
+    const isEn = (dir === 'ltr');
+
+    const win = window.open('', '_blank');
+    if (!win) {
+      showToast('חלון ההדפסה נחסם על ידי הדפדפן.', 'warning');
+      return;
+    }
+
+    const doc = win.document;
+    doc.open();
+    doc.write(`<!DOCTYPE html>
+<html lang="${isEn ? 'en' : 'he'}" dir="${dir}">
+<head>
+  <meta charset="utf-8">
+  <title>קורות חיים A4 - סטודיו קריירה</title>
+  <style>
+    @page { size: A4 portrait; margin: 15mm 20mm; }
+    body {
+      font-family: 'Assistant', Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 1.5;
+      color: #000;
+      background: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    h1 { font-size: 18pt; margin-bottom: 8pt; border-bottom: 1.5pt solid #333; padding-bottom: 4pt; }
+    h2 { font-size: 13pt; margin-top: 12pt; margin-bottom: 6pt; color: #111; }
+    h3 { font-size: 11pt; margin-top: 8pt; margin-bottom: 4pt; }
+    p { margin-top: 4pt; margin-bottom: 6pt; }
+    ul { margin: 4pt 0 8pt 0; padding-inline-start: 18pt; }
+    li { margin-bottom: 3pt; }
+  </style>
+</head>
+<body>
+  ${htmlContent}
+</body>
+</html>`);
+    doc.close();
+
+    setTimeout(() => {
+      win.focus();
+      win.print();
+    }, 200);
+  }
+
+  function openStudioMobilePreview() {
+    syncLiveA4ToMobile();
+    const dlg = document.getElementById('studioMobilePreviewDialog');
+    if (dlg) {
+      openDialogEl(dlg);
+    }
+  }
+
+  function closeStudioMobilePreview() {
+    const dlg = document.getElementById('studioMobilePreviewDialog');
+    if (dlg) {
+      closeDialogEl(dlg);
+    }
+  }
+
+  // Live editing listeners on A4 sheet
+  const studioA4Sheet = document.getElementById('studioLiveA4Sheet');
+  if (studioA4Sheet) {
+    studioA4Sheet.addEventListener('input', () => {
+      updateLiveA4WordCount();
+      syncLiveA4ToMobile();
+    });
+  }
+
+  const studioMobileA4Sheet = document.getElementById('studioMobileA4Sheet');
+  if (studioMobileA4Sheet) {
+    studioMobileA4Sheet.addEventListener('input', () => {
+      const desktopSheet = document.getElementById('studioLiveA4Sheet');
+      if (desktopSheet) {
+        desktopSheet.innerHTML = studioMobileA4Sheet.innerHTML;
+      }
+      updateLiveA4WordCount();
+    });
+  }
+
+  // Load career studio profile once DOM is ready
+  loadInitialStudioProfile();
+
+  // Expose Studio methods to window for inline HTML handlers
+  window.switchDashboardAppMode = switchDashboardAppMode;
+  window.openJobInCareerStudio = openJobInCareerStudio;
+  window.onStudioJobSelectChange = onStudioJobSelectChange;
+  window.goToStudioStep = goToStudioStep;
+  window.handleStudioCvUpload = handleStudioCvUpload;
+  window.runStudioAtsAnalysis = runStudioAtsAnalysis;
+  window.proceedToStudioStep2 = proceedToStudioStep2;
+  window.setStudioWriterTone = setStudioWriterTone;
+  window.setStudioCvLang = setStudioCvLang;
+  window.upgradeStudioBullet = upgradeStudioBullet;
+  window.injectBulletIntoLiveDoc = injectBulletIntoLiveDoc;
+  window.generateTailoredCvPackage = generateTailoredCvPackage;
+  window.setStudioPreviewDocTab = setStudioPreviewDocTab;
+  window.copyStudioLiveCvText = copyStudioLiveCvText;
+  window.printStudioLiveA4 = printStudioLiveA4;
+  window.openStudioMobilePreview = openStudioMobilePreview;
+  window.closeStudioMobilePreview = closeStudioMobilePreview;
