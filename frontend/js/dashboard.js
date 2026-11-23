@@ -3313,6 +3313,14 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
       const barColors = labels.map(l => colorMap[l] || '#89f4e7');
 
+      const isLightMode = typeof document !== 'undefined' && document.documentElement && document.documentElement.getAttribute('data-theme') === 'light';
+      const chartTextColor = isLightMode ? '#475569' : '#c0c5be';
+      const chartGridColor = isLightMode ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.08)';
+      const tooltipBg = isLightMode ? '#FFFFFF' : '#191d1b';
+      const tooltipTitle = isLightMode ? '#0F172A' : '#f5f6f0';
+      const tooltipBody = isLightMode ? '#475569' : '#c0c5be';
+      const tooltipBorder = isLightMode ? 'rgba(15, 23, 42, 0.12)' : 'rgba(255, 255, 255, 0.16)';
+
       sectorChartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -3334,10 +3342,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           plugins: {
             legend: { display: false },
             tooltip: {
-              backgroundColor: '#191d1b',
-              titleColor: '#f5f6f0',
-              bodyColor: '#c0c5be',
-              borderColor: 'rgba(255, 255, 255, 0.16)',
+              backgroundColor: tooltipBg,
+              titleColor: tooltipTitle,
+              bodyColor: tooltipBody,
+              borderColor: tooltipBorder,
               borderWidth: 1,
               cornerRadius: 12,
               rtl: true,
@@ -3353,11 +3361,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             y: {
               beginAtZero: true,
               suggestedMax: 5,
-              ticks: { stepSize: 1, color: '#c0c5be', font: { family: 'Google Sans', size: 11 } },
-              grid: { color: 'rgba(255, 255, 255, 0.08)' }
+              ticks: { stepSize: 1, color: chartTextColor, font: { family: 'Google Sans', size: 11 } },
+              grid: { color: chartGridColor }
             },
             x: {
-              ticks: { color: '#c0c5be', font: { family: 'Google Sans', size: 10 } },
+              ticks: { color: chartTextColor, font: { family: 'Google Sans', size: 10 } },
               grid: { display: false }
             }
           }
@@ -4109,6 +4117,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (icon) {
         icon.className = isLight ? 'ph-duotone ph-moon' : 'ph-duotone ph-sun';
       }
+      try {
+        if (typeof renderSectorChart === 'function') {
+          renderSectorChart();
+        }
+      } catch (chartErr) {}
     }
     return normalized;
   }

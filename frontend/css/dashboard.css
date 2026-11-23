@@ -297,6 +297,19 @@
     scrollbar-color: rgba(163, 172, 185, 0.35) transparent;
     scrollbar-width: thin;
   }
+
+  /* Screen-Reader Utility Class */
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
 }
 
 @layer dashboard {
@@ -3937,6 +3950,15 @@ border-radius: 999px;
   /* ==========================================================================
      Light Mode Component Overrides (@layer dashboard)
      ========================================================================== */
+  :root[data-theme="light"],
+  html[data-theme="light"],
+  html[data-theme="light"] body,
+  :root[data-theme="light"] .dashboard-app {
+    background-color: #F8FAFC !important;
+    background-image: none !important;
+    color: #0F172A !important;
+  }
+
   :root[data-theme="light"] .dashboard-app .dashboard-header,
   :root[data-theme="light"] .dashboard-header,
   :root[data-theme="light"] .dashboard-app .dashboard-sidebar,
@@ -3945,6 +3967,134 @@ border-radius: 999px;
     border: 1px solid #CBD5E1 !important;
     box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
     color: var(--text-primary) !important;
+  }
+
+  :root[data-theme="light"] .dashboard-app .brand-title,
+  :root[data-theme="light"] .dashboard-app .profile-title,
+  :root[data-theme="light"] .profile-title,
+  :root[data-theme="light"] .brand-title {
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .brand-subtitle,
+  :root[data-theme="light"] .profile-subtitle {
+    color: #475569 !important;
+  }
+
+  :root[data-theme="light"] .brand-icon-pill {
+    background: #EFF6FF !important;
+    border-color: #BFDBFE !important;
+  }
+
+  :root[data-theme="light"] .brand-icon-pill i {
+    color: #1D4ED8 !important;
+  }
+
+  :root[data-theme="light"] .header-cloud-btn,
+  :root[data-theme="light"] .header-theme-btn {
+    background: #F1F5F9 !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .header-cloud-btn i,
+  :root[data-theme="light"] .header-theme-btn i {
+    color: #1D4ED8 !important;
+  }
+
+  :root[data-theme="light"] .header-progress-title,
+  :root[data-theme="light"] .header-progress-title span {
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .progress-pct-chip {
+    background: #EFF6FF !important;
+    border: 1px solid #BFDBFE !important;
+    color: #1D4ED8 !important;
+  }
+
+  :root[data-theme="light"] .segmented-progress {
+    background: #E2E8F0 !important;
+    border: 1px solid #CBD5E1 !important;
+  }
+
+  /* Cards & Empty State - Light Mode Surface Integrity */
+  :root[data-theme="light"] .dashboard-card,
+  :root[data-theme="light"] .empty-state {
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .dashboard-card h3,
+  :root[data-theme="light"] .empty-state h3,
+  :root[data-theme="light"] #chartTitle,
+  :root[data-theme="light"] #emptyStateTitle {
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .dashboard-card p,
+  :root[data-theme="light"] .empty-state p,
+  :root[data-theme="light"] #emptyStateDesc {
+    color: #475569 !important;
+  }
+
+  :root[data-theme="light"] #emptyStateIcon {
+    color: #1D4ED8 !important;
+  }
+
+  :root[data-theme="light"] #chartChip {
+    background: #EFF6FF !important;
+    border-color: #BFDBFE !important;
+    color: #1D4ED8 !important;
+  }
+
+  :root[data-theme="light"] .dashboard-card > div[style*="border-top"] {
+    border-top-color: #E2E8F0 !important;
+  }
+
+  :root[data-theme="light"] .dashboard-topbar {
+    color: #475569 !important;
+    border-bottom-color: #E2E8F0 !important;
+  }
+
+  :root[data-theme="light"] .dashboard-topbar strong {
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .dashboard-topbar .dashboard-chip {
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #1D4ED8 !important;
+  }
+
+  :root[data-theme="light"] .dashboard-divider {
+    color: #CBD5E1 !important;
+  }
+
+  :root[data-theme="light"] #filterResultSummary {
+    color: #475569 !important;
+  }
+
+  :root[data-theme="light"] #filterStatusText {
+    color: #475569 !important;
+  }
+
+  :root[data-theme="light"] .cards-count-summary {
+    color: #475569 !important;
+  }
+
+  :root[data-theme="light"] .cards-count-summary span {
+    color: #0F172A !important;
+  }
+
+  :root[data-theme="light"] .cards-count-summary i {
+    color: #1D4ED8 !important;
+  }
+
+  :root[data-theme="light"] .dashboard-dot {
+    background: #1D4ED8 !important;
   }
 
   /* Stat Cubes - Light Mode */
@@ -4275,3 +4425,14 @@ border-radius: 999px;
     }
   }
 }
+
+/* Unlayered canvas overrides at EOF to guarantee Light Mode clean override */
+:root[data-theme="light"],
+html[data-theme="light"],
+html[data-theme="light"] body,
+:root[data-theme="light"] .dashboard-app {
+  background-color: #F8FAFC !important;
+  background-image: none !important;
+  color: #0F172A !important;
+}
+

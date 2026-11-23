@@ -365,6 +365,11 @@ job_search_automation/
   - Reset legacy Career Studio UI markup, buttons, and CSS rules in `frontend/` to allow a clean-slate redesign.
   - Preserved all backend scripts (`scripts/studio_bridge.py`, `tools/cv_tailor/`, `src/url_guard.py`), Pydantic schemas, baseline CV profiles (`frontend/data/career_studio_profile.json`, `studio_profile.json`, `frontend/data/cv/`), and candidate realism rules.
   - Job Radar, duplicate handling, inactive jobs scanning, and Supabase CAS sync continue to operate with 100% test integrity.
+- **Light Mode Canvas & Component Surface Coherence (TASK-96):**
+  - Screen-Reader Utility: Added standard `.visually-hidden` in `@layer base` for accessible hiding of header title and theme toggles without raw text leakage.
+  - Full Canvas Neutralization: Neutralized dark background leaks in Light Mode by enforcing `#F8FAFC` background across `:root[data-theme="light"]`, `html[data-theme="light"]`, and `.dashboard-app`.
+  - Clean Slate Cards & Empty State: Structured `.dashboard-card`, `.empty-state`, headers, chips, and subheaders in Light Mode with pure white surfaces (`#FFFFFF`), crisp slate borders (`#CBD5E1`), and dark typography (`#0F172A` / `#475569`).
+  - Dynamic Chart Theme Sync: Chart.js sector distribution chart dynamically adapts axes, grid lines, and tooltip styling to Light Mode palette upon theme switching.
 
 ---
 
