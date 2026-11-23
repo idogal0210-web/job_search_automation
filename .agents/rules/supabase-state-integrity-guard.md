@@ -1,5 +1,6 @@
 ---
-trigger: always_on
+trigger: glob
+globs: "supabase/**, frontend/js/**, docs/dashboard.js, scripts/*cloud*"
 description: "Guarantees absolute non-destructive persistence and integrity for user triage state in Supabase Cloud Database (public.sync_state)."
 ---
 

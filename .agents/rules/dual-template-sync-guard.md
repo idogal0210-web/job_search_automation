@@ -1,5 +1,6 @@
 ---
-trigger: always_on
+trigger: glob
+globs: "frontend/**, docs/**, src/ui_builder.py"
 description: "Enforces 1:1 dual-template synchronization between frontend/ sources and docs/ build. Forbids editing docs/ in isolation."
 ---
 

@@ -6,7 +6,7 @@ description: "Mandates running full unit tests, project hygiene, and updating li
 # Pre-Push Verification and Living Documentation Guard
 
 ## 1. Core Principle
-Zero broken pipelines, zero phantom progress, and zero outdated documentation on `main`. An AI agent must never commit or push unverified code or leave project documentation behind.
+Zero broken pipelines, zero phantom progress, and zero outdated documentation on `main`. An AI agent must never commit or push unverified code or leave project documentation behind. The full end-to-end GitOps procedure (staging, branch management, sync, remote hygiene) is maintained in the global `save-and-sync` skill.
 
 ## 2. Invariant Rules (Iron Guards)
 

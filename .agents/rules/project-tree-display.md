@@ -1,6 +1,6 @@
 ---
-trigger: always_on
-description: "Mandates using scripts/render_tree_widget.py to render an interactive Generative UI tree widget (<agent-embed>) whenever the user requests the project tree."
+trigger: model_decision
+description: "Mandates using scripts/render_tree_widget.py to render an interactive Generative UI tree widget (<agent-embed>) whenever the user requests the project tree or directory structure."
 ---
 
 # נוהל הצגת עץ הפרויקט (Project Tree Display Policy)
