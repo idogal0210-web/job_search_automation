@@ -166,13 +166,13 @@ Read `DESIGN.md` before changing any HTML, CSS, or UI JavaScript in `job_search_
 
 ---
 
-## Open questions
+## Resolved Design Decisions (Consolidated & Implemented)
 
-Real inconsistencies found in the current CSS that are worth deciding on directly in this file before cleaning them up:
+All previously identified CSS inconsistencies have been unified in `frontend/css/dashboard.css` (compiled to `docs/dashboard.css`):
 
-1. **Accent Hue Consolidation (Violet vs. Sky Cyan vs. Teal):** Active dark mode uses `#8b5cf6` / `#a78bfa` (`:root[data-theme="dark"]` and `.btn-apply-elegant`), while 21 hardcoded rules still use `#38bdf8` (sky cyan), `.btn-apply` base still defines teal (`#0d9488` -> `#0f766e`), and `:root` fallback defines `#7FB2E5`. **Suggested fix:** Standardize all interactive accents onto `var(--accent-primary)` (`#8b5cf6`) and `var(--dashboard-cyan)` (`#a78bfa`), keeping `#7FB2E5` only in the base `:root` token tested by `test_phase6_design_and_a11y.py`.
-2. **Dark Surface Near-Duplicates:** Active dark mode defines `#0b0e14` / `#131722` / `#1a1f2e`, while dialogs and overlays still hardcode `#0b1120`, `#0f172a` (7x), and `#0b101b` (5x). **Suggested fix:** Replace those hardcoded dark blues with `var(--bg-canvas)`, `var(--bg-surface)`, and `var(--glass-bg-elevated)`.
-3. **Hardcoded Status Colors vs. Tokens:** Rules mix `#34d399` (14x), `#10b981` (5x), `#47CD89`, `#fca5a5` (13x), `#f87171` (5x), and `#ef4444` (6x). **Suggested fix:** Route status borders/icons to `var(--status-pass)`, `var(--status-warn)`, and `var(--status-fail)`, reserving lighter tints (`#6ee7b7`, `#fca5a5`) only for badge foreground text over tinted backgrounds.
-4. **Overlapping Responsive Breakpoints:** Media queries currently fragment across `1120px`, `1119px`, `1024px`, `950px`, `900px`, `880px` (`ui-fixes.css`), `820px`, `768px`, `767px`, `640px`, and `400px`. **Suggested fix:** Consolidate onto 3 standard widths (`1120px`, `900px`, `640px`) plus `400px` for ultra-narrow phones.
-5. **Duplicate `.btn-back-to-top` Positioning:** Desktop position is defined at line 2120 (`bottom: 26px; left: 26px;`) and overridden at line 8137 (`left: 14px; bottom: 16px;`). **Suggested fix:** Keep a single canonical rule using logical properties (`inset-inline-start: 16px; inset-block-end: 16px;`).
-6. **Non-Token Radii (`14px`, `18px`):** `14px` appears 22 times and `18px` is used on `dialog.studio-modal-dialog` instead of the declared scale (`8px`, `10px`, `12px`, `16px`, `20px`). **Suggested fix:** Snap `14px` to `var(--radius-control)` (`12px`) or `var(--radius-card)` (`16px`), and `18px` to `var(--radius-modal)` (`20px`).
+1. **Accent Hue Consolidation (Resolved):** All interactive accents across buttons, chips, and states standardized onto `var(--accent-primary)` and `var(--dashboard-cyan)`. Teal gradients in base `.btn-apply` migrated to token-driven gradients. Base `:root` fallback retains verified `#7FB2E5` and contrast tokens tested by `tests/test_phase6_design_and_a11y.py`.
+2. **Dark Surface Near-Duplicates (Resolved):** Hardcoded dialog and overlay dark blues replaced with semantic surface tokens (`var(--bg-canvas)`, `var(--bg-surface)`, and `var(--glass-bg-elevated)`).
+3. **Hardcoded Status Colors vs. Tokens (Resolved):** Routed status icons, borders, and indicators to `var(--status-pass)`, `var(--status-warn)`, and `var(--status-fail)`.
+4. **Responsive Breakpoints Unified (Resolved):** Consolidated fragmented media queries onto the 3 standard widths (`1120px`, `900px`, `640px`) plus `400px` for ultra-narrow phones.
+5. **Canonical `.btn-back-to-top` Positioning (Resolved):** Removed duplicate declaration. Single canonical rule now enforces CSS Logical Properties (`inset-inline-start: 16px; inset-block-end: 16px;`).
+6. **Non-Token Radii Snapped (Resolved):** 14px control and container radii snapped to `var(--radius-control)` (12px) or `var(--radius-card)` (16px). 18px dialog radii snapped to `var(--radius-modal)` (20px).

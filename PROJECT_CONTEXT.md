@@ -348,6 +348,20 @@ job_search_automation/
 - **Button & Control Accents:** Styled `.mode-switch-btn`, `.copilot-promo-btn`, `.btn-apply`, `.btn-apply-elegant` with clean white surfaces, dark slate typography, cobalt border (`1.5px solid #1D4ED8`), and soft blue active/hover states (`#EFF6FF`).
 - **Layer & Constraint Hygiene:** Maintained strict brace depth `0` across `@layer base, dashboard, studio;`, wrapped hover effects in `@media (hover: hover)`, eliminated all `backdrop-filter:`, `transition: all`, and `100vw`. Full parity verified by `test_template_docs_sync.py`, `test_phase6_design_and_a11y.py`, zero emojis, and clean hygiene.
 
+### 6.16 Design System Consolidation & CSS Token Hardening (TASK-93, Nov 2026)
+- **Token Harmonization in `frontend/css/dashboard.css` (compiled to `docs/`):**
+  - Consolidated interactive accent colors: Eliminated hardcoded `#38bdf8` in active rules and teal gradients in `.btn-apply`, unifying all controls onto `var(--accent-primary)` and `var(--dashboard-cyan)`. Retained `#7FB2E5` in `:root` fallback for contrast verification tests.
+  - Replaced dark surface hardcodes: Dialog and overlay dark blue values (`#0b1120`, `#0b101b`) replaced with `var(--bg-canvas)`, `var(--bg-surface)`, and `var(--glass-bg-elevated)`.
+  - Semantic Status Routing: Replaced hardcoded status hex values with semantic tokens (`var(--status-pass)`, `var(--status-warn)`, and `var(--status-fail)`).
+  - Responsive Breakpoints: Consolidated fragmented media queries onto the 3 standard breakpoints (`1120px`, `900px`, `640px`) plus `400px` for ultra-narrow viewports.
+  - Logical Properties for Back-to-Top: Removed duplicate `.btn-back-to-top` positioning rules and implemented a single canonical rule using CSS Logical Properties (`inset-inline-start: 16px; inset-block-end: 16px;`).
+  - Corner Radii Alignment: Snapped non-token radii (14px -> `var(--radius-control)` / `var(--radius-card)`, 18px -> `var(--radius-modal)`).
+- **Volume & Storage Diagnostics (`evaluation_state.json`):**
+  - Identified storage driver: 30MB+ file size driven by 3,540 `COMPLETE` records storing verbose `snippet` (~6.6MB) and full `description` (~5.9MB) along with 2-space indentation.
+  - Verified safety: All 3,540 completed URLs are already captured in `data/jobs_state.json` (6,469 handled links). Proposed safe atomic pruning pipeline preserving deduplication integrity.
+- **U5 Evaluation Benchmark Preparation:**
+  - Sampled 18 balanced real-world Israeli market jobs across target positive roles, borderline roles, and disqualified negatives into `data/evaluation_benchmark_template.json` for human ground-truth calibration.
+
 ---
 
 ## 7. MCP Servers Usage Policy & Operational Protocol
