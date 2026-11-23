@@ -228,6 +228,10 @@
     font-size: 1.15em;
   }
 
+  .dashboard-chip {
+    white-space: nowrap !important;
+  }
+
   .tab-btn,
   .btn-triage,
   .tool-btn,
@@ -1037,6 +1041,67 @@
     .btn-excel i {
       font-size: 19px;
       color: #ffffff !important;
+    }
+
+    /* Elegant Contextual Action Pills in Cards Header */
+    .btn-action-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      border: 1px solid transparent;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+    }
+    .btn-action-pill i {
+      font-size: 16px;
+    }
+    .btn-action-pill.saved {
+      background: rgba(16, 185, 129, 0.18);
+      color: var(--dashboard-lime, #34d399);
+      border-color: rgba(52, 211, 153, 0.4);
+    }
+    .btn-action-pill.saved:hover {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: var(--dashboard-lime, #34d399);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    }
+    .btn-action-pill.rejected {
+      background: rgba(239, 68, 68, 0.18);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+    .btn-action-pill.rejected:hover {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: rgba(239, 68, 68, 0.6);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+    }
+    :root[data-theme="light"] .btn-action-pill.saved {
+      background: #ECFDF5;
+      color: #065F46;
+      border-color: #A7F3D0;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+    :root[data-theme="light"] .btn-action-pill.saved:hover {
+      background: #D1FAE5;
+      border-color: #34D399;
+    }
+    :root[data-theme="light"] .btn-action-pill.rejected {
+      background: #FEF2F2;
+      color: #991B1B;
+      border-color: #FECACA;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+    :root[data-theme="light"] .btn-action-pill.rejected:hover {
+      background: #FEE2E2;
+      border-color: #F87171;
     }
 
     /* Job Cards Grid Container (Cubes Layout) */
@@ -4048,6 +4113,7 @@ border-radius: 999px;
     background: #EFF6FF !important;
     border-color: #BFDBFE !important;
     color: #1D4ED8 !important;
+    white-space: nowrap !important;
   }
 
   :root[data-theme="light"] .dashboard-card > div[style*="border-top"] {

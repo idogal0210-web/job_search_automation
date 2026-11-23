@@ -3170,14 +3170,14 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (lblRej) lblRej.textContent = pRej + '% הוסרו';
     }
 
-    // Contextual Action Bars
+    // Contextual Action Bars / Buttons
     const savedBar = document.getElementById('savedActionBar');
     const rejectedBar = document.getElementById('rejectedActionBar');
     if (savedBar) {
-      savedBar.style.display = (currentFilter === 'saved') ? 'flex' : 'none';
+      savedBar.style.display = (currentFilter === 'saved') ? 'inline-flex' : 'none';
     }
     if (rejectedBar) {
-      rejectedBar.style.display = (currentFilter === 'rejected') ? 'flex' : 'none';
+      rejectedBar.style.display = (currentFilter === 'rejected') ? 'inline-flex' : 'none';
     }
 
     // Empty State Handling
