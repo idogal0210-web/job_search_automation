@@ -1,193 +1,168 @@
-# מערכת אוטומציה וסינון משרות | עידו גל
-**Job Search Automation, Multi-Tier AI Evaluation & Career Studio Workspace**
+# Autonomous Job Discovery & Career Intelligence Platform
+**Multi-Source Ingestion, Calibrated AI Evaluation, Real-Time Cloud Sync & Interactive Web Dashboard**
 
-מערכת אוטונומית לאיסוף יומי, סינון דטרמיניסטי, הערכת AI מבוססת Google Gemini, אומדן שכר ענפי, סטודיו קריירה מתקדם ודשבורד אינטראקטיבי עבור משרות בתחומי האנרגיה, הגז הטבעי, מערכות סולאריות (PV), אגירת אנרגיה (BESS), בקרה ו-SCADA, ורחפנים/כטב"ם (UAV/C-UAS).
+![Dashboard Preview](docs/assets/images/dashboard-preview.jpg)
+
+An autonomous, production-grade career discovery and triage platform engineered for specialized engineering disciplines (Energy, Natural Gas, Solar PV, Battery Storage / BESS, SCADA / Industrial Control, and Unmanned Autonomous Systems / UAVs).
+
+The system continuously crawls and normalizes vacancies across job boards and native ATS APIs, executes deterministic criteria gating and calibrated Google Gemini LLM evaluations, calculates market compensation benchmarks, synchronizes triage states securely across devices via Supabase, and publishes a responsive single-page analytics dashboard.
 
 ---
 
-## ארכיטקטורת המערכת והמודולים
+## Key Highlights & Core Capabilities
 
-המערכת בנויה בארכיטקטורה מודולרית נקייה, רספונסיבית ומאובטחת:
+- **Multi-Source Job Ingestion:** Automated daily collection across LinkedIn, regional job boards, and direct ATS API integrations (Comeet, Greenhouse, Lever, and Ashby) with circuit-breaker resilience and exponential backoff.
+- **Deterministic Hard Gates & Statutory Screening:** Immediate pre-evaluation checks enforce geographic commute limits, advertised compensation floors, domain verification, and exclude non-technical or non-applicable roles prior to AI invocation.
+- **Calibrated Multi-Model AI Evaluation:** Powered by Google Gemini via structured Pydantic schemas with evidence extraction, scoring candidates objectively on a 0-100 scale, evaluating qualification gaps, and factoring in tiered target company priority bonuses.
+- **Evidence-Based Salary Intelligence Engine:** Extracts advertised compensation or estimates market salary bands based on verified industry baselines across specific technical domains.
+- **Secure Cloud Synchronization (Supabase PostgreSQL):** Non-destructive Compare-And-Swap (CAS) state synchronization with user authentication and Row-Level Security (RLS), keeping triage records (saved, starred, rejected, and purged) mirrored across mobile and desktop devices.
+- **Interactive Single-Page Dashboard:** Glassmorphism UI built with modern CSS Cascade Layers (`@layer base, dashboard`), high-contrast dark and light modes, sector distribution visualization, instant search, and one-click data export.
+- **Zero-Emoji & Strict Privacy Standards:** Built under rigorous enterprise standards prohibiting pictorial emojis in code and documentation, with automated secret scans, schema validation, and complete redaction of personal identifiable information.
 
-```
+---
+
+## System Architecture
+
+```text
 job_search_automation/
-├── main.py                         # תהליך הריצה המרכזי ונקודת הכניסה (CLI Entrypoint)
-├── PROJECT_CONTEXT.md              # עוגן ההקשר הרשמי ומקור האמת של הפרויקט
-├── TASKS.md                        # מעקב משימות, אבני דרך ובדיקות אימות
-├── requirements.txt                # תלויות פייתון
-├── requirements-lock.txt           # נעילת גרסאות מדויקת לשחזור מלא של סביבת הריצה
-├── .python-version                 # הגדרת גרסת פייתון רשמית (Python 3.11)
-├── .agents/                        # חוקי הפעלה ומיומנויות ייעודיות לסוכני AI
-│   ├── rules/                      # חוקי מערכת (zero-emojis.md, save-and-sync.md, single-source-and-replaceability-guard.md וכו')
-│   └── skills/                     # מיומנויות עבודה (ui-review, save-and-sync, task-lifecycle-manager וכו')
+├── main.py                         # Primary orchestration entrypoint (CLI execution)
+├── PROJECT_CONTEXT.md              # Architectural context and system specifications
+├── TASKS.md                        # Task tracking, milestone verification, and roadmap
+├── requirements.txt                # Production dependency declarations
+├── requirements-lock.txt           # Deterministic pinned versions for reproducible builds
+├── .python-version                 # Environment specification (Python 3.11)
+├── .agents/                        # AI agent customization layer
+│   ├── rules/                      # System invariant rules (zero-emojis, sync guard, etc.)
+│   └── skills/                     # Domain skills (code review, living docs, testing)
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml                  # בדיקות CI אוטומטיות בכל Pull Request (388 בדיקות יחידה, היגיינה ואפס אימוג'ים)
-│       └── daily_job_search.yml    # ריצת Cron יומית מתוזמנת ב-GitHub Actions
-├── frontend/                       # קובצי מקור מודולריים של הממשק
-│   ├── templates/index.html        # תבנית שלד הדשבורד וסטודיו קריירה (בסנכרון מלא מול docs/index.html)
-│   ├── css/dashboard.css           # סגנונות CSS מודולריים: עיצוב Glassmorphism, שכבות Cascade Layers וטוקנים
-│   ├── css/ui-fixes.css            # סגנונות ייעודיים לבידוד BiDi, איפוס חיצי בחירה ודיוק לוגואים
-│   ├── js/dashboard.js             # לוגיקת האפליקציה בצד הלקוח (נרמול שכר ומיקומים, סנכרון ענן, וסטודיו קריירה)
-│   └── data/cv/                    # תבניות קורות חיים מעודכנות (עברית ואנגלית)
+│       ├── ci.yml                  # Automated CI test pipeline running on PRs and pushes
+│       └── daily_job_search.yml    # Scheduled daily GitHub Actions cron workflow
+├── frontend/                       # Source presentation assets (single source of truth)
+│   ├── templates/index.html        # Clean semantic dashboard layout template
+│   ├── css/dashboard.css           # Modular styling with Cascade Layers and custom design tokens
+│   ├── js/dashboard.js             # Client-side reactivity, filtering, and cloud sync logic
+│   └── assets/                     # Vector icons, verified company logos, and preview images
 ├── src/
-│   ├── pipeline.py                 # תזמור תהליך הריצה, שלבים ומעקב מדדי בריאות
-│   ├── fetchers.py                 # סריקת משרות מפלטפורמות (LinkedIn, Drushim, Comeet, Greenhouse, Lever ATS ישיר) עם Backoff ו-CircuitBreaker
-│   ├── ats_client.py               # שכבת API-First אחודה לחילוץ ואימות משרות מ-Greenhouse, Lever, Ashby ו-Comeet
-│   ├── job_policy.py               # סינון מקדים דטרמיניסטי: מדרגי עדיפויות, 46 חברות יעד, שער גאוגרפי (45-50 דק'), רף שכר 16K והחרגת מעסיקים
-│   ├── gemini_runtime.py           # ניהול בריכת מודלי Gemini עם סכמת Pydantic מובנית וראיות התאמה
-│   ├── evaluators.py               # הערכת התאמה (ציון 0-100), בונוס חברות יעד מדורג (Tier 1/2) ואימות ראיות מודעה
-│   ├── salary_engine.py            # מנוע שכר מבוסס ראיות: חילוץ ממודעה וכיול שכר השוואתי
-│   ├── state_manager.py            # ניהול מצב אטומי, מניעת כפילויות ומעקב סטטוסים
-│   ├── ui_builder.py               # מנוע בניית נתוני הדשבורד וסנכרון תבניות 1:1 לתיקיית docs/
-│   ├── url_utils.py                # סניטיזציה, אימות ונרמול כתובות URL
-│   └── publishers.py               # הפקת דוח דוא"ל מעוצב (RTL) ושליחה אוטומטית למשרות נבחרות
-├── docs/                           # אפליקציית Web אינטראקטיבית ב-GitHub Pages
-│   ├── PRD.md                      # מסמך אפיון מובנה של 37 הסעיפים התקניים (Single Source of Truth לדרישות ולקוד)
-│   ├── decisions/                  # יומן החלטות ארכיטקטורה ומוצר (Architecture Decision Records)
-│   ├── index.html                  # שלד האפליקציה המשרת את GitHub Pages
-│   ├── dashboard.css               # סגנונות הדשבורד וסטודיו קריירה
-│   ├── dashboard.js                # לוגיקת האפליקציה המאוחדת
-│   ├── career/cv/                  # גרסאות קורות החיים המעודכנות לצפייה ולהורדה
-│   ├── career/studio_profile.json  # הגדרת מעסיקים מוחרגים מסונכרנת לסטודיו קריירה
-│   └── data/jobs.json              # נתוני משרות עדכניות (טעינה אסינכרונית)
-├── data/
-│   ├── jobs_state.json             # מעקב משרות פעילות ומזהי URL
-│   ├── weekly_archive.json         # ארכיון שבועי מלא עם ציוני AI ונתוני שכר
-│   ├── historical_catalog.json     # קטלוג היסטורי למניעת כפילויות בין סבבים
-│   └── evaluation_state.json       # מטמון הערכות ותור משרות הממתינות לבדיקה חוזרת
-├── tests/                          # חבילת בדיקות אוטומטית מלאה (395 בדיקות יחידה ואינטגרציה)
-└── scripts/
-    ├── studio_bridge.py            # שרת גשר מקומי המחבר את סטודיו קריירה ל-tools/cv_tailor ול-GeminiPool
-    ├── project_hygiene.py          # מנוע היגיינת פרויקט, בדיקת סודות ואימות שלמות נתונים
-    ├── validate_zero_emoji.py      # אימות מוחלט של מדיניות אפס אימוג'ים בקוד, בממשק ובדוחות
-    ├── scan_inactive_jobs.py       # סריקה וזיהוי אוטומטיים של משרות שנסגרו או הוסרו (404/410/Closed)
-    └── inspect_state.py            # כלי CLI יעיל לבדיקת סטטוס נתונים ומשרות ללא עומס טוקנים
+│   ├── pipeline.py                 # Multi-stage execution pipeline and telemetry
+│   ├── fetchers.py                 # Scrapers and crawlers with exponential backoff & CircuitBreaker
+│   ├── ats_client.py               # Unified API-first client for Greenhouse, Lever, Ashby, Comeet
+│   ├── job_policy.py               # Deterministic filtering: location gating, salary floor, target firms
+│   ├── gemini_runtime.py           # Gemini model pool management and structured JSON validation
+│   ├── evaluators.py               # Candidate scoring, target company bonus, and evidence auditing
+│   ├── salary_engine.py            # Domain-specific compensation estimation and calibration
+│   ├── state_manager.py            # Atomic state persistence and duplicate prevention
+│   ├── ui_builder.py               # Dashboard compiler ensuring 1:1 parity between frontend/ and docs/
+│   ├── url_utils.py                # URL sanitization, canonical ID extraction, and domain guards
+│   └── publishers.py               # Structured digest generation and notification delivery
+├── docs/                           # Compiled production build served via GitHub Pages
+└── tests/                          # Automated unit, integration, and security test suite
 ```
 
 ---
 
-## תחומי הליבה ותפקידי היעד
+## Data Pipeline & Operational Flow
 
-המערכת פועלת במדרג תלת-שכבתי מוגדר וממוקד:
-
-1. **עדיפות עליונה (Tier 1):**
-   - אנרגיה סולארית (`Solar PV`), מערכות אגירת אנרגיה בסוללות (`BESS`), אנרגיות ירוקות נוספות ומתקני גז טבעי.
-2. **עדיפות משנית (Tier 2):**
-   - תשתיות אנרגיה מורכבות, רחפנים, כטב"ם וטכנולוגיה ביטחונית (`UAV / C-UAS`).
-3. **עדיפות שלישית (Tier 3):**
-   - תפעול, אחזקה ופיקוח מכני תעשייתי (מתקנים תהליכיים, מערכות לחץ גבוה וציוד סובב).
-
-### 7 תפקידי יעד מרכזיים באנרגיה:
-- בקר תפעול מערכות אנרגיה מתחדשת ואגירה (`Renewable Energy & BESS Operator`)
-- מתאם חיבורי רשת ותשתיות (`Grid Interconnection Coordinator`)
-- מומחה / מתאם תפעול מסחרי ורנומינציות (`Commercial Operations & Nominations Specialist`)
-- אינטגרטור תפעול ואוטומציה לחדרי בקרה (`Operational Automation & SCADA Specialist`)
-- מתאם התחשבנות, מנייה וסליקה (`Energy Settlement & Billing Coordinator`)
-- הנדסאי תפעול ואחזקת מתקני לחץ וגז (`Gas & Pressure Systems Operations Specialist`)
-- בקר אנרגיה בכיר / מנהל משמרת בקרה (`Senior Energy / Gas Dispatcher`)
-
----
-
-## שפת עיצוב Glassmorphism וסטודיו קריירה (Career Studio)
-
-סביבת עבודה מודולרית מתקדמת המוטמעת ישירות בדשבורד לצד לוח המשרות:
-
-1. **שפת עיצוב Glassmorphism ועקביות ויזואלית (ui-review Standards):**
-   - **רקע Canvas רב-שכבתי קבוע:** מעבר צבעים כהה ועמוק (dark gradient mesh) ב-CSS בלבד עם 4 כתמי צבע מעודנים ומטושטשים (radial gradient orbs) במצב כהה ומצב בהיר, ללא אנימציות כבדות וללא ירידת פריימים בגלילה.
-   - **משטחי זכוכית שקופים-למחצה:** מכולות ה-Header, כרטיסיות המשרה בגריד (`.job-card`), מודל פרטי המשרה, וסרגלי סטודיו קריירה נהנים ממשטחי זכוכית (`rgba(22, 28, 38, 0.75-0.82)` במצב כהה / זכוכית חלבית בהירה במצב בהיר).
-   - **מסגרות זכוכית והדגשות קצה עליון:** מסגרות עדינות של `1px solid rgba(255, 255, 255, 0.12)` עם החזרי אור פנימיים עליונים (`inset 0 1px 1px rgba(255, 255, 255, 0.14)`) והצללות רכות רב-שכבתיות.
-   - **חוק הרדיוס המקונן (Nested-Radius Law):** אחידות מתמטית קפדנית לפיה `inner = outer - padding`: מודלים `20px`, כרטיסיות ומכולות `16px`, פקדי בחירה `12px`, ותגיות פנימיות `8px`.
-   - **סולם 3 דרגות גובה פקדים:** אחידות בגבהי פקדים ל-`32px` (פקדים קומפקטיים/אייקונים), `38px` (שדות קלט, חיפוש ובחירה), ו-`44px` (כפתורים ראשיים ופקדי מגע).
-   - **שפת צל ואור אחידה:** מעבר מלא לטוקנים סמנטיים (`--shadow-glass-sm`, `--shadow-glass-md`, `--shadow-glass-lg`).
-   - **שימור ארכיטקטורת הדסקטופ הסימטרית:** מבנה Header של `1fr auto 1fr` ב-CSS Grid עם ממתג מערכת ממורכז ב-50% גיאומטרי מדויק.
-   - **שורת פעולות קומפקטית ואייקונים אלגנטיים:** שורת כפתורי פעולה יחידה (`32x32px`) עם בועיות ריחוף נגישות (`Tooltip`) להגשת מועמדות (מטוס נייר), התאמה בסטודיו, שמירה, הסרה ופתיחת פרטים מלאים ללא שטחים מתים.
-
-2. **קליטת קורות חיים וחילוץ טקסט עצמאי בדפדפן:**
-   - אזור גרירה והעלאה ייעודי התומך בקובצי PDF, DOCX ו-TXT באמצעות PDF.js ו-Mammoth.js.
-   - חילוץ טקסט מלא בצד הלקוח (ללא העלאת מידע אישי לשרתים חיצוניים), עם אפשרות חזרה מיידית לפרופיל הבסיס המובנה.
-
-3. **מנוע ATS ושערי סף סטטוטוריים:**
-   - בדיקת שערי סף מקצועיים מול דרישות המשרה: הנדסאי מכונות, לימודי חשמלאי מוסמך, ותואר מהנדס B.Sc עם הבחנה בין תנאי סף פוסל ליתרון.
-   - מיפוי פערי מילות מפתח מול הטקסונומיה הענפית (`SCADA`, `PRMS`, `BESS`, `Bifacial PV`, `AVEVA` וכו').
-   - **בורר משרות ממוקד:** רשימת הבחירה מציגה אך ורק משרות שנמצאות בסטטוס מסומנות בכוכב (`starred`) או שמורות (`saved`) בלוח המשרות, עם תיוגי מקור מפורטים (`[כוכב]`, `[שמורה]`) ואחוז התאמה.
-   - **הילת פוקוס מדורגת (Progressive Step Glow):** הארה עדינה והכוונת תשומת הלב לשלב 1 (הזנה ובחירה), ומעבר אוטומטי חלק לשלב 2 (ציון ATS, מד שעון ומדדי סף) ברגע הפעלת הניתוח, עם איפוס מיידי בניקוי.
-
-4. **ארכיטקטורת Career Studio במסך מפוצל (`55/45` Split-Screen):**
-   - **מעבר בלחיצה אחת מלוח המשרות (`openJobInCareerStudio`):** כפתור `"התאם קו״ח בסטודיו"` בכל כרטיס משרה וחלון פרטי משרה הטוען את המשרה ישירות לסטודיו ומריץ ניתוח התאמה מיידי.
-   - **סרגל הקשר עליון אחוד ו-3 כלי ליבה ממוקדים (ללא סרגלי צד כפולים):**
-     1. **כלי 1 — סורק התאמת משרה ופערי ATS:** סרגל משרת יעד דביק (`#studioStickyJobBar`) המלווה את הגלילה, בדיקת שערי סף סטטוטוריים (עם קיפול שערים תקינים ב-`<details>`), ניתוח עומק `Gemini` ומחקר חברה חי (`Tavily`), מד התאמה משוקלל עם ספים מסונכרנים [80, 65, 50] ואינטגרציית ציון AI במד המרכזי, ומטריצת מילות מפתח מורחבת (מכונות, שסתומים, תקני ISO, בטיחות ורחפנים).
-     2. **כלי 2 — בונה קו״ח מותאם (`A4`) ומבקר עוצמת שורות:** כרטיס הקשר משרה דביק בשלב 2 (`#writerTargetJobContextCard`) עם תצוגת מילות מפתח חסרות, הפקת חבילת מועמדות מלאה (`HE`/`EN`), מבקר שורות אוטומטי (`renderBulletImpactAuditor`) המדרג שורות ומאמת את הקלט הפעיל של המשתמש, אכיפת אורך אופטימלי (12–25 מילים) וזיהוי קלישאות, והטמעת שורות משודרגות ישירות בגוף קורות החיים (`in-place replacement`).
-     3. **כלי 3 — אופטימיזציית `LinkedIn SEO` והכנה לראיון (`STAR Simulator`):** מחולל `Headline`, `About` ו-`Skills` דינמי ללינקדאין מול משרת היעד הפעילה (`renderLinkedInOptimizer`), לצד סימולטור ראיונות `STAR` הכולל קטגוריית רחפנים ומערכות אוטונומיות (`uav`), משקולות ציון מכוילות (20/20/40/20), חסימת באג תשובה ריקה, ותגי סטטוס דינמיים.
-   - **תצוגת מסמך חיה ודביקה (`45%` רוחב בדסקטופ, `<dialog>` במובייל):** תצוגה חיה (`#studioLiveDocViewer`) המאפשרת מעבר מיידי בין קורות החיים המותאמים, מכתב הפנייה ו-3 דגשים לראיון, עריכה דו-כיוונית בלחיצה על כל שורה, וייצוא `PDF A4`.
-
-5. **גרסאות קורות חיים עדכניות:**
-   - שתי גרסאות מעודכנות (עברית ואנגלית, בתקן A4 עמוד יחיד) לצפייה ולהורדה ישירה מתוך הממשק.
-
-6. **סנכרון ענן חי (Supabase Live Cloud Sync):**
-   - סנכרון דו-כיווני חי מבוסס Supabase (`PostgreSQL` עם `Row Level Security`) המוגן בהתחברות משתמש (אימייל וסיסמה) ומסנכרן בדיוק של 100% את המשרות המסומנות בכוכב, השמורות והמוסרות בין המחשב לטלפון.
-   - ללא טוקנים של GitHub וללא קישורי שיתוף: הסנכרון בין המחשב לטלפון מתבצע אך ורק דרך Supabase, לאחר התחברות עם אימייל וסיסמה.
-   - עדכון אוטומטי בעת פתיחת המסך או מעבר לשונית (`visibilitychange` ו-`focus`), דגימת רקע רציפה וחיווי סטטוס ענן חי בהדר.
+1. **Ingestion & Deduplication:** Crawls vacancies via direct ATS endpoints and job boards. Unique fingerprints and canonical URLs prevent duplicate evaluations.
+2. **Deterministic Hard Gate Screening:**
+   - Filters out non-technical roles, entry-level garage tasks, and generic positions.
+   - Enforces a geographic commute threshold from central industrial hubs.
+   - Disqualifies positions explicitly advertised below statutory compensation thresholds.
+3. **Structured AI Evaluation:**
+   - Evaluates remaining candidates against specialized engineering criteria.
+   - Extracts concrete evidence for core requirements and identifies qualification gaps.
+   - Assigns a calibrated match score (0-100) and applies tiered target company bonuses.
+4. **Compensation Engine:**
+   - Detects advertised salary ranges directly from listing text.
+   - Calibrates role estimates against domain baselines when compensation is unlisted.
+5. **Atomic State & Cloud Persistence:**
+   - Persists triage decisions atomically using temporary files and safe replacements.
+   - Synchronizes triage changes to Supabase via authenticated CAS endpoints.
+6. **Web Dashboard Compilation:**
+   - Compiles static datasets into a deployment-ready web dashboard served via GitHub Pages.
 
 ---
 
-## דרישות מערכת והתקנה
+## Getting Started & Installation
 
-### סביבת ריצה
-- **גרסת Python נתמכת**: Python 3.11 (תואמת ומסונכרנת מול ריצות ה-CI ב-GitHub Actions).
+### Prerequisites
+- Python 3.11+
+- Git
 
-### התקנת תלויות
+### Installation
 ```bash
-python3 -m pip install --upgrade pip
-# התקנה עם נעילת גרסאות לשחזור מלא:
+# Clone the repository
+git clone https://github.com/idogal0210-web/job_search_automation.git
+cd job_search_automation
+
+# Create and activate a virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies from locked specification
+pip install --upgrade pip
 pip install -r requirements-lock.txt
-# או התקנת טווחי גרסאות:
-pip install -r requirements.txt
 ```
 
-### הגדרת משתני סביבה (`.env`)
-להרצה מקומית, יש ליצור קובץ `.env` בשורש הפרויקט ולהגדיר את המשתנים הנדרשים:
-- `GEMINI_API_KEY` - מפתח API פעיל עבור Google Gemini (נדרש להערכת משרות).
-- `GEMINI_MODELS` - רשימת מודלים מועדפת (ברירת מחדל: `gemini-3.8-flash,gemini-3.5-flash-lite,gemini-3.5-flash`).
-- `SENDER_EMAIL` - כתובת דוא"ל לשליחת דוח המשרות היומי (אופציונלי).
-- `SENDER_APP_PASSWORD` - סיסמת אפליקציה מאובטחת לשליחת דוא"ל (אופציונלי).
+### Environment Configuration
+Create a `.env` file in the root directory (never commit this file to version control):
+```bash
+# Google Gemini API key for structured evaluations
+GEMINI_API_KEY="your-gemini-api-key"
+
+# Optional: Preferred model hierarchy fallback order
+GEMINI_MODELS="gemini-3.8-flash,gemini-3.5-flash-lite,gemini-3.5-flash"
+
+# Optional: Supabase configuration for cloud triage synchronization
+SUPABASE_URL="https://your-project.supabase.co"
+SUPABASE_KEY="your-publishable-key"
+
+# Optional: Email notification settings
+SENDER_EMAIL="your-notification-sender@example.com"
+SENDER_APP_PASSWORD="your-secure-app-password"
+RECIPIENT_EMAIL="your-recipient@example.com"
+```
+
+### Running the System
+```bash
+# Execute the full pipeline (ingest, filter, evaluate, and build dashboard)
+python3 main.py
+
+# Recompile the frontend source into docs/ distribution
+python3 src/ui_builder.py
+
+# Run inactive job scanner
+python3 scripts/scan_inactive_jobs.py
+```
 
 ---
 
-## בדיקות ואימות איכות (Quality Gate)
+## Quality Gate & Verification
 
-### 1. הרצת כלל בדיקות היחידה והאינטגרציה
+The project enforces deterministic automated verification across all changes:
+
 ```bash
+# 1. Run comprehensive unit and integration test suite
 python3 -m unittest discover -s tests -p "test_*.py"
-node tests/stress_m2_harness.js
-```
-388 בדיקות יחידה ואינטגרציה בפייתון ו-2,489 בדיקות הארנס JS עוברות בהצלחה מלאה.
 
-### 2. בדיקת היגיינה, סריקת סודות ואפס אימוג'ים
-```bash
-python3 scripts/project_hygiene.py --validate
-python3 scripts/project_hygiene.py --check-secrets
+# 2. Verify zero-emoji compliance across code, comments, and documentation
 python3 scripts/validate_zero_emoji.py
-```
 
-### 3. בדיקת סנכרון תבניות הממשק (1:1 Symmetry)
-```bash
-python3 -m unittest tests/test_template_docs_sync.py
+# 3. Verify clean working tree, valid schemas, and absence of secrets
+python3 scripts/project_hygiene.py --check-secrets --validate
+
+# 4. Verify strict 1:1 byte parity between frontend source and docs distribution
+python3 tests/test_template_docs_sync.py
+
+# 5. Check client-side JavaScript syntax
+node -c frontend/js/dashboard.js docs/dashboard.js
 ```
 
 ---
 
-## עקרונות אמינות והגנת נתונים
+## Engineering Standards & Privacy Invariants
 
-1. **סינון מבוסס ראיות:**
-   - פסילה אוטומטית של משרות עם שכר מפורסם מתחת ל-15,000 ₪.
-   - משרות משמרות 24/7 מאושרות אך ורק עבור בקרה תעשייתית תהליכית בשילוב שכר מוכח של 20,000 ₪ ומעלה או מעסיק מוביל מוכר.
-   - פסילה מוחלטת של עבודה מוסכית / פסי ייצור ללא אופק הנדסי, ומשרות מכירות כלליות.
-2. **הגנה מפני דליפת מידע וסודות:**
-   - סריקה אוטומטית לפני כל קומיט מוודאת אפס מפתחות API, טוקנים או סיסמאות בעץ העבודה.
-   - קובצי מידע אישי מוגנים ואינם נשלחים לשירותי ענן חיצוניים מעבר לתהליך ההערכה המאובטח.
-3. **מדיניות אפס אימוג'ים (Zero-Emoji Policy):**
-   - שימוש בלעדי באייקונים וקטוריים ובטיפוגרפיה מקצועית נקייה בכל מסמכי המאגר, הקוד, הדוחות והממשק.
-4. **עבודה אטומית ועמידות לרשת:**
-   - עדכוני נתונים נכתבים לקבצים זמניים ומוחלפים אטומית (`os.replace`).
-   - משרות שלא הוערכו עקב תקלות רשת אינן נשרפות ונשמרות להערכה חוזרת (`RETRY_PENDING`).
+- **Zero Pictorial Emojis:** Strict invariant prohibiting pictorial Unicode emojis and Dingbats across all code, tests, documentation, and commits in favor of clean typographic indicators (`[OK]`, `[FAILED]`, `[INFO]`) and SVG vector icons.
+- **Privacy & Secret Redaction:** Automated pre-commit scans inspect the working tree for secrets, credentials, and exposed tokens before every commit. No personal phone numbers, home addresses, or sensitive credentials are stored in repository files.
+- **Dual-Template Sync Guard:** All UI development takes place strictly within `frontend/`. Compiled assets in `docs/` are derived deterministically through `src/ui_builder.py` with automated parity checks.
+- **Fault-Tolerant Persistence:** State operations utilize atomic file swaps (`os.replace`) to prevent database corruption during sudden termination or network drops.
