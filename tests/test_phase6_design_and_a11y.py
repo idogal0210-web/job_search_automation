@@ -88,11 +88,10 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
                 )
 
     def test_02_css_cascade_layers_and_performance_hygiene(self):
-        """dashboard.css uses @layer base, dashboard, studio, has zero transition:all and zero backdrop-filter."""
-        self.assertIn("@layer base, dashboard, studio;", self.css_text)
+        """dashboard.css uses @layer base, dashboard, has zero transition:all and zero backdrop-filter."""
+        self.assertIn("@layer base, dashboard;", self.css_text)
         self.assertIn("@layer base {", self.css_text)
         self.assertIn("@layer dashboard {", self.css_text)
-        self.assertIn("@layer studio {", self.css_text)
         self.assertIsNone(re.search(r"transition\s*:\s*all\b", self.css_text))
         self.assertNotIn("backdrop-filter:", self.css_text)
         self.assertNotIn("direction: ltr !important;", self.css_text)
@@ -110,32 +109,13 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
             self.assertNotIn(forbidden, self.html_text, f"Forbidden string '{forbidden}' found in index.html")
             self.assertNotIn(forbidden, self.docs_html_text, f"Forbidden string '{forbidden}' found in docs/index.html")
 
-    def test_04_hidden_until_found_panels_not_suppressed_by_display_none(self):
-        """studioModuleWriter and studioModuleInterview use hidden='until-found' without inline display:none."""
-        for panel_id in ("studioModuleWriter", "studioModuleInterview"):
-            panel = self.soup.find(id=panel_id)
-            self.assertIsNotNone(panel)
-            self.assertEqual(panel.get("hidden"), "until-found")
-            style_attr = panel.get("style") or ""
-            self.assertNotIn("display: none", style_attr)
-        self.assertIn('[hidden]:not([hidden="until-found"])', self.css_text)
-
-    def test_05_sticky_job_bar_horizontal_meter_and_stage_status_dom(self):
-        """Top sticky bar, horizontal match progress bar, and stage status pills exist in DOM."""
+    def test_04_theme_toggle_elements_in_dom(self):
+        """Color-scheme meta tag and theme toggle button exist in DOM."""
         self.assertIsNotNone(self.soup.find("meta", attrs={"name": "color-scheme", "content": "light dark"}))
         self.assertIsNotNone(self.soup.find(id="themeToggleBtn"))
-        self.assertIsNotNone(self.soup.find(id="studioStickyJobBar"))
-        self.assertIsNotNone(self.soup.find(id="studioStickyMatchBar"))
-        self.assertIsNotNone(self.soup.find(id="studioStickyMatchFill"))
-        self.assertIsNotNone(self.soup.find(id="studioStickyMatchThreshold"))
-        self.assertIsNotNone(self.soup.find(id="studioStageStatusAts"))
-        self.assertIsNotNone(self.soup.find(id="studioStageStatusWriter"))
-        self.assertIsNotNone(self.soup.find(id="studioStageStatusInterview"))
-        self.assertIsNotNone(self.soup.find(id="atsSeveritySortedGapsCard"))
-        self.assertIsNotNone(self.soup.find(id="atsSeveritySortedGapsList"))
 
-    def test_06_js_theme_toggle_severity_gaps_and_tracked_bullet_suggestions(self):
-        """JS functions for theme toggling, severity-sorted gaps, and tracked bullet diffs execute cleanly."""
+    def test_05_js_theme_toggle_executes_cleanly(self):
+        """JS functions for theme toggling execute cleanly without console errors."""
         skip_if_no_js(self)
         harness = f"""
         var window = globalThis;
@@ -156,16 +136,7 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
         var __dom = {{
           themeToggleBtn: {{ attrs: {{}}, setAttribute: function(k,v){{ this.attrs[k]=v; }} }},
           themeToggleLabel: {{ textContent: '' }},
-          themeToggleIcon: {{ className: '' }},
-          atsVerdictSummaryLine: {{ textContent: '' }},
-          atsSeveritySortedGapsList: {{ innerHTML: '' }},
-          studioStickyMatchValue: {{ textContent: '' }},
-          studioStickyMatchBar: {{ attrs: {{}}, setAttribute: function(k,v){{ this.attrs[k]=v; }} }},
-          studioStickyMatchFill: {{ style: {{ inlineSize: '0%' }}, classList: {{ remove: function(){{}}, add: function(){{}} }} }},
-          studioStageStatusAts: {{ textContent: '', classList: {{ remove: function(){{}}, add: function(){{}} }} }},
-          studioStageIssuesAts: {{ textContent: '' }},
-          writerBulletAuditList: {{ innerHTML: '' }},
-          writerAuditorSummaryBadge: {{ textContent: '' }}
+          themeToggleIcon: {{ className: '' }}
         }};
         var document = {{
           documentElement: {{
@@ -182,17 +153,9 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
         {self.js_text}
         var t1 = window.initDashboardTheme();
         var t2 = window.toggleDashboardTheme();
-        var report = window.runAtsJobMatching("דרוש תואר ראשון בהנדסת מכונות B.Sc וידע ב-Lean ו-BESS");
-        window.renderSeveritySortedGaps(report, "דרוש תואר ראשון בהנדסת מכונות B.Sc וידע ב-Lean ו-BESS");
-        window.updateStudioWorkbenchHeaderAndStages(report, "דרוש תואר ראשון בהנדסת מכונות B.Sc וידע ב-Lean ו-BESS");
-        window.renderBulletImpactAuditor();
         print(JSON.stringify({{
           t1: t1,
-          t2: t2,
-          verdict: __dom.atsVerdictSummaryLine.textContent,
-          hasInjectBtn: __dom.atsSeveritySortedGapsList.innerHTML.includes("הוסף לקו״ח"),
-          stageAts: __dom.studioStageStatusAts.textContent,
-          hasTrackedAccept: __dom.writerBulletAuditList.innerHTML.includes("acceptTrackedBulletSuggestion")
+          t2: t2
         }}));
         """
         proc = run_js(harness)
@@ -200,10 +163,6 @@ class TestPhase6DesignAndA11y(unittest.TestCase):
         res = json.loads(proc.stdout.strip())
         self.assertEqual(res["t1"], "dark")
         self.assertEqual(res["t2"], "light")
-        self.assertIn("B.Sc", res["verdict"])
-        self.assertTrue(res["hasInjectBtn"])
-        self.assertEqual(res["stageAts"], "חסום")
-        self.assertTrue(res["hasTrackedAccept"])
 
 
 if __name__ == "__main__":

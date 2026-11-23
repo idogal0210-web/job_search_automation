@@ -361,6 +361,10 @@ job_search_automation/
   - Verified safety: All 3,540 completed URLs are already captured in `data/jobs_state.json` (6,469 handled links). Proposed safe atomic pruning pipeline preserving deduplication integrity.
 - **U5 Evaluation Benchmark Preparation:**
   - Sampled 18 balanced real-world Israeli market jobs across target positive roles, borderline roles, and disqualified negatives into `data/evaluation_benchmark_template.json` for human ground-truth calibration.
+- **Career Studio Legacy UI Reset (TASK-94):**
+  - Reset legacy Career Studio UI markup, buttons, and CSS rules in `frontend/` to allow a clean-slate redesign.
+  - Preserved all backend scripts (`scripts/studio_bridge.py`, `tools/cv_tailor/`, `src/url_guard.py`), Pydantic schemas, baseline CV profiles (`frontend/data/career_studio_profile.json`, `studio_profile.json`, `frontend/data/cv/`), and candidate realism rules.
+  - Job Radar, duplicate handling, inactive jobs scanning, and Supabase CAS sync continue to operate with 100% test integrity.
 
 ---
 

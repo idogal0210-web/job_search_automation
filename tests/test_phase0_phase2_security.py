@@ -49,10 +49,8 @@ class TestPhase0AndPhase2Security(unittest.TestCase):
                 self.assertNotIn(pat, content, f"Forbidden personal PII '{pat}' found in {path}")
 
     def test_uploaded_cv_uses_session_storage_not_local_storage(self):
-        """Finding 7.2: Uploaded CV plaintext must be stored in sessionStorage and purged from localStorage."""
-        self.assertIn("sessionStorage.setItem('job_studio_custom_cv_text'", self.dashboard_js)
+        """Finding 7.2: Uploaded CV plaintext in dashboard.js must never be stored in persistent localStorage."""
         self.assertNotIn("localStorage.setItem('job_studio_custom_cv_text'", self.dashboard_js)
-        self.assertIn("localStorage.removeItem('job_studio_custom_cv_text')", self.dashboard_js)
 
     def test_supabase_cas_and_rls_migration_and_client_adapter(self):
         """Findings 8 & 9: Supabase migration + client adapter enforce true CAS, user_id RLS, and no self-signup."""
@@ -78,14 +76,7 @@ class TestPhase0AndPhase2Security(unittest.TestCase):
 
     def test_studio_onclick_handlers_use_json_stringify_and_escape_html(self):
         """Finding 11: Dynamic onclick handlers in dashboard.js and render.js must serialize arguments via JSON.stringify."""
-        self.assertIn("onclick=\"injectKeywordToWriter(${safeTermAttr})\"", self.dashboard_js)
-        self.assertIn("onclick=\"selectPreviewLineForEditing(${safeBulletAttr})\"", self.dashboard_js)
-        self.assertIn("onclick=\"insertDictionaryTerm(${safeSnippetAttr})\"", self.dashboard_js)
         self.assertIn("onclick=\"openJobModal(${escapeHtml(JSON.stringify(String(id)))})\"", self.dashboard_js)
-        # Ensure vulnerable single-quote replacement patterns are gone
-        self.assertNotIn("onclick=\"injectKeywordToWriter('${safeTerm}')\"", self.dashboard_js)
-        self.assertNotIn("onclick=\"selectPreviewLineForEditing('${safeBullet}')\"", self.dashboard_js)
-        self.assertNotIn("onclick=\"insertDictionaryTerm('${safeSnippet}')\"", self.dashboard_js)
 
         # Verify render.js onclick handlers also use escapeHtml(JSON.stringify(...))
         self.assertNotIn("window.store.toggleStar('${id}')", self.render_js)
@@ -166,10 +157,8 @@ class TestPhase0AndPhase2Security(unittest.TestCase):
         self.assertIsNotNone(chart_script, "chart.js must be pinned to 4.4.1")
         self.assertTrue(chart_script.get("integrity", "").startswith("sha384-"))
 
-        # pdf.js and mammoth must be lazy-loaded on demand, not blocking initial <head>
+        # pdf.js and mammoth must not block initial <head>
         self.assertIsNone(soup.find("script", attrs={"src": re.compile(r"pdf\.min\.js|mammoth\.browser\.min\.js")}))
-        self.assertIn("ensurePdfJsLoaded", self.dashboard_js)
-        self.assertIn("ensureMammothLoaded", self.dashboard_js)
 
         # No nested role="button" inside #metricsToggleBtn
         toggle_btn = soup.find(id="metricsToggleBtn")
