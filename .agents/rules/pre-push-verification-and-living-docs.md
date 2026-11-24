@@ -1,6 +1,6 @@
 ---
 trigger: always_on
-description: "Mandates running full unit tests, project hygiene, and updating living documentation (TASKS.md, PROJECT_CONTEXT.md) before any Git commit or push."
+description: "Mandates running full unit tests, project hygiene, and updating living documentation (TASKS.md, PROJECT_CONTEXT.md, DESIGN.md) before any Git commit or push."
 ---
 
 # Pre-Push Verification and Living Documentation Guard
@@ -25,6 +25,7 @@ Whenever ANY code, UI component, database adapter, or architecture element is mo
 2. **`PROJECT_CONTEXT.md`:** Must be updated in the SAME commit to reflect current architecture, schemas, or file trees.
 3. **`README.md`:** Must be updated if the change alters user-facing features, CLI commands, or dashboard workflows.
 4. **Dependencies:** If Python libraries are added or changed, both `requirements.txt` and `requirements-lock.txt` must be updated together.
+5. **`DESIGN.md`:** Whenever ANY UI component, CSS rule, design token, color, typography, or layout is modified (`frontend/**`, `docs/**`, `*.css`, `*.html`), `DESIGN.md` MUST be synchronized in the SAME commit to preserve the visual single source of truth.
 
 ### Step 3: Zero-Emoji Enforcement
 Strictly verify that commit messages, code files, JSON payloads, and markdown artifacts contain zero emojis.
