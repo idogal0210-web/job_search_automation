@@ -42,6 +42,11 @@ def evaluate_candidates(jobs, client, health, ledger, *, pool=None, enrich_job=e
     ledger.stage_candidates(jobs)
     passed, audit = [], []
     deadline = time.monotonic() + max_duration
+    try:
+        from src.supabase_feedback import get_few_shot_block
+        few_shot_block = get_few_shot_block()
+    except Exception:
+        few_shot_block = ""
     for original in jobs:
         job = dict(original)
         record = ledger.jobs.get(job["link"], {})
@@ -79,7 +84,8 @@ def evaluate_candidates(jobs, client, health, ledger, *, pool=None, enrich_job=e
                                 raise EvaluationUnavailable({"client": "missing_or_invalid_configuration"})
                             result = evaluate_and_enrich_job_with_gemini(
                                 client, job["title"], job["company"], job["snippet"],
-                                is_drone_job(job), health, pool=pool)
+                                is_drone_job(job), health, pool=pool,
+                                few_shot_context=few_shot_block)
                         except EvaluationUnavailable as error:
                             result = apply_keyword_fallback(job, str(error))
             if job.get("location") and job["location"] not in {"לא צוין", "ישראל"}:

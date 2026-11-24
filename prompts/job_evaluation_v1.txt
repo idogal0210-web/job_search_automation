@@ -43,6 +43,6 @@ Rules:
   Never invent quotes; if absent use empty quote.
 - If technical fit fails, return DISQUALIFIED and technical_role=false.
 - No unsupported facts in company summaries or location.
-Drone domain hint: {is_drone}
+{few_shot_context}Drone domain hint: {is_drone}
 Job JSON:
 {job_json}

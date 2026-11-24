@@ -127,4 +127,5 @@ def get_ats_boards() -> Dict[str, List[Dict[str, str]]]:
         "comeet": [dict(item) for item in boards.get("comeet", []) if isinstance(item, dict) and item.get("slug") and item.get("uid")],
         "greenhouse": [dict(item) for item in boards.get("greenhouse", []) if isinstance(item, dict) and item.get("slug")],
         "lever": [dict(item) for item in boards.get("lever", []) if isinstance(item, dict) and item.get("slug")],
+        "ashby": [dict(item) for item in boards.get("ashby", []) if isinstance(item, dict) and item.get("slug")],
     }

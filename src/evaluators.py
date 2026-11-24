@@ -137,16 +137,21 @@ def validate_requirement_assessments(assessments, raw_text, profile_text=CV_CONT
     return validated
 
 
-def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_drone, health_metrics, *, pool=None):
+def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_drone, health_metrics, *, pool=None, few_shot_context=None):
     job = {"title": title, "company": company, "snippet": snippet}
     rejected = deterministic_filter(job)
     if rejected:
         return rejected
 
+    if few_shot_context is None:
+        from src.supabase_feedback import get_few_shot_block
+        few_shot_context = get_few_shot_block()
+
     # Employer preference is intentionally absent from AI scoring. Applied once below.
     prompt_template = get_prompt_template("job_evaluation_v1.txt")
     prompt = prompt_template.format(
         cv_context=CV_CONTEXT,
+        few_shot_context=few_shot_context or "",
         is_drone=is_drone,
         job_json=json.dumps(job, ensure_ascii=False)
     )

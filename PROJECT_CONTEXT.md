@@ -67,6 +67,7 @@ job_search_automation/
 │   ├── evaluators.py               # Match score evaluator (0-100), target company bonuses, and keyword fallback
 │   ├── salary_engine.py            # Evidence-based salary prediction, comparable role calibration, confidence scoring
 │   ├── state_manager.py            # Job deduplication, status tracking (QUALIFIED/DISQUALIFIED/RETRY_PENDING), storage
+│   ├── supabase_feedback.py        # Few-Shot feedback loop engine retrieving triage history from Supabase/local sync for LLM calibration
 │   ├── ui_builder.py               # Build orchestrator compiling frontend/ assets and data into docs/
 │   ├── url_guard.py                # Shared anti-SSRF guard (is_global IP check, redirect re-validation, peer verification)
 │   ├── company_matcher.py          # Normalized quote-unified word-boundary company & employer blacklist matcher
@@ -99,7 +100,8 @@ job_search_automation/
 │   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
 ├── tools/                          # Standalone modular tooling
 │   └── cv_tailor/                  # Fact-based CV tailoring and interview prep engine
-├── tests/                          # Automated unit and integration test suite (222 passing Python tests)
+├── tests/                          # Automated unit and integration test suite (229 passing Python tests)
+│   ├── test_supabase_feedback_loop.py # Few-Shot dynamic prompt feedback loop & Supabase/local triage sync tests
 │   ├── test_strict_ai_gate_and_prioritization.py # Strict AI-only gate & new job prioritization over retry queues
 │   ├── test_career_studio_v3_flow.py # Career Studio v3.0 4-step workflow, layout invariants & STAR simulator tests
 │   ├── test_studio_bridge.py       # Unified Career Studio HTTP bridge, schema, SSRF, blacklist & generator tests
@@ -192,7 +194,7 @@ job_search_automation/
 ## 5. Implementation Status
 
 ### 5.1 Functional Components (Done)
-- **Multi-source automated scrapers:** Working scrapers for LinkedIn (Energy, Drones), Drushim (Industry, Energy, Operations), and config-driven direct ATS connectors (`Comeet`: Enlight, Driivz, Percepto, XTEND, mPrest; `Greenhouse`: Augury, Electreon; `Lever`: D-Fend Solutions) guarded by `CircuitBreaker`. Decommissioned Indeed and Glassdoor due to persistent anti-bot gating.
+- **Multi-source automated scrapers:** Working scrapers for LinkedIn (Energy, Drones), Drushim (Industry, Energy, Operations), and config-driven direct ATS connectors (10 verified boards across 3 ATS systems: `Comeet`: Enlight, Driivz, Percepto, XTEND, mPrest, SolarEdge Technologies, BIRD Aerosystems; `Greenhouse`: Augury, Electreon; `Lever`: D-Fend Solutions) guarded by `CircuitBreaker`. Decommissioned Indeed and Glassdoor due to persistent anti-bot gating.
 - **Deterministic zero-token filter:** Instant regex-based rejection of non-technical roles (accounting, HR, sales, legal) and blacklisted operators (Chevron, Energean, INGL).
 - **Structured Gemini LLM evaluation:** Multi-model pool with Pydantic JSON schemas, automatic backoff, jitter, and quota error isolation.
 - **Evidence-based salary engine:** Predicts salary brackets and confidence scores based on sector benchmarks and role equivalencies.
@@ -243,11 +245,14 @@ job_search_automation/
 - **Target Companies 46 Refinement & Core Brain Policy (TASK-78):** Refined target employers from 75 to 46 focus companies across 2 core sectors — Tier 1 (32 energy, solar, BESS & gas infrastructure firms, +10 bonus) and Tier 2 (14 drones/UAV firms, +5 bonus). Added proactive Junior Project Manager, Assistant PM, and Coordinator search queries with domain anchor protection against non-technical PM leaks. Enforced deterministic ~45-50 min commute radius from Tel Aviv (`location_out_of_range`), raised advertised salary floor to 16,000 ILS/mo (`below_salary_floor`), raised quality threshold to 75+, and fixed line 199 `RETRY_PENDING` infinite loop by cleanly separating statutory blockers (`DISQUALIFIED`) from flexible experience gaps (`QUALIFIED` with `fit_gaps`).
 - **Target Companies 75 Expansion & Batched Collection:** Expanded target employers from 50 to 75 companies across 5 technical sectors (Solar, Natural Gas, SCADA, Drones, High-Tech Energy & Mobility, 15 per sector) ranked by growth and recruitment velocity. Calibrated tiered priority bonus (+10 for Tier 1 ranks 1-5, +5 for Tier 2 ranks 6-15, capped at 100, applied when base match >= 65). Implemented batched LinkedIn collection via 5-company Boolean queries `("CompA" OR "CompB" ...)` reducing 75 queries to 15 network requests with zero rate-limit collisions.
 
+- **Few-Shot Feedback Loop & Dynamic Prompt Calibration (TASK-100):** Built `src/supabase_feedback.py` enabling closed-loop active learning from user triage feedback. Safely retrieves the latest 5 starred and 5 rejected jobs from Supabase `public.sync_state` via REST API with graceful degradation to local `data/sync_state.json` (zero hard crashes in CI/offline environments without credentials). Resolves job metadata from `data/historical_catalog.json` or `data/weekly_archive.json` with strict PII filtering (no user notes/IDs) and length bounding (<= 1,200 chars). Dynamically injects `{few_shot_context}` into `prompts/job_evaluation_v1.txt` during evaluation in `src/evaluators.py` and `src/pipeline.py` to continuously align GeminiPool scoring with real candidate preferences. Verified with dedicated test suite `tests/test_supabase_feedback_loop.py` (6 tests).
+- **Target ATS Connectors Expansion (10 Boards, TASK-100):** Systematically probed all 46 target employers across Comeet, Greenhouse, Lever, and Ashby APIs. Empirically validated and onboarded 2 new public Comeet boards: SolarEdge Technologies (`solaredge`, 92 live positions) and BIRD Aerosystems (`birdaero`, 18 live positions). Updated `search-preferences.json`, `src/config.py`, `src/fetchers.py` logo pipeline, and added integration tests in `tests/test_ats_connectors.py` (now 10 active direct ATS boards across Comeet, Greenhouse, and Lever).
+
 ### 5.2 In Progress (WIP)
 - **Salary engine market calibration:** Fine-tuning compensation bands based on user feedback and emerging Israeli industrial salary data.
 
 ### 5.3 Backlog / Next Steps
-- **Direct ATS connectors:** Adding scrapers for direct Comeet and Greenhouse job board endpoints of target companies.
+- **Direct ATS connectors:** 10 target company boards active; continuing proactive discovery for new openings on Comeet, Greenhouse, Lever, and Ashby.
 - **Scheduled cloud executions:** Regular unattended runs via GitHub Actions cron workflows.
 
 ---

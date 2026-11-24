@@ -444,7 +444,7 @@ def fetch_comeet_jobs(company_slug="enlightenergy", company_uid="99.006", compan
                     desc_parts.append(f"{d.get('name', 'Details')}: {val}")
             snippet = " | ".join(desc_parts) if desc_parts else title
 
-            comeet_logo = "assets/logos/enlight.png" if "enlight" in company_slug.lower() else None
+            comeet_logo = "assets/logos/enlight.png" if "enlight" in company_slug.lower() else ("assets/logos/solaredge.png" if "solaredge" in company_slug.lower() else None)
             jobs.append({
                 "title": title,
                 "company": company_display_name,

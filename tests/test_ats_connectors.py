@@ -9,6 +9,7 @@ from src.fetchers import (
     CircuitBreaker,
     FETCHERS,
     RunHealth,
+    fetch_comeet_jobs,
     fetch_greenhouse_jobs,
     fetch_lever_jobs,
 )
@@ -20,12 +21,41 @@ from tools.cv_tailor.src.scraper import scrape_job
 class TestAtsConfigAndIdentity(unittest.TestCase):
     def test_get_ats_boards_loads_verified_providers(self):
         boards = get_ats_boards()
-        self.assertGreaterEqual(len(boards["comeet"]), 5)
+        self.assertGreaterEqual(len(boards["comeet"]), 7)
         self.assertGreaterEqual(len(boards["greenhouse"]), 2)
         self.assertGreaterEqual(len(boards["lever"]), 1)
         comeet_slugs = {item["slug"] for item in boards["comeet"]}
         self.assertIn("enlightenergy", comeet_slugs)
         self.assertIn("mprest", comeet_slugs)
+        self.assertIn("solaredge", comeet_slugs)
+        self.assertIn("birdaero", comeet_slugs)
+
+    def test_fetch_comeet_jobs_solaredge_and_bird_parsing(self):
+        sample_html = """
+        <script>
+        COMPANY_POSITIONS_DATA = [
+            {
+                "name": "Debug Practical Engineer",
+                "uid": "71.ABC",
+                "location": {"name": "Israel", "city": "Herzliya"},
+                "url_active_page": "https://www.comeet.com/jobs/solaredge/71.00A/debug-pe/71.ABC",
+                "custom_fields": {"details": [{"name": "Role", "value": "Testing solar inverters"}]}
+            }
+        ];
+        </script>
+        """
+        mock_session = MagicMock()
+        mock_resp = MagicMock()
+        mock_resp.status_code = 200
+        mock_resp.text = sample_html
+        mock_session.get.return_value = mock_resp
+
+        health = RunHealth()
+        jobs = fetch_comeet_jobs("solaredge", "71.00A", "SolarEdge Technologies", health_metrics=health, session=mock_session)
+        self.assertEqual(len(jobs), 1)
+        self.assertEqual(jobs[0]["company"], "SolarEdge Technologies")
+        self.assertEqual(jobs[0]["logo"], "assets/logos/solaredge.png")
+        self.assertTrue(jobs[0]["is_direct_ats"])
 
     def test_stable_job_id_supports_greenhouse_lever_ashby(self):
         self.assertEqual(

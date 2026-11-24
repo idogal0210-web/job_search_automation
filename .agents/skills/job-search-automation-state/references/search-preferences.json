@@ -132,6 +132,16 @@
         "slug": "mprest",
         "uid": "38.005",
         "company": "mPrest"
+      },
+      {
+        "slug": "solaredge",
+        "uid": "71.00A",
+        "company": "SolarEdge Technologies"
+      },
+      {
+        "slug": "birdaero",
+        "uid": "97.006",
+        "company": "BIRD Aerosystems"
       }
     ],
     "greenhouse": [
