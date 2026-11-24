@@ -230,6 +230,18 @@ def evaluate_and_enrich_job_with_gemini(client, title, company, snippet, is_dron
             ]
             if gaps and not data.get("fit_gaps"):
                 data["fit_gaps"] = "; ".join(filter(None, gaps))
+
+    # Strict AI-Only Gate: Keyword fallback evaluations must strictly remain RETRY_PENDING
+    if data.get("evaluation_source") == "keyword_fallback":
+        data.update(
+            status="RETRY_PENDING",
+            evaluation_complete=False,
+            match_score=0,
+            base_match_score=0,
+            priority_bonus=0,
+            fit_gaps="הערכת AI טרם הושלמה (ממתינה לחיבור מודל זמין)."
+        )
+
     data.update(evaluate_job_salary({**job, "sector_key": data["sector_key"]}))
     print("[EVALUATION] " + json.dumps({
         "company": company, "title": title, "status": data["status"],

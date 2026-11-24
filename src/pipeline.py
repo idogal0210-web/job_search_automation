@@ -91,9 +91,20 @@ def evaluate_candidates(jobs, client, health, ledger, *, pool=None, enrich_job=e
             health.pending_evaluations += 1
         if result.get("evaluation_source") == "keyword_fallback":
             health.fallback_evaluations += 1
+            # Strict AI-Only Gate: Keyword fallback jobs are strictly NEVER qualified or published
+            result["status"] = "RETRY_PENDING"
+            result["evaluation_complete"] = False
+            result["match_score"] = 0
+            job["status"] = "RETRY_PENDING"
+            job["evaluation_complete"] = False
+            job["match_score"] = 0
         if result.get("status") == "DISQUALIFIED":
             health.jobs_rejected += 1
-        if result.get("status") == "QUALIFIED" and result.get("evaluation_complete") is True:
+        if (
+            result.get("status") == "QUALIFIED"
+            and result.get("evaluation_complete") is True
+            and result.get("evaluation_source") != "keyword_fallback"
+        ):
             passed.append(job)
         audit.append({k: job.get(k) for k in (
             "link", "title", "company", "status", "evaluation_source", "evaluation_model",

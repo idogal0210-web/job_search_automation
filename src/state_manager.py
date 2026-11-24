@@ -60,12 +60,18 @@ class EvaluationLedger:
         stage = "RETRY_PENDING"
         old = self.jobs.get(job["link"], {})
         attempts = old.get("attempts", 0) + 1
-        if result.get("evaluation_complete") is True:
+        if result.get("evaluation_source") == "keyword_fallback":
+            stage = "RETRY_PENDING"
+        elif result.get("evaluation_complete") is True:
             stage = "READY" if result.get("status") == "QUALIFIED" else "COMPLETE"
         elif attempts >= 3:
             stage = "COMPLETE"
+        entry_job = {**job, **result}
+        if stage == "COMPLETE":
+            entry_job["snippet"] = ""
+            entry_job["description"] = ""
         self.jobs[job["link"]] = {
-            "stage": stage, "job": {**job, **result},
+            "stage": stage, "job": entry_job,
             "attempts": attempts,
             "updated_at": datetime.now(timezone.utc).isoformat(),
         }
@@ -84,7 +90,6 @@ class EvaluationLedger:
             self.save()
 
     def select(self, raw_jobs, handled, max_pending=30):
-        selected = {}
         handled_canonical = {canonical_job_url(link) for link in handled}
         known = {job_identity(record["job"]): link for link, record in self.jobs.items()}
         known_urls = {canonical_job_url(link): link for link in self.jobs}
@@ -93,17 +98,8 @@ class EvaluationLedger:
             key = content_identity(entry["job"])
             if key:
                 content_seen[key] = entry["job"]
-        pending_count = 0
-        for link, record in self.jobs.items():
-            if record["stage"] != "COMPLETE":
-                if record["stage"] == "RETRY_PENDING":
-                    if record.get("attempts", 0) >= 3:
-                        record["stage"] = "COMPLETE"
-                        continue
-                    if pending_count >= max_pending:
-                        continue
-                    pending_count += 1
-                selected[link] = dict(record["job"])
+
+        new_selected = {}
         for job in raw_jobs:
             link = job.get("link")
             if not canonical_job_url(link):
@@ -128,16 +124,40 @@ class EvaluationLedger:
             record = self.jobs.get(link, {})
             if record.get("stage") == "COMPLETE" or (link in handled and not record):
                 continue
-            if link not in selected:
-                selected[link] = dict(job)
-            elif record.get("stage") != "READY" and len(job.get("snippet", "")) > len(selected[link].get("snippet", "")):
-                selected[link].update(job)
-        return list(selected.values())
+            if link not in new_selected:
+                new_selected[link] = dict(job)
+            elif record.get("stage") != "READY" and len(job.get("snippet", "")) > len(new_selected[link].get("snippet", "")):
+                new_selected[link].update(job)
+
+        ready_selected = {}
+        pending_selected = {}
+        pending_count = 0
+        for link, record in self.jobs.items():
+            if record["stage"] == "READY":
+                if link not in new_selected:
+                    ready_selected[link] = dict(record["job"])
+            elif record["stage"] == "RETRY_PENDING":
+                if record.get("attempts", 0) >= 3:
+                    record["stage"] = "COMPLETE"
+                    continue
+                if link in new_selected:
+                    continue
+                if pending_count >= max_pending:
+                    continue
+                pending_count += 1
+                pending_selected[link] = dict(record["job"])
+
+        # Prioritize new jobs from current run before pulling from RETRY_PENDING
+        # READY jobs are delivered first (cached, 0 AI cost), followed by new candidates, then RETRY_PENDING
+        return list(ready_selected.values()) + list(new_selected.values()) + list(pending_selected.values())
 
     def commit_delivery(self, links):
         for link in links:
             if self.jobs[link]["stage"] == "READY":
                 self.jobs[link]["stage"] = "COMPLETE"
+                if "job" in self.jobs[link]:
+                    self.jobs[link]["job"]["snippet"] = ""
+                    self.jobs[link]["job"]["description"] = ""
         self.save()
 
     def completed_links(self):

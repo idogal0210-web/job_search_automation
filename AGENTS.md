@@ -8,7 +8,7 @@ The platform continuously executes:
 - Intelligent LLM evaluation with calibrated scoring and statutory threshold checks (Gemini Flash).
 - Secure, non-destructive cloud synchronization with Supabase (`public.sync_state`).
 - Live dual-template dashboard deployment to GitHub Pages (`frontend/` -> `docs/`).
-- Career Studio 3.0 split-screen workbench (Jobscan ATS matcher, Resume Worded line auditor, Teal-style writer, and STAR interview prep).
+- Career Studio v3.0 split-screen workbench (4-stage progressive flow: ATS Hard Gates & Gaps, Keywords & Live A4 Tailoring, LinkedIn & Outreach Kit, and STAR Interview Simulator).
 
 ---
 

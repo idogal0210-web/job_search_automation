@@ -99,7 +99,8 @@ job_search_automation/
 │   └── evaluation_benchmark_template.json # Benchmark schema and ground-truth dataset template
 ├── tools/                          # Standalone modular tooling
 │   └── cv_tailor/                  # Fact-based CV tailoring and interview prep engine
-├── tests/                          # Automated unit and integration test suite (217 passing Python tests)
+├── tests/                          # Automated unit and integration test suite (222 passing Python tests)
+│   ├── test_strict_ai_gate_and_prioritization.py # Strict AI-only gate & new job prioritization over retry queues
 │   ├── test_career_studio_v3_flow.py # Career Studio v3.0 4-step workflow, layout invariants & STAR simulator tests
 │   ├── test_studio_bridge.py       # Unified Career Studio HTTP bridge, schema, SSRF, blacklist & generator tests
 │   ├── test_studio_bridge_security.py # Bridge Origin/Host/Token/Content-Length & URL guard SSRF/redirect tests
@@ -286,16 +287,9 @@ job_search_automation/
   5. `Junior` (Entry-Level / Beginners): Triggered on 0-2 years experience, "Junior", or entry-level beginner wording. Excludes Senior/lead titles or explicit non-junior requirements.
 - **Triage Tabs Parity:** Starred jobs automatically transfer from "חדשות" to "בכוכב", and saved jobs transfer to "נשמרו". Default sort is `date_desc`, ensuring newest jobs are prominently displayed first.
 
-### 6.7 Career Studio Ergonomic Architecture & High-End Visual Design (TASK-56 & TASK-57)
-- **Flexible Split-Screen & Focus Mode:** 55% active tool workbench / 45% live A4 document split-screen on desktop (>= 1120px). Features a 1-click Focus Mode toggle button (`#btnToggleStudioFocus`) in `#studioStickyJobBar` that expands the active tool to 100% full-width on demand and hides the preview column, persisted in `localStorage`.
-- **Stage 1 (ATS Fit Analysis) Two-Level Structure:** Compact 58px score gauge and 52px KPI ribbon at the top, directly accompanied by the actionable severity gaps card (`#atsSeveritySortedGapsCard`). Dense findings are partitioned into 3 progressive pill subtabs:
-  1. `שערי סף והסמכות` (`#atsSubtabGatesBtn`): Statutory hard gates checklist (`#atsHardGatesList`).
-  2. `מטריצת מילות מפתח` (`#atsSubtabKeywordsBtn`): 4 taxonomy groups with 1-click injection.
-  3. `מחקר חברה ותובנות AI` (`#atsSubtabResearchBtn`): Deep Gemini analysis, company research, and clarification questions.
-- **Stage 2 (AI Writer) Inline Tuning & WYSIWYG A4 Document Editing:** De-emphasized bulky package generator cards into compact controls, focusing user attention on the line-by-line bullet impact auditor (`#writerAuditorSection`) and the live A4 document. The live A4 document lines (`.live-preview-editable-text`) support direct WYSIWYG inline editing (`contenteditable="true"`), debounced real-time synchronization (`onLiveDocLineEdited`) into model replacement mappings, and instant A4 PDF printing.
-- **Stage 3 (Interview Prep & LinkedIn SEO) Subtabs:** Clean segmented switcher between LinkedIn Profile Optimizer (`#interviewColSide`) and Role-Specific STAR Simulator (`#interviewColMain`).
-- **Guided Stage Navigation:** Tactical, high-contrast guided navigation buttons at the bottom of Stage 1 and Stage 2 ("המשך לשדרוג קו״ח עם הפערים שזוהו" and "המשך להכנה לראיון למשרה זו") streamlining user progression.
-- **Visual Design & Performance Hygiene:** Built with double-bezel card nesting, hairline glass borders (`rgba(255, 255, 255, 0.08)`), micro-interaction hover states, GPU-safe scoped CSS transitions (zero `transition: all`), and 100% zero-emoji compliance.
+### 6.7 Legacy Career Studio UI Retirement (TASK-94 & TASK-98)
+- **Superseded by Career Studio v3.0:** The legacy TASK-56/TASK-57 workbench implementation (including `#btnToggleStudioFocus`, dense subtabs `#atsSubtabGatesBtn`/`#atsSubtabKeywordsBtn`/`#atsSubtabResearchBtn`, legacy `#writerAuditorSection`, and segmented `#interviewColSide`/`#interviewColMain`) was retired in TASK-94 and superseded by the 4-stage progressive Career Studio v3.0 architecture (TASK-98, `docs/CAREER_STUDIO_V3_SPEC.md`).
+- **Canonical Implementation:** The current production architecture is detailed in Section 6.4 and TASK-98: responsive 55/45 split-screen, unified context bar (`.studio-context-bar`), Step 1 (Hard Gates & Graded Gaps), Step 2 (Keywords & Live Editable A4 Tailoring), Step 3 (LinkedIn & Recruiter Outreach Kit), Step 4 (STAR Interview Simulator), and contextual side column swapping (`#studioA4PreviewCard` in Steps 1-2 vs `#studioJobBriefCard` in Steps 3-4).
 
 ### 6.8 CSS Stability, Responsive Layout, and Accessibility Hardening (TASK-58)
 - **Modal & Dialog Parity:** `@keyframes slideUpModal` and `@keyframes pulseHeat` registered natively; `dialog.dashboard-modal-backdrop` scoped to `width: 100% / max-inline-size: 100%` with transparent dialog background to prevent double-darkening with `::backdrop` and eliminate horizontal overflow; non-standard `overscroll-behavior: contain` removed from `::backdrop`.
