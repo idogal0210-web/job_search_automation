@@ -4232,6 +4232,125 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   let studioCurrentWriterTone = 'technical';
   let studioCurrentCvLang = 'he';
   let studioActivePreviewDocTab = 'cv'; // 'cv' | 'cover_letter'
+  let studioCurrentInterviewDomain = 'energy';
+  let studioCurrentQuestionIdx = 0;
+
+  const STUDIO_TOAST_ICONS = {
+    success: 'ph-check-circle',
+    warning: 'ph-warning-circle',
+    error: 'ph-warning-octagon',
+    info: 'ph-info'
+  };
+
+  function notifyStudio(msg, severity = 'info') {
+    const icon = STUDIO_TOAST_ICONS[severity] || 'ph-info';
+    showToast(icon, msg);
+  }
+
+  const STUDIO_INTERVIEW_BANK = {
+    energy: {
+      label: 'אנרגיה ותפעול',
+      questions: [
+        {
+          title: 'תאר אירוע חריג במשמרת בקרה או במתקן אנרגיה שבו נדרשת לקבל החלטה תפעולית מהירה ועצמאית.',
+          focus: 'דגש לבדיקה: הפרדה ברורה בין פעולותיך האישיות לבין תיאום הצוות, שמירה על בטיחות ורציפות אספקה.'
+        },
+        {
+          title: 'כיצד ניהלת תיאום שוטף בין גורמי שטח, הנדסה ולקוחות קצה תחת מגבלות תפעוליות או מסחריות?',
+          focus: 'דגש לבדיקה: הצגת סדרי עדיפויות, תקשורת מדויקת בזמן אמת ומניעת השמטת מידע בהעברת משמרת.'
+        },
+        {
+          title: 'ספר על תהליך עבודה ידני או שוחק שזיהית בתפעול השוטף וכיצד יזמת שיפור מדיד שלו.',
+          focus: 'דגש לבדיקה: הצגת הבעיה המקורית, הכלי שבנית או הטמעת, וחיסכון מוכח בזמן או בצמצום טעויות.'
+        }
+      ]
+    },
+    solar_bess: {
+      label: 'סולאר ו-BESS',
+      questions: [
+        {
+          title: 'כיצד תיגש לאיתור ובידוד ירידת תפוקה או תקלת ממיר/סטרינג באתר סולארי משולב אגירה (PV + BESS)?',
+          focus: 'דגש לבדיקה: שילוב בדיקה מרחוק ב-SCADA/ניטור עם הנחיית טכנאי שטח ונהלי בטיחות חשמל (LOTO).'
+        },
+        {
+          title: 'ספר על ניסיונך בעבודת שטח או בהקמת מערכות פוטו-וולטאיות ואיך הוא תורם לך בתפקידי תפעול ובקרה.',
+          focus: 'דגש לבדיקה: חיבור אותנטי בין היכרות פיזית עם הפאנלים והחיווט לבין קריאת נתוני ביצועים ונצילות.'
+        },
+        {
+          title: 'כיצד מנהלים תחזוקה מונעת ותיאום מול קבלני משנה או רשת החלוקה לצמצום זמני השבתה באתר מתחדשות?',
+          focus: 'דגש לבדיקה: תכנון חלונות השבתה בשעות שפל ייצור, מעקב SLA ובקרת איכות ביצוע.'
+        }
+      ]
+    },
+    gas: {
+      label: 'גז טבעי ו-PRMS',
+      questions: [
+        {
+          title: 'תאר מקרה של שינוי פתאומי בלחץ או בספיקה במערכת גז טבעי וכיצד פעלת לייצוב המערכת.',
+          focus: 'דגש לבדיקה: ניטור לחצים וספיקות בזמן אמת, תיאום מול אסדה/נתג"ז ושמירה על גבולות לחץ בטיחותיים.'
+        },
+        {
+          title: 'כיצד מתבצע ניהול בקשות Nomination ו-Re-nomination יומיות כאשר קיימת התנגשות בין ביקוש לקוחות לזמינות מתקן?',
+          focus: 'דגש לבדיקה: עבודה מדויקת מול תנאי הסכם, שקלול מגבלות קיבולת ותקשורת שקופה מול הגורם המסחרי.'
+        },
+        {
+          title: 'אילו בדיקות ובקרות חיוניות בעבודה בסביבת מתקני גז בלחץ גבוה ותחנות הפחתה ומדידה (PRMS)?',
+          focus: 'דגש לבדיקה: משמעת היתרי עבודה, אינטרלוקים בטיחותיים, מערכות ESD והפרדה בין ניסיון מוכח ללימודים.'
+        }
+      ]
+    },
+    scada: {
+      label: 'בקרה ו-SCADA',
+      questions: [
+        {
+          title: 'בעת הופעת גל התראות סימולטני במסכי ה-SCADA/HMI, כיצד אתה מתעדף ומבדיל בין תקלת שורש לסימפטום?',
+          focus: 'דגש לבדיקה: מתודולוגיית Triage של התראות קריטיות, הצלבת חיישנים (לחץ/טמפ׳/ספיקה) ותיעוד מסודר.'
+        },
+        {
+          title: 'תאר את ניסיונך בעבודה עם AVEVA System Platform וכלי ניתוח נתונים (SAP / Excel) לקבלת החלטות במשמרת.',
+          focus: 'דגש לבדיקה: שימוש בגרפים היסטוריים (Trends), זיהוי סחיפת קריאה ודיווח הנדסי ברור להנהלה.'
+        },
+        {
+          title: 'מה תעשה כאשר קיים פער בין קריאת חיישן בחדר הבקרה לבין הדיווח הפיזי של מפעיל השטח?',
+          focus: 'דגש לבדיקה: זהירות בטיחותית (הנחת מצב מחמיר), בדיקת תקשורת/כיול ועצירת פעולה אוטומטית מסוכנת.'
+        }
+      ]
+    },
+    uav: {
+      label: 'רחפנים וכטב"ם',
+      questions: [
+        {
+          title: 'תאר משימת הפעלת רחפן בתנאי שטח או מזג אוויר מאתגרים וכיצד הבטחת השלמת משימה וחזרה בטוחה.',
+          focus: 'דגש לבדיקה: בד"ח לפני ואחרי טיסה, ניהול סיכונים, קריאת טלמטריה ושמירה על קשר עין/שידור.'
+        },
+        {
+          title: 'כיצד הרקע שלך כהנדסאי מכונות ובקרת מערכות 24/7 משתלב באינטגרציה, ניסויי שטח ותמיכה במערכות כטב"ם?',
+          focus: 'דגש לבדיקה: הבנת מכלולים מכאניים-חשמליים, עבודה לפי פרוטוקולי ניסוי ופתרון תקלות שטח בזמן אמת.'
+        },
+        {
+          title: 'כיצד תנהל אירוע של אובדן קשר רגעי או חריגת סוללה/מנוע במהלך גיחת סריקה או הדגמת לקוח?',
+          focus: 'דגש לבדיקה: הפעלת נוהל חירום סדור (RTH / נחיתת בטיחות), קור רוח ותחקור לוגים לאחר הנחיתה.'
+        }
+      ]
+    },
+    pm: {
+      label: 'ניהול פרויקטים (PM)',
+      questions: [
+        {
+          title: 'תאר מצב שבו נדרשת לתאם בין מספר ממשקים (הנדסה, תפעול, קבלנים או לקוחות) תחת לוח זמנים צפוף.',
+          focus: 'דגש לבדיקה: הגדרת תכולה ואבני דרך, מעקב משימות, הסרת חסמים ותקשורת פרואקטיבית.'
+        },
+        {
+          title: 'ספר על יוזמה או פרויקט שהובלת מקצה לקצה — מאפיון הצורך ועד להטמעה אצל משתמשי הקצה.',
+          focus: 'דגש לבדיקה: אפיון מדויק (כגון כלי Copilot/נוהל משמרת), רתימת הצוות והדרכה, ומדידת אימוץ בפועל.'
+        },
+        {
+          title: 'כיצד תתמודד כמתאם/מנהל פרויקט ג׳וניור עם עיכוב של ספק קריטי שעלול לדחות מסירה או חיבור מתקן?',
+          focus: 'דגש לבדיקה: זיהוי מוקדם בנתיב הקריטי, הצגת חלופות להנהלה ותיעוד סיכונים שקוף.'
+        }
+      ]
+    }
+  };
 
   function getStudioBridgeBaseUrl() {
     return 'http://127.0.0.1:8765';
@@ -4297,6 +4416,16 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (label) {
       label.textContent = studioBridgeConnected ? 'שרת AI מחובר' : 'אופליין מקומי';
     }
+    const evalModeBadge = document.getElementById('studioStarEvalModeBadge');
+    const evalModeText = document.getElementById('studioStarEvalModeText');
+    if (evalModeBadge) {
+      evalModeBadge.className = `studio-eval-mode-badge ${studioBridgeConnected ? 'online' : 'offline'}`;
+    }
+    if (evalModeText) {
+      evalModeText.textContent = studioBridgeConnected
+        ? 'מצב בדיקה: מחובר לשרת AI מקומי (studio_bridge + Gemini)'
+        : 'מצב בדיקה: הערכה מילולית מקומית (שרת AI לא מחובר)';
+    }
   }
 
   async function checkStudioBridgeHealth(notifyUser = false) {
@@ -4308,31 +4437,40 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const health = await callStudioBridge('/api/health', null, 'GET', 4000);
       if (health && health.ok) {
         setStudioBridgeUiState(true);
-        if (notifyUser) showToast('שרת ה-AI המקומי מחובר ומוכן לעבודה!', 'success');
+        if (notifyUser) notifyStudio('שרת ה-AI המקומי מחובר ומוכן לעבודה!', 'success');
         return true;
       }
       setStudioBridgeUiState(false);
-      if (notifyUser) showToast('שרת ה-AI המקומי אינו זמין (הרם scripts/studio_bridge.py).', 'warning');
+      if (notifyUser) notifyStudio('שרת ה-AI המקומי אינו זמין (הרם scripts/studio_bridge.py).', 'warning');
       return false;
     } catch (e) {
       setStudioBridgeUiState(false);
-      if (notifyUser) showToast('שרת ה-AI המקומי לא מגיב.', 'warning');
+      if (notifyUser) notifyStudio('שרת ה-AI המקומי לא מגיב.', 'warning');
       return false;
     }
   }
 
   async function loadInitialStudioProfile() {
-    try {
-      const res = await fetch('data/career_studio_profile.json');
-      if (res.ok) {
-        studioProfileCache = await res.json().catch(() => null);
-        const nameLabel = document.getElementById('studioCvFileNameLabel');
-        if (nameLabel && studioProfileCache && studioProfileCache.candidate_name) {
-          nameLabel.textContent = `פרופיל: ${studioProfileCache.candidate_name}`;
+    if (typeof fetch !== 'function') return;
+    const candidateUrls = ['career/career_studio_profile.json', 'data/career_studio_profile.json'];
+    for (const url of candidateUrls) {
+      try {
+        const res = await fetch(url);
+        if (res.ok) {
+          studioProfileCache = await res.json().catch(() => null);
+          const nameLabel = document.getElementById('studioCvFileNameLabel');
+          const resolvedName = studioProfileCache && (
+            studioProfileCache.candidate_name ||
+            (studioProfileCache.candidate && studioProfileCache.candidate.name_he)
+          );
+          if (nameLabel && resolvedName) {
+            nameLabel.textContent = `פרופיל: ${resolvedName}`;
+          }
+          break;
         }
+      } catch (e) {
+        // Offline fallback
       }
-    } catch (e) {
-      // Offline fallback
     }
   }
 
@@ -4437,6 +4575,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
   function clearStudioJobContext() {
     studioActiveJob = null;
+    studioAtsAnalysisState = null;
     const titleEl = document.getElementById('studioActiveJobTitle');
     const compEl = document.getElementById('studioActiveCompanyBadge');
     const scoreVal = document.getElementById('studioOverallScoreVal');
@@ -4453,15 +4592,27 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (urlIn) urlIn.value = '';
     if (descIn) descIn.value = '';
 
+    refreshStudioJobBriefCard();
+    refreshStudioLinkedinKit(false);
     goToStudioStep(1);
+  }
+
+  function detectStudioDomainFromJob(title, description, sectorKey) {
+    const combined = `${title || ''} ${description || ''} ${sectorKey || ''}`.toLowerCase();
+    if (/רחפנ|כטב|uav|drone|uas|avionics/.test(combined)) return 'uav';
+    if (/סולאר|פוטו|bess|אגיר|pv|solar|inverter/.test(combined)) return 'solar_bess';
+    if (/גז טבעי|prms|אסד|nomination|לפיד|gas/.test(combined)) return 'gas';
+    if (/scada|plc|בקרה|חדר פיקוח|aveva|hmi|אוטומציה/.test(combined)) return 'scada';
+    if (/פרויקט|מתאם|תיאום הקמה|project manager|\bpm\b|coordinator/.test(combined)) return 'pm';
+    return 'energy';
   }
 
   function selectStudioJob(job) {
     studioActiveJob = job;
 
-    const id = String(job.id || '');
+    const id = String(job.link || job.id || '');
     const select = document.getElementById('studioJobSelect');
-    if (select && select.value !== id) {
+    if (select && id && select.value !== id) {
       select.value = id;
     }
 
@@ -4485,41 +4636,104 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (titleIn) titleIn.value = title;
     if (compIn) compIn.value = comp;
     if (urlIn) urlIn.value = job.link || '';
+    const fullText = ((job.job_summary || '') + '\n' + (job.company_requirements || '') + '\n' + (job.snippet || '')).trim() || title;
     if (descIn) {
-      const fullText = (job.job_summary || '') + '\n' + (job.company_requirements || '') + '\n' + (job.snippet || '');
-      descIn.value = fullText.trim() || title;
+      descIn.value = fullText;
     }
 
+    const detectedDomain = detectStudioDomainFromJob(title, fullText, job.sector_key);
+    selectStudioInterviewDomain(detectedDomain, null);
+
+    refreshStudioJobBriefCard();
+    refreshStudioLinkedinKit(false);
     goToStudioStep(1);
     updateStudioBlacklistWarning();
   }
 
-  function goToStudioStep(stepNum) {
-    if (stepNum > 2) {
-      showToast('שלבים 3 ו-4 ייפתחו בסבב הבא.', 'info');
-      return;
-    }
-    currentStudioStep = stepNum;
+  function syncStudioSideColumnMode(stepNum) {
+    const isBriefMode = (stepNum >= 3);
+    const a4Card = document.getElementById('studioA4PreviewCard');
+    const briefCard = document.getElementById('studioJobBriefCard');
+    const mobileBtnLabel = document.getElementById('studioMobilePreviewLabel');
+    const mobileBtnIcon = document.getElementById('studioMobilePreviewIcon');
+    const mobileBtn = document.getElementById('studioMobilePreviewBtn');
+    const mobileA4Wrap = document.getElementById('studioMobileA4Wrap');
+    const mobileBriefWrap = document.getElementById('studioMobileJobBriefWrap');
+    const mobileTitle = document.getElementById('studioMobilePreviewTitle');
+    const mobileSubtitle = document.getElementById('studioMobilePreviewSubtitle');
+    const mobileDialogIcon = document.getElementById('studioMobileDialogIcon');
 
-    // Update stepper nav
+    if (a4Card) a4Card.style.display = isBriefMode ? 'none' : 'flex';
+    if (briefCard) briefCard.style.display = isBriefMode ? 'flex' : 'none';
+
+    if (mobileBtnLabel) {
+      mobileBtnLabel.textContent = isBriefMode ? 'תמצית משרה' : 'תצוגת מסמך';
+    }
+    if (mobileBtnIcon) {
+      mobileBtnIcon.className = isBriefMode ? 'ph-duotone ph-briefcase' : 'ph-duotone ph-file-text';
+    }
+    if (mobileBtn) {
+      mobileBtn.setAttribute('title', isBriefMode ? 'הצג תמצית משרה ודרישות' : 'הצג תצוגת A4 חיה');
+    }
+
+    if (mobileA4Wrap) mobileA4Wrap.style.display = isBriefMode ? 'none' : 'block';
+    if (mobileBriefWrap) mobileBriefWrap.style.display = isBriefMode ? 'block' : 'none';
+    if (mobileTitle) {
+      mobileTitle.textContent = isBriefMode ? 'כרטיס תמצית המשרה והדרישות' : 'תצוגת מסמך A4 חיה';
+    }
+    if (mobileSubtitle) {
+      mobileSubtitle.textContent = isBriefMode
+        ? 'רפרנס מהיר לדרישות המשרה בזמן עדכון LinkedIn והכנה לראיון'
+        : 'עריכה ישירה וייצוא לקובץ PDF';
+    }
+    if (mobileDialogIcon) {
+      mobileDialogIcon.className = isBriefMode ? 'ph-duotone ph-briefcase' : 'ph-duotone ph-file-text';
+    }
+
+    if (isBriefMode) {
+      refreshStudioJobBriefCard();
+    } else {
+      syncLiveA4ToMobile();
+    }
+  }
+
+  function goToStudioStep(stepNum) {
+    const clamped = Math.max(1, Math.min(4, Number(stepNum) || 1));
+    currentStudioStep = clamped;
+
     for (let i = 1; i <= 4; i++) {
       const item = document.getElementById(`studioStepItem${i}`);
       if (item) {
-        item.classList.toggle('active', i === stepNum);
+        const isAct = (i === clamped);
+        item.classList.toggle('active', isAct);
+        const btn = item.querySelector ? item.querySelector('.studio-step-btn') : null;
+        if (btn && typeof btn.setAttribute === 'function') {
+          if (isAct) {
+            btn.setAttribute('aria-current', 'step');
+          } else if (typeof btn.removeAttribute === 'function') {
+            btn.removeAttribute('aria-current');
+          }
+        }
       }
     }
 
-    // Toggle Panes
-    const p1 = document.getElementById('studioPaneStep1');
-    const p2 = document.getElementById('studioPaneStep2');
-    if (p1) {
-      p1.classList.toggle('active', stepNum === 1);
-      p1.style.display = (stepNum === 1) ? 'block' : 'none';
+    for (let i = 1; i <= 4; i++) {
+      const pane = document.getElementById(`studioPaneStep${i}`);
+      if (pane) {
+        const isAct = (i === clamped);
+        pane.classList.toggle('active', isAct);
+        pane.style.display = isAct ? 'block' : 'none';
+      }
     }
-    if (p2) {
-      p2.classList.toggle('active', stepNum === 2);
-      p2.style.display = (stepNum === 2) ? 'block' : 'none';
+
+    if (clamped === 3) {
+      refreshStudioLinkedinKit(false);
+    } else if (clamped === 4) {
+      renderActiveStudioQuestion();
+      setStudioBridgeUiState(studioBridgeConnected);
     }
+
+    syncStudioSideColumnMode(clamped);
   }
 
   function updateStudioBlacklistWarning() {
@@ -4532,10 +4746,17 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const comp = (compIn ? compIn.value : '').trim().toLowerCase();
     const desc = (descIn ? descIn.value : '').trim().toLowerCase();
 
-    // Check known blacklisted employers (e.g. defense blacklist/filters)
-    const isBlocked = (comp.includes('blacklist') || desc.includes('employer_blacklisted'));
+    const excludedList = (studioProfileCache && Array.isArray(studioProfileCache.excluded_employers))
+      ? studioProfileCache.excluded_employers
+      : [];
+    const matchedExcluded = excludedList.find(ex => ex && comp.includes(String(ex).toLowerCase()));
+    const isBlocked = Boolean(matchedExcluded || comp.includes('blacklist') || desc.includes('employer_blacklisted'));
     if (banner) banner.style.display = isBlocked ? 'flex' : 'none';
-    if (msg && isBlocked) msg.textContent = 'משרה זו נחסמה להגשה על פי מדיניות הסינון.';
+    if (msg && isBlocked) {
+      msg.textContent = matchedExcluded
+        ? `המעסיק (${matchedExcluded}) מופיע ברשימת ההחרגות האישית.`
+        : 'משרה זו נחסמה להגשה על פי מדיניות הסינון.';
+    }
     if (btn) btn.disabled = isBlocked;
     return isBlocked;
   }
@@ -4546,15 +4767,20 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const reader = new FileReader();
     reader.onload = function(e) {
       const text = e.target.result;
-      studioProfileCache = {
+      studioProfileCache = Object.assign({}, studioProfileCache || {}, {
         candidate_name: file.name.replace(/\.[^/.]+$/, ""),
         custom_cv_text: text
-      };
+      });
+      try {
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.setItem('studio_uploaded_cv_name', file.name);
+        }
+      } catch (err) {}
       const nameLabel = document.getElementById('studioCvFileNameLabel');
       if (nameLabel) {
         nameLabel.textContent = file.name;
       }
-      showToast(`קובץ קורות חיים נטען בהצלחה: ${file.name}`, 'success');
+      notifyStudio(`קובץ קורות חיים נטען בהצלחה: ${file.name}`, 'success');
     };
     reader.readAsText(file);
   }
@@ -4577,17 +4803,17 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const jobText = descIn ? descIn.value.trim() : '';
 
     if (!jobText && !title) {
-      showToast('הזן תיאור משרה או כותרת לניתוח התאמה.', 'warning');
+      notifyStudio('הזן תיאור משרה או כותרת לניתוח התאמה.', 'warning');
       return;
     }
 
     if (updateStudioBlacklistWarning()) {
-      showToast('המשרה חסומה להגשה.', 'error');
+      notifyStudio('המשרה חסומה להגשה.', 'error');
       return;
     }
 
     if (btn) btn.disabled = true;
-    showToast('מפעיל ניתוח התאמה ב-Gemini / שרת מקומי...', 'info');
+    notifyStudio('מפעיל ניתוח התאמה ב-Gemini / שרת מקומי...', 'info');
 
     const customCv = (studioProfileCache && studioProfileCache.custom_cv_text) ? studioProfileCache.custom_cv_text : '';
 
@@ -4604,10 +4830,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       setStudioBridgeUiState(true);
       studioAtsAnalysisState = res;
       applyStudioAtsResults(res);
-      showToast('ניתוח ה-ATS הושלם בהצלחה!', 'success');
+      notifyStudio('ניתוח ה-ATS הושלם בהצלחה!', 'success');
     } catch (err) {
       // Local rule-based fallback if bridge offline
-      showToast(`שרת מקומי אינו זמין (${err.message}) — מבצע ניתוח מילולי מקומי.`, 'warning');
+      notifyStudio(`שרת מקומי אינו זמין (${err.message}) — מבצע ניתוח מילולי מקומי.`, 'warning');
       const fallbackAnalysis = performLocalFallbackAtsAnalysis(jobText || title, title, company);
       studioAtsAnalysisState = fallbackAnalysis;
       applyStudioAtsResults(fallbackAnalysis);
@@ -4693,15 +4919,17 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (gapsContainer) gapsContainer.style.display = 'block';
 
     const gaps = an.categorized_gaps || [];
-    const blockingGaps = gaps.filter(g => g.tier === 'blocking');
-    const importantGaps = gaps.filter(g => g.tier === 'important');
-    const niceToHaveGaps = gaps.filter(g => g.tier === 'nice_to_have');
+    const extractGapLabel = (g) => String((g && (g.requirement || g.gap)) || '').trim();
+    const getGapSeverity = (g) => String((g && (g.severity || g.tier)) || '').toLowerCase();
+    const blockingGaps = gaps.filter(g => getGapSeverity(g) === 'blocking');
+    const importantGaps = gaps.filter(g => getGapSeverity(g) === 'important');
+    const niceToHaveGaps = gaps.filter(g => getGapSeverity(g) === 'nice_to_have');
 
     // If no categorized_gaps, partition missing_keywords
     const missing = an.missing_keywords || [];
-    const bList = (blockingGaps.length > 0) ? blockingGaps.map(g => g.gap) : missing.slice(0, 2);
-    const iList = (importantGaps.length > 0) ? importantGaps.map(g => g.gap) : missing.slice(2, 5);
-    const nList = (niceToHaveGaps.length > 0) ? niceToHaveGaps.map(g => g.gap) : missing.slice(5);
+    const bList = (blockingGaps.length > 0) ? blockingGaps.map(extractGapLabel).filter(Boolean) : missing.slice(0, 2);
+    const iList = (importantGaps.length > 0) ? importantGaps.map(extractGapLabel).filter(Boolean) : missing.slice(2, 5);
+    const nList = (niceToHaveGaps.length > 0) ? niceToHaveGaps.map(extractGapLabel).filter(Boolean) : missing.slice(5);
 
     if (blockingAlert) {
       blockingAlert.style.display = (bList.length > 0) ? 'flex' : 'none';
@@ -4728,8 +4956,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       btnProceed.disabled = false;
     }
 
-    // Populate Step 2 injection chips immediately
+    // Populate Step 2 injection chips immediately and refresh Brief & LinkedIn
     populateStep2KeywordsCloud(bList, iList, nList);
+    refreshStudioJobBriefCard();
+    refreshStudioLinkedinKit(false);
   }
 
   function renderGapList(listId, countId, items) {
@@ -4799,7 +5029,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const current = input.value.trim();
     input.value = current ? `${current}, ${kw}` : kw;
     input.focus();
-    showToast(`מילת המפתח "${kw}" נוספה לתיבת השדרוג!`, 'info');
+    notifyStudio(`מילת המפתח "${kw}" נוספה לתיבת השדרוג!`, 'info');
   }
 
   function setStudioWriterTone(tone, btn) {
@@ -4824,12 +5054,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     const raw = input ? input.value.trim() : '';
     if (!raw) {
-      showToast('הזן שורת הישג לשדרוג.', 'warning');
+      notifyStudio('הזן שורת הישג לשדרוג.', 'warning');
       return;
     }
 
     if (btn) btn.disabled = true;
-    showToast('משדרג שורת הישג באמצעות Gemini...', 'info');
+    notifyStudio('משדרג שורת הישג באמצעות Gemini...', 'info');
 
     const descIn = document.getElementById('studioJobDescriptionInput');
     const jobContext = descIn ? descIn.value.trim() : '';
@@ -4844,7 +5074,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (res && res.ok && res.result && resultBox && resultText) {
         resultText.textContent = res.result.rewritten_bullet || raw;
         resultBox.style.display = 'block';
-        showToast('השורה שודרגה בהצלחה!', 'success');
+        notifyStudio('השורה שודרגה בהצלחה!', 'success');
       }
     } catch (err) {
       // Local rule-based fallback upgrade
@@ -4852,7 +5082,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         const upgraded = `הובלת ${raw} תוך עמידה ביעדי זמינות של 99.8%, שיפור מדדי תפעול ובקרה קפדנית על פי נוהלי הבטיחות.`;
         resultText.textContent = upgraded;
         resultBox.style.display = 'block';
-        showToast(`שדרוג מקומי בוצע (${err.message}).`, 'info');
+        notifyStudio(`שדרוג מקומי בוצע (${err.message}).`, 'info');
       }
     } finally {
       if (btn) btn.disabled = false;
@@ -4879,7 +5109,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     syncLiveA4ToMobile();
     updateLiveA4WordCount();
-    showToast('השורה הוזרקה לתצוגת ה-A4 החיה!', 'success');
+    notifyStudio('השורה הוזרקה לתצוגת ה-A4 החיה!', 'success');
   }
 
   async function generateTailoredCvPackage() {
@@ -4893,12 +5123,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     const title = titleIn ? titleIn.value.trim() : 'משרה';
 
     if (!jobText && !title) {
-      showToast('הזן תיאור משרה להפקת קורות חיים.', 'warning');
+      notifyStudio('הזן תיאור משרה להפקת קורות חיים.', 'warning');
       return;
     }
 
     if (btn) btn.disabled = true;
-    showToast('מפיק קורות חיים מותאמים A4 ב-Gemini...', 'info');
+    notifyStudio('מפיק קורות חיים מותאמים A4 ב-Gemini...', 'info');
 
     const customCv = (studioProfileCache && studioProfileCache.custom_cv_text) ? studioProfileCache.custom_cv_text : '';
 
@@ -4918,10 +5148,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       if (res && res.ok && res.package) {
         studioTailoredPackageState = res.package;
         renderTailoredPackageInA4(res.package);
-        showToast('קו"ח מותאמים A4 הופקו בהצלחה!', 'success');
+        notifyStudio('קו"ח מותאמים A4 הופקו בהצלחה!', 'success');
       }
     } catch (err) {
-      showToast(`הפקה בשרת אינה זמינה (${err.message}) — מייצר תבנית A4 מקומית.`, 'warning');
+      notifyStudio(`הפקה בשרת אינה זמינה (${err.message}) — מייצר תבנית A4 מקומית.`, 'warning');
       renderFallbackLocalCvInA4(title, company);
     } finally {
       if (btn) btn.disabled = false;
@@ -5069,12 +5299,62 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   function copyStudioLiveCvText() {
     const sheet = document.getElementById('studioLiveA4Sheet');
     if (!sheet) return;
-    const txt = sheet.innerText || sheet.textContent || '';
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(txt).then(() => {
-        showToast('תוכן המסמך הועתק ללוח בהצלחה!', 'success');
-      });
+    const txt = (sheet.innerText || sheet.textContent || '').trim();
+    if (!txt) return;
+    writeTextToClipboardWithFallback(txt, 'תוכן המסמך הועתק ללוח בהצלחה!');
+  }
+
+  function writeTextToClipboardWithFallback(text, successMsg) {
+    const clean = String(text || '').trim();
+    if (!clean) {
+      notifyStudio('אין תוכן להעתקה בשדה זה.', 'warning');
+      return false;
     }
+    const fallbackExec = () => {
+      try {
+        if (typeof document === 'undefined' || !document.body) return false;
+        const prev = document.activeElement;
+        const field = document.createElement('textarea');
+        field.value = clean;
+        field.setAttribute('readonly', '');
+        field.style.cssText = 'position:fixed;inset-block-start:0;opacity:0';
+        document.body.appendChild(field);
+        field.select();
+        const ok = Boolean(document.execCommand && document.execCommand('copy'));
+        field.remove();
+        if (prev && typeof prev.focus === 'function') {
+          prev.focus({ preventScroll: true });
+        }
+        return ok;
+      } catch (e) {
+        return false;
+      }
+    };
+
+    if (typeof navigator !== 'undefined' && navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      navigator.clipboard.writeText(clean).then(() => {
+        notifyStudio(successMsg || 'הועתק ללוח בהצלחה!', 'success');
+      }).catch(() => {
+        if (fallbackExec()) {
+          notifyStudio(successMsg || 'הועתק ללוח בהצלחה!', 'success');
+        } else {
+          notifyStudio('ההעתקה ללוח נדחתה על ידי הדפדפן.', 'warning');
+        }
+      });
+      return true;
+    }
+    if (fallbackExec()) {
+      notifyStudio(successMsg || 'הועתק ללוח בהצלחה!', 'success');
+      return true;
+    }
+    return false;
+  }
+
+  function copyStudioFieldText(elementId, successMsg) {
+    const el = document.getElementById(elementId);
+    if (!el) return false;
+    const val = (typeof el.value === 'string') ? el.value : (el.innerText || el.textContent || '');
+    return writeTextToClipboardWithFallback(val, successMsg);
   }
 
   function printStudioLiveA4() {
@@ -5087,7 +5367,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     const win = window.open('', '_blank');
     if (!win) {
-      showToast('חלון ההדפסה נחסם על ידי הדפדפן.', 'warning');
+      notifyStudio('חלון ההדפסה נחסם על ידי הדפדפן.', 'warning');
       return;
     }
 
@@ -5129,8 +5409,502 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     }, 200);
   }
 
+  // --------------------------------------------------------------------------
+  // Contextual Job Summary Brief Card (Steps 3 & 4 Side Column + Mobile Dialog)
+  // --------------------------------------------------------------------------
+
+  function getActiveStudioJobSnapshot() {
+    const titleIn = document.getElementById('studioJobTitleInput');
+    const compIn = document.getElementById('studioJobCompanyInput');
+    const urlIn = document.getElementById('studioJobUrlInput');
+    const descIn = document.getElementById('studioJobDescriptionInput');
+
+    const title = (titleIn && titleIn.value.trim()) || (studioActiveJob && studioActiveJob.title) || '';
+    const company = (compIn && compIn.value.trim()) || (studioActiveJob && studioActiveJob.company) || '';
+    const rawUrl = (urlIn && urlIn.value.trim()) || (studioActiveJob && studioActiveJob.link) || '';
+    const cleanedUrl = String(rawUrl).replace(/[\u0000-\u001F\u007F]/g, '').trim();
+    let safeUrl = '#';
+    if (cleanedUrl) {
+      if (typeof URL === 'function') {
+        try {
+          const parsed = new URL(cleanedUrl);
+          if (['http:', 'https:', 'mailto:'].includes(parsed.protocol) && !parsed.username && !parsed.password) {
+            safeUrl = parsed.href;
+          }
+        } catch (_) {
+          safeUrl = '#';
+        }
+      } else if (/^https?:\/\/[^\s@]+$/i.test(cleanedUrl)) {
+        safeUrl = cleanedUrl;
+      }
+    }
+    const location = (studioActiveJob && normalizeJobLocation(studioActiveJob.location)) || 'ישראל';
+    const description = (descIn && descIn.value.trim()) ||
+      (studioActiveJob && (studioActiveJob.job_summary || studioActiveJob.company_requirements || studioActiveJob.snippet)) || '';
+
+    let score = null;
+    if (studioAtsAnalysisState && studioAtsAnalysisState.analysis && studioAtsAnalysisState.analysis.overall_score != null) {
+      score = Math.max(0, Math.min(100, Number(studioAtsAnalysisState.analysis.overall_score) || 0));
+    } else if (studioActiveJob && (studioActiveJob.base_match_score != null || studioActiveJob.match_score != null)) {
+      score = Math.max(0, Math.min(100, Number(studioActiveJob.base_match_score ?? studioActiveJob.match_score) || 0));
+    }
+
+    const an = (studioAtsAnalysisState && studioAtsAnalysisState.analysis) ? studioAtsAnalysisState.analysis : null;
+    const matched = an && Array.isArray(an.matched_keywords) ? an.matched_keywords : [];
+    const gapsRaw = an && Array.isArray(an.categorized_gaps) ? an.categorized_gaps : [];
+    const gaps = gapsRaw.length > 0
+      ? gapsRaw.map(g => String((g && (g.requirement || g.gap)) || '').trim()).filter(Boolean)
+      : (an && Array.isArray(an.missing_keywords) ? an.missing_keywords.slice(0, 5) : []);
+
+    return {
+      title: stripEmojis(title),
+      company: stripEmojis(company),
+      safeUrl,
+      hasValidUrl: Boolean(safeUrl && safeUrl !== '#'),
+      location: stripEmojis(location),
+      description: stripEmojis(description),
+      score,
+      matchedKeywords: matched,
+      openGaps: gaps
+    };
+  }
+
+  function refreshStudioJobBriefCard() {
+    const snap = getActiveStudioJobSnapshot();
+    const titleEl = document.getElementById('studioBriefJobTitle');
+    const compEl = document.getElementById('studioBriefCompany');
+    const locEl = document.getElementById('studioBriefLocation');
+    const scoreEl = document.getElementById('studioBriefScore');
+    const descEl = document.getElementById('studioBriefDescription');
+    const kwEl = document.getElementById('studioBriefKeywords');
+    const gapsEl = document.getElementById('studioBriefGapsList');
+    const extLink = document.getElementById('studioBriefExternalLink');
+
+    if (titleEl) titleEl.textContent = snap.title || 'בחר משרה לעבודה';
+    if (compEl) compEl.textContent = snap.company || 'כללי';
+    if (locEl) {
+      locEl.innerHTML = `<i class="ph-duotone ph-map-pin" aria-hidden="true"></i> <span>${escapeHtml(snap.location || 'ישראל')}</span>`;
+    }
+    if (scoreEl) {
+      scoreEl.textContent = (snap.score != null) ? `${snap.score}% התאמה` : '--% התאמה';
+    }
+    if (descEl) {
+      descEl.textContent = snap.description || 'בחר משרה מרשימת המשרות או הזן תיאור משרה בשלב 1 כדי להציג כאן את דרישות התפקיד בזמן עדכון ה-LinkedIn והתרגול לראיון.';
+    }
+
+    const keywordsToDisplay = snap.matchedKeywords.length > 0
+      ? snap.matchedKeywords
+      : ['הנדסאי מכונות', 'בקרת תהליך ו-SCADA', 'תפעול מתקני אנרגיה', 'AVEVA System Platform'];
+    if (kwEl) {
+      kwEl.innerHTML = '';
+      keywordsToDisplay.slice(0, 8).forEach(kw => {
+        const pill = document.createElement('span');
+        pill.className = 'studio-skill-pill';
+        pill.textContent = kw;
+        kwEl.appendChild(pill);
+      });
+    }
+
+    if (gapsEl) {
+      gapsEl.innerHTML = '';
+      const gapItems = snap.openGaps.length > 0
+        ? snap.openGaps
+        : (studioActiveJob && studioActiveJob.fit_gaps ? [stripEmojis(studioActiveJob.fit_gaps)] : []);
+      if (gapItems.length === 0) {
+        const li = document.createElement('li');
+        li.className = 'gap-item-empty';
+        li.textContent = 'אין פערי מיקוד פתוחים להצגה';
+        gapsEl.appendChild(li);
+      } else {
+        gapItems.slice(0, 5).forEach(g => {
+          const li = document.createElement('li');
+          li.className = 'gap-tier-item';
+          li.textContent = g;
+          gapsEl.appendChild(li);
+        });
+      }
+    }
+
+    if (extLink) {
+      extLink.setAttribute('href', snap.hasValidUrl ? snap.safeUrl : '#');
+      extLink.classList.toggle('is-disabled', !snap.hasValidUrl);
+      extLink.setAttribute('aria-disabled', snap.hasValidUrl ? 'false' : 'true');
+    }
+
+    syncJobBriefToMobileDialog(snap, keywordsToDisplay);
+  }
+
+  function syncJobBriefToMobileDialog(snap, keywordsToDisplay) {
+    const mobileWrap = document.getElementById('studioMobileJobBriefWrap');
+    if (!mobileWrap) return;
+    const safeTitle = escapeHtml(snap.title || 'בחר משרה לעבודה');
+    const safeComp = escapeHtml(snap.company || 'כללי');
+    const safeLoc = escapeHtml(snap.location || 'ישראל');
+    const safeScore = (snap.score != null) ? `${snap.score}% התאמה` : '--% התאמה';
+    const safeDesc = escapeHtml(snap.description || 'לא הוזן תיאור משרה.');
+    const kwHtml = (keywordsToDisplay || []).slice(0, 8).map(k => `<span class="studio-skill-pill">${escapeHtml(k)}</span>`).join('');
+    const gapsHtml = (snap.openGaps && snap.openGaps.length > 0)
+      ? snap.openGaps.slice(0, 5).map(g => `<li class="gap-tier-item">${escapeHtml(g)}</li>`).join('')
+      : '<li class="gap-item-empty">אין פערי מיקוד פתוחים להצגה</li>';
+
+    mobileWrap.innerHTML = `
+      <div class="studio-brief-header" style="margin-block-end: 12px;">
+        <h4 class="studio-brief-heading">${safeTitle}</h4>
+        <div class="studio-brief-meta-row">
+          <span class="studio-company-badge">${safeComp}</span>
+          <span class="studio-brief-meta-item"><i class="ph-duotone ph-map-pin" aria-hidden="true"></i> <span>${safeLoc}</span></span>
+          <bdi><span class="studio-brief-score-pill">${safeScore}</span></bdi>
+        </div>
+      </div>
+      <div class="studio-brief-section" style="margin-block-end: 10px;">
+        <h5 class="studio-brief-section-title">תמצית התפקיד והדרישות</h5>
+        <p class="studio-brief-text">${safeDesc}</p>
+      </div>
+      <div class="studio-brief-section" style="margin-block-end: 10px;">
+        <h5 class="studio-brief-section-title">מילות מפתח מרכזיות</h5>
+        <div class="studio-skills-pills">${kwHtml}</div>
+      </div>
+      <div class="studio-brief-section">
+        <h5 class="studio-brief-section-title">דגשים ופערי מיקוד לראיון</h5>
+        <ul class="gap-tier-list">${gapsHtml}</ul>
+      </div>
+    `;
+  }
+
+  // --------------------------------------------------------------------------
+  // Step 3: LinkedIn Branding & Direct Apply Implementation
+  // --------------------------------------------------------------------------
+
+  function proceedToStudioStep3() {
+    goToStudioStep(3);
+  }
+
+  function proceedToStudioStep4() {
+    goToStudioStep(4);
+  }
+
+  function refreshStudioLinkedinKit(notify = true) {
+    const snap = getActiveStudioJobSnapshot();
+    const domain = detectStudioDomainFromJob(snap.title, snap.description, studioActiveJob && studioActiveJob.sector_key);
+
+    const domainTagMap = {
+      uav: 'UAV & Autonomous Field Operations',
+      solar_bess: 'Solar PV, BESS & Energy Infrastructure',
+      gas: 'Natural Gas 24/7 Control & PRMS Operations',
+      scada: 'SCADA, AVEVA & Real-Time Process Control',
+      pm: 'Technical Project Coordination & Energy Operations',
+      energy: 'Energy Systems, Gas Control & Field Operations'
+    };
+    const domainFocusEn = domainTagMap[domain] || domainTagMap.energy;
+
+    const headlineText = snap.title
+      ? `הנדסאי מכונות מוסמך | בקרה ותפעול מערכות אנרגיה 24/7 (SCADA / AVEVA) | מיקוד: ${snap.title}`
+      : `Practical Mechanical Engineer | ${domainFocusEn} | SCADA & Operations`;
+
+    const targetPhrase = snap.company && snap.company !== 'כללי'
+      ? `מתמקד כעת בהשתלבות בתפקידי ${snap.title || 'הנדסה, תפעול ובקרה'} ב-${snap.company}, תוך חיבור בין שליטה בחדרי בקרה להבנה טכנית מעשית בשטח.`
+      : 'מתמקד בתפקידי תפעול, בקרה, אנרגיה מתחדשת, גז טבעי, ניהול פרויקטים טכני ומערכות רחפנים.';
+
+    const aboutText = [
+      'הנדסאי מכונות מוסמך (התמחות בגז טבעי ואנרגיה ירוקה) עם ניסיון מוכח בבקרה תפעולית בזמן אמת במערך 24/7, ניטור לחצים וספיקות ב-AVEVA System Platform, וניהול ממשקים מול מתקני הפקה, לקוחות תעשייתיים וגורמים מסחריים.',
+      'משלב יכולת קבלת החלטות עצמאית באירועים חריגים עם אוטומציה ושיפור תהליכי משמרת באמצעות Excel, SAP ו-Microsoft 365 Copilot, לצד ניסיון שטח בהתקנת מערכות סולאריות (PV) והפעלת רחפנים מבצעית.',
+      targetPhrase
+    ].join('\n\n');
+
+    const baseSkillsByDomain = {
+      uav: ['הנדסאי מכונות', 'הפעלת רחפנים וכטב"ם', 'טלמטריה ובקרה', 'אינטגרציית מערכות שטח', 'SCADA', 'בטיחות ותפעול מבצעי'],
+      solar_bess: ['הנדסאי מכונות', 'מערכות פוטו-וולטאיות (PV)', 'BESS אגירת אנרגיה', 'SCADA וניטור מרחוק', 'אחזקה מונעת ושבר', 'בטיחות ותפעול'],
+      gas: ['הנדסאי מכונות', 'גז טבעי 24/7', 'AVEVA System Platform', 'SCADA', 'Nomination & Re-nomination', 'תחנות PRMS ובטיחות תהליך'],
+      scada: ['SCADA', 'AVEVA System Platform', 'בקרת תהליך 24/7', 'הנדסאי מכונות', 'SAP & Excel Analytics', 'ניהול אירועים והתראות'],
+      pm: ['תיאום וניהול פרויקטים הנדסיים', 'הנדסאי מכונות', 'ניהול ממשקים וקבלנים', 'בקרה תפעולית 24/7', 'SAP & Excel', 'אופטימיזציית תהליכים'],
+      energy: ['הנדסאי מכונות', 'בקרה ותפעול אנרגיה 24/7', 'AVEVA System Platform', 'SCADA', 'גז טבעי ומתחדשות', 'ניתוח נתונים תפעולי']
+    };
+
+    const mergedSkills = [];
+    const pushUnique = (s) => {
+      const clean = stripEmojis(String(s || '').trim());
+      if (clean && !mergedSkills.some(existing => existing.toLowerCase() === clean.toLowerCase())) {
+        mergedSkills.push(clean);
+      }
+    };
+    (snap.matchedKeywords || []).forEach(pushUnique);
+    (baseSkillsByDomain[domain] || baseSkillsByDomain.energy).forEach(pushUnique);
+    const finalSkills = mergedSkills.slice(0, 8);
+
+    const roleDisplay = snap.title || 'תפקיד הנדסי / תפעולי';
+    const compDisplay = (snap.company && snap.company !== 'כללי') ? ` ב-${snap.company}` : '';
+    const recruiterMsg = `שלום רב, ראיתי את הפרסום עבור משרת ${roleDisplay}${compDisplay} והתרשמתי מאוד מהעשייה שלכם. אני הנדסאי מכונות מוסמך עם ניסיון של כ-4 שנים בבקרת מערכות אנרגיה וגז טבעי במערך 24/7 (AVEVA / SCADA), תיאום תפעולי-מסחרי והובלת שיפור תהליכים, לצד רקע מעשי במערכות סולאריות ורחפנים. הגשתי כעת מועמדות ואשמח מאוד לבחון התאמה בשיחה קצרה. תודה רבה, עידו גל.`;
+
+    const headlineEl = document.getElementById('studioLinkedinHeadline');
+    const aboutEl = document.getElementById('studioLinkedinAbout');
+    const skillsListEl = document.getElementById('studioLinkedinSkillsList');
+    const skillsTextEl = document.getElementById('studioLinkedinSkillsText');
+    const recruiterEl = document.getElementById('studioRecruiterMessage');
+    const applyLink = document.getElementById('studioDirectApplyLink');
+    const applyHint = document.getElementById('studioApplyUrlHint');
+
+    if (headlineEl) headlineEl.value = headlineText;
+    if (aboutEl) aboutEl.value = aboutText;
+    if (skillsTextEl) skillsTextEl.value = finalSkills.join(' • ');
+    if (skillsListEl) {
+      skillsListEl.innerHTML = '';
+      finalSkills.forEach(sk => {
+        const pill = document.createElement('span');
+        pill.className = 'studio-skill-pill';
+        pill.textContent = sk;
+        skillsListEl.appendChild(pill);
+      });
+    }
+    if (recruiterEl) recruiterEl.value = recruiterMsg;
+
+    if (applyLink) {
+      applyLink.setAttribute('href', snap.hasValidUrl ? snap.safeUrl : '#');
+      applyLink.classList.toggle('is-disabled', !snap.hasValidUrl);
+      applyLink.setAttribute('aria-disabled', snap.hasValidUrl ? 'false' : 'true');
+    }
+    if (applyHint) {
+      applyHint.textContent = snap.hasValidUrl
+        ? `קישור ישיר למודעת המשרה פעיל (${snap.company || 'אתר המעסיק'})`
+        : 'לא הוזן קישור משרה חיצוני — הזן קישור בשלב 1 או בחר משרה מהרשימה';
+    }
+
+    if (notify) {
+      notifyStudio('תוצרי ה-LinkedIn והודעת הפנייה עודכנו למשרה הפעילה!', 'success');
+    }
+  }
+
+  function handleStudioDirectApplyClick(event) {
+    const snap = getActiveStudioJobSnapshot();
+    if (!snap.hasValidUrl) {
+      if (event && typeof event.preventDefault === 'function') event.preventDefault();
+      notifyStudio('בחר משרה פעילה או הזן קישור תקין למשרה בשלב 1.', 'warning');
+      return false;
+    }
+    return true;
+  }
+
+  // --------------------------------------------------------------------------
+  // Step 4: STAR Interview Simulator Implementation
+  // --------------------------------------------------------------------------
+
+  function selectStudioInterviewDomain(domain, clickedBtn) {
+    const targetDomain = STUDIO_INTERVIEW_BANK[domain] ? domain : 'energy';
+    studioCurrentInterviewDomain = targetDomain;
+    studioCurrentQuestionIdx = 0;
+
+    const pills = document.querySelectorAll('.studio-domain-pill[data-domain]');
+    pills.forEach(p => {
+      const isMatch = (p.getAttribute('data-domain') === targetDomain);
+      p.classList.toggle('active', isMatch);
+      p.setAttribute('aria-checked', isMatch ? 'true' : 'false');
+    });
+
+    if (clickedBtn && typeof clickedBtn.classList !== 'undefined') {
+      clickedBtn.classList.add('active');
+      clickedBtn.setAttribute('aria-checked', 'true');
+    }
+
+    renderActiveStudioQuestion();
+  }
+
+  function cycleStudioInterviewQuestion(delta) {
+    const bank = STUDIO_INTERVIEW_BANK[studioCurrentInterviewDomain] || STUDIO_INTERVIEW_BANK.energy;
+    const total = bank.questions.length;
+    if (total === 0) return;
+    studioCurrentQuestionIdx = (studioCurrentQuestionIdx + delta + total) % total;
+    renderActiveStudioQuestion();
+  }
+
+  function renderActiveStudioQuestion() {
+    const bank = STUDIO_INTERVIEW_BANK[studioCurrentInterviewDomain] || STUDIO_INTERVIEW_BANK.energy;
+    const q = bank.questions[studioCurrentQuestionIdx] || bank.questions[0];
+    if (!q) return;
+
+    const domainBadge = document.getElementById('studioQuestionDomainBadge');
+    const counterEl = document.getElementById('studioQuestionCounter');
+    const titleEl = document.getElementById('studioInterviewQuestionTitle');
+    const focusEl = document.getElementById('studioInterviewQuestionFocus');
+
+    if (domainBadge) domainBadge.textContent = bank.label;
+    if (counterEl) counterEl.textContent = `${studioCurrentQuestionIdx + 1} / ${bank.questions.length}`;
+    if (titleEl) titleEl.textContent = q.title;
+    if (focusEl) focusEl.textContent = q.focus;
+  }
+
+  function loadSampleStarOutline() {
+    const input = document.getElementById('studioStarAnswerInput');
+    if (!input) return;
+    input.value = [
+      'מצב (Situation): במהלך משמרת בחדר הבקרה במערך 24/7 זוהתה חריגה בנתוני לחץ וספיקה בקו אספקה מרכזי.',
+      'משימה (Task): אחריותי הישירה הייתה לייצב את המערכת במהירות ולשמור על רציפות אספקה מלאה תוך עמידה בגבולות הבטיחות וההסכם.',
+      'פעולה (Action): ניתחתי בזמן אמת את מגמות הלחץ ב-AVEVA System Platform, תיאמתי פתיחת קו גיבוי מול צוות ההפקה ונתג"ז, ועדכנתי את כמויות ה-Nomination מול הלקוחות.',
+      'תוצאה (Result): הלחץ התייצב תוך דקות ספורות, נשמרה זמינות של 100% ללא חריגות בטיחות, והפקתי נוהל מסודר שהוטמע בהעברות המשמרת של הצוות.'
+    ].join('\n');
+    input.focus();
+  }
+
+  function computeLocalStarEvaluation(answerText) {
+    const txt = String(answerText || '').trim();
+    if (!txt) {
+      return {
+        total_score: 0,
+        situation_score: 0,
+        situation_feedback: 'לא הוזנה תשובה לבדיקה.',
+        task_score: 0,
+        task_feedback: 'הגדר את המשימה והאילוץ התפעולי.',
+        action_score: 0,
+        action_feedback: 'פרט את הפעולות שביצעת אישית.',
+        result_score: 0,
+        result_feedback: 'ציין את התוצאה שהושגה בשטח.',
+        golden_answer: '',
+        improvement_tips: ['כתוב תשובה מלאה בת 3-5 משפטים לפי ארבעת שלבי STAR.']
+      };
+    }
+
+    const words = txt.split(/\s+/).filter(Boolean).length;
+    const hasS = /מצב|רקע|במהלך|משמרת|במסגרת|במתקן|כאשר|זוהתה|situation/i.test(txt);
+    const hasT = /משימה|אחריות|נדרשתי|יעד|מטרה|להבטיח|למנוע|task/i.test(txt);
+    const hasA = /ביצעתי|פעלתי|ניתחתי|תיאמתי|הובלתי|בדקתי|פיתחתי|עדכנתי|הפעלתי|action|scada|aveva|sap|copilot/i.test(txt);
+    const hasR = /תוצאה|הושג|צומצם|נמנע|זמינות|רציפות|בטיחות|אפס|דקות|%|result/i.test(txt);
+
+    const lenFactor = Math.min(1, words / 35);
+    const sScore = Math.round((hasS ? 14 : 6) + 6 * lenFactor);
+    const tScore = Math.round((hasT ? 14 : 6) + 6 * lenFactor);
+    const aScore = Math.round((hasA ? 28 : 12) + 12 * lenFactor);
+    const rScore = Math.round((hasR ? 14 : 6) + 6 * lenFactor);
+
+    const sClamped = Math.min(20, sScore);
+    const tClamped = Math.min(20, tScore);
+    const aClamped = Math.min(40, aScore);
+    const rClamped = Math.min(20, rScore);
+    const total = sClamped + tClamped + aClamped + rClamped;
+
+    const tips = [];
+    if (!hasS) tips.push('הוסף משפט פתיחה הממקם את הזירה התפעולית (חדר בקרה, מתקן שטח או פרויקט).');
+    if (!hasT) tips.push('חדד מה הייתה אחריותך האישית ומה היה אילוץ הבטיחות או הזמן.');
+    if (!hasA) tips.push('השתמש בפעלים בגוף ראשון ("ניתחתי", "תיאמתי", "בידדתי") וציין כלים הנדסיים כמו SCADA / AVEVA.');
+    if (!hasR) tips.push('סיים בתוצאה עובדתית ברורה (רציפות אספקה, עמידה בנהלי בטיחות או חיסכון בזמן).');
+    if (words < 25) tips.push('הרחב מעט את הפירוט ההנדסי כדי לתת למראיין תמונה מלאה (מומלץ 40-90 מילים).');
+
+    return {
+      total_score: total,
+      situation_score: sClamped,
+      situation_feedback: hasS
+        ? 'הקשר הזירה התפעולית הוצג בצורה ברורה.'
+        : 'חסר תיאור ממוקד של המצב הראשוני והמערכת המעורבת.',
+      task_score: tClamped,
+      task_feedback: hasT
+        ? 'המשימה והאחריות מול האילוץ התפעולי מוגדרים היטב.'
+        : 'מומלץ לחדד מה נדרש ממך להשיג ומה היה הסיכון.',
+      action_score: aClamped,
+      action_feedback: hasA
+        ? 'פירוט פעולות אישיות וכלים טכניים מופיע בצורה משכנעת.'
+        : 'פרט בגוף ראשון אילו פעולות הנדסיות/בקרתיות ביצעת בעצמך.',
+      result_score: rClamped,
+      result_feedback: hasR
+        ? 'הוצגה תוצאה תפעולית/בטיחותית קונקרטית.'
+        : 'הוסף את התוצאה בפועל בסיום האירוע ללא הפרזה.',
+      golden_answer: 'במצב כזה, מתודולוגיית הפעולה המומלצת משלבת זיהוי מוקדם של החריגה במערכת הבקרה (SCADA / AVEVA), הגדרת יעד הבטיחות ורציפות האספקה, ביצוע פעולות בידוד ותיאום אקטיבי מול השטח והלקוחות, וסיכום התוצאה העובדתית והפקת הלקחים.',
+      improvement_tips: tips
+    };
+  }
+
+  function applyStarEvaluationToDom(ev, sourceLabel, isOnlineBridge) {
+    if (!ev) return;
+    const totalEl = document.getElementById('studioStarTotalScore');
+    const sourceTag = document.getElementById('studioStarSourceTag');
+    if (totalEl) totalEl.textContent = `${ev.total_score}/100`;
+    if (sourceTag) sourceTag.textContent = sourceLabel;
+
+    setStudioBridgeUiState(Boolean(isOnlineBridge));
+
+    const updateCard = (cardId, scoreId, fbId, score, maxScore, fbText) => {
+      const card = document.getElementById(cardId);
+      const sEl = document.getElementById(scoreId);
+      const fEl = document.getElementById(fbId);
+      if (sEl) sEl.textContent = `${score}/${maxScore}`;
+      if (fEl) fEl.textContent = fbText || '';
+      if (card) {
+        card.classList.remove('tier-pass', 'tier-warn', 'tier-fail');
+        const ratio = maxScore > 0 ? (score / maxScore) : 0;
+        if (ratio >= 0.75) card.classList.add('tier-pass');
+        else if (ratio >= 0.5) card.classList.add('tier-warn');
+        else card.classList.add('tier-fail');
+      }
+    };
+
+    updateCard('starCardSituation', 'starScoreSituation', 'starFeedbackSituation', Number(ev.situation_score) || 0, 20, ev.situation_feedback);
+    updateCard('starCardTask', 'starScoreTask', 'starFeedbackTask', Number(ev.task_score) || 0, 20, ev.task_feedback);
+    updateCard('starCardAction', 'starScoreAction', 'starFeedbackAction', Number(ev.action_score) || 0, 40, ev.action_feedback);
+    updateCard('starCardResult', 'starScoreResult', 'starFeedbackResult', Number(ev.result_score) || 0, 20, ev.result_feedback);
+
+    const goldenBox = document.getElementById('studioStarGoldenBox');
+    const goldenText = document.getElementById('studioStarGoldenText');
+    const tipsList = document.getElementById('studioStarTipsList');
+
+    const tips = Array.isArray(ev.improvement_tips) ? ev.improvement_tips : [];
+    if (goldenBox && (ev.golden_answer || tips.length > 0)) {
+      goldenBox.style.display = 'block';
+      if (goldenText) goldenText.textContent = ev.golden_answer || '';
+      if (tipsList) {
+        tipsList.innerHTML = '';
+        tips.forEach(t => {
+          const li = document.createElement('li');
+          li.textContent = t;
+          tipsList.appendChild(li);
+        });
+      }
+    } else if (goldenBox) {
+      goldenBox.style.display = 'none';
+    }
+  }
+
+  async function evaluateStudioStarAnswer() {
+    const answerEl = document.getElementById('studioStarAnswerInput');
+    const qTitleEl = document.getElementById('studioInterviewQuestionTitle');
+    const qFocusEl = document.getElementById('studioInterviewQuestionFocus');
+    const btn = document.getElementById('studioBtnEvaluateStar');
+
+    const answer = answerEl ? answerEl.value.trim() : '';
+    if (!answer) {
+      notifyStudio('הזן תשובה בתיבת התרגול לפני הפעלת הבדיקה.', 'warning');
+      const emptyEv = computeLocalStarEvaluation('');
+      applyStarEvaluationToDom(emptyEv, 'לא הוזנה תשובה לבדיקה', studioBridgeConnected);
+      return emptyEv;
+    }
+
+    const question = `${qTitleEl ? qTitleEl.textContent : ''}\n${qFocusEl ? qFocusEl.textContent : ''}`.trim();
+    const snap = getActiveStudioJobSnapshot();
+    const jobContext = `${snap.title} | ${snap.company}\n${snap.description}`.trim();
+
+    if (btn) btn.disabled = true;
+
+    try {
+      const res = await callStudioBridge('/api/interview/evaluate', {
+        question,
+        answer,
+        category: studioCurrentInterviewDomain,
+        job_context: jobContext
+      }, 'POST', 40000);
+
+      if (res && res.ok && res.evaluation) {
+        applyStarEvaluationToDom(res.evaluation, 'הערכת AI מלאה דרך studio_bridge (Gemini)', true);
+        notifyStudio('הערכת תשובת ה-STAR הושלמה ב-Gemini!', 'success');
+        return res.evaluation;
+      }
+      throw new Error('תשובת שרת חסרה');
+    } catch (err) {
+      const localEv = computeLocalStarEvaluation(answer);
+      applyStarEvaluationToDom(localEv, 'מצב מקומי: הערכת מבנה מילולית (שרת AI אינו פעיל)', false);
+      notifyStudio('בוצעה הערכת STAR מקומית (חבר את studio_bridge.py למשוב AI מעמיק).', 'info');
+      return localEv;
+    } finally {
+      if (btn) btn.disabled = false;
+    }
+  }
+
   function openStudioMobilePreview() {
-    syncLiveA4ToMobile();
+    syncStudioSideColumnMode(currentStudioStep);
     const dlg = document.getElementById('studioMobilePreviewDialog');
     if (dlg) {
       openDialogEl(dlg);
@@ -5164,10 +5938,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     });
   }
 
-  // Load career studio profile once DOM is ready
+  // Initialize Career Studio defaults once DOM is ready
   loadInitialStudioProfile();
+  refreshStudioLinkedinKit(false);
+  renderActiveStudioQuestion();
 
-  // Expose Studio methods to window for inline HTML handlers
+  // Expose Studio methods to window for inline HTML handlers and unit tests
   window.switchDashboardAppMode = switchDashboardAppMode;
   window.openJobInCareerStudio = openJobInCareerStudio;
   window.onStudioJobSelectChange = onStudioJobSelectChange;
@@ -5175,6 +5951,8 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   window.handleStudioCvUpload = handleStudioCvUpload;
   window.runStudioAtsAnalysis = runStudioAtsAnalysis;
   window.proceedToStudioStep2 = proceedToStudioStep2;
+  window.proceedToStudioStep3 = proceedToStudioStep3;
+  window.proceedToStudioStep4 = proceedToStudioStep4;
   window.setStudioWriterTone = setStudioWriterTone;
   window.setStudioCvLang = setStudioCvLang;
   window.upgradeStudioBullet = upgradeStudioBullet;
@@ -5182,6 +5960,14 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   window.generateTailoredCvPackage = generateTailoredCvPackage;
   window.setStudioPreviewDocTab = setStudioPreviewDocTab;
   window.copyStudioLiveCvText = copyStudioLiveCvText;
+  window.copyStudioFieldText = copyStudioFieldText;
   window.printStudioLiveA4 = printStudioLiveA4;
+  window.refreshStudioLinkedinKit = refreshStudioLinkedinKit;
+  window.handleStudioDirectApplyClick = handleStudioDirectApplyClick;
+  window.selectStudioInterviewDomain = selectStudioInterviewDomain;
+  window.cycleStudioInterviewQuestion = cycleStudioInterviewQuestion;
+  window.loadSampleStarOutline = loadSampleStarOutline;
+  window.evaluateStudioStarAnswer = evaluateStudioStarAnswer;
+  window.computeLocalStarEvaluation = computeLocalStarEvaluation;
   window.openStudioMobilePreview = openStudioMobilePreview;
   window.closeStudioMobilePreview = closeStudioMobilePreview;
