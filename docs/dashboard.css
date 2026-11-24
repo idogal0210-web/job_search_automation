@@ -400,8 +400,55 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 10px;
       min-width: 0;
+    }
+    .brand-utility-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-inline-start: 4px;
+      padding-inline-start: 8px;
+      border-inline-start: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .dashboard-app .cloud-pill.header-cloud-btn,
+    .cloud-pill.header-cloud-btn,
+    .dashboard-app .cloud-pill.header-theme-btn,
+    .cloud-pill.header-theme-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+    }
+    .cloud-pill.header-cloud-btn:hover,
+    .cloud-pill.header-theme-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-1px);
+    }
+    .cloud-pill.header-cloud-btn i,
+    .cloud-pill.header-theme-btn i {
+      font-size: 14px;
+      line-height: 1;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    .cloud-pill.header-cloud-btn .sync-status-dot {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 6px;
+      height: 6px;
+      margin: 0;
     }
     .dashboard-app .profile-title,
     .dashboard-app .brand-title,
@@ -4074,6 +4121,10 @@ border-radius: 999px;
     -webkit-text-fill-color: transparent !important;
     color: #0284C7 !important;
     filter: none !important;
+  }
+
+  :root[data-theme="light"] .brand-utility-group {
+    border-inline-start-color: #E2E8F0 !important;
   }
 
   :root[data-theme="light"] .brand-subtitle,

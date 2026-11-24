@@ -22,20 +22,22 @@
   <header class="dashboard-sidebar dashboard-header">
     <!-- Header Section Right (Profile & Actions) -->
     <div class="header-section header-section-right dashboard-sidebar-brand">
-      <div class="brand-icon-pill" title="בקרת משרות מקצועית" aria-label="בקרת משרות מקצועית">
-        <i class="ph-duotone ph-briefcase" style="font-size: 19px; color: #000;"></i>
+      <div class="brand-icon-pill" title="AutoJob — בקרת משרות מקצועית" aria-label="AutoJob — בקרת משרות מקצועית">
+        <i class="ph-duotone ph-briefcase" style="font-size: 19px; color: var(--dashboard-cyan, #38BDF8);"></i>
       </div>
       <div class="brand-titles profile-info">
         <div class="brand-title-row">
           <h1 class="brand-title profile-title"><span class="brand-logo-text" dir="ltr" aria-label="AutoJob"><span class="brand-logo-auto">Auto</span><span class="brand-logo-job">Job</span></span></h1>
-          <button type="button" id="headerCloudBtn" class="cloud-pill header-cloud-btn" onclick="openCloudModal()" title="חשבון וסנכרון ענן" aria-label="חשבון וסנכרון ענן">
-            <span class="sync-status-dot" id="headerSyncDot" role="status" aria-live="polite"></span>
-            <i class="ph-duotone ph-cloud" aria-hidden="true"></i>
-          </button>
-          <button type="button" id="themeToggleBtn" class="cloud-pill header-cloud-btn header-theme-btn" onclick="toggleDashboardTheme()" aria-pressed="false" title="החלף לערכת נושא בהירה" aria-label="החלף לערכת נושא בהירה">
-            <i class="ph-duotone ph-sun" id="themeToggleIcon" aria-hidden="true"></i>
-            <span id="themeToggleLabel" class="visually-hidden">כהה</span>
-          </button>
+          <div class="brand-utility-group">
+            <button type="button" id="headerCloudBtn" class="cloud-pill header-cloud-btn" onclick="openCloudModal()" title="חשבון וסנכרון ענן" aria-label="חשבון וסנכרון ענן">
+              <span class="sync-status-dot" id="headerSyncDot" role="status" aria-live="polite"></span>
+              <i class="ph-duotone ph-cloud" aria-hidden="true"></i>
+            </button>
+            <button type="button" id="themeToggleBtn" class="cloud-pill header-cloud-btn header-theme-btn" onclick="toggleDashboardTheme()" aria-pressed="false" title="החלף לערכת נושא בהירה" aria-label="החלף לערכת נושא בהירה">
+              <i class="ph-duotone ph-sun" id="themeToggleIcon" aria-hidden="true"></i>
+              <span id="themeToggleLabel" class="visually-hidden">כהה</span>
+            </button>
+          </div>
         </div>
         <div class="brand-subtitle-row">
           <span class="brand-subtitle profile-subtitle">אנרגיה, גז טבעי ורחפנים</span>
