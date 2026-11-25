@@ -335,7 +335,7 @@ class GeminiPool:
 
     def generate_json(self, client, prompt, *, schema=None, temperature=None, health=None):
         reasons = {}
-        key_pool = client if hasattr(client, "get_current_client") else None
+        key_pool = client if isinstance(client, GeminiClientPool) else None
         for name in self.models:
             state = self.states[name]
             if self.clock() < state.open_until:
