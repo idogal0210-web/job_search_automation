@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
+from src.gemini_runtime import init_gemini_client_pool
+
 from src.config import get_search_keywords, get_ats_boards, get_target_companies
 from src.fetchers import (
     CircuitBreaker,
@@ -143,19 +145,7 @@ def evaluate_all_jobs(all_raw_jobs: list, handled_links: set, health: RunHealth,
     health.candidates_found = len(new_jobs)
     print(f"[FETCH] raw={len(all_raw_jobs)} candidates_including_pending={len(new_jobs)}", flush=True)
 
-    client = None
-    if os.getenv("GEMINI_API_KEY"):
-        try:
-            client = genai.Client(
-                api_key=os.environ["GEMINI_API_KEY"],
-                http_options=types.HttpOptions(
-                    timeout=20000,
-                    retry_options=types.HttpRetryOptions(attempts=1)
-                )
-            )
-        except Exception as error:
-            print(f"[AI_CONFIG] Could not initialize Gemini client: {type(error).__name__}", flush=True)
-
+    client = init_gemini_client_pool()
     if client is None:
         print("[AI_CONFIG] No GEMINI_API_KEY; unresolved jobs will remain pending", flush=True)
 

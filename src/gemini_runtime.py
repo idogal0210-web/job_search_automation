@@ -5,8 +5,9 @@ import random
 import re
 import time
 from dataclasses import dataclass
-from typing import Literal
+from typing import Literal, Optional
 
+from google import genai
 from google.genai import types
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
@@ -130,7 +131,7 @@ def classify_error(error):
         return "invalid_response"
     code = getattr(error, "code", None) or getattr(error, "status_code", None)
     message = str(error).lower()
-    if str(code) == "429" or "429" in message or "resource_exhausted" in message:
+    if str(code) == "429" or "429" in message or "resource_exhausted" in message or "resource has been exhausted" in message:
         # 'quota' alone is NOT proof of a daily quota: per-minute limits use it too.
         if "per minute" in message or "per_minute" in message or "perminute" in message:
             return "rate_limit"
@@ -166,6 +167,157 @@ class ModelState:
     reason: str = ""
 
 
+def mask_api_key(key: str) -> str:
+    """Safely mask an API key for logs (e.g. AIza...4a12)."""
+    if not key:
+        return "<empty>"
+    clean = key.strip()
+    if len(clean) <= 8:
+        return "***"
+    return f"{clean[:4]}...{clean[-4:]}"
+
+
+def load_gemini_api_keys() -> list[str]:
+    """Collect unique Gemini API keys from GEMINI_API_KEYS and numbered GEMINI_API_KEY* env vars."""
+    keys = []
+    raw_keys = os.getenv("GEMINI_API_KEYS", "")
+    if raw_keys:
+        for k in re.split(r"[\s,]+", raw_keys):
+            clean = k.strip()
+            if clean and clean not in keys:
+                keys.append(clean)
+
+    primary = os.getenv("GEMINI_API_KEY", "").strip()
+    if primary and primary not in keys:
+        keys.append(primary)
+
+    for i in range(2, 21):
+        numbered = os.getenv(f"GEMINI_API_KEY_{i}", "").strip()
+        if numbered and numbered not in keys:
+            keys.append(numbered)
+
+    return keys
+
+
+class GeminiKeyEntry:
+    def __init__(self, key: str, index: int, client: any = None):
+        self.key = key
+        self.index = index
+        self.client = client
+        self.is_daily_quota_exhausted = False
+        self.open_until = 0.0
+        self.masked = mask_api_key(key)
+
+
+class GeminiClientPool:
+    """Manages a pool of Gemini API keys with automatic failover upon daily quota exhaustion."""
+
+    class _ModelsProxy:
+        def __init__(self, pool):
+            self._pool = pool
+
+        def generate_content(self, *args, **kwargs):
+            client = self._pool.get_current_client()
+            if client is None:
+                raise EvaluationUnavailable({"client": "all_api_keys_exhausted"})
+            return client.models.generate_content(*args, **kwargs)
+
+    def __init__(self, keys: list[str] = None, *, client_factory=None, clock=time.monotonic):
+        if keys is None:
+            keys = load_gemini_api_keys()
+        self.clock = clock
+        self._client_factory = client_factory or (lambda k: genai.Client(
+            api_key=k,
+            http_options=types.HttpOptions(
+                timeout=20000,
+                retry_options=types.HttpRetryOptions(attempts=1)
+            )
+        ))
+        self.entries = []
+        for i, k in enumerate(keys, 1):
+            client = None
+            try:
+                client = self._client_factory(k)
+            except Exception as e:
+                print(f"[KEY_POOL] Warning: failed to initialize client for key {i}: {type(e).__name__}", flush=True)
+            self.entries.append(GeminiKeyEntry(key=k, index=i, client=client))
+        self.current_index = 0
+        self.models = self._ModelsProxy(self)
+
+    @property
+    def has_keys(self) -> bool:
+        return len(self.entries) > 0
+
+    def active_key_count(self) -> int:
+        return sum(1 for e in self.entries if not e.is_daily_quota_exhausted and e.client is not None)
+
+    def total_key_count(self) -> int:
+        return len(self.entries)
+
+    def get_current_entry(self) -> Optional[GeminiKeyEntry]:
+        if not self.entries:
+            return None
+        now = self.clock()
+        for offset in range(len(self.entries)):
+            idx = (self.current_index + offset) % len(self.entries)
+            entry = self.entries[idx]
+            if not entry.is_daily_quota_exhausted and entry.client is not None and now >= entry.open_until:
+                self.current_index = idx
+                return entry
+        for offset in range(len(self.entries)):
+            idx = (self.current_index + offset) % len(self.entries)
+            entry = self.entries[idx]
+            if not entry.is_daily_quota_exhausted and entry.client is not None:
+                self.current_index = idx
+                return entry
+        return None
+
+    def get_current_client(self):
+        entry = self.get_current_entry()
+        return entry.client if entry else None
+
+    def rotate_on_error(self, error_kind: str) -> bool:
+        """Mark current key as exhausted/cooling down and rotate to next available key.
+        Returns True if a fresh active key is available, False if all keys are exhausted."""
+        current = self.get_current_entry()
+        if not current:
+            return False
+
+        if error_kind in {"daily_quota", "authentication"}:
+            current.is_daily_quota_exhausted = True
+            print(f"[KEY_ROTATION] Key {current.index}/{len(self.entries)} ({current.masked}) hit {error_kind}. Tripping key.", flush=True)
+        else:
+            current.open_until = self.clock() + 60.0
+            print(f"[KEY_ROTATION] Key {current.index}/{len(self.entries)} ({current.masked}) hit {error_kind}. Backing off key for 60s.", flush=True)
+
+        self.current_index = (self.current_index + 1) % len(self.entries)
+        next_entry = self.get_current_entry()
+        if next_entry and next_entry != current and not next_entry.is_daily_quota_exhausted:
+            print(f"[KEY_ROTATION] Switched to Key {next_entry.index}/{len(self.entries)} ({next_entry.masked}).", flush=True)
+            return True
+        return False
+
+    def is_all_exhausted(self) -> bool:
+        return all(e.is_daily_quota_exhausted or e.client is None for e in self.entries)
+
+    def close(self):
+        for entry in self.entries:
+            if entry.client is not None and hasattr(entry.client, "close"):
+                try:
+                    entry.client.close()
+                except Exception:
+                    pass
+
+
+def init_gemini_client_pool(keys: list[str] = None) -> Optional[GeminiClientPool]:
+    """Initialize a GeminiClientPool from environment variables or explicit keys."""
+    pool = GeminiClientPool(keys)
+    if not pool.has_keys or pool.active_key_count() == 0:
+        return None
+    print(f"[AI_CONFIG] Initialized Gemini key pool with {pool.active_key_count()} active keys (total {pool.total_key_count()}).", flush=True)
+    return pool
+
+
 class GeminiPool:
     """One pool per run; no global cross-job shutdown on a single model error."""
     def __init__(self, models=None, *, clock=time.monotonic, sleep=time.sleep,
@@ -183,68 +335,85 @@ class GeminiPool:
 
     def generate_json(self, client, prompt, *, schema=None, temperature=None, health=None):
         reasons = {}
+        key_pool = client if hasattr(client, "get_current_client") else None
         for name in self.models:
             state = self.states[name]
             if self.clock() < state.open_until:
                 reasons[name] = state.reason
                 print(f"[MODEL_SKIP] model={name} reason={state.reason}", flush=True)
                 continue
-            for attempt in range(self.max_attempts):
-                if self.last_request is not None:
-                    self.sleep(max(0, self.min_interval - (self.clock() - self.last_request)))
-                self.last_request = self.clock()
-                if health is not None:
-                    health.gemini_attempts += 1
-                try:
-                    cfg_kwargs = {"response_mime_type": "application/json"}
-                    if schema is not None:
-                        cfg_kwargs["response_schema"] = schema
-                    if temperature is not None:
-                        cfg_kwargs["temperature"] = temperature
-                    cfg_kwargs["http_options"] = types.HttpOptions(
-                        timeout=20000, retry_options=types.HttpRetryOptions(attempts=1)
-                    )
-                    response = client.models.generate_content(
-                        model=name, contents=prompt,
-                        config=types.GenerateContentConfig(**cfg_kwargs)
-                    )
-                    text = response.text or ""
-                    if schema is not None:
-                        data = schema.model_validate_json(text).model_dump()
-                    else:
-                        clean_text = text.strip()
-                        if clean_text.startswith("```json"):
-                            clean_text = clean_text[7:]
-                        if clean_text.startswith("```"):
-                            clean_text = clean_text[3:]
-                        if clean_text.endswith("```"):
-                            clean_text = clean_text[:-3]
-                        data = json.loads(clean_text.strip())
-                except Exception as error:
-                    kind = classify_error(error)
-                    reasons[name] = kind
-                    if health is not None:
-                        health.gemini_failures += 1
-                    print(f"[MODEL_ERROR] model={name} kind={kind} attempt={attempt+1}", flush=True)
-                    delay = max(2 ** (attempt + 1) + self.jitter(), retry_after(error))
-                    if (kind in {"invalid_response", "timeout", "unavailable", "rate_limit"}
-                            and attempt + 1 < self.max_attempts and delay <= 8):
-                        self.sleep(delay)
-                        continue
-                    state.failures += 1
-                    state.reason = kind
-                    if kind in {"daily_quota", "authentication", "configuration"} or state.failures >= 3:
-                        state.open_until = float("inf")
-                    else:
-                        base = 60 if kind == "rate_limit" else 15
-                        state.open_until = self.clock() + max(delay, min(300, base * 2 ** min(state.failures - 1, 4)))
+            while True:
+                active_client = key_pool.get_current_client() if key_pool else client
+                if active_client is None:
+                    reasons[name] = "no_active_client"
                     break
-                else:
-                    state.failures, state.open_until, state.reason = 0, 0, ""
+                key_failed = False
+                for attempt in range(self.max_attempts):
+                    if self.last_request is not None:
+                        self.sleep(max(0, self.min_interval - (self.clock() - self.last_request)))
+                    self.last_request = self.clock()
                     if health is not None:
-                        health.gemini_successes += 1
-                    data["evaluation_model"] = name
-                    return data
+                        health.gemini_attempts += 1
+                    try:
+                        cfg_kwargs = {"response_mime_type": "application/json"}
+                        if schema is not None:
+                            cfg_kwargs["response_schema"] = schema
+                        if temperature is not None:
+                            cfg_kwargs["temperature"] = temperature
+                        cfg_kwargs["http_options"] = types.HttpOptions(
+                            timeout=20000, retry_options=types.HttpRetryOptions(attempts=1)
+                        )
+                        response = active_client.models.generate_content(
+                            model=name, contents=prompt,
+                            config=types.GenerateContentConfig(**cfg_kwargs)
+                        )
+                        text = response.text or ""
+                        if schema is not None:
+                            data = schema.model_validate_json(text).model_dump()
+                        else:
+                            clean_text = text.strip()
+                            if clean_text.startswith("```json"):
+                                clean_text = clean_text[7:]
+                            if clean_text.startswith("```"):
+                                clean_text = clean_text[3:]
+                            if clean_text.endswith("```"):
+                                clean_text = clean_text[:-3]
+                            data = json.loads(clean_text.strip())
+
+                        state.failures, state.open_until, state.reason = 0, 0, ""
+                        if health is not None:
+                            health.gemini_successes += 1
+                        data["evaluation_model"] = name
+                        return data
+                    except Exception as error:
+                        kind = classify_error(error)
+                        reasons[name] = kind
+                        if health is not None:
+                            health.gemini_failures += 1
+                        print(f"[MODEL_ERROR] model={name} kind={kind} attempt={attempt+1}", flush=True)
+
+                        if key_pool and kind in {"daily_quota", "authentication", "rate_limit"}:
+                            if key_pool.rotate_on_error(kind):
+                                key_failed = True
+                                break
+
+                        delay = max(2 ** (attempt + 1) + self.jitter(), retry_after(error))
+                        if (kind in {"invalid_response", "timeout", "unavailable", "rate_limit"}
+                                and attempt + 1 < self.max_attempts and delay <= 8):
+                            self.sleep(delay)
+                            continue
+                        state.failures += 1
+                        state.reason = kind
+                        if kind in {"daily_quota", "authentication", "configuration"} or state.failures >= 3:
+                            state.open_until = float("inf")
+                        else:
+                            base = 60 if kind == "rate_limit" else 15
+                            state.open_until = self.clock() + max(delay, min(300, base * 2 ** min(state.failures - 1, 4)))
+                        key_failed = True
+                        break
+
+                if not key_failed or not key_pool or key_pool.is_all_exhausted():
+                    break
         raise EvaluationUnavailable(reasons)
 
     def is_exhausted(self) -> bool:

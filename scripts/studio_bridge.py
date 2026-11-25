@@ -41,6 +41,8 @@ from src.gemini_runtime import (
     EvaluationUnavailable,
     GeminiPool,
     StarInterviewEvaluationSchema,
+    init_gemini_client_pool,
+    load_gemini_api_keys,
 )
 from tools.cv_tailor.src.analyzer import ATSAnalysis, analyze_job_match
 from tools.cv_tailor.src.generator import TailoredPackage, generate_tailored_package
@@ -133,7 +135,10 @@ class BridgeServices:
     def get_config(self) -> Dict[str, Any]:
         return load_config()
 
-    def get_gemini_client(self) -> Optional[genai.Client]:
+    def get_gemini_client(self):
+        pool = init_gemini_client_pool()
+        if pool is not None:
+            return pool
         cfg = self.get_config()
         key = (cfg.get("gemini_api_key") or "").strip()
         if not key:
@@ -147,10 +152,11 @@ class BridgeServices:
             base_ok = bool(load_base_profile(cfg.get("base_profile_path")))
         except Exception:
             base_ok = False
+        gemini_ok = bool(cfg.get("gemini_api_key")) or bool(load_gemini_api_keys())
         return {
             "ok": True,
             "mode": "local_bridge",
-            "gemini_configured": bool(cfg.get("gemini_api_key")),
+            "gemini_configured": gemini_ok,
             "tavily_configured": bool(cfg.get("tavily_api_key")),
             "firecrawl_configured": bool(cfg.get("firecrawl_api_key")),
             "base_profile_loaded": base_ok,
