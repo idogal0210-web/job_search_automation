@@ -4477,11 +4477,16 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         const savedName = sessionStorage.getItem('studio_uploaded_cv_name');
         const savedText = sessionStorage.getItem('studio_uploaded_cv_text');
         if (savedName && savedText) {
+          const resetBtn = document.getElementById('studioBtnResetCv');
+          if (resetBtn) resetBtn.style.display = 'inline-flex';
           applyUploadedCv(savedName, savedText);
           return;
         }
       }
     } catch (e) {}
+
+    const resetBtn = document.getElementById('studioBtnResetCv');
+    if (resetBtn) resetBtn.style.display = 'none';
 
     if (studioProfileCache && !studioTailoredPackageState) {
       const defaultMd = formatProfileJsonToMarkdown(studioProfileCache);
@@ -4558,6 +4563,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     select.innerHTML = '<option value="">-- בחר משרה מרשימת המשרות --</option>';
 
     const allJobs = getAllAvailableJobs();
+    const countBadge = document.getElementById('studioJobCountBadge');
+    if (countBadge) {
+      const cnt = (allJobs && allJobs.length) || 0;
+      countBadge.textContent = `${cnt} משרות פעילות`;
+    }
     if (!allJobs || allJobs.length === 0) return;
 
     allJobs.forEach((job, idx) => {
@@ -4884,6 +4894,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (nameLabel) {
       nameLabel.textContent = fileName;
     }
+    const resetBtn = document.getElementById('studioBtnResetCv');
+    if (resetBtn) {
+      resetBtn.style.display = 'inline-flex';
+    }
 
     // Force render into studioLiveA4Sheet
     studioTailoredPackageState = {
@@ -4898,12 +4912,113 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     renderTailoredPackageInA4(studioTailoredPackageState);
   }
 
+  function resetStudioCvToDefault(e) {
+    if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
+    try {
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.removeItem('studio_uploaded_cv_name');
+        sessionStorage.removeItem('studio_uploaded_cv_text');
+      }
+    } catch (err) {}
+    const fileInput = document.getElementById('studioCvFileInput');
+    if (fileInput) fileInput.value = '';
+    const resetBtn = document.getElementById('studioBtnResetCv');
+    if (resetBtn) resetBtn.style.display = 'none';
+
+    if (studioProfileCache) {
+      delete studioProfileCache.custom_cv_text;
+    }
+    studioTailoredPackageState = null;
+    loadInitialStudioProfile();
+    notifyStudio('הוחזרו קורות החיים המקוריים כברירת מחדל.', 'info');
+  }
+
+  function loadSampleStudioJob() {
+    const jobs = Object.values(allJobsMap || {});
+    const sample = jobs.find(j => (j.match_score || 0) >= 80) || jobs[0] || {
+      title: 'מהנדס / הנדסאי פרויקטים סולאריים ו-BESS',
+      company: 'אנלייט אנרגיה מתחדשת',
+      link: 'https://www.comeet.com/jobs/enlightenergy/99.006',
+      snippet: 'ניהול ותיאום הקמת חוות סולאריות ומערכות אגירת אנרגיה (BESS), עבודה מול קבלני משנה, חיבורי רשת חח"י, בקרת איכות ותפעול מערכות SCADA.'
+    };
+    const titleIn = document.getElementById('studioJobTitleInput');
+    const compIn = document.getElementById('studioJobCompanyInput');
+    const urlIn = document.getElementById('studioJobUrlInput');
+    const descIn = document.getElementById('studioJobDescriptionInput');
+    if (titleIn) titleIn.value = sample.title || '';
+    if (compIn) compIn.value = sample.company || '';
+    if (urlIn) urlIn.value = sample.link || '';
+    if (descIn) descIn.value = sample.snippet || sample.description || '';
+    notifyStudio(`נטענה משרה לדוגמה: ${sample.company} — ${sample.title}`, 'info');
+  }
+
+  let studioStarTimerInterval = null;
+  let studioStarTimerRemaining = 120;
+
+  function toggleStudioStarTimer() {
+    const btn = document.getElementById('studioStarTimerBtn');
+    const display = document.getElementById('studioStarTimerDisplay');
+    if (!btn || !display) return;
+
+    if (studioStarTimerInterval) {
+      clearInterval(studioStarTimerInterval);
+      studioStarTimerInterval = null;
+      btn.classList.remove('running');
+      notifyStudio('טיימר התרגול הושהה.', 'info');
+      return;
+    }
+
+    if (studioStarTimerRemaining <= 0) {
+      studioStarTimerRemaining = 120;
+    }
+
+    btn.classList.add('running');
+    btn.classList.remove('warning');
+    notifyStudio('טיימר תרגול הופעל (2 דקות לתשובה ממוקדת).', 'info');
+
+    studioStarTimerInterval = setInterval(() => {
+      studioStarTimerRemaining--;
+      const mins = String(Math.floor(studioStarTimerRemaining / 60)).padStart(2, '0');
+      const secs = String(studioStarTimerRemaining % 60).padStart(2, '0');
+      display.textContent = `${mins}:${secs}`;
+
+      if (studioStarTimerRemaining <= 30 && studioStarTimerRemaining > 0) {
+        btn.classList.add('warning');
+      }
+
+      if (studioStarTimerRemaining <= 0) {
+        clearInterval(studioStarTimerInterval);
+        studioStarTimerInterval = null;
+        btn.classList.remove('running', 'warning');
+        display.textContent = '00:00';
+        notifyStudio('הזמן המומלץ לתשובה (2 דקות) הסתיים! סכם את התוצאה ובדוק את התשובה.', 'warning');
+      }
+    }, 1000);
+  }
+
   async function loadPdfJsLibrary() {
-    if (window.pdfjsLib) return window.pdfjsLib;
+    if (window.pdfjsLib) {
+      if (!window.pdfjsLib.GlobalWorkerOptions || !window.pdfjsLib.GlobalWorkerOptions.workerSrc) {
+        try {
+          const workerBlob = new Blob(
+            ['importScripts("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js");'],
+            { type: 'application/javascript' }
+          );
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(workerBlob);
+        } catch (e) {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+      }
+      return window.pdfjsLib;
+    }
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      const timeoutId = setTimeout(() => {
+        reject(new Error('PDF.js loading timeout'));
+      }, 5000);
       script.onload = () => {
+        clearTimeout(timeoutId);
         if (window.pdfjsLib) {
           try {
             const workerBlob = new Blob(
@@ -4919,52 +5034,63 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           reject(new Error('PDF engine not initialized'));
         }
       };
-      script.onerror = () => reject(new Error('Failed to load PDF library'));
+      script.onerror = () => {
+        clearTimeout(timeoutId);
+        reject(new Error('Failed to load PDF library'));
+      };
       document.head.appendChild(script);
     });
   }
 
   async function extractTextFromPdf(file) {
-    const pdfLib = await loadPdfJsLibrary();
-    const arrayBuffer = await file.arrayBuffer();
-    const loadingTask = pdfLib.getDocument({
-      data: arrayBuffer,
-      cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
-      cMapPacked: true,
-      enableXfa: true
-    });
-    const pdf = await loadingTask.promise;
-    let fullText = '';
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      const page = await pdf.getPage(pageNum);
-      const textContent = await page.getTextContent();
-      let pageText = '';
-      let lastY = null;
-      for (const item of (textContent.items || [])) {
-        if (!item.str && !item.hasEOL) continue;
-        const currentY = item.transform ? item.transform[5] : null;
-        if (lastY !== null && currentY !== null && Math.abs(currentY - lastY) > 3) {
-          if (Math.abs(currentY - lastY) > 16) {
-            pageText += '\n\n';
-          } else {
+    const extractionPromise = (async () => {
+      const pdfLib = await loadPdfJsLibrary();
+      const arrayBuffer = await file.arrayBuffer();
+      const loadingTask = pdfLib.getDocument({
+        data: arrayBuffer,
+        cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
+        cMapPacked: true,
+        enableXfa: true
+      });
+      const pdf = await loadingTask.promise;
+      let fullText = '';
+      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        const page = await pdf.getPage(pageNum);
+        const textContent = await page.getTextContent();
+        let pageText = '';
+        let lastY = null;
+        for (const item of (textContent.items || [])) {
+          if (!item.str && !item.hasEOL) continue;
+          const currentY = item.transform ? item.transform[5] : null;
+          if (lastY !== null && currentY !== null && Math.abs(currentY - lastY) > 3) {
+            if (Math.abs(currentY - lastY) > 16) {
+              pageText += '\n\n';
+            } else {
+              pageText += '\n';
+            }
+          } else if (item.hasEOL) {
+            pageText += '\n';
+          } else if (pageText.length > 0 && !pageText.endsWith('\n') && !pageText.endsWith(' ')) {
+            pageText += ' ';
+          }
+          pageText += (item.str || '');
+          if (item.hasEOL && !pageText.endsWith('\n')) {
             pageText += '\n';
           }
-        } else if (item.hasEOL) {
-          pageText += '\n';
-        } else if (pageText.length > 0 && !pageText.endsWith('\n') && !pageText.endsWith(' ')) {
-          pageText += ' ';
+          if (currentY !== null) {
+            lastY = currentY;
+          }
         }
-        pageText += (item.str || '');
-        if (item.hasEOL && !pageText.endsWith('\n')) {
-          pageText += '\n';
-        }
-        if (currentY !== null) {
-          lastY = currentY;
-        }
+        fullText += pageText.trim() + '\n\n';
       }
-      fullText += pageText.trim() + '\n\n';
-    }
-    return fullText.trim();
+      return fullText.trim();
+    })();
+
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('PDF extraction timed out')), 6000)
+    );
+
+    return Promise.race([extractionPromise, timeoutPromise]);
   }
 
   async function handleStudioCvUpload(files) {
@@ -5320,8 +5446,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       sheet.appendChild(ul);
     }
     const li = document.createElement('li');
+    li.className = 'bullet-just-injected';
     li.textContent = bullet;
     ul.appendChild(li);
+    setTimeout(() => {
+      li.classList.remove('bullet-just-injected');
+    }, 2500);
 
     syncLiveA4ToMobile();
     updateLiveA4WordCount();
@@ -5400,13 +5530,22 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (!sheet || !pkg) return;
 
     const isCover = (studioActivePreviewDocTab === 'cover_letter');
-    const md = isCover ? (pkg.cover_letter_markdown || '') : (pkg.cv_markdown || '');
+    let md = isCover ? (pkg.cover_letter_markdown || '') : (pkg.cv_markdown || '');
+    if (!isCover && (!md || md.trim().length < 20)) {
+      md = getCandidateProfileMarkdownFallback(pkg.title);
+      pkg.cv_markdown = md;
+    }
     const isEn = (pkg.lang === 'en');
     const dir = isEn ? 'ltr' : 'rtl';
 
     sheet.setAttribute('dir', dir);
     const nodes = createSafeMarkdownNodes(md, dir);
-    sheet.replaceChildren(...nodes);
+    if (nodes && nodes.length > 0) {
+      sheet.replaceChildren(...nodes);
+    } else {
+      const fallbackNodes = createSafeMarkdownNodes(getCandidateProfileMarkdownFallback(pkg.title), 'rtl');
+      sheet.replaceChildren(...fallbackNodes);
+    }
 
     syncLiveA4ToMobile();
     updateLiveA4WordCount();
@@ -6199,3 +6338,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   window.computeLocalStarEvaluation = computeLocalStarEvaluation;
   window.openStudioMobilePreview = openStudioMobilePreview;
   window.closeStudioMobilePreview = closeStudioMobilePreview;
+  window.resetStudioCvToDefault = resetStudioCvToDefault;
+  window.loadSampleStudioJob = loadSampleStudioJob;
+  window.toggleStudioStarTimer = toggleStudioStarTimer;
