@@ -37,10 +37,7 @@ Activated automatically when working on matched file paths:
 - [supabase-state-integrity-guard.md](.agents/rules/supabase-state-integrity-guard.md): Guarantees non-destructive, additive upsert contracts for user triage records (`starred`, `saved`, `rejected`, notes) on Supabase Cloud Database (`supabase/**, frontend/js/**, docs/dashboard.js, scripts/*cloud*`).
 - [DESIGN.md](DESIGN.md): Read `DESIGN.md` before changing any UI — single source of truth for colors, typography, spacing, component states, layout rules, and open design consolidation questions.
 - [ui-invariants-symmetry-guard.md](.agents/rules/ui-invariants-symmetry-guard.md): UI invariants, desktop symmetry, dark-mode tokens, and zero synthetic logo rules for HTML/CSS/JS assets (`*.html, *.css, *.js, frontend/**, docs/**, src/ui_builder.py`).
-- [realism-grounding.md](.agents/rules/realism-grounding.md): Enforces 100% candidate realism, locked original job titles, and zero credential fabrication across all tailored CV and cover letter workflows (`.agents/skills/cv-tailor/**, tools/cv_tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**`).
-- [cover-letter-policy.md](.agents/rules/cover-letter-policy.md): Mandates explicit user confirmation before authoring cover letters.
-- [language-generation-policy.md](.agents/rules/language-generation-policy.md): Defaults tailored CV outputs to Hebrew; requires explicit user instruction for English versions.
-- [file-naming-and-save-policy.md](.agents/rules/file-naming-and-save-policy.md): Enforces clear, short, standardized file naming conventions and user save confirmations.
+- [cv-tailor-invariants.md](.agents/rules/cv-tailor-invariants.md): Enforces 100% candidate realism, locked original job titles, zero credential fabrication, Hebrew default, opt-in cover letters, and clean file naming across all tailored CV and cover letter workflows (`.agents/skills/cv-tailor/**, tools/cv_tailor/**, docs/career/cv/**, frontend/data/cv/**, output/**`).
 
 ---
 
