@@ -19,6 +19,7 @@ Project behaviors and safety constraints are partitioned into modular, single-re
 These rules are loaded into context unconditionally:
 
 - [zero-emojis.md](.agents/rules/zero-emojis.md): Strict, absolute ban on all pictorial Unicode emojis and Dingbats across all code, comments, commit messages, PR descriptions, markdown artifacts, and conversational replies.
+- [concise-communication.md](.agents/rules/concise-communication.md): Mandates concise, high-signal conversational replies, direct answers without introductory or concluding fluff, while strictly preserving technical accuracy, paths, and commands.
 - [pre-push-verification-and-living-docs.md](.agents/rules/pre-push-verification-and-living-docs.md): Requires clean execution of validation scripts and full unit test suite before any commit. Mandates same-commit updates to `TASKS.md`, `PROJECT_CONTEXT.md`, and `README.md`.
 - [single-source-and-replaceability-guard.md](.agents/rules/single-source-and-replaceability-guard.md): Enforces single source of truth, modular component replaceability across scrapers, database persistence, UI, and bulk data lockout on `data/*.json`.
 - [critical-thinking-quality.md](.agents/rules/critical-thinking-quality.md): Uncompromising quality floor. Active evaluation of proposals, identification of failure modes, and empirical verification before declaring task completion.
