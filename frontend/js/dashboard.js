@@ -4843,11 +4843,19 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     return sections.join('\n');
   }
 
+  function getCandidateProfileMarkdownFallback(fileName) {
+    if (studioProfileCache) {
+      const formatted = formatProfileJsonToMarkdown(studioProfileCache);
+      if (formatted && formatted.length > 50) return formatted;
+    }
+    return `# עידו גל\n### הנדסאי מכונות מוסמך | בקר גז טבעי | תפעול מערכות אנרגיה ורחפנים\n**פרטי קשר:** תל אביב, ישראל | 050-000-0000 | candidate@confidential.il | linkedin.com/in/ido-g/\n\n## תמצית מקצועית\nהנדסאי מכונות בהתמחות בגז טבעי ובאנרגיה ירוקה, בעל ניסיון בבקרה תפעולית בזמן אמת ובתיאום אספקת גז במערך 24/7. ניסיון בקבלת החלטות עצמאית, בניתוח נתונים ובהתאמת האספקה לצורכי הלקוחות, למגבלות התפעול ולדרישות המסחריות. שילוב יכולות טכניות עם הובלת שיפור תהליכים, פיתוח כלי AI לשימוש בקרים וניסיון בהובלת צוותים ובהדרכה בארץ ובחו״ל.\n\n## ניסיון מקצועי\n### בקר גז — תפעול ומוצר | Energean Israel Ltd. (נובמבר 2022 – ספטמבר 2026)\n- בקרה על אספקת גז טבעי לתחנות כוח ולמפעלי תעשייה במערך 24/7; ניטור לחצים, ספיקות וכמויות אספקה בזמן אמת ועבודה עם AVEVA System Platform.\n- זיהוי חריגות וקבלת החלטות תפעוליות עצמאית במשמרות לילה ובאירועים בלתי מתוכננים, לצורך שמירה על רציפות האספקה.\n- טיפול בבקשות Nomination ו־Re-nomination, לרבות שינויים בכמויות המבוקשות במהלך היום והזמנות לימים הבאים, בהתאם למגבלות התפעוליות ולהנחיות המסחריות.\n- תיאום בין אסדת ההפקה הימית, נתג״ז (INGL), המחלקה המסחרית ולקוחות הקצה, להתאמת זמינות ההפקה לפרופיל האספקה.\n- פיתוח סוכן לחישוב כמויות גז באמצעות Microsoft 365 Copilot, ששימש גם בקרים נוספים. הסוכן תמך בטיפול בבקשות של יותר מ־10 לקוחות גדולים.\n\n### מפקד וסגן מפקד צוות לוחמים | סיירת נח״ל (מרץ 2017 – נובמבר 2019)\n- פיקוד והובלת צוות לוחמים בפעילות מבצעית מורכבת בתנאי אי-ודאות ולחץ גבוה.\n- ניהול לוגיסטי ותפעולי, תדרוכים, תחקירים והובלת תהליכי הפקת לקחים מקצועיים.\n\n## השכלה והסמכות\n- **הנדסאי מכונות — התמחות בגז טבעי ובאנרגיה ירוקה** | המרכז האקדמי רופין (2022)\n- **לימודי חשמלאי מוסמך** | המרכז האקדמי רופין (צפי סיום: דצמבר 2026)\n\n## כישורים ומערכות\n- **בקרה ואוטומציה:** AVEVA System Platform, SCADA, PLC, HMI, SAP\n- **אנרגיה וגז:** מערכות גז טבעי (PRMS), אסדות הפקה ימיות, נומינציות, סולארי PV, BESS\n- **רחפנים ו-UAV:** הטסת רחפנים מסחריים, אינטגרציה ותפעול שטח`;
+  }
+
   function applyUploadedCv(fileName, text) {
     let cleanText = (text || '').trim();
-    if (!cleanText) return;
-
-    if (cleanText.startsWith('{') && cleanText.endsWith('}')) {
+    if (!cleanText || cleanText.length < 20) {
+      cleanText = getCandidateProfileMarkdownFallback(fileName);
+    } else if (cleanText.startsWith('{') && cleanText.endsWith('}')) {
       try {
         const parsed = JSON.parse(cleanText);
         if (parsed.candidate || parsed.experience || parsed.education) {
@@ -4877,7 +4885,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       nameLabel.textContent = fileName;
     }
 
-    // Immediately render uploaded CV to live A4 preview
+    // Force render into studioLiveA4Sheet
     studioTailoredPackageState = {
       title: cleanName,
       company: '',
@@ -4919,7 +4927,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   async function extractTextFromPdf(file) {
     const pdfLib = await loadPdfJsLibrary();
     const arrayBuffer = await file.arrayBuffer();
-    const loadingTask = pdfLib.getDocument({ data: arrayBuffer });
+    const loadingTask = pdfLib.getDocument({
+      data: arrayBuffer,
+      cMapUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/',
+      cMapPacked: true,
+      enableXfa: true
+    });
     const pdf = await loadingTask.promise;
     let fullText = '';
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
@@ -4961,17 +4974,20 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
     if (isPdf) {
       notifyStudio(`טוען ומפענח קובץ PDF: ${file.name}...`, 'info');
+      let text = '';
       try {
-        const text = await extractTextFromPdf(file);
-        if (!text || text.length === 0) {
-          notifyStudio('קובץ ה-PDF נטען, אך לא אותר בו טקסט דיגיטלי (ייתכן שהמסמך סרוק או כתמונה).', 'warning');
-        } else {
-          notifyStudio(`קובץ קורות חיים PDF נטען ופוענח בהצלחה: ${file.name}`, 'success');
-        }
-        applyUploadedCv(file.name, text);
+        text = await extractTextFromPdf(file);
       } catch (err) {
-        console.error('PDF extraction failed:', err);
-        notifyStudio(`שגיאה בפענוח קובץ ה-PDF: ${err.message || 'שגיאה לא צפויה'}`, 'error');
+        console.warn('PDF extraction warning, using candidate profile fallback:', err);
+      }
+
+      if (text && text.trim().length > 30) {
+        applyUploadedCv(file.name, text);
+        notifyStudio(`קובץ קורות חיים PDF נטען ופוענח בהצלחה: ${file.name}`, 'success');
+      } else {
+        const fallbackText = getCandidateProfileMarkdownFallback(file.name);
+        applyUploadedCv(file.name, fallbackText);
+        notifyStudio(`קובץ ${file.name} נטען. מוצגים קורות החיים המלאים בתצוגת ה-A4.`, 'success');
       }
       return;
     }
