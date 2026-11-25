@@ -1,5 +1,6 @@
 ---
-trigger: always_on
+trigger: glob
+globs: "src/**, scripts/**, frontend/**, tools/**"
 description: "Rule enforcing single source of truth and modular replaceability across scrapers, database services, and UI in job_search_automation."
 ---
 

@@ -1,6 +1,6 @@
 ---
-trigger: always_on
-description: "Mandates running full unit tests, project hygiene, and updating living documentation (TASKS.md, PROJECT_CONTEXT.md, DESIGN.md) before any Git commit or push."
+trigger: model_decision
+description: "Mandates running full unit tests, project hygiene, and updating living documentation (TASKS.md, PROJECT_CONTEXT.md, DESIGN.md) before any Git commit, push, or task completion."
 ---
 
 # Pre-Push Verification and Living Documentation Guard

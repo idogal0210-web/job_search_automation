@@ -9,7 +9,7 @@ description: "Enforces 1:1 dual-template synchronization between frontend/ sourc
 ## 1. Core Architecture & Single Source of Truth
 In `job_search_automation`, the web application follows a strict Dual-Template architecture:
 - **Source of Truth:** Modular source files under `frontend/`:
-  - `frontend/templates/index.html` (layout shell, metadata slots, Career Studio split-pane)
+  - `frontend/templates/index.html` (layout shell and metadata slots)
   - `frontend/css/dashboard.css` (modular styling and design tokens)
   - `frontend/js/dashboard.js` (client-side application logic, state adapters, Supabase sync)
   - `frontend/templates/email_report.html` (externalized daily email digest template)

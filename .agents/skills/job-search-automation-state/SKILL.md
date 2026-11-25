@@ -12,7 +12,7 @@ description: "Maintains Ido Gal's job-search policy and evaluates energy, gas, s
 - **Core Pipeline Entrypoints:**
   - CLI & Orchestration: `main.py`, `src/pipeline.py`, `src/config.py`
   - Policy & Evaluation: `src/job_policy.py`, `src/evaluators.py`, `src/gemini_runtime.py` (`GeminiPool` via official `google-genai` SDK with Pydantic structured output validation), `prompts/job_evaluation_v1.txt`
-  - Multi-Source Fetchers: `src/fetchers.py` + `src/ats_client.py` (LinkedIn, Drushim, multi-company Direct ATS for Comeet, Greenhouse, Lever configured in `search-preferences.json` `ats_boards`) + MCP 3-tier discovery/extraction (`Tavily` for discovery, `api-anything` for API-first ATS querying / `call_batch` / `changes` delta checks / `learn_site`, and surgical `Firecrawl` only as JS/SPA fallback)
+  - Multi-Source Fetchers: `src/fetchers.py` + `src/ats_client.py` (LinkedIn, Drushim, multi-company Direct ATS for Comeet, Greenhouse, Lever configured in `search-preferences.json` `ats_boards`) + MCP 3-tier discovery/extraction (`Parallel` free `web_search`/`web_fetch`, `Tavily` for discovery, and surgical `Firecrawl` only as JS/SPA fallback)
   - Compensation & State: `src/salary_engine.py`, `src/state_manager.py`, `data/jobs_state.json`, `data/evaluation_state.json`, `data/historical_catalog.json`, and Supabase Cloud Sync (`public.sync_state`)
 
 ## 2. Vacancy Evaluation Rules (Iron Rules)

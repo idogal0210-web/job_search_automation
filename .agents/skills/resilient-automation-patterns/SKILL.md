@@ -1,11 +1,11 @@
 ---
 name: resilient-automation-patterns
-description: "Ensures unattended automations (cron jobs, scrapers, GeminiPool LLM calls, Tavily/api-anything/Firecrawl extraction, inactive job scanner, loopback Studio Bridge, and versioned Supabase CAS cloud sync) in job_search_automation are fault-tolerant, credit-safe, SSRF-protected, observable, and idempotent."
+description: "Ensures unattended automations (cron jobs, scrapers, GeminiPool LLM calls, Parallel/Tavily/Firecrawl extraction, inactive job scanner, loopback Studio Bridge, and versioned Supabase CAS cloud sync) in job_search_automation are fault-tolerant, credit-safe, SSRF-protected, observable, and idempotent."
 ---
 
 # Resilient Automation Patterns (`job_search_automation`)
 
-Make every unattended run (`main.py`, `src/pipeline.py`, `scripts/scan_inactive_jobs.py`, `.github/workflows/daily_job_search.yml`) **observable, credit-safe, recoverable, and idempotent**. Assume every external dependency (LinkedIn, Drushim, Comeet, Greenhouse, Lever, Gemini API, Tavily, api-anything, Firecrawl, Supabase, SMTP) will eventually fail or rate-limit.
+Make every unattended run (`main.py`, `src/pipeline.py`, `scripts/scan_inactive_jobs.py`, `.github/workflows/daily_job_search.yml`) **observable, credit-safe, recoverable, and idempotent**. Assume every external dependency (LinkedIn, Drushim, Comeet, Greenhouse, Lever, Gemini API, Parallel, Tavily, Firecrawl, Supabase, SMTP) will eventually fail or rate-limit.
 
 ## 1. Multi-Model Gemini Fallback Pool (`src/gemini_runtime.py`)
 - **Ordered Model Rotation (`GeminiPool`):** Execute structured evaluations using the configured fallback chain:
@@ -15,7 +15,7 @@ Make every unattended run (`main.py`, `src/pipeline.py`, `scripts/scan_inactive_
 
 ## 2. Three-Tier Scraper & MCP Credit Protection (`src/fetchers.py`, `src/ats_client.py` & MCP Policy)
 - **Tier 1 — Fast Static Fetchers, Direct ATS APIs & `Tavily` Discovery:** Use native Python fetchers (`src/fetchers.py` including 15 batched OR queries across 75 target companies on LinkedIn, Drushim, and `src/ats_client.py` for Comeet, Greenhouse, Lever, Ashby) and `Tavily` MCP for initial job discovery and domain verification.
-- **Tier 1.5 — `api-anything` MCP (API-First Extraction & Delta Polling):** Use `api-anything` (`call_operation`, `call_batch`, `learn_site`) to inspect, learn, and poll external career sites via HTTP/JSON (`changes: true` / `changesOnly: true`) before spending Firecrawl credits or launching a browser. Respect `retryAfterMs` on `rate` responses.
+- **Tier 1.5 — `Parallel` MCP (Free Web Search & Fetch):** Prefer `parallel_parallel-search` (`web_search`, `web_fetch`) for free live web discovery and page fetching before spending `Tavily` or `Firecrawl` credits.
 - **Tier 2 — Surgical `Firecrawl` Extraction:** Invoke `Firecrawl` MCP **only** when Tier 1/1.5 fails or a specific job URL requires heavy JS/SPA rendering. Never run bulk/broad crawling on `Firecrawl` to prevent credit exhaustion.
 - **Per-Source Circuit Breaker:** Track consecutive failures per source via `CircuitBreaker` (`src/fetchers.py`, `main.py`). After 3 consecutive failures, open the circuit for that source (`[CIRCUIT OPEN] <source>`), log the degradation, and continue the pipeline with remaining healthy sources.
 

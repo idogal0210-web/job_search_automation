@@ -1,6 +1,6 @@
 ---
 trigger: model_decision
-description: "MCP server policies, triggers, credit conservation, and safety restrictions whenever using or configuring tavily, firecrawl, chrome-devtools, github, supabase_mcp, or gemini-api-docs in job_search_automation."
+description: "MCP server policies, triggers, credit conservation, and safety restrictions whenever using or configuring parallel_parallel-search, tavily, firecrawl, chrome-devtools, github, supabase_mcp, or gemini-api-docs in job_search_automation."
 ---
 
 # מדיניות והנחיות שימוש בשרתי MCP — פרויקט job_search_automation
@@ -15,7 +15,8 @@ description: "MCP server policies, triggers, credit conservation, and safety res
 
 | שרת MCP | תפקיד במערכת | מתי חובה להפעיל? (Trigger) | מתי אסור להפעיל? (Restrictions) |
 | :--- | :--- | :--- | :--- |
-| **`tavily`** | שכבת גילוי ראשונית (שלב 1 בסריקה), איתור משרות חדשות ברשת ואימות דומיינים. | • בעת חיפוש משרות חדשות של חברות יעד (אנרגיה, גז, רחפנים, SCADA).<br>• בעת אימות כתובת URL של חברה או בדיקת דומיין. | • אין להשתמש בו לגירוד עמוק של דפי פורטל מורכבים (השתמש ב-Firecrawl או בסקרייפרים ייעודיים ב-Python).<br>• אין לבצע חיפושים כלליים שאינם קשורים למשרות. |
+| **`parallel_parallel-search`** | שכבת חיפוש ושליפת דפים חינמית (שלב 1 מועדף לפני ניצול קרדיטים של Tavily/Firecrawl). | • בחיפוש משרות, אימות חברות ושליפת תוכן עמודי אינטרנט רגילים (`web_search`, `web_fetch`). | • לא נועד לעקיפת הגנות JS/SPA כבדות (למקרים אלו להעביר ל-Firecrawl). |
+| **`tavily`** | שכבת גילוי משלימה (שלב 1.5), איתור משרות חדשות ברשת ואימות דומיינים. | • כאשר `parallel_parallel-search` אינו מספק תוצאות מספקות לחברות יעד (אנרגיה, גז, רחפנים, SCADA). | • אין להשתמש בו לגירוד עמוק של דפי פורטל מורכבים (השתמש ב-Firecrawl או בסקרייפרים ייעודיים ב-Python).<br>• אין לבצע חיפושים כלליים שאינם קשורים למשרות. |
 | **`firecrawl`** | שכבת חילוץ עמוקה ומוצא אחרון (שלב 3 בסריקה) לדפי קריירה מורכבים בלבד (SPA כבד). | • אך ורק כאשר לינק משרה נכשל בחילוץ ישיר, או כשהדף מרונדר ב-JS כבד במיוחד ודורש חילוץ טקסט מלא של דרישות המשרה. | • אסור להפעיל אותו ככלי חיפוש ראשוני (מבזבז קרדיטים).<br>• יש להפעיל באופן כירורגי על לינק בודד בלבד ולא בסריקות שטח המוניות. |
 | **`chrome-devtools`** | בדיקות UI, אימות נראות רספונסיבית של הדשבורד ודיבאגינג בדפדפן. | • בעת עדכון או תיקון קוד של ממשק הדשבורד (`docs/index.html` או `src/ui_builder.py`).<br>• כשהמשתמש מבקש לבדוק פריסת כרטיסיות, פילטרים או תצוגת מובייל. | • אסור להפעיל בריצות סריקת משרות אוטומטיות (Cron/Headless).<br>• אין להפעיל כשאין שינוי או בדיקה הקשורים ל-UI. |
 | **`github`** | ניטור ובקרה של GitHub Actions, בדיקת לוגים וסנכרון גרסאות. | • בעת דיווח על כשל בריצת ה-Cron היומית ב-GitHub Actions.<br>• בעת צורך בסנכרון קוד, Push ל-main או בדיקת היסטוריית ריצות. | • אין להפעיל לקריאות סרק כשכל המידע הדרוש כבר קיים במאגר המקומי. |
