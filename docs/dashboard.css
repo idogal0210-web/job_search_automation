@@ -2224,15 +2224,72 @@ z-index: 100;
       align-items: center;
       gap: 10px;
       width: 100%;
+      margin-top: 8px;
     }
     .job-modal-bottom-bar .job-actions-bottom-row .btn-apply.btn-apply-elegant {
-      flex: 1;
+      flex: 1 1 auto;
+      width: auto;
       height: 44px;
       min-height: 44px;
       border-radius: 12px;
       font-size: 14px;
       font-weight: 700;
       gap: 8px;
+      background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+      border: 1px solid rgba(52, 211, 153, 0.5) !important;
+      color: #ffffff !important;
+      box-shadow: 0 2px 10px rgba(4, 120, 87, 0.35);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+    .job-modal-bottom-bar .job-actions-bottom-row .btn-open-in-studio {
+      flex: 0 0 auto;
+      height: 44px;
+      min-height: 44px;
+      border-radius: 12px;
+      padding: 0 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--accent-primary) !important;
+      border: 1px solid rgba(139, 92, 246, 0.45) !important;
+      background: rgba(139, 92, 246, 0.08) !important;
+      box-sizing: border-box;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 150ms ease, border-color 150ms ease;
+    }
+    @media (hover: hover) {
+      .job-modal-bottom-bar .job-actions-bottom-row .btn-open-in-studio:hover {
+        background: rgba(139, 92, 246, 0.18) !important;
+        border-color: rgba(139, 92, 246, 0.7) !important;
+      }
+    }
+    .job-modal-bottom-bar .job-actions-bottom-row .btn-alt-source {
+      flex: 0 0 auto;
+      height: 44px;
+      min-height: 44px;
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: var(--dashboard-gold) !important;
+      border: 1px solid rgba(255, 211, 104, 0.4) !important;
+      background: rgba(255, 211, 104, 0.08) !important;
+      box-sizing: border-box;
+      white-space: nowrap;
+      text-decoration: none;
     }
 
     .job-modal-bottom-bar .btn-apply {

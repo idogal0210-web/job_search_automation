@@ -216,9 +216,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     if (!job) {
       return {
         isNoGap: true,
-        badgeHtml: '<span class="gap-status-pill gap-status-ok">[OK] ללא פערי סף</span>',
-        statusHtml: '<span class="gap-text-ok">[OK] עונה על דרישות הסף</span>',
-        fullHtml: '<span class="gap-text-ok">[OK] ללא פערי סף מהותיים</span>'
+        badgeHtml: '<span class="gap-status-pill gap-status-ok">ללא פערי סף</span>',
+        statusHtml: '<span class="gap-text-ok">עונה על דרישות הסף</span>',
+        fullHtml: '<span class="gap-text-ok">ללא פערי סף מהותיים</span>'
       };
     }
     const insightRaw = stripEmojis(job.reasoning || job.experience_strengths || '').trim();
@@ -232,11 +232,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     let statusHtml = '';
 
     if (isNoGap) {
-      badgeHtml = '<span class="gap-status-pill gap-status-ok">[OK] ללא פערי סף</span>';
-      statusHtml = '<span class="gap-text-ok">[OK] עונה על דרישות הסף</span>';
+      badgeHtml = '<span class="gap-status-pill gap-status-ok">ללא פערי סף</span>';
+      statusHtml = '<span class="gap-text-ok">עונה על דרישות הסף</span>';
     } else {
-      badgeHtml = '<span class="gap-status-pill gap-status-alert">[פער] קיים פער סף</span>';
-      statusHtml = `<span class="gap-text-alert">[פער] ${escapeHtml(shortGap)}</span>`;
+      badgeHtml = '<span class="gap-status-pill gap-status-alert">קיים פער סף</span>';
+      statusHtml = `<span class="gap-text-alert">פער סף: ${escapeHtml(shortGap)}</span>`;
     }
 
     return {
@@ -1604,7 +1604,6 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     [['elmo motion control', 'אלמו'], 'elmomc.com'],
     [['pacaya', 'pacaya hr'], 'pacaya.co.il'],
     [['team 3', 'צוות 3', 'team 3 group'], 'team3.co.il'],
-    [['esp710'], 'esp710.com'],
     [['aitan'], 'aitan.com'],
     [['growings robotx', 'growings'], 'growings-robotx.com'],
     [['hct', 'hadarom container', 'הדרום קונטיינר'], 'hct.co.il'],
@@ -1668,6 +1667,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
   }
 
   const LOCAL_COMPANY_LOGOS = [
+    [['esp710'], 'assets/logos/esp710.png'],
     [['electra', 'אלקטרה'], 'assets/logos/electra.png'],
     [['alumenergy', 'אלומאנרג\'י', 'אלומנרג\'י', 'אלומנרג׳י', 'אלומוט'], 'assets/logos/alumenergy.png'],
     [['amarel', 'אמראל'], 'assets/logos/amarel.png'],
@@ -2524,15 +2524,15 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         </button>
         `}
       </div>
-      <div class="job-actions-bottom-row" style="width: 100%; margin-top: 8px; display: flex; gap: 8px; align-items: center;">
-        <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant" style="flex: 1;">
+      <div class="job-actions-bottom-row">
+        <a href="${safeLink}" target="_blank" rel="noopener noreferrer" class="btn-apply btn-apply-elegant">
           <span>הגש מועמדות באתר המשרה</span> <i class="ph-duotone ph-arrow-up-right"></i>
         </a>
-        <button type="button" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}); closeJobModal();" class="btn-triage btn-open-in-studio" style="padding: 10px 14px; font-size: 13px; color: var(--accent-primary); border-color: rgba(139, 92, 246, 0.4);" title="פתח משרה לעבודה בסטודיו קריירה">
+        <button type="button" onclick="openJobInCareerStudio(${escapeHtml(JSON.stringify(String(id)))}); closeJobModal();" class="btn-triage btn-open-in-studio" title="פתח משרה לעבודה בסטודיו קריירה">
           <i class="ph-duotone ph-sparkle"></i> <span>פתח בסטודיו</span>
         </button>
         ${Array.isArray(altLinksStore[id]) && altLinksStore[id].length > 0 ? `
-          <a href="${sanitizeUrl(altLinksStore[id][0])}" target="_blank" rel="noopener noreferrer" class="btn-triage" style="padding: 10px 14px; font-size: 13px; color: var(--dashboard-gold); border-color: rgba(255, 211, 104, 0.4);" title="מקור נוסף להגשת מועמדות (מוזג מכפילות)">
+          <a href="${sanitizeUrl(altLinksStore[id][0])}" target="_blank" rel="noopener noreferrer" class="btn-triage btn-alt-source" title="מקור נוסף להגשת מועמדות (מוזג מכפילות)">
             <i class="ph-duotone ph-link"></i> <span>מקור נוסף (${altLinksStore[id].length})</span>
           </a>
         ` : ''}
