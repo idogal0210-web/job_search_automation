@@ -347,7 +347,7 @@ class GeminiPool:
                 if active_client is None:
                     reasons[name] = "no_active_client"
                     break
-                key_failed = False
+                rotated_to_new_key = False
                 for attempt in range(self.max_attempts):
                     if self.last_request is not None:
                         self.sleep(max(0, self.min_interval - (self.clock() - self.last_request)))
@@ -394,7 +394,7 @@ class GeminiPool:
 
                         if key_pool and kind in {"daily_quota", "authentication", "rate_limit"}:
                             if key_pool.rotate_on_error(kind):
-                                key_failed = True
+                                rotated_to_new_key = True
                                 break
 
                         delay = max(2 ** (attempt + 1) + self.jitter(), retry_after(error))
@@ -409,10 +409,9 @@ class GeminiPool:
                         else:
                             base = 60 if kind == "rate_limit" else 15
                             state.open_until = self.clock() + max(delay, min(300, base * 2 ** min(state.failures - 1, 4)))
-                        key_failed = True
                         break
 
-                if not key_failed or not key_pool or key_pool.is_all_exhausted():
+                if not rotated_to_new_key or (key_pool and key_pool.is_all_exhausted()):
                     break
         raise EvaluationUnavailable(reasons)
 
