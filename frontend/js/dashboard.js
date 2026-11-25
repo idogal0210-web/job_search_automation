@@ -4477,17 +4477,25 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         const savedName = sessionStorage.getItem('studio_uploaded_cv_name');
         const savedText = sessionStorage.getItem('studio_uploaded_cv_text');
         if (savedName && savedText) {
-          studioProfileCache = Object.assign({}, studioProfileCache || {}, {
-            candidate_name: savedName.replace(/\.[^/.]+$/, ""),
-            custom_cv_text: savedText
-          });
-          const nameLabel = document.getElementById('studioCvFileNameLabel');
-          if (nameLabel) {
-            nameLabel.textContent = savedName;
-          }
+          applyUploadedCv(savedName, savedText);
+          return;
         }
       }
     } catch (e) {}
+
+    if (studioProfileCache && !studioTailoredPackageState) {
+      const defaultMd = formatProfileJsonToMarkdown(studioProfileCache);
+      if (defaultMd) {
+        studioTailoredPackageState = {
+          title: (studioProfileCache.candidate && studioProfileCache.candidate.name_he) || 'עידו גל',
+          company: '',
+          lang: 'he',
+          cv_markdown: defaultMd,
+          cover_letter_markdown: ''
+        };
+        renderTailoredPackageInA4(studioTailoredPackageState);
+      }
+    }
   }
 
   function switchDashboardAppMode(mode) {
@@ -4777,21 +4785,109 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     return isBlocked;
   }
 
+  function formatProfileJsonToMarkdown(data) {
+    if (!data) return '';
+    const sections = [];
+    const cand = data.candidate || {};
+    const name = cand.name_he || cand.name_en || data.candidate_name || 'עידו גל';
+    const title = cand.title_he || cand.title_en || '';
+    const contact = [cand.location, cand.phone, cand.email, cand.linkedin_url].filter(Boolean).join(' | ');
+
+    sections.push(`# ${name}`);
+    if (title) sections.push(`### ${title}`);
+    if (contact) sections.push(`**פרטי קשר:** ${contact}`);
+
+    const summary = cand.summary_he || cand.summary_en || data.summary;
+    if (summary) {
+      sections.push('');
+      sections.push('## תמצית מקצועית');
+      sections.push(summary);
+    }
+
+    if (Array.isArray(data.experience) && data.experience.length > 0) {
+      sections.push('');
+      sections.push('## ניסיון מקצועי');
+      data.experience.forEach(exp => {
+        const role = exp.role_he || exp.role_en || exp.role || '';
+        const comp = exp.company || '';
+        const period = exp.period || '';
+        sections.push(`### ${role} | ${comp} (${period})`);
+        if (Array.isArray(exp.bullets)) {
+          exp.bullets.forEach(b => sections.push(`- ${b}`));
+        }
+      });
+    }
+
+    if (Array.isArray(data.education) && data.education.length > 0) {
+      sections.push('');
+      sections.push('## השכלה והסמכות');
+      data.education.forEach(edu => {
+        const deg = edu.degree || '';
+        const inst = edu.institution || '';
+        const yr = edu.year || '';
+        sections.push(`- **${deg}** | ${inst} (${yr})`);
+        if (edu.final_project) sections.push(`  - פרויקט גמר: ${edu.final_project}`);
+      });
+    }
+
+    if (data.technical_skills && typeof data.technical_skills === 'object') {
+      sections.push('');
+      sections.push('## כישורים ומערכות');
+      Object.entries(data.technical_skills).forEach(([category, skills]) => {
+        if (Array.isArray(skills)) {
+          sections.push(`- **${category}:** ${skills.join(', ')}`);
+        }
+      });
+    }
+
+    return sections.join('\n');
+  }
+
   function applyUploadedCv(fileName, text) {
+    let cleanText = (text || '').trim();
+    if (!cleanText) return;
+
+    if (cleanText.startsWith('{') && cleanText.endsWith('}')) {
+      try {
+        const parsed = JSON.parse(cleanText);
+        if (parsed.candidate || parsed.experience || parsed.education) {
+          cleanText = formatProfileJsonToMarkdown(parsed);
+        }
+      } catch (e) {}
+    }
+
+    const isHebrew = /[\u0590-\u05FF]/.test(cleanText);
+    const lang = isHebrew ? 'he' : 'en';
+    const cleanName = fileName.replace(/\.[^/.]+$/, "");
+
     studioProfileCache = Object.assign({}, studioProfileCache || {}, {
-      candidate_name: fileName.replace(/\.[^/.]+$/, ""),
-      custom_cv_text: text
+      candidate_name: cleanName,
+      custom_cv_text: cleanText
     });
+
     try {
       if (typeof sessionStorage !== 'undefined') {
         sessionStorage.setItem('studio_uploaded_cv_name', fileName);
-        sessionStorage.setItem('studio_uploaded_cv_text', text);
+        sessionStorage.setItem('studio_uploaded_cv_text', cleanText);
       }
     } catch (err) {}
+
     const nameLabel = document.getElementById('studioCvFileNameLabel');
     if (nameLabel) {
       nameLabel.textContent = fileName;
     }
+
+    // Immediately render uploaded CV to live A4 preview
+    studioTailoredPackageState = {
+      title: cleanName,
+      company: '',
+      lang: lang,
+      cv_markdown: cleanText,
+      cover_letter_markdown: ''
+    };
+
+    setStudioPreviewDocTab('cv');
+    renderTailoredPackageInA4(studioTailoredPackageState);
   }
 
   async function loadPdfJsLibrary() {
@@ -4829,8 +4925,31 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
       const page = await pdf.getPage(pageNum);
       const textContent = await page.getTextContent();
-      const pageItems = (textContent.items || []).map(item => item.str || '');
-      fullText += pageItems.join(' ') + '\n\n';
+      let pageText = '';
+      let lastY = null;
+      for (const item of (textContent.items || [])) {
+        if (!item.str && !item.hasEOL) continue;
+        const currentY = item.transform ? item.transform[5] : null;
+        if (lastY !== null && currentY !== null && Math.abs(currentY - lastY) > 3) {
+          if (Math.abs(currentY - lastY) > 16) {
+            pageText += '\n\n';
+          } else {
+            pageText += '\n';
+          }
+        } else if (item.hasEOL) {
+          pageText += '\n';
+        } else if (pageText.length > 0 && !pageText.endsWith('\n') && !pageText.endsWith(' ')) {
+          pageText += ' ';
+        }
+        pageText += (item.str || '');
+        if (item.hasEOL && !pageText.endsWith('\n')) {
+          pageText += '\n';
+        }
+        if (currentY !== null) {
+          lastY = currentY;
+        }
+      }
+      fullText += pageText.trim() + '\n\n';
     }
     return fullText.trim();
   }
@@ -5339,21 +5458,33 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         h3.dir = targetDir;
         appendInlineBold(h3, line.slice(4));
         frag.push(h3);
-      } else if (line.startsWith('- ') || line.startsWith('* ')) {
+      } else if (line.startsWith('- ') || line.startsWith('* ') || line.startsWith('• ') || line.startsWith('· ')) {
         if (!currentList) {
           currentList = document.createElement('ul');
           currentList.dir = targetDir;
           frag.push(currentList);
         }
         const li = document.createElement('li');
+        li.dir = targetDir;
         appendInlineBold(li, line.slice(2));
         currentList.appendChild(li);
       } else {
         currentList = null;
-        const p = document.createElement('p');
-        p.dir = targetDir;
-        appendInlineBold(p, line);
-        frag.push(p);
+        const isHeaderLike = (line.length < 50 && (
+          line.endsWith(':') ||
+          /^(תמצית|ניסיון|השכלה|שירות|קורסים|כישורים|מערכות|שפות|הסמכות|פרויקטים|פרטים|summary|experience|education|skills|certifications|languages)/i.test(line)
+        ));
+        if (isHeaderLike) {
+          const h3 = document.createElement('h3');
+          h3.dir = targetDir;
+          appendInlineBold(h3, line);
+          frag.push(h3);
+        } else {
+          const p = document.createElement('p');
+          p.dir = targetDir;
+          appendInlineBold(p, line);
+          frag.push(p);
+        }
       }
     }
     return frag;
