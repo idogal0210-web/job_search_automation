@@ -12,8 +12,8 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css" integrity="sha384-nblAP2mo2pVPyMQZDw9Xy9Cwgs9lowushAYep4w5+Q9kF4Ibf3n0B/gCMVdR+Vqy" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css" integrity="sha384-pPVoXE8ft+zxKtxIDDI7SfTK6y95NHm4qa+hKEg/hs8VkjW5IP+9/dGOPCbDpUPl" crossorigin="anonymous" referrerpolicy="no-referrer">
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261125180807">
-  <link rel="stylesheet" href="ui-fixes.css?v=20261125180807">
+  <link rel="stylesheet" href="dashboard.css?v=20261125172908">
+  <link rel="stylesheet" href="ui-fixes.css?v=20261125172908">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -67,7 +67,7 @@
       <!-- Mobile Collapsible Summary Toggle Button -->
       <button type="button" class="metrics-summary-toggle" id="metricsToggleBtn" onclick="toggleMetricsExpand()" aria-expanded="false" aria-controls="collapsibleMetricsContent" aria-label="הרחב או צמצם פירוט מטריקות">
         <div class="metrics-summary-inline">
-          <span class="metric-summary-pill lime active-pill" title="משרות חדשות"><span id="summaryNewCount">23</span> חדשות</span>
+          <span class="metric-summary-pill lime active-pill" title="משרות חדשות"><span id="summaryNewCount">24</span> חדשות</span>
           <span class="metric-summary-pill gold" title="משרות בכוכב"><span id="summaryStarredCount">6</span> בכוכב</span>
           <span class="metric-summary-pill cyan" title="משרות שמורות"><span id="summarySavedCount">52</span> שמורות</span>
           <span class="metric-summary-pill rose" title="משרות שהוסרו"><span id="summaryRejectedCount">0</span> הוסרו</span>
@@ -112,7 +112,7 @@
             <div class="stat-cube-icon lime">
               <i class="ph-duotone ph-sparkle"></i>
             </div>
-            <div class="stat-cube-count" id="statNewCount">23</div>
+            <div class="stat-cube-count" id="statNewCount">24</div>
             <div class="stat-cube-label">משרות חדשות</div>
           </button>
 
@@ -271,7 +271,7 @@
         <div class="cards-view-header" style="margin-top: 0;">
           <div class="cards-count-summary">
             <i class="ph-duotone ph-briefcase" style="font-size: 18px; color: var(--dashboard-cyan);"></i>
-            <span id="visibleJobsCountText">סה״כ משרות חדשות: 23</span>
+            <span id="visibleJobsCountText">סה״כ משרות חדשות: 24</span>
           </div>
 
           <!-- Contextual Action Buttons in Toolbar -->
@@ -1117,16 +1117,16 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261125180807",
+      build_id: "20261125172908",
       schema_version: "2.0.0",
       generated_at: "25.11.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261125180807",
-      catalog_data_url: "data/historical_catalog.json?v=20261125180807",
+      jobs_data_url: "data/jobs.json?v=20261125172908",
+      catalog_data_url: "data/historical_catalog.json?v=20261125172908",
       supabase_url: "https://wvwdxpttwsrdbvvtiyoh.supabase.co",
       supabase_anon_key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2d2R4cHR0d3NyZGJ2dnRpeW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQyNjA0MTcsImV4cCI6MjEwOTgzNjQxN30.YUun0ttLje3gwWvOU-ACimAtX-xgbUbXhJoELCsx0V4"
     };
   </script>
-  <script src="dashboard.js?v=20261125180807" defer></script>
+  <script src="dashboard.js?v=20261125172908" defer></script>
 </body>
 </html>

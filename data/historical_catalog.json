@@ -26662,5 +26662,97 @@
     "p25": 11500,
     "p50": 13250,
     "p75": 15000
+  },
+  "https://il.linkedin.com/jobs/view/integration-specialist-at-esp710-4492386714": {
+    "link": "https://il.linkedin.com/jobs/view/integration-specialist-at-esp710-4492386714",
+    "title": "Integration Specialist",
+    "company": "ESP710",
+    "snippet": "ESP710\nis a dynamic defense-tech startup developing cutting-edge tactical UAVs, loitering munitions, and airborne systems at the forefront of aerial warfare technology.\nAbout the Role: We are\nlooking for a hands-on\nCore UAV R&D & Systems Integration Engineer\nto join our core R&D team and bring our aerial platforms to life. Working side-by-side with our Mechanical, Software, and Algorithm developers, you will take freshly prototyped mechanical platforms from the CAD/3D-printing stage and transform them into fully functional, combat-ready flying systems—from electronics and avionics build-up, through lab and GNSS-denied field flight testing, to operational delivery and soldier training.\nKey Responsibilities\nPrototype Bring-Up (From Shell to Flying System):\nPartner closely with the Mechanical R&D team to turn newly designed/3D-printed airframes into operational prototypes—performing precision soldering, harnessing, electronics assembly, and payload/sensor integration.\nAvionics & Flight Controller Mastery:\nConfigure, calibrate, and tune flight controllers (\nPX4, ArduPilot, Betaflight/INAV\n), ESCs, GPS/IMU sensors, and RF/video communication links for optimal flight performance.\nLab Validation & Live Field Trials:\nLead end-to-end testing from bench validation to live field flight trials—including complex operational scenarios such as\nGNSS-denied environments\n—and analyze flight logs to drive rapid R&D iterations.\nReal-Time Field Troubleshooting:\nDiagnose and solve multidisciplinary issues (hardware, RF, avionics, power, and mechanical interfaces) on the spot under field conditions.\nOperational Delivery & End-User Training:\nAccompany platforms through final operational acceptance, conducting live demonstrations and direct training for end-users/soldiers in the field.\nQualifications & Requirements\nHands-On UAV / Drone Builder:\nProven practical experience building, integrating, and flying UAVs, FPV/tactical drones, or loitering munitions from scratch (professional or elite military background).\nElectronics & Avionics Skills:\nStrong hands-on capabilities in electronics, fine soldering, wiring/harnessing, power systems, and RF/telemetry data links (UART, CAN, MAVLink, ELRS/analog/digital video).\nAutopilot & Tuning Proficiency:\nHands-on experience setting up, calibrating, and troubleshooting open-source or commercial flight controllers (\nPX4 / ArduPilot / Betaflight\n) and analyzing flight logs.\nField-First R&D Mindset:\nHigh independence, creativity, and ability to improvise, modify hardware/setups on the fly, and solve problems in real-time field environments.\nStrong Advantage:\nBackground in rapid-prototyping defense/aerospace environments, robotics startups, or hands-on tactical drone/FPV development and field operations.",
+    "query": "(\"Aeronautics\" OR \"BlueBird Aero Systems\" OR \"XTEND\" OR \"D-Fend Solutions\" OR \"Percepto\")",
+    "source": "LinkedIn",
+    "location": "ישראל",
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEGCZh_pjA90A/company-logo_100_100/company-logo_100_100/0/1733571590166/esp710_logo?e=2147483647&v=beta&t=7Bro2fpY-5pddP3FifGwdgxswtZoj8aRoO7ZcN59jbQ",
+    "date": "2026-11-25",
+    "source_id": "",
+    "is_direct_ats": "",
+    "description": "ESP710\nis a dynamic defense-tech startup developing cutting-edge tactical UAVs, loitering munitions, and airborne systems at the forefront of aerial warfare technology.\nAbout the Role: We are\nlooking for a hands-on\nCore UAV R&D & Systems Integration Engineer\nto join our core R&D team and bring our aerial platforms to life. Working side-by-side with our Mechanical, Software, and Algorithm developers, you will take freshly prototyped mechanical platforms from the CAD/3D-printing stage and transform them into fully functional, combat-ready flying systems—from electronics and avionics build-up, through lab and GNSS-denied field flight testing, to operational delivery and soldier training.\nKey Responsibilities\nPrototype Bring-Up (From Shell to Flying System):\nPartner closely with the Mechanical R&D team to turn newly designed/3D-printed airframes into operational prototypes—performing precision soldering, harnessing, electronics assembly, and payload/sensor integration.\nAvionics & Flight Controller Mastery:\nConfigure, calibrate, and tune flight controllers (\nPX4, ArduPilot, Betaflight/INAV\n), ESCs, GPS/IMU sensors, and RF/video communication links for optimal flight performance.\nLab Validation & Live Field Trials:\nLead end-to-end testing from bench validation to live field flight trials—including complex operational scenarios such as\nGNSS-denied environments\n—and analyze flight logs to drive rapid R&D iterations.\nReal-Time Field Troubleshooting:\nDiagnose and solve multidisciplinary issues (hardware, RF, avionics, power, and mechanical interfaces) on the spot under field conditions.\nOperational Delivery & End-User Training:\nAccompany platforms through final operational acceptance, conducting live demonstrations and direct training for end-users/soldiers in the field.\nQualifications & Requirements\nHands-On UAV / Drone Builder:\nProven practical experience building, integrating, and flying UAVs, FPV/tactical drones, or loitering munitions from scratch (professional or elite military background).\nElectronics & Avionics Skills:\nStrong hands-on capabilities in electronics, fine soldering, wiring/harnessing, power systems, and RF/telemetry data links (UART, CAN, MAVLink, ELRS/analog/digital video).\nAutopilot & Tuning Proficiency:\nHands-on experience setting up, calibrating, and troubleshooting open-source or commercial flight controllers (\nPX4 / ArduPilot / Betaflight\n) and analyzing flight logs.\nField-First R&D Mindset:\nHigh independence, creativity, and ability to improvise, modify hardware/setups on the fly, and solve problems in real-time field environments.\nStrong Advantage:\nBackground in rapid-prototyping defense/aerospace environments, robotics startups, or hands-on tactical drone/FPV development and field operations.",
+    "description_complete": true,
+    "status": "QUALIFIED",
+    "technical_role": true,
+    "match_score": 88,
+    "concrete_matches_count": 5,
+    "reasoning": "התאמה גבוהה לתפקיד אינטגרציית רחפנים ומערכות בלתי מאוישות בשטח.",
+    "sector_key": "drones",
+    "sector": "רחפנים ומערכות בלתי מאוישות",
+    "company_domain_product": "רחפנים טקטיים ואמצעי לחימה אוויריים מתקדמים",
+    "job_summary": "דרוש מהנדס אינטגרציה מעשי לפיתוח, הרכבה, כיול וטיסות ניסוי של רחפנים ומערכות אוויריות טקטיות.",
+    "experience_strengths": "רקע בניהול מבצעי, הבנה מערכתית רחבה, יכולות ידיים טובות והתמודדות עם תנאי שטח מורכבים.",
+    "key_highlights": "ניסיון מעשי בהפעלת מערכות, רקע פיקודי מבצעי, ויכולת למידה מהירה של מערכות אלקטרו-מכניות.",
+    "company_size": "חברת סטארט-אפ",
+    "junior_openness": "פתוח למפתחים ומהנדסים מעשיים עם רקע מעשי רלוונטי.",
+    "work_model": "היברידי / שטח",
+    "company_requirements": "ניסיון מעשי בבניית רחפנים, אלקטרוניקה, כיול בקר טיסה וניסויי שטח.",
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "requirement_assessments": [
+      {
+        "requirement": "Hands-On UAV / Drone Builder",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Proven practical experience building, integrating, and flying UAVs, FPV/tactical drones",
+          "source_field": "Qualifications & Requirements"
+        },
+        "profile_evidence": {
+          "quote": "drone/UAV integration and flight operations",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש רקע והיכרות עם אינטגרציה של רחפנים והפעלתם בשטח."
+      },
+      {
+        "requirement": "Field-First R&D Mindset",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "High independence, creativity, and ability to improvise, modify hardware/setups on the fly",
+          "source_field": "Qualifications & Requirements"
+        },
+        "profile_evidence": {
+          "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "רקע פיקודי קרבי מספק את יכולת האלתור והעבודה בתנאי לחץ בשטח הנדרשת לתפקיד."
+      }
+    ],
+    "evaluation_model": "gemini-flash-lite-latest",
+    "evaluation_source": "gemini",
+    "evaluation_complete": true,
+    "base_match_score": 88,
+    "priority_bonus": 0,
+    "is_target_company": false,
+    "disqualification_reason": "",
+    "target_category": "",
+    "target_tier": 0,
+    "evidence_status": "verified_quotes",
+    "salary_range": "14,000 - 19,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_source_url": "",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: רחפנים, כטב״ם ומערכות C-UAS.",
+    "salary_confidence": "low",
+    "quality_level": "medium",
+    "quality_reasons": [
+      "טבלת עזר פנימית ללא אימות מול סקר מקור",
+      "התאמה למגזר: רחפנים, כטב״ם ומערכות C-UAS"
+    ],
+    "estimate_type": "market_estimate",
+    "compensation_basis": "gross_base",
+    "pay_period": "month",
+    "has_shifts": false,
+    "has_company_car": false,
+    "is_normative_vehicle": false,
+    "has_on_call": false,
+    "p25": 14000,
+    "p50": 16500,
+    "p75": 19000
   }
 }
