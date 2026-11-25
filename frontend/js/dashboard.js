@@ -4472,6 +4472,22 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         // Offline fallback
       }
     }
+    try {
+      if (typeof sessionStorage !== 'undefined') {
+        const savedName = sessionStorage.getItem('studio_uploaded_cv_name');
+        const savedText = sessionStorage.getItem('studio_uploaded_cv_text');
+        if (savedName && savedText) {
+          studioProfileCache = Object.assign({}, studioProfileCache || {}, {
+            candidate_name: savedName.replace(/\.[^/.]+$/, ""),
+            custom_cv_text: savedText
+          });
+          const nameLabel = document.getElementById('studioCvFileNameLabel');
+          if (nameLabel) {
+            nameLabel.textContent = savedName;
+          }
+        }
+      }
+    } catch (e) {}
   }
 
   function switchDashboardAppMode(mode) {
@@ -4761,25 +4777,90 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
     return isBlocked;
   }
 
-  function handleStudioCvUpload(files) {
+  function applyUploadedCv(fileName, text) {
+    studioProfileCache = Object.assign({}, studioProfileCache || {}, {
+      candidate_name: fileName.replace(/\.[^/.]+$/, ""),
+      custom_cv_text: text
+    });
+    try {
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem('studio_uploaded_cv_name', fileName);
+        sessionStorage.setItem('studio_uploaded_cv_text', text);
+      }
+    } catch (err) {}
+    const nameLabel = document.getElementById('studioCvFileNameLabel');
+    if (nameLabel) {
+      nameLabel.textContent = fileName;
+    }
+  }
+
+  async function loadPdfJsLibrary() {
+    if (window.pdfjsLib) return window.pdfjsLib;
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      script.onload = () => {
+        if (window.pdfjsLib) {
+          try {
+            const workerBlob = new Blob(
+              ['importScripts("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js");'],
+              { type: 'application/javascript' }
+            );
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(workerBlob);
+          } catch (e) {
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          }
+          resolve(window.pdfjsLib);
+        } else {
+          reject(new Error('PDF engine not initialized'));
+        }
+      };
+      script.onerror = () => reject(new Error('Failed to load PDF library'));
+      document.head.appendChild(script);
+    });
+  }
+
+  async function extractTextFromPdf(file) {
+    const pdfLib = await loadPdfJsLibrary();
+    const arrayBuffer = await file.arrayBuffer();
+    const loadingTask = pdfLib.getDocument({ data: arrayBuffer });
+    const pdf = await loadingTask.promise;
+    let fullText = '';
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const textContent = await page.getTextContent();
+      const pageItems = (textContent.items || []).map(item => item.str || '');
+      fullText += pageItems.join(' ') + '\n\n';
+    }
+    return fullText.trim();
+  }
+
+  async function handleStudioCvUpload(files) {
     if (!files || files.length === 0) return;
     const file = files[0];
+    const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+
+    if (isPdf) {
+      notifyStudio(`טוען ומפענח קובץ PDF: ${file.name}...`, 'info');
+      try {
+        const text = await extractTextFromPdf(file);
+        if (!text || text.length === 0) {
+          notifyStudio('קובץ ה-PDF נטען, אך לא אותר בו טקסט דיגיטלי (ייתכן שהמסמך סרוק או כתמונה).', 'warning');
+        } else {
+          notifyStudio(`קובץ קורות חיים PDF נטען ופוענח בהצלחה: ${file.name}`, 'success');
+        }
+        applyUploadedCv(file.name, text);
+      } catch (err) {
+        console.error('PDF extraction failed:', err);
+        notifyStudio(`שגיאה בפענוח קובץ ה-PDF: ${err.message || 'שגיאה לא צפויה'}`, 'error');
+      }
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = function(e) {
       const text = e.target.result;
-      studioProfileCache = Object.assign({}, studioProfileCache || {}, {
-        candidate_name: file.name.replace(/\.[^/.]+$/, ""),
-        custom_cv_text: text
-      });
-      try {
-        if (typeof sessionStorage !== 'undefined') {
-          sessionStorage.setItem('studio_uploaded_cv_name', file.name);
-        }
-      } catch (err) {}
-      const nameLabel = document.getElementById('studioCvFileNameLabel');
-      if (nameLabel) {
-        nameLabel.textContent = file.name;
-      }
+      applyUploadedCv(file.name, text);
       notifyStudio(`קובץ קורות חיים נטען בהצלחה: ${file.name}`, 'success');
     };
     reader.readAsText(file);
