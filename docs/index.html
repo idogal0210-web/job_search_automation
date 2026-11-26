@@ -12,8 +12,8 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css" integrity="sha384-nblAP2mo2pVPyMQZDw9Xy9Cwgs9lowushAYep4w5+Q9kF4Ibf3n0B/gCMVdR+Vqy" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css" integrity="sha384-pPVoXE8ft+zxKtxIDDI7SfTK6y95NHm4qa+hKEg/hs8VkjW5IP+9/dGOPCbDpUPl" crossorigin="anonymous" referrerpolicy="no-referrer">
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" href="dashboard.css?v=20261126003158">
-  <link rel="stylesheet" href="ui-fixes.css?v=20261126003158">
+  <link rel="stylesheet" href="dashboard.css?v=20261126164422">
+  <link rel="stylesheet" href="ui-fixes.css?v=20261126164422">
 </head>
 <body dir="rtl">
 <div class="dashboard-app" dir="rtl">
@@ -250,15 +250,15 @@
         <!-- Sector Distribution Card -->
         <div class="dashboard-card" style="margin-bottom: 0; display: flex; flex-direction: column;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <h3 id="chartTitle" style="margin: 0; font-size: 16px; font-weight: 700;">התפלגות תחומים</h3>
+            <h3 id="chartTitle" style="margin: 0; font-size: 16px; font-weight: 700; white-space: nowrap;">התפלגות תחומים</h3>
             <span id="chartChip" class="dashboard-chip" style="color: var(--dashboard-cyan); border-color: rgba(137, 244, 231, 0.35);">פעיל</span>
           </div>
           <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 150px;">
             <canvas id="sectorChart" style="max-height: 150px; width: 100%;"></canvas>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 11.5px; color: var(--dashboard-muted);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 12px; color: var(--dashboard-muted);">
             <span>מקורות: LinkedIn, Drushim, ATS</span>
-            <button type="button" onclick="shareSyncLink()" class="dashboard-chip" aria-label="שיתוף קישור סנכרון" title="שיתוף קישור סנכרון" style="cursor: pointer; font-size: 11px; padding: 2px 8px;">
+            <button type="button" onclick="shareSyncLink()" class="dashboard-chip" aria-label="שיתוף קישור סנכרון" title="שיתוף קישור סנכרון" style="cursor: pointer; font-size: 12px; padding: 4px 10px; min-height: 28px;">
               <i class="ph-duotone ph-share-network"></i> שיתוף
             </button>
           </div>
@@ -1117,16 +1117,16 @@
 
   <script>
     window.__APP_CONFIG__ = {
-      build_id: "20261126003158",
+      build_id: "20261126164422",
       schema_version: "2.0.0",
       generated_at: "26.11.2026",
       report_type: "סריקה יומית",
-      jobs_data_url: "data/jobs.json?v=20261126003158",
-      catalog_data_url: "data/historical_catalog.json?v=20261126003158",
+      jobs_data_url: "data/jobs.json?v=20261126164422",
+      catalog_data_url: "data/historical_catalog.json?v=20261126164422",
       supabase_url: "https://wvwdxpttwsrdbvvtiyoh.supabase.co",
       supabase_anon_key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2d2R4cHR0d3NyZGJ2dnRpeW9oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQyNjA0MTcsImV4cCI6MjEwOTgzNjQxN30.YUun0ttLje3gwWvOU-ACimAtX-xgbUbXhJoELCsx0V4"
     };
   </script>
-  <script src="dashboard.js?v=20261126003158" defer></script>
+  <script src="dashboard.js?v=20261126164422" defer></script>
 </body>
 </html>

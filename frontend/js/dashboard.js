@@ -3242,7 +3242,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
 
       if (currentFilter === 'saved') {
         sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'saved' && jobStates[j.link] !== 'rejected' && jobStates[j.link] !== 'purged');
-        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שמורות';
+        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות תחומים';
         if (chartChipEl) {
           chartChipEl.innerHTML = `<i class="ph-duotone ph-bookmark-simple"></i> ${sourceJobs.length} שמורות`;
           chartChipEl.style.color = 'var(--dashboard-lime)';
@@ -3250,7 +3250,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         }
       } else if (currentFilter === 'starred') {
         sourceJobs = allAvailableJobs.filter(j => Boolean(starredJobs[j.link]) && jobStates[j.link] !== 'rejected' && jobStates[j.link] !== 'purged');
-        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות בכוכב';
+        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות תחומים';
         if (chartChipEl) {
           chartChipEl.innerHTML = `<i class="ph-fill ph-star"></i> ${sourceJobs.length} בכוכב`;
           chartChipEl.style.color = 'var(--dashboard-gold)';
@@ -3258,7 +3258,7 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
         }
       } else if (currentFilter === 'rejected') {
         sourceJobs = allAvailableJobs.filter(j => jobStates[j.link] === 'rejected');
-        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות שהוסרו';
+        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות תחומים';
         if (chartChipEl) {
           chartChipEl.innerHTML = `<i class="ph-duotone ph-trash"></i> ${sourceJobs.length} הוסרו`;
           chartChipEl.style.color = '#fca5a5';
@@ -3271,12 +3271,12 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           const isSt = Boolean(starredJobs[j.link]);
           return rawJobLinks.has(j.link) && !isSt && st !== 'saved' && st !== 'rejected' && st !== 'purged';
         });
-        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות משרות חדשות';
+        if (chartTitleEl) chartTitleEl.textContent = 'התפלגות תחומים';
         if (chartChipEl) {
           if (sourceJobs.length === 0) {
             chartChipEl.innerHTML = '<i class="ph-duotone ph-chart-bar"></i> 0 משרות';
           } else {
-            chartChipEl.innerHTML = `<i class="ph-duotone ph-chart-bar"></i> חדשות (${sourceJobs.length})`;
+            chartChipEl.innerHTML = `<i class="ph-duotone ph-chart-bar"></i> ${sourceJobs.length} חדשות`;
           }
           chartChipEl.style.color = 'var(--dashboard-cyan)';
           chartChipEl.style.borderColor = 'rgba(137, 244, 231, 0.35)';
@@ -3303,20 +3303,9 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
       const labels = Object.keys(counts);
       const data = Object.values(counts);
 
-      const colorMap = {
-        'סולאר': '#ffd368',
-        'בקרה ו-SCADA': '#89f4e7',
-        'רחפנים': '#34d399',
-        'תפעול ואחזקה': '#b4fcf1',
-        'אגירה': '#a0c03e',
-        'גז טבעי': '#fca5a5',
-        'אנרגיה': '#38bdf8',
-        'אין משרות להצגה': '#c0c5be'
-      };
-
-      const barColors = labels.map(l => colorMap[l] || '#89f4e7');
-
       const isLightMode = typeof document !== 'undefined' && document.documentElement && document.documentElement.getAttribute('data-theme') === 'light';
+      const defaultBarColor = isLightMode ? '#0284c7' : 'rgba(56, 189, 248, 0.85)';
+      const hoverBarColor = isLightMode ? '#0369a1' : '#38bdf8';
       const chartTextColor = isLightMode ? '#475569' : '#c0c5be';
       const chartGridColor = isLightMode ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.08)';
       const tooltipBg = isLightMode ? '#FFFFFF' : '#191d1b';
@@ -3330,9 +3319,10 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
           labels: labels,
           datasets: [{
             data: data,
-            backgroundColor: barColors,
-            borderRadius: 8,
-            borderSkipped: false,
+            backgroundColor: defaultBarColor,
+            hoverBackgroundColor: hoverBarColor,
+            borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
+            borderSkipped: 'bottom',
             maxBarThickness: 32
           }]
         },
@@ -3364,11 +3354,11 @@ let rawJobsData = (typeof __INLINE_JOBS_FALLBACK__ !== 'undefined') ? __INLINE_J
             y: {
               beginAtZero: true,
               suggestedMax: 5,
-              ticks: { stepSize: 1, color: chartTextColor, font: { family: 'Google Sans', size: 11 } },
+              ticks: { stepSize: 1, color: chartTextColor, font: { family: 'Google Sans', size: 12 } },
               grid: { color: chartGridColor }
             },
             x: {
-              ticks: { color: chartTextColor, font: { family: 'Google Sans', size: 10 } },
+              ticks: { color: chartTextColor, font: { family: 'Google Sans', size: 11 } },
               grid: { display: false }
             }
           }
