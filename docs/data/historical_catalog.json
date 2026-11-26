@@ -28742,5 +28742,355 @@
         "label": "עבודת שטח"
       }
     ]
+  },
+  "https://il.linkedin.com/jobs/view/project-manager-at-imco-industries-ltd-4493737529": {
+    "link": "https://il.linkedin.com/jobs/view/project-manager-at-imco-industries-ltd-4493737529",
+    "title": "Project Manager",
+    "company": "Imco Industries Ltd.",
+    "location": "יקנעם",
+    "date": "2026-11-26",
+    "source": "LinkedIn",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "energy_tech",
+    "company_domain_product": "קבוצת אימקו - חטיבה תעשייתית",
+    "company_summary": "",
+    "job_summary": "ניהול פרויקטים בייצור, תמיכה שוטפת ומעקב אחר לו\"ז, תקציבים, תיאום מול ממשקים פנימיים וספקים.",
+    "company_requirements": "הנדסאי מכונות/אלקטרוניקה/תו\"ן, 1-2 שנות ניסיון בניהול/ריכוז פרויקטים, שליטה ב-Priority וב-Office.",
+    "experience_strengths": "הנדסאי מכונות מוסמך, רקע חזק בתיאום תפעולי, ניהול משימות ורב-תחומיות.",
+    "reasoning": "התאמה מלאה לתפקיד ניהול פרויקטים הנדסי ותפעולי בקבוצת אימקו.",
+    "key_highlights": "הנדסאי מכונות, ניסיון בריכוז תהליכים, יכולת עבודה מול מחלקות הנדסה וייצור.",
+    "salary_range": "15,000 - 20,000 ₪ (מקובל רכב ענפי)",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: ניהול פרויקטים, תיאום הקמות ו-PMO טכני.",
+    "salary_source_url": "",
+    "p25": 15000,
+    "p75": 20000,
+    "logo": "https://media.licdn.com/dms/image/v2/C4D0BAQHPotyjos8wlw/company-logo_100_100/company-logo_100_100/0/1652685612268/imco_industried_ltd_logo?e=2147483647&v=beta&t=vBP8cwvidx48CY49AEPTv_HcwwjFcjUBuXS4PPBFaS4",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/C4D0BAQHPotyjos8wlw/company-logo_100_100/company-logo_100_100/0/1652685612268/imco_industried_ltd_logo?e=2147483647&v=beta&t=vBP8cwvidx48CY49AEPTv_HcwwjFcjUBuXS4PPBFaS4",
+    "snippet": "לחטיבה התעשייתית של קבוצת אימקו\nדרוש/ה מנהל/ת פרויקטים בייצור\nמיקום: יקנעם\nהגדרת התפקיד\n:\n• תמיכה שוטפת בפרויקטים והובלת משימות בתחומי התפעול, הייצור והלוגיסטיקה.\n• מעקב אחר לו\"ז, תקציבים ועמידה ביעדים בהתאם לתוכנית הפרויקט.\n• תיאום בין מחלקות פנימיות, ספקים וקבלני משנה, כולל איסוף נתונים ודיווחי סטטוס.\n• ריכוז תהליכים אדמיניסטרטיביים בפרויקט, כולל תיעוד, דוחות ועדכוני סטטוס.\n• הכנת חומרים לפגישות, תיאום דיוני סטטוס ומעקב אחר משימות לביצוע.\n• עבודה שוטפת עם מחלקות הרכש, ההנדסה, הייצור ואבטחת האיכות.\nדרישות התפקיד\n:\n• טכנאי/ת או הנדסאי/ת מכונות/אלקטרוניקה/תו\"ן - יתרון.\n• ניסיון של שנה-שנתיים בניהול או ריכוז פרויקטים – חובה.\n• יכולת עבודה בסביבה דינמית ומול מספר משימות במקביל.\n• ניסיון עבודה עם מערכת ה- Priority - חובה\n• שליטה טובה ביישומי Office ובמערכות ניהול פרויקטים.\n• יחסי אנוש מצוינים ויכולת הנעת ממשקים.",
+    "stable_job_id": "li_4493737529",
+    "content_hash": "ch_70f3ec464659",
+    "requirement_assessments": [
+      {
+        "requirement": "טכנאי/ת או הנדסאי/ת מכונות/אלקטרוניקה/תו\"ן",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "טכנאי/ת או הנדסאי/ת מכונות/אלקטרוניקה/תו\"ן - יתרון.",
+          "source_field": "job_requirements"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד הוא הנדסאי מכונות מוסמך."
+      },
+      {
+        "requirement": "ניסיון של שנה-שנתיים בניהול או ריכוז פרויקטים",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ניסיון של שנה-שנתיים בניהול או ריכוז פרויקטים – חובה.",
+          "source_field": "job_requirements"
+        },
+        "profile_evidence": {
+          "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע תפעולי והנדסי המאפשר השתלבות בריכוז פרויקטים."
+      },
+      {
+        "requirement": "ניסיון עבודה עם מערכת ה- Priority",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ניסיון עבודה עם מערכת ה- Priority - חובה",
+          "source_field": "job_requirements"
+        },
+        "profile_evidence": {
+          "quote": "Python automation, Gemini/Copilot AI workflows, SAP, Excel data modeling.",
+          "source_field": "Key Competencies"
+        },
+        "assessment": "gap",
+        "explanation": "בקורות החיים מצוין ניסיון ב-SAP וב-Excel, אך לא צויין במפורש ניסיון במערכת Priority."
+      }
+    ],
+    "fit_gaps": "לא צוין במודעה ניסיון ספציפי במערכת Priority בקורות החיים של המועמד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://il.linkedin.com/jobs/view/ai-systems-implementation-project-coordinator-26086-at-yael-group-4492349847": {
+    "link": "https://il.linkedin.com/jobs/view/ai-systems-implementation-project-coordinator-26086-at-yael-group-4492349847",
+    "title": "AI Systems Implementation & Project Coordinator(26086)",
+    "company": "Yael Group",
+    "location": "ישראל",
+    "date": "2026-11-26",
+    "source": "LinkedIn",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "energy_tech",
+    "company_domain_product": "Yael Group",
+    "company_summary": "",
+    "job_summary": "רכז פרויקטים והטמעת מערכות בינה מלאכותית, כולל עבודה עם Microsoft Copilot וכלים גנרטיביים.",
+    "company_requirements": "תואר ראשון רלוונטי, 2-3 שנות ניסיון בניהול פרויקטים ותיאום, שליטה ב-Microsoft Copilot, אוריינטציה טכנולוגית.",
+    "experience_strengths": "ניסיון מעשי באוטומציה מבוססת Python וכלי AI כמו Gemini ו-Copilot, לצד הבנה טכנולוגית חזקה.",
+    "reasoning": "מועמד מתאים לתפקיד ניהול פרויקטים וטכנולוגיות בינה מלאכותית בזכות רקע טכני ויכולות למידה.",
+    "key_highlights": "שילוב יכולות ניהול פרויקטים, אוריינטציה טכנולוגית גבוהה והיכרות עם כלי AI ו-Copilot.",
+    "salary_range": "15,000 - 20,000 ₪ (מקובל רכב ענפי)",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: ניהול פרויקטים, תיאום הקמות ו-PMO טכני.",
+    "salary_source_url": "",
+    "p25": 15000,
+    "p75": 20000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQEcGBazaGSS_A/company-logo_100_100/B4DZ87aYPbKYAI-/0/1783408198972/yael_software_logo?e=2147483647&v=beta&t=J-7xkVSZfPHjfBY5aLTEPk3EEkj-4cdyyZ5JzvylBoI",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQEcGBazaGSS_A/company-logo_100_100/B4DZ87aYPbKYAI-/0/1783408198972/yael_software_logo?e=2147483647&v=beta&t=J-7xkVSZfPHjfBY5aLTEPk3EEkj-4cdyyZ5JzvylBoI",
+    "snippet": "Who We Are:\nYael Group is a leading group of companies in the Israeli market, providing advanced technological solutions across a wide range of domains to organizations in all sectors\nAI Department – Project Coordination & AI Implementation\nWe are looking for a team member to join our AI Department and take part in a diverse range of AI-related initiatives. The role combines project and task coordination, implementation of AI solutions, training, and hands-on work with AI tools.\nJob Description\nCoordinate and track projects and tasks, working closely with various stakeholders across the organization.\nImplement basic-complexity AI solutions and AI Agents.\nWork regularly with Microsoft Copilot and Generative AI tools.\nPrepare and deliver training sessions and learning materials.\nDevelop content for the organization's Copilot website, presentations, and professional materials.\nExplore new AI tools and capabilities and support their implementation across the organization.\nJob Requirements\nBachelor's degree in a relevant field, such as Information Systems, Industrial Engineering and Management, Computer Science, Business Administration with a technology specialization, or another related discipline.\n2–3 years of experience in project management or coordination, implementation, deployment, or a similar business-technology role.\nHands-on knowledge and experience with Microsoft Copilot –\nmandatory\n.\nStrong technological orientation and the ability to learn independently and quickly.\nAnalytical thinking, strong organizational skills, accuracy, and attention to detail.\nSelf-motivation, initiative, and the ability to independently take ownership of tasks and drive them through to completion.\nExcellent communication and presentation skills.\nAdvantages:\nExperience with Copilot Studio, Power Platform, AI Agent development, or Low-Code/No-Code tools.\nThis position offers an excellent opportunity to join an AI Department, gain hands-on experience across a variety of projects and initiatives, and develop professionally in the rapidly evolving field of Artificial Intelligence.",
+    "stable_job_id": "li_4492349847",
+    "content_hash": "ch_2118efa8b11e",
+    "requirement_assessments": [
+      {
+        "requirement": "2–3 years of experience in project management or coordination",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "2–3 years of experience in project management or coordination",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Python automation, Gemini/Copilot AI workflows",
+          "source_field": "Candidate profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון טכנולוגי תפעולי המשתלב היטב בדרישות התיאום וניהול המשימות."
+      },
+      {
+        "requirement": "Hands-on knowledge and experience with Microsoft Copilot",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Hands-on knowledge and experience with Microsoft Copilot",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Python and Copilot AI calculation agents",
+          "source_field": "Candidate profile"
+        },
+        "assessment": "match",
+        "explanation": "המועמד שולט בעבודה מעשית עם סוכני חישוב של Copilot וכללי AI."
+      },
+      {
+        "requirement": "Bachelor's degree in a relevant field",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "Bachelor's degree in a relevant field",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
+          "source_field": "Candidate profile"
+        },
+        "assessment": "gap",
+        "explanation": "למועמד הכשרה כהנדסאי ולא תואר ראשון אקדמי, אך יש לו בסיס הנדסי חזק."
+      }
+    ],
+    "fit_gaps": "נדרש תואר ראשון רלוונטי או ניסיון מקביל חזק; למועמד רקע כהנדסאי וניסיון טכנולוגי מעשי.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://il.linkedin.com/jobs/view/npi-coordinator-at-logica-it-4492695441": {
+    "link": "https://il.linkedin.com/jobs/view/npi-coordinator-at-logica-it-4492695441",
+    "title": "NPI Coordinator",
+    "company": "Logica-IT",
+    "location": "תל אביב",
+    "date": "2026-11-26",
+    "source": "LinkedIn",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "energy_tech",
+    "company_domain_product": "חברת הייטק מובילה בתחום פיתוח חומרה",
+    "company_summary": "",
+    "job_summary": "רכז/ת NPI להובלת תהליכי מעבר של מוצרי חומרה מאב-טיפוס לייצור המוני, כולל ניהול BOM, תמיכה בהרכבה ובדיקות, ועבודה מול צוותי הנדסה וייצור.",
+    "company_requirements": "הנדסאי/ת אלקטרוניקה, הבנה בתהליכי ייצור וקריאת שרטוטים, שליטה ב-Excel, אנגלית ברמה גבוהה וסדר וארגון.",
+    "experience_strengths": "רקע מעשי בהנדסה, שליטה בתוכנות ניהול ו-Excel, יכולת עבודה רוחבית מול מספר ממשקים ותשומת לב קפדנית לפרטים.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך בעל ניסיון בתיאום הנדסי, מערכות אלקטרו-מכניות ועבודה עם מערכות ERP ו-Excel.",
+    "key_highlights": "התפקיד משלב ממשק ישצר בין פיתוח לייצור, ניהול BOM, כתיבת נהלים טכניים ותמיכה באיתור תקלות חומרה.",
+    "salary_range": "לא צוין במודעה",
+    "salary_source_type": "none",
+    "salary_source_label": "לא צוין שכר",
+    "salary_evidence": "מודעת המשרה אינה מציינת שכר, ולא קיימים נתוני סקר ענפיים מוסמכים לתפקיד זה.",
+    "salary_source_url": "",
+    "p25": null,
+    "p75": null,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFSgkIfsBmkuQ/company-logo_100_100/B4DZ09hq8aI0AQ-/0/1774853730505/logica_it_logo?e=2147483647&v=beta&t=oowITd4ajCwtn5jPtOgKPgYspDC9jx100EkwZM9GFyI",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQFSgkIfsBmkuQ/company-logo_100_100/B4DZ09hq8aI0AQ-/0/1774853730505/logica_it_logo?e=2147483647&v=beta&t=oowITd4ajCwtn5jPtOgKPgYspDC9jx100EkwZM9GFyI",
+    "snippet": "NPI Coordinator – Leading Hi-Tech Company in Tel Aviv!\nWant to be the link between engineering, development and manufacturing, and take a hardware product from the first prototype all the way to mass production?\nA leading hi-tech company is looking for an NPI Coordinator to join its Hardware Development team. This is a central, high-impact role with plenty of cross-functional work. It suits someone who values order and precision and enjoys seeing a product come to life.\nWhat you’ll do:\n🔹 Manage and update BOMs, engineering data and changes (ECO/ECR)\n🔹 Support the assembly and testing of prototypes\n🔹 Work with ERP / PLM systems and Excel\n🔹 Write work instructions and technical documentation\n🔹 Troubleshoot issues and support production\n🔹 Work closely with engineers, production teams and suppliers\nWhat we’re looking for:\n✅ Electronics Practical Engineer (Handasai)\n✅ Understanding of manufacturing processes and ability to read technical drawings\n✅ Strong Excel skills\n✅ Very good English\n✅ Organized, precise, and able to work with multiple stakeholders\nAdvantages:\n⭐ Industrial Engineering & Management Practical Engineer\n⭐ Experience in a manufacturing, engineering or NPI environment\n📍\nLocation:\nTel Aviv\n📩\nInterested?\nSend me a private message or apply here.",
+    "stable_job_id": "li_4492695441",
+    "content_hash": "ch_c8b7ad6c0afe",
+    "requirement_assessments": [
+      {
+        "requirement": "Electronics Practical Engineer (Handasai)",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Electronics Practical Engineer (Handasai)",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות)",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "gap",
+        "explanation": "המועמד הינו הנדסאי מכונות ולא הנדסאי אלקטרוניקה, אך בעל רקע הנדסי מקביל."
+      },
+      {
+        "requirement": "Understanding of manufacturing processes and ability to read technical drawings",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Understanding of manufacturing processes and ability to read technical drawings",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "Practical Mechanical Engineer with Deep Specialization in Energy Systems",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד השכלה והבנה בתהליכי ייצור ומערכות אלקטרו-מכניות."
+      },
+      {
+        "requirement": "Strong Excel skills",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Strong Excel skills",
+          "source_field": "company_requirements"
+        },
+        "profile_evidence": {
+          "quote": "Excel data modeling",
+          "source_field": "Tech & AI"
+        },
+        "assessment": "match",
+        "explanation": "המועמד שולט במידול נתונים ועבודה עם Excel."
+      },
+      {
+        "requirement": "Work with ERP / PLM systems and Excel",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "Work with ERP / PLM systems and Excel",
+          "source_field": "What you’ll do"
+        },
+        "profile_evidence": {
+          "quote": "SAP, Excel data modeling",
+          "source_field": "Tech & AI"
+        },
+        "assessment": "match",
+        "explanation": "למועמד היכרות וניסיון בעבודה עם מערכות ניהול ארגוניות כגון SAP ו-Excel."
+      },
+      {
+        "requirement": "Industrial Engineering & Management Practical Engineer",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "Industrial Engineering & Management Practical Engineer",
+          "source_field": "Advantages"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד הינו הנדסאי מוסמך בתחום טכנולוגי-מעשי קרוב."
+      }
+    ],
+    "fit_gaps": "המועמד הוא הנדסאי מכונות ולא הנדסאי אלקטרוניקה, אך הרקע ההנדסי המעשי שלו תומך בדרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C%D7%99-%D7%90%D7%AA%D7%A8-%D7%9E%D7%A0%D7%94%D7%9C%D7%99-%D7%A9%D7%98%D7%97-at-alumeshet-4494632935": {
+    "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%A0%D7%94%D7%9C%D7%99-%D7%90%D7%AA%D7%A8-%D7%9E%D7%A0%D7%94%D7%9C%D7%99-%D7%A9%D7%98%D7%97-at-alumeshet-4494632935",
+    "title": "מנהלי אתר / מנהלי שטח",
+    "company": "Alumeshet",
+    "location": "רחבי הארץ",
+    "date": "2026-11-26",
+    "source": "LinkedIn",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "operations",
+    "company_domain_product": "אלומעשת - פרויקטים ובנייה",
+    "company_summary": "",
+    "job_summary": "ניהול ביצוע באתרי בנייה, ניהול צוותי התקנה וקבלני משנה, הבטחת איכות ובטיחות.",
+    "company_requirements": "כ-2 שנות ניסיון בביצוע, קריאת שרטוטים טכניים חובה, ניסיון בניהול עובדים וניסיון באתרי בנייה.",
+    "experience_strengths": "הנדסאי מכונות, ניסיון פיקודי כמפקד צוות בסיירת נח\"ל ויכולות תיאום וניהול שטח.",
+    "reasoning": "המועמד מתאים לתפקידי ניהול שטח וביצוע הודות לרקע בהנדסה וניסיון פיקודי.",
+    "key_highlights": "הובלת צוותים, קריאת שרטוטים ויכולת עבודה בשטח.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQGp6uONyuYLsw/company-logo_100_100/B4EZu8YdTHKoAQ-/0/1768392087607/alumeshet_logo?e=2147483647&v=beta&t=c2LbOTotQncxVSOw5vFORnVHh9gu2ZcxDV68YeFamiI",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4E0BAQGp6uONyuYLsw/company-logo_100_100/B4EZu8YdTHKoAQ-/0/1768392087607/alumeshet_logo?e=2147483647&v=beta&t=c2LbOTotQncxVSOw5vFORnVHh9gu2ZcxDV68YeFamiI",
+    "snippet": "יודעים להוביל צוותים, לנהל ביצוע ולגרום לדברים לקרות בשטח?\nחברת\nאלומעשת\nמגייסת\nמנהל/ת ביצוע לפרויקטים באתרי בנייה ברחבי הארץ\n.\nאנחנו מחפשים איש/אשת שטח עם יכולות ניהול, חשיבה ביצועית ויכולת להוביל פרויקטים בצורה מקצועית, מדויקת ובטוחה.\nמה תעשו בתפקיד?\n• תנהלו עבודות התקנה באתרי בנייה.\n• תובילו צוותי התקנה וקבלני משנה.\n• תהיו אחראים על איכות הביצוע, עמידה בלוחות זמנים ונהלי בטיחות.\n• תעבדו מול ממשקים מקצועיים ותפתרו אתגרים בשטח.\n• תלוו את הפרויקטים משלב הביצוע ועד למסירה ללקוח.\nמה חשוב לנו?\n✓ כשנתיים ניסיון בתחום הביצוע\n✓ ידע בקריאת שרטוטים טכניים – חובה\n✓ ניסיון בניהול עובדים\n✓ ניסיון באתרי בנייה – יתרון משמעותי\n✓ ניסיון בניהול לוגיסטי – יתרון\n📍\nמיקום העבודה:\nאתרי בנייה ברחבי הארץ.\nאם אתם אוהבים את השטח, יודעים להניע אנשים ולוקחים אחריות על התוצאה – נשמח להכיר.\nלהגשת מועמדות:\nAviadC@alumeshet.co.il\nמספר משרה: 554519\n#דרושים #מנהל_ביצוע #אתרי_בנייה #ניהול_פרויקטים #גיוס_עובדים",
+    "stable_job_id": "li_4494632935",
+    "content_hash": "ch_7ef6f73ed78b",
+    "requirement_assessments": [
+      {
+        "requirement": "ידע בקריאת שרטוטים טכניים",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ידע בקריאת שרטוטים טכניים – חובה",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "הנדסאי מכונות",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "כמהנדס מכונות מוסמך, למועמד יש רקע חזק בקריאת שרטוטים הנדסיים."
+      },
+      {
+        "requirement": "ניסיון בניהול עובדים",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ניסיון בניהול עובדים",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש ניסיון פיקודי משמעותי כמפקד צוות קרבי."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
   }
 }
