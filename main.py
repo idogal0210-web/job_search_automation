@@ -311,15 +311,40 @@ def report_results(
     return 1 if health.final_status.startswith("FAILED_") else 0
 
 
-def main():
+def parse_args(argv=None):
+    """Parse CLI flags. argv=None means no flags (safe for programmatic/test calls)."""
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Job search pipeline: fetch, evaluate, publish dashboard, notify."
+    )
+    parser.add_argument(
+        "--build-only", action="store_true",
+        help="Rebuild the static dashboard from existing archive data (no fetching, AI calls or email).",
+    )
+    parser.add_argument(
+        "--skip-email", action="store_true",
+        help="Run the full pipeline but do not send the email digest (jobs stay READY for later delivery).",
+    )
+    return parser.parse_args(argv if argv is not None else [])
+
+
+def main(argv=None):
+    args = parse_args(argv)
     root = Path(__file__).resolve().parent
+    if args.build_only:
+        print("[INIT] Build-only mode: rebuilding dashboard from existing data", flush=True)
+        return 0 if publish_dashboard([], root) else 1
     health, handled_links, ledger, sync_state_path = load_context(root, STATE_FILE)
     all_raw_jobs = collect_all_jobs(health)
     processed_jobs, audit = evaluate_all_jobs(all_raw_jobs, handled_links, health, ledger)
     dashboard_ok = publish_dashboard(processed_jobs, root)
-    email_configured, daily_top_picks = dispatch_notifications(
-        processed_jobs, dashboard_ok, health, outbox_path=_outbox_path_for_state(STATE_FILE)
-    )
+    if args.skip_email:
+        print("[EMAIL] Skipped by --skip-email; qualified jobs remain READY", flush=True)
+        email_configured, daily_top_picks = False, processed_jobs[:5]
+    else:
+        email_configured, daily_top_picks = dispatch_notifications(
+            processed_jobs, dashboard_ok, health, outbox_path=_outbox_path_for_state(STATE_FILE)
+        )
     state_ok = persist_state(
         ledger, daily_top_picks, handled_links, STATE_FILE,
         sync_state_path, dashboard_ok, email_configured, health
@@ -328,4 +353,4 @@ def main():
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(main(sys.argv[1:]))

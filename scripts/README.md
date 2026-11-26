@@ -13,6 +13,17 @@ This directory contains standalone operational, maintenance, and verification sc
 - **`update_job_gaps_and_reasoning.py`**: One-off maintenance script used during model migrations to populate Hebrew fit gaps and concise reasoning fields for historical records.
 - **`evaluate_dataset.py`**: Benchmark dataset evaluator used for prompt regression testing, scoring calibration, and precision measurement.
 
+- **`studio_bridge.py`**: Loopback-only Career Studio API server (token + Origin/Host checks). Serves `docs/` and endpoints such as `/api/studio/ingest`, `/api/ats/analyze`, `/api/studio/tailor`, `/api/interview/evaluate`. Run: `python3 scripts/studio_bridge.py --port 8765`.
+- **`render_tree_widget.py`**: Generates the interactive repository tree widget. Run: `python3 scripts/render_tree_widget.py --output docs/tree_widget.html`.
+- **`pre-commit.sh`**: Git pre-commit hook running the zero-emoji validator and `project_hygiene.py --check-secrets --validate`.
+
+## Main Pipeline Flags (`main.py`)
+
+- `python3 main.py`: full run (fetch, evaluate, publish, email, persist state).
+- `python3 main.py --skip-email`: full run without sending the email digest.
+- `python3 main.py --build-only`: rebuild the dashboard from existing data only (no fetching, AI calls or email).
+- `python3 main.py --help`: show usage without starting a run.
+
 ## External Tools & Workers
 
 - **`tools/cloudflare-worker/job-check.js`**: Standalone Cloudflare Worker script for edge-based job URL validation and status verification.
