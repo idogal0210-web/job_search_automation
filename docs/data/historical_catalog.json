@@ -29294,5 +29294,299 @@
         "label": "עבודת שטח"
       }
     ]
+  },
+  "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%AA-%D7%9E%D7%9B%D7%A0%D7%99%D7%A7%D7%94-%D7%91%D7%9E%D7%A7%D7%95%D7%A8-at-rafael-advanced-defense-systems-4493987988": {
+    "link": "https://il.linkedin.com/jobs/view/%D7%9E%D7%91%D7%A7%D7%A8-%D7%AA-%D7%9E%D7%9B%D7%A0%D7%99%D7%A7%D7%94-%D7%91%D7%9E%D7%A7%D7%95%D7%A8-at-rafael-advanced-defense-systems-4493987988",
+    "title": "מבקר.ת מכניקה במקור",
+    "company": "Rafael Advanced Defense Systems",
+    "location": "ישראל",
+    "date": "2026-11-27",
+    "source": "LinkedIn",
+    "match_score": 90,
+    "base_match_score": 85,
+    "priority_bonus": 5,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "energy_tech",
+    "company_domain_product": "רפאל מערכות לחימה מתקדמות",
+    "company_summary": "",
+    "job_summary": "ביצוע ביקורת מכנית ממדית לחלקים ומערכות אצל יצרנים וקבלני משנה, כולל פיקוח ובקרה בשלבי פיתוח וייצור.",
+    "company_requirements": "הנדסאי מכונות, ניסיון בביקורת מכנית וממדית, אנגלית ברמה גבוהה ונכונות לנסיעות.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם רקע בהנדסה ומערכות אלקטרו-מכניות.",
+    "reasoning": "המועמד הוא הנדסאי מכונות מוסמך עם רקע מעשי חזק המתאים לדרישות תפקיד ביקורת מכנית ופיקוח.",
+    "key_highlights": "התאמה מלאה לדרישת ההשכלה כהנדסאי מכונות ויכולת עבודה מול ספקים ויצרנים.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGjWdLehU_iCQ/company-logo_100_100/company-logo_100_100/0/1730446060663?e=2147483647&v=beta&t=hIJEoCW8KAy20T-a269t7xhslVMo9JWK_091rD834ns",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQGjWdLehU_iCQ/company-logo_100_100/company-logo_100_100/0/1730446060663?e=2147483647&v=beta&t=hIJEoCW8KAy20T-a269t7xhslVMo9JWK_091rD834ns",
+    "snippet": "קצת על התפקיד:\nביקורת לחלקים מכאניים\nבקרה ופיקוח על יצרנים וקבלני משנה\nביצוע ביקורת במקור אצל יצרנים וקבלני משנה\nעיקר הפעילות הינה בשלבי הפיתוח והייצור של המוצרים\nמה אנחנו מחפשים?\nניסיון של לפחות שנתיים בביקורת מכנית כולל ביקורת ממדית אצל יצרנים, באמצעות כלים קונבנציונאליים ומכונת מדידה.\nידיעת השפה האנגלית ברמה גבוהה.\nנכונות לנסיעות תכופות ברחבי הארץ ובחו\"ל.\nהנדסאי.ת / טכנאי.ת מכונות - חובה.\nהכרת תהליכי ייצור במפעלי עיבוד שבבי ומפעלי תהליכים מיוחדים (ציפוי, צבע, יציקות) - יתרון.\nיכולת בניית תוכניות והפעלת CMM - יתרון.\nלמה כדאי לך להצטרף אלינו?\nמקצוע ייחודי ונדרש שלא ניתן ללמוד אותו במוסד טכנולוגי אקדמי.\nעבודה מעניינת ומאתגרת המשלבת ממשקי עבודה עם לקוחות וספקי שרות רבים ומגוונים.\nהשפעה ישירה על איכות המוצרים המגיעים לפרויקטים השונים ברפאל וללקוחות בכל העולם.\nחשיפה לטכנולוגיות חדשות אצל יצרנים בארץ ובעולם.",
+    "stable_job_id": "li_4493987988",
+    "content_hash": "ch_fff3109ed9cb",
+    "requirement_assessments": [
+      {
+        "requirement": "הנדסאי.ת / טכנאי.ת מכונות - חובה.",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "הנדסאי.ת / טכנאי.ת מכונות - חובה.",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בתעודת הנדסאי מכונות מוסמך."
+      },
+      {
+        "requirement": "ניסיון של לפחות שנתיים בביקורת מכנית כולל ביקורת ממדית אצל יצרנים",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "ניסיון של לפחות שנתיים בביקורת מכנית כולל ביקורת ממדית אצל יצרנים",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Practical Mechanical Engineer with Deep Specialization in Energy Systems",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע מעשי כהנדסאי מכונות המשתלב בתחומי הפיקוח והבקדרה."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://il.linkedin.com/jobs/view/system-engineer-%E2%80%93-hardware-integration-at-yael-korentec-technologies-4493641169": {
+    "link": "https://il.linkedin.com/jobs/view/system-engineer-%E2%80%93-hardware-integration-at-yael-korentec-technologies-4493641169",
+    "title": "System Engineer – Hardware Integration",
+    "company": "Yael Korentec Technologies",
+    "location": "ישראל",
+    "date": "2026-11-27",
+    "source": "LinkedIn",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "energy_tech",
+    "company_domain_product": "מערכות ימיות וביטחוניות מתקדמות",
+    "company_summary": "",
+    "job_summary": "משרת System Engineer לחומרה ואינטגרציה במערכות ימיות וביטחוניות, כולל הרכבות, בדיקות מעבדה ושטח, ותיעוד הנדסי.",
+    "company_requirements": "תואר בוגר בהנדסת חשמל או דיפלומת הנדסאי אלקטרוניקה/מכונות, ניסיון מעשי באינטגרציית חומרה.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם רקע מעשי מוצק באינטגרציה של מערכות, עבודה טכנית שדה ויכולת למידה גבוהה.",
+    "reasoning": "התאמה גבוהה לתפקיד הנדסי מבצעי המשלב אינטגרציה מעשית של מערכות אלקטרו-מכניות.",
+    "key_highlights": "התאמה לדרישת הנדסאי, רקע מעשי באינטגרציה, אוריינטציה טכנית חזקה ואנגלית גבוהה.",
+    "salary_range": "11,500 - 15,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 11500,
+    "p75": 15000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQFq2n4jjN5FiA/company-logo_100_100/B4DZ87.GThIEAU-/0/1783417562602/korentec_logo?e=2147483647&v=beta&t=trMbBadqYi9XWlNYf2ahMGW3z9uiAmC2W-6EweIhAeU",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQFq2n4jjN5FiA/company-logo_100_100/B4DZ87.GThIEAU-/0/1783417562602/korentec_logo?e=2147483647&v=beta&t=trMbBadqYi9XWlNYf2ahMGW3z9uiAmC2W-6EweIhAeU",
+    "snippet": "System Engineer – Hardware Integration | Maritime & Defense Systems\nFor a leading company in the Defense Industry, we are looking for a System Engineer with a strong hands-on orientation to join the Hardware Integration team, working on advanced maritime and defense systems.\nJob Description:\nPerform hardware assemblies, system integration and testing in laboratories, at customer sites and onboard naval vessels.\nExecute integration activities involving complex hardware systems and subsystems.\nSupport the preparation of system and subsystem drawings and engineering documentation, under the guidance and approval of the Chief Engineer.\nPromote the preparation, review and finalization of engineering reports and technical analyses as part of the product documentation.\nParticipate in field integration activities and system testing in operational environments, including maritime platforms.\nRequirements:\nB.Sc. in Electrical Engineering or Practical Engineer diploma in Electronics – Mandatory.\nHands-on experience in hardware assembly, integration and testing – Advantage.\nExperience in the maritime domain, particularly former Israeli Navy personnel or experience in civilian maritime companies – Strong Advantage.\nSkipper license or experience operating small vessels – Advantage.\nFamiliarity with unmanned systems – Advantage.\nHigh-level English.\nJoin a leading defense technology environment and take part in challenging hardware integration projects across maritime and operational platforms.",
+    "stable_job_id": "li_4493641169",
+    "content_hash": "ch_8989917eaaab",
+    "requirement_assessments": [
+      {
+        "requirement": "Practical Engineer diploma in Electronics",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "Practical Engineer diploma in Electronics – Mandatory.",
+          "source_field": "Requirements"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בתעודת הנדסאי מוסמך (מכונות ואנרגיה ירוקה)."
+      },
+      {
+        "requirement": "Hands-on experience in hardware assembly, integration and testing",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "Hands-on experience in hardware assembly, integration and testing – Advantage.",
+          "source_field": "Requirements"
+        },
+        "profile_evidence": {
+          "quote": "Electro-mechanical systems, site supervision, equipment commissioning, troubleshooting",
+          "source_field": "Key Competencies & Target Operational Focus"
+        },
+        "assessment": "match",
+        "explanation": "למועמד ניסיון מעשי עשיר בהרכבות, בדיקות שדה ואינטגרציה של מערכות אלקטרו-מכניות."
+      }
+    ],
+    "fit_gaps": "נדרש רקע באלקטרוניקה או מערכות ימיות לפי דרישות ספציפיות, אך עידו מביא רקע הנדסאי מכונות ומומחיות באנרגיה ומערכות בקרה.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://il.linkedin.com/jobs/view/lead-manufacturing-engineering-technician-at-thermo-fisher-scientific-4493859755": {
+    "link": "https://il.linkedin.com/jobs/view/lead-manufacturing-engineering-technician-at-thermo-fisher-scientific-4493859755",
+    "title": "Lead Manufacturing Engineering Technician",
+    "company": "Thermo Fisher Scientific",
+    "location": "צח״ר",
+    "date": "2026-11-27",
+    "source": "LinkedIn",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "incomplete",
+    "sector_key": "operations",
+    "company_domain_product": "Thermo Fisher Scientific - ציוד ומערכות למדעי החיים וביופרודקשן",
+    "company_summary": "",
+    "job_summary": "תפקיד טכנאי/ת אחזקה תעשייתית האחראי/ת על תחזוקה מונעת ומתקנת של ציוד ייצור, מערכות שירות ומערכות בקרה בסביבת GMP.",
+    "company_requirements": "הסמכת טכנאי או הנדסאי במכונות/חשמל/מכטרוניקה, ניסיון קודם באחזקה תעשייתית, היכרות עם מערכות מכניות וחשמליות, יכולת קריאת שרטוטים.",
+    "experience_strengths": "הנדסאי מכונות מוסמך עם התמחות במערכות אנרגיה ומכטרוניקה, רקע בפתרון תקלות וקריאת שרטוטים טכניים.",
+    "reasoning": "המועמד הינו הנדסאי מכונות מוסמך בעל רקע טכני חזק במערכות אלק트로-מכניות ואחזקה, המתאים לתפקידי טכנאי אחזקה והנדסה.",
+    "key_highlights": "התאמה מלאה להשכלה כהנדסאי מכונות, ניסיון מעשי במערכות אלק트로-מכניות ויכולת עבודה מול ממשקים הנדסיים ותפעוליים.",
+    "salary_range": "13,500 - 17,500 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • כולל משמרות",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: תפעול, אחזקה ומכונות תעשייתיות.",
+    "salary_source_url": "",
+    "p25": 13500,
+    "p75": 17500,
+    "logo": "https://media.licdn.com/dms/image/v2/D560BAQGe2HQP4zwTlA/company-logo_100_100/company-logo_100_100/0/1688649979581/thermo_fisher_scientific_logo?e=2147483647&v=beta&t=iwXfVsVoN3N55AbBLzgcXs3SjpF3H5asLBOKd8LqV3o",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D560BAQGe2HQP4zwTlA/company-logo_100_100/company-logo_100_100/0/1688649979581/thermo_fisher_scientific_logo?e=2147483647&v=beta&t=iwXfVsVoN3N55AbBLzgcXs3SjpF3H5asLBOKd8LqV3o",
+    "snippet": "Work Schedule\nStandard (Mon-Fri)\nEnvironmental Conditions\nAble to lift 40 lbs. without assistance, Loud Noises (Equipment/Machinery), Some degree of PPE (Personal Protective Equipment) required (safety glasses, gowning, gloves, lab coat, ear plugs etc.)\nאודות תרמו פישר\nלעבודתנו בתרמו פישר סיינטיפיק יש השפעה משמעותית ברחבי העולם. מדי יום, עמיתינו מממשים את ייעודנו ומאפשרים ללקוחותינו להפוך את העולם לבריא, נקי ובטוח יותר. אנו מעניקים לצוותים שלנו ברחבי העולם משאבים והזדמנויות לפיתוח הקריירה, ובמקביל מקדמים את המדע ומפתחים פתרונות לכמה מהאתגרים המורכבים ביותר בעולם.\nאודות אתר הייצור בצח״ר\nאתר הייצור בצח״ר הוא חלק מחטיבת Bioproduction בקבוצת מדעי החיים של תרמו פישר סיינטיפיק. באתר פועלים שלושה קווי ייצור: קו לייצור המכשירים, קו BLOTER וקו EGEL.\nהאתר פועל כיחידת ייצור עצמאית מקצה לקצה ומרכז את כלל הפונקציות הנדרשות לתהליך ייצור מלא. בין היתר פועלות בו שרשרת האספקה, איכות, טכנולוגיית המוצר והייצור, הכנת חומרים וייצור, כאשר כלל הצוותים עובדים בשיתוף פעולה כדי להבטיח תהליך ייצור רציף, איכותי ויעיל – משלב התכנון וההכנה ועד לייצור הסופי.\nתיאור התפקיד\nטכנאי/ת האחזקה אחראי/ת לתחזוקה מונעת, מתקנת וחזויה של ציוד הייצור, מערכות השירות ותשתיות האתר. התפקיד תומך באמינות הציוד, ברציפות התפעולית, באיכות המוצרים ובעמידה בדרישות בטיחות, GMP ורגולציה.\nהתפקיד מספק תמיכה טכנית מעשית במערכות מכניות, חשמליות, פנאומטיות, הידראוליות ומערכות בקרה, נותן מענה לתקלות ציוד, תומך בפעילויות תיקוף והפעלה ותורם ליוזמות לשיפור האמינות ולשיפור מתמיד.\nתחומי אחריות מרכזיים\nלבצע תחזוקה מונעת, מתקנת וחזויה בציוד ייצור, במערכות שירות ובמערכות האתר.\nלאתר ולתקן תקלות בציוד הייצור, במערכות השירות ובמערכות המבנה, ולצמצם השבתות ייצור באמצעות תגובה מהירה לתקלות.\nלבצע תחזוקה מכנית, חשמלית, פנאומטית, הידראולית ותחזוקת מערכות בקרה, ולאמת את תפקוד הציוד לאחר תיקונים.\nלהתקין, לשנות ולהפעיל ציוד חדש.\nלתעד במדויק פעילויות אחזקה במערכת ממוחשבת לניהול אחזקה (CMMS), כגון Uptime.\nלדווח על תקלות חוזרות ולהשתתף בניתוח גורמי שורש (RCA) ובפעילויות של פעולות מתקנות ומונעות (CAPA).\nלתמוך בייצור, בפעילויות תיקוף (IQ/OQ/PQ) ובהפעלה.\nלעבוד בשיתוף פעולה עם צוותי הייצור, ההנדסה, האיכות, התיקוף והאחזקה.\nלזהות הזדמנויות לשיפור אמינות הציוד ולתמוך ביוזמות Lean ושיפור מתמיד.\nלעמוד בדרישות GMP, בנהלי בטיחות, בנוהלי נעילה ותיוג (LOTO), בדרישות סביבתיות ובתקני 5S.\nדרישות התפקיד\nהשכלה וניסיון\nהסמכת טכנאי/ת או הנדסאי/ת במכונות, חשמל, מכטרוניקה, אוטומציה או תחום רלוונטי, או ניסיון תעשייתי מקביל.\n2–5 שנות ניסיון באחזקה תעשייתית – יתרון.\nידע מקצועי ומיומנויות\nהיכרות עם מערכות מכניות, חשמליות, פנאומטיות והידראוליות.\nניסיון במערכות PLC וב-CMMS – יתרון.\nיכולת לקרוא שרטוטים טכניים ותרשימי חשמל.\nיכולות גבוהות לאיתור תקלות ולחשיבה אנליטית.\nאחריות ותשומת לב גבוהה לפרטים.\nעבודה מול ממשקים ותקשורת\nכישורי עבודת צוות ותקשורת גבוהים.\nתודעת שירות.\nיכולת לעבוד באופן עצמאי ולתפקד ביעילות תחת לחץ.\nתנאי עבודה\nהעבודה מתבצעת בסביבת ייצור.\nייתכן שתידרש עבודה במשמרות, שעות נוספות, בסופי שבוע או במתכונת כוננות.\nהשימוש בציוד המגן האישי הנדרש הוא חובה.\nיכולת לעמוד, לטפס בסולמות ולעבוד בגובה או בחללים סגורים לפי הצורך.\nיכולת להרים עד 23 ק״ג .",
+    "stable_job_id": "li_4493859755",
+    "content_hash": "ch_a5b4eabc94d6",
+    "requirement_assessments": [
+      {
+        "requirement": "הסמכת טכנאי/ת או הנדסאי/ת במכונות, חשמל, מכטרוניקה, אוטומציה או תחום רלוונטי",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "הסמכת טכנאי/ת או הנדסאי/ת במכונות, חשמל, מכטרוניקה, אוטומציה או תחום רלוונטי",
+          "source_field": "דרישות התפקיד"
+        },
+        "profile_evidence": {
+          "quote": "Certified Practical Mechanical Engineer (הנדסאי מכונות), Natural Gas & Green Energy Specialization, Ruppin Academic Center (2022).",
+          "source_field": "Education & Credentials"
+        },
+        "assessment": "match",
+        "explanation": "המועמד מחזיק בדיפלומה של הנדסאי מכונות כמבוקש בדרישות הסף."
+      },
+      {
+        "requirement": "יכולת לקרוא שרטוטים טכניים ותרשימי חשמל",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "יכולת לקרוא שרטוטים טכניים ותרשימי חשמל.",
+          "source_field": "ידע מקצועי ומיומנויות"
+        },
+        "profile_evidence": {
+          "quote": "",
+          "source_field": "unverified"
+        },
+        "assessment": "unknown",
+        "explanation": "ציטוט המודעה לא אומת או חסרה ראיה מאומתת בפרופיל; נדרשת בדיקה."
+      },
+      {
+        "requirement": "ניסיון במערכות PLC וב-CMMS",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "ניסיון במערכות PLC וב-CMMS – יתרון.",
+          "source_field": "ידע מקצועי ומיומנויות"
+        },
+        "profile_evidence": {
+          "quote": "SCADA / AVEVA / 24/7 Control Rooms",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד יש רקע בבקרה תעשייתית ובמערכות SCADA."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
+  },
+  "https://il.linkedin.com/jobs/view/%D7%93%D7%A8%D7%95%D7%A9%D7%99%D7%9D-%D7%98%D7%9B%D7%A0%D7%90%D7%99%D7%9D-%D7%9E%D7%94%D7%9E%D7%A2%D7%A8%D7%9A-%D7%94%D7%98%D7%9B%D7%A0%D7%99-%D7%91%D7%97%D7%99%D7%9C-%D7%94%D7%90%D7%95%D7%95%D7%99%D7%A8-at-amarel-ltd-4494783609": {
+    "link": "https://il.linkedin.com/jobs/view/%D7%93%D7%A8%D7%95%D7%A9%D7%99%D7%9D-%D7%98%D7%9B%D7%A0%D7%90%D7%99%D7%9D-%D7%9E%D7%94%D7%9E%D7%A2%D7%A8%D7%9A-%D7%94%D7%98%D7%9B%D7%A0%D7%99-%D7%91%D7%97%D7%99%D7%9C-%D7%94%D7%90%D7%95%D7%95%D7%99%D7%A8-at-amarel-ltd-4494783609",
+    "title": "דרושים טכנאים מהמערך הטכני בחיל האוויר",
+    "company": "AMAREL LTD",
+    "location": "ישראל",
+    "date": "2026-11-27",
+    "source": "LinkedIn",
+    "match_score": 85,
+    "base_match_score": 85,
+    "priority_bonus": 0,
+    "evaluation_complete": true,
+    "evidence_status": "verified_quotes",
+    "sector_key": "drones",
+    "company_domain_product": "מערכות מתקדמות בתעשייה הביטחונית",
+    "company_summary": "",
+    "job_summary": "גיוס אנשי מקצוע לתפקידים טכניים בפיתוח, שילוב ותמיכה במערכות מתקדמות",
+    "company_requirements": "ניסיון מהמערך הטכני בחיל האוויר, רקע טכני",
+    "experience_strengths": "רקע בטכנולוגיה צבאית, הנדסאי מכונות וניסיון פיקודי ותפעולי.",
+    "reasoning": "התאמה גבוהה לתפקיד טכני במערכות מתקדמות המבוסס על רקע טכני צבאי ותעשייתי.",
+    "key_highlights": "השתלבות במערך טכני מתקדם בתעשייה הביטחונית.",
+    "salary_range": "14,000 - 19,000 ₪",
+    "salary_source_type": "sector_benchmark",
+    "salary_source_label": "טווח ענפי • הנדסאי 2-4 שנים",
+    "salary_evidence": "טווח שכר ענפי לפי סיווג תפקיד: רחפנים, כטב״ם ומערכות C-UAS.",
+    "salary_source_url": "",
+    "p25": 14000,
+    "p75": 19000,
+    "logo": "https://media.licdn.com/dms/image/v2/D4D0BAQGQr2Z6Sml-yg/company-logo_100_100/B4DZbDOQ79HQAU-/0/1747032019101/amarel_logo?e=2147483647&v=beta&t=NHrBXVeTTiaxH93t_pT_VLLsjUBWZi7RbLEnS6qINbM",
+    "company_logo_url": "https://media.licdn.com/dms/image/v2/D4D0BAQGQr2Z6Sml-yg/company-logo_100_100/B4DZbDOQ79HQAU-/0/1747032019101/amarel_logo?e=2147483647&v=beta&t=NHrBXVeTTiaxH93t_pT_VLLsjUBWZi7RbLEnS6qINbM",
+    "snippet": "רוצים לקחת חלק בפיתוח, שילוב ותמיכה במערכות המתקדמות ביותר בתעשייה הביטחונית?\nאנחנו מרחיבים את פעילותנו ומגייסים אנשי מקצוע מנוסים מחיל האוויר למגוון תפקידים טכניים",
+    "stable_job_id": "li_4494783609",
+    "content_hash": "ch_f6f134a92a85",
+    "requirement_assessments": [
+      {
+        "requirement": "רקע מחיל האוויר או ניסיון טכני רלוונטי",
+        "importance": "preferred",
+        "ad_evidence": {
+          "quote": "מגייסים אנשי מקצוע מנוסים מחיל האוויר למגוון תפקידים טכניים",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Combat Engineering / Demolitions & Breaching Team Leader, Nahal Reconnaissance",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "למועמד רקע פיקודי וטכני מבצעי עשיר התואם את דרישות המערך."
+      },
+      {
+        "requirement": "שילוב ותמיכה במערכות המתקדמות ביותר",
+        "importance": "required",
+        "ad_evidence": {
+          "quote": "פיתוח, שילוב ותמיכה במערכות המתקדמות ביותר בתעשייה הביטחונית",
+          "source_field": "snippet"
+        },
+        "profile_evidence": {
+          "quote": "Multidisciplinary Technical Professional & Practical Mechanical Engineer",
+          "source_field": "Core Profile"
+        },
+        "assessment": "match",
+        "explanation": "המועמד בעל הכשרה כהנדסאי מכונות ורקע במערכות אלקטרו-מכניות מורכבות."
+      }
+    ],
+    "fit_gaps": "אין פערי סף מהותיים; המועמד עונה על דרישות התפקיד.",
+    "is_direct_ats": "",
+    "is_field_work": false,
+    "provides_company_car": false,
+    "is_shifts_24_7": false,
+    "is_junior_friendly": false,
+    "curated_tags": []
   }
 }
