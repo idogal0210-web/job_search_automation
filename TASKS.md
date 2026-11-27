@@ -13,6 +13,13 @@ Strictly adheres to the zero-emoji policy and evidence-based completion.
 
 ## Completed Tasks Archive
 
+### Mobile UI & Layout Stabilization (2026-11-28)
+- [x] **TASK-110**: Stabilize mobile search capsule flex-basis and filter ribbon proportions.
+  - Root Cause: In mobile view (`max-width: 768px`), `.search-capsule-ribbon` switches to `flex-direction: column`. The search wrapper inherited `.search-capsule-input-wide { flex: 1 1 220px }`, which applied `flex-basis: 220px` along the vertical column axis, expanding the capsule into a giant 220px balloon dome with `border-radius: 999px`. Additionally, unreset `min-height: 48px` from `theme.css` created vertical bloat across stacked select filters.
+  - Fix: Overrode `.search-capsule-input-wide` with `flex: none !important; width: 100% !important;` and standardized `.search-capsule` to 44px on mobile (`min-height: 44px; height: 44px;`) and 38px on desktop. Restructured mobile ribbon into a clean 2-column grid (`1fr 1fr`) for Region and Sector capsules, reducing vertical ribbon footprint by >50%. Enforced iOS Safari `16px !important` input guard to prevent unwanted auto-zooming.
+  - Target files: `frontend/css/dashboard.css`, `docs/dashboard.css`, `frontend/templates/index.html`, `docs/index.html`, `TASKS.md`.
+  - Evidence: Verified via Chrome DevTools MCP mobile emulation (`390x844`) and desktop (`1440x900`), template parity test passed (100% byte and structural parity), zero-emoji audit passed, hygiene secret check passed.
+
 ### Tooling Cleanup (2026-11-26)
 - [x] **TOOLS-01**: Removed broken one-off scripts `scripts/restore_cloud_jobs.py` (missing input file) and `scripts/clean_cloud_active_jobs.py` (hardcoded conversation path).
 - [x] **TOOLS-02**: Added argparse to `main.py`: `--help` no longer starts a live run; new `--build-only` and `--skip-email` flags.

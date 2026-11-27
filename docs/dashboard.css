@@ -3435,9 +3435,12 @@ border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 999px;
-  padding: 6px 14px;
+  padding: 0 14px;
+  height: 38px;
+  min-height: 38px;
   color: #ffffff;
   font-size: 13px;
+  box-sizing: border-box;
   transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -3450,6 +3453,7 @@ border-radius: 999px;
 .search-capsule i {
   font-size: 15px;
   color: var(--dashboard-cyan, #38bdf8);
+  flex-shrink: 0;
 }
 
 .search-capsule input,
@@ -3463,6 +3467,15 @@ border-radius: 999px;
   margin: 0 !important;
   box-shadow: none !important;
   cursor: pointer;
+  min-height: 0 !important;
+  height: 100% !important;
+  box-sizing: border-box;
+}
+
+.search-capsule select {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .search-capsule select option {
@@ -3517,13 +3530,14 @@ border-radius: 999px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
+  padding: 0 14px;
   border-radius: 999px;
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
   box-sizing: border-box;
-  min-height: 34px;
+  min-height: 38px;
+  height: 38px;
   white-space: nowrap;
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
   background: rgba(255, 255, 255, 0.06);
@@ -3576,33 +3590,52 @@ border-radius: 999px;
 
 @media (max-width: 768px) {
   .search-capsule-ribbon {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
+    padding: 12px;
   }
   .search-capsule-input-wide {
+    grid-column: 1 / -1;
     max-width: 100%;
     width: 100%;
+    flex: none !important;
   }
   .search-capsule {
     width: 100%;
+    height: 44px;
+    min-height: 44px;
+    padding: 0 12px;
     justify-content: flex-start;
     box-sizing: border-box;
   }
+  .search-capsule-sort {
+    grid-column: 1 / -1;
+  }
+  .search-capsule input,
   .search-capsule select {
+    font-size: 16px !important; /* iOS Safari auto-zoom guard */
     width: 100%;
+    min-height: 0 !important;
+    height: 100% !important;
   }
   .search-ribbon-actions {
+    grid-column: 1 / -1;
     margin-inline-start: 0;
     width: 100%;
+    display: flex;
     justify-content: space-between;
-    padding-top: 6px;
+    gap: 8px;
+    padding-top: 8px;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
   .ribbon-tool-btn {
     flex: 1;
+    min-height: 44px;
+    height: 44px;
     justify-content: center;
+    font-size: 13px;
+    padding: 0 8px;
   }
 }
 
@@ -4632,6 +4665,10 @@ border-radius: 999px;
   :root[data-theme="light"] .search-capsule .search-clear-btn:hover {
     color: #0F172A !important;
     background: rgba(15, 23, 42, 0.08) !important;
+  }
+
+  :root[data-theme="light"] .search-ribbon-actions {
+    border-top-color: #E2E8F0 !important;
   }
 
   :root[data-theme="light"] .btn-reset-filters {
